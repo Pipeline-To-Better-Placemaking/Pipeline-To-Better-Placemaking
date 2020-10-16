@@ -1,0 +1,11 @@
+{
+  "name": "measuring-place-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bautista Bertolami, Madison Dishman, Joshua Howell, Mason Proco, Mike Triana",
+  "license": "ISC"
+}
