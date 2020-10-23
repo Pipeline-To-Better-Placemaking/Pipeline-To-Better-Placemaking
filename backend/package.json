@@ -9,6 +9,11 @@
   "author": "Bautista Bertolami, Madison Dishman, Joshua Howell, Mason Proco, Mike Triana",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^26.5.3"
+    "jest": "^26.5.3",
+    "supertest": "^5.0.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1"
   }
 }
