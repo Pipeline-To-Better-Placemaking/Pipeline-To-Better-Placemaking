@@ -47,7 +47,7 @@ class TitleScreenClass extends Component {
         };
     }
 
-    onPressIn = (navigation) => {
+    onPressIn = () => {
         this.setState({
             color: styles.signUpTextPressed.color
         });
