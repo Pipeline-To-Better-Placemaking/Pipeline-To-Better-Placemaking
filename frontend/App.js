@@ -7,6 +7,7 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import TitleScreen from './screens/TitleScreen.js';
 import SignUp from './screens/SignUp.js';
 import Home from './screens/Home.js';
+import LogIn from './screens/LogIn.js';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -25,6 +26,11 @@ class App extends Component {
               name="TitleScreen"
               component={TitleScreen}
               options={{ headerShown: false}}
+            />
+            <Stack.Screen
+              name="LogIn"
+              component={LogIn}
+              options={{headerShown: false}}
             />
             <Stack.Screen
               name="SignUp"

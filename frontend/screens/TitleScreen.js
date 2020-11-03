@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View,  Pressable, Image } from 'react-native';
+import { View,  ScrollView, Pressable, Image } from 'react-native';
 import { Text, Button } from '@ui-kitten/components';
 import styles from './styles/titleScreenStyles.js';
 
@@ -8,7 +8,7 @@ import styles from './styles/titleScreenStyles.js';
 // 2.) Add circles to hold images -- Complete
 // 3.) Add images to circles -- Complete (Maybe add a rim)
 // 4.) Get feedback on color scheme and overall design
-// 5.) Hook up redirects to login and sign up page -- 1/2 Complete
+// 5.) Hook up redirects to login and sign up page -- Complete
 // 6.) Possibly add animation to the text and image bubbles
 // 7.) Maybe add a subtitle text under the title
 
@@ -43,68 +43,67 @@ class TitleScreenClass extends Component {
         super(props);
 
         this.state = {
-            color: styles.signUpText.color
+            color: styles.signUpText.color,
+            active: -1
         };
-
-        this.onLoginPress = this.onLoginPress.bind(this);
     }
 
-    onPressIn = () => {
+    onPressSignIn = () => {
         this.setState({
-            color: styles.signUpTextPressed.color
+            color: styles.signUpTextPressed.color,
+            active: 1
         });
 
     }
 
-    onPressOut = () => {
+    onUnPressSignIn = () => {
         this.setState({
-            color: styles.signUpText.color
+            active: -1
         });
 
         this.props.navigation.navigate("SignUp");
     }
 
-    onLoginPress = () => {
-
+    onPressLogIn = () => {
+        this.props.navigation.navigate("LogIn");
     }
-
-
 
     render() {
 
         return(
-            
+
             <View style={[styles.background, { backgroundColor: '#006FD6' }]}>
+                <ScrollView contentContainerStyle={{flexGrow : 1, justifyContent: 'center'}} keyboardShouldPersistTaps='handled'>
 
-                <View marginTop={10} marginLeft={30}>
-                    <ImageCircleCity leftMargin={100} bottomMargin={-80}/>
-                    <ImageCircleConstruction leftMargin={180} bottomMargin={20}/>
-                </View>        
-            
-                <View>
-                    <Text category='h1' status='control'>
-                        2+ Community
-                    </Text>
-                </View>
+                    <View marginTop={10} marginLeft={30}>
+                        <ImageCircleCity leftMargin={100} bottomMargin={-80}/>
+                        <ImageCircleConstruction leftMargin={180} bottomMargin={20}/>
+                    </View>
 
-                <View>
+                    <View>
+                        <Text category='h1' status='control' style={{textAlign: 'center'}}>
+                            2+ Community
+                        </Text>
+                    </View>
 
-                    <View style={[styles.logInButton]}>
-                        <Button size='giant' onPress={this.onLoginPress} style={[{backgroundColor: '#DEBD07'}]}>
-                            <Text style={ [ { color: '#091C7A', fontWeight: '600', fontSize: 18 } ] }>
-                                Log In   
+                    <View>
+
+                        <Button size='giant' onPress={this.onPressLogIn} style={[styles.logInButton]}>
+                            <Text style={[{ color: styles.logInText.color, fontWeight: '600', fontSize: 18 }]}>
+                                Log In
                             </Text>
                         </Button>
-                    </View>
 
-                    <View style={[styles.signUpButton]}>
-                        <Pressable onPressIn={this.onPressIn} onPressOut={this.onPressOut}>
-                            <Text style={{ color: this.state.color, fontSize: 20} } >
-                                Sign Up
-                            </Text>
-                        </Pressable>
+                        <View style={[styles.signUpButton]}>
+                            <Pressable onPressIn={this.onPressSignIn} onPressOut={this.onUnPressSignIn}>
+                                <Text style={{ color: this.state.active === 1 ? this.state.color : styles.signUpText.color, fontSize: 20} } >
+                                    Sign Up
+                                </Text>
+                            </Pressable>
+                        </View>
+
                     </View>
-                </View>
+                </ScrollView>
             </View>
         );
     }
