@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
-import { Text, Button, Input, Icon } from '@ui-kitten/components';
+import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
 import styles from './styles/signUpStyles.js';
 
 // **** TODO ****
@@ -26,7 +26,8 @@ class SignUp extends Component {
             pass: ' ',
             confirmPass: ' ',
             passMatch: true,
-            securityOption: true
+            securityOption: true,
+            visible: false
         }
 
         this.onFirstNameChange = this.onFirstNameChange.bind(this);
@@ -34,7 +35,7 @@ class SignUp extends Component {
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onPassChange = this.onPassChange.bind(this);
         this.onConfirmPassChange = this.onConfirmPassChange.bind(this);
-        this.confirmPassword = this.confirmPassword.bind(this);
+        this.onSignUp = this.onSignUp.bind(this);
     }
 
     onFirstNameChange(event) {
@@ -65,19 +66,8 @@ class SignUp extends Component {
     }
 
     onConfirmPassChange(event) {
-        this.setState({
-            confirmPass: event.target.value
-        });
 
-        this.confirmPassword()
-    }
-
-    confirmPassword() {
-
-        console.log(this.state.pass);
-        console.log(this.state.confirmPass);
-
-        if (this.state.pass != this.state.confirmPass)
+        if (this.state.pass != event.target.value)
         {
             this.setState({
                 passMatch: false
@@ -88,6 +78,16 @@ class SignUp extends Component {
             this.setState({
                 passMatch: true
             });
+        }
+    }
+
+    onSignUp(props) {
+
+        if (!this.state.passMatch)
+        {
+            this.setState({
+                visible: true
+            })
         }
     }
 
@@ -109,7 +109,10 @@ class SignUp extends Component {
             });
         }
 
+        
+
         return(
+            
             <View style={[styles.background, { backgroundColor: '#006FD6' }]}>
 
                 {/* Allows the inputs to not be blocked by the keyboard. Behavior is different on different devices*/}
@@ -171,18 +174,24 @@ class SignUp extends Component {
                             accessoryRight={renderIcon}
                             secureTextEntry={this.state.securityOption}
                             onChange={this.onConfirmPassChange}
-                            status={this.state.passMatch ? "primary" : "danger"}
+                            status={this.state.passMatch ? "basic" : "danger"}
                             />
                         </View>
 
                     </View>
                 </KeyboardAvoidingView>
 
-                <Button size='giant' style={[{backgroundColor: '#DEBD07'}]}>
+                <Button size='giant' onPress={this.onSignUp} style={[{backgroundColor: '#DEBD07'}]}>
                     <Text style={ [ { color: '#091C7A', fontWeight: '600', fontSize: 18 } ] }>
                         Sign Up   
                     </Text>
                 </Button>
+
+                <Modal
+                    visible={this.state.visible}
+                >
+                    <Text>test</Text>
+                </Modal>
 
             </View>
             

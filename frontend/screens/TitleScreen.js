@@ -45,6 +45,8 @@ class TitleScreenClass extends Component {
         this.state = {
             color: styles.signUpText.color
         };
+
+        this.onLoginPress = this.onLoginPress.bind(this);
     }
 
     onPressIn = () => {
@@ -61,6 +63,12 @@ class TitleScreenClass extends Component {
 
         this.props.navigation.navigate("SignUp");
     }
+
+    onLoginPress = () => {
+
+    }
+
+
 
     render() {
 
@@ -82,7 +90,7 @@ class TitleScreenClass extends Component {
                 <View>
 
                     <View style={[styles.logInButton]}>
-                        <Button size='giant' style={[{backgroundColor: '#DEBD07'}]}>
+                        <Button size='giant' onPress={this.onLoginPress} style={[{backgroundColor: '#DEBD07'}]}>
                             <Text style={ [ { color: '#091C7A', fontWeight: '600', fontSize: 18 } ] }>
                                 Log In   
                             </Text>
