@@ -11,25 +11,44 @@ class Home extends Component {
         super(props);
 
         this.state = {
-            lat: 0,
-            long: 0
+            location: props.location
         }
+
+        console.log(this.state.location);
     }
 
     render() {
 
         return(
-            <View>
-                 <MapView
-                    provider={PROVIDER_GOOGLE}
-                    style={styles.mapStyle}
-                    initialRegion={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                    }}
-                />
+            <View style={[{backgroundColor: '#FFFFFF'}]}>
+                <View style={[{backgroundColor: '#006FD6'}]}>
+                    <Text category='h5' style={styles.header}>
+                        Home
+                    </Text>
+                </View>
+
+                <View>
+                    <MapView
+                        provider={PROVIDER_GOOGLE}
+                        style={styles.mapStyle}
+                        initialCamera ={{
+                            center:{
+                                latitude: this.state.location.coords.latitude,
+                                longitude: this.state.location.coords.longitude
+                            },
+                            pitch: 10,
+                            heading: this.state.location.coords.heading,
+                            altitude: this.state.location.coords.altitude,
+                            zoom: 17
+                        }}
+                    />
+                </View>
+
+                <View>
+
+                </View>
+
+
             </View>
         );
 

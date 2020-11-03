@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon } from '@ui-kitten/components';
 import styles from './styles/logInStyles.js';
+import * as Location from 'expo-location'; 
 
 // **** TODO ****
 //  1.) Forgot password
@@ -53,8 +54,29 @@ class LogIn extends Component {
         // this.props.navigation.navigate(""); // Forgot password
     }
 
-    onPressLogIn = () => {
-        this.props.navigation.navigate("Home"); // log into app
+    onPressLogIn = async () => {
+
+        let enabled = await Location.hasServicesEnabledAsync();
+
+        console.log(enabled);
+
+        if (enabled)
+        {
+            let status = await Location.requestPermissionsAsync();
+
+            console.log(status);
+
+            if (status.granted)
+            {
+                console.log("Gathering location...");
+                
+                let location = await Location.getCurrentPositionAsync({});
+
+                this.props.getCoords(location);
+
+                this.props.navigation.navigate("Home");
+            }
+        }
     }
 
     onPressBack = () => {

@@ -16,22 +16,43 @@ const Stack = createStackNavigator();
 
 class App extends Component {
 
+  constructor(props) {
+
+    super(props);
+
+    this.state = {
+      location: { }
+    }
+
+    this.getCoords = this.getCoords.bind(this);
+  }
+
+  getCoords = (locationDetails) => {
+    this.setState({
+      location: locationDetails
+    });
+  }
+
   render() {
     return(
       <NavigationContainer>
         <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={eva.dark}>
           <Stack.Navigator>
+
             <Stack.Screen
               name="TitleScreen"
               component={TitleScreen}
               options={{ headerShown: false}}
             />
+
             <Stack.Screen
               name="LogIn"
-              component={LogIn}
               options={{headerShown: false}}
-            />
+            >
+              {props => <LogIn {...props} getCoords={this.getCoords}></LogIn>}
+            </Stack.Screen>
+
             <Stack.Screen
               name="SignUp"
               component={SignUp}
@@ -39,9 +60,10 @@ class App extends Component {
             />
             <Stack.Screen
               name="Home"
-              component={Home}
               options={{headerShown: false}}
-            />
+            >
+              {props => <Home {...props} location = {this.state.location}></Home>}
+            </Stack.Screen>
           </Stack.Navigator>
         </ApplicationProvider>
       </NavigationContainer>

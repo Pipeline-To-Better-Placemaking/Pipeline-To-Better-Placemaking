@@ -183,21 +183,24 @@ class SignUp extends Component {
                                 />
                             </View>
 
-                            <View style={[styles.backButton]}>
-                                <Pressable onPressIn={this.onPressBack} onPressOut={this.onUnPressBack}>
-                                    <Text style={{ color: this.state.active === 1 ? this.state.color : styles.backText.color, fontSize: 20} } >
-                                        &larr; Back
-                                    </Text>
-                                </Pressable>
-                            </View>
                         </View>
                     </KeyboardAvoidingView>
+
 
                     <Button size='giant' onPress={this.onSignUp} style={[{backgroundColor: '#DEBD07'}]}>
                         <Text style={ [ { color: '#091C7A', fontWeight: '600', fontSize: 18 } ] }>
                             Sign Up   
                         </Text>
                     </Button>
+
+                    <View style={[styles.backButton]}>
+                        <Pressable onPressIn={this.onPressBack} onPressOut={this.onUnPressBack}>
+                            <Text style={{ color: this.state.active === 1 ? this.state.color : styles.backText.color, fontSize: 20} } >
+                                &larr; Back
+                            </Text>
+                        </Pressable>
+                    </View>
+
                 </ScrollView>
             </View>
 
