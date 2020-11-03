@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import { View,  ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon } from '@ui-kitten/components';
 import styles from './styles/signUpStyles.js';
 
@@ -91,6 +91,21 @@ class SignUp extends Component {
         }
     }
 
+    onPressBack = () => {
+        this.setState({
+            color: styles.backPressed.color,
+            active: 1
+        });
+    }
+
+    onUnPressBack = () => {
+        this.setState({
+            active: -1
+        });
+
+        this.props.navigation.navigate("TitleScreen");
+    }
+
     render() {
 
         const AlertIcon = (props) => (
@@ -111,81 +126,91 @@ class SignUp extends Component {
 
         return(
             <View style={[styles.background, { backgroundColor: '#006FD6' }]}>
+                <ScrollView contentContainerStyle={{flexGrow : 1, justifyContent: 'center'}} keyboardShouldPersistTaps='handled'>
 
-                {/* Allows the inputs to not be blocked by the keyboard. Behavior is different on different devices*/}
-                <KeyboardAvoidingView
-                behavior={"position"}
-                style={{marginBottom: 60}}
-                >
-                    <View style={styles.title}>
-                        <Text category='h1' status='control'>
+                    {/* Allows the inputs to not be blocked by the keyboard. Behavior is different on different devices*/}
+                    <KeyboardAvoidingView
+                    behavior={"position"}
+                    style={{marginBottom: 60}}
+                    >
+                        <View style={styles.title}>
+                            <Text category='h1' status='control'>
+                                Sign Up
+                            </Text>
+                        </View>
+
+                        <View>
+
+                            <View>
+                                <Text category='label' style={styles.inputText}> First Name: </Text>
+                                <Input
+                                placeholder='First name...'
+                                onChange={this.onFirstNameChange}
+                                style={styles.inputBox}
+                                />
+                            </View>
+
+                            <View>
+                                <Text category='label' style={styles.inputText}> Last Name: </Text>
+                                <Input
+                                placeholder='Last name...'
+                                onChange={this.onLastNameChange}
+                                style={styles.inputBox}
+                                />
+                            </View>
+
+                            <View>
+                                <Text category='label' style={styles.inputText}> Email Address: </Text>
+                                <Input
+                                placeholder='Email address...'
+                                onChange={this.onEmailChange}
+                                style={styles.inputBox}
+                                />
+                            </View>
+
+                            <View>
+                                <Text category='label' style={styles.inputText}> Password:</Text>
+                                <Input
+                                placeholder='Password...'
+                                caption='Should contain at least 8 symbols'
+                                captionIcon={AlertIcon}
+                                accessoryRight={renderIcon}
+                                secureTextEntry={this.state.securityOption}
+                                onChange={this.onPassChange}
+                                />
+                            </View>
+
+                            <View>
+                                <Text category='label' style={styles.inputText}> Confirm Password:</Text>
+                                <Input
+                                placeholder='Password...'
+                                accessoryRight={renderIcon}
+                                secureTextEntry={this.state.securityOption}
+                                onChange={this.onConfirmPassChange}
+                                status={this.state.passMatch ? "primary" : "danger"}
+                                />
+                            </View>
+
+                        </View>
+                    </KeyboardAvoidingView>
+
+                    <Button size='giant' style={[{backgroundColor: '#DEBD07'}]}>
+                        <Text style={ [ { color: '#091C7A', fontWeight: '600', fontSize: 18 } ] }>
                             Sign Up
                         </Text>
+                    </Button>
+
+                    <View style={[styles.backButton]}>
+                        <Pressable onPressIn={this.onPressBack} onPressOut={this.onUnPressBack}>
+                            <Text style={{ color: this.state.active === 1 ? this.state.color : styles.backText.color, fontSize: 20} } >
+                                &larr; Back
+                            </Text>
+                        </Pressable>
                     </View>
 
-                    <View>
-
-                        <View>
-                            <Text category='label' style={styles.inputText}> First Name: </Text>
-                            <Input
-                            placeholder='First name...'
-                            onChange={this.onFirstNameChange}
-                            style={styles.inputBox}
-                            />
-                        </View>
-
-                        <View>
-                            <Text category='label' style={styles.inputText}> Last Name: </Text>
-                            <Input
-                            placeholder='Last name...'
-                            onChange={this.onLastNameChange}
-                            style={styles.inputBox}
-                            />
-                        </View>
-
-                        <View>
-                            <Text category='label' style={styles.inputText}> Email Address: </Text>
-                            <Input
-                            placeholder='Email address...'
-                            onChange={this.onEmailChange}
-                            style={styles.inputBox}
-                            />
-                        </View>
-
-                        <View>
-                            <Text category='label' style={styles.inputText}> Password:</Text>
-                            <Input
-                            placeholder='Password...'
-                            caption='Should contain at least 8 symbols'
-                            captionIcon={AlertIcon}
-                            accessoryRight={renderIcon}
-                            secureTextEntry={this.state.securityOption}
-                            onChange={this.onPassChange}
-                            />
-                        </View>
-
-                        <View>
-                            <Text category='label' style={styles.inputText}> Confirm Password:</Text>
-                            <Input
-                            placeholder='Password...'
-                            accessoryRight={renderIcon}
-                            secureTextEntry={this.state.securityOption}
-                            onChange={this.onConfirmPassChange}
-                            status={this.state.passMatch ? "primary" : "danger"}
-                            />
-                        </View>
-
-                    </View>
-                </KeyboardAvoidingView>
-
-                <Button size='giant' style={[{backgroundColor: '#DEBD07'}]}>
-                    <Text style={ [ { color: '#091C7A', fontWeight: '600', fontSize: 18 } ] }>
-                        Sign Up   
-                    </Text>
-                </Button>
-
+                </ScrollView>
             </View>
-            
+
         );
     }
 

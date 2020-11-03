@@ -7,15 +7,16 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
-    
+
     logInButton: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 170
+        marginTop: 100,
+        backgroundColor: '#DEBD07'
     },
 
     logInText: {
-        color: '#000000',
+        color: '#091C7A',
         fontSize: 20
     },
 
@@ -34,7 +35,7 @@ export const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 20
     },
-    
+
     circle: {
         width: 150,
         height: 150,

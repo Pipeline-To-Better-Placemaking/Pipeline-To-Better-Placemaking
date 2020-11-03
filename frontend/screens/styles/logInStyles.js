@@ -30,6 +30,18 @@ export const styles = StyleSheet.create({
         width: 300
     },
 
+    logInButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 30,
+        backgroundColor: '#DEBD07'
+    },
+
+    logInText: {
+        color: '#091C7A',
+        fontSize: 20
+    },
+
     backButton: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -40,8 +52,16 @@ export const styles = StyleSheet.create({
         color: '#8F9BB3',
     },
 
-    backPressed: {
+    backTextPressed: {
         color: '#FFFFFF',
+    },
+
+    forgotText: {
+        color: '#FFFFFF',
+    },
+
+    forgotPressed: {
+        color: '#000000',
     },
 
 });
