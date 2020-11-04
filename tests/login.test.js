@@ -3,8 +3,11 @@ const supertest = require('supertest')
 const th = require('./test_helper')
 const api = supertest(app)
 
+const User = require('../models/user')
+
 const testUser = {
     username: 'JohnDoe',
+    email: 'test@yahoo.com',
     password: 'admin'
 }
 
@@ -13,8 +16,9 @@ describe('When logging in', () => {
     beforeEach(async () => {
         // Begin each test with a known user record in the database
 
-        // TODO: Delete all users in test database
-        // TODO: Add JohnDoe user to test database
+        await User.deleteMany({})
+        const user = new User(testUser)
+        await user.save()
     })
     
     test('login succeeds with valid username and password', async () => {
