@@ -14,11 +14,18 @@
     "supertest": "^5.0.0"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-ensure-login": "^0.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "json-server": "^0.16.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.12",
-    "mongoose-unique-validator": "^2.0.3"
+    "mongoose-unique-validator": "^2.0.3",
+    "passport": "^0.4.1",
+    "passport-json": "^1.2.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local-mongoose": "^6.0.1"
   }
 }
