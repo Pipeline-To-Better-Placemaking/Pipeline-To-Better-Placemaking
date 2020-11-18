@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --verbose"
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
   "author": "Bautista Bertolami, Madison Dishman, Joshua Howell, Mason Proco, Mike Triana",
   "license": "ISC",

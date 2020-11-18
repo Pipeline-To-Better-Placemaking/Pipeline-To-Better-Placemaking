@@ -1,5 +1,6 @@
 const app = require('../app')
 const supertest = require('supertest')
+const mongoose = require('mongoose')
 const th = require('./test_helper')
 const api = supertest(app)
 
@@ -9,7 +10,7 @@ const baseUrl = '/api/users/authenticate'
 
 const testUser = {
     email: 'test@yahoo.com',
-    password: 'admin'
+    password: '1#Aadmin'
 }
 
 describe('When logging in', () => {
@@ -18,7 +19,12 @@ describe('When logging in', () => {
         // Begin each test with a known user record in the database
 
         await User.deleteMany({})
-        const user = new User(testUser)
+        const user = new User({
+            firstname: 'John',
+            lastname: 'Doe',
+            email: testUser.email,
+            password: testUser.password
+        })
         await User.addUser(user)
     })
     
@@ -69,4 +75,9 @@ describe('When logging in', () => {
             .expect(401)
             .expect('Content-Type', /application\/json/)
     })
+})
+
+afterAll(() => {
+    mongoose.connection.close()
+    app.close()
 })
