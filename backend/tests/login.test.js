@@ -5,8 +5,9 @@ const api = supertest(app)
 
 const User = require('../models/user')
 
+const baseUrl = '/api/users/authenticate'
+
 const testUser = {
-    username: 'JohnDoe',
     email: 'test@yahoo.com',
     password: 'admin'
 }
@@ -18,36 +19,37 @@ describe('When logging in', () => {
 
         await User.deleteMany({})
         const user = new User(testUser)
-        await user.save()
+        await User.addUser(user)
     })
     
     test('login succeeds with valid username and password', async () => {
 
         const response = await api
-            .post('/login')
+            .post(baseUrl)
             .send(testUser)
             // Confirm successful login
             .expect(200)
             .expect('Content-Type', /application\/json/)
 
-        // Confirm that response contains username
-        expect(response.body).toMatchObject({ username: testUser.username })
+        // Confirm that response contains email
+        expect(response.body).toMatchObject({ user: { email: testUser.email } })
         
         // Confirm that response contains authorization token
         expect(response.body.token)
 
         // Confirm that the token is accurate
-        expect(response.body.token).toMatch(th.getToken(testUser.username))
+        const user = await User.getUserByEmail(testUser.email)
+        expect(response.body.token).toMatch(th.getToken(user))
     })
 
-    test('login fails (401) with invalid username', async () => {
+    test('login fails (401) with invalid email', async () => {
         const badCreds = {
-            username: 'NotAUser',
-            password: 'admin'
+            email: 'notauser@yahoo.com',
+            password: testUser.password
         }
 
         const response = await api
-            .post('/login')
+            .post(baseUrl)
             .send(badCreds)
             // Confirm unsuccessful login
             .expect(401)
@@ -56,12 +58,12 @@ describe('When logging in', () => {
 
     test('login fails (401) with invalid password', async () => {
         const badCreds = {
-            username: 'JohnDoe',
+            email: testUser.email,
             password: 'wrong'
         }
 
         const response = await api
-            .post('/login')
+            .post(baseUrl)
             .send(badCreds)
             // Confirm unsuccessful login
             .expect(401)
