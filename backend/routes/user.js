@@ -11,7 +11,6 @@ router.post('/register', (req, res, next) => {
         lastname: req.body.lastname,
         instituion: req.body.instituion,
         email: req.body.email,
-        username: req.body.username,
         password: req.body.password
     })
 
@@ -26,10 +25,10 @@ router.post('/register', (req, res, next) => {
 })
 
 router.post('/authenticate', (req,res,next) => {
-    const username = req.body.username
+    const email = req.body.email
     const password = req.body.password
 
-    User.getUserByUsername(username, (err,user) => {
+    User.getUserByEmail(email, (err,user) => {
         if(err) throw err
         if(!user){
             return res.json({success: false, msg: 'User not found'})
@@ -37,7 +36,7 @@ router.post('/authenticate', (req,res,next) => {
         User.comparePassword(password, user.password, (err, isMatch) => {
             if(err) throw err
             if(isMatch){
-                const token = jwt.sign(user.toJSON(), config.SECRET, {
+                const token = jwt.sign(user.toJSON(), config.PRIVATE_KEY, {
                     expiresIn: 86400 //1 day
                 })
 
@@ -46,8 +45,7 @@ router.post('/authenticate', (req,res,next) => {
                     token: 'JWT' + token,
                     user: {
                         id: user.__id,
-                        name: user.name,
-                        username: user.username,
+                        name: user.firstname,
                         email: user.email
                     }
                 })
