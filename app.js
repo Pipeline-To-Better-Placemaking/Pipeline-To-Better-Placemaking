@@ -7,13 +7,15 @@ const passport = require('passport')
 const config = require('./utils/config')
 
 console.log('Connecting to ', config.DB_URI)
-mongoose.connect(config.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
+const connect = async () => {
+    try {
+        await mongoose.connect(config.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
         console.log('Connected to database')
-    })
-    .catch((error) => {
+    } catch (err) {
         console.log('Error connecting to database: ', error.message)
-    })
+    }
+}
+connect()
 
 const routes = require('./routes/user.js');
 
