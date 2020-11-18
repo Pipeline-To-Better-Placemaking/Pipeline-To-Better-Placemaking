@@ -42,8 +42,8 @@ const expressSession = require('express-session')({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressSession);
 
-app.listen(config.PORT, () => {
+const server = app.listen(config.PORT, () => {
     console.log(`Server is running on port ${config.PORT}`)
 })
 
-
+module.exports = server
