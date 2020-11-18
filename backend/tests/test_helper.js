@@ -1,5 +1,6 @@
 const config = require('../utils/config')
 const jwt = require('jsonwebtoken')
+const User = require('../models/user')
 
 // Get a valid token for a specific user
 const getToken = (user) => {
@@ -8,6 +9,12 @@ const getToken = (user) => {
     })
 }
 
+const getUsers = async () => {
+    const users = await User.find({})
+    return users.map(u => u.toJSON())
+}
+
 module.exports = {
-    getToken
+    getToken,
+    getUsers
 }
