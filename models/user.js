@@ -4,13 +4,23 @@ const config = require('../utils/config.js')
 const uniqueValidator = require('mongoose-unique-validator')
 
 const userSchema = mongoose.Schema({
-    username: {
+    firstname: {
         type: String,
-        required: true,
-        unique: true,
-        minlength: 1,
-        maxlength: 25,
-        match: /[A-Za-z0-9-_]+/
+        required: false,
+        unique: false,
+        match: /[A-Za-z]/
+    },
+    lastname: {
+        type: String,
+        required: false,
+        unique: false,
+        match: /[A-Za-z]/
+    },
+    institution: {
+        type: String,
+        required: false,
+        unique: false,
+        match: /[A-Za-z ]/
     },
     email: {
         type: String,
@@ -32,8 +42,8 @@ module.exports.getUserById = function(id,callback){
     User.findById(id,callback)
 }
 
-module.exports.getUserByUsername = function(username,callback){
-    const query = {username: username}
+module.exports.getUserByEmail = function(username,callback){
+    const query = {email: email}
     User.findOne(query,callback)
 }
 

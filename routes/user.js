@@ -1,13 +1,15 @@
 const express = require('express')
 const router = express.Router()
-const User = require('./models/user.js')
+const User = require('../models/user.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
-const config = require('./utils/config')
+const config = require('../utils/config')
 
 router.post('/register', (req, res, next) => {
     let newUser = new User({
-        name: req.body.name,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        instituion: req.body.instituion,
         email: req.body.email,
         username: req.body.username,
         password: req.body.password
@@ -60,5 +62,7 @@ router.post('/authenticate', (req,res,next) => {
 router.get('/profile', passport.authenticate('jwt',{session:false}), (req, res, next) => {
     res.json({user: req.user})
 })
+
+
 
 module.exports = router
