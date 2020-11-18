@@ -22,7 +22,7 @@ describe('When logging in', () => {
         await User.addUser(user)
     })
     
-    test('login succeeds with valid username and password', async () => {
+    test('login succeeds with valid email and password', async () => {
 
         const response = await api
             .post(baseUrl)
