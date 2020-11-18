@@ -15,7 +15,7 @@ mongoose.connect(config.DB_URI, { useNewUrlParser: true, useUnifiedTopology: tru
         console.log('Error connecting to database: ', error.message)
     })
 
-const routes = require('./routes.js');
+const routes = require('./routes/user.js');
 
 const app = express();
 
