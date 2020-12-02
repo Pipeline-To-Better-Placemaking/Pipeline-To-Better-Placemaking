@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
-import * as Location from 'expo-location'; 
+import HomeMapView from './components/HomeMapView.js';
+import HomeResultView from './components/HomeResultView.js';
+import HomeBottomNav from './components/HomeBottomNav.js';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
 import styles from './styles/homeStyles.js'; 
@@ -14,7 +15,6 @@ class Home extends Component {
             location: props.location
         }
 
-        console.log(this.state.location);
     }
 
     render() {
@@ -28,27 +28,13 @@ class Home extends Component {
                 </View>
 
                 <View>
-                    <MapView
-                        provider={PROVIDER_GOOGLE}
-                        style={styles.mapStyle}
-                        initialCamera ={{
-                            center:{
-                                latitude: this.state.location.coords.latitude,
-                                longitude: this.state.location.coords.longitude
-                            },
-                            pitch: 10,
-                            heading: this.state.location.coords.heading,
-                            altitude: this.state.location.coords.altitude,
-                            zoom: 17
-                        }}
-                    />
+                    <HomeMapView location={this.state.location}/>
+                    <HomeResultView/>
                 </View>
 
                 <View>
-
+                    <HomeBottomNav/>
                 </View>
-
-
             </View>
         );
 

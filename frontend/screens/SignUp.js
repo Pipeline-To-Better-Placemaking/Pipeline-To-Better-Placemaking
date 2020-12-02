@@ -25,6 +25,7 @@ class SignUp extends Component {
             email: ' ',
             pass: ' ',
             confirmPass: ' ',
+            signInError: false,
             passMatch: true,
             securityOption: true,
             visible: false
@@ -35,38 +36,40 @@ class SignUp extends Component {
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onPassChange = this.onPassChange.bind(this);
         this.onConfirmPassChange = this.onConfirmPassChange.bind(this);
+        this.onSignUp = this.onSignUp.bind(this);
+        this.signUpError = this.signUpError.bind(this);
     }
 
     onFirstNameChange(event) {
 
         this.setState({
-            firstName: event.target.value
+            firstName: event
         });
     }
 
     onLastNameChange(event) {
 
         this.setState({
-            lastName: event.target.value
+            lastName: event
         });
     }
 
     onEmailChange(event) {
 
         this.setState({
-            email: event.target.value
+            email: event
         })
     }
 
     onPassChange(event) {
         this.setState({
-            pass: event.target.value
+            pass: event
         });
     }
 
     onConfirmPassChange(event) {
 
-        if (this.state.pass != event.target.value)
+        if (this.state.pass != event)
         {
             this.setState({
                 passMatch: false
@@ -95,6 +98,57 @@ class SignUp extends Component {
         this.props.navigation.navigate("TitleScreen");
     }
 
+    signUpError = () => {
+        
+        if (this.state.signInError)
+        {
+            return (
+                <Text visible={this.state.signInError} style={styles.signUpErrorMessage}> One or more of the options are incorrect. </Text>
+            );
+        }
+
+        return null;
+    }
+
+    async onSignUp() {
+
+        var err = 0
+
+        console.log(this.state.firstName)
+        console.log(this.state.lastName)
+        console.log(this.state.pass)
+        console.log(this.state.email)
+
+
+
+
+        await fetch('/api/user/register', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                firstname: this.state.firstName,
+                lastname: this.state.lastName,
+                institution: "University of Central Florida",
+                email: this.state.email,
+                password: this.state.pass
+            })
+        })
+        .then((response) => console.log(response))
+        .catch((error) => (console.log(error), err = 1))
+
+        if (err)
+        {
+            console.log("Error.");
+            this.setState({
+                signInError: true
+            })
+        }
+    }
+
+
     render() {
 
         const AlertIcon = (props) => (
@@ -112,8 +166,10 @@ class SignUp extends Component {
                 securityOption: !this.state.securityOption
             });
         }
-
         
+        const SignUpErrorMessage = () => {
+            return this.signUpError();
+        }
 
         return(
             
@@ -137,7 +193,7 @@ class SignUp extends Component {
                                 <Text category='label' style={styles.inputText}> First Name: </Text>
                                 <Input
                                 placeholder='First name...'
-                                onChange={this.onFirstNameChange}
+                                onChangeText={this.onFirstNameChange}
                                 style={styles.inputBox}
                                 />
                             </View>
@@ -146,7 +202,7 @@ class SignUp extends Component {
                                 <Text category='label' style={styles.inputText}> Last Name: </Text>
                                 <Input
                                 placeholder='Last name...'
-                                onChange={this.onLastNameChange}
+                                onChangeText={this.onLastNameChange}
                                 style={styles.inputBox}
                                 />
                             </View>
@@ -155,7 +211,7 @@ class SignUp extends Component {
                                 <Text category='label' style={styles.inputText}> Email Address: </Text>
                                 <Input
                                 placeholder='Email address...'
-                                onChange={this.onEmailChange}
+                                onChangeText={this.onEmailChange}
                                 style={styles.inputBox}
                                 />
                             </View>
@@ -168,7 +224,7 @@ class SignUp extends Component {
                                 captionIcon={AlertIcon}
                                 accessoryRight={renderIcon}
                                 secureTextEntry={this.state.securityOption}
-                                onChange={this.onPassChange}
+                                onChangeText={this.onPassChange}
                                 />
                             </View>
 
@@ -178,7 +234,7 @@ class SignUp extends Component {
                                 placeholder='Password...'
                                 accessoryRight={renderIcon}
                                 secureTextEntry={this.state.securityOption}
-                                onChange={this.onConfirmPassChange}
+                                onChangeText={this.onConfirmPassChange}
                                 status={this.state.passMatch ? "basic" : "danger"}
                                 />
                             </View>
@@ -186,6 +242,7 @@ class SignUp extends Component {
                         </View>
                     </KeyboardAvoidingView>
 
+                    <SignUpErrorMessage/>
 
                     <Button size='giant' onPress={this.onSignUp} style={[{backgroundColor: '#DEBD07'}]}>
                         <Text style={ [ { color: '#091C7A', fontWeight: '600', fontSize: 18 } ] }>

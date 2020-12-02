@@ -43,6 +43,12 @@ export const styles = StyleSheet.create({
         color: '#FFFFFF',
     },
 
+    signUpErrorMessage: {
+        color: '#FF3D71',
+        marginTop: -25,
+        marginBottom: 20
+    },
+
 });
 
 export default styles;
