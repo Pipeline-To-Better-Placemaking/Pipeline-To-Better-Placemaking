@@ -5,6 +5,14 @@ import styles from '../styles/homeStyles.js';
 
 class HomeResultView extends Component {
 
+    constructor(props){
+        super(props);
+
+        this.state = {
+            
+        }
+    }
+
     render() {
         return(
             <View>
@@ -13,7 +21,7 @@ class HomeResultView extends Component {
                     <Text style={styles.resultText}> Results </Text>
 
                     <View style={styles.resultCompareButtonView}>
-                        <Button status='primary' appearance='outline'> 
+                        <Button status='primary' appearance='outline' onPress={this.props.onComparePress}> 
                             Compare 
                         </Button>
                     </View>

@@ -8,6 +8,7 @@ import TitleScreen from './screens/TitleScreen.js';
 import SignUp from './screens/SignUp.js';
 import Home from './screens/Home.js';
 import LogIn from './screens/LogIn.js';
+import UserSettings from './screens/UserSettings.js';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -64,6 +65,11 @@ class App extends Component {
             >
               {props => <Home {...props} location = {this.state.location}></Home>}
             </Stack.Screen>
+            <Stack.Screen
+              name="UserSettings"
+              component={UserSettings}
+              options={{headerShown: false}}
+            />
           </Stack.Navigator>
         </ApplicationProvider>
       </NavigationContainer>

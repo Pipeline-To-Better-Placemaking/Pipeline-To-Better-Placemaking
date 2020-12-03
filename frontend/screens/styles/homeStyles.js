@@ -2,10 +2,9 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
 
-    background: {
+    container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: '#FFFFFF'
     },
 
     mapStyle: {
@@ -40,15 +39,56 @@ export const styles = StyleSheet.create({
         paddingLeft: 150
     },
 
+    naigationWrapper: {
+        flex: 1,
+        flexDirection: 'column-reverse'
+
+    },
+
     bottoNavView: {
-        marginTop: 360,
+        height: 50
+    },
+
+    resultBox: {
+        marginLeft: 50,
+        width: 275,
+        height:100,
+        borderColor: 'black',
+        borderWidth: 1
+    },
+
+    resultBoxTab: {
+        flexDirection: 'row',
+        marginTop: 25,
+        marginLeft: 25,
+        borderTopLeftRadius: 40,
+        borderBottomLeftRadius: 40,
+        backgroundColor: '#006FD6',
+        borderColor: 'black',
+        borderWidth: 0,
+        width: 50,
         height: 100
     },
 
-    bottomNavItem: {
-        marginBottom: 50
+    resultBoxText: {
+        marginTop: 10,
+        marginLeft: 15,
+        color: 'black',
+        fontSize: 20
     },
 
+    resultBoxComment: {
+        marginTop: 25,
+        marginLeft: 15,
+        color: 'black',
+        fontSize: 12
+    },
+
+    resultBoxCheckBox: {
+       marginTop: 5,
+       marginLeft: 15,
+       marginRight: -35
+    }
 })
 
 export default styles;

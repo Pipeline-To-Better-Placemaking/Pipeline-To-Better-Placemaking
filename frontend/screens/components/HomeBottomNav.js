@@ -20,6 +20,11 @@ class HomeBottomNav extends Component {
         this.setState({
             index: tabIndex
         });
+
+        if (tabIndex == 2){
+            this.props.goToUserSettings();
+        }
+
     }
 
     render(){
@@ -37,11 +42,11 @@ class HomeBottomNav extends Component {
         );
 
         return(
-            <View>
+            <View style={styles.naigationWrapper}>
                 <BottomNavigation style={styles.bottoNavView} selectedIndex={this.state.index} onSelect={ (index) => this.onTabSelect(index)}>
-                    <BottomNavigationTab icon={ClipBoardIcon} style={styles.bottomNavItem}/>
-                    <BottomNavigationTab icon={HomeIcon} style={styles.bottomNavItem}/>
-                    <BottomNavigationTab icon={PersonIcon} style={styles.bottomNavItem}/>
+                    <BottomNavigationTab icon={ClipBoardIcon}/>
+                    <BottomNavigationTab icon={HomeIcon}/>
+                    <BottomNavigationTab icon={PersonIcon}/>
                 </BottomNavigation>
             </View>
         );
