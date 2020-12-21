@@ -85,7 +85,6 @@ class SignUp extends Component {
 
     onPressBack = () => {
         this.setState({
-            color: styles.backPressed.color,
             active: 1
         });
     }
@@ -99,7 +98,7 @@ class SignUp extends Component {
     }
 
     signUpError = () => {
-        
+
         if (this.state.signInError)
         {
             return (
@@ -166,21 +165,18 @@ class SignUp extends Component {
                 securityOption: !this.state.securityOption
             });
         }
-        
+
         const SignUpErrorMessage = () => {
             return this.signUpError();
         }
 
         return(
-            
-            <View style={[styles.background, { backgroundColor: '#006FD6' }]}>
-                <ScrollView contentContainerStyle={{flexGrow : 1, justifyContent: 'center'}} keyboardShouldPersistTaps='handled'>
+
+            <View style={{backgroundColor: styles.container.backgroundColor, flex: 1}}>
+                <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
 
                     {/* Allows the inputs to not be blocked by the keyboard. Behavior is different on different devices*/}
-                    <KeyboardAvoidingView
-                    behavior={"position"}
-                    style={{marginBottom: 60}}
-                    >
+                    <KeyboardAvoidingView behavior={"position"} style={{marginBottom: 60}}>
                         <View style={styles.title}>
                             <Text category='h1' status='control'>
                                 Sign Up
@@ -244,15 +240,15 @@ class SignUp extends Component {
 
                     <SignUpErrorMessage/>
 
-                    <Button size='giant' onPress={this.onSignUp} style={[{backgroundColor: '#DEBD07'}]}>
-                        <Text style={ [ { color: '#091C7A', fontWeight: '600', fontSize: 18 } ] }>
-                            Sign Up   
+                    <Button size='giant' onPress={this.onSignUp} style={styles.signUpButton}>
+                        <Text style={styles.signUpText}>
+                            Sign Up
                         </Text>
                     </Button>
 
-                    <View style={[styles.backButton]}>
+                    <View style={styles.backButton}>
                         <Pressable onPressIn={this.onPressBack} onPressOut={this.onUnPressBack}>
-                            <Text style={{ color: this.state.active === 1 ? this.state.color : styles.backText.color, fontSize: 20} } >
+                            <Text style={this.state.active === 1 ? styles.backTextPressed : styles.backText}>
                                 &larr; Back
                             </Text>
                         </Pressable>

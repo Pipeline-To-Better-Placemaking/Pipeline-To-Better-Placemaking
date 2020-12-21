@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, CheckBox, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
-import styles from '../styles/homeStyles.js'; 
+import styles from '../styles/homeStyles.js';
 
 class DummyResult extends Component {
 
@@ -19,7 +19,7 @@ class DummyResult extends Component {
         this.setState({
             checked: !this.state.checked
         })
-    } 
+    }
 
     render(){
 
@@ -38,8 +38,10 @@ class DummyResult extends Component {
         }
 
         return(
-            <View style={styles.resultBoxTab}>
-                <CompareCheckBox/>
+            <View style={styles.result}>
+                <View style={styles.resultTab}>
+                    <CompareCheckBox/>
+                </View>
                 <View style={styles.resultBox}>
                     <Text category={'s1'} style={styles.resultBoxText}>
                         Dummy Result
@@ -48,6 +50,7 @@ class DummyResult extends Component {
                         Dummy Result Comment
                     </Text>
                 </View>
+
             </View>
         );
     }

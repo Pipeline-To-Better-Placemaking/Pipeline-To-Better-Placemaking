@@ -2,38 +2,41 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
 
-    background: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+    container: {
+        flexGrow : 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        backgroundColor: '#006FD6'
     },
 
     logInButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
         marginTop: 100,
+        width: 300,
         backgroundColor: '#DEBD07'
     },
 
     logInText: {
         color: '#091C7A',
-        fontSize: 20
+        fontSize: 20,
+        fontWeight: '600',
     },
 
     signUpButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 75
+        marginTop: 75,
+        marginBottom: 75,
     },
 
     signUpText: {
         color: '#8F9BB3',
-        fontSize: 20
+        fontSize: 20,
+        textAlign: 'center'
     },
 
     signUpTextPressed: {
         color: '#FFFFFF',
-        fontSize: 20
+        fontSize: 20,
+        textAlign: 'center'
     },
 
     circle: {

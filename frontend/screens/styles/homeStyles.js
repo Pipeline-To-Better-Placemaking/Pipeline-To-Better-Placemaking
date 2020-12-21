@@ -8,25 +8,25 @@ export const styles = StyleSheet.create({
     },
 
     mapStyle: {
-        width: 400,
-        height: 200
+       height:'90%'
     },
 
     header: {
-        textAlign: 'center', 
-        color: '#FFFFFF', 
-        marginTop: 75,
+        textAlign: 'center',
+        color: '#FFFFFF',
         marginBottom: 5
     } ,
 
     resultTextView: {
-        marginTop: 20,
-        marginLeft: 10
+        marginTop: -10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginLeft: 30
     },
 
     resultText: {
         fontSize: 25,
-        color: 'black'
+        color: 'black',
     },
 
     resultLine: {
@@ -36,43 +36,47 @@ export const styles = StyleSheet.create({
     },
 
     resultCompareButtonView: {
-        paddingLeft: 150
+        marginRight: 30,
     },
 
     naigationWrapper: {
         flex: 1,
         flexDirection: 'column-reverse'
-
     },
 
     bottoNavView: {
         height: 50
     },
 
-    resultBox: {
-        marginLeft: 50,
-        width: 275,
-        height:100,
-        borderColor: 'black',
-        borderWidth: 1
+    result: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        marginTop: 8,
+        marginBottom: 8,
     },
 
-    resultBoxTab: {
+    resultBox: {
+        width: '80%',
+        borderColor: 'black',
+        borderWidth: 1,
+        height: 100,
+    },
+
+    resultTab: {
         flexDirection: 'row',
-        marginTop: 25,
-        marginLeft: 25,
         borderTopLeftRadius: 40,
         borderBottomLeftRadius: 40,
         backgroundColor: '#006FD6',
         borderColor: 'black',
         borderWidth: 0,
         width: 50,
-        height: 100
+        height: 100,
     },
 
     resultBoxText: {
-        marginTop: 10,
         marginLeft: 15,
+        marginTop: 10,
         color: 'black',
         fontSize: 20
     },

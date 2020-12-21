@@ -7,7 +7,7 @@ import DummyResult from './components/DummyResult.js';
 
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
-import styles from './styles/homeStyles.js'; 
+import styles from './styles/homeStyles.js';
 
 class Home extends Component {
 
@@ -38,25 +38,27 @@ class Home extends Component {
 
         return(
             <View style={styles.container}>
-                <View style={[{backgroundColor: '#006FD6'}]}>
+                <View style={{backgroundColor: '#006FD6', justifyContent:'flex-end', flexDirection:'column', height: '10%'}}>
                     <Text category='h5' style={styles.header}>
                         Home
                     </Text>
                 </View>
 
                 <View>
-                    <HomeMapView location={this.state.location}/>
-                    <HomeResultView onComparePress={this.onComparePress}/>
+                    <View style={{height:'50%',justifyContent: 'space-between', flexDirection:'column'}}>
+                        <HomeMapView location={this.state.location}/>
+                        <HomeResultView onComparePress={this.onComparePress}/>
+                    </View>
+
+                    <ScrollView style={{height:'30%', marginTop:25}}>
+                        <DummyResult compare={this.state.compare}/>
+                        <DummyResult compare={this.state.compare}/>
+                        <DummyResult compare={this.state.compare}/>
+                        <DummyResult compare={this.state.compare}/>
+                        <DummyResult compare={this.state.compare}/>
+                    </ScrollView>
                 </View>
 
-                <ScrollView>
-                    <DummyResult compare={this.state.compare}/>
-                    <DummyResult compare={this.state.compare}/>
-                    <DummyResult compare={this.state.compare}/>
-                    <DummyResult compare={this.state.compare}/>
-                    <DummyResult compare={this.state.compare}/>
-                </ScrollView>
-    
                 <HomeBottomNav goToUserSettings={this.goToUserSettings}/>
             </View>
         );

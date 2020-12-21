@@ -1,7 +1,7 @@
-import React, { Component } from 'react'; 
+import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
-import styles from '../styles/homeStyles.js'; 
+import styles from '../styles/homeStyles.js';
 
 class HomeResultView extends Component {
 
@@ -9,25 +9,25 @@ class HomeResultView extends Component {
         super(props);
 
         this.state = {
-            
+
         }
     }
 
     render() {
         return(
-            <View>
-                <Text style={styles.resultTextView}>
-                
+            <View style={{justifyContent: 'flex-end'}}>
+                <View style={styles.resultTextView}>
+
                     <Text style={styles.resultText}> Results </Text>
 
                     <View style={styles.resultCompareButtonView}>
-                        <Button status='primary' appearance='outline' onPress={this.props.onComparePress}> 
-                            Compare 
+                        <Button status='primary' appearance='outline' onPress={this.props.onComparePress}>
+                            Compare
                         </Button>
                     </View>
 
-                </Text>
-                
+                </View>
+
                 <View style={styles.resultLine}></View>
             </View>
         );

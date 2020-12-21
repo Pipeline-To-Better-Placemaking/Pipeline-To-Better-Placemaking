@@ -43,14 +43,12 @@ class TitleScreenClass extends Component {
         super(props);
 
         this.state = {
-            color: styles.signUpText.color,
             active: -1
         };
     }
 
     onPressSignIn = () => {
         this.setState({
-            color: styles.signUpTextPressed.color,
             active: 1
         });
 
@@ -71,9 +69,8 @@ class TitleScreenClass extends Component {
     render() {
 
         return(
-
-            <View style={[styles.background, { backgroundColor: '#006FD6' }]}>
-                <ScrollView contentContainerStyle={{flexGrow : 1, justifyContent: 'center'}} keyboardShouldPersistTaps='handled'>
+            <View backgroundColor={styles.container.backgroundColor} flex={1}>
+                <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
 
                     <View marginTop={10} marginLeft={30}>
                         <ImageCircleCity leftMargin={100} bottomMargin={-80}/>
@@ -81,28 +78,29 @@ class TitleScreenClass extends Component {
                     </View>
 
                     <View>
-                        <Text category='h1' status='control' style={{textAlign: 'center'}}>
+                        <Text category='h1' status='control'>
                             2+ Community
                         </Text>
                     </View>
 
                     <View>
 
-                        <Button size='giant' onPress={this.onPressLogIn} style={[styles.logInButton]}>
-                            <Text style={[{ color: styles.logInText.color, fontWeight: '600', fontSize: 18 }]}>
+                        <Button size='giant' onPress={this.onPressLogIn} style={styles.logInButton}>
+                            <Text style={styles.logInText}>
                                 Log In
                             </Text>
                         </Button>
 
-                        <View style={[styles.signUpButton]}>
+                        <View style={styles.signUpButton}>
                             <Pressable onPressIn={this.onPressSignIn} onPressOut={this.onUnPressSignIn}>
-                                <Text style={{ color: this.state.active === 1 ? this.state.color : styles.signUpText.color, fontSize: 20} } >
+                                <Text style={this.state.active === 1 ? styles.signUpTextPressed : styles.signUpText}>
                                     Sign Up
                                 </Text>
                             </Pressable>
                         </View>
 
                     </View>
+
                 </ScrollView>
             </View>
         );
