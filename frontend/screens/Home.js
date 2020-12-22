@@ -38,7 +38,7 @@ class Home extends Component {
 
         return(
             <View style={styles.container}>
-                <View style={{backgroundColor: '#006FD6', justifyContent:'flex-end', flexDirection:'column', height: '10%'}}>
+                <View style={{backgroundColor: '#006FD6', justifyContent:'flex-end', flexDirection:'column', height: '8%'}}>
                     <Text category='h5' style={styles.header}>
                         Home
                     </Text>
@@ -50,7 +50,7 @@ class Home extends Component {
                         <HomeResultView onComparePress={this.onComparePress}/>
                     </View>
 
-                    <ScrollView style={{height:'30%', marginTop:25}}>
+                    <ScrollView style={{height:'38%', marginTop:25}}>
                         <DummyResult compare={this.state.compare}/>
                         <DummyResult compare={this.state.compare}/>
                         <DummyResult compare={this.state.compare}/>

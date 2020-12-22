@@ -55,6 +55,21 @@ class LogIn extends Component {
 
     onPressLogIn = async () => {
 
+        let defaultLocation = {
+              "timestamp": 0,
+              "coords": {
+                "accuracy": -1,
+                "altitude": -1,
+                "altitudeAccuracy": -1,
+                "heading": -1,
+                "latitude": 28.602413253152307,
+                "longitude": -81.20019937739713,
+                "speed": 0
+              }
+            };
+
+        this.props.getCoords(defaultLocation);
+
         let enabled = await Location.hasServicesEnabledAsync();
 
         console.log(enabled);
@@ -72,10 +87,10 @@ class LogIn extends Component {
                 let location = await Location.getCurrentPositionAsync({});
 
                 this.props.getCoords(location);
-
-                this.props.navigation.navigate("Home");
             }
         }
+        
+        this.props.navigation.navigate("Home");
     }
 
     onPressBack = () => {
