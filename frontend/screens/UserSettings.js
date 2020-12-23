@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+
+import HomeBottomNav from './components/HomeBottomNav.js';
+
+import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
+import styles from './styles/homeStyles.js';
 
 class UserSettings extends Component {
 
@@ -13,8 +18,8 @@ class UserSettings extends Component {
 
     render() {
         return(
-            <View>
-                
+            <View style={styles.container}>
+                <HomeBottomNav navigation={this.props.navigation} selectedIndex={2}/>
             </View>
         );
     }

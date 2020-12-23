@@ -4,11 +4,13 @@ export const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF'
+        backgroundColor: '#FFFFFF',
+        justifyContent: 'space-between',
+        flexDirection:'column'
     },
 
     mapStyle: {
-       height:'90%'
+       height:'100%'
     },
 
     header: {
@@ -18,7 +20,7 @@ export const styles = StyleSheet.create({
     } ,
 
     resultTextView: {
-        marginTop: -10,
+        marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginLeft: 30

@@ -1,7 +1,7 @@
-import React, { Component } from 'react'; 
+import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
-import styles from '../styles/homeStyles.js'; 
+import styles from '../styles/homeStyles.js';
 
 class HomeBottomNav extends Component {
 
@@ -9,20 +9,20 @@ class HomeBottomNav extends Component {
         super(props);
 
         this.state = {
-            index: 1
+            
         }
-        
+
         this.onTabSelect = this.onTabSelect.bind(this);
     }
 
     onTabSelect(tabIndex) {
 
-        this.setState({
-            index: tabIndex
-        });
-
-        if (tabIndex == 2){
-            this.props.goToUserSettings();
+        if (tabIndex == 0) {
+            this.props.navigation.navigate("Collaborate");
+        } else if (tabIndex == 1) {
+            this.props.navigation.navigate("Home");
+        } else if (tabIndex == 2) {
+            this.props.navigation.navigate("UserSettings");
         }
 
     }
@@ -43,7 +43,7 @@ class HomeBottomNav extends Component {
 
         return(
             <View style={styles.naigationWrapper}>
-                <BottomNavigation style={styles.bottoNavView} selectedIndex={this.state.index} onSelect={ (index) => this.onTabSelect(index)}>
+                <BottomNavigation style={styles.bottoNavView} selectedIndex={this.props.selectedIndex} onSelect={(index) => this.onTabSelect(index)}>
                     <BottomNavigationTab icon={ClipBoardIcon}/>
                     <BottomNavigationTab icon={HomeIcon}/>
                     <BottomNavigationTab icon={PersonIcon}/>

@@ -9,6 +9,7 @@ import SignUp from './screens/SignUp.js';
 import Home from './screens/Home.js';
 import LogIn from './screens/LogIn.js';
 import UserSettings from './screens/UserSettings.js';
+import Collaborate from './screens/Collaborate.js';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -57,6 +58,11 @@ class App extends Component {
             <Stack.Screen
               name="SignUp"
               component={SignUp}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Collaborate"
+              component={Collaborate}
               options={{headerShown: false}}
             />
             <Stack.Screen

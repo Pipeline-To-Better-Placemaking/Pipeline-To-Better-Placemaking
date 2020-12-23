@@ -19,12 +19,7 @@ class Home extends Component {
             compare: false
         }
 
-        this.goToUserSettings = this.goToUserSettings.bind(this);
         this.onComparePress = this.onComparePress.bind(this);
-    }
-
-    goToUserSettings = () => {
-        this.props.navigation.navigate("UserSettings");
     }
 
     onComparePress() {
@@ -44,22 +39,23 @@ class Home extends Component {
                     </Text>
                 </View>
 
-                <View>
-                    <View style={{height:'50%',justifyContent: 'space-between', flexDirection:'column'}}>
-                        <HomeMapView location={this.state.location}/>
-                        <HomeResultView onComparePress={this.onComparePress}/>
-                    </View>
-
-                    <ScrollView style={{height:'38%', marginTop:25}}>
-                        <DummyResult compare={this.state.compare}/>
-                        <DummyResult compare={this.state.compare}/>
-                        <DummyResult compare={this.state.compare}/>
-                        <DummyResult compare={this.state.compare}/>
-                        <DummyResult compare={this.state.compare}/>
-                    </ScrollView>
+                <View style={{height:'45%'}}>
+                    <HomeMapView location={this.state.location}/>
                 </View>
 
-                <HomeBottomNav goToUserSettings={this.goToUserSettings}/>
+                <HomeResultView onComparePress={this.onComparePress}/>
+
+                <ScrollView>
+                    <DummyResult compare={this.state.compare}/>
+                    <DummyResult compare={this.state.compare}/>
+                    <DummyResult compare={this.state.compare}/>
+                    <DummyResult compare={this.state.compare}/>
+                    <DummyResult compare={this.state.compare}/>
+                </ScrollView>
+
+                {/*The View is just the height of the bottom Nav bar*/}
+                <View style={{height:50}}/>
+                <HomeBottomNav navigation={this.props.navigation} selectedIndex={1}/>
             </View>
         );
 
