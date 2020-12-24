@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View,  ScrollView, Pressable, Image } from 'react-native';
 import { Text, Button } from '@ui-kitten/components';
-import styles from './styles/titleScreenStyles.js';
+import styles from './titleScreenStyles.js';
 
 // ****** TODO *******
 // 1.) Add some sort of highlight when sign up is pressed (Pressable, TouchableHighlight) -- Complete

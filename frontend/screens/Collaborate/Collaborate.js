@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
-import HomeBottomNav from './components/HomeBottomNav.js';
+import HomeBottomNav from '../components/BottomNav.js';
 
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
-import styles from './styles/homeStyles.js';
+import styles from './collaborateStyles.js';
 
 class Collaborate extends Component {
 

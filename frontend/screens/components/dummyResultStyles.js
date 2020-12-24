@@ -1,55 +1,6 @@
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        backgroundColor: '#FFFFFF',
-        justifyContent: 'space-between',
-        flexDirection:'column'
-    },
-
-    mapStyle: {
-       height:'100%'
-    },
-
-    header: {
-        textAlign: 'center',
-        color: '#FFFFFF',
-        marginBottom: 5
-    } ,
-
-    resultTextView: {
-        marginTop: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginLeft: 30
-    },
-
-    resultText: {
-        fontSize: 25,
-        color: 'black',
-    },
-
-    resultLine: {
-        borderBottomColor: 'black',
-        borderBottomWidth: 2,
-        marginTop: 5
-    },
-
-    resultCompareButtonView: {
-        marginRight: 30,
-    },
-
-    naigationWrapper: {
-        flex: 1,
-        flexDirection: 'column-reverse'
-    },
-
-    bottoNavView: {
-        height: 50
-    },
-
     result: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -95,6 +46,6 @@ export const styles = StyleSheet.create({
        marginLeft: 15,
        marginRight: -35
     }
-})
+});
 
 export default styles;

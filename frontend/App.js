@@ -5,11 +5,11 @@ import { ApplicationProvider, IconRegistry, Layout, Text } from '@ui-kitten/comp
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 import TitleScreen from './screens/TitleScreen.js';
-import SignUp from './screens/SignUp.js';
-import Home from './screens/Home.js';
-import LogIn from './screens/LogIn.js';
-import UserSettings from './screens/UserSettings.js';
-import Collaborate from './screens/Collaborate.js';
+import SignUp from './screens/SignUp/SignUp.js';
+import Home from './screens/Home/Home.js';
+import LogIn from './screens/Login/LogIn.js';
+import UserSettings from './screens/UserSettings/UserSettings.js';
+import Collaborate from './screens/Collaborate/Collaborate.js';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';

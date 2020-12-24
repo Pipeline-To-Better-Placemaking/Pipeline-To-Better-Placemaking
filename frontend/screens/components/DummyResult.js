@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, CheckBox, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
-import styles from '../styles/homeStyles.js';
+import styles from './dummyResultStyles.js';
 
 class DummyResult extends Component {
 

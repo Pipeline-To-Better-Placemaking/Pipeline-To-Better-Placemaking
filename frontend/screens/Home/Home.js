@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-import HomeMapView from './components/HomeMapView.js';
-import HomeResultView from './components/HomeResultView.js';
-import HomeBottomNav from './components/HomeBottomNav.js';
-import DummyResult from './components/DummyResult.js';
+import HomeResultView from './ResultView.js';
+import HomeMapView from './HomeMapView.js';
+import HomeBottomNav from '../components/BottomNav.js';
+import DummyResult from '../components/DummyResult.js';
 
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
-import styles from './styles/homeStyles.js';
+import styles from './homeStyles.js';
 
 class Home extends Component {
 
@@ -33,8 +33,8 @@ class Home extends Component {
 
         return(
             <View style={styles.container}>
-                <View style={{backgroundColor: '#006FD6', justifyContent:'flex-end', flexDirection:'column', height: '8%'}}>
-                    <Text category='h5' style={styles.header}>
+                <View style={styles.header}>
+                    <Text category='h5' style={styles.headerText}>
                         Home
                     </Text>
                 </View>

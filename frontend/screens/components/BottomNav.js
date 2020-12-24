@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
-import styles from '../styles/homeStyles.js';
+import styles from './bottomNavStyles.js';
 
-class HomeBottomNav extends Component {
+class BottomNav extends Component {
 
     constructor(props){
         super(props);
 
         this.state = {
-            
+
         }
 
         this.onTabSelect = this.onTabSelect.bind(this);
@@ -42,7 +42,7 @@ class HomeBottomNav extends Component {
         );
 
         return(
-            <View style={styles.naigationWrapper}>
+            <View style={styles.navigationWrapper}>
                 <BottomNavigation style={styles.bottoNavView} selectedIndex={this.props.selectedIndex} onSelect={(index) => this.onTabSelect(index)}>
                     <BottomNavigationTab icon={ClipBoardIcon}/>
                     <BottomNavigationTab icon={HomeIcon}/>
@@ -54,4 +54,4 @@ class HomeBottomNav extends Component {
 
 }
 
-export default HomeBottomNav;
+export default BottomNav;

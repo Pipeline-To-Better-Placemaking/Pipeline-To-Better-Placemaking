@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon } from '@ui-kitten/components';
-import styles from './styles/logInStyles.js';
+import styles from './logInStyles.js';
 import * as Location from 'expo-location';
 
 // **** TODO ****
@@ -89,7 +89,7 @@ class LogIn extends Component {
                 this.props.getCoords(location);
             }
         }
-        
+
         this.props.navigation.navigate("Home");
     }
 

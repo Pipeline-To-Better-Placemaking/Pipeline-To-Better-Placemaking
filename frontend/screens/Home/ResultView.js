@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
-import styles from '../styles/homeStyles.js';
+import styles from './resultViewStyles.js';
 
-class HomeResultView extends Component {
+class ResultView extends Component {
 
     constructor(props){
         super(props);
@@ -34,4 +34,4 @@ class HomeResultView extends Component {
     }
 }
 
-export default HomeResultView;
+export default ResultView;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
-import styles from './styles/signUpStyles.js';
+import styles from './signUpStyles.js';
 
 // **** TODO ****
 //  1.) Add input boxes for first name, last name, email, and password -- Complete
