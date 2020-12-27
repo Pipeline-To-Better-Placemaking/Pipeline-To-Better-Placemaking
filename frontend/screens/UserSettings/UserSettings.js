@@ -16,9 +16,32 @@ class UserSettings extends Component {
         }
     }
 
+    onPressLogOut = () => {
+
+        this.props.navigation.navigate("TitleScreen");
+    }
+
     render() {
         return(
             <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text category='h5' style={styles.headerText}>
+                        Settings
+                    </Text>
+                </View>
+
+                <View style={{alignItems: 'center'}}>
+
+                    <Button size='giant' onPress={this.onPressLogOut} style={styles.logOutButton}>
+                        <Text style={styles.logOutText}>
+                            Log Out
+                        </Text>
+                    </Button>
+
+                </View>
+
+                {/*The View is just the height of the bottom Nav bar*/}
+                <View style={{height:50}}/>
                 <HomeBottomNav navigation={this.props.navigation} selectedIndex={2}/>
             </View>
         );

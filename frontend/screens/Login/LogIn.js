@@ -140,6 +140,7 @@ class LogIn extends Component {
                                 <Text category='label' style={styles.inputText}> Email Address: </Text>
                                 <Input
                                 placeholder='Email address...'
+                                autoCapitalize='none'
                                 onChange={this.onEmailChange}
                                 style={styles.inputBox}
                                 />
@@ -149,6 +150,7 @@ class LogIn extends Component {
                                 <Text category='label' style={styles.inputText}> Password:</Text>
                                 <Input
                                 placeholder='Password...'
+                                autoCapitalize='none'
                                 accessoryRight={renderIcon}
                                 secureTextEntry={this.state.securityOption}
                                 onChange={this.onPassChange}

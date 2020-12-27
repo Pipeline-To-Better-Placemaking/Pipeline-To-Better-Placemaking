@@ -207,6 +207,7 @@ class SignUp extends Component {
                                 <Text category='label' style={styles.inputText}> Email Address: </Text>
                                 <Input
                                 placeholder='Email address...'
+                                autoCapitalize='none'
                                 onChangeText={this.onEmailChange}
                                 style={styles.inputBox}
                                 />
@@ -216,6 +217,7 @@ class SignUp extends Component {
                                 <Text category='label' style={styles.inputText}> Password:</Text>
                                 <Input
                                 placeholder='Password...'
+                                autoCapitalize='none'
                                 caption='Should contain at least 8 symbols'
                                 captionIcon={AlertIcon}
                                 accessoryRight={renderIcon}
@@ -228,6 +230,7 @@ class SignUp extends Component {
                                 <Text category='label' style={styles.inputText}> Confirm Password:</Text>
                                 <Input
                                 placeholder='Password...'
+                                autoCapitalize='none'
                                 accessoryRight={renderIcon}
                                 secureTextEntry={this.state.securityOption}
                                 onChangeText={this.onConfirmPassChange}
