@@ -7,7 +7,8 @@ export const styles = StyleSheet.create({
     },
 
     bottoNavView: {
-        height: 50
+        height: 50,
+        backgroundColor: '#222B45', // maybe remove this later is we figure out light/dark mode
     }
 });
 

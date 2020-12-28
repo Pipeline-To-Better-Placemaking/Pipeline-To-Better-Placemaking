@@ -3,7 +3,8 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 
 import HomeBottomNav from '../components/BottomNav.js';
 
-import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
+import { mapping, light, dark } from '@eva-design/eva';
+import { Text, Button, Input, Icon, Modal, Toggle } from '@ui-kitten/components';
 import styles from './userSettingsStyles.js';
 
 class UserSettings extends Component {
@@ -14,11 +15,17 @@ class UserSettings extends Component {
         this.state = {
 
         }
+
+        this.onToggleTheme = this.onToggleTheme.bind(this);
     }
 
     onPressLogOut = () => {
 
         this.props.navigation.navigate("TitleScreen");
+    }
+
+    onToggleTheme = () => {
+        this.props.toggleTheme();
     }
 
     render() {
@@ -37,6 +44,9 @@ class UserSettings extends Component {
                             Log Out
                         </Text>
                     </Button>
+
+
+                    <Button style={{marginTop:50}} onPress={this.onToggleTheme}>Toggle Dark Mode</Button>
 
                 </View>
 

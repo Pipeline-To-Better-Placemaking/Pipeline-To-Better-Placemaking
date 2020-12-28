@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
-import styles from './resultViewStyles.js';
+import styles from './collaborateStyles.js';
 
-class ResultView extends Component {
+class TeamView extends Component {
 
     constructor(props){
         super(props);
@@ -16,24 +16,23 @@ class ResultView extends Component {
     render() {
         return(
             <View style={{justifyContent: 'flex-end'}}>
-                <View style={styles.resultTextView}>
-
+                <View style={styles.teamTextView}>
                     <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
-                        <Text style={styles.resultText}> Results </Text>
+                        <Text style={styles.teamText}> Teams </Text>
                     </View>
 
-                    <View style={styles.resultCompareButtonView}>
-                        <Button status='primary' appearance='outline' onPress={this.props.onComparePress}>
-                            Compare
+                    <View style={styles.createTeamButtonView}>
+                        <Button status='primary' appearance='outline' onPress={this.props.onCreateTeam}>
+                            Create New
                         </Button>
                     </View>
 
                 </View>
 
-                <View style={styles.resultLine}></View>
+                <View style={styles.line}></View>
             </View>
         );
     }
 }
 
-export default ResultView;
+export default TeamView;

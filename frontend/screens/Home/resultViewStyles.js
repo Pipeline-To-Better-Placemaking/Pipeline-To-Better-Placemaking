@@ -11,11 +11,9 @@ export const styles = StyleSheet.create({
 
     resultText: {
         fontSize: 25,
-        color: 'black',
     },
 
     resultLine: {
-        borderBottomColor: 'black',
         borderBottomWidth: 2,
         marginTop: 5
     },

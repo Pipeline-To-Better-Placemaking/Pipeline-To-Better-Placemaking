@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import * as eva from '@eva-design/eva';
+import { mapping, light as lightTheme, dark as darkTheme } from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry, Layout, Text } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
@@ -16,6 +16,21 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
+/* Kinda hacky, for some reason trying to set the theme on NavigationContainer
+ * doesn't work with the themes from '@eva-design/eva', it complains about the
+ * backgroundColor. So I'm setting it like this for now.
+ */
+const MyLightTheme = {
+  colors: {
+    background: '#FFFFFF',
+  },
+};
+const MyDarkTheme = {
+  colors: {
+    background: '#222B45',
+  },
+};
+
 class App extends Component {
 
   constructor(props) {
@@ -23,10 +38,13 @@ class App extends Component {
     super(props);
 
     this.state = {
-      location: { }
+      location: { },
+      theme: lightTheme,
+      darkTheme: false,
     }
 
     this.getCoords = this.getCoords.bind(this);
+    this.toggleTheme = this.toggleTheme.bind(this);
   }
 
   getCoords = (locationDetails) => {
@@ -35,11 +53,21 @@ class App extends Component {
     });
   }
 
+  toggleTheme = () => {
+    let nextTheme = this.state.theme === darkTheme ? lightTheme : darkTheme;
+    let darkColor = nextTheme === darkTheme ? true : false;
+    this.setState({
+        theme: nextTheme,
+        darkTheme: darkColor
+    });
+  };
+
   render() {
+
     return(
-      <NavigationContainer>
+      <NavigationContainer theme={this.state.darkTheme ? MyDarkTheme : MyLightTheme}>
         <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={eva.dark}>
+        <ApplicationProvider mapping={mapping} theme={this.state.theme}>
           <Stack.Navigator>
 
             <Stack.Screen
@@ -73,9 +101,10 @@ class App extends Component {
             </Stack.Screen>
             <Stack.Screen
               name="UserSettings"
-              component={UserSettings}
               options={{headerShown: false}}
-            />
+              >
+                {props => <UserSettings {...props} toggleTheme={this.toggleTheme}/>}
+              </Stack.Screen>
           </Stack.Navigator>
         </ApplicationProvider>
       </NavigationContainer>

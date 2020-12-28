@@ -11,7 +11,6 @@ export const styles = StyleSheet.create({
 
     resultBox: {
         width: '80%',
-        borderColor: 'black',
         borderWidth: 1,
         height: 100,
     },
@@ -21,8 +20,6 @@ export const styles = StyleSheet.create({
         borderTopLeftRadius: 40,
         borderBottomLeftRadius: 40,
         backgroundColor: '#006FD6',
-        borderColor: 'black',
-        borderWidth: 0,
         width: 50,
         height: 100,
     },
@@ -30,14 +27,12 @@ export const styles = StyleSheet.create({
     resultBoxText: {
         marginLeft: 15,
         marginTop: 10,
-        color: 'black',
         fontSize: 20
     },
 
     resultBoxComment: {
         marginTop: 25,
         marginLeft: 15,
-        color: 'black',
         fontSize: 12
     },
 
