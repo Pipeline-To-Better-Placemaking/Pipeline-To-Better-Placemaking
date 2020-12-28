@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
+import MyHeader from '../components/MyHeader.js';
 import HomeBottomNav from '../components/BottomNav.js';
 import TeamView from './TeamView.js';
 
@@ -16,8 +17,7 @@ class Collaborate extends Component {
             data: [{
                 title: 'Team',
                 description: 'Description for Team'
-            }],
-            numTeams: 1
+            }]
         }
         this.onCreateTeam = this.onCreateTeam.bind(this);
     }
@@ -29,8 +29,7 @@ class Collaborate extends Component {
         };
         this.state.data.push(temp);
         this.setState({
-            data:this.state.data,
-            numTeams: this.state.numTeams + 1
+            data:this.state.data
         });
     }
 
@@ -52,11 +51,8 @@ class Collaborate extends Component {
 
         return(
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text category='h5' style={styles.headerText}>
-                        Collaborate
-                    </Text>
-                </View>
+
+                <MyHeader myHeaderText={"Collaborate"}/>
 
                 <TeamView onCreateTeam={this.onCreateTeam}/>
 

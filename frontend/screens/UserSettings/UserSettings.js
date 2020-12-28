@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
+import MyHeader from '../components/MyHeader.js';
 import HomeBottomNav from '../components/BottomNav.js';
 
 import { mapping, light, dark } from '@eva-design/eva';
@@ -31,11 +32,8 @@ class UserSettings extends Component {
     render() {
         return(
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text category='h5' style={styles.headerText}>
-                        Settings
-                    </Text>
-                </View>
+
+                <MyHeader myHeaderText={"Settings"}/>
 
                 <View style={{alignItems: 'center'}}>
 

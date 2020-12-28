@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import MyHeader from '../components/MyHeader.js';
 import HomeResultView from './ResultView.js';
 import HomeMapView from './HomeMapView.js';
 import HomeBottomNav from '../components/BottomNav.js';
@@ -33,11 +34,8 @@ class Home extends Component {
 
         return(
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text category='h5' style={styles.headerText}>
-                        Home
-                    </Text>
-                </View>
+
+                <MyHeader myHeaderText={"Home"}/>
 
                 <View style={{height:'45%'}}>
                     <HomeMapView location={this.state.location}/>
