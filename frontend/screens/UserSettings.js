@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import HomeBottomNav from './components/HomeBottomNav.js';
 
 class UserSettings extends Component {
 
@@ -14,7 +15,7 @@ class UserSettings extends Component {
     render() {
         return(
             <View>
-                
+                <HomeBottomNav></HomeBottomNav>
             </View>
         );
     }

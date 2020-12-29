@@ -9,6 +9,7 @@ import SignUp from './screens/SignUp.js';
 import Home from './screens/Home.js';
 import LogIn from './screens/LogIn.js';
 import UserSettings from './screens/UserSettings.js';
+import ForgotPasswordScreen from './screens/ForgotPasswordScreen.js';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -40,7 +41,7 @@ class App extends Component {
         <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={eva.dark}>
           <Stack.Navigator>
-
+            
             <Stack.Screen
               name="TitleScreen"
               component={TitleScreen}
@@ -59,17 +60,26 @@ class App extends Component {
               component={SignUp}
               options={{headerShown: false}}
             />
+
             <Stack.Screen
               name="Home"
               options={{headerShown: false}}
             >
               {props => <Home {...props} location = {this.state.location}></Home>}
             </Stack.Screen>
+
             <Stack.Screen
               name="UserSettings"
               component={UserSettings}
               options={{headerShown: false}}
             />
+
+            <Stack.Screen
+              name="ForgotPasswordScreen"
+              component={ForgotPasswordScreen}
+              options={{headerShown: false}}
+            />
+
           </Stack.Navigator>
         </ApplicationProvider>
       </NavigationContainer>
