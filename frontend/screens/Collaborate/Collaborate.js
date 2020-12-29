@@ -3,8 +3,9 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 
 import MyHeader from '../components/MyHeader.js';
 import TeamView from './TeamView.js';
+import CreateTeamCard from './CreateTeamCard.js';
 
-import { Text, Button, Input, Icon, Modal, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import styles from './collaborateStyles.js';
 
 class Collaborate extends Component {
@@ -19,7 +20,9 @@ class Collaborate extends Component {
             createTeam: false,
             tempTeamName: ' '
         }
-        this.onCreateTeam = this.onCreateTeam.bind(this);
+        this.onOpenCreateTeam = this.onCreateTeam.bind(this, true, false);
+        this.onDismissCreateTeam = this.onCreateTeam.bind(this, false, false);
+        this.onCreateNewTeam = this.onCreateTeam.bind(this, false, true);
         this.addNewTeam = this.addNewTeam.bind(this);
         this.setTempTeamName = this.setTempTeamName.bind(this);
     }
@@ -27,10 +30,10 @@ class Collaborate extends Component {
     setTempTeamName(event) {
         this.setState({
             tempTeamName: event
-        })
+        });
     }
 
-    onCreateTeam = (visible, submit) => {
+    onCreateTeam(visible, submit) {
         if (visible) {
             this.setState({
                 createTeam: true
@@ -46,13 +49,13 @@ class Collaborate extends Component {
         }
     }
 
-    addNewTeam = (teamName) => {
+    addNewTeam(teamName) {
         let temp = {
             title: teamName
         };
         this.state.data.push(temp);
         this.setState({
-            data:this.state.data
+            data: this.state.data
         });
     }
 
@@ -71,12 +74,26 @@ class Collaborate extends Component {
             />
         );
 
+        const popUpAnchor = () => (
+            <Divider style={{marginTop: 5}} />
+        );
+
         return(
             <View style={styles.container}>
 
                 <MyHeader myHeaderText={"Collaborate"}/>
 
-                <TeamView onCreateTeam={this.onCreateTeam}/>
+                <TeamView onOpenCreateTeam={this.onOpenCreateTeam}/>
+
+                <Popover
+                    visible={this.state.createTeam}
+                    backdropStyle={styles.backdrop}
+                    onBackdropPress={this.onDismissCreateTeam}
+                    anchor={popUpAnchor}>
+
+                    <CreateTeamCard setTempTeamName={this.setTempTeamName}
+                                    onCreateNewTeam={this.onCreateNewTeam}/>
+                </Popover>
 
                 <View style={{flexDirection:'row', justifyContent:'center', marginTop:15}}>
                     <List
@@ -86,23 +103,6 @@ class Collaborate extends Component {
                       renderItem={renderItem}
                     />
                 </View>
-
-                <Modal
-                    style={{width:'50%', marginBottom:200}}
-                    visible={this.state.createTeam}
-                    backdropStyle={styles.backdrop}
-                    onBackdropPress={() => this.onCreateTeam(false, false)}>
-                    <Card disabled={true} style={{marginBottom:200}}>
-                      <Text>Enter a Team Name</Text>
-                      <Input
-                          placeholder='Type Here...'
-                          onChangeText={this.setTempTeamName}
-                      />
-                      <Button onPress={() => this.onCreateTeam(false, true)}>
-                        Create
-                      </Button>
-                    </Card>
-                </Modal>
 
                 <View style={styles.teamTextView}>
                     <View style={{flexDirection:'column', justifyContent:'flex-end'}}>

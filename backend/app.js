@@ -17,7 +17,7 @@ const connect = async () => {
 }
 connect()
 
-const routes = require('./routes/user.js');
+const routes = require('./routes/users.js');
 
 const app = express();
 
