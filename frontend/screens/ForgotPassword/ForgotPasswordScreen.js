@@ -34,11 +34,11 @@ class ForgotPasswordScreen extends Component {
 
 
     render() {
-        
-        return(
-            <View style={[styles.background, { backgroundColor: '#006FD6' }]}>
 
-<               View style={styles.title}>
+        return(
+            <View style={styles.container}>
+
+                <View style={styles.title}>
                     <Text category='h1' status='control'>
                         Forgot Password
                     </Text>
@@ -52,10 +52,10 @@ class ForgotPasswordScreen extends Component {
                     style={styles.inputBox}
                     />
                 </View>
-                
+
                 <Button size='giant' onPress={this.onSignUp} style={[{marginTop: 50, backgroundColor: '#DEBD07'}]}>
                         <Text style={ [ { color: '#091C7A', fontWeight: '600', fontSize: 18} ] }>
-                            Submit  
+                            Submit
                         </Text>
                 </Button>
 
@@ -72,4 +72,4 @@ class ForgotPasswordScreen extends Component {
 
 }
 
-export default ForgotPasswordScreen
+export default ForgotPasswordScreen;
