@@ -3,37 +3,39 @@ const bcrypt = require('bcryptjs')
 const config = require('../utils/config.js')
 const uniqueValidator = require('mongoose-unique-validator')
 
+const ObjectId = mongoose.Schema.Types.ObjectId
+
 const coord = new Schema({
     lat: Number,
     long: Number, 
 })
 
-const entry = mongoose.Schema({
+const Entry = mongoose.Schema({
 
     location:{type:coord},
     age:{
-        type:string,
+        type:String,
         enum:['<15','15-30','30-45','45-60','60+']
     },
     posture:{
-        type:string,
+        type:String,
         enum:['sitting(formal)','sitting(informal)','standing','laying']
     },
     activity:{
-        type:string,
+        type:String,
         enum:['waiting','eating','talking','exercising']
     },
-    time:{type:string}
+    time:{type:String}
 })
 
 
 const stationary_schema = mongoose.Schema({
-    project:{type:objectId},
-    owner:{type:objectId},
-    start_time:{type:string},
-    end_time:{type:string},
-    data:{type:entry},
-    complete:{type:bool}
+    project:{type:ObjectId},
+    owner:{type:ObjectId},
+    start_time:{type:String},
+    end_time:{type:String},
+    data:{type:Entry},
+    complete:{type:Boolean}
 })
 
 

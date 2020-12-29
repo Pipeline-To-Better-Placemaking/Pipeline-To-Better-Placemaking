@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs')
 const config = require('../utils/config.js')
 const uniqueValidator = require('mongoose-unique-validator')
 
+const ObjectId = mongoose.Schema.Types.ObjectId
+
 const user_schema = mongoose.Schema({
     firstname: {
         type: String,
@@ -32,13 +34,13 @@ const user_schema = mongoose.Schema({
         type: String,
         required: true
     },
-    is_verified:{type: bool},
-    vefification_code:{type: string},
-    invites:{type:[objectId]},
-    teams:{type:[objectId]}
+    is_verified:{type: Boolean},
+    vefification_code:{type: String},
+    invites:{type:[ObjectId]},
+    teams:{type:[ObjectId]}
 })
 
-user_Schema.plugin(uniqueValidator)
+user_schema.plugin(uniqueValidator)
 
 const Users= module.exports = mongoose.model('Users', user_schema)
 
@@ -83,6 +85,6 @@ module.exports.acceptInvite = async function(userId,teamId){
 
 }
 
-module.exports.denyInvite() = async function(userId,teamId){
-    
+module.exports.denyInvite = async function(userId,teamId){
+
 }
