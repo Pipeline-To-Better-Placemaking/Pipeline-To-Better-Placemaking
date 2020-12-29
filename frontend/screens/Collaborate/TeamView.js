@@ -22,14 +22,13 @@ class TeamView extends Component {
                     </View>
 
                     <View style={styles.createTeamButtonView}>
-                        <Button status='primary' appearance='outline' onPress={() => this.props.onCreateTeam(true, false)}>
+                        <Button status='primary' appearance='outline' onPress={this.props.onOpenCreateTeam}>
                             Create New
                         </Button>
                     </View>
 
                 </View>
 
-                <Divider style={{marginTop: 5}} />
             </View>
         );
     }
