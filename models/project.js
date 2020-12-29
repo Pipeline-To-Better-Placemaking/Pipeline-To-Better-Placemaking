@@ -2,17 +2,19 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const config = require('../utils/config.js')
 
-var Coordinate = new Schema({
+const ObjectId = mongoose.Schema.Types.ObjectId
+
+var Coord = new Schema({
     lat: Number,
     long: Number, 
 });
 
 const project_schema = mongoose.Schema({
 
-    title:{type: string},
-    description:{type: string},
-    points:{type: Coordinate},
-    areas:{type: [[Coordinate]]},
+    title:{type: String},
+    description:{type: String},
+    points:{type: [Coord]},
+    areas:{type: [[Coord]]},
     admins:{type: [ObjectId]},
     users:{type: [ObjectId]},
     activities:{type:[ObjectId]},

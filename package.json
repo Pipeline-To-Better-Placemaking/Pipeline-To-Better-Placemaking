@@ -21,6 +21,7 @@
     "express-session": "^1.17.1",
     "json-server": "^0.16.2",
     "jsonwebtoken": "^8.5.1",
+    "loader": "^2.1.1",
     "mongoose": "^5.10.12",
     "mongoose-unique-validator": "^2.0.3",
     "passport": "^0.4.1",
