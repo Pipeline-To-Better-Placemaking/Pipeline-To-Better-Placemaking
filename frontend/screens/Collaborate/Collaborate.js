@@ -15,8 +15,7 @@ class Collaborate extends Component {
 
         this.state = {
             data: [{
-                title: 'Team',
-                description: 'Description for Team'
+                title: 'Team Name'
             }],
             createTeam: false,
             tempTeamName: ' '
@@ -50,8 +49,7 @@ class Collaborate extends Component {
 
     addNewTeam = (teamName) => {
         let temp = {
-            title: teamName,
-            description: 'Description for Team'
+            title: teamName
         };
         this.state.data.push(temp);
         this.setState({
@@ -70,7 +68,6 @@ class Collaborate extends Component {
               title=<Text style={{fontSize:20}}>
                         {`${item.title}`}
                     </Text>
-              description={`${item.description}`}
               accessoryRight={ForwardIcon}
             />
         );
@@ -82,22 +79,6 @@ class Collaborate extends Component {
 
                 <TeamView onCreateTeam={this.onCreateTeam}/>
 
-                <Modal
-                    visible={this.state.createTeam}
-                    backdropStyle={styles.backdrop}
-                    onBackdropPress={() => this.onCreateTeam(false, false)}>
-                    <Card disabled={true}>
-                      <Text>Team Name</Text>
-                      <Input
-                          placeholder='Enter a Team Name Here...'
-                          onChangeText={this.setTempTeamName}
-                      />
-                      <Button onPress={() => this.onCreateTeam(false, true)}>
-                        Create
-                      </Button>
-                    </Card>
-                </Modal>
-
                 <View style={{flexDirection:'row', justifyContent:'center', marginTop:15}}>
                     <List
                       style={{maxHeight:'80%', maxWidth:'90%'}}
@@ -106,6 +87,23 @@ class Collaborate extends Component {
                       renderItem={renderItem}
                     />
                 </View>
+
+                <Modal
+                    style={{width:'50%', marginBottom:200}}
+                    visible={this.state.createTeam}
+                    backdropStyle={styles.backdrop}
+                    onBackdropPress={() => this.onCreateTeam(false, false)}>
+                    <Card disabled={true} style={{marginBottom:200}}>
+                      <Text>Enter a Team Name</Text>
+                      <Input
+                          placeholder='Type Here...'
+                          onChangeText={this.setTempTeamName}
+                      />
+                      <Button onPress={() => this.onCreateTeam(false, true)}>
+                        Create
+                      </Button>
+                    </Card>
+                </Modal>
 
                 <View style={styles.teamTextView}>
                     <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
