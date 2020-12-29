@@ -33,7 +33,7 @@ class UserSettings extends Component {
 
                 <MyHeader myHeaderText={"Settings"}/>
 
-                <View style={{ alignItems: 'center'}}>
+                <View style={{ alignItems: 'center', marginTop:30}}>
 
                     <Button size='giant' onPress={this.onPressLogOut} style={styles.logOutButton}>
                         <Text style={styles.logOutText}>
