@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Pressable} from 'react-native';
 import { Text, Button, Input, Icon } from '@ui-kitten/components';
-import styles from './styles/logInStyles.js';
+import styles from './forgotPasswordStyles.js';
 
 class ForgotPasswordScreen extends Component {
 

@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 
-import HomeMapView from './components/HomeMapView.js';
-import HomeResultView from './components/HomeResultView.js';
-import HomeBottomNav from './components/HomeBottomNav.js';
-import DummyResult from './components/DummyResult.js';
+import MyHeader from '../components/MyHeader.js';
+import HomeResultView from './ResultView.js';
+import HomeMapView from './HomeMapView.js';
+import DummyResult from '../components/DummyResult.js';
 
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
-import styles from './styles/homeStyles.js'; 
+import styles from './homeStyles.js';
 
-class Home extends Component {
+class HomeScreen extends Component {
 
     constructor(props){
         super(props);
@@ -19,12 +19,9 @@ class Home extends Component {
             compare: false
         }
 
-        this.goToUserSettings = this.goToUserSettings.bind(this);
-        this.onComparePress = this.onComparePress.bind(this);
-    }
+        console.log("Loading Home Screen...")
 
-    goToUserSettings = () => {
-        this.props.navigation.navigate("UserSettings");
+        this.onComparePress = this.onComparePress.bind(this);
     }
 
     onComparePress() {
@@ -37,17 +34,16 @@ class Home extends Component {
     render() {
 
         return(
+            
             <View style={styles.container}>
-                <View style={[{backgroundColor: '#006FD6'}]}>
-                    <Text category='h5' style={styles.header}>
-                        Home
-                    </Text>
+
+                <MyHeader myHeaderText={"Home"}/>
+
+                <View style={{height:'45%'}}>
+                    <HomeMapView location={this.state.location}/>
                 </View>
 
-                <View>
-                    <HomeMapView location={this.state.location}/>
-                    <HomeResultView onComparePress={this.onComparePress}/>
-                </View>
+                <HomeResultView onComparePress={this.onComparePress}/>
 
                 <ScrollView>
                     <DummyResult compare={this.state.compare}/>
@@ -56,12 +52,11 @@ class Home extends Component {
                     <DummyResult compare={this.state.compare}/>
                     <DummyResult compare={this.state.compare}/>
                 </ScrollView>
-    
-                <HomeBottomNav goToUserSettings={this.goToUserSettings}/>
+
             </View>
         );
 
     }
 }
 
-export default Home;
+export default HomeScreen;

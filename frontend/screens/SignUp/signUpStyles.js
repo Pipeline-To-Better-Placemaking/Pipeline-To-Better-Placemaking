@@ -2,13 +2,16 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
 
-    background: {
+    container: {
+        flexGrow : 1,
         justifyContent: 'center',
         alignItems: 'center',
-      },
+        textAlign: 'center',
+        backgroundColor: '#006FD6'
+    },
 
     title: {
-        marginTop: -10,
+        marginTop: 20,
         marginBottom: 30,
         justifyContent: 'center',
         alignItems: 'center'
@@ -29,18 +32,30 @@ export const styles = StyleSheet.create({
         width: 300
     },
 
+    signUpButton: {
+        width: 300,
+        backgroundColor: '#DEBD07'
+    },
+
+    signUpText: {
+        color: '#091C7A',
+        fontSize: 20,
+        fontWeight: '600',
+    },
+
     backButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20
+        marginTop: 20,
+        marginBottom: 30,
     },
 
     backText: {
         color: '#8F9BB3',
+        fontSize: 20,
     },
 
-    backPressed: {
+    backTextPressed: {
         color: '#FFFFFF',
+        fontSize: 20,
     },
 
     signUpErrorMessage: {

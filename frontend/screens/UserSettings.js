@@ -15,7 +15,7 @@ class UserSettings extends Component {
     render() {
         return(
             <View>
-                <HomeBottomNav></HomeBottomNav>
+                
             </View>
         );
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import { View } from 'react-native';
-import styles from '../styles/homeStyles.js'; 
+import styles from './homeMapViewStyles.js';
 
 class HomeMapView extends Component {
 
@@ -14,7 +14,7 @@ class HomeMapView extends Component {
     }
 
     render() {
-        
+
         return(
             <View>
                 <MapView

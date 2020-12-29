@@ -2,17 +2,17 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
 
-    background: {
-        flex: 1,
+    container: {
+        flexGrow : 1,
         justifyContent: 'center',
         alignItems: 'center',
-      },
+        textAlign: 'center',
+        backgroundColor: '#006FD6'
+    },
 
     title: {
         marginTop: -10,
         marginBottom: 30,
-        justifyContent: 'center',
-        alignItems: 'center'
     },
 
     inputText: {
@@ -31,37 +31,42 @@ export const styles = StyleSheet.create({
     },
 
     logInButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
         marginTop: 30,
+        width: 300,
         backgroundColor: '#DEBD07'
     },
 
     logInText: {
         color: '#091C7A',
-        fontSize: 20
+        fontSize: 20,
+        fontWeight: '600',
     },
 
     backButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20
+        marginTop: 20,
+        marginBottom: 75
     },
 
     backText: {
         color: '#8F9BB3',
+        fontSize: 20
     },
 
     backTextPressed: {
         color: '#FFFFFF',
+        fontSize: 20
     },
 
     forgotText: {
         color: '#FFFFFF',
+        fontSize: 18,
+        textAlign: 'center'
     },
 
-    forgotPressed: {
+    forgotTextPressed: {
         color: '#000000',
+        fontSize: 18,
+        textAlign: 'center'
     },
 
 });

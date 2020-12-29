@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ScrollView, View,  Pressable, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon } from '@ui-kitten/components';
-import styles from './styles/logInStyles.js';
-import * as Location from 'expo-location'; 
+import styles from './logInStyles.js';
+import * as Location from 'expo-location';
 
 // **** TODO ****
 //  1.) Forgot password
@@ -28,19 +28,18 @@ class LogIn extends Component {
     onEmailChange(event) {
 
         this.setState({
-            email: event.target.value
+            email: event
         })
     }
 
     onPassChange(event) {
         this.setState({
-            pass: event.target.value
+            pass: event
         });
     }
 
     onPressForgot = () => {
         this.setState({
-            color: styles.forgotPressed.color,
             active: 0
         });
 
@@ -56,6 +55,21 @@ class LogIn extends Component {
 
     onPressLogIn = async () => {
 
+        let defaultLocation = {
+              "timestamp": 0,
+              "coords": {
+                "accuracy": -1,
+                "altitude": -1,
+                "altitudeAccuracy": -1,
+                "heading": -1,
+                "latitude": 28.602413253152307,
+                "longitude": -81.20019937739713,
+                "speed": 0
+              }
+            };
+
+        this.props.getCoords(defaultLocation);
+
         let enabled = await Location.hasServicesEnabledAsync();
 
         console.log(enabled);
@@ -69,19 +83,18 @@ class LogIn extends Component {
             if (status.granted)
             {
                 console.log("Gathering location...");
-                
+
                 let location = await Location.getCurrentPositionAsync({});
 
                 this.props.getCoords(location);
-
-                this.props.navigation.navigate("Home");
             }
         }
+
+        this.props.navigation.navigate("HomeNav");
     }
 
     onPressBack = () => {
         this.setState({
-            color: styles.backTextPressed.color,
             active: 2
         });
 
@@ -111,27 +124,24 @@ class LogIn extends Component {
 
         return(
 
-            <View style={[styles.background, { backgroundColor: '#006FD6' }]} >
-                <ScrollView contentContainerStyle={{flexGrow : 1, justifyContent: 'center'}} keyboardShouldPersistTaps='handled'>
+            <View backgroundColor={styles.container.backgroundColor} flex={1}>
+                <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
 
                     {/* Allows the inputs to not be blocked by the keyboard. Behavior is different on different devices*/}
-                    <KeyboardAvoidingView
-                    behavior={"position"}
-                    style={{marginBottom: 30}}
-                    >
+                    <KeyboardAvoidingView behavior={"position"} style={{marginBottom:30}}>
                         <View style={styles.title}>
-                            <Text category='h1' status='control'>
+                            <Text category='h1' status='control' style={{textAlign:'center'}}>
                                 Log In
                             </Text>
                         </View>
 
                         <View>
-
                             <View>
                                 <Text category='label' style={styles.inputText}> Email Address: </Text>
                                 <Input
                                 placeholder='Email address...'
-                                onChange={this.onEmailChange}
+                                autoCapitalize='none'
+                                onChangeText={this.onEmailChange}
                                 style={styles.inputBox}
                                 />
                             </View>
@@ -140,32 +150,32 @@ class LogIn extends Component {
                                 <Text category='label' style={styles.inputText}> Password:</Text>
                                 <Input
                                 placeholder='Password...'
+                                autoCapitalize='none'
                                 accessoryRight={renderIcon}
                                 secureTextEntry={this.state.securityOption}
-                                onChange={this.onPassChange}
+                                onChangeText={this.onPassChange}
                                 />
                             </View>
-
                         </View>
                     </KeyboardAvoidingView>
 
                     <View>
                         <Pressable onPressIn={this.onPressForgot} onPressOut={this.onUnPressForgot}>
-                            <Text style={{ color: (this.state.active === 0 ? this.state.color : styles.forgotText.color), fontSize: 18, textAlign: 'center'} } >
+                            <Text style={this.state.active === 0 ? styles.forgotTextPressed : styles.forgotText}>
                                 Forgot Password?
                             </Text>
                         </Pressable>
                     </View>
 
-                    <Button size='giant' onPress={this.onPressLogIn} style={[styles.logInButton]}>
-                        <Text style={[{ color: styles.logInText.color, fontWeight: '600', fontSize: 18 }]}>
+                    <Button size='giant' onPress={this.onPressLogIn} style={styles.logInButton}>
+                        <Text style={styles.logInText}>
                             Log In
                         </Text>
                     </Button>
 
-                    <View style={[styles.backButton]}>
+                    <View style={styles.backButton}>
                         <Pressable onPressIn={this.onPressBack} onPressOut={this.onUnPressBack}>
-                            <Text style={{color: (this.state.active === 2 ? this.state.color : styles.backText.color), fontSize: 20}} >
+                            <Text style={this.state.active === 2 ? styles.backTextPressed : styles.backText}>
                                 &larr; Back
                             </Text>
                         </Pressable>
