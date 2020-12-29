@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
     },
 
     logOutButton: {
-        marginTop: 30,
         width: 300,
         backgroundColor: '#DEBD07'
     },

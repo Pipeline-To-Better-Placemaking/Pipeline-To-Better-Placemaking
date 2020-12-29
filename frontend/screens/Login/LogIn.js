@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import { ScrollView, View,  Pressable, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon } from '@ui-kitten/components';
 import styles from './logInStyles.js';
 import * as Location from 'expo-location';
@@ -50,7 +50,7 @@ class LogIn extends Component {
             active: -1
         });
 
-        // this.props.navigation.navigate(""); // Forgot password
+        this.props.navigation.navigate("ForgotPasswordScreen"); // Forgot password
     }
 
     onPressLogIn = async () => {
@@ -90,7 +90,7 @@ class LogIn extends Component {
             }
         }
 
-        this.props.navigation.navigate("Home");
+        this.props.navigation.navigate("HomeNav");
     }
 
     onPressBack = () => {

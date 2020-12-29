@@ -9,7 +9,7 @@ class BottomNav extends Component {
         super(props);
 
         this.state = {
-
+            index: 1
         }
 
         this.onTabSelect = this.onTabSelect.bind(this);
@@ -18,11 +18,14 @@ class BottomNav extends Component {
     onTabSelect(tabIndex) {
 
         if (tabIndex == 0) {
-            this.props.navigation.navigate("Collaborate");
+            this.setState({index: 0});
+            this.props.navigation.navigate("CollaborateStack");
         } else if (tabIndex == 1) {
-            this.props.navigation.navigate("Home");
+            this.setState({index: 1})
+            this.props.navigation.navigate("HomeScreenStack");
         } else if (tabIndex == 2) {
-            this.props.navigation.navigate("UserSettings");
+            this.setState({index: 2})
+            this.props.navigation.navigate("UserSettingsStack");
         }
 
     }
@@ -43,7 +46,7 @@ class BottomNav extends Component {
 
         return(
             <View style={styles.navigationWrapper}>
-                <BottomNavigation style={styles.bottoNavView} selectedIndex={this.props.selectedIndex} onSelect={(index) => this.onTabSelect(index)}>
+                <BottomNavigation style={styles.bottoNavView} selectedIndex={this.state.index} onSelect={(index) => this.onTabSelect(index)}>
                     <BottomNavigationTab icon={ClipBoardIcon}/>
                     <BottomNavigationTab icon={HomeIcon}/>
                     <BottomNavigationTab icon={PersonIcon}/>

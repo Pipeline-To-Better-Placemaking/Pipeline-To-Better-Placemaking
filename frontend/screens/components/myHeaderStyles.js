@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#006FD6',
         justifyContent:'flex-end',
         flexDirection:'column',
-        height: '8%'
+        height: '10%'
     },
 
     headerText: {

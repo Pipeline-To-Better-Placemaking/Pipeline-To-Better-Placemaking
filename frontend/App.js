@@ -4,12 +4,7 @@ import { mapping, light as lightTheme, dark as darkTheme } from '@eva-design/eva
 import { ApplicationProvider, IconRegistry, Layout, Text } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
-import TitleScreen from './screens/TitleScreen.js';
-import SignUp from './screens/SignUp/SignUp.js';
-import Home from './screens/Home/Home.js';
-import LogIn from './screens/Login/LogIn.js';
-import UserSettings from './screens/UserSettings/UserSettings.js';
-import Collaborate from './screens/Collaborate/Collaborate.js';
+import MainStackNavigation from './navigation/MainStackNavigation.js';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -20,11 +15,13 @@ const Stack = createStackNavigator();
  * doesn't work with the themes from '@eva-design/eva', it complains about the
  * backgroundColor. So I'm setting it like this for now.
  */
+
 const MyLightTheme = {
   colors: {
     background: '#FFFFFF',
   },
 };
+
 const MyDarkTheme = {
   colors: {
     background: '#222B45',
@@ -65,49 +62,17 @@ class App extends Component {
   render() {
 
     return(
-      <NavigationContainer theme={this.state.darkTheme ? MyDarkTheme : MyLightTheme}>
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider mapping={mapping} theme={this.state.theme}>
-          <Stack.Navigator>
-
-            <Stack.Screen
-              name="TitleScreen"
-              component={TitleScreen}
-              options={{ headerShown: false}}
-            />
-
-            <Stack.Screen
-              name="LogIn"
-              options={{headerShown: false}}
-            >
-              {props => <LogIn {...props} getCoords={this.getCoords}></LogIn>}
-            </Stack.Screen>
-
-            <Stack.Screen
-              name="SignUp"
-              component={SignUp}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Collaborate"
-              component={Collaborate}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Home"
-              options={{headerShown: false}}
-            >
-              {props => <Home {...props} location = {this.state.location}></Home>}
-            </Stack.Screen>
-            <Stack.Screen
-              name="UserSettings"
-              options={{headerShown: false}}
-              >
-                {props => <UserSettings {...props} toggleTheme={this.toggleTheme}/>}
-              </Stack.Screen>
-          </Stack.Navigator>
-        </ApplicationProvider>
-      </NavigationContainer>
+      <ApplicationProvider mapping={mapping} theme={this.state.theme}>
+        <NavigationContainer theme={this.props.darkTheme ? MyDarkTheme : MyLightTheme}>
+          <IconRegistry icons={EvaIconsPack} />
+          <MainStackNavigation 
+            theme={this.state.theme}
+            getCoords={this.getCoords}
+            location={this.state.location}
+            toggleTheme={this.toggleTheme}
+          />
+        </NavigationContainer>
+      </ApplicationProvider>
     );
   }
 }

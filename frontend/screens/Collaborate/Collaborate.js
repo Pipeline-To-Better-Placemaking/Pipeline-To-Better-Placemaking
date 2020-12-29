@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
 import MyHeader from '../components/MyHeader.js';
-import HomeBottomNav from '../components/BottomNav.js';
 import TeamView from './TeamView.js';
 import CreateTeamCard from './CreateTeamCard.js';
 
@@ -111,8 +110,6 @@ class Collaborate extends Component {
                     </View>
                 </View>
                 <Divider style={{marginTop: 5}} />
-
-                <HomeBottomNav navigation={this.props.navigation} selectedIndex={0}/>
             </View>
         );
     }

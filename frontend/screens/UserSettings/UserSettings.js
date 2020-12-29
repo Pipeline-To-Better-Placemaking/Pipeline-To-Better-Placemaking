@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
 import MyHeader from '../components/MyHeader.js';
-import HomeBottomNav from '../components/BottomNav.js';
 
-import { mapping, light, dark } from '@eva-design/eva';
 import { Text, Button, Input, Icon, Modal, Toggle } from '@ui-kitten/components';
 import styles from './userSettingsStyles.js';
 
@@ -35,7 +33,7 @@ class UserSettings extends Component {
 
                 <MyHeader myHeaderText={"Settings"}/>
 
-                <View style={{alignItems: 'center'}}>
+                <View style={{ alignItems: 'center'}}>
 
                     <Button size='giant' onPress={this.onPressLogOut} style={styles.logOutButton}>
                         <Text style={styles.logOutText}>
@@ -48,9 +46,6 @@ class UserSettings extends Component {
 
                 </View>
 
-                {/*The View is just the height of the bottom Nav bar*/}
-                <View style={{height:50}}/>
-                <HomeBottomNav navigation={this.props.navigation} selectedIndex={2}/>
             </View>
         );
     }

@@ -3,14 +3,13 @@ import React, { Component } from 'react';
 import MyHeader from '../components/MyHeader.js';
 import HomeResultView from './ResultView.js';
 import HomeMapView from './HomeMapView.js';
-import HomeBottomNav from '../components/BottomNav.js';
 import DummyResult from '../components/DummyResult.js';
 
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
 import styles from './homeStyles.js';
 
-class Home extends Component {
+class HomeScreen extends Component {
 
     constructor(props){
         super(props);
@@ -19,6 +18,8 @@ class Home extends Component {
             location: props.location,
             compare: false
         }
+
+        console.log("Loading Home Screen...")
 
         this.onComparePress = this.onComparePress.bind(this);
     }
@@ -33,6 +34,7 @@ class Home extends Component {
     render() {
 
         return(
+            
             <View style={styles.container}>
 
                 <MyHeader myHeaderText={"Home"}/>
@@ -51,13 +53,10 @@ class Home extends Component {
                     <DummyResult compare={this.state.compare}/>
                 </ScrollView>
 
-                {/*The View is just the height of the bottom Nav bar*/}
-                <View style={{height:50}}/>
-                <HomeBottomNav navigation={this.props.navigation} selectedIndex={1}/>
             </View>
         );
 
     }
 }
 
-export default Home;
+export default HomeScreen;
