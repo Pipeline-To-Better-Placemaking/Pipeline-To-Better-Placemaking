@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
-import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
+import { Text, Button, Input, Icon, Modal, Divider } from '@ui-kitten/components';
 import styles from './collaborateStyles.js';
 
 class TeamView extends Component {
@@ -22,14 +22,14 @@ class TeamView extends Component {
                     </View>
 
                     <View style={styles.createTeamButtonView}>
-                        <Button status='primary' appearance='outline' onPress={this.props.onCreateTeam}>
+                        <Button status='primary' appearance='outline' onPress={() => this.props.onCreateTeam(true, false)}>
                             Create New
                         </Button>
                     </View>
 
                 </View>
 
-                <View style={styles.line}></View>
+                <Divider style={{marginTop: 5}} />
             </View>
         );
     }

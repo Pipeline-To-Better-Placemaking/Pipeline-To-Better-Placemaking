@@ -28,13 +28,13 @@ class LogIn extends Component {
     onEmailChange(event) {
 
         this.setState({
-            email: event.target.value
+            email: event
         })
     }
 
     onPassChange(event) {
         this.setState({
-            pass: event.target.value
+            pass: event
         });
     }
 
@@ -141,7 +141,7 @@ class LogIn extends Component {
                                 <Input
                                 placeholder='Email address...'
                                 autoCapitalize='none'
-                                onChange={this.onEmailChange}
+                                onChangeText={this.onEmailChange}
                                 style={styles.inputBox}
                                 />
                             </View>
@@ -153,7 +153,7 @@ class LogIn extends Component {
                                 autoCapitalize='none'
                                 accessoryRight={renderIcon}
                                 secureTextEntry={this.state.securityOption}
-                                onChange={this.onPassChange}
+                                onChangeText={this.onPassChange}
                                 />
                             </View>
                         </View>

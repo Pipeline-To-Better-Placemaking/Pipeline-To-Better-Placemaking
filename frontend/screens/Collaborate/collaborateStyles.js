@@ -26,7 +26,11 @@ export const styles = StyleSheet.create({
 
     createTeamButtonView: {
         marginRight: 30,
-    }
+    },
+
+    backdrop: {
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
 
 });
 
