@@ -95,9 +95,9 @@ class Collaborate extends Component {
                                     onCreateNewTeam={this.onCreateNewTeam}/>
                 </Popover>
 
-                <View style={{flexDirection:'row', justifyContent:'center', marginTop:15}}>
+                <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
                     <List
-                      style={{maxHeight:'80%', maxWidth:'90%'}}
+                      style={{maxHeight:'100%', maxWidth:'90%'}}
                       data={this.state.data}
                       ItemSeparatorComponent={Divider}
                       renderItem={renderItem}
