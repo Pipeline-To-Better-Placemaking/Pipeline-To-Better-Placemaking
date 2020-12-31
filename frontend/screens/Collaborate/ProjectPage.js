@@ -60,9 +60,17 @@ class ProjectPage extends Component {
                     <HomeMapView location={this.state.location}/>
                 </View>
 
-                <View>
-                    <Text onPress={this.getLocationName}>{this.state.locName}</Text>
+
+
+                <View style={styles.teamTextView}>
+                    <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
+                        <Text style={styles.teamText}> Sign Up </Text>
+                    </View>
+                    <View style={{flexDirection: 'row', justifyContent: 'flex-end',marginRight:30}}>
+                        <Text onPress={this.getLocationName}>{this.state.locName}</Text>
+                    </View>
                 </View>
+                <Divider style={{marginTop: 5}} />
             </View>
         );
     }
