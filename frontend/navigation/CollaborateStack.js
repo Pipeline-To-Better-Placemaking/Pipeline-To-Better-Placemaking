@@ -1,14 +1,45 @@
 import React, {Component} from 'react';
 import Collaborate from '../screens/Collaborate/Collaborate.js';
 import TeamPage from '../screens/Collaborate/TeamPage.js';
+import ProjectPage from '../screens/Collaborate/ProjectPage.js';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const CollaborateScreenStack = createStackNavigator();
 
 class CollaborateStack extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
+
+        this.state = {
+            selectedTeam: null,
+            selectedProject: null
+        };
+
+        this.setSelectedTeam = this.setSelectedTeam.bind(this);
+        this.getSelectedTeam = this.getSelectedTeam.bind(this);
+        this.setSelectedProject = this.setSelectedProject.bind(this);
+        this.getSelectedProject = this.getSelectedProject.bind(this);
+    }
+
+    setSelectedTeam(team) {
+        this.setState({
+            selectedTeam: team
+        });
+    }
+
+    getSelectedTeam() {
+        return this.state.selectedTeam;
+    }
+
+    setSelectedProject(project) {
+        this.setState({
+            selectedProject: project
+        });
+    }
+
+    getSelectedProject() {
+        return this.state.selectedProject;
     }
 
     render() {
@@ -16,15 +47,29 @@ class CollaborateStack extends Component {
             <CollaborateScreenStack.Navigator>
                 <CollaborateScreenStack.Screen
                     name="Collaborate"
-                    component={Collaborate}
-                    options={{headerShown: false}}
-                />
+                    options={{headerShown: false}}>
+                    {props => <Collaborate
+                                   {...props}
+                                   setSelectedTeam={this.setSelectedTeam}
+                              />}
+                </CollaborateScreenStack.Screen>
                 <CollaborateScreenStack.Screen
                     name="TeamPage"
-                    component={TeamPage}
-                    options={{headerShown: false}}
-                    initialParams={{selectedTeam:null}}
-                />
+                    options={{headerShown: false}}>
+                    {props => <TeamPage
+                                    {...props}
+                                    getSelectedTeam={this.getSelectedTeam}
+                                    setSelectedProject={this.setSelectedProject}
+                              />}
+                </CollaborateScreenStack.Screen>
+                <CollaborateScreenStack.Screen
+                    name="ProjectPage"
+                    options={{headerShown: false}}>
+                    {props => <ProjectPage
+                                    {...props}
+                                    getSelectedProject={this.getSelectedProject}
+                              />}
+                </CollaborateScreenStack.Screen>
             </CollaborateScreenStack.Navigator>
         )
     }

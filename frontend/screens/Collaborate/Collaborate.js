@@ -61,7 +61,8 @@ class Collaborate extends Component {
     }
 
     openTeamPage(item) {
-        this.props.navigation.navigate("TeamPage", {selectedTeam: item});
+        this.props.setSelectedTeam(item);
+        this.props.navigation.navigate("TeamPage");
     }
 
     render() {
