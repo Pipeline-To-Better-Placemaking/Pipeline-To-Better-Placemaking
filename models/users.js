@@ -36,6 +36,7 @@ const user_schema = mongoose.Schema({
     },
     is_verified:{type: Boolean},
     vefification_code:{type: String},
+    verification_timeout:{type:String},
     invites:{type:[ObjectId]},
     teams:{type:[ObjectId]}
 })
@@ -68,23 +69,46 @@ module.exports.comparePassword = async function(candidatePassword, hash){
 
 module.exports.verifyEmail = async function(userId, code){
     return await Users.updateOne(
-        {id:userId},
+        {_id:userId},
         {$set: {is_verified:true}}
         )
 }
 
 module.exports.createVerificationCode = async function(userId){
-    return 0
+    var verificationNum = rand(100000, 9999999)
+    verificationString = String(num).padStart(7, '0')
+    var expiryTime = new Date() + 10 + 60 * 1000
+    await Users.updateOne(
+        {_id:userId},
+        {$set: {verification_code:verificationString,
+                verification_timeout:expiryTime
+              }
+        }
+    )
+    return verificationString
 }
-
 module.exports.getInvites = async function(userId){
-
+    return await Users.findById(userId).invites
 }
 
-module.exports.acceptInvite = async function(userId,teamId){
-
+module.exports.createInvite = async function(userId, teamId){
+    Users.updateOne({
+        _id: userId
+      }, {
+        $addToSetid:
+         {
+            invits:teamId
+         }
+      })
 }
 
-module.exports.denyInvite = async function(userId,teamId){
-
+module.exports.deleteInvite = async function(userId,teamId){
+    await Users.updateOne({
+        _id: userId
+      }, {
+        $pull:
+         {
+          invites : teamId
+        }
+      })
 }

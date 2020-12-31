@@ -5,14 +5,10 @@ const uniqueValidator = require('mongoose-unique-validator')
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-const coord = new Schema({
-    lat: Number,
-    long: Number, 
-})
-
 const Entry = mongoose.Schema({
 
-    location:{type:coord},
+    location:  {lat: Number,
+                long: Number},
     age:{
         type:String,
         enum:['<15','15-30','30-45','45-60','60+']
