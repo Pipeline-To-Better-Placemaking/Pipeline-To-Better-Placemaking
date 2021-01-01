@@ -45,7 +45,7 @@ class MainStackNavigation extends Component {
                 name="HomeNav"
                 options={{headerShown: false}}
                 >
-                {props => <HomeNav {...props} location = {this.props.location}></HomeNav>}
+                {props => <HomeNav {...props} location = {this.props.location} toggleTheme={this.props.toggleTheme}></HomeNav>}
                 </Stack.Screen>
 
                 <Stack.Screen
