@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
 
@@ -7,7 +7,18 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
-        height: '10%'
+        ...Platform.select({
+          ios: {
+            height: '10%'
+          },
+          android: {
+            height: '5%'
+          },
+          default: {
+            // other platforms, web for example
+            height: '10%'
+          }
+        })
     },
 
     headerText: {
