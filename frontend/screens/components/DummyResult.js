@@ -15,10 +15,19 @@ class DummyResult extends Component {
         this.onCheckBoxPress = this.onCheckBoxPress.bind(this);
     }
 
-    onCheckBoxPress() {
-        this.setState({
+    async onCheckBoxPress() {
+        await this.setState({
             checked: !this.state.checked
         })
+
+        if (this.state.checked)
+        {
+            this.props.compareIncrement();
+        }
+        else
+        {
+            this.props.compareDecrement();
+        }
     }
 
     render(){

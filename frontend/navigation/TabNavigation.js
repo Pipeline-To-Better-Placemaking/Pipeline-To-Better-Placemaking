@@ -31,7 +31,7 @@ class TabNavigation extends Component {
                 <Tab.Screen
                     name='HomeScreenStack'
                 >
-                    {props => <HomeScreenStack {...props} location = {this.props.location}></HomeScreenStack>}
+                    {props => <HomeScreenStack {...props} navigation={this.props.navigation} location = {this.props.location}></HomeScreenStack>}
                 </Tab.Screen>
                 
                 <Tab.Screen

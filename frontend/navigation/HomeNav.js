@@ -28,6 +28,7 @@ class HomeNav extends Component {
             <TabNavigation
                 location={this.state.location}
                 toggleTheme={this.props.toggleTheme}
+                navigation={this.props.navigation}
             />
         );
 
