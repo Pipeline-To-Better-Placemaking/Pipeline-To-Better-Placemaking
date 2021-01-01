@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView, View,  Pressable, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
-import { Text, Button, Input, Icon } from '@ui-kitten/components';
+import { ScrollView, View,  Pressable, TouchableWithoutFeedback, KeyboardAvoidingView, Modal } from 'react-native';
+import { Text, Button, Input, Icon, Spinner } from '@ui-kitten/components';
 import styles from './logInStyles.js';
 import * as Location from 'expo-location';
 
@@ -18,7 +18,8 @@ class LogIn extends Component {
             email: ' ',
             pass: ' ',
             active: -1,
-            securityOption: true
+            securityOption: true,
+            loading: false
         }
 
         this.onEmailChange = this.onEmailChange.bind(this);
@@ -53,7 +54,14 @@ class LogIn extends Component {
         this.props.navigation.navigate("ForgotPasswordScreen"); // Forgot password
     }
 
+    setLoading = (visible) => {
+      this.setState({
+          loading: visible
+      });
+    }
+
     onPressLogIn = async () => {
+        this.setLoading(true);
 
         let defaultLocation = {
               "timestamp": 0,
@@ -89,7 +97,7 @@ class LogIn extends Component {
                 this.props.getCoords(location);
             }
         }
-
+        this.setLoading(false);
         this.props.navigation.navigate("HomeNav");
     }
 
@@ -125,6 +133,15 @@ class LogIn extends Component {
         return(
 
             <View backgroundColor={styles.container.backgroundColor} flex={1}>
+                <Modal
+                      animationType='fade'
+                      transparent={true}
+                      visible={this.state.loading}
+                      >
+                      <View style={styles.modalBackgroundStyle}>
+                        <Spinner />
+                      </View>
+                </Modal>
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
 
                     {/* Allows the inputs to not be blocked by the keyboard. Behavior is different on different devices*/}
