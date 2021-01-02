@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Modal, ScrollView } from 'react-native';
 import { Text, Button, Input, Icon, Divider, Card } from '@ui-kitten/components';
 
-import CreateNewProjectMap from '../components/Maps/CreateNewProjectMap.js';
+import CreateNewProjectMap from '../../components/Maps/CreateNewProjectMap.js';
 
 import styles from './createProjectViewStyles.js';
 
