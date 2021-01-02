@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
 import BackHeader from '../components/BackHeader.js';
-import HomeMapView from '../Home/HomeMapView.js'; // using this for now, just to get the visual
+import ViewProjectMap from '../components/Maps/ViewProjectMap.js';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import * as Location from 'expo-location';
@@ -14,20 +14,12 @@ class ProjectPage extends Component {
         super(props);
 
         this.state = {
-            location: {
-                  "timestamp": 0,
-                  "coords": {
-                    "accuracy": -1,
-                    "altitude": -1,
-                    "altitudeAccuracy": -1,
-                    "heading": -1,
-                    "latitude": 28.602413253152307,
-                    "longitude": -81.20019937739713,
-                    "speed": 0
-                  }
-            },
-            locName: "Tap to Load: University of Central Florida"
+            projName: props.getSelectedProject().title,
+            location: props.getSelectedProject().location,
+            locName: "Tap to Load: University of Central Florida",
+            area: props.getSelectedProject().area
         }
+        
         this.openPrevPage = this.openPrevPage.bind(this);
         this.getLocationName = this.getLocationName.bind(this);
     }
@@ -54,12 +46,14 @@ class ProjectPage extends Component {
 
         return(
             <View style={styles.container}>
-                <BackHeader headerText={this.props.getSelectedProject().title} prevPage={this.openPrevPage}/>
+                <BackHeader headerText={this.state.projName} prevPage={this.openPrevPage}/>
 
                 <View style={{height:'45%'}}>
-                    <HomeMapView location={this.state.location}/>
+                    <ViewProjectMap
+                        location={this.state.location}
+                        area={this.state.area}
+                    />
                 </View>
-
 
 
                 <View style={styles.teamTextView}>
