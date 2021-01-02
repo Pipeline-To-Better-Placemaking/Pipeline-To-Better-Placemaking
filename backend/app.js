@@ -5,6 +5,8 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const passport = require('passport')
 const config = require('./utils/config')
+const middlewares = require('./utils/middlewares')
+require('express-async-errors')
 
 console.log('Connecting to ', config.DB_URI)
 const connect = async () => {
@@ -27,6 +29,8 @@ app.use(express.static(path.join(__dirname,'public')))
 
 app.use(bodyParser.json())
 app.use('/api/users',routes)
+
+app.use(middlewares.errorHandler)
 
 app.use(passport.initialize());
 app.use(passport.session());
