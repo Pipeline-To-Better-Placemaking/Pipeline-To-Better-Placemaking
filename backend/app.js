@@ -17,7 +17,7 @@ const connect = async () => {
 }
 connect()
 
-const routes = require('./routes/users.js');
+
 
 const app = express();
 
@@ -26,7 +26,12 @@ app.use(cors())
 app.use(express.static(path.join(__dirname,'public')))
 
 app.use(bodyParser.json())
-app.use('/api/users',routes)
+
+const userApi = require('./routes/users.js')
+const teamApi = require('./routes/teams.js')
+
+app.use('/api/users', userApi)
+app.use('/api/teams', teamApi)
 
 app.use(passport.initialize());
 app.use(passport.session());

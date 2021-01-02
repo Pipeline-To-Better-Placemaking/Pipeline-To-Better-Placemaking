@@ -1,13 +1,12 @@
 const express = require('express')
+const xoauth2 = require('xoauth2')
+const nodemailer = require('nodemailer')
 const router = express.Router()
 const User = require('../models/users.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
-const users = require('../models/users.js')
-const xoauth2 = require('xoauth2')
 
-const nodemailer = require('nodemailer')
 
 router.post('/register', async (req, res, next) => {
     let newUser = new User({
@@ -18,7 +17,7 @@ router.post('/register', async (req, res, next) => {
         password: req.body.password
     })
 
-    if(User.getUserByEmail(req.body.email)){
+    if( await User.getUserByEmail(req.body.email) != null){
         return res.status(401).json({
             success: false,
             msg: 'Email already in use'
@@ -31,8 +30,7 @@ router.post('/register', async (req, res, next) => {
 
 router.post('/authenticate', async (req,res,next) => {
     const email = req.body.email
-    const password = req.body.password
-
+    const password = req.body.password 
     const user = await User.getUserByEmail(email)
     const passwordMatch = (user === null)
         ? false // User was not found
@@ -66,6 +64,18 @@ router.post('/authenticate', async (req,res,next) => {
 
 router.get('/profile', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     res.json({user: await req.user})
+})
+
+router.put('/profile', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    let newUser = new User({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        instituion: req.body.instituion,
+    })
+
+    User.updateUser(await req.user, newUser)
+
+    res.json.status(200)
 })
 
 router.get('/verification',passport.authenticate('jwt',{session:false}), async (req, res, next) => {
