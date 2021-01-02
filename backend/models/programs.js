@@ -3,14 +3,11 @@ const bcrypt = require('bcryptjs')
 const config = require('../utils/config.js')
 const uniqueValidator = require('mongoose-unique-validator')
 
-const coord = new Schema({
-    lat: Number,
-    long: Number, 
-})
 
 const entry = mongoose.Schema({
 
-    location:{type:coord},
+    location:{type: {lat: Number,
+                     long: Number}},
     adress:{type:string},
     type:{
         type:string,
