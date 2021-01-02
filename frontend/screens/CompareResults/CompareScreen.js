@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
+import styles from './compareStyles'
+
+import EmptyCompareBox from '../components/EmptyCompareBox.js'
+import CompareBox from '../components/CompareBox.js';
+import MyHeader from '../components/MyHeader.js';
 
 
 class CompareScreen extends Component {
@@ -10,9 +15,15 @@ class CompareScreen extends Component {
     }
 
     render() {
-        return(
-            <View>
 
+        return(
+            <View style={styles.container}>
+
+                <MyHeader myHeaderText={"Compare"}/>
+
+                <CompareBox/>
+                <CompareBox/>
+                <EmptyCompareBox/>
             </View>
         )
     }
