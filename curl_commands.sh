@@ -38,3 +38,17 @@ curl -H 'Accept: application/json' \
      http://localhost:8080/api/teams
 
 echo 
+
+PROJID=$(curl -H 'Accept: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request POST \
+     -d '{"title": "Testing","description": "a cool testing thing"}'\
+     http://localhost:8080/api/teams \
+     | jq -r '._id')
+
+curl -H 'Accept: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/teams/${PROJID}
+
+ 
