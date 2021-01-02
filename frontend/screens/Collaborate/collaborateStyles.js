@@ -30,6 +30,13 @@ export const styles = StyleSheet.create({
 
     backdrop: {
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      flex: 1,
+      justifyContent: 'center',
+    },
+
+    modalBackgroundStyle: {
+      flex: 1,
+      justifyContent: 'center',
     },
 
 });
