@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import TabNavigation from './TabNavigation';
 
-class Home extends Component {
+class HomeNav extends Component {
 
     constructor(props){
         super(props);
@@ -33,4 +33,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default HomeNav;

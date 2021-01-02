@@ -25,6 +25,7 @@ class Collaborate extends Component {
         this.onCreateNewTeam = this.onCreateTeam.bind(this, false, true);
         this.addNewTeam = this.addNewTeam.bind(this);
         this.setTempTeamName = this.setTempTeamName.bind(this);
+        this.openTeamPage = this.openTeamPage.bind(this);
     }
 
     setTempTeamName(event) {
@@ -59,6 +60,11 @@ class Collaborate extends Component {
         });
     }
 
+    openTeamPage(item) {
+        this.props.setSelectedTeam(item);
+        this.props.navigation.navigate("TeamPage");
+    }
+
     render() {
 
         const ForwardIcon = (props) => (
@@ -71,6 +77,7 @@ class Collaborate extends Component {
                         {`${item.title}`}
                     </Text>
               accessoryRight={ForwardIcon}
+              onPress={() => this.openTeamPage(item)}
             />
         );
 
@@ -95,9 +102,9 @@ class Collaborate extends Component {
                                     onCreateNewTeam={this.onCreateNewTeam}/>
                 </Popover>
 
-                <View style={{flexDirection:'row', justifyContent:'center', marginTop:15}}>
+                <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
                     <List
-                      style={{maxHeight:'80%', maxWidth:'90%'}}
+                      style={{maxHeight:'100%', maxWidth:'90%'}}
                       data={this.state.data}
                       ItemSeparatorComponent={Divider}
                       renderItem={renderItem}
