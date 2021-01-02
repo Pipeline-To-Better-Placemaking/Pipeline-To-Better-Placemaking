@@ -5,6 +5,12 @@ const uniqueValidator = require('mongoose-unique-validator')
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
+const rand = (min = 0, max = 50) => {
+    let num = Math.random() * (max - min) + min;
+
+    return Math.floor(num);
+};
+
 const user_schema = mongoose.Schema({
     firstname: {
         type: String,
@@ -36,17 +42,14 @@ const user_schema = mongoose.Schema({
     },
     is_verified:{type: Boolean},
     vefification_code:{type: String},
+    verification_timeout:{type:String},
     invites:{type:[ObjectId]},
     teams:{type:[ObjectId]}
 })
 
 user_schema.plugin(uniqueValidator)
 
-const Users= module.exports = mongoose.model('Users', user_schema)
-
-module.exports.getUserById = async function(id){
-    return await Users.findById(id)
-}
+const Users = module.exports = mongoose.model('Users', user_schema)
 
 module.exports.getUserByEmail = async function(email){
     const query = {email: email}
@@ -58,8 +61,20 @@ module.exports.addUser = async function(newUser){
     const salt  = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(newUser.password, salt)
     newUser.password = hash
-    const user = await newUser.save()
-    return user
+    return await newUser.save()
+}
+
+module.exports.updateUser = async function(userId, newUser){
+    return await Users.updateOne(
+        {_id:userId},
+        {$set: {firstname:newUser.firstname,
+                lastname:newUser.lastname,
+                institution:newUser.institution
+            }}
+        )
+    
+
+
 }
 
 module.exports.comparePassword = async function(candidatePassword, hash){
@@ -67,24 +82,57 @@ module.exports.comparePassword = async function(candidatePassword, hash){
 }
 
 module.exports.verifyEmail = async function(userId, code){
-    return await Users.updateOne(
-        {id:userId},
-        {$set: {is_verified:true}}
-        )
+    
+    var user = await Users.findById(userId)
+    
+    if(code == user.verification_code && user.expiryTime < new Date()){
+        await Users.updateOne(
+            {_id:userId},
+            {$set: {is_verified:true}}
+            )
+        
+        return true
+    }
+    else{
+        return false
+    }
 }
 
-module.exports.createVerificationCode = async function(userId){
-    return 0
+module.exports.createVerification = async function(userId){
+    var num = rand(100000, 9999999)
+    verificationString = String(num).padStart(7, '0')
+    var expiryTime = new Date() + 10 + 60 * 1000
+    await Users.updateOne(
+        {_id:userId},
+        {$set: {verification_code:verificationString,
+                verification_timeout:expiryTime
+              }
+        }
+    )
+    return verificationString
 }
-
 module.exports.getInvites = async function(userId){
-
+    return await Users.findById(userId).invites
 }
 
-module.exports.acceptInvite = async function(userId,teamId){
-
+module.exports.createInvite = async function(userId, teamId){
+    Users.updateOne({
+        _id: userId
+      }, {
+        $addToSetid:
+         {
+            invits:teamId
+         }
+      })
 }
 
-module.exports.denyInvite = async function(userId,teamId){
-
+module.exports.deleteInvite = async function(userId,teamId){
+    await Users.updateOne({
+        _id: userId
+      }, {
+        $pull:
+         {
+          invites : teamId
+        }
+      })
 }

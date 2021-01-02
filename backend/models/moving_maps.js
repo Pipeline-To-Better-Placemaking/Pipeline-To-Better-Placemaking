@@ -5,19 +5,15 @@ const uniqueValidator = require('mongoose-unique-validator')
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-const coord = new Schema({
-    lat: Number,
-    long: Number, 
-})
-
 const entry = mongoose.Schema({
 
-    path:{type:[coord]},
+    path:{type:[{lat: Number,
+                 long: Number},]},
     age:{
         type:String,
         enum:['<15','15-30','30-45','45-60','60+']
     },
-    mofr:{
+    mode:{
         type:String,
         enum:['running','walking','biking','skateboarding','other']
     },
@@ -36,15 +32,29 @@ const moving_schema = mongoose.Schema({
 const Movings = module.exports = mongoose.model('Moving_Maps', moving_schema)
 
 module.exports.addTest = async function addTest(newTest){
-
+    
 }
 
 module.exports.addEntry = async function(testId, entry){
-
+    Movings.updateOne({
+        _id: testId
+      }, {
+        $addToSetid:
+         {
+          data: entry
+        }
+      })
 }
 
 module.exports.deleteEntry = async function(testId, entryId){
-
+    Movings.updateOne({
+        _id: testId
+      }, {
+        $pull:
+         {
+          data:{_id : entryId}
+        }
+      })
 }
 
 module.exports.claim = async function(testId, userId){

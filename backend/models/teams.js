@@ -6,7 +6,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const team_schema = mongoose.Schema({
 
-    title:{type: String},
+    ttle:{type: String},
     description:{type: String},
     public:{type: Boolean},
     projects:{type:[ObjectId]},
@@ -18,16 +18,17 @@ const team_schema = mongoose.Schema({
 
 const Teams = module.exports = mongoose.model('Teams', team_schema)
 
-module.exports.getTeamById = async function (teamId){
-
+module.exports.addTeam = async function (newTeam){
+  return await newTeam.save()
 }
 
-module.exports.allTeamsShort = async function (count, first = 0,userId = -1){
-
-}
-
-module.exports.addTeam = async function(newTeam){
-    Teams.save(newTeams)
+module.exports.allTeamsShort = async function (count = 10, first = 0,userId = -1){
+  if (userId != -1){
+    return await Teams.find().skip(first).limit(count)
+  }
+  else{
+    return await Teams.find({awards: {$elemMatch: {users:userId}}}).skip(first).limit(count)
+  }
 }
 
 module.exports.addAdmin = async function(teamId, userId){
@@ -68,7 +69,4 @@ module.exports.removeUser = async function(TeamsId, userId){
           users: userId
         }
       })
-}
-module.exports.getUsersTeamss = async function (userId){
-    
 }
