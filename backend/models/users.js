@@ -58,7 +58,7 @@ module.exports.addUser = async function(newUser){
     const salt  = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(newUser.password, salt)
     newUser.password = hash
-    const user = await Users.save(newUser)
+    const user = await newUser.save()
     return user
 }
 
