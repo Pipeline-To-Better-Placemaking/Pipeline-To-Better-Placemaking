@@ -22,11 +22,20 @@ router.post('/authenticate', async (req,res,next) => {
     const email = req.body.email
     const password = req.body.password
 
+    // Email or password is missing
+    if (!email || !password) {
+        return res.status(401).json({
+            success: false,
+            msg: 'Invalid email or password'
+        })
+    }
+
     const user = await User.getUserByEmail(email)
     const passwordMatch = (user === null)
         ? false // User was not found
         : await User.comparePassword(password, user.password)
 
+    // Email or password is invalid
     if (!(user && passwordMatch)) {
         return res.status(401).json({
             success: false,
@@ -34,6 +43,7 @@ router.post('/authenticate', async (req,res,next) => {
         })
     }
 
+    // Create an authentication token for the user
     const token = jwt.sign(user.toJSON(), config.PRIVATE_KEY, {
         expiresIn: 86400 //1 day
     })
