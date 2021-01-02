@@ -51,11 +51,6 @@ user_schema.plugin(uniqueValidator)
 
 const Users = module.exports = mongoose.model('Users', user_schema)
 
-module.exports.getUserById = async function(id){
-    let res =  await Users.findById(id)
-    return res
-}
-
 module.exports.getUserByEmail = async function(email){
     const query = {email: email}
     return await Users.findOne(query)
@@ -66,8 +61,19 @@ module.exports.addUser = async function(newUser){
     const salt  = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(newUser.password, salt)
     newUser.password = hash
-    const user = await newUser.save()
-    return user
+    return await newUser.save()
+}
+
+module.exports.updateUser = async function(userId, newUser){
+    return await Users.updateOne(
+        {_id:userId},
+        {$set: {firstname:newUser.firstname,
+                lastname:newUser.lastname,
+                institution:newUser.institution
+            }}
+        )
+    
+
 }
 
 module.exports.comparePassword = async function(candidatePassword, hash){

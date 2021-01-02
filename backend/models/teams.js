@@ -18,8 +18,8 @@ const team_schema = mongoose.Schema({
 
 const Teams = module.exports = mongoose.model('Teams', team_schema)
 
-module.exports.getTeamById = async function (teamId){
-  return await Teams.findById(teamId)
+module.exports.addTeam = async function (newTeam){
+  return await newTeam.save()
 }
 
 module.exports.allTeamsShort = async function (count = 10, first = 0,userId = -1){
@@ -29,10 +29,6 @@ module.exports.allTeamsShort = async function (count = 10, first = 0,userId = -1
   else{
     return await Teams.find({awards: {$elemMatch: {users:userId}}}).skip(first).limit(count)
   }
-}
-
-module.exports.addTeam = async function(newTeam){
-    return await Teams.save(newTeams)
 }
 
 module.exports.addAdmin = async function(teamId, userId){
