@@ -4,11 +4,6 @@ const config = require('../utils/config.js')
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-var Coord = new Schema({
-    lat: Number,
-    long: Number, 
-});
-
 const project_schema = mongoose.Schema({
 
     title:{type: String},

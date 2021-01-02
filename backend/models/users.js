@@ -5,6 +5,12 @@ const uniqueValidator = require('mongoose-unique-validator')
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
+const rand = (min = 0, max = 50) => {
+    let num = Math.random() * (max - min) + min;
+
+    return Math.floor(num);
+};
+
 const user_schema = mongoose.Schema({
     firstname: {
         type: String,
@@ -43,10 +49,11 @@ const user_schema = mongoose.Schema({
 
 user_schema.plugin(uniqueValidator)
 
-const Users= module.exports = mongoose.model('Users', user_schema)
+const Users = module.exports = mongoose.model('Users', user_schema)
 
 module.exports.getUserById = async function(id){
-    return await Users.findById(id)
+    let res =  await Users.findById(id)
+    return res
 }
 
 module.exports.getUserByEmail = async function(email){
@@ -59,7 +66,7 @@ module.exports.addUser = async function(newUser){
     const salt  = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(newUser.password, salt)
     newUser.password = hash
-    const user = await Users.save(newUser)
+    const user = await newUser.save()
     return user
 }
 
@@ -68,14 +75,24 @@ module.exports.comparePassword = async function(candidatePassword, hash){
 }
 
 module.exports.verifyEmail = async function(userId, code){
-    return await Users.updateOne(
-        {_id:userId},
-        {$set: {is_verified:true}}
-        )
+    
+    var user = await Users.findById(userId)
+    
+    if(code == user.verification_code && user.expiryTime < new Date()){
+        await Users.updateOne(
+            {_id:userId},
+            {$set: {is_verified:true}}
+            )
+        
+        return true
+    }
+    else{
+        return false
+    }
 }
 
-module.exports.createVerificationCode = async function(userId){
-    var verificationNum = rand(100000, 9999999)
+module.exports.createVerification = async function(userId){
+    var num = rand(100000, 9999999)
     verificationString = String(num).padStart(7, '0')
     var expiryTime = new Date() + 10 + 60 * 1000
     await Users.updateOne(
