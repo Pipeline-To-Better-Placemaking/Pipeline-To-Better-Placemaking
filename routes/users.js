@@ -75,7 +75,9 @@ router.put('/profile', passport.authenticate('jwt',{session:false}), async (req,
 
     User.updateUser(await req.user, newUser)
 
-    res.json.status(200)
+    res.status(200).json({
+        success: true
+    })
 })
 
 router.get('/verification',passport.authenticate('jwt',{session:false}), async (req, res, next) => {
