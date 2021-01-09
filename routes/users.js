@@ -30,12 +30,23 @@ router.post('/register', async (req, res, next) => {
 
 router.post('/authenticate', async (req,res,next) => {
     const email = req.body.email
-    const password = req.body.password 
+
+    const password = req.body.password
+
+    // Email or password is missing
+    if (!email || !password) {
+        return res.status(401).json({
+            success: false,
+            msg: 'Invalid email or password'
+        })
+    }
+
     const user = await User.getUserByEmail(email)
     const passwordMatch = (user === null)
         ? false // User was not found
         : await User.comparePassword(password, user.password)
 
+    // Email or password is invalid
     if (!(user && passwordMatch)) {
         return res.status(401).json({
             success: false,
@@ -66,23 +77,25 @@ router.get('/profile', passport.authenticate('jwt',{session:false}), async (req,
     res.json({user: await req.user})
 })
 
-router.put('/profile', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+router.post('/profiles', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+
+    user = await req.user
+
     let newUser = new User({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
-        instituion: req.body.instituion,
+        instituion: req.body.instituion
     })
 
-    User.updateUser(await req.user, newUser)
+    user = await User.updateUser(user._id, newUser)
 
-    res.status(200).json({
-        success: true
-    })
+    res.status(200).json(user)
 })
 
 router.get('/verification',passport.authenticate('jwt',{session:false}), async (req, res, next) => {
 
-    let userId = await req.user._id
+    let user = await req.user
+    userId = user._id
     code = await User.createVerification(userId)
 
 
@@ -141,12 +154,14 @@ router.get('/invites', passport.authenticate('jwt',{session:false}), async (req,
 
 router.post('/invites', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
 
+    let user = await req.user
+
     for( response in req.body.responses){
         if (response.accept == true){
             //accept the invite by adding the user to the team
             //will add once I have the function written
         }
-        User.deleteInvite(await req.user._id,response.teamId)
+        User.deleteInvite(await user._id,response.teamId)
     }
 
 })
