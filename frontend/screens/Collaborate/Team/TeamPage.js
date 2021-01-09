@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Modal } from 'react-native';
 
-import BackHeader from '../components/BackHeader.js';
-import CreateProjectView from './CreateProjectView.js';
+import BackHeader from '../../components/BackHeader.js';
+import CreateProjectView from '../Project/CreateProjectView.js';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import styles from './collaborateStyles.js';
+import styles from '../collaborateStyles.js';
 
 class TeamPage extends Component {
 
@@ -123,10 +123,10 @@ class TeamPage extends Component {
                    });
                 }
                 if(!goodName){
-                    console.log("Need to enter a Project Name");
+                    console.log("TeamPage.js: Need to enter a Project Name");
                 }
                 if(!goodArea){
-                    console.log("Need at least 3 points");
+                    console.log("TeamPage.js: Need at least 3 points");
                 }
             } else {
                 this.setState({

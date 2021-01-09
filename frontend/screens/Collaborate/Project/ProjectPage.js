@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
-import BackHeader from '../components/BackHeader.js';
-import ViewProjectMap from '../components/Maps/ViewProjectMap.js';
+import BackHeader from '../../components/BackHeader.js';
+import ViewProjectMap from '../../components/Maps/ViewProjectMap.js';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import * as Location from 'expo-location';
-import styles from './collaborateStyles.js';
+import styles from '../collaborateStyles.js';
 
 class ProjectPage extends Component {
 
@@ -16,10 +16,10 @@ class ProjectPage extends Component {
         this.state = {
             projName: props.getSelectedProject().title,
             location: props.getSelectedProject().location,
-            locName: "Tap to Load: University of Central Florida",
+            locName: "Tap to Load Location Name",
             area: props.getSelectedProject().area
         }
-        
+
         this.openPrevPage = this.openPrevPage.bind(this);
         this.getLocationName = this.getLocationName.bind(this);
     }

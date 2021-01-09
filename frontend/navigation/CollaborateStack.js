@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Collaborate from '../screens/Collaborate/Collaborate.js';
-import TeamPage from '../screens/Collaborate/TeamPage.js';
-import ProjectPage from '../screens/Collaborate/ProjectPage.js';
+import TeamPage from '../screens/Collaborate/Team/TeamPage.js';
+import ProjectPage from '../screens/Collaborate/Project/ProjectPage.js';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const CollaborateScreenStack = createStackNavigator();
