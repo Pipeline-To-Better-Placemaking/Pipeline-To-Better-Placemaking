@@ -118,7 +118,7 @@ class SignUp extends Component {
         console.log(this.state.pass)
         console.log(this.state.email)
 
-        await fetch('http://192.168.0.27:27017/api/users/register', {
+        await fetch('http://192.168.1.125:27017/api/users/register', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -133,7 +133,7 @@ class SignUp extends Component {
             })
         })
         .then((response) => (response.json()))
-        .then((res) => (console.log(res.msg)))
+        .then((res) => (console.log(res)))
         .catch((error) => (console.log(error), err = 1))
 
         if (err)

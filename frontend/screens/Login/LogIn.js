@@ -3,6 +3,9 @@ import { ScrollView, View,  Pressable, TouchableWithoutFeedback, KeyboardAvoidin
 import { Text, Button, Input, Icon, Spinner } from '@ui-kitten/components';
 import styles from './logInStyles.js';
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const config = require('../../utils/config.js')
 
 // **** TODO ****
 //  1.) Forgot password
@@ -19,7 +22,8 @@ class LogIn extends Component {
             pass: ' ',
             active: -1,
             securityOption: true,
-            loading: false
+            loading: false,
+            invalid: false
         }
 
         this.onEmailChange = this.onEmailChange.bind(this);
@@ -43,7 +47,6 @@ class LogIn extends Component {
         this.setState({
             active: 0
         });
-
     }
 
     onUnPressForgot = () => {
@@ -76,29 +79,63 @@ class LogIn extends Component {
               }
             };
 
-        this.props.getCoords(defaultLocation);
+        let success = false
+        let token = ''
 
-        let enabled = await Location.hasServicesEnabledAsync();
+        console.log(config.LOCALHOST)
 
-        console.log(enabled);
+        await fetch(config.LOCALHOST + '/api/users/authenticate', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: this.state.email,
+                password: this.state.pass
+            })
+        })
+        .then((response) => (response.json()))
+        .then((res) => (console.log(res), success = res.success, token=res.token))
+        .catch((error) => (console.log(error), success = false))
 
-        if (enabled)
-        {
-            let status = await Location.requestPermissionsAsync();
 
-            console.log(status);
-
-            if (status.granted)
-            {
-                console.log("Gathering location...");
-
-                let location = await Location.getCurrentPositionAsync({});
-
-                this.props.getCoords(location);
-            }
+        if (!success){
+            this.setState({
+                invalid: true
+            })
         }
+        else {
+            console.log("Authentication successful")
+
+            await AsyncStorage.setItem('@token', token);
+
+            this.props.getCoords(defaultLocation);
+
+            let enabled = await Location.hasServicesEnabledAsync();
+
+            console.log(enabled);
+
+            if (enabled)
+            {
+                let status = await Location.requestPermissionsAsync();
+
+                console.log(status);
+
+                if (status.granted)
+                {
+                    console.log("Gathering location...");
+
+                    let location = await Location.getCurrentPositionAsync({});
+
+                    this.props.getCoords(location);
+                }
+            }
+
+            this.props.navigation.navigate("HomeNav")
+        }
+
         this.setLoading(false);
-        this.props.navigation.navigate("HomeNav");
     }
 
     onPressBack = () => {
@@ -112,8 +149,6 @@ class LogIn extends Component {
         this.setState({
             active: -1
         });
-
-        this.props.navigation.navigate("TitleScreen");
     }
 
     render() {
@@ -128,6 +163,20 @@ class LogIn extends Component {
             this.setState({
                 securityOption: !this.state.securityOption
             });
+        }
+
+        const InvalidWarning = () => {
+
+            if (this.state.invalid){
+                return (
+                    <Text style={styles.invalidText}>
+                        Invalid email or password.
+                    </Text>
+                )
+            }
+            else {
+                return null
+            }
         }
 
         return(
@@ -176,6 +225,8 @@ class LogIn extends Component {
                         </View>
                     </KeyboardAvoidingView>
 
+                    <InvalidWarning/>
+
                     <View>
                         <Pressable onPressIn={this.onPressForgot} onPressOut={this.onUnPressForgot}>
                             <Text style={this.state.active === 0 ? styles.forgotTextPressed : styles.forgotText}>
@@ -199,6 +250,7 @@ class LogIn extends Component {
                     </View>
 
                 </ScrollView>
+
             </View>
 
         );

@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import { Text, Button, Divider, List, Icon, ListItem, Toggle } from '@ui-kitten/components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import MyHeader from '../components/MyHeader.js';
 
-import { Text, Button, Divider, List, Icon, ListItem, Toggle } from '@ui-kitten/components';
 import styles from './userSettingsStyles.js';
+
+const config = require('../../utils/config.js')
 
 const settingsData = [
     {
@@ -34,8 +37,11 @@ class UserSettings extends Component {
         super(props);
 
         this.state = {
-
+            firstName: this.props.userDetails.firstName,
+            lastName: this.props.userDetails.lastName,
+            email: this.props.userDetails.email
         }
+        console.log("Loading User Settings...")
 
         this.onToggleTheme = this.onToggleTheme.bind(this);
     }
@@ -68,7 +74,7 @@ class UserSettings extends Component {
         else if (index == 4){
             this.onToggleTheme()
         }
-    } 
+    }
 
     render() {        
 
@@ -105,8 +111,8 @@ class UserSettings extends Component {
         const UserDetails = () => {
             return(
                 <View style={styles.userDetails}>
-                    <Text style={{fontSize: 20}}> First Last Name</Text>
-                    <Text style={{fontSize: 20}}> test@gmail.com </Text>
+                    <Text style={{fontSize: 20, alignSelf: 'center'}}> {this.props.userDetails.firstName} {this.props.userDetails.lastName} </Text>
+                    <Text style={{fontSize: 20, alignSelf: 'center'}}> {this.state.email} </Text>
                 </View>
             )
         }

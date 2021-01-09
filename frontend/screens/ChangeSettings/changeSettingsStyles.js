@@ -11,8 +11,10 @@ export const styles = StyleSheet.create({
     },
 
     title: {
-        marginTop: -10,
+        marginTop: 20,
         marginBottom: 30,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     inputText: {
@@ -22,21 +24,17 @@ export const styles = StyleSheet.create({
         color: '#FFFFFF'
     },
 
-    inputRow: {
-        flexDirection: "row"
-    },
-
     inputBox: {
         width: 300
     },
 
-    logInButton: {
-        marginTop: 30,
+    confirmChangeButton: {
         width: 300,
+        marginTop: 50,
         backgroundColor: '#DEBD07'
     },
 
-    logInText: {
+    confirmChangeText: {
         color: '#091C7A',
         fontSize: 20,
         fontWeight: '600',
@@ -44,44 +42,18 @@ export const styles = StyleSheet.create({
 
     backButton: {
         marginTop: 20,
-        marginBottom: 75
+        marginBottom: 30,
     },
 
     backText: {
         color: '#8F9BB3',
-        fontSize: 20
+        fontSize: 20,
     },
 
     backTextPressed: {
         color: '#FFFFFF',
-        fontSize: 20
-    },
-
-    forgotText: {
-        color: '#FFFFFF',
-        fontSize: 18,
-        textAlign: 'center'
-    },
-
-    forgotTextPressed: {
-        color: '#000000',
-        fontSize: 18,
-        textAlign: 'center'
-    },
-
-    modalBackgroundStyle: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-
-    invalidText: {
-        color: '#FF3D71',
         fontSize: 20,
-        marginBottom: 10
-    }
-
+    },
 });
 
 export default styles;

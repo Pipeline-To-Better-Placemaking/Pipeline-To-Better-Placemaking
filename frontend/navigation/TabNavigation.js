@@ -37,7 +37,7 @@ class TabNavigation extends Component {
                 <Tab.Screen
                     name='UserSettingsStack'
                 >
-                    {props => <UserSettingsStack {...props} toggleTheme={this.props.toggleTheme}/>}
+                    {props => <UserSettingsStack {...props} userDetails={this.props.userDetails} toggleTheme={this.props.toggleTheme}/>}
                 </Tab.Screen>
 
                 <Tab.Screen

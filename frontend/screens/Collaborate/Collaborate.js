@@ -73,9 +73,10 @@ class Collaborate extends Component {
 
         const renderItem = ({ item, index }) => (
             <ListItem
-              title=<Text style={{fontSize:20}}>
+              title={
+                    <Text style={{fontSize:20}}>
                         {`${item.title}`}
-                    </Text>
+                    </Text>}
               accessoryRight={ForwardIcon}
               onPress={() => this.openTeamPage(item)}
             />
