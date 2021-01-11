@@ -22,4 +22,12 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     res.status(201).json(team)
 })
 
+router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    res.json(await Team.findById(req.params.id))
+})
+
+router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    res.json(await Team.findById(req.params.id))
+})
+
 module.exports = router
