@@ -29,13 +29,15 @@ app.use(express.static(path.join(__dirname,'public')))
 
 app.use(bodyParser.json())
 
-const userApi = require('./routes/users.js')
 const loginApi = require('./routes/login.js')
 const teamApi = require('./routes/teams.js')
+const userApi = require('./routes/users.js')
+const verifyApi = require('./routes/verify.js')
 
-app.use('/api/users', userApi)
 app.use('/api/login', loginApi)
 app.use('/api/teams', teamApi)
+app.use('/api/users', userApi)
+app.use('/api/verify', verifyApi)
 
 app.use(middlewares.errorHandler)
 
