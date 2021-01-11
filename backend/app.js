@@ -5,8 +5,6 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const passport = require('passport')
 const config = require('./utils/config')
-const middlewares = require('./utils/middlewares')
-require('express-async-errors')
 
 console.log('Connecting to ', config.DB_URI)
 const connect = async () => {
@@ -34,8 +32,6 @@ const teamApi = require('./routes/teams.js')
 
 app.use('/api/users', userApi)
 app.use('/api/teams', teamApi)
-
-app.use(middlewares.errorHandler)
 
 app.use(passport.initialize());
 app.use(passport.session());

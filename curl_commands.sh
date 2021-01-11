@@ -31,30 +31,10 @@ curl -H 'Accept: application/json' \
 
 echo 
 
-curl -H "Authorization: Bearer ${TOKEN}" \
+curl -H 'Accept: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
      --request POST \
-     -H 'Accept: application/json' \
-     -H 'Content-Type: application/json' \
      -d '{"title": "Testing","description": "a cool testing thing"}'\
      http://localhost:8080/api/teams
 
 echo 
-
-PROJID=$(curl -H 'Accept: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request POST \
-     -d '{"title": "Testing","description": "a cool testing thing"}'\
-     http://localhost:8080/api/teams \
-     | jq -r '._id')
-
-curl -H 'Accept: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-     http://localhost:8080/api/teams/${PROJID}
-
-curl -H "Authorization: Bearer ${TOKEN}" \
-     --request POST \
-     -H 'Accept: application/json' \
-     -H 'Content-Type: application/json' \
-     -d '{"firstname": "HIGHEFFORT","lastname": "Smith"}'\
-     http://localhost:8080/api/users/profiles \

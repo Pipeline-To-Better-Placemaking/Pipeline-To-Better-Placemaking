@@ -82,8 +82,6 @@ class LogIn extends Component {
         let success = false
         let token = ''
 
-        console.log(config.LOCALHOST)
-
         await fetch(config.LOCALHOST + '/api/users/authenticate', {
             method: 'POST',
             headers: {

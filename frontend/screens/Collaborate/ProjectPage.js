@@ -4,6 +4,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import ProjectHeader from './ProjectHeader.js';
 import ViewProjectMap from '../../components/Maps/ViewProjectMap.js';
 import CreateActivity from '../../ResearchActivities/CreateActivity.js';
+import ViewProjectMap from '../components/Maps/ViewProjectMap.js';
 
 import { Text, Button, Input, Icon, Popover, Divider,
          List, ListItem, Card, Drawer, DrawerItem, OverflowMenu, MenuItem } from '@ui-kitten/components';
@@ -42,7 +43,7 @@ class ProjectPage extends Component {
               }
             ]
         }
-
+        
         this.openPrevPage = this.openPrevPage.bind(this);
         this.openMenu = this.openMenu.bind(this);
 
@@ -126,9 +127,9 @@ class ProjectPage extends Component {
 
         const activityItem = ({ item, index }) => (
             <ListItem
-              title=<Text style={{fontSize:20}}>
+              title={<Text style={{fontSize:20}}>
                         {`${item.title}`}
-                    </Text>
+                    </Text>}
               description={`${item.date}`}
               accessoryRight={ForwardIcon}
               onPress={() => this.openActivityPage(item)}

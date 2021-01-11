@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Collaborate from '../screens/Collaborate/Collaborate.js';
+
 import TeamPage from '../screens/Collaborate/Team/TeamPage.js';
 import ProjectPage from '../screens/Collaborate/Project/ProjectPage.js';
 import ActivitySignUp from '../screens/ResearchActivities/ActivitySignUp.js';

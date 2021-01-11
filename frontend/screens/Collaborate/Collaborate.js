@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
 import MyHeader from '../components/MyHeader.js';
-import CreateTeamCard from './Team/CreateTeamCard.js';
+import TeamView from './TeamView.js';
+import CreateTeamCard from './CreateTeamCard.js';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import styles from './collaborateStyles.js';
@@ -90,16 +91,7 @@ class Collaborate extends Component {
 
                 <MyHeader myHeaderText={"Collaborate"}/>
 
-                <View style={styles.teamTextView}>
-                    <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
-                        <Text style={styles.teamText}> Teams </Text>
-                    </View>
-                    <View style={styles.createTeamButtonView}>
-                        <Button status='primary' appearance='outline' onPress={this.onOpenCreateTeam}>
-                            Create New
-                        </Button>
-                    </View>
-                </View>
+                <TeamView onOpenCreateTeam={this.onOpenCreateTeam}/>
 
                 <Popover
                     visible={this.state.createTeam}

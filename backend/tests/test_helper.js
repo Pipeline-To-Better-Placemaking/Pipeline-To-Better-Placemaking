@@ -1,6 +1,6 @@
 const config = require('../utils/config')
 const jwt = require('jsonwebtoken')
-const User = require('../models/users')
+const User = require('../models/user')
 
 // Get a valid token for a specific user
 const getToken = (user) => {

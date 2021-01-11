@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Modal } from 'react-native';
 
-import BackHeader from '../../components/BackHeader.js';
-import CreateProjectView from '../Project/CreateProjectView.js';
+import BackHeader from '../components/BackHeader.js';
+import CreateProjectView from './CreateProjectView.js';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import * as Location from 'expo-location';
@@ -71,7 +71,66 @@ class TeamPage extends Component {
 
     setCreateProject(value) {
         this.setState({
-            createProject: value
+          tempArea: this.state.tempArea
+        });
+    }
+
+    removeMarker(marker, index) {
+      this.state.tempArea.splice(index, 1);
+      this.setState({
+        tempArea: this.state.tempArea
+      });
+    }
+
+    onCreateProject(visible, submit) {
+        if (visible) {
+            this.setState({
+                createProject: true
+            });
+        } else {
+            if (submit) {
+                let goodName = this.state.tempProjectName.trim().length !== 0;
+                let goodArea = this.state.tempArea.length > 2;
+                if (goodName && goodArea) {
+                   this.addNewProject(this.state.tempProjectName.trim(),
+                                      this.state.tempArea);
+                   this.setState({
+                       createProject: false,
+                       tempProjectName: ' ',
+                       tempArea: []
+                   });
+                }
+                if(!goodName){
+                    console.log("Need to enter a Project Name");
+                }
+                if(!goodArea){
+                    console.log("Need at least 3 points");
+                }
+            } else {
+                this.setState({
+                    createProject: false,
+                    tempProjectName: ' ',
+                    tempArea: []
+                });
+            }
+        }
+    }
+
+    addNewProject(projectName, projArea) {
+        let temp = {
+            title: projectName,
+            location: { // This just takes the first point, should probably calculate center point
+                    "coords":{
+                        "latitude": projArea[0].latitude,
+                        "longitude":projArea[0].longitude,
+                        "altitude": -1,
+                        "heading": -1}
+                    },
+            area: projArea
+        };
+        this.state.data.push(temp);
+        this.setState({
+            data: this.state.data
         });
     }
 
@@ -83,9 +142,9 @@ class TeamPage extends Component {
 
         const renderItem = ({ item, index }) => (
             <ListItem
-              title=<Text style={{fontSize:20}}>
+              title={<Text style={{fontSize:20}}>
                         {`${item.title}`}
-                    </Text>
+                    </Text>}
               accessoryRight={ForwardIcon}
               onPress={() => this.openProjectPage(item)}
             />
