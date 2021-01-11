@@ -1,5 +1,6 @@
 const config = require('../utils/config')
 const nodemailer = require('nodemailer')
+const passport = require('passport')
 const User = require('../models/users.js')
 const xoauth2 = require('xoauth2')
 

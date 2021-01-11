@@ -1,12 +1,11 @@
 const app = require('../app')
-const supertest = require('supertest')
 const mongoose = require('mongoose')
-const th = require('./test_helper')
+const supertest = require('supertest')
 const api = supertest(app)
-
+const th = require('./test_helper')
 const User = require('../models/users')
 
-const baseUrl = '/api/users/register'
+const baseUrl = '/api/users'
 
 describe('When creating a new user account', () => {
 

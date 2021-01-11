@@ -1,4 +1,6 @@
+const config = require('../utils/config')
 const jwt = require('jsonwebtoken')
+const User = require('../models/users')
 
 const express = require('express')
 const router = express.Router()
@@ -34,7 +36,7 @@ router.post('/', async (req,res,next) => {
 
     var shortUser = {
         _id : user._id,
-        email : user.emai
+        email : user.email
     }
     const token = jwt.sign(shortUser, config.PRIVATE_KEY, {
         expiresIn: 86400 //1 day
@@ -53,4 +55,4 @@ router.post('/', async (req,res,next) => {
 
 // Logout -
 
-module.eports = router
+module.exports = router
