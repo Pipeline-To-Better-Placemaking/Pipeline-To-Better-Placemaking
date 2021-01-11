@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const th = require('./test_helper')
 const api = supertest(app)
 
-const User = require('../models/users')
+const User = require('../models/user')
 
 const baseUrl = '/api/users/register'
 

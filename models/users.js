@@ -73,6 +73,7 @@ module.exports.updateUser = async function(userId, newUser){
             }}
         )
     
+
 }
 
 module.exports.comparePassword = async function(candidatePassword, hash){
