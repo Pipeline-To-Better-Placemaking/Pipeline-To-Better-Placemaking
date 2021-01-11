@@ -1,13 +1,10 @@
 const express = require('express')
-const xoauth2 = require('xoauth2')
-const nodemailer = require('nodemailer')
+const passport = require('passport')
 const router = express.Router()
 const User = require('../models/users.js')
-const passport = require('passport')
-const config = require('../utils/config')
 
 // Create a new user
-router.post('/register', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
     let newUser = new User({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
@@ -27,13 +24,23 @@ router.post('/register', async (req, res, next) => {
     res.status(201).json(user)
 })
 
-// Get user info
-router.get('/profile', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    res.json({user: await req.user})
+// Get user info -
+// Return all info if the token matches the user id
+// Return limited info otherwise
+router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    const user = await User.findById(req.params.id)
+
+    if (req.params.id === await req.user._id) {
+        return res.json(user)
+    }
+
+    // Remove invites
+    delete user.invites
+    res.json(user)
 })
 
 // Update user info
-router.post('/profiles', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+router.put('/', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
 
     user = await req.user
 
@@ -46,62 +53,6 @@ router.post('/profiles', passport.authenticate('jwt',{session:false}), async (re
     user = await User.updateUser(user._id, newUser)
 
     res.status(200).json(user)
-})
-
-// Send verification email
-router.get('/verification',passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-
-    let user = await req.user
-    userId = user._id
-    code = await User.createVerification(userId)
-
-
-    var transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        auth: {
-            xoauth2: xoauth2.createXOAuth2Generator({
-                user: config.PROJECT_EMAIL,
-                clientId: config.CLIENT_ID,
-                clientSecret: config.CLIENT_SECRET,
-                refreshToken: config.REFRESH_TOKEN, 
-                accessToken: config.ACCESS_TOKEN
-            })
-        }
-    })
-
-    var mailOptions = {
-        from: config.PROJECT_EMAIL,
-        to: await req.user.emai,
-        subject: "Email Verification",
-        text: "Hello from Place Makers, your verification code is: \n" + code + "\n Thanks!"
-    }
-
-    transporter.sendMail(mailOptions, function(error,info){
-        if (error) {
-            console.log(error)
-            res.json({msg:'error'})
-        }
-        else{
-            console.log("message sent")
-            res.status(200)
-        }
-    })
-
-})
-
-// Verify user's email
-router.post('/verification', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    var correct = User.verifyEmail(await req.user._id, await req.body.code)
-    if (correct){
-        res.status(200).json({
-            msg:"Success"
-        })
-    }
-    else{
-        res.status(401).json({
-            msg:"Failiure"
-        })
-    }
 })
 
 // Get user's invites
