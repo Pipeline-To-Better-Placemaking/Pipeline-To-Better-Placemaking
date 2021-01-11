@@ -5,6 +5,7 @@ import BackHeader from '../../components/BackHeader.js';
 import CreateProjectView from '../Project/CreateProjectView.js';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import * as Location from 'expo-location';
 import styles from '../collaborateStyles.js';
 
 class TeamPage extends Component {
@@ -12,9 +13,10 @@ class TeamPage extends Component {
     constructor(props){
         super(props);
 
-        this.state = { // these values are for example
-            data: [{
+        this.state = {
+            data: [{ // these values are for example
                 title: 'Project Name',
+                locName: 'Example Loc Name',
                 location: {
                     "timestamp": 0,
                     "coords": {
@@ -42,33 +44,13 @@ class TeamPage extends Component {
                   },
                 ]
             }],
-            createProject: false,
-            tempProjectName: ' ',
-            tempLocation: {
-                "timestamp": 0,
-                "coords": {
-                  "accuracy": -1,
-                  "altitude": -1,
-                  "altitudeAccuracy": -1,
-                  "heading": -1,
-                  "latitude": 28.602413253152307,
-                  "longitude": -81.20019937739713,
-                  "speed": 0
-                }
-            },
-            tempArea: []
+            createProject: false
         }
         this.openPrevPage = this.openPrevPage.bind(this);
         this.openProjectPage = this.openProjectPage.bind(this);
 
-        // Creating a new Project
-        this.onOpenCreateProject = this.onCreateProject.bind(this, true, false);
-        this.onDismissCreateProject = this.onCreateProject.bind(this, false, false);
-        this.onCreateNewProject = this.onCreateProject.bind(this, false, true);
-        this.addNewProject = this.addNewProject.bind(this);
-        this.setTempProjectName = this.setTempProjectName.bind(this);
-        this.addMarker = this.addMarker.bind(this);
-        this.removeMarker = this.removeMarker.bind(this);
+        this.setProjectData = this.setProjectData.bind(this);
+        this.setCreateProject= this.setCreateProject.bind(this);
     }
 
     openPrevPage() {
@@ -80,79 +62,16 @@ class TeamPage extends Component {
         this.props.navigation.navigate("ProjectPage");
     }
 
-    setTempProjectName(event) {
-        this.setState({
-            tempProjectName: event
-        });
-    }
-
-    addMarker(coordinates) {
-        let temp = {
-            latitude: coordinates.latitude,
-            longitude: coordinates.longitude
-         };
-        this.state.tempArea.push(temp);
-        this.setState({
-          tempArea: this.state.tempArea
-        });
-    }
-
-    removeMarker(marker, index) {
-      this.state.tempArea.splice(index, 1);
-      this.setState({
-        tempArea: this.state.tempArea
-      });
-    }
-
-    onCreateProject(visible, submit) {
-        if (visible) {
-            this.setState({
-                createProject: true
-            });
-        } else {
-            if (submit) {
-                let goodName = this.state.tempProjectName.trim().length !== 0;
-                let goodArea = this.state.tempArea.length > 2;
-                if (goodName && goodArea) {
-                   this.addNewProject(this.state.tempProjectName.trim(),
-                                      this.state.tempArea);
-                   this.setState({
-                       createProject: false,
-                       tempProjectName: ' ',
-                       tempArea: []
-                   });
-                }
-                if(!goodName){
-                    console.log("TeamPage.js: Need to enter a Project Name");
-                }
-                if(!goodArea){
-                    console.log("TeamPage.js: Need at least 3 points");
-                }
-            } else {
-                this.setState({
-                    createProject: false,
-                    tempProjectName: ' ',
-                    tempArea: []
-                });
-            }
-        }
-    }
-
-    addNewProject(projectName, projArea) {
-        let temp = {
-            title: projectName,
-            location: { // This just takes the first point, should probably calculate center point
-                    "coords":{
-                        "latitude": projArea[0].latitude,
-                        "longitude":projArea[0].longitude,
-                        "altitude": -1,
-                        "heading": -1}
-                    },
-            area: projArea
-        };
-        this.state.data.push(temp);
+    setProjectData(data) {
+        this.state.data.push(data);
         this.setState({
             data: this.state.data
+        });
+    }
+
+    setCreateProject(value) {
+        this.setState({
+            createProject: value
         });
     }
 
@@ -178,13 +97,8 @@ class TeamPage extends Component {
 
                 <CreateProjectView
                         createProject={this.state.createProject}
-                        setTempProjectName={this.setTempProjectName}
-                        onCreateNewProject={this.onCreateNewProject}
-                        onDismissCreateProject={this.onDismissCreateProject}
-                        location={this.state.tempLocation}
-                        markers={this.state.tempArea}
-                        addMarker={this.addMarker}
-                        removeMarker={this.removeMarker}
+                        setCreateProject={this.setCreateProject}
+                        setProjectData={this.setProjectData}
                     />
 
                 <View style={styles.teamTextView}>
@@ -192,7 +106,7 @@ class TeamPage extends Component {
                         <Text style={styles.teamText}> Projects </Text>
                     </View>
                     <View style={styles.createTeamButtonView}>
-                        <Button status='primary' appearance='outline' onPress={this.onOpenCreateProject}>
+                        <Button status='primary' appearance='outline' onPress={() => this.setCreateProject(true)}>
                             Create New
                         </Button>
                     </View>
