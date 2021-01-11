@@ -1,14 +1,15 @@
 const app = require('../app')
-const supertest = require('supertest')
 const mongoose = require('mongoose')
-const th = require('./test_helper')
+const supertest = require('supertest')
 const api = supertest(app)
-
+const th = require('./test_helper')
 const User = require('../models/users')
 
-const baseUrl = '/api/users/authenticate'
+const baseUrl = '/api/login'
 
 const testUser = {
+    firstname: 'John',
+    lastname: 'Doe',
     email: 'test@yahoo.com',
     password: '1#Aadmin'
 }
@@ -20,8 +21,8 @@ describe('When logging in', () => {
 
         await User.deleteMany({})
         const user = new User({
-            firstname: 'John',
-            lastname: 'Doe',
+            firstname: testUser.firstname,
+            lastname: testUser.lastname,
             email: testUser.email,
             password: testUser.password
         })
@@ -44,8 +45,9 @@ describe('When logging in', () => {
         expect(response.body.token)
 
         // Confirm that the token is accurate
-        const user = await User.getUserByEmail(testUser.email)
-        expect(response.body.token).toMatch(th.getToken(user))
+        const payload = th.decodeToken(response.body.token)
+        expect(payload.email).toBeDefined()
+        expect(payload.email).toMatch(testUser.email)
     })
 
     test('login fails (401) with invalid email', async () => {

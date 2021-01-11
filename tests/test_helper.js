@@ -9,6 +9,10 @@ const getToken = (user) => {
     })
 }
 
+const decodeToken = (token) => {
+    return jwt.decode(token, config.PRIVATE_KEY)
+}
+
 const getUsers = async () => {
     const users = await User.find({})
     return users.map(u => u.toJSON())
@@ -16,5 +20,6 @@ const getUsers = async () => {
 
 module.exports = {
     getToken,
+    decodeToken,
     getUsers
 }
