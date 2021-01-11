@@ -3,7 +3,7 @@ import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView
 import { Text, Button, Input, Icon, Divider, Card } from '@ui-kitten/components';
 import * as Location from 'expo-location';
 
-import CreateNewProjectMap from '../components/Maps/CreateNewProjectMap.js';
+import CreateNewProjectMap from '../../components/Maps/CreateNewProjectMap.js';
 
 import styles from './createProjectViewStyles.js';
 

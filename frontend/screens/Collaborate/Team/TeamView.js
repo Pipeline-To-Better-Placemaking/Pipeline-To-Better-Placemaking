@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon, Modal, Divider } from '@ui-kitten/components';
-import styles from './collaborateStyles.js';
+import styles from '../collaborateStyles.js';
 
 class TeamView extends Component {
 

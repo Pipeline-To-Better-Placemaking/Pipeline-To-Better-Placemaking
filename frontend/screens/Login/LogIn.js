@@ -147,6 +147,8 @@ class LogIn extends Component {
         this.setState({
             active: -1
         });
+
+        this.props.navigation.navigate("TitleScreen")
     }
 
     render() {
