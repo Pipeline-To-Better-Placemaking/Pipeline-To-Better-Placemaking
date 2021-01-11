@@ -4,10 +4,9 @@ const nodemailer = require('nodemailer')
 const router = express.Router()
 const User = require('../models/users.js')
 const passport = require('passport')
-const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 
-
+// Create a new user
 router.post('/register', async (req, res, next) => {
     let newUser = new User({
         firstname: req.body.firstname,
@@ -28,55 +27,12 @@ router.post('/register', async (req, res, next) => {
     res.status(201).json(user)
 })
 
-router.post('/authenticate', async (req,res,next) => {
-    const email = req.body.email
-
-    const password = req.body.password
-
-    // Email or password is missing
-    if (!email || !password) {
-        return res.status(401).json({
-            success: false,
-            msg: 'Invalid email or password'
-        })
-    }
-
-    const user = await User.getUserByEmail(email)
-    const passwordMatch = (user === null)
-        ? false // User was not found
-        : await User.comparePassword(password, user.password)
-
-    // Email or password is invalid
-    if (!(user && passwordMatch)) {
-        return res.status(401).json({
-            success: false,
-            msg: 'Invalid email or password'
-        })
-    }
-
-    var shortUser = {
-        _id : user._id,
-        email : user.emai
-    }
-    const token = jwt.sign(shortUser, config.PRIVATE_KEY, {
-        expiresIn: 86400 //1 day
-    })
-
-    res.status(200).json({
-        success: true,
-        token: token,
-        user: {
-            id: user.__id,
-            name: user.firstname,
-            email: user.email
-        }
-    })
-})
-
+// Get user info
 router.get('/profile', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     res.json({user: await req.user})
 })
 
+// Update user info
 router.post('/profiles', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
 
     user = await req.user
@@ -92,6 +48,7 @@ router.post('/profiles', passport.authenticate('jwt',{session:false}), async (re
     res.status(200).json(user)
 })
 
+// Send verification email
 router.get('/verification',passport.authenticate('jwt',{session:false}), async (req, res, next) => {
 
     let user = await req.user
@@ -132,6 +89,7 @@ router.get('/verification',passport.authenticate('jwt',{session:false}), async (
 
 })
 
+// Verify user's email
 router.post('/verification', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     var correct = User.verifyEmail(await req.user._id, await req.body.code)
     if (correct){
@@ -146,12 +104,14 @@ router.post('/verification', passport.authenticate('jwt',{session:false}), async
     }
 })
 
+// Get user's invites
 router.get('/invites', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     res.status(200).json({
         invites: await User.getInvites(await req.user._id)
     })
 })
 
+// Accept invite
 router.post('/invites', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
 
     let user = await req.user
