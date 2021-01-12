@@ -82,20 +82,26 @@ class LogIn extends Component {
         let success = false
         let token = ''
 
-        await fetch(config.LOCALHOST + '/api/users/authenticate', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: this.state.email,
-                password: this.state.pass
+        try {
+            const response = await fetch(config.LOCALHOST + '/api/login', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: this.state.email,
+                    password: this.state.pass
+                })
             })
-        })
-        .then((response) => (response.json()))
-        .then((res) => (console.log(res), success = res.success, token=res.token))
-        .catch((error) => (console.log(error), success = false))
+            const res = await response.json()
+            console.log(res)
+            success = res.success
+            token = res.token
+        } catch (error) {
+            console.log(error)
+            success = false
+        }
 
 
         if (!success){
