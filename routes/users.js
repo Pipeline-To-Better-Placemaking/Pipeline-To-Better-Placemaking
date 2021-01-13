@@ -5,6 +5,13 @@ const User = require('../models/users.js')
 
 // Create a new user
 router.post('/', async (req, res, next) => {
+    if (!req.body.password) {
+        return res.status(400).json({
+            success: false,
+            msg: 'Missing password'
+        })
+    }
+
     let newUser = new User({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
@@ -12,13 +19,6 @@ router.post('/', async (req, res, next) => {
         email: req.body.email,
         password: req.body.password
     })
-
-    if( await User.getUserByEmail(req.body.email) != null){
-        return res.status(401).json({
-            success: false,
-            msg: 'Email already in use'
-        })
-    }
 
     const user = await User.addUser(newUser)
     res.status(201).json(user)
