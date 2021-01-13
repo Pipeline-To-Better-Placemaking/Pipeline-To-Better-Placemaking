@@ -309,6 +309,45 @@ describe('When creating a new user account', () => {
             )
         })
     })
+
+    test('creation fails (400) if email is already in use', async () => {
+        const user = new User({
+            email: 'test@gmail.com',
+            password: '!1Aaaaaa'
+        })
+        await User.addUser(user)
+        
+        const newUser = {
+            firstname: 'John',
+            lastname: 'Doe',
+            email: 'test@gmail.com',
+            password: '!1Abcdef'
+        }
+        
+        const usersBefore = await th.getUsers()
+
+        await api
+            .post(baseUrl)
+            .send(newUser)
+            // Confirm failure
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+
+        const usersAfter = await th.getUsers()
+        // Check if there is still the same numer of users as before
+        expect(usersAfter).toHaveLength(usersBefore.length)
+
+        // Check to make sure this user did not get added to the database
+        expect(usersAfter).not.toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    firstname: newUser.firstname,
+                    lastname: newUser.lastname,
+                    email: newUser.email
+                })
+            ])
+        )
+    })
 })
 
 afterAll(() => {
