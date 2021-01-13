@@ -50,13 +50,39 @@ describe('When logging in', () => {
         expect(payload.email).toMatch(testUser.email)
     })
 
+    test('login fails (401) with missing email', async () => {
+        const badCreds = {
+            password: testUser.password
+        }
+
+       await api
+            .post(baseUrl)
+            .send(badCreds)
+            // Confirm unsuccessful login
+            .expect(401)
+            .expect('Content-Type', /application\/json/)
+    })
+
+    test('login fails (401) with missing password', async () => {
+        const badCreds = {
+            email: testUser.email
+        }
+
+        await api
+            .post(baseUrl)
+            .send(badCreds)
+            // Confirm unsuccessful login
+            .expect(401)
+            .expect('Content-Type', /application\/json/)
+    })
+
     test('login fails (401) with invalid email', async () => {
         const badCreds = {
             email: 'notauser@yahoo.com',
             password: testUser.password
         }
 
-        const response = await api
+        await api
             .post(baseUrl)
             .send(badCreds)
             // Confirm unsuccessful login
@@ -70,7 +96,7 @@ describe('When logging in', () => {
             password: 'wrong'
         }
 
-        const response = await api
+        await api
             .post(baseUrl)
             .send(badCreds)
             // Confirm unsuccessful login
