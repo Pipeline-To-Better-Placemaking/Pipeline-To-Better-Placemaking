@@ -5,10 +5,16 @@ const User = require('../models/users.js')
 
 // Create a new user
 router.post('/', async (req, res, next) => {
-    if (!req.body.password) {
+    // Check password
+    if (!req.body.password ||                       // Password must be given
+        req.body.password.length < 8 ||             // Length must be >= 8 characters
+        /\s/g.test(req.body.password) ||            // Must not contain any whitespace characters
+        !/\d/g.test(req.body.password) ||           // Must contain at least one digit
+        !/[!@#$%^&*]/g.test(req.body.password) ||   // Must contain at least one symbol
+        !/[A-Z]/g.test(req.body.password)) {        // Must contain at least one uppercase letter
         return res.status(400).json({
             success: false,
-            msg: 'Missing password'
+            msg: 'Missing or invalid password'
         })
     }
 
