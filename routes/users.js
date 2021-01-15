@@ -40,9 +40,14 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         return res.json(user)
     }
 
-    // Remove invites
+    // Remove invites as they should only be seen by the user
     delete user.invites
     res.json(user)
+})
+
+router.get('/', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    const user = await User.findById((await req.user)._id)
+    return res.json(user)
 })
 
 // Update user info

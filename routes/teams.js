@@ -19,6 +19,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     })
 
     const team = await Team.addTeam(newTeam)
+
     res.status(201).json(team)
 })
 
@@ -27,7 +28,23 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 })
 
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    res.json(await Team.findById(req.params.id))
+    user = await req.user
+    let newTeam = new Team({
+        title: req.body.title,
+        description: req.body.description,
+        public: req.body.public
+    })
+
+    if (await Team.isAdmin(req.params.id,user._id)){
+        res.status(201).json(await Team.updateTeam(req.params.id,newTeam))
+    }
+
+    else{
+        res.json({
+            msg: unauthorized
+        })
+    }
+    
 })
 
 module.exports = router
