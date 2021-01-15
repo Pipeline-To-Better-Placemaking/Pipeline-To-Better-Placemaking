@@ -6,7 +6,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const team_schema = mongoose.Schema({
 
-    ttle:{type: String},
+    title:{type: String},
     description:{type: String},
     public:{type: Boolean},
     projects:{type:[ObjectId]},
@@ -20,6 +20,16 @@ const Teams = module.exports = mongoose.model('Teams', team_schema)
 
 module.exports.addTeam = async function (newTeam){
   return await newTeam.save()
+}
+
+module.exports.updateTeam = async function (teamId, newTeam){
+  return await Teams.updateOne(
+    {_id:teamId},
+    {$set: {title:newTeam.title,
+            description:newTeam.description,
+            public:newTeam.public
+        }}
+    )
 }
 
 module.exports.allTeamsShort = async function (count = 10, first = 0,userId = -1){
@@ -41,9 +51,9 @@ module.exports.addAdmin = async function(teamId, userId){
         }
       })
 }
-module.exports.removeAdmin = async function(TeamsId, userId){
+module.exports.removeAdmin = async function(teamsId, userId){
     Teams.updateOne({
-        _id: TeamsId
+        _id: teamsId
       }, {
         $pull:
          {
@@ -52,9 +62,22 @@ module.exports.removeAdmin = async function(TeamsId, userId){
       })
 }
 
-module.exports.addUser = async function(TeamsId, userId){
+module.exports.isAdmin = async function(teamId, userId){
+  doc = Teams.find({
+    _id: teamId,
+    admins: {$elemMatch: userId}
+  })
+
+  if (doc.length === 0){
+    return false
+  }
+  return true
+
+}
+
+module.exports.addUser = async function(teamsId, userId){
     Teams.updateOne({
-        _id: TeamsId
+        _id: teamsId
       }, {
         $addToSetid: {
           users: userId

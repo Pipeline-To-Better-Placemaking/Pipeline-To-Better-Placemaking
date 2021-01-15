@@ -120,7 +120,7 @@ module.exports.createInvite = async function(userId, teamId){
       }, {
         $addToSetid:
          {
-            invits:teamId
+            invites:teamId
          }
       })
 }
