@@ -1,5 +1,7 @@
+const log = require('../utils/log')
+
 module.exports = (error, req, res, next) => {
-    console.error(error.message)
+    log.error(error.message)
 
     if (error.name === 'ValidationError') {
         return res.status(400).json({

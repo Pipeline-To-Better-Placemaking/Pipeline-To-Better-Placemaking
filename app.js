@@ -6,15 +6,16 @@ const mongoose = require('mongoose')
 const passport = require('passport')
 const config = require('./utils/config')
 const errorHandler = require('./middlewares/error_handler')
+const log = require('./utils/log')
 require('express-async-errors')
 
-console.log('Connecting to ', config.DB_URI)
+log.info('Connecting to ', config.DB_URI)
 const connect = async () => {
     try {
         await mongoose.connect(config.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-        console.log('Connected to database')
+        log.info('Connected to database')
     } catch (err) {
-        console.log('Error connecting to database: ', error.message)
+        log.info('Error connecting to database: ', error.message)
     }
 }
 connect()
@@ -56,7 +57,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressSession);
 
 const server = app.listen(config.PORT, () => {
-    console.log(`Server is running on port ${config.PORT}`)
+    log.info(`Server is running on port ${config.PORT}`)
 })
 
 module.exports = server
