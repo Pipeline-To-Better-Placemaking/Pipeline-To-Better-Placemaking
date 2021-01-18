@@ -1,4 +1,4 @@
-const errorHandler = (error, req, res, next) => {
+module.exports = (error, req, res, next) => {
     console.error(error.message)
 
     if (error.name === 'ValidationError') {
@@ -10,7 +10,3 @@ const errorHandler = (error, req, res, next) => {
 
     next(error)
 }
-
-module.exports = {
-    errorHandler
-} 
