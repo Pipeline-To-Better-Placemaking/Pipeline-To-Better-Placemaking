@@ -29,19 +29,31 @@ class ProjectPage extends Component {
                 title: activityTypes[0],
                 date: new Date(),
                 type: activityTypes[0],
-                signUpSlots: []
+                signUpSlots: [{ // offset by 1
+                    selectedHour: 1,
+                    selectedMin: 1,
+                    selectedTime: 1
+                }]
               },
               {
                 title: activityTypes[1],
                 date: new Date(),
                 type: activityTypes[1],
-                signUpSlots: []
+                signUpSlots: [{
+                    selectedHour: 1,
+                    selectedMin: 1,
+                    selectedTime: 1
+                }]
               },
               {
                 title: activityTypes[2],
                 date: new Date(),
                 type: activityTypes[2],
-                signUpSlots: []
+                signUpSlots: [{
+                    selectedHour: 1,
+                    selectedMin: 1,
+                    selectedTime: 1
+                }]
               }
             ]
         }

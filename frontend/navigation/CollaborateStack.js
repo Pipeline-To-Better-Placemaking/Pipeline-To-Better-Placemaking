@@ -4,6 +4,11 @@ import Collaborate from '../screens/Collaborate/Collaborate.js';
 import TeamPage from '../screens/Collaborate/Team/TeamPage.js';
 import ProjectPage from '../screens/Collaborate/Project/ProjectPage.js';
 import ActivitySignUp from '../screens/ResearchActivities/ActivitySignUp.js';
+
+import StationaryActivity from '../screens/ResearchActivities/Stationary/ActivityPage.js';
+import PeopleActivity from '../screens/ResearchActivities/PeopleMoving/ActivityPage.js';
+import SurveyActivity from '../screens/ResearchActivities/Survey/ActivityPage.js';
+
 import { createStackNavigator } from '@react-navigation/stack';
 
 const CollaborateScreenStack = createStackNavigator();
@@ -103,6 +108,27 @@ class CollaborateStack extends Component {
                                     {...props}
                                     getSelectedActivity={this.getSelectedActivity}
                                     getActivityTypes={this.getActivityTypes}
+                              />}
+                </CollaborateScreenStack.Screen>
+                <CollaborateScreenStack.Screen
+                    name="StationaryActivity"
+                    options={{headerShown: false}}>
+                    {props => <StationaryActivity
+                                    {...props}
+                              />}
+                </CollaborateScreenStack.Screen>
+                <CollaborateScreenStack.Screen
+                    name="PeopleActivity"
+                    options={{headerShown: false}}>
+                    {props => <PeopleActivity
+                                    {...props}
+                              />}
+                </CollaborateScreenStack.Screen>
+                <CollaborateScreenStack.Screen
+                    name="SurveyActivity"
+                    options={{headerShown: false}}>
+                    {props => <SurveyActivity
+                                    {...props}
                               />}
                 </CollaborateScreenStack.Screen>
             </CollaborateScreenStack.Navigator>
