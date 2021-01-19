@@ -9,7 +9,7 @@ let CLIENT_SECRET = process.env.CLIENT_SECRET
 let REFRESH_TOKEN = process.env.REFRESH_TOKEN
 let ACCESS_TOKEN = process.env.ACCESS_TOKEN
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
     DB_URI = process.env.TEST_DB_URI
     PRIVATE_KEY = process.env.TEST_PRIVATE_KEY
 }
