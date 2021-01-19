@@ -17,11 +17,7 @@ class CollaborateStack extends Component {
             selectedTeam: null,
             selectedProject: null,
             selectedActivity: null,
-            activityTypes: {
-                PeopleMoving: {name:'People Moving'},
-                StationaryMap: {name:'Stationary Map'},
-                Survey: {name:'Survey'}
-            }
+            activityTypes: ['Stationary Map', 'People Moving', 'Survey']
         };
 
         this.setSelectedTeam = this.setSelectedTeam.bind(this);

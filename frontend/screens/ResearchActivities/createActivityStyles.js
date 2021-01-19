@@ -17,6 +17,13 @@ export const styles = StyleSheet.create({
         marginRight:40
     },
 
+    btnView: {
+        justifyContent:'center',
+        alignItems:'center',
+        margin:5,
+        marginRight:40
+    },
+
     backdrop: {
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
       flex: 1,

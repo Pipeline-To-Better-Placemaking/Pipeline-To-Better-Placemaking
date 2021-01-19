@@ -26,19 +26,22 @@ class ProjectPage extends Component {
             menuVisible: false,
             createActivity: false,
             data: [{
-                title: activityTypes.StationaryMap.name,
-                date: '01/01/2021',
-                type: activityTypes.StationaryMap
+                title: activityTypes[0],
+                date: new Date(),
+                type: activityTypes[0],
+                signUpSlots: []
               },
               {
-                title: activityTypes.PeopleMoving.name,
-                date: '01/01/2021',
-                type: activityTypes.PeopleMoving
+                title: activityTypes[1],
+                date: new Date(),
+                type: activityTypes[1],
+                signUpSlots: []
               },
               {
-                title: activityTypes.Survey.name,
-                date: '01/01/2021',
-                type: activityTypes.Survey
+                title: activityTypes[2],
+                date: new Date(),
+                type: activityTypes[2],
+                signUpSlots: []
               }
             ]
         }
@@ -46,8 +49,16 @@ class ProjectPage extends Component {
         this.openPrevPage = this.openPrevPage.bind(this);
         this.openMenu = this.openMenu.bind(this);
 
+        this.addActivity = this.addActivity.bind(this);
         this.openActivityPage = this.openActivityPage.bind(this);
         this.setCreateActivity = this.setCreateActivity.bind(this);
+    }
+
+    addActivity(activity) {
+        this.state.data.push(activity);
+        this.setState({
+           data: this.state.data
+        });
     }
 
     openPrevPage() {
@@ -129,7 +140,7 @@ class ProjectPage extends Component {
               title={<Text style={{fontSize:20}}>
                         {`${item.title}`}
                     </Text>}
-              description={`${item.date}`}
+              description={`${item.date.toLocaleDateString()}`}
               accessoryRight={ForwardIcon}
               onPress={() => this.openActivityPage(item)}
             />
@@ -141,6 +152,7 @@ class ProjectPage extends Component {
                 <CreateActivity
                     createActivity={this.state.createActivity}
                     setCreateActivity={this.setCreateActivity}
+                    addActivity={this.addActivity}
                     getActivityTypes={this.props.getActivityTypes}
                     anchor={myMenu}
                 />
@@ -157,7 +169,7 @@ class ProjectPage extends Component {
                 <SignUpView />
                 <Divider style={{marginTop: 5}} />
 
-                <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
+                <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'30%', marginTop:15}}>
                     <List
                       style={{maxHeight:'100%', maxWidth:'90%'}}
                       data={this.state.data}
