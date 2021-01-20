@@ -8,15 +8,14 @@ const project_schema = mongoose.Schema({
 
     title:{type: String},
     description:{type: String},
-    points:{type: [{lat: Number,
-                    long: Number
+    team:{type:ObjectId},
+    points:{type: [{latitude: Number,
+                    longitude: Number
                    }]},
-    areas:{type: [[ {lat: Number,
-                     long: Number
+    areas:{type: [[ {latitude: Number,
+                     longitude: Number
                     }
                  ]]},
-    admins:{type: [ObjectId]},
-    users:{type: [ObjectId]},
     activities:{type:[{activity:ObjectId,
                        testType:{
                                type:String,
@@ -28,7 +27,7 @@ const project_schema = mongoose.Schema({
 const Projects = module.exports = mongoose.model('Projects', project_schema)
 
 module.exports.addProject = async function(newProject){
-    return await Projects.save(newProject)
+    return await newProject.save()
 }
 
 module.exports.addTest = async function(projectId, type){

@@ -10,8 +10,13 @@ const team_schema = mongoose.Schema({
     description:{type: String},
     public:{type: Boolean},
     projects:{type:[ObjectId]},
-    owner:{type: ObjectId},
-    admins:{type: [ObjectId]},
+    users:{type: [{userId: ObjectId,
+                   role:{
+                        type:String,
+                        enum:['owner','admin','user']
+                   }
+                  }]
+          },
     users:{type: [ObjectId]},
 
 })
@@ -41,31 +46,44 @@ module.exports.allTeamsShort = async function (count = 10, first = 0,userId = -1
   }
 }
 
-module.exports.addAdmin = async function(teamId, userId){
-    Teams.updateOne({
-        _id: TeamId
-      }, {
-        $addToSetid:
-         {
-          admins: userId
-        }
+module.exports.addProject = async function(teamId, projectId){
+  Teams.updateOne({
+    _id: teamId
+  }, {
+    $push:{
+          projects: projectId
+          }
       })
 }
-module.exports.removeAdmin = async function(teamsId, userId){
+
+
+module.exports.promote = async function(teamId, userId){
     Teams.updateOne({
-        _id: teamsId
+          _id: teamsId,
+          users:{$elemMatch:{userId:uId,roll:'user'}}
+    }, {
+    $set:
+       {
+        "users.$.roll" : 'user'
+       }
+    })
+}
+module.exports.demote = async function(teamsId, uId){
+    Teams.updateOne({
+        _id: teamsId,
+        users:{$elemMatch:{userId:uId,roll:'admin'}}
       }, {
-        $pull:
+        $set:
          {
-          admins: userId
+          "users.$.roll" : 'user'
         }
       })
 }
 
-module.exports.isAdmin = async function(teamId, userId){
+module.exports.isAdmin = async function(teamId, uID){
   doc = Teams.find({
     _id: teamId,
-    admins: {$elemMatch: userId}
+    users: {$elemMatch: {userId:uID, role:'admin'}}
   })
 
   if (doc.length === 0){
@@ -75,21 +93,21 @@ module.exports.isAdmin = async function(teamId, userId){
 
 }
 
-module.exports.addUser = async function(teamsId, userId){
+module.exports.addUser = async function(teamsId, uID){
     Teams.updateOne({
         _id: teamsId
       }, {
         $addToSetid: {
-          users: userId
+          users: {userId:uID,roll:'user'}
         }
       })
 }
-module.exports.removeUser = async function(TeamsId, userId){
+module.exports.removeUser = async function(TeamsId, uID){
     Teams.updateOne({
         _id: TeamsId
       }, {
         $pull: {
-          users: userId
+          users:{userId:uId,roll:'user'}
         }
       })
 }

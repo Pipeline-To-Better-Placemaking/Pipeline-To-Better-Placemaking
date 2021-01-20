@@ -64,3 +64,14 @@ curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
      http://localhost:8080/api/teams/${TEAM}
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request POST \
+      -d "{\"title\": \"proj1\",\"description\": \"thingy\",
+          \"points\":[{\"latitude\": 28.602413253152307, \"longitude\": -70.20019937739713},
+                      {\"latitude\": 20.602413253152307, \"longitude\": -81.20019937739713},
+                      {\"latitude\": 38.602413253152307, \"longitude\": -81.20019937739713}],
+          \"team\": \"${TEAM}\"
+      }" \
+     http://localhost:8080/api/projects/
