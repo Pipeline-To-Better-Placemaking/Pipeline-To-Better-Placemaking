@@ -65,6 +65,10 @@ curl -H 'Content-Type: application/json' \
      --request GET \
      http://localhost:8080/api/teams/${TEAM}
 
+
+echo 
+echo
+
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request POST \
@@ -75,3 +79,14 @@ curl -H 'Content-Type: application/json' \
           \"team\": \"${TEAM}\"
       }" \
      http://localhost:8080/api/projects/
+
+echo
+echo
+
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/teams/${TEAM}
+
+echo

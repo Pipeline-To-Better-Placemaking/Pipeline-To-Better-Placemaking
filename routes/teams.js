@@ -12,9 +12,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     let newTeam = new Team({
         title: req.body.title,
         description: req.body.description,
-        owner: user._id,
-        admins: [user._id],
-        users: [user._id],
+        users: [{user:user._id, role:'owner'}],
         public: req.body.public
     })
 

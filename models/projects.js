@@ -30,6 +30,16 @@ module.exports.addProject = async function(newProject){
     return await newProject.save()
 }
 
+module.exports.updateProject = async function (projectId, newProject){
+  return await Projects.updateOne(
+    {_id:teamId},
+    {$set: {title:newProject.title,
+            description:newProject.description,
+            points:newProject.poinst
+        }}
+    )
+}
+
 module.exports.addTest = async function(projectId, type){
     Projects.updateOne({
         _id: projectId

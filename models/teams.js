@@ -10,14 +10,13 @@ const team_schema = mongoose.Schema({
     description:{type: String},
     public:{type: Boolean},
     projects:{type:[ObjectId]},
-    users:{type: [{userId: ObjectId,
+    users:{type:[{user: ObjectId,
                    role:{
                         type:String,
                         enum:['owner','admin','user']
                    }
                   }]
-          },
-    users:{type: [ObjectId]},
+          }
 
 })
 
@@ -47,7 +46,7 @@ module.exports.allTeamsShort = async function (count = 10, first = 0,userId = -1
 }
 
 module.exports.addProject = async function(teamId, projectId){
-  Teams.updateOne({
+  await Teams.updateOne({
     _id: teamId
   }, {
     $push:{
