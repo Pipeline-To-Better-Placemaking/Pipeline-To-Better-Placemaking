@@ -97,7 +97,7 @@ class CreateActivity extends Component {
         console.log(selectedTime);
 
         timeSlot.timeVal = selectedTime;
-        timeSlot.timeString = selectedTime;//time.toLocaleTimeString()
+        timeSlot.timeString = selectedTime.toLocaleTimeString();
         tempList[timeIndex] = timeSlot;
 
         this.setState({
