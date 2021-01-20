@@ -48,16 +48,10 @@ class ActivitySignUp extends Component {
 
     render() {
 
-        const hour = ["1", "2", "3", "4", "5", "6",
-                      "7", "8", "9", "10", "11", "12"];
-        const min = ["00", "05", "10", "15", "20", "25",
-                     "30", "35", "40", "45", "50", "55"];
-        const time = ["am", "pm"];
-
         const signUpCard = ({item, index}) => (
             <Card>
               <Text>Position: {index}</Text>
-              <Text>Time: {hour[item.selectedHour-1]} : {min[item.selectedMin-1]} {time[item.selectedTime-1]}</Text>
+              <Text>Time: {item.timeString}</Text>
               <Button onPress={this.openActivityPage}>
                 Sign Up / Begin
               </Button>

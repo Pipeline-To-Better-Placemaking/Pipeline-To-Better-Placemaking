@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Modal, ScrollView } from 'react-native';
+import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Modal, ScrollView, Platform } from 'react-native';
 import { Text, Button, Input, Icon, Divider, Card, Select, SelectItem, Datepicker, Popover, List } from '@ui-kitten/components';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Location from 'expo-location';
 
 import styles from './createActivityStyles.js';
@@ -11,16 +12,17 @@ class CreateActivity extends Component {
         super(props);
 
         let activityTypes = props.getActivityTypes();
+        let time = new Date();
 
         this.state = {
             tempTitle: activityTypes[0],
             tempType: activityTypes[0],
-            tempDate: new Date(),
+            tempDate: time,
+            tempTime: time,
             selectedActivity: 0,
             listOfTimes: [{
-                selectedHour: 0,
-                selectedMin: 0,
-                selectedTime: 0
+                timeVal: time,
+                timeString: time.toLocaleTimeString(),
             }],
         }
 
@@ -30,10 +32,9 @@ class CreateActivity extends Component {
         this.setSelectedActivity = this.setSelectedActivity.bind(this);
         this.createTime = this.createTime.bind(this);
         this.delete = this.delete.bind(this);
-        this.setSelectedHour = this.setSelectedHour.bind(this);
-        this.setSelectedMin = this.setSelectedMin.bind(this);
-        this.setSelectedTime = this.setSelectedTime.bind(this);
+
         this.setDate = this.setDate.bind(this);
+        this.setTime = this.setTime.bind(this);
     }
 
     onCreateActivity(submit) {
@@ -47,6 +48,7 @@ class CreateActivity extends Component {
                  date: this.state.tempDate,
                  signUpSlots: this.state.listOfTimes
              };
+             //console.log(activityDay);
              this.props.addActivity(activityDay);
         } else {
              //cancel
@@ -56,15 +58,16 @@ class CreateActivity extends Component {
        this.props.setCreateActivity(false);
 
         // reset values
+        let time = new Date();
         this.setState({
             tempTitle: activityTypes[0],
             tempType: activityTypes[0],
-            tempDate: new Date(),
+            tempDate: time,
+            tempTime: time,
             selectedActivity: 0,
             listOfTimes: [{
-                selectedHour: 0,
-                selectedMin: 0,
-                selectedTime: 0
+                timeVal: time,
+                timeString: time.toLocaleTimeString(),
             }]
         });
     }
@@ -84,50 +87,29 @@ class CreateActivity extends Component {
         });
     }
 
-    setSelectedHour(value, timeIndex) {
+    setTime(value, timeIndex) {
+        console.log(value);
+        let selectedTime = value.target.value || this.state.tempTime;
 
         let tempList = [...this.state.listOfTimes];
         let timeSlot = {...tempList[timeIndex]};
 
-        timeSlot.selectedHour = value;
+        console.log(selectedTime);
+
+        timeSlot.timeVal = selectedTime;
+        timeSlot.timeString = selectedTime;//time.toLocaleTimeString()
         tempList[timeIndex] = timeSlot;
 
         this.setState({
             listOfTimes: tempList
         });
-    }
-
-    setSelectedMin(value, timeIndex) {
-
-        let tempList = [...this.state.listOfTimes];
-        let timeSlot = {...tempList[timeIndex]};
-
-        timeSlot.selectedMin = value;
-        tempList[timeIndex] = timeSlot;
-
-        this.setState({
-            listOfTimes: tempList
-        });
-    }
-
-    setSelectedTime(value, timeIndex) {
-
-        let tempList = [...this.state.listOfTimes];
-        let timeSlot = {...tempList[timeIndex]};
-
-        timeSlot.selectedTime = value;
-        tempList[timeIndex] = timeSlot;
-
-        this.setState({
-            listOfTimes: tempList
-        });
-    }
+      }
 
     createTime() {
+        let time = new Date();
         let temp = {
-            selectedHour: 0,
-            selectedMin: 0,
-            selectedTime: 0
+            timeVal: time,
+            timeString: time.toLocaleTimeString(),
         };
         this.state.listOfTimes.push(temp);
         this.setState({
@@ -168,48 +150,15 @@ class CreateActivity extends Component {
           <SelectItem title={title}/>
         );
 
-        const hour = ["1", "2", "3", "4", "5", "6",
-                      "7", "8", "9", "10", "11", "12"];
-        const min = ["00", "05", "10", "15", "20", "25",
-                     "30", "35", "40", "45", "50", "55"];
-        const time = ["am", "pm"];
-
-        const timeItem = (item) => (
-            <SelectItem key="{item}" title={item} />
-        );
-
         const TimePicker = ({item, index}) => (
             <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
               <Text>Time </Text>
-              <Select
-                style={{width:91}}
-                placeholder=' '
-                value={hour[item.selectedHour.row]}
-                selectedIndex={item.selectedHour}
-                onSelect={value => this.setSelectedHour(value, index)}
-                >
-                    {hour.map(timeItem)}
-              </Select>
-              <Text> : </Text>
-              <Select
-                style={{width:95}}
-                placeholder=' '
-                value={min[item.selectedMin.row]}
-                selectedIndex={item.selectedMin}
-                onSelect={value => this.setSelectedMin(value, index)}
-                >
-                    {min.map(timeItem)}
-              </Select>
-              <Text> </Text>
-              <Select
-                style={{width:100}}
-                placeholder=' '
-                value={time[item.selectedTime.row]}
-                selectedIndex={item.selectedTime}
-                onSelect={value => this.setSelectedTime(value, index)}
-                >
-                    {time.map(timeItem)}
-              </Select>
+              <DateTimePicker
+                  style={{width:300}}
+                  mode={'time'}
+                  value={this.state.listOfTimes[index].timeVal}
+                  onChange={value => this.setTime(value, index)}
+              />
             </View>
         );
 
