@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "cross-env NODE_ENV=dev node app.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
   "author": "Bautista Bertolami, Madison Dishman, Joshua Howell, Mason Proco, Mike Triana",
