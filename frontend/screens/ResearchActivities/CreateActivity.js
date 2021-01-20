@@ -89,7 +89,7 @@ class CreateActivity extends Component {
 
     setTime(value, timeIndex) {
         console.log(value);
-        let selectedTime = value.target.value || this.state.tempTime;
+        let selectedTime = value || this.state.tempTime;
 
         let tempList = [...this.state.listOfTimes];
         let timeSlot = {...tempList[timeIndex]};
@@ -157,7 +157,7 @@ class CreateActivity extends Component {
                   style={{width:300}}
                   mode={'time'}
                   value={this.state.listOfTimes[index].timeVal}
-                  onChange={value => this.setTime(value, index)}
+                  onChange={(e, selectedDate) => this.setTime(selectedDate, index)}
               />
             </View>
         );
