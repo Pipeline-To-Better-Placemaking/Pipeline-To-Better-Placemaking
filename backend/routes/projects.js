@@ -23,13 +23,14 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
         })
 
         const project = await Project.addProject(newProject)
+
         await Team.addProject(req.body.team,project._id)
 
         res.status(201).json(project)
 
     }
     else{
-        res.json('unauthorized')
+        res.json({msg:'unauthorized'})
     }   
 })
 
@@ -39,19 +40,21 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
-    let newTeam = new Team({
+    let newProject = new Project({
         title: req.body.title,
         description: req.body.description,
-        public: req.body.public
+        points: req.body.points
     })
 
-    if (await Team.isAdmin(req.params.id,user._id)){
-        res.status(201).json(await Team.updateTeam(req.params.id,newTeam))
+    project = await Project.findById(req.params.id)
+
+    if (await Team.isAdmin(project.team,user._id)){
+        res.status(201).json(await Project.updateProject(req.params.id,newProject))
     }
 
     else{
         res.json({
-            msg: unauthorized
+            msg: 'unauthorized'
         })
     }
     
