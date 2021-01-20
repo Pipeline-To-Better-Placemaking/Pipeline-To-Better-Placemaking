@@ -4,8 +4,6 @@ import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './changeSettingsStyles.js';
 
-const config = require('../../utils/config.js')
-
 class ChangeNameScreen extends Component {
 
     constructor(props){
@@ -56,7 +54,7 @@ class ChangeNameScreen extends Component {
         console.log("Confirming change...")
         let success = false
 
-        await fetch(config.LOCALHOST + '/api/users/profile', {
+        await fetch('https://msrplacetest.herokuapp.com/api/users/', {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',

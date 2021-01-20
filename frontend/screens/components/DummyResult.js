@@ -23,10 +23,12 @@ class DummyResult extends Component {
         if (this.state.checked)
         {
             this.props.compareIncrement();
+            this.props.addProject(this.props.projectArea)
         }
         else
         {
             this.props.compareDecrement();
+            this.props.removeProject(this.props.projectArea)
         }
     }
 
@@ -53,10 +55,10 @@ class DummyResult extends Component {
                 </View>
                 <View style={styles.resultBox}>
                     <Text category={'s1'} style={styles.resultBoxText}>
-                        Dummy Result
+                        {this.props.projectArea}
                     </Text>
                     <Text category={'s2'} style={styles.resultBoxComment}>
-                        Dummy Result Comment
+                        {this.props.projectComment}
                     </Text>
                 </View>
 

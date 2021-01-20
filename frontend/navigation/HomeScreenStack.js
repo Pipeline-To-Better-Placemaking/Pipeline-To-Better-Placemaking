@@ -9,6 +9,19 @@ class HomeScreenStack extends Component {
 
     constructor(props){
         super(props);
+
+        this.state = {
+            selectedProjects: []
+        }
+
+        this.getSelectedProjects = this.getSelectedProjects.bind(this)
+    }
+
+    async getSelectedProjects(projects) {
+
+        await this.setState({
+            selectedProjects: projects
+        })
     }
 
     render() {
@@ -19,14 +32,14 @@ class HomeScreenStack extends Component {
                     name="HomeScreen"
                     options={{headerShown: false}}
                 >
-                    {props => <HomeScreen {...props} navigation={this.props.navigation} location = {this.props.location}></HomeScreen>}
+                    {props => <HomeScreen {...props} setProjects={this.getSelectedProjects} navigation={this.props.navigation} location = {this.props.location}></HomeScreen>}
                 </HomeStack.Screen>
                 
                 <HomeStack.Screen
                     name="CompareScreen"
                     options={{headerShown: false}}
                 >
-                    {props => <CompareScreen {...props} navigation={this.props.navigation}></CompareScreen>}
+                    {props => <CompareScreen {...props} selectedProjects={this.state.selectedProjects} navigation={this.props.navigation}></CompareScreen>}
                 </HomeStack.Screen>
 
             </HomeStack.Navigator>

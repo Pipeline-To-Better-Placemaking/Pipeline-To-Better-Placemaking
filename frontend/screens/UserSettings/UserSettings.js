@@ -7,8 +7,6 @@ import MyHeader from '../components/MyHeader.js';
 
 import styles from './userSettingsStyles.js';
 
-const config = require('../../utils/config.js')
-
 const settingsData = [
     {
         title: 'Change Name',

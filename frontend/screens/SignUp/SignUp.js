@@ -113,12 +113,9 @@ class SignUp extends Component {
 
         var err = 0
 
-        console.log(this.state.firstName)
-        console.log(this.state.lastName)
-        console.log(this.state.pass)
-        console.log(this.state.email)
 
-        await fetch('http://192.168.1.125:27017/api/users/register', {
+
+        await fetch('https://msrplacetest.herokuapp.com/api/users/', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

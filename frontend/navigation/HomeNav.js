@@ -3,8 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import TabNavigation from './TabNavigation';
 
-const config = require('../utils/config.js')
-
 var userDetails = {
     firstname: '',
     lastname: '',
@@ -36,9 +34,10 @@ class HomeNav extends Component {
         console.log("Triggering componentDidMount")
 
         let token = await AsyncStorage.getItem("@token")
+        let id = await AsyncStorage.getItem("@id")
         let success = false
 
-        await fetch(config.LOCALHOST +  '/api/users/profile', {
+        await fetch('https://msrplacetest.herokuapp.com/api/users/' + id, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -50,14 +49,14 @@ class HomeNav extends Component {
         .then(async (res) => (
                 console.log(res),
 
-                await AsyncStorage.setItem("@firstName", res.user.firstname),
-                await AsyncStorage.setItem("@lastName", res.user.lastname),
-                await AsyncStorage.setItem("@email", res.user.email),
+                await AsyncStorage.setItem("@firstName", res.firstname),
+                await AsyncStorage.setItem("@lastName", res.lastname),
+                await AsyncStorage.setItem("@email", res.email),
 
                 userDetails = {
-                    firstName: res.user.firstname,
-                    lastName: res.user.lastname,
-                    email: res.user.email
+                    firstName: res.firstname,
+                    lastName: res.lastname,
+                    email: res.email
                 }
             ))
         .catch((error) => (console.log(error), success = false))

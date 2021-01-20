@@ -5,8 +5,6 @@ import styles from './logInStyles.js';
 import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const config = require('../../utils/config.js')
-
 // **** TODO ****
 //  1.) Forgot password
 //  2.) Log into app
@@ -81,9 +79,10 @@ class LogIn extends Component {
 
         let success = false
         let token = ''
+        let id = ''
 
         try {
-            const response = await fetch(config.LOCALHOST + '/api/login', {
+            const response = await fetch('https://msrplacetest.herokuapp.com/api/login', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -98,6 +97,7 @@ class LogIn extends Component {
             console.log(res)
             success = res.success
             token = res.token
+            id = res.user.id
         } catch (error) {
             console.log(error)
             success = false
@@ -113,6 +113,7 @@ class LogIn extends Component {
             console.log("Authentication successful")
 
             await AsyncStorage.setItem('@token', token);
+            await AsyncStorage.setItem('@id', id);
 
             this.props.getCoords(defaultLocation);
 
