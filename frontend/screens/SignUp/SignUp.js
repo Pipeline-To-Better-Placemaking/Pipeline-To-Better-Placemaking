@@ -28,7 +28,8 @@ class SignUp extends Component {
             signInError: false,
             passMatch: true,
             securityOption: true,
-            visible: false
+            visible: false,
+            passwordStrengthFail: false
         }
 
         this.onFirstNameChange = this.onFirstNameChange.bind(this);
@@ -113,7 +114,19 @@ class SignUp extends Component {
 
         var err = 0
 
-
+        // Check password strength (was not working when in its own function for some reason???)
+        if (
+            this.state.pass.length < 8 ||
+            await /\s/g.test(this.state.pass) ||
+            await !/\d/g.test(this.state.pass) ||
+            await !/[!@#$%^&*]/g.test(this.state.pass) ||
+            await !/[A-Z]/g.test(this.state.pass)
+            )
+        {
+            this.setState({
+                passwordStrengthFail: true
+            })
+        }
 
         await fetch('https://msrplacetest.herokuapp.com/api/users/', {
             method: 'POST',
@@ -136,7 +149,7 @@ class SignUp extends Component {
         if (err)
         {
             console.log("Error.");
-            this.setState({
+            await this.setState({
                 signInError: true
             })
         }
@@ -213,7 +226,7 @@ class SignUp extends Component {
                                 <Input
                                 placeholder='Password...'
                                 autoCapitalize='none'
-                                caption='Should contain at least 8 symbols'
+                                caption={<Text style={this.state.passwordStrengthFail ? {color: "#FF3D71"} : {color: "#8F9BB3"}}>Must contain at least 8 characters,{"\n"}one uppercase, one symbol, and one digit.</Text>}
                                 captionIcon={AlertIcon}
                                 accessoryRight={renderIcon}
                                 secureTextEntry={this.state.securityOption}
