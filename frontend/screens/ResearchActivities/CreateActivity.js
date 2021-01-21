@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Modal, ScrollView } from 'react-native';
+import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Modal, ScrollView, Platform } from 'react-native';
 import { Text, Button, Input, Icon, Divider, Card, Select, SelectItem, Datepicker, Popover, List } from '@ui-kitten/components';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Location from 'expo-location';
 
 import styles from './createActivityStyles.js';
@@ -11,17 +12,17 @@ class CreateActivity extends Component {
         super(props);
 
         let activityTypes = props.getActivityTypes();
+        let time = new Date();
 
         this.state = {
             tempTitle: activityTypes[0],
             tempType: activityTypes[0],
-            tempDate: new Date(),
+            tempDate: time,
             selectedActivity: 0,
-            listOfTimes: [{
-                selectedHour: 0,
-                selectedMin: 0,
-                selectedTime: 0
-            }],
+            listOfTimes: [],
+            isTimePickerVisible:false,
+            currTime: time,
+            currIndex: -1
         }
 
         this.onCreateNewActivity = this.onCreateActivity.bind(this, true);
@@ -30,10 +31,11 @@ class CreateActivity extends Component {
         this.setSelectedActivity = this.setSelectedActivity.bind(this);
         this.createTime = this.createTime.bind(this);
         this.delete = this.delete.bind(this);
-        this.setSelectedHour = this.setSelectedHour.bind(this);
-        this.setSelectedMin = this.setSelectedMin.bind(this);
-        this.setSelectedTime = this.setSelectedTime.bind(this);
+
         this.setDate = this.setDate.bind(this);
+        this.setTime = this.setTime.bind(this);
+        this.getTimeStr = this.getTimeStr.bind(this);
+        this.viewTime = this.viewTime.bind(this);
     }
 
     onCreateActivity(submit) {
@@ -47,6 +49,7 @@ class CreateActivity extends Component {
                  date: this.state.tempDate,
                  signUpSlots: this.state.listOfTimes
              };
+             //console.log(activityDay);
              this.props.addActivity(activityDay);
         } else {
              //cancel
@@ -56,16 +59,13 @@ class CreateActivity extends Component {
        this.props.setCreateActivity(false);
 
         // reset values
+        let time = new Date();
         this.setState({
             tempTitle: activityTypes[0],
             tempType: activityTypes[0],
-            tempDate: new Date(),
+            tempDate: time,
             selectedActivity: 0,
-            listOfTimes: [{
-                selectedHour: 0,
-                selectedMin: 0,
-                selectedTime: 0
-            }]
+            listOfTimes: []
         });
     }
 
@@ -84,54 +84,51 @@ class CreateActivity extends Component {
         });
     }
 
-    setSelectedHour(value, timeIndex) {
-
-        let tempList = [...this.state.listOfTimes];
-        let timeSlot = {...tempList[timeIndex]};
-
-        timeSlot.selectedHour = value;
-        tempList[timeIndex] = timeSlot;
-
-        this.setState({
-            listOfTimes: tempList
-        });
+    getTimeStr(time) {
+        let hours = time.getHours();
+        let minutes = `${time.getMinutes()}`;
+        let morning = " AM";
+        // 12 hour instead of 24
+        if (hours > 12) {
+            hours = hours - 12
+            morning = " PM";
+        } else if (hours === 12) {
+            morning = " PM";
+        } else if (hours === 0) {
+            hours = 12
+        }
+        // 2 digits
+        if (minutes.length !== 2) {
+            minutes = 0 + minutes;
+        }
+        return hours + ":" + minutes + morning;
     }
 
-    setSelectedMin(value, timeIndex) {
-
+    setTime(value) {
         let tempList = [...this.state.listOfTimes];
-        let timeSlot = {...tempList[timeIndex]};
+        let timeSlot = {...tempList[this.state.currIndex]};
 
-        timeSlot.selectedMin = value;
-        tempList[timeIndex] = timeSlot;
+        timeSlot.timeVal = value;
+        timeSlot.timeString = this.getTimeStr(value);
+
+        tempList[this.state.currIndex] = timeSlot;
 
         this.setState({
-            listOfTimes: tempList
+            currTime: value,
+            listOfTimes: tempList,
+            isTimePickerVisible:false
         });
-    }
-
-    setSelectedTime(value, timeIndex) {
-
-        let tempList = [...this.state.listOfTimes];
-        let timeSlot = {...tempList[timeIndex]};
-
-        timeSlot.selectedTime = value;
-        tempList[timeIndex] = timeSlot;
-
-        this.setState({
-            listOfTimes: tempList
-        });
-    }
+      }
 
     createTime() {
+        let time = new Date();
         let temp = {
-            selectedHour: 0,
-            selectedMin: 0,
-            selectedTime: 0
+            timeVal: time,
+            timeString: this.getTimeStr(time),
         };
         this.state.listOfTimes.push(temp);
         this.setState({
-            listOfTimes: this.state.listOfTimes
+            listOfTimes: this.state.listOfTimes,
         });
     }
 
@@ -139,6 +136,14 @@ class CreateActivity extends Component {
         this.state.listOfTimes.splice(timeIndex, 1);
         this.setState({
             listOfTimes: this.state.listOfTimes
+        });
+    }
+
+    viewTime(item, index) {
+        this.setState({
+            currTime: item.timeVal,
+            currIndex: index,
+            isTimePickerVisible:true
         });
     }
 
@@ -160,6 +165,10 @@ class CreateActivity extends Component {
           <Icon {...props} name='calendar'/>
         );
 
+        const ClockIcon = (props) => (
+          <Icon {...props} name='clock-outline'/>
+        );
+
         const PlusIcon = (props) => (
           <Icon {...props} name='plus-outline'/>
         );
@@ -168,53 +177,28 @@ class CreateActivity extends Component {
           <SelectItem title={title}/>
         );
 
-        const hour = ["1", "2", "3", "4", "5", "6",
-                      "7", "8", "9", "10", "11", "12"];
-        const min = ["00", "05", "10", "15", "20", "25",
-                     "30", "35", "40", "45", "50", "55"];
-        const time = ["am", "pm"];
-
-        const timeItem = (item) => (
-            <SelectItem key="{item}" title={item} />
-        );
-
         const TimePicker = ({item, index}) => (
-            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-              <Text>Time </Text>
-              <Select
-                style={{width:91}}
-                placeholder=' '
-                value={hour[item.selectedHour.row]}
-                selectedIndex={item.selectedHour}
-                onSelect={value => this.setSelectedHour(value, index)}
+            <View style={{justifyContent:'flex-start'}}>
+              <Button
+                onPress={() => this.viewTime(item, index)}
+                accessoryRight={ClockIcon}
+                appearance='ghost'
                 >
-                    {hour.map(timeItem)}
-              </Select>
-              <Text> : </Text>
-              <Select
-                style={{width:95}}
-                placeholder=' '
-                value={min[item.selectedMin.row]}
-                selectedIndex={item.selectedMin}
-                onSelect={value => this.setSelectedMin(value, index)}
-                >
-                    {min.map(timeItem)}
-              </Select>
-              <Text> </Text>
-              <Select
-                style={{width:100}}
-                placeholder=' '
-                value={time[item.selectedTime.row]}
-                selectedIndex={item.selectedTime}
-                onSelect={value => this.setSelectedTime(value, index)}
-                >
-                    {time.map(timeItem)}
-              </Select>
+                <Text>Time </Text>
+                <Text>{item.timeString} </Text>
+              </Button>
+              <DateTimePickerModal
+                  mode="time"
+                  date={this.state.currTime}
+                  isVisible={this.state.isTimePickerVisible}
+                  onConfirm={this.setTime}
+                  onCancel={() => this.setState({isTimePickerVisible:false})}
+              />
             </View>
         );
 
         const Delete = ({item, index}) => (
-            <View style={{flexDirection:'row',justifyContent:'center',marginTop:5}}>
+            <View style={{justifyContent:'flex-end'}}>
                 <Button
                   onPress={() => this.delete(item, index)}
                   accessoryRight={DeleteIcon}
@@ -227,8 +211,10 @@ class CreateActivity extends Component {
 
         const signUpCard = ({item, index}) => (
             <Card>
-              <TimePicker {...{item, index}} />
-              <Delete {...{item, index}} />
+              <View style={styles.activityView}>
+                <TimePicker {...{item, index}} />
+                <Delete {...{item, index}} />
+              </View>
             </Card>
         );
 

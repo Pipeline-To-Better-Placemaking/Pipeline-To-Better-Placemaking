@@ -17,6 +17,7 @@ class ProjectPage extends Component {
 
         let project = props.getSelectedProject();
         let activityTypes = props.getActivityTypes();
+        let time = new Date();
 
         this.state = {
             projName: project.title,
@@ -27,32 +28,29 @@ class ProjectPage extends Component {
             createActivity: false,
             data: [{
                 title: activityTypes[0],
-                date: new Date(),
+                date: time,
                 type: activityTypes[0],
                 signUpSlots: [{ // offset by 1
-                    selectedHour: 1,
-                    selectedMin: 1,
-                    selectedTime: 1
+                    timeVal: time,
+                    timeString: time.toLocaleTimeString(),
                 }]
               },
               {
                 title: activityTypes[1],
-                date: new Date(),
+                date: time,
                 type: activityTypes[1],
                 signUpSlots: [{
-                    selectedHour: 1,
-                    selectedMin: 1,
-                    selectedTime: 1
+                    timeVal: time,
+                    timeString: time.toLocaleTimeString(),
                 }]
               },
               {
                 title: activityTypes[2],
-                date: new Date(),
+                date: time,
                 type: activityTypes[2],
                 signUpSlots: [{
-                    selectedHour: 1,
-                    selectedMin: 1,
-                    selectedTime: 1
+                    timeVal: time,
+                    timeString: time.toLocaleTimeString(),
                 }]
               }
             ]
