@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Modal, ScrollView, Platform } from 'react-native';
 import { Text, Button, Input, Icon, Divider, Card, Select, SelectItem, Datepicker, Popover, List } from '@ui-kitten/components';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Location from 'expo-location';
 
 import styles from './createActivityStyles.js';
@@ -18,12 +18,9 @@ class CreateActivity extends Component {
             tempTitle: activityTypes[0],
             tempType: activityTypes[0],
             tempDate: time,
-            tempTime: time,
             selectedActivity: 0,
-            listOfTimes: [{
-                timeVal: time,
-                timeString: time.toLocaleTimeString(),
-            }],
+            listOfTimes: [],
+            isTimePickerVisible:false
         }
 
         this.onCreateNewActivity = this.onCreateActivity.bind(this, true);
@@ -35,6 +32,7 @@ class CreateActivity extends Component {
 
         this.setDate = this.setDate.bind(this);
         this.setTime = this.setTime.bind(this);
+        this.getTimeStr = this.getTimeStr.bind(this);
     }
 
     onCreateActivity(submit) {
@@ -63,12 +61,8 @@ class CreateActivity extends Component {
             tempTitle: activityTypes[0],
             tempType: activityTypes[0],
             tempDate: time,
-            tempTime: time,
             selectedActivity: 0,
-            listOfTimes: [{
-                timeVal: time,
-                timeString: time.toLocaleTimeString(),
-            }]
+            listOfTimes: []
         });
     }
 
@@ -87,21 +81,28 @@ class CreateActivity extends Component {
         });
     }
 
-    setTime(value, timeIndex) {
-        console.log(value);
-        let selectedTime = value || this.state.tempTime;
+    getTimeStr(time) {
+        let hours = time.getHours();
+        let minutes = `${time.getMinutes()}`;
+        let morning = " AM";
+        // 12 hour instead of 24
+        if (hours > 12) {
+            hours = hours - 12
+            morning = " PM";
+        }
+        // 2 digits
+        if (minutes.length !== 2) {
+            minutes = 0 + minutes;
+        }
+        return hours + ":" + minutes + morning;
+    }
 
-        let tempList = [...this.state.listOfTimes];
-        let timeSlot = {...tempList[timeIndex]};
-
-        console.log(selectedTime);
-
-        timeSlot.timeVal = selectedTime;
-        timeSlot.timeString = selectedTime.toLocaleTimeString();
-        tempList[timeIndex] = timeSlot;
+    setTime(value, item) {
+        item.timeVal = value;
+        item.timeString = this.getTimeStr(value);
 
         this.setState({
-            listOfTimes: tempList
+            isTimePickerVisible:false
         });
       }
 
@@ -109,7 +110,7 @@ class CreateActivity extends Component {
         let time = new Date();
         let temp = {
             timeVal: time,
-            timeString: time.toLocaleTimeString(),
+            timeString: this.getTimeStr(time),
         };
         this.state.listOfTimes.push(temp);
         this.setState({
@@ -142,6 +143,10 @@ class CreateActivity extends Component {
           <Icon {...props} name='calendar'/>
         );
 
+        const ClockIcon = (props) => (
+          <Icon {...props} name='clock-outline'/>
+        );
+
         const PlusIcon = (props) => (
           <Icon {...props} name='plus-outline'/>
         );
@@ -152,12 +157,20 @@ class CreateActivity extends Component {
 
         const TimePicker = ({item, index}) => (
             <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-              <Text>Time </Text>
-              <DateTimePicker
-                  style={{width:300}}
-                  mode={'time'}
-                  value={this.state.listOfTimes[index].timeVal}
-                  onChange={(e, selectedDate) => this.setTime(selectedDate, index)}
+              <Button
+                onPress={() => this.setState({isTimePickerVisible:true})}
+                accessoryRight={ClockIcon}
+                appearance='ghost'
+                >
+                <Text>Time </Text>
+                <Text>{item.timeString} </Text>
+              </Button>
+              <DateTimePickerModal
+                  mode="time"
+                  date={item.timeVal}
+                  isVisible={this.state.isTimePickerVisible}
+                  onConfirm={(selectedTime) => this.setTime(selectedTime, item)}
+                  onCancel={() => this.setState({isTimePickerVisible:false})}
               />
             </View>
         );
