@@ -9,15 +9,13 @@ const project_schema = mongoose.Schema({
     title:{type: String},
     description:{type: String},
     team:{type:ObjectId},
-    points:{type: [{latitude: Number,
-                    longitude: Number
-                   }]},
-    areas:{type: [[ {latitude: Number,
+    area:{type: ObjectId},
+    subareas:{type: [{area:[ {latitude: Number,
                      longitude: Number
                     }
-                 ]]},
+                 ]}]},
     activities:{type:[{activity:ObjectId,
-                       testType:{
+                       test_type:{
                                type:String,
                                enum:['survey','stationary','moving', 'program']
                             }
@@ -27,12 +25,32 @@ const project_schema = mongoose.Schema({
 const Projects = module.exports = mongoose.model('Projects', project_schema)
 
 module.exports.addProject = async function(newProject){
-    return await newProject.save()
+    project = await newProject.save()
+    mainArea = project.subareas[0]._id
+
+    await Projects.updateOne({
+      _id:project._id
+    },{
+      $set: {area: mainArea}
+    })
+
+    return await Projects.findById(project._id)
+}
+
+module.exports.addActivity = async function (projectId, activityId, testType){
+  return await Projects.updateOne(
+    {_id:projectId},
+    {$push: {activities:{
+                activity:activityId,
+                test_type:testType
+    }}}
+  )
+
 }
 
 module.exports.updateProject = async function (projectId, newProject){
   return await Projects.updateOne(
-    {_id:teamId},
+    {_id:projectId},
     {$set: {title:newProject.title,
             description:newProject.description,
             points:newProject.poinst
@@ -44,7 +62,7 @@ module.exports.addTest = async function(projectId, type){
     Projects.updateOne({
         _id: projectId
       }, {
-        $addToSetid:
+        $push:
          {
           activities:{activity:projectId, testType:type}
         }
