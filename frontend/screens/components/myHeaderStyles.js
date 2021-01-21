@@ -6,18 +6,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#006FD6',
         justifyContent:'flex-end',
         flexDirection:'column',
-        ...Platform.select({
-          ios: {
-            height: '10%'
-          },
-          android: {
-            height: '5%'
-          },
-          default: {
-            // other platforms, web for example
-            height: '10%'
-          }
-        })
+        height: '10%'
     },
 
     headerText: {

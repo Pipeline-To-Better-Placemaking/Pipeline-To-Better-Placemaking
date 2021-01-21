@@ -58,18 +58,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
-        ...Platform.select({
-          ios: {
-            height: '10%'
-          },
-          android: {
-            height: '5%'
-          },
-          default: {
-            // other platforms, web for example
-            height: '10%'
-          }
-        })
+        height: '10%'
     },
 
     headerText: {
@@ -88,11 +77,12 @@ export const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginRight: 25,
     },
 
     button: {
-        marginLeft: 5,
+        marginLeft: 25,
         backgroundColor: '#006FD6',
         borderColor: '#006FD6',
       },
