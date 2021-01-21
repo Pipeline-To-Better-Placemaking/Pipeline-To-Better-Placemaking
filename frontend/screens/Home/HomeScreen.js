@@ -19,14 +19,14 @@ class HomeScreen extends Component {
             location: props.location,
             compare: false,
             compareCount: 0,
-            selectedProjects: []
+            selectedProjects: this.props.selectedProjects
         }
 
         this.onComparePress = this.onComparePress.bind(this);
         this.compareIncrement = this.compareIncrement.bind(this);
         this.compareDecrement = this.compareDecrement.bind(this);
         this.addToSelectedProjects = this.addToSelectedProjects.bind(this);
-        this.removeFromSelectedProjectes = this.removeFromSelectedProjectes.bind(this)
+        // this.removeFromSelectedProjectes = this.removeFromSelectedProjectes.bind(this)
     }
 
     onComparePress() {
@@ -64,21 +64,14 @@ class HomeScreen extends Component {
 
     }
 
-    async removeFromSelectedProjectes(name) {
+    inSelectedProject = (name) => {
 
-        var selectedProjectsArray = this.state.selectedProjects
-
-        var index = selectedProjectsArray.indexOf(name)
-
-        selectedProjectsArray.splice(index, 1)
-
-        console.log("Array: " + JSON.stringify(selectedProjectsArray))
-
-        await this.setState({
-            selectedProjects: selectedProjectsArray
-        })
-
-        await this.props.setProjects(selectedProjectsArray)
+        if (this.state.selectedProjects.includes(name)) {
+            return true
+        }
+        else {
+            return false
+        }
     }
 
     render() {
@@ -97,29 +90,32 @@ class HomeScreen extends Component {
 
                 <ScrollView>
                     <DummyResult 
+                        inList={this.inSelectedProject}
                         compare={this.state.compare} 
                         compareIncrement={this.compareIncrement} 
                         compareDecrement={this.compareDecrement}
                         addProject={this.addToSelectedProjects}
-                        removeProject={this.removeFromSelectedProjectes}
+                        removeProject={this.props.removeFromSelectedProjects}
                         projectArea={"Lake Lilian"}
                         projectComment={"Pavillion at Lake Lilian"}
                         />
                     <DummyResult 
+                        inList={this.inSelectedProject}
                         compare={this.state.compare} 
                         compareIncrement={this.compareIncrement} 
                         compareDecrement={this.compareDecrement}
                         addProject={this.addToSelectedProjects}
-                        removeProject={this.removeFromSelectedProjectes}
+                        removeProject={this.props.removeFromSelectedProjects}
                         projectArea={"Lake Eola"}
                         projectComment={"East side of Lake Eola"}
                         />
                     <DummyResult 
+                        inList={this.inSelectedProject}
                         compare={this.state.compare} 
                         compareIncrement={this.compareIncrement} 
                         compareDecrement={this.compareDecrement}
                         addProject={this.addToSelectedProjects}
-                        removeProject={this.removeFromSelectedProjectes}
+                        removeProject={this.props.removeFromSelectedProjects}
                         projectArea={"J. Blanchard Park"}
                         projectComment={"First mile of trails"}
                         />
@@ -130,6 +126,7 @@ class HomeScreen extends Component {
                     compare={this.state.compare} 
                     selected={this.state.compareCount}
                     selectedProjects={this.state.selectedProjects}
+                    removeFromSelectedProjectes={this.props.removeFromSelectedProjectes}
                 />
                 
             </View>

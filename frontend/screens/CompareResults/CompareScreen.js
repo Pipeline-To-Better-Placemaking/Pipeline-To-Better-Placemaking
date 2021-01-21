@@ -14,7 +14,8 @@ class CompareScreen extends Component {
         super(props);
 
         this.state = {
-            index: 0
+            index: 0,
+            compareCount: this.props.compareCount
         }
 
         console.log(this.props.selectedProjects)
@@ -27,7 +28,27 @@ class CompareScreen extends Component {
         })
     }
 
+    removeCard = (name) => {
+        
+        this.setState({
+            compareCount: this.state.compareCount-1
+        })
+
+        this.props.removeFromSelectedProjects(name)
+    }
+
     render() {
+
+        const EmptyBox = () => {
+            if (this.state.compareCount < 2) {
+                return (
+                    <EmptyCompareBox/>
+                )
+            }
+            else {
+                return null
+            }
+        }
 
         const CompareBoxList = () => {
 
@@ -35,6 +56,7 @@ class CompareScreen extends Component {
                 this.props.selectedProjects.map((name, key) => {
                     return(
                     <CompareBox
+                        removeCard={this.removeCard}
                         key={key}
                         projectName={name}
                         index={this.state.index}
@@ -53,7 +75,8 @@ class CompareScreen extends Component {
 
                     <CompareBoxList/>
 
-                    {/* <EmptyCompareBox/> */}
+                    <EmptyBox/>
+
                     <View>
                         <Button style={styles.confirmCompare}> Confirm Compare </Button>
                     </View>

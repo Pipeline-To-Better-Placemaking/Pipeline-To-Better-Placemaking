@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     },
 
     emptyBox: {
-        height: 150,
+        height: 225,
         width: '80%',
         marginTop: 50,
         backgroundColor: 'transparent',
@@ -59,9 +59,17 @@ export const styles = StyleSheet.create({
     removeButton: {
         width: 30,
         height: 30,
-        marginLeft: 120,
-        flexGrow: 0
-    }
+        borderRadius: 150/2,
+        marginBottom: -12,
+        position: 'relative'
+    },
+
+    removeIcon: {
+        position: 'relative',
+        width: 30,
+        height: 30,
+    },
+    
 });
 
 export default styles;

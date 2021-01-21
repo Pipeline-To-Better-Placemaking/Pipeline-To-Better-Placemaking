@@ -21,7 +21,7 @@ class CompareBox extends Component {
 
         const RemoveIcon = (props) => {
             return (
-                <Icon {...props} fill='#8F9BB3' style={styles.removeButton} name='close-circle' />
+                <Icon {...props} fill='#8F9BB3' style={styles.removeIcon} name='close-circle'/>
             )
         }
 
@@ -29,12 +29,19 @@ class CompareBox extends Component {
 
             <View>
                 <Button style={styles.box}>
+                    
+
                     <View style={styles.textContainer}>
                         
                         <Text style={styles.projectText}>
                             {this.props.projectName}
-
-                            <RemoveIcon/>
+                            
+                            <Button 
+                                appearance={"ghost"}
+                                onPress={() => this.props.removeCard(this.props.projectName)}
+                                accessoryLeft={RemoveIcon}
+                                style={styles.removeButton}
+                            />
                         </Text> 
 
                         <Select style={styles.chooseTestButton} value={activities[this.state.index-1]} onSelect={index => this.props.setIndex(index)}  placeholder='Choose Test'>

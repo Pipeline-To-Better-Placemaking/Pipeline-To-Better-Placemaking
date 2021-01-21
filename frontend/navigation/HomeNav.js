@@ -31,8 +31,6 @@ class HomeNav extends Component {
 
     async componentDidMount() {
 
-        console.log("Triggering componentDidMount")
-
         let token = await AsyncStorage.getItem("@token")
         let id = await AsyncStorage.getItem("@id")
         let success = false

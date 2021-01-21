@@ -15,12 +15,28 @@ class HomeScreenStack extends Component {
         }
 
         this.getSelectedProjects = this.getSelectedProjects.bind(this)
+        this.removeFromSelectedProjects = this.removeFromSelectedProjects.bind(this)
     }
 
     async getSelectedProjects(projects) {
 
         await this.setState({
             selectedProjects: projects
+        })
+    }
+
+    async removeFromSelectedProjects(name) {
+
+        var selectedProjectsArray = this.state.selectedProjects
+
+        var index = selectedProjectsArray.indexOf(name)
+
+        selectedProjectsArray.splice(index, 1)
+
+        console.log("Array: " + JSON.stringify(selectedProjectsArray))
+
+        await this.setState({
+            selectedProjects: selectedProjectsArray
         })
     }
 
@@ -32,14 +48,25 @@ class HomeScreenStack extends Component {
                     name="HomeScreen"
                     options={{headerShown: false}}
                 >
-                    {props => <HomeScreen {...props} setProjects={this.getSelectedProjects} navigation={this.props.navigation} location = {this.props.location}></HomeScreen>}
+                    {props => <HomeScreen {...props}
+                                selectedProjects={this.state.selectedProjects}
+                                setProjects={this.getSelectedProjects}
+                                navigation={this.props.navigation}
+                                location = {this.props.location}
+                                removeFromSelectedProjects ={this.removeFromSelectedProjects}>
+                                </HomeScreen>}
                 </HomeStack.Screen>
                 
                 <HomeStack.Screen
                     name="CompareScreen"
                     options={{headerShown: false}}
                 >
-                    {props => <CompareScreen {...props} selectedProjects={this.state.selectedProjects} navigation={this.props.navigation}></CompareScreen>}
+                    {props => <CompareScreen {...props} 
+                                removeFromSelectedProjects={this.removeFromSelectedProjects}
+                                selectedProjects={this.state.selectedProjects}
+                                navigation={this.props.navigation}
+                                compareCount={this.state.selectedProjects.length}>
+                                </CompareScreen>}
                 </HomeStack.Screen>
 
             </HomeStack.Navigator>

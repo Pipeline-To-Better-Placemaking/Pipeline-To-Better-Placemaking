@@ -9,7 +9,8 @@ class DummyResult extends Component {
         super(props);
 
         this.state = {
-            checked: false
+            checked: false,
+            added: false,
         }
 
         this.onCheckBoxPress = this.onCheckBoxPress.bind(this);
@@ -22,14 +23,34 @@ class DummyResult extends Component {
 
         if (this.state.checked)
         {
-            this.props.compareIncrement();
-            this.props.addProject(this.props.projectArea)
+            await this.props.compareIncrement();
+            await this.props.addProject(this.props.projectArea)
+
+            await this.setState({
+                added: !this.state.added
+            })
         }
         else
         {
-            this.props.compareDecrement();
-            this.props.removeProject(this.props.projectArea)
+            await this.props.compareDecrement();
+            await this.props.removeProject(this.props.projectArea)
+
+            await this.setState({
+                added: !this.state.added
+            })
         }
+    }
+    
+    async componentDidUpdate() {
+
+        if (!this.props.inList(this.props.projectArea) && this.state.added && this.state.checked){
+
+            await  this.setState({
+                checked: false,
+                added: false
+            })
+        }
+
     }
 
     render(){
