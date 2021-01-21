@@ -20,7 +20,9 @@ class CreateActivity extends Component {
             tempDate: time,
             selectedActivity: 0,
             listOfTimes: [],
-            isTimePickerVisible:false
+            isTimePickerVisible:false,
+            currTime: time,
+            currIndex: -1
         }
 
         this.onCreateNewActivity = this.onCreateActivity.bind(this, true);
@@ -33,6 +35,7 @@ class CreateActivity extends Component {
         this.setDate = this.setDate.bind(this);
         this.setTime = this.setTime.bind(this);
         this.getTimeStr = this.getTimeStr.bind(this);
+        this.viewTime = this.viewTime.bind(this);
     }
 
     onCreateActivity(submit) {
@@ -89,6 +92,10 @@ class CreateActivity extends Component {
         if (hours > 12) {
             hours = hours - 12
             morning = " PM";
+        } else if (hours === 12) {
+            morning = " PM";
+        } else if (hours === 0) {
+            hours = 12
         }
         // 2 digits
         if (minutes.length !== 2) {
@@ -97,11 +104,18 @@ class CreateActivity extends Component {
         return hours + ":" + minutes + morning;
     }
 
-    setTime(value, item) {
-        item.timeVal = value;
-        item.timeString = this.getTimeStr(value);
+    setTime(value) {
+        let tempList = [...this.state.listOfTimes];
+        let timeSlot = {...tempList[this.state.currIndex]};
+
+        timeSlot.timeVal = value;
+        timeSlot.timeString = this.getTimeStr(value);
+
+        tempList[this.state.currIndex] = timeSlot;
 
         this.setState({
+            currTime: value,
+            listOfTimes: tempList,
             isTimePickerVisible:false
         });
       }
@@ -114,7 +128,7 @@ class CreateActivity extends Component {
         };
         this.state.listOfTimes.push(temp);
         this.setState({
-            listOfTimes: this.state.listOfTimes
+            listOfTimes: this.state.listOfTimes,
         });
     }
 
@@ -122,6 +136,14 @@ class CreateActivity extends Component {
         this.state.listOfTimes.splice(timeIndex, 1);
         this.setState({
             listOfTimes: this.state.listOfTimes
+        });
+    }
+
+    viewTime(item, index) {
+        this.setState({
+            currTime: item.timeVal,
+            currIndex: index,
+            isTimePickerVisible:true
         });
     }
 
@@ -156,9 +178,9 @@ class CreateActivity extends Component {
         );
 
         const TimePicker = ({item, index}) => (
-            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+            <View style={{justifyContent:'flex-start'}}>
               <Button
-                onPress={() => this.setState({isTimePickerVisible:true})}
+                onPress={() => this.viewTime(item, index)}
                 accessoryRight={ClockIcon}
                 appearance='ghost'
                 >
@@ -167,16 +189,16 @@ class CreateActivity extends Component {
               </Button>
               <DateTimePickerModal
                   mode="time"
-                  date={item.timeVal}
+                  date={this.state.currTime}
                   isVisible={this.state.isTimePickerVisible}
-                  onConfirm={(selectedTime) => this.setTime(selectedTime, item)}
+                  onConfirm={this.setTime}
                   onCancel={() => this.setState({isTimePickerVisible:false})}
               />
             </View>
         );
 
         const Delete = ({item, index}) => (
-            <View style={{flexDirection:'row',justifyContent:'center',marginTop:5}}>
+            <View style={{justifyContent:'flex-end'}}>
                 <Button
                   onPress={() => this.delete(item, index)}
                   accessoryRight={DeleteIcon}
@@ -189,8 +211,10 @@ class CreateActivity extends Component {
 
         const signUpCard = ({item, index}) => (
             <Card>
-              <TimePicker {...{item, index}} />
-              <Delete {...{item, index}} />
+              <View style={styles.activityView}>
+                <TimePicker {...{item, index}} />
+                <Delete {...{item, index}} />
+              </View>
             </Card>
         );
 
