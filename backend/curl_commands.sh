@@ -1,15 +1,3 @@
-curl --header "Content-Type: application/json" \
-      --request POST \
-      -d '{"email": "apples@gmail.com","password": "What@1234"}'\
-      http://localhost:8080/api/users 
-
-echo
-
-curl --header "Content-Type: application/json" \
-      --request POST \
-      -d '{"email": "apples@gmail.com","password": "What@1234"}'\
-      http://localhost:8080/api/login \
-
 TOKEN=$(curl --header "Content-Type: application/json" \
       --request POST \
       -d '{"email": "apples@gmail.com","password": "What@1234"}'\
@@ -40,11 +28,7 @@ TEAM=$(curl -H "Authorization: Bearer ${TOKEN}" \
         -d '{"title": "Testing","description": "a cool testing thing"}'\
         http://localhost:8080/api/teams \
         | jq -r '._id' )
-echo 
 
-echo ${TEAM}
-
-echo 
 
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
@@ -83,10 +67,52 @@ curl -H 'Content-Type: application/json' \
 echo
 echo
 
+PROJECT=$(curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/teams/${TEAM}  \
+     | jq -r '.projects[0]' )
+
+AREA=$(curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/projects/${PROJECT}  \
+     | jq -r '.subareas[0]._id' )
+
+
+USER=$(curl -H "Authorization: Bearer ${TOKEN}" \
+        -H 'Content-Type: application/json' \
+        --request GET \
+        http://localhost:8080/api/users/ \
+        | jq -r '._id')
+echo 
+echo TEAM:
+echo ${TEAM}
+echo USER:
+echo ${USER}
+echo PROJECT:
+echo ${PROJECT}
+echo AREA:
+echo ${AREA}
+echo
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request POST \
+      -d "{\"owner\": \"${USER}\",  
+           \"claimed\": \"true\", 
+           \"area\": \"${AREA}\" , 
+           \"project\": \"${PROJECT}\" , 
+           \"start_time\": \"2:00\" , 
+           \"end_time\": \"3:00\"  }"  \
+     http://localhost:8080/api/stationary_maps/
+
+echo
+echo 
 
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
-     http://localhost:8080/api/teams/${TEAM}
+     http://localhost:8080/api/projects/${PROJECT}
 
 echo
