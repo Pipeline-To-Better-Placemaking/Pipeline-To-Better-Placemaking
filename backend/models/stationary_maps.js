@@ -7,8 +7,8 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Entry = mongoose.Schema({
 
-    location:  {lat: Number,
-                long: Number},
+    location: {lat: Number,
+               long: Number},
     age:{
         type:String,
         enum:['<15','15-30','30-45','45-60','60+']
@@ -21,24 +21,28 @@ const Entry = mongoose.Schema({
         type:String,
         enum:['waiting','eating','talking','exercising']
     },
-    time:{type:String}
+    time:{type:String},
 })
 
 
 const stationary_schema = mongoose.Schema({
     project:{type:ObjectId},
     owner:{type:ObjectId},
+    area:{type:ObjectId},
+    claimed:{type:Boolean,
+             default:false},
     start_time:{type:String},
     end_time:{type:String},
-    data:{type:Entry},
-    complete:{type:Boolean}
+    data:{type:[Entry]},
+    complete:{type:Boolean,
+              default:false}
 })
 
 
 const Stationarys = module.exports = mongoose.model('Stationary_Maps', stationary_schema)
 
-module.exports.addTest = async function addTest(newTest){
-
+module.exports.addMap = async function addTest(newMap){
+    return await newMap.save()
 }
 
 module.exports.addEntry = async function(testId, marker){
