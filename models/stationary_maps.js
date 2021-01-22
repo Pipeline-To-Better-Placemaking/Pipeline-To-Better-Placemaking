@@ -28,7 +28,7 @@ const Entry = mongoose.Schema({
 const stationary_schema = mongoose.Schema({
     project:{type:ObjectId},
     owner:{type:ObjectId},
-    area:{type;ObjectId},
+    area:{type:ObjectId},
     claimed:{type:Boolean,
              default:false},
     start_time:{type:String},
