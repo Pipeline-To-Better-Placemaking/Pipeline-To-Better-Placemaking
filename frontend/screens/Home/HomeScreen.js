@@ -26,7 +26,6 @@ class HomeScreen extends Component {
         this.compareIncrement = this.compareIncrement.bind(this);
         this.compareDecrement = this.compareDecrement.bind(this);
         this.addToSelectedProjects = this.addToSelectedProjects.bind(this);
-        // this.removeFromSelectedProjectes = this.removeFromSelectedProjectes.bind(this)
     }
 
     onComparePress() {
@@ -122,7 +121,7 @@ class HomeScreen extends Component {
                 </ScrollView>
 
                 <ConfirmCompare 
-                    navigation={this.props.navigation} 
+                    navigation={this.props.navigation}
                     compare={this.state.compare} 
                     selected={this.state.compareCount}
                     selectedProjects={this.state.selectedProjects}

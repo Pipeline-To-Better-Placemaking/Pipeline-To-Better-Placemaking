@@ -165,6 +165,9 @@ class ProjectPage extends Component {
                     addActivity={this.addActivity}
                     getActivityTypes={this.props.getActivityTypes}
                     anchor={myMenu}
+                    navigation={this.props.navigation}
+                    location={this.state.location}
+                    area={this.state.area}
                 />
 
                 <View style={{height:'45%'}}>

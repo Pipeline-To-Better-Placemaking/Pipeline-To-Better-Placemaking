@@ -51,6 +51,10 @@ class CreateActivity extends Component {
              };
              //console.log(activityDay);
              this.props.addActivity(activityDay);
+
+             if (activityDay.title === "Stationary Map") {
+               this.props.navigation.navigate("StandingPointScreen", {location: this.props.location, area: this.props.area})
+             }
         } else {
              //cancel
         }

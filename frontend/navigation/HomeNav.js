@@ -35,7 +35,7 @@ class HomeNav extends Component {
         let id = await AsyncStorage.getItem("@id")
         let success = false
 
-        await fetch('https://msrplacetest.herokuapp.com/api/users/' + id, {
+        await fetch('https://measuringplacesd.herokuapp.com/api/users/' + id, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',

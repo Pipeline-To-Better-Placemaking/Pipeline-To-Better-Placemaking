@@ -21,7 +21,7 @@ class ConfirmCompare extends Component {
 
         const CompareButton = () => {
 
-            if (this.props.compare && this.props.selected >= 2)
+            if (this.props.compare)
             {
                 return (
                     <Button onPress={this.onCompareConfirm} style={styles.confirmCompareCount}>

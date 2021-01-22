@@ -19,9 +19,9 @@ class CollaborateStack extends Component {
         super(props);
 
         this.state = {
-            selectedTeam: null,
-            selectedProject: null,
-            selectedActivity: null,
+            selectedTeam: {},
+            selectedProject: {},
+            selectedActivity: {},
             activityTypes: ['Stationary Map', 'People Moving', 'Survey']
         };
 
@@ -99,6 +99,7 @@ class CollaborateStack extends Component {
                                     getSelectedProject={this.getSelectedProject}
                                     setSelectedActivity={this.setSelectedActivity}
                                     getActivityTypes={this.getActivityTypes}
+                                    navigation={this.props.navigation}
                               />}
                 </CollaborateScreenStack.Screen>
                 <CollaborateScreenStack.Screen
@@ -108,13 +109,6 @@ class CollaborateStack extends Component {
                                     {...props}
                                     getSelectedActivity={this.getSelectedActivity}
                                     getActivityTypes={this.getActivityTypes}
-                              />}
-                </CollaborateScreenStack.Screen>
-                <CollaborateScreenStack.Screen
-                    name="StationaryActivity"
-                    options={{headerShown: false}}>
-                    {props => <StationaryActivity
-                                    {...props}
                               />}
                 </CollaborateScreenStack.Screen>
                 <CollaborateScreenStack.Screen

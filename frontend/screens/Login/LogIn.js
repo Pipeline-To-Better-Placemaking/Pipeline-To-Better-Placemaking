@@ -82,7 +82,7 @@ class LogIn extends Component {
         let id = ''
 
         try {
-            const response = await fetch('https://msrplacetest.herokuapp.com/api/login', {
+            const response = await fetch('https://measuringplacesd.herokuapp.com/api/login', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

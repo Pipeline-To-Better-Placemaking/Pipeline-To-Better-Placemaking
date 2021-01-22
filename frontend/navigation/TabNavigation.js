@@ -20,8 +20,18 @@ class TabNavigation extends Component {
 
         this.state = {
             location: props.location,
-            index: 1
+            index: 1,
+            showTab: true
         }
+    }
+
+    hideTab = async () => {
+
+        console.log("Hiding tab bar")
+
+        await this.setState({
+            showTab: false
+        })
     }
 
     render(){
@@ -31,7 +41,7 @@ class TabNavigation extends Component {
                 <Tab.Screen
                     name='HomeScreenStack'
                 >
-                    {props => <HomeScreenStack {...props} navigation={this.props.navigation} location = {this.props.location}></HomeScreenStack>}
+                    {props => <HomeScreenStack {...props} location = {this.props.location}></HomeScreenStack>}
                 </Tab.Screen>
                 
                 <Tab.Screen
@@ -42,8 +52,10 @@ class TabNavigation extends Component {
 
                 <Tab.Screen
                     name='CollaborateStack'
-                    component={CollaborateStack}
-                />
+                    options={{tabBarVisible: this.state.showTab}}
+                >
+                    {props => <CollaborateStack {...props}/> }
+                </Tab.Screen>
 
             </Tab.Navigator>
 

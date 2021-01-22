@@ -5,6 +5,7 @@ import SignUp from '../screens/SignUp/SignUp.js';
 import HomeNav from './HomeNav.js';
 import LogIn from '../screens/Login/LogIn.js';
 import ForgotPasswordScreen from '../screens/ForgotPassword/ForgotPasswordScreen.js';
+import StandingPointScreen from '../screens/ResearchActivities/StandingPointScreen';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -42,10 +43,18 @@ class MainStackNavigation extends Component {
                 />
 
                 <Stack.Screen
+                    name="StandingPointScreen"
+                    options={{headerShown: false}}
+                >
+                    {props => <StandingPointScreen {...props} navigation={this.props.navigation}> </StandingPointScreen>}
+            
+                </Stack.Screen>
+
+                <Stack.Screen
                 name="HomeNav"
                 options={{headerShown: false}}
                 >
-                {props => <HomeNav {...props} location = {this.props.location} toggleTheme={this.props.toggleTheme}></HomeNav>}
+                {props => <HomeNav {...props} navigation={this.props.navigation} location = {this.props.location} toggleTheme={this.props.toggleTheme}></HomeNav>}
                 </Stack.Screen>
 
                 <Stack.Screen

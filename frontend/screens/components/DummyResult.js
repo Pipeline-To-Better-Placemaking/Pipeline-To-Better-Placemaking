@@ -71,9 +71,11 @@ class DummyResult extends Component {
 
         return(
             <View style={styles.result}>
+
                 <View style={styles.resultTab}>
                     <CompareCheckBox/>
                 </View>
+                
                 <View style={styles.resultBox}>
                     <Text category={'s1'} style={styles.resultBoxText}>
                         {this.props.projectArea}
