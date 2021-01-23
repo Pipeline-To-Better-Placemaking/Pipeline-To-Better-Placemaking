@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Modal } from 'react-native';
 
-import BackHeader from '../../components/BackHeader.js';
+import BackHeader from '../../components/Headers/BackHeader.js';
 import CreateProjectView from '../Project/CreateProjectView.js';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';

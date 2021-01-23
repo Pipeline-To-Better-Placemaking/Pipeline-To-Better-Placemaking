@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Text, Button, Divider, List, Icon, ListItem, Toggle } from '@ui-kitten/components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import MyHeader from '../components/MyHeader.js';
+import MyHeader from '../components/Headers/MyHeader.js';
 
 import styles from './userSettingsStyles.js';
 

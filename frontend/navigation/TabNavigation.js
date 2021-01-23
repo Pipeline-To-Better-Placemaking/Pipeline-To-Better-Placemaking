@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
 
-import HomeBottomNav from '../screens/components/BottomNav.js';
+import HomeBottomNav from '../screens/components//Tab/BottomNav.js';
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreenStack from './HomeScreenStack.js';

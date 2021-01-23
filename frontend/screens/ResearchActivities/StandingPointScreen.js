@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Modal, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import MyHeader from '../components/MyHeader.js'
+import MyHeader from '../components/Headers/MyHeader.js'
 import styles from './standingPointStyles.js';
 import MapAreaPointList from '../components/Maps/MapAreaPointList.js';
 

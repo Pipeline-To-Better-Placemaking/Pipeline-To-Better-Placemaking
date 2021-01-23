@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
-import MyHeader from '../components/MyHeader.js';
+import MyHeader from '../components/Headers/MyHeader.js';
 import CreateTeamCard from './Team/CreateTeamCard.js';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';

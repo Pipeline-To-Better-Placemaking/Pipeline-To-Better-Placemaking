@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import ViewProjectMap from '../../components/Maps/ViewProjectMap.js'
-import MyHeader from '../../components/MyHeader.js';
+import MyHeader from '../../components/Headers/MyHeader.js';
 import styles from '../../CompareResults/compareStyles.js';
 
 class StationaryActivity extends Component {
