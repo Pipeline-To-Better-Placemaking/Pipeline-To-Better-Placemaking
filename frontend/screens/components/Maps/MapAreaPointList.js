@@ -4,14 +4,14 @@ import { View } from 'react-native';
 import { Text, Button, Input, Icon, Divider, List, ListItem} from '@ui-kitten/components';
 import styles from '../../ResearchActivities/standingPointStyles.js';
 
-class MapAreaWithPoints extends Component {
+class MapAreaPointList extends Component {
 
     constructor(props){
         super(props);
 
         this.state = {
             location: props.location,
-            markers: props.markers
+            markers: props.markers,
         }
     }
 
@@ -88,4 +88,4 @@ class MapAreaWithPoints extends Component {
     }
 }
 
-export default MapAreaWithPoints;
+export default MapAreaPointList;

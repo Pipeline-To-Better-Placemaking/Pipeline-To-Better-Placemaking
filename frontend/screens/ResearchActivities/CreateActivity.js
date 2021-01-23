@@ -22,11 +22,12 @@ class CreateActivity extends Component {
             listOfTimes: [],
             isTimePickerVisible:false,
             currTime: time,
-            currIndex: -1
+            currIndex: -1,
+            visible: this.props.visible,
         }
 
-        this.onCreateNewActivity = this.onCreateActivity.bind(this, true);
-        this.onDismissNewActivity = this.onCreateActivity.bind(this, false);
+        this.onCreateNewActivity = this.onCreate.bind(this, true);
+        this.onDismissNewActivity = this.onCreate.bind(this, false);
 
         this.setSelectedActivity = this.setSelectedActivity.bind(this);
         this.createTime = this.createTime.bind(this);
@@ -38,29 +39,27 @@ class CreateActivity extends Component {
         this.viewTime = this.viewTime.bind(this);
     }
 
-    onCreateActivity(submit) {
+    async onCreate(submit) {
+
         let activityTypes = this.props.getActivityTypes();
 
         if (submit) {
              // save
-             let activityDay = {
-                 title: this.state.tempTitle,
-                 type: this.state.tempType,
-                 date: this.state.tempDate,
-                 signUpSlots: this.state.listOfTimes
-             };
-             //console.log(activityDay);
-             this.props.addActivity(activityDay);
+            let activityDay = {
+                title: this.state.tempTitle,
+                type: this.state.tempType,
+                date: this.state.tempDate,
+                signUpSlots: this.state.listOfTimes,
+                standingPointData: []
+            };
 
-             if (activityDay.title === "Stationary Map") {
-               this.props.navigation.navigate("StandingPointScreen", {location: this.props.location, area: this.props.area})
-             }
-        } else {
+            await this.props.addTempData(activityDay);
+
              //cancel
         }
 
         // this sets whether this screen is visible or not
-       this.props.setCreateActivity(false);
+        this.props.setCreateActivity(false, submit);
 
         // reset values
         let time = new Date();
@@ -69,9 +68,10 @@ class CreateActivity extends Component {
             tempType: activityTypes[0],
             tempDate: time,
             selectedActivity: 0,
-            listOfTimes: []
+            listOfTimes: [],
+            standingPointData: []
         });
-    }
+      }
 
     setSelectedActivity(index) {
         let activityTypes = this.props.getActivityTypes();
@@ -226,9 +226,10 @@ class CreateActivity extends Component {
         let activityTypes = this.props.getActivityTypes();
 
         return(
+
             <Popover
                 anchor={this.props.anchor}
-                visible={this.props.createActivity}
+                visible={this.props.visible}
                 backdropStyle={styles.backdrop}
                 onBackdropPress={this.onDismissNewActivity}
                 fullWidth={true}
@@ -291,6 +292,7 @@ class CreateActivity extends Component {
                   </View>
                 </View>
             </Popover>
+          // </View>
         );
     }
 }

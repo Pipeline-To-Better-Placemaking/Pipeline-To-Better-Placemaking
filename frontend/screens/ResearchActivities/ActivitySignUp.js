@@ -2,23 +2,30 @@ import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
 import BackHeader from '../components/BackHeader.js';
+import MapAreaWithPoints from '../components/Maps/MapAreaPointList.js'
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import * as Location from 'expo-location';
 import styles from './activitySignUpStyles.js';
+import MapAreaWithStandingPoints from '../components/Maps/MapAreaWithStandingPoints.js';
 
 class ActivitySignUp extends Component {
 
     constructor(props){
         super(props);
 
+        let project = props.getSelectedProject();
         let activity = props.getSelectedActivity();
 
         this.state = {
             title: activity.title,
             type: activity.type,
             date: activity.date,
-            signUpSlots: activity.signUpSlots
+            signUpSlots: activity.signUpSlots,
+            standingPoints: activity.standingPointData,
+
+            location: project.location,
+            area: project.area,
         }
 
         this.openPrevPage = this.openPrevPage.bind(this);
@@ -60,19 +67,31 @@ class ActivitySignUp extends Component {
 
         return(
             <View style={styles.container}>
+                
                 <BackHeader headerText={this.state.title} prevPage={this.openPrevPage}/>
-                <Text style={{textAlign:'center'}}>
-                    Type: {this.state.type}
-                </Text>
-                <Text style={{textAlign:'center'}}>
-                    Date: {this.state.date.toLocaleDateString()}
-                </Text>
-                <List
-                  style={{maxHeight:500}}
-                  data={this.state.signUpSlots}
-                  ItemSeparatorComponent={Divider}
-                  renderItem={signUpCard}
-                />
+                
+                <View style={styles.mapContainer}>
+                    <MapAreaWithStandingPoints
+                        location={this.state.location}
+                        area={this.state.area}
+                        markers={this.state.standingPoints}
+                    />
+                </View>
+
+                <View>
+                    <Text style={{textAlign:'center'}}>
+                        Type: {this.state.type}
+                    </Text>
+                    <Text style={{textAlign:'center', marginBottom: 10}}>
+                        Date: {this.state.date.toLocaleDateString()}
+                    </Text>
+                    <List
+                    style={{maxHeight:400}}
+                    data={this.state.signUpSlots}
+                    ItemSeparatorComponent={Divider}
+                    renderItem={signUpCard}
+                    />
+                </View>
             </View>
         );
     }

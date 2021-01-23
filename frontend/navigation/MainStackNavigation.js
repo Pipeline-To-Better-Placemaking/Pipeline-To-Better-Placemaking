@@ -46,7 +46,7 @@ class MainStackNavigation extends Component {
                     name="StandingPointScreen"
                     options={{headerShown: false}}
                 >
-                    {props => <StandingPointScreen {...props} navigation={this.props.navigation}> </StandingPointScreen>}
+                    {props => <StandingPointScreen {...props}> </StandingPointScreen>}
             
                 </Stack.Screen>
 

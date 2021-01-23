@@ -54,6 +54,7 @@ class CollaborateStack extends Component {
     }
 
     getSelectedProject() {
+
         return this.state.selectedProject;
     }
 
@@ -64,6 +65,9 @@ class CollaborateStack extends Component {
     }
 
     getSelectedActivity() {
+
+        console.log("Getting activity: " + JSON.stringify(this.state.selectedActivity))
+
         return this.state.selectedActivity;
     }
 
@@ -107,6 +111,7 @@ class CollaborateStack extends Component {
                     options={{headerShown: false}}>
                     {props => <ActivitySignUp
                                     {...props}
+                                    getSelectedProject={this.getSelectedProject}
                                     getSelectedActivity={this.getSelectedActivity}
                                     getActivityTypes={this.getActivityTypes}
                               />}

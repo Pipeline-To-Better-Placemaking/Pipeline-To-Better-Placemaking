@@ -8,6 +8,7 @@ import CreateActivity from '../../ResearchActivities/CreateActivity.js';
 import { Text, Button, Input, Icon, Popover, Divider,
          List, ListItem, Card, Drawer, DrawerItem, OverflowMenu, MenuItem } from '@ui-kitten/components';
 import * as Location from 'expo-location';
+import StandingPointScreen from '../../ResearchActivities/StandingPointScreen.js';
 import styles from './projectStyles.js';
 
 class ProjectPage extends Component {
@@ -26,49 +27,35 @@ class ProjectPage extends Component {
             area: project.area,
             menuVisible: false,
             createActivity: false,
-            data: [{
-                title: activityTypes[0],
-                date: time,
-                type: activityTypes[0],
-                signUpSlots: [{ // offset by 1
-                    timeVal: time,
-                    timeString: time.toLocaleTimeString(),
-                }]
-              },
-              {
-                title: activityTypes[1],
-                date: time,
-                type: activityTypes[1],
-                signUpSlots: [{
-                    timeVal: time,
-                    timeString: time.toLocaleTimeString(),
-                }]
-              },
-              {
-                title: activityTypes[2],
-                date: time,
-                type: activityTypes[2],
-                signUpSlots: [{
-                    timeVal: time,
-                    timeString: time.toLocaleTimeString(),
-                }]
-              }
-            ]
+            stationaryModal: false,
+            data: [],
+            markers: [],
+            tempData: {}
         }
 
         this.openPrevPage = this.openPrevPage.bind(this);
         this.openMenu = this.openMenu.bind(this);
 
         this.addActivity = this.addActivity.bind(this);
+        this.addTempData = this.addTempData.bind(this);
         this.openActivityPage = this.openActivityPage.bind(this);
         this.setCreateActivity = this.setCreateActivity.bind(this);
+        this.setData = this.setData.bind(this);
     }
 
     addActivity(activity) {
+
         this.state.data.push(activity);
         this.setState({
            data: this.state.data
         });
+    }
+
+    async addTempData(activity) {
+
+        await this.setState({
+            tempData:  activity
+        })
     }
 
     openPrevPage() {
@@ -81,15 +68,45 @@ class ProjectPage extends Component {
         });
     }
 
-    setCreateActivity(value) {
+    setCreateActivity(value, cancel) {
+
         this.setState({
             createActivity: value
         });
+
+        if (!value && cancel) {
+            this.setState({
+                stationaryModal: true
+            })
+        }
     }
 
     openActivityPage(item) {
         this.props.setSelectedActivity(item);
         this.props.navigation.navigate("SignUpPage");
+    }
+
+    cancelStandingPoint = () => {
+
+        this.setState({
+            stationaryModal: false
+        })
+    }
+
+    setData(markers) {
+
+        let tempData = this.state.tempData
+
+        tempData.standingPointData = markers
+ 
+        let data = this.state.data
+
+        data.push(tempData)
+
+        this.setState({
+            stationaryModal: false,
+            data: data
+        })
     }
 
     render() {
@@ -160,14 +177,22 @@ class ProjectPage extends Component {
             <View style={styles.container}>
 
                 <CreateActivity
-                    createActivity={this.state.createActivity}
+                    visible={this.state.createActivity}
                     setCreateActivity={this.setCreateActivity}
-                    addActivity={this.addActivity}
+                    addTempData={this.addTempData}
                     getActivityTypes={this.props.getActivityTypes}
                     anchor={myMenu}
                     navigation={this.props.navigation}
                     location={this.state.location}
                     area={this.state.area}
+                />
+
+                <StandingPointScreen
+                    visible={this.state.stationaryModal}
+                    location={this.state.location}
+                    area={this.state.area}
+                    setData={this.setData}
+                    cancel={this.cancelStandingPoint}
                 />
 
                 <View style={{height:'45%'}}>

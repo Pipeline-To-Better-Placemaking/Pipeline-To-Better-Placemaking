@@ -8,6 +8,11 @@ export const styles = StyleSheet.create({
         flexDirection:'column'
     },
 
+    mapContainer: {
+        height: '25%',
+        marginBottom: 10
+    }
+
 });
 
 export default styles;

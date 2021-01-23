@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import { View, ScrollView, Pressable, Modal, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import MyHeader from '../components/MyHeader.js'
 import styles from './standingPointStyles.js';
-import MapAreaWithPoints from '../components/Maps/MapAreaWithPoints.js';
+import MapAreaPointList from '../components/Maps/MapAreaPointList.js';
 
 class StandingPointScreen extends Component {
 
@@ -13,8 +13,8 @@ class StandingPointScreen extends Component {
 
         this.state = {
 
-            location: props.route.params.location,
-            area: props.route.params.area,
+            location: props.location,
+            area: props.area,
             markers: []
         }
 
@@ -48,8 +48,17 @@ class StandingPointScreen extends Component {
         })
     }
 
-    onConfirm() {
-        
+    onConfirm = () => {
+        this.props.setData(this.state.markers)
+
+        this.setState({
+            markers: []
+        })
+    }
+
+    onCancel = () => {
+
+        this.props.cancel()
     }
 
     render() {
@@ -62,38 +71,45 @@ class StandingPointScreen extends Component {
             <Icon {...props} name='checkmark-outline'/>
         );
 
-
         return(
+
+            <Modal
+                animationType='slide'
+                visible={this.props.visible}
+            >
             
-            <View style={styles.container}>
+                <View style={styles.container}>
 
-                <MyHeader myHeaderText={"Create Standing Points"}/>
+                    <MyHeader myHeaderText={"Create Standing Points"}/>
 
-                <MapAreaWithPoints
-                    location={this.state.location}
-                    area={this.state.area}
-                    addMarker={this.addMarker}
-                    removeMarker={this.removeMarker}
-                    markers={this.state.markers}
-                />
+                    <MapAreaPointList
+                        location={this.state.location}
+                        area={this.state.area}
+                        addMarker={this.addMarker}
+                        removeMarker={this.removeMarker}
+                        markers={this.state.markers}
+                    />
 
-                <View style={styles.buttonContainer}>
+                    <View style={styles.buttonContainer}>
 
-                    <Button 
-                        status='danger'
-                        accessoryLeft={CancelIcon}>
-                        Cancel
-                    </Button>
+                        <Button 
+                            status='danger'
+                            accessoryLeft={CancelIcon}
+                            onPress={this.onCancel}>
+                            Cancel
+                        </Button>
 
                         <Button
                             status='success'
-                            accessoryLeft={CreateIcon}>
+                            accessoryLeft={CreateIcon}
+                            onPress={this.onConfirm}>
                             Confrim
                         </Button>
 
-                </View>
+                    </View>
 
-            </View>
+                </View>
+            </Modal>
         );
     }
 }
