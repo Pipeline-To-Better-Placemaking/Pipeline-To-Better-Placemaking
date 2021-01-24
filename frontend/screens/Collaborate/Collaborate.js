@@ -14,7 +14,7 @@ class Collaborate extends Component {
         super(props);
 
         this.state = {
-            data: JSON.parse(props.teams),
+            data: props.teams,
             createTeam: false,
             tempTeamName: ' '
         }
@@ -49,9 +49,9 @@ class Collaborate extends Component {
     }
 
     async addNewTeam(teamName) {
-        let token = await AsyncStorage.getItem("@token")
-        let id = await AsyncStorage.getItem("@id")
-        let teams = null
+        let token = await AsyncStorage.getItem("@token");
+        let teams = this.state.data;
+        let team = null;
         // Save the new team
         try {
             const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/', {
@@ -66,34 +66,31 @@ class Collaborate extends Component {
                     description: "description"
                 })
             })
+            team = await response.json()
         } catch (error) {
             console.log("error", error)
         }
-        // Get the list of teams
-        await fetch('https://measuringplacesd.herokuapp.com/api/users/' + id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-            }
-        })
-        .then((response) => (response.json()))
-        .then(async (res) => (
-                teams = JSON.stringify(res.teams),
-                await AsyncStorage.setItem("@teams", teams)
-            ))
-        .catch((error) => (console.log(error)))
+
+        // Add the new team
+        teams.push({
+           _id: team._id,
+           title: team.title
+        });
+
+        await AsyncStorage.setItem("@teams", JSON.stringify(teams))
+
         // Update
-        await this.props.updateTeams(JSON.parse(teams));
+        await this.props.updateTeams(teams);
         await this.setState({
             data: this.props.teams
         });
         console.log("teams: ");
         console.log(this.state.data);
+        this.openTeamPage(team);
     }
 
     openTeamPage(item) {
+        console.log("Selected Team: ", item);
         this.props.setSelectedTeam(item);
         this.props.navigation.navigate("TeamPage");
     }

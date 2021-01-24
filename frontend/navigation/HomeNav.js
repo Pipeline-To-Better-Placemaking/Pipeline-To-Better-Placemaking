@@ -37,8 +37,6 @@ class HomeNav extends Component {
         let token = await AsyncStorage.getItem("@token")
         let id = await AsyncStorage.getItem("@id")
         let success = false
-        let resTeam = null
-        let resInvites = null
 
         await fetch('https://measuringplacesd.herokuapp.com/api/users/' + id, {
             method: 'GET',
@@ -52,22 +50,19 @@ class HomeNav extends Component {
         .then(async (res) => (
                 console.log(res),
 
-                resTeam = JSON.stringify(res.teams),
-                resInvites = JSON.stringify(res.invites),
-
                 await AsyncStorage.setItem("@firstName", res.firstname),
                 await AsyncStorage.setItem("@lastName", res.lastname),
                 await AsyncStorage.setItem("@email", res.email),
-                await AsyncStorage.setItem("@teams", resTeam),
-                await AsyncStorage.setItem("@invites", resInvites),
+                await AsyncStorage.setItem("@teams", JSON.stringify(res.teams)),
+                await AsyncStorage.setItem("@invites", JSON.stringify(res.invites)),
 
                 userDetails = {
                     firstName: res.firstname,
                     lastName: res.lastname,
                     email: res.email
                 },
-                teams = resTeam,
-                invites = resInvites
+                teams = res.teams,
+                invites = res.invites
             ))
         .catch((error) => (console.log(error), success = false))
     }
