@@ -14,7 +14,7 @@ class Collaborate extends Component {
         super(props);
 
         this.state = {
-            data: props.teams,
+            data: props.getTeams(),
             createTeam: false,
             tempTeamName: ' '
         }
@@ -82,7 +82,7 @@ class Collaborate extends Component {
         // Update
         await this.props.updateTeams(teams);
         await this.setState({
-            data: this.props.teams
+            data: teams
         });
         console.log("teams: ");
         console.log(this.state.data);
@@ -164,7 +164,7 @@ class Collaborate extends Component {
                 <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
                     <List
                       style={{maxHeight:'100%', maxWidth:'90%'}}
-                      data={this.state.data}
+                      data={this.props.getTeams()}
                       ItemSeparatorComponent={Divider}
                       renderItem={renderItem}
                     />

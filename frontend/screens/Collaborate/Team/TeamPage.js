@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import BackHeader from '../../components/Headers/BackHeader.js';
+import BackEditHeader from '../../components/Headers/BackEditHeader.js';
 import CreateProjectView from '../Project/CreateProjectView.js';
+import EditTeam from './EditTeam.js';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import * as Location from 'expo-location';
@@ -19,10 +20,13 @@ class TeamPage extends Component {
         this.state = {
             team: team,
             data: team.projects,
-            createProject: false
+            createProject: false,
+            editPageVisible: false,
         }
         this.openPrevPage = this.openPrevPage.bind(this);
         this.openProjectPage = this.openProjectPage.bind(this);
+
+        this.viewEditPage = this.viewEditPage.bind(this);
 
         this.setProjectData = this.setProjectData.bind(this);
         this.setCreateProject= this.setCreateProject.bind(this);
@@ -101,6 +105,12 @@ class TeamPage extends Component {
         });
     }
 
+    viewEditPage() {
+        this.setState({
+            editPageVisible: !this.state.editPageVisible
+        });
+    }
+
     render() {
 
         const ForwardIcon = (props) => (
@@ -119,13 +129,25 @@ class TeamPage extends Component {
 
         return(
             <View style={styles.container}>
-                <BackHeader headerText={this.state.team.title} prevPage={this.openPrevPage}/>
+                <BackEditHeader
+                    headerText={this.props.getSelectedTeam().title}
+                    prevPage={this.openPrevPage}
+                    openEditMenu={this.viewEditPage}
+                />
+
+                <EditTeam
+                    editTeam={this.state.editPageVisible}
+                    viewEditPage={this.viewEditPage}
+                    updateTeams={this.props.updateTeams}
+                    getSelectedTeam={this.props.getSelectedTeam}
+                    setSelectedTeam={this.props.setSelectedTeam}
+                />
 
                 <CreateProjectView
-                        createProject={this.state.createProject}
-                        setCreateProject={this.setCreateProject}
-                        setProjectData={this.setProjectData}
-                    />
+                    createProject={this.state.createProject}
+                    setCreateProject={this.setCreateProject}
+                    setProjectData={this.setProjectData}
+                />
 
                 <View style={styles.teamTextView}>
                     <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
@@ -142,7 +164,7 @@ class TeamPage extends Component {
                 <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
                     <List
                       style={{maxHeight:'100%', maxWidth:'90%'}}
-                      data={this.state.data}
+                      data={this.props.getSelectedTeam().projects}
                       ItemSeparatorComponent={Divider}
                       renderItem={renderItem}
                     />
