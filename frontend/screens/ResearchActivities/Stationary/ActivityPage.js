@@ -13,8 +13,8 @@ class StationaryActivity extends Component {
 
         this.state = {
 
-            location: props.route.params.location,
-            area: props.route.params.area
+            // location: props.route.params.location,
+            // area: props.route.params.area
         }
     }
 
@@ -30,12 +30,12 @@ class StationaryActivity extends Component {
 
                 <MyHeader myHeaderText={"Create Boundaries"}/>
                 
-                <View style={styles.mapContainer}>
+                {/* <View style={styles.mapContainer}>
                     <ViewProjectMap
                         location={this.state.location}
                         area={this.state.area}
                     />
-                </View>
+                </View> */}
 
             </View>
         );
