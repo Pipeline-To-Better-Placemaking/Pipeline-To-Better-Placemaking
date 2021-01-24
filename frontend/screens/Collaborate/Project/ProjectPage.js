@@ -20,12 +20,10 @@ class ProjectPage extends Component {
         let project = props.getSelectedProject();
         let activityTypes = props.getActivityTypes();
         let time = new Date();
-
         this.state = {
-            projName: project.title,
-            location: project.location,
-            locName: project.locName,
-            area: project.area,
+            project: project,
+            location: project.subareas[0].area[0], // pick the first point for now
+            area: project.subareas[0].area,
             menuVisible: false,
             editMenu: false,
             createActivity: false,
@@ -134,7 +132,7 @@ class ProjectPage extends Component {
         );
 
         const myHeader = () => (
-            <ProjectHeader headerText={this.state.projName}
+            <ProjectHeader headerText={this.state.project.title}
                            prevPage={this.openPrevPage}
                            openMenu={this.openMenu}/>
         );
@@ -154,7 +152,7 @@ class ProjectPage extends Component {
         const LocationInfo = () => (
             <View style={styles.teamTextView}>
                 <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
-                    <Text>Loaction: {this.state.locName}</Text>
+                    <Text>Loaction: {this.state.project.description}</Text>
                 </View>
             </View>
         );

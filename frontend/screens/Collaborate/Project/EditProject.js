@@ -16,9 +16,8 @@ class EditProject extends Component {
 
         this.state = {
             projName: project.title,
-            location: project.location,
-            locName: project.locName,
-            area: project.area,
+            locName: project.description,
+            subareas: project.subareas,
         }
 
         this.onDismissProject = this.onCreateProject.bind(this, false);
@@ -66,13 +65,13 @@ class EditProject extends Component {
     }
 
     addNewProject(projectName, subareas) {
-        let temp = {
+        /*let temp = {
             title: projectName,
             location: this.state.location,
             locName: this.state.locName,
             area: subareas,
         };
-        this.props.setSelectedProject(temp);
+        this.props.setSelectedProject(temp);*/
     }
 
     render() {

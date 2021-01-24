@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Modal } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import BackHeader from '../../components/Headers/BackHeader.js';
 import CreateProjectView from '../Project/CreateProjectView.js';
@@ -13,37 +14,11 @@ class TeamPage extends Component {
     constructor(props){
         super(props);
 
+        let team = props.getSelectedTeam();
+
         this.state = {
-            data: [{ // these values are for example
-                title: 'Project Name',
-                locName: 'Example Loc Name',
-                location: {
-                    "timestamp": 0,
-                    "coords": {
-                      "accuracy": -1,
-                      "altitude": -1,
-                      "altitudeAccuracy": -1,
-                      "heading": -1,
-                      "latitude": 28.602413253152307,
-                      "longitude": -81.20019937739713,
-                      "speed": 0
-                    }
-                },
-                area: [
-                  {
-                    "latitude": 28.60281064892976,
-                    "longitude": -81.20062004774809,
-                  },
-                  {
-                    "latitude": 28.601854567009166,
-                    "longitude": -81.2006676569581,
-                  },
-                  {
-                    "latitude": 28.60175654457185,
-                    "longitude": -81.19934029877186,
-                  },
-                ]
-            }],
+            team: team,
+            data: team.projects,
             createProject: false
         }
         this.openPrevPage = this.openPrevPage.bind(this);
@@ -57,16 +32,67 @@ class TeamPage extends Component {
         this.props.navigation.navigate("Collaborate");
     }
 
-    openProjectPage(item) {
-        this.props.setSelectedProject(item);
+    async openProjectPage(item) {
+        let token = await AsyncStorage.getItem("@token");
+        console.log("opening project: ", item);
+        let id = item; // TODO: change to this once they update to give us the title: item._id
+        let projectDetails = null;
+        // Get the team information
+        await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + id, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+            }
+        })
+        .then((response) => (response.json()))
+        .then(async (res) => (
+                projectDetails = res
+            ))
+        .catch((error) => (console.log(error)))
+        // Update
+        console.log("Selected Project: ", projectDetails);
+
+        this.props.setSelectedProject(projectDetails);
         this.props.navigation.navigate("ProjectPage");
     }
 
-    setProjectData(data) {
-        this.state.data.push(data);
-        this.setState({
+    async setProjectData(data) {
+        let token = await AsyncStorage.getItem("@token");
+        let projects = this.state.data;
+        let project = null;
+        // Save the new project
+        try {
+            const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                    title: data.title,
+                    description: data.description,
+                    points: data.points,
+                    team: this.state.team
+                })
+            })
+            project = await response.json()
+        } catch (error) {
+            console.log("error", error)
+        }
+        console.log(project);
+
+        // Update
+        await this.state.data.push(project._id); // TODO: change once they update to give title: project
+        await this.setState({
             data: this.state.data
         });
+
+        // Open Project Page
+        await this.props.setSelectedProject(project);
+        this.props.navigation.navigate("ProjectPage");
     }
 
     setCreateProject(value) {
@@ -93,7 +119,7 @@ class TeamPage extends Component {
 
         return(
             <View style={styles.container}>
-                <BackHeader headerText={this.props.getSelectedTeam().title} prevPage={this.openPrevPage}/>
+                <BackHeader headerText={this.state.team.title} prevPage={this.openPrevPage}/>
 
                 <CreateProjectView
                         createProject={this.state.createProject}

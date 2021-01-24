@@ -86,12 +86,31 @@ class Collaborate extends Component {
         });
         console.log("teams: ");
         console.log(this.state.data);
-        this.openTeamPage(team);
+        // Open team Page
+        this.props.setSelectedTeam(team);
+        this.props.navigation.navigate("TeamPage");
     }
 
-    openTeamPage(item) {
-        console.log("Selected Team: ", item);
-        this.props.setSelectedTeam(item);
+    async openTeamPage(item) {
+        let token = await AsyncStorage.getItem("@token");
+        let teamDetails = null
+        // Get the team information
+        await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + item._id, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+            }
+        })
+        .then((response) => (response.json()))
+        .then(async (res) => (
+                teamDetails = res
+            ))
+        .catch((error) => (console.log(error)))
+        // Update
+        console.log("Selected Team: ", teamDetails);
+        this.props.setSelectedTeam(teamDetails);
         this.props.navigation.navigate("TeamPage");
     }
 

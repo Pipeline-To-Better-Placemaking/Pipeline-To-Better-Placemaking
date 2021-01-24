@@ -135,6 +135,7 @@ class CollaborateStack extends Component {
                     options={{headerShown: false}}>
                     {props => <StationaryActivity
                                     {...props}
+                                    getSelectedActivity={this.getSelectedActivity}
                               />}
                 </CollaborateScreenStack.Screen>
                 <CollaborateScreenStack.Screen
