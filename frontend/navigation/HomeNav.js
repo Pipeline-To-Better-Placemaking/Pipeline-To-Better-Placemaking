@@ -9,6 +9,9 @@ var userDetails = {
     email: ''
 }
 
+var teams;
+var invites;
+
 class HomeNav extends Component {
 
     constructor(props){
@@ -34,6 +37,8 @@ class HomeNav extends Component {
         let token = await AsyncStorage.getItem("@token")
         let id = await AsyncStorage.getItem("@id")
         let success = false
+        let resTeam = null
+        let resInvites = null
 
         await fetch('https://measuringplacesd.herokuapp.com/api/users/' + id, {
             method: 'GET',
@@ -47,15 +52,22 @@ class HomeNav extends Component {
         .then(async (res) => (
                 console.log(res),
 
+                resTeam = JSON.stringify(res.teams),
+                resInvites = JSON.stringify(res.invites),
+
                 await AsyncStorage.setItem("@firstName", res.firstname),
                 await AsyncStorage.setItem("@lastName", res.lastname),
                 await AsyncStorage.setItem("@email", res.email),
+                await AsyncStorage.setItem("@teams", resTeam),
+                await AsyncStorage.setItem("@invites", resInvites),
 
                 userDetails = {
                     firstName: res.firstname,
                     lastName: res.lastname,
                     email: res.email
-                }
+                },
+                teams = resTeam,
+                invites = resInvites
             ))
         .catch((error) => (console.log(error), success = false))
     }
@@ -68,6 +80,8 @@ class HomeNav extends Component {
                 toggleTheme={this.props.toggleTheme}
                 navigation={this.props.navigation}
                 userDetails={userDetails}
+                teams={teams}
+                invites={invites}
             />
         );
 

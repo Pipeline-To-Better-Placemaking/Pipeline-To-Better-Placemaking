@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import MyHeader from '../components/Headers/MyHeader.js';
 import CreateTeamCard from './Team/CreateTeamCard.js';
@@ -13,9 +14,7 @@ class Collaborate extends Component {
         super(props);
 
         this.state = {
-            data: [{
-                title: 'Team Name'
-            }],
+            data: JSON.parse(props.teams),
             createTeam: false,
             tempTeamName: ' '
         }
@@ -33,7 +32,7 @@ class Collaborate extends Component {
         });
     }
 
-    onCreateTeam(visible, submit) {
+    async onCreateTeam(visible, submit) {
         if (visible) {
             this.setState({
                 createTeam: true
@@ -49,14 +48,49 @@ class Collaborate extends Component {
         }
     }
 
-    addNewTeam(teamName) {
-        let temp = {
-            title: teamName
-        };
-        this.state.data.push(temp);
-        this.setState({
-            data: this.state.data
+    async addNewTeam(teamName) {
+        let token = await AsyncStorage.getItem("@token")
+        let id = await AsyncStorage.getItem("@id")
+        let teams = null
+        // Save the new team
+        try {
+            const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                    title: teamName,
+                    description: "description"
+                })
+            })
+        } catch (error) {
+            console.log("error", error)
+        }
+        // Get the list of teams
+        await fetch('https://measuringplacesd.herokuapp.com/api/users/' + id, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+            }
+        })
+        .then((response) => (response.json()))
+        .then(async (res) => (
+                teams = JSON.stringify(res.teams),
+                await AsyncStorage.setItem("@teams", teams)
+            ))
+        .catch((error) => (console.log(error)))
+        // Update
+        await this.props.updateTeams(JSON.parse(teams));
+        await this.setState({
+            data: this.props.teams
         });
+        console.log("teams: ");
+        console.log(this.state.data);
     }
 
     openTeamPage(item) {

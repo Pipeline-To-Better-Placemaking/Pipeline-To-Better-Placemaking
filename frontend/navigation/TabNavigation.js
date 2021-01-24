@@ -9,9 +9,7 @@ import HomeScreenStack from './HomeScreenStack.js';
 import UserSettingsStack from './UserSettingsStack.js';
 import CollaborateStack from './CollaborateStack.js';
 
-
 const Tab = createBottomTabNavigator();
-
 
 class TabNavigation extends Component {
 
@@ -43,7 +41,7 @@ class TabNavigation extends Component {
                 >
                     {props => <HomeScreenStack {...props} location = {this.props.location}></HomeScreenStack>}
                 </Tab.Screen>
-                
+
                 <Tab.Screen
                     name='UserSettingsStack'
                 >
@@ -54,7 +52,7 @@ class TabNavigation extends Component {
                     name='CollaborateStack'
                     options={{tabBarVisible: this.state.showTab}}
                 >
-                    {props => <CollaborateStack {...props}/> }
+                    {props => <CollaborateStack {...props} teams={this.props.teams} invites={this.props.invites}/> }
                 </Tab.Screen>
 
             </Tab.Navigator>

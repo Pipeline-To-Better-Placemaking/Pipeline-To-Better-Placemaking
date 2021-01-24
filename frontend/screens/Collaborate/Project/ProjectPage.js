@@ -4,6 +4,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import ProjectHeader from './ProjectHeader.js';
 import ViewProjectMap from '../../components/Maps/ViewProjectMap.js';
 import CreateActivity from '../../ResearchActivities/CreateActivity.js';
+import EditProject from './EditProject.js';
 
 import { Text, Button, Input, Icon, Popover, Divider,
          List, ListItem, Card, Drawer, DrawerItem, OverflowMenu, MenuItem } from '@ui-kitten/components';
@@ -26,6 +27,7 @@ class ProjectPage extends Component {
             locName: project.locName,
             area: project.area,
             menuVisible: false,
+            editMenu: false,
             createActivity: false,
             stationaryModal: false,
             data: [],
@@ -35,6 +37,7 @@ class ProjectPage extends Component {
 
         this.openPrevPage = this.openPrevPage.bind(this);
         this.openMenu = this.openMenu.bind(this);
+        this.viewEditMenu = this.viewEditMenu.bind(this);
 
         this.addActivity = this.addActivity.bind(this);
         this.addTempData = this.addTempData.bind(this);
@@ -68,6 +71,13 @@ class ProjectPage extends Component {
         });
     }
 
+    viewEditMenu() {
+        this.setState({
+            editMenu: !this.state.editMenu,
+            menuVisible: false,
+        });
+    }
+
     setCreateActivity(value, cancel) {
 
         this.setState({
@@ -98,7 +108,7 @@ class ProjectPage extends Component {
         let tempData = this.state.tempData
 
         tempData.standingPointData = markers
- 
+
         let data = this.state.data
 
         data.push(tempData)
@@ -137,7 +147,7 @@ class ProjectPage extends Component {
               placement={'bottom end'}
               style={styles.menu}
               >
-                  <MenuItem title='Edit Project'/>
+                  <MenuItem title='Edit Project' onPress={this.viewEditMenu}/>
               </OverflowMenu>
         );
 
@@ -193,6 +203,14 @@ class ProjectPage extends Component {
                     area={this.state.area}
                     setData={this.setData}
                     cancel={this.cancelStandingPoint}
+                />
+
+                <EditProject
+                    editProject={this.state.editMenu}
+                    viewEditMenu={this.viewEditMenu}
+                    getSelectedProject={this.props.getSelectedProject}
+                    setSelectedProject={this.props.setSelectedProject}
+                    anchor={myMenu}
                 />
 
                 <View style={{height:'45%'}}>
