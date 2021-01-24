@@ -18,6 +18,10 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
     const team = await Team.addTeam(newTeam)
 
+    // Add the new team to the user's teams
+    user.teams.push(team._id)
+    user.save()
+
     res.status(201).json(team)
 })
 
