@@ -9,7 +9,7 @@ const team_schema = mongoose.Schema({
     title:{type: String},
     description:{type: String},
     public:{type: Boolean},
-    projects:{type:[ObjectId]},
+    projects:[{ type: ObjectId, ref: 'Projects' }],
     users:{type:[{user: ObjectId,
                    role:{
                         type:String,

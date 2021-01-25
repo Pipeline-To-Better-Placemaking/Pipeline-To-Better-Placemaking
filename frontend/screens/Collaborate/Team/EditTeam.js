@@ -4,72 +4,43 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, Button, Input, Icon, Divider, Card } from '@ui-kitten/components';
 import * as Location from 'expo-location';
 
-import CreateNewProjectMap from '../../components/Maps/CreateNewProjectMap.js';
+import styles from '../Project/createProjectViewStyles.js';
 
-import styles from './createProjectViewStyles.js';
-
-class EditProject extends Component {
+class EditTeam extends Component {
 
     constructor(props){
         super(props);
 
-        let project = props.getSelectedProject();
+        let team = props.getSelectedTeam();
 
         this.state = {
-            project: project,
-            projName: project.title,
-            locName: project.description,
-            subareas: project.subareas,
+            team: team,
+            teamName: team.title,
         }
 
-        this.onDismissProject = this.onCreateProject.bind(this, false);
-        this.onUpdateProject = this.onCreateProject.bind(this, true);
-        this.comfirmEditProject = this.comfirmEditProject.bind(this);
+        this.onDismissTeam = this.onEditTeam.bind(this, false);
+        this.onUpdateTeam = this.onEditTeam.bind(this, true);
+        this.comfirmEditTeam = this.comfirmEditTeam.bind(this);
 
-        this.onDeleteProject = this.onDeleteProject.bind(this);
-
-        this.addMarker = this.addMarker.bind(this);
-        this.removeMarker = this.removeMarker.bind(this);
+        this.onDeleteTeam = this.onDeleteTeam.bind(this);
     }
 
-    addMarker(coordinates) {
-        let temp = {
-            latitude: coordinates.latitude,
-            longitude: coordinates.longitude
-         };
-        /*this.state.tempArea.push(temp);
-        this.setState({
-          tempArea: this.state.tempArea
-      });*/
-    }
-
-    removeMarker(marker, index) {
-      /*this.state.tempArea.splice(index, 1);
-      this.setState({
-        tempArea: this.state.tempArea
-    });*/
-    }
-
-    async onCreateProject(submit) {
+    async onEditTeam(submit) {
         if (submit) {
-            let goodName = this.state.projName.trim().length !== 0;
-            //let goodArea = this.state.tempArea.length > 2;
+            let goodName = this.state.teamName.trim().length !== 0;
             if (goodName){
-               this.comfirmEditProject(this.state.projName.trim(), this.state.area);
-               this.props.viewEditPage();
+               this.comfirmEditTeam(this.state.teamName.trim());
             }
-        } else {
-            this.props.viewEditPage();
         }
         this.props.viewEditPage();
     }
 
-    async comfirmEditProject(projectName, subareas) {
+    async comfirmEditTeam(teamName) {
         let token = await AsyncStorage.getItem("@token")
         let success = false
 
         // Change the info
-        await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + this.state.project._id, {
+        await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + this.state.team._id, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -77,7 +48,7 @@ class EditProject extends Component {
                 'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({
-                title: projectName
+                title: teamName
             })
         })
         .then((response) => (response.json()))
@@ -87,18 +58,26 @@ class EditProject extends Component {
         .catch((error) => (console.log(error), success = false))
 
         // Update
-        let tempProject = this.state.project;
-        tempProject.title = projectName;
-        await this.props.setSelectedProject(tempProject);
+        let tempTeam = this.state.team;
+        tempTeam.title = teamName;
+        await this.props.setSelectedTeam(tempTeam);
+
+        let teams = await AsyncStorage.getItem("@teams");
+        teams = JSON.parse(teams);
+        let changeIndex = teams.findIndex(element => element._id === tempTeam._id);
+        const newTeams = [...teams];
+        newTeams[changeIndex].title = teamName;
+        await AsyncStorage.setItem("@teams", JSON.stringify(newTeams));
+        await this.props.updateTeams(newTeams);
     }
 
-    async onDeleteProject() {
+    async onDeleteTeam() {
         // should probs have something for comfirm Delete first
         /*let token = await AsyncStorage.getItem("@token")
         let success = false
 
         // Delete
-        await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + this.state.project._id, {
+        await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + this.state.team._id, {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',
@@ -112,7 +91,17 @@ class EditProject extends Component {
         ))
         .catch((error) => (console.log(error), success = false))
 
-        // Update*/
+        // Update
+        let teams = await AsyncStorage.getItem("@teams");
+        teams = JSON.parse(teams);
+        let changeIndex = teams.findIndex(element => element._id === tempTeam._id);
+        const newTeams = [...teams];
+        newTeams.splice(changeIndex, 1);
+        await AsyncStorage.setItem("@teams", JSON.stringify(newTeams));
+        await this.props.updateTeams(newTeams);
+        await this.props.setSelectedTeam(null);
+        // this.props.viewEditPage();
+        this.props.navigation.navigate("Collaborate");*/
     }
 
     render() {
@@ -136,21 +125,21 @@ class EditProject extends Component {
         return(
             <Modal
               animationType='slide'
-              visible={this.props.editProject}
+              visible={this.props.editTeam}
               >
                 <View style={styles.container}>
 
                   <View style={styles.projName}>
-                      <Text>Edit Project Name: </Text>
+                      <Text>Edit Team Name: </Text>
                       <Input
                           style={{flex:1}}
-                          placeholder={this.state.projName}
-                          onChangeText={(value) => this.setState({projName:value})}
+                          placeholder={this.state.teamName}
+                          onChangeText={(value) => this.setState({teamName:value})}
                       />
                   </View>
 
                   <View style={{flexDirection:'row', justifyContent:'space-around', marginTop:40}}>
-                      <Button onPress={this.onDeleteProject}
+                      <Button onPress={this.onDeleteTeam}
                               status='danger'
                               accessoryLeft={DeleteIcon}>
                         Delete
@@ -158,12 +147,12 @@ class EditProject extends Component {
                   </View>
 
                   <View style={{flexDirection:'row', justifyContent:'space-around', marginTop:40}}>
-                      <Button onPress={this.onDismissProject}
+                      <Button onPress={this.onDismissTeam}
                               status='danger'
                               accessoryLeft={CancelIcon}>
                         Cancel
                       </Button>
-                      <Button onPress={this.onUpdateProject}
+                      <Button onPress={this.onUpdateTeam}
                               status='success'
                               accessoryLeft={CreateIcon}>
                         Update
@@ -176,4 +165,4 @@ class EditProject extends Component {
     }
 }
 
-export default EditProject;
+export default EditTeam;

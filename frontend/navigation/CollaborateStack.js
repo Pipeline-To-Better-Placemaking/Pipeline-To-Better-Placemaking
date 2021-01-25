@@ -30,7 +30,8 @@ class CollaborateStack extends Component {
 
         this.setSelectedTeam = this.setSelectedTeam.bind(this);
         this.getSelectedTeam = this.getSelectedTeam.bind(this);
-        this.updateTeams= this.updateTeams.bind(this);
+        this.updateTeams = this.updateTeams.bind(this);
+        this.getTeams = this.getTeams.bind(this);
 
         this.setSelectedProject = this.setSelectedProject.bind(this);
         this.getSelectedProject = this.getSelectedProject.bind(this);
@@ -45,6 +46,10 @@ class CollaborateStack extends Component {
         this.setState({
             teams: teams
         })
+    }
+
+    getTeams() {
+        return this.state.teams;
     }
 
     setSelectedTeam(team) {
@@ -95,7 +100,7 @@ class CollaborateStack extends Component {
                                    {...props}
                                    setSelectedTeam={this.setSelectedTeam}
                                    updateTeams={this.updateTeams}
-                                   teams={this.state.teams}
+                                   getTeams={this.getTeams}
                                    invites={this.state.invites}
                               />}
                 </CollaborateScreenStack.Screen>
@@ -104,6 +109,8 @@ class CollaborateStack extends Component {
                     options={{headerShown: false}}>
                     {props => <TeamPage
                                     {...props}
+                                    updateTeams={this.updateTeams}
+                                    setSelectedTeam={this.setSelectedTeam}
                                     getSelectedTeam={this.getSelectedTeam}
                                     setSelectedProject={this.setSelectedProject}
                               />}

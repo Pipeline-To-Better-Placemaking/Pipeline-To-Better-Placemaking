@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
-import ProjectHeader from './ProjectHeader.js';
+import BackEditHeader from '../../components/Headers/BackEditHeader.js';
 import ViewProjectMap from '../../components/Maps/ViewProjectMap.js';
 import CreateActivity from '../../ResearchActivities/CreateActivity.js';
 import EditProject from './EditProject.js';
@@ -24,8 +24,7 @@ class ProjectPage extends Component {
             project: project,
             location: project.subareas[0].area[0], // pick the first point for now
             area: project.subareas[0].area,
-            menuVisible: false,
-            editMenu: false,
+            editPageVisible: false,
             createActivity: false,
             stationaryModal: false,
             data: [],
@@ -34,8 +33,7 @@ class ProjectPage extends Component {
         }
 
         this.openPrevPage = this.openPrevPage.bind(this);
-        this.openMenu = this.openMenu.bind(this);
-        this.viewEditMenu = this.viewEditMenu.bind(this);
+        this.viewEditPage = this.viewEditPage.bind(this);
 
         this.addActivity = this.addActivity.bind(this);
         this.addTempData = this.addTempData.bind(this);
@@ -63,16 +61,9 @@ class ProjectPage extends Component {
         this.props.navigation.navigate("TeamPage");
     }
 
-    openMenu() {
+    viewEditPage() {
         this.setState({
-            menuVisible: !this.state.menuVisible
-        });
-    }
-
-    viewEditMenu() {
-        this.setState({
-            editMenu: !this.state.editMenu,
-            menuVisible: false,
+            editPageVisible: !this.state.editPageVisible,
         });
     }
 
@@ -132,21 +123,11 @@ class ProjectPage extends Component {
         );
 
         const myHeader = () => (
-            <ProjectHeader headerText={this.state.project.title}
-                           prevPage={this.openPrevPage}
-                           openMenu={this.openMenu}/>
-        );
-
-        const myMenu = () => (
-            <OverflowMenu
-              anchor={myHeader}
-              visible={this.state.menuVisible}
-              onBackdropPress={this.openMenu}
-              placement={'bottom end'}
-              style={styles.menu}
-              >
-                  <MenuItem title='Edit Project' onPress={this.viewEditMenu}/>
-              </OverflowMenu>
+            <BackEditHeader
+                headerText={this.props.getSelectedProject().title}
+                prevPage={this.openPrevPage}
+                openEditMenu={this.viewEditPage}
+            />
         );
 
         const LocationInfo = () => (
@@ -189,7 +170,7 @@ class ProjectPage extends Component {
                     setCreateActivity={this.setCreateActivity}
                     addTempData={this.addTempData}
                     getActivityTypes={this.props.getActivityTypes}
-                    anchor={myMenu}
+                    anchor={myHeader}
                     navigation={this.props.navigation}
                     location={this.state.location}
                     area={this.state.area}
@@ -204,11 +185,10 @@ class ProjectPage extends Component {
                 />
 
                 <EditProject
-                    editProject={this.state.editMenu}
-                    viewEditMenu={this.viewEditMenu}
+                    editProject={this.state.editPageVisible}
+                    viewEditPage={this.viewEditPage}
                     getSelectedProject={this.props.getSelectedProject}
                     setSelectedProject={this.props.setSelectedProject}
-                    anchor={myMenu}
                 />
 
                 <View style={{height:'45%'}}>
