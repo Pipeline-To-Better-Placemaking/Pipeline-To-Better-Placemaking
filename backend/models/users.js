@@ -44,7 +44,7 @@ const user_schema = mongoose.Schema({
     vefification_code:{type: String},
     verification_timeout:{type:String},
     invites:{type:[ObjectId]},
-    teams:{type:[ObjectId]}
+    teams: [{ type: ObjectId, ref: 'Teams' }]
 })
 
 user_schema.plugin(uniqueValidator)

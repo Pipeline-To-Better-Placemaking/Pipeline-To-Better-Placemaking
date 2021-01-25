@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import ViewProjectMap from '../../components/Maps/ViewProjectMap.js'
-import MyHeader from '../../components/Headers/MyHeader.js';
+import BackHeader from '../../components/Headers/BackHeader.js';
 import styles from '../../CompareResults/compareStyles.js';
 
 class StationaryActivity extends Component {
@@ -11,11 +11,38 @@ class StationaryActivity extends Component {
     constructor(props){
         super(props);
 
+        //console.log("activity", props.getSelectedActivity());
         this.state = {
 
+            // idk if this worked before, sorry if I broke something
             // location: props.route.params.location,
             // area: props.route.params.area
+
+            location: {
+              "latitude": 28.60281064892976,
+              "longitude": -81.20062004774809,
+            },
+            area: [
+                  {
+                    "latitude": 28.60281064892976,
+                    "longitude": -81.20062004774809,
+                  },
+                  {
+                    "latitude": 28.601854567009166,
+                    "longitude": -81.2006676569581,
+                  },
+                  {
+                    "latitude": 28.60175654457185,
+                    "longitude": -81.19934029877186,
+                  },
+                ]
         }
+
+        this.openPrevPage = this.openPrevPage.bind(this);
+    }
+
+    openPrevPage() {
+        this.props.navigation.navigate("SignUpPage");
     }
 
     componentDidMount() {
@@ -28,14 +55,14 @@ class StationaryActivity extends Component {
         return(
             <View style={styles.container}>
 
-                <MyHeader myHeaderText={"Create Boundaries"}/>
-                
-                {/* <View style={styles.mapContainer}>
+                <BackHeader headerText={"Create Boundaries"} prevPage={this.openPrevPage}/>
+
+                <View style={styles.mapContainer}>
                     <ViewProjectMap
                         location={this.state.location}
                         area={this.state.area}
                     />
-                </View> */}
+                </View>
 
             </View>
         );

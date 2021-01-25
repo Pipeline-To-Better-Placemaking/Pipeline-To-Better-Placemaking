@@ -24,8 +24,8 @@ class ActivitySignUp extends Component {
             signUpSlots: activity.signUpSlots,
             standingPoints: activity.standingPointData,
 
-            location: project.location,
-            area: project.area,
+            location: project.subareas[0].area[0], // pick the first point for now
+            area: project.subareas[0].area,
         }
 
         this.openPrevPage = this.openPrevPage.bind(this);
@@ -67,9 +67,9 @@ class ActivitySignUp extends Component {
 
         return(
             <View style={styles.container}>
-                
+
                 <BackHeader headerText={this.state.title} prevPage={this.openPrevPage}/>
-                
+
                 <View style={styles.mapContainer}>
                     <MapAreaWithStandingPoints
                         location={this.state.location}

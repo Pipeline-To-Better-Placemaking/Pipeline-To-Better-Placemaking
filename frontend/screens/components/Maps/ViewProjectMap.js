@@ -23,12 +23,12 @@ class ViewProjectMap extends Component {
                     style={{height:'100%'}}
                     initialCamera ={{
                         center:{
-                            latitude: this.state.location.coords.latitude,
-                            longitude: this.state.location.coords.longitude
+                            latitude: this.state.location.latitude,
+                            longitude: this.state.location.longitude
                         },
                         pitch: 10,
-                        heading: this.state.location.coords.heading,
-                        altitude: this.state.location.coords.altitude,
+                        heading: -1,
+                        altitude: -1,
                         zoom: 17
                     }}
                 >
