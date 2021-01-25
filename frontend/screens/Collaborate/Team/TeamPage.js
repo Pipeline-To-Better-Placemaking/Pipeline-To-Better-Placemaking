@@ -39,7 +39,7 @@ class TeamPage extends Component {
     async openProjectPage(item) {
         let token = await AsyncStorage.getItem("@token");
         console.log("opening project: ", item);
-        let id = item; // TODO: change to this once they update to give us the title: item._id
+        let id = item._id;
         let projectDetails = null;
         // Get the team information
         await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + id, {
@@ -89,7 +89,7 @@ class TeamPage extends Component {
         console.log(project);
 
         // Update
-        await this.state.data.push(project._id); // TODO: change once they update to give title: project
+        await this.state.data.push(project);
         await this.setState({
             data: this.state.data
         });
