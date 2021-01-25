@@ -26,7 +26,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 })
 
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    res.json(await Team.findById(req.params.id))
+    res.json(await Team.findById(req.params.id).populate('projects', 'title'))
 })
 
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
