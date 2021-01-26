@@ -40,10 +40,20 @@ const stationary_schema = mongoose.Schema({
 })
 
 
-const Stationarys = module.exports = mongoose.model('Stationary_Maps', stationary_schema)
+const Maps = module.exports = mongoose.model('Stationary_Maps', stationary_schema)
 
-module.exports.addMap = async function addTest(newMap){
+module.exports.addMap = async function(newMap){
     return await newMap.save()
+}
+
+module.exports.deleteMap = async function(mapId){
+    return await Maps.findByIdAndDelete(mapId)
+}
+
+module.exports.projectCleanup = async function(projectId){
+    return await Maps.deleteMany(
+        {project:projectId}
+    )
 }
 
 module.exports.addEntry = async function(testId, marker){

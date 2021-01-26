@@ -55,6 +55,17 @@ module.exports.addProject = async function(teamId, projectId){
       })
 }
 
+module.exports.removeProject = async function(teamId, projectId){
+  return await Teams.updateOne({
+    _id:teamId
+  },{
+    $pull:
+    {
+      projects:projectId
+    }
+  })
+}
+
 
 module.exports.promote = async function(teamId, userId){
     Teams.updateOne({
