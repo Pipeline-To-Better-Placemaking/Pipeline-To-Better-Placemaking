@@ -122,19 +122,25 @@ echo
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
-     http://localhost:8080/api/teams/${TEAM}
+     http://localhost:8080/api/projects/${PROJECT} 
 
-echo
 echo 
+echo
 
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
-     --request DELETE \
-     http://localhost:8080/api/teams/${TEAM}
+     --request POST \
+      -d "{\"area\":[{\"latitude\": 8.602413253152307, \"longitude\": -7.20019937739713},
+                      {\"latitude\": 0.602413253152307, \"longitude\": -1.20019937739713},
+                      {\"latitude\": 8.602413253152307, \"longitude\": -8.20019937739713}]
+      }" \
+     http://localhost:8080/api/projects/${PROJECT}/areas
+
 echo
 echo
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
-     http://localhost:8080/api/teams/${TEAM}
-echo
+     http://localhost:8080/api/projects/${PROJECT} 
+
+echo 
