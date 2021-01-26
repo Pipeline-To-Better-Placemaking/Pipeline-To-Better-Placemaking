@@ -4,10 +4,11 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import BackHeader from '../components/Headers/BackHeader.js';
 import MapAreaWithPoints from '../components/Maps/MapAreaPointList.js'
 
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, Card, SelectItem } from '@ui-kitten/components';
 import * as Location from 'expo-location';
 import styles from './activitySignUpStyles.js';
 import MapAreaWithStandingPoints from '../components/Maps/MapAreaWithStandingPoints.js';
+import SignUpCard from '../components/ActivitySignUp/SignUpCard.js'
 
 class ActivitySignUp extends Component {
 
@@ -16,6 +17,7 @@ class ActivitySignUp extends Component {
 
         let project = props.getSelectedProject();
         let activity = props.getSelectedActivity();
+        let nameArray= this.createPositionNameArray(activity.standingPointData);
 
         this.state = {
             title: activity.title,
@@ -26,10 +28,23 @@ class ActivitySignUp extends Component {
 
             location: project.subareas[0].area[0], // pick the first point for now
             area: project.subareas[0].area,
+            positionNameArray: nameArray
         }
 
         this.openPrevPage = this.openPrevPage.bind(this);
         this.openActivityPage = this.openActivityPage.bind(this);
+    }
+
+    createPositionNameArray(markers) {
+
+        let nameArray = []
+
+        for (let i = 0; i < markers.length; i++){
+            
+            nameArray.push(i+1)
+        }
+
+        return nameArray;
     }
 
     openPrevPage() {
@@ -56,13 +71,7 @@ class ActivitySignUp extends Component {
     render() {
 
         const signUpCard = ({item, index}) => (
-            <Card>
-              <Text>Position: {index}</Text>
-              <Text>Time: {item.timeString}</Text>
-              <Button onPress={this.openActivityPage}>
-                Sign Up / Begin
-              </Button>
-            </Card>
+            <SignUpCard item={item} names={this.state.positionNameArray}/>
         );
 
         return(

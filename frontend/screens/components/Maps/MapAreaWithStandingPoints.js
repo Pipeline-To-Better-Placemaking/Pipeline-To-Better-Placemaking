@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MapView, { PROVIDER_GOOGLE, Marker, Polygon } from 'react-native-maps'
+import MapView, { PROVIDER_GOOGLE, Marker, Polygon, Callout } from 'react-native-maps'
 import { View } from 'react-native';
 import { Text, Button, Input, Icon, Divider, List, ListItem} from '@ui-kitten/components';
 
@@ -27,12 +27,18 @@ class MapAreaWithStandingPoints extends Component {
                             latitude: coord.latitude,
                             longitude: coord.longitude
                         }}
-                    />
+                    >
+                        <Callout>
+                            <Text>Position {index+1}</Text>
+                        </Callout>
+
+                    </MapView.Marker>
                     )))
                 }
             }
 
         return(
+
             <View>
                 <MapView
                     provider={PROVIDER_GOOGLE}
