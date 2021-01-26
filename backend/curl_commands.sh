@@ -130,7 +130,7 @@ echo
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request DELETE \
-     http://localhost:8080/api/projects/${PROJECT}
+     http://localhost:8080/api/teams/${TEAM}
 echo
 echo
 curl -H 'Content-Type: application/json' \

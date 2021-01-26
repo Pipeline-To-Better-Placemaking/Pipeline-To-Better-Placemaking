@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Project = require('../models/projects.js')
 const Team = require('../models/teams.js')
-const Map = require('../models/stationary_maps.js')
+const Stationary_Map = require('../models/stationary_maps.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
@@ -66,7 +66,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
     project = await Project.findById(req.params.id)
     if(await Team.isAdmin(project.team,user._id)){
         await Team.removeProject(project.team,project._id)
-        await Map.projectCleanup(project._id)
+        await Stationary_Map.projectCleanup(project._id)
         res.json(await Project.deleteProject(project._id))
 
     }

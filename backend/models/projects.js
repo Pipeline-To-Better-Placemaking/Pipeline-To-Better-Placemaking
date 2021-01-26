@@ -41,6 +41,12 @@ module.exports.deleteProject = async function(projectId){
   return await Projects.findByIdAndDelete(projectId)
 }
 
+module.exports.teamCleanup = async function(teamId){
+  return await Projects.deleteMany(
+      {team:teamId}
+  )
+}
+
 module.exports.addActivity = async function (projectId, activityId, testType){
   return await Projects.updateOne(
     {_id:projectId},
@@ -49,7 +55,6 @@ module.exports.addActivity = async function (projectId, activityId, testType){
                 test_type:testType
     }}}
   )
-
 }
 
 module.exports.updateProject = async function (projectId, newProject){
