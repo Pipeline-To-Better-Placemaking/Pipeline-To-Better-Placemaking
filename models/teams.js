@@ -97,8 +97,11 @@ module.exports.demote = async function(teamsId, uId){
 module.exports.isAdmin = async function(teamId, uID){
   doc = Teams.find({
     _id: teamId,
-    users: {$elemMatch: {userId:uID, role:'admin'}}
-  })
+    users: {$elemMatch: {userId:uID, $or :[
+                                          {role:'admin'},
+                                          {role:'owner'}
+                                        ]}}
+                                      })
 
   if (doc.length === 0){
     return false
@@ -116,8 +119,21 @@ module.exports.isOwner = async function(teamId, uID){
     return false
   }
   return true
+}
+
+module.exports.isUser = async function(teamId, uID){
+  doc = Teams.find({
+    _id: teamId,
+    users: {$elemMatch: {userId:uID}}
+  })
+
+  if (doc.length === 0){
+    return false
+  }
+  return true
 
 }
+
 
 module.exports.addUser = async function(teamsId, uID){
     Teams.updateOne({

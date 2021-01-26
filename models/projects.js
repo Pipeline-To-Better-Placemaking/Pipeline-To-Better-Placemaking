@@ -37,6 +37,17 @@ module.exports.addProject = async function(newProject){
     return await Projects.findById(project._id)
 }
 
+module.exports.updateProject = async function (projectId, newProject){
+  return await Projects.updateOne(
+    {_id:projectId},
+    {$set: {title:newProject.title,
+            description:newProject.description,
+            points:newProject.poinst
+        }}
+    )
+}
+
+
 module.exports.deleteProject = async function(projectId){
   return await Projects.findByIdAndDelete(projectId)
 }
@@ -57,16 +68,6 @@ module.exports.addActivity = async function (projectId, activityId, testType){
   )
 }
 
-module.exports.updateProject = async function (projectId, newProject){
-  return await Projects.updateOne(
-    {_id:projectId},
-    {$set: {title:newProject.title,
-            description:newProject.description,
-            points:newProject.poinst
-        }}
-    )
-}
-
 module.exports.removeActivity = async function(projectId, testId){
   return await Projects.updateOne({
     _id:projectId
@@ -78,10 +79,11 @@ module.exports.removeActivity = async function(projectId, testId){
   })
 }
 
-module.exports.getProjectById = async function(projectId){
-    return await Projects.findById(projectId)
+module.exports.addArea = async function(projectId, newArea){
+  return await Projects.updateOne(
+    {_id:projectId},
+    {$push: {subareas:{area:newArea}}
+    }
+  )
 }
 
-module.exports.getTests = async function(projectId){
-     return await Projects.findById(projectId).activities
-}
