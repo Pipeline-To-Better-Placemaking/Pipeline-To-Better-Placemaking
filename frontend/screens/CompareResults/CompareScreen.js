@@ -3,9 +3,9 @@ import { View,  ScrollView, Pressable, Image, TouchableWithoutFeedback, Keyboard
 import { Text, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
 import styles from './compareStyles'
 
-import EmptyCompareBox from '../components/EmptyCompareBox.js'
-import CompareBox from '../components/CompareBox.js';
-import MyHeader from '../components/MyHeader.js';
+import EmptyCompareBox from '../components/Compare/EmptyCompareBox.js'
+import CompareBox from '../components/Compare/CompareBox.js';
+import MyHeader from '../components/Headers/MyHeader.js';
 
 
 class CompareScreen extends Component {

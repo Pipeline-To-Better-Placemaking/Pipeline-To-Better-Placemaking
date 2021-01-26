@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
-import styles from '../Home/homeStyles.js';
+import styles from '../../Home/homeStyles.js'
 
 class ConfirmCompare extends Component {
 
@@ -21,7 +21,7 @@ class ConfirmCompare extends Component {
 
         const CompareButton = () => {
 
-            if (this.props.compare && this.props.selected >= 2)
+            if (this.props.compare)
             {
                 return (
                     <Button onPress={this.onCompareConfirm} style={styles.confirmCompareCount}>

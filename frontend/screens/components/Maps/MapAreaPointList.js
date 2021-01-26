@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker, Polygon } from 'react-native-maps'
 import { View } from 'react-native';
 import { Text, Button, Input, Icon, Divider, List, ListItem} from '@ui-kitten/components';
+import styles from '../../ResearchActivities/standingPointStyles.js';
 
-class CreateNewProjectMap extends Component {
+class MapAreaPointList extends Component {
 
     constructor(props){
         super(props);
 
         this.state = {
-            location: props.location
+            location: props.location,
+            markers: props.markers,
         }
     }
 
@@ -31,7 +33,8 @@ class CreateNewProjectMap extends Component {
         const ShowPolygon = () => {
             if(this.props.markers === null) {
                 return (null);
-            } else {//if(this.props.markers.length < 3) {
+            }
+            else {//if(this.props.markers.length < 3) {
                 return (this.props.markers.map((coord, index) => (
                     <MapView.Marker
                         key={index}
@@ -40,24 +43,15 @@ class CreateNewProjectMap extends Component {
                             longitude: coord.longitude
                         }}
                     />
-                )));
-            } /*else {
-                return (
-                     <MapView.Polygon
-                      coordinates={this.props.markers}
-                      strokeWidth={3}
-                      strokeColor={'rgba(255,0,0,0.5)'}
-                      fillColor={'rgba(0,0,0,0)'}
-                    />
-                );
-            }*/
-        };
+                    )))
+                }
+            }
 
         return(
             <View>
                 <MapView
                     provider={PROVIDER_GOOGLE}
-                    style={{height:'50%'}}
+                    style={{height:'40%'}}
                     initialCamera ={{
                         center:{
                             latitude: this.state.location.latitude,
@@ -70,14 +64,23 @@ class CreateNewProjectMap extends Component {
                     }}
                     onPress={event => this.props.addMarker(event.nativeEvent.coordinate)}
                 >
-                    <ShowPolygon />
+                    <MapView.Polygon
+                     coordinates={this.props.area}
+                     strokeWidth={3}
+                     strokeColor={'rgba(255,0,0,0.5)'}
+                     fillColor={'rgba(0,0,0,0.5)'}
+                    />
+
+                    <ShowPolygon/>
+
                 </MapView>
 
-                <View style={{flexDirection:'row', justifyContent:'center', height:'50%', marginTop:15}}>
+                <View style={styles.pointList}>
                     <List
-                      data={this.props.markers}
-                      ItemSeparatorComponent={Divider}
-                      renderItem={renderItem}
+                        style={styles.list}
+                        data={this.state.markers}
+                        ItemSeparatorComponent={Divider}
+                        renderItem={renderItem}
                     />
                 </View>
             </View>
@@ -85,4 +88,4 @@ class CreateNewProjectMap extends Component {
     }
 }
 
-export default CreateNewProjectMap;
+export default MapAreaPointList;

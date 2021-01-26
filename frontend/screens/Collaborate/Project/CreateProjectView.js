@@ -15,16 +15,8 @@ class CreateProjectView extends Component {
         this.state = {
             tempProjectName: ' ',
             tempLocation: {
-                "timestamp": 0,
-                "coords": {
-                  "accuracy": -1,
-                  "altitude": -1,
-                  "altitudeAccuracy": -1,
-                  "heading": -1,
-                  "latitude": 28.602413253152307,
-                  "longitude": -81.20019937739713,
-                  "speed": 0
-                }
+                "latitude": 28.602413253152307,
+                "longitude": -81.20019937739713,
             },
             tempArea: []
         }
@@ -96,7 +88,7 @@ class CreateProjectView extends Component {
         let enabled = await Location.hasServicesEnabledAsync();
         if (enabled)
         {
-            let locationInfo = await Location.reverseGeocodeAsync(loc.coords);
+            let locationInfo = await Location.reverseGeocodeAsync(loc);
             retVal = locationInfo[0].name;
         }
         return retVal;
@@ -105,20 +97,18 @@ class CreateProjectView extends Component {
     addNewProject = async (projectName, projArea) => {
         // This just takes the first point, should probably calculate center point of projArea
         let tempLoc = {
-                "coords":{
-                    "latitude": projArea[0].latitude,
-                    "longitude":projArea[0].longitude,
-                    "altitude": -1,
-                    "heading": -1}
-                };
+            "latitude": projArea[0].latitude,
+            "longitude":projArea[0].longitude,
+           };
         let tempLocationName = await this.getLocationName(tempLoc);
-        console.log("TeamPage.js: tempLocationName: ", tempLocationName);
+        console.log("CreateProjectView.js: description/locationName", tempLocationName);
         let temp = {
             title: projectName,
-            locName: tempLocationName,
-            location: tempLoc,
-            area: projArea
+            description: tempLocationName,
+            location: projArea[0],
+            points: projArea
         };
+
         this.props.setProjectData(temp);
     }
 

@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
 
-import HomeBottomNav from '../screens/components/BottomNav.js';
+import HomeBottomNav from '../screens/components//Tab/BottomNav.js';
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreenStack from './HomeScreenStack.js';
 import UserSettingsStack from './UserSettingsStack.js';
 import CollaborateStack from './CollaborateStack.js';
 
-
 const Tab = createBottomTabNavigator();
-
 
 class TabNavigation extends Component {
 
@@ -20,8 +18,18 @@ class TabNavigation extends Component {
 
         this.state = {
             location: props.location,
-            index: 1
+            index: 1,
+            showTab: true
         }
+    }
+
+    hideTab = async () => {
+
+        console.log("Hiding tab bar")
+
+        await this.setState({
+            showTab: false
+        })
     }
 
     render(){
@@ -31,9 +39,9 @@ class TabNavigation extends Component {
                 <Tab.Screen
                     name='HomeScreenStack'
                 >
-                    {props => <HomeScreenStack {...props} navigation={this.props.navigation} location = {this.props.location}></HomeScreenStack>}
+                    {props => <HomeScreenStack {...props} location = {this.props.location}></HomeScreenStack>}
                 </Tab.Screen>
-                
+
                 <Tab.Screen
                     name='UserSettingsStack'
                 >
@@ -42,8 +50,10 @@ class TabNavigation extends Component {
 
                 <Tab.Screen
                     name='CollaborateStack'
-                    component={CollaborateStack}
-                />
+                    options={{tabBarVisible: this.state.showTab}}
+                >
+                    {props => <CollaborateStack {...props} teams={this.props.teams} invites={this.props.invites}/> }
+                </Tab.Screen>
 
             </Tab.Navigator>
 

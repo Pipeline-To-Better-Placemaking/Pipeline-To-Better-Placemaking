@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Collaborate from '../screens/Collaborate/Collaborate.js';
 
 import TeamPage from '../screens/Collaborate/Team/TeamPage.js';
@@ -19,14 +20,18 @@ class CollaborateStack extends Component {
         super(props);
 
         this.state = {
-            selectedTeam: null,
-            selectedProject: null,
-            selectedActivity: null,
+            selectedTeam: {},
+            selectedProject: {},
+            selectedActivity: {},
+            teams: props.teams,
+            invites: props.invites,
             activityTypes: ['Stationary Map', 'People Moving', 'Survey']
         };
 
         this.setSelectedTeam = this.setSelectedTeam.bind(this);
         this.getSelectedTeam = this.getSelectedTeam.bind(this);
+        this.updateTeams = this.updateTeams.bind(this);
+        this.getTeams = this.getTeams.bind(this);
 
         this.setSelectedProject = this.setSelectedProject.bind(this);
         this.getSelectedProject = this.getSelectedProject.bind(this);
@@ -35,6 +40,16 @@ class CollaborateStack extends Component {
         this.getSelectedActivity = this.getSelectedActivity.bind(this);
 
         this.getActivityTypes = this.getActivityTypes.bind(this);
+    }
+
+    async updateTeams(teams) {
+        this.setState({
+            teams: teams
+        })
+    }
+
+    getTeams() {
+        return this.state.teams;
     }
 
     setSelectedTeam(team) {
@@ -54,6 +69,7 @@ class CollaborateStack extends Component {
     }
 
     getSelectedProject() {
+
         return this.state.selectedProject;
     }
 
@@ -64,6 +80,9 @@ class CollaborateStack extends Component {
     }
 
     getSelectedActivity() {
+
+        console.log("Getting activity: " + JSON.stringify(this.state.selectedActivity))
+
         return this.state.selectedActivity;
     }
 
@@ -80,6 +99,9 @@ class CollaborateStack extends Component {
                     {props => <Collaborate
                                    {...props}
                                    setSelectedTeam={this.setSelectedTeam}
+                                   updateTeams={this.updateTeams}
+                                   getTeams={this.getTeams}
+                                   invites={this.state.invites}
                               />}
                 </CollaborateScreenStack.Screen>
                 <CollaborateScreenStack.Screen
@@ -87,6 +109,8 @@ class CollaborateStack extends Component {
                     options={{headerShown: false}}>
                     {props => <TeamPage
                                     {...props}
+                                    updateTeams={this.updateTeams}
+                                    setSelectedTeam={this.setSelectedTeam}
                                     getSelectedTeam={this.getSelectedTeam}
                                     setSelectedProject={this.setSelectedProject}
                               />}
@@ -96,9 +120,11 @@ class CollaborateStack extends Component {
                     options={{headerShown: false}}>
                     {props => <ProjectPage
                                     {...props}
+                                    setSelectedProject={this.setSelectedProject}
                                     getSelectedProject={this.getSelectedProject}
                                     setSelectedActivity={this.setSelectedActivity}
                                     getActivityTypes={this.getActivityTypes}
+                                    navigation={this.props.navigation}
                               />}
                 </CollaborateScreenStack.Screen>
                 <CollaborateScreenStack.Screen
@@ -106,6 +132,7 @@ class CollaborateStack extends Component {
                     options={{headerShown: false}}>
                     {props => <ActivitySignUp
                                     {...props}
+                                    getSelectedProject={this.getSelectedProject}
                                     getSelectedActivity={this.getSelectedActivity}
                                     getActivityTypes={this.getActivityTypes}
                               />}
@@ -115,6 +142,7 @@ class CollaborateStack extends Component {
                     options={{headerShown: false}}>
                     {props => <StationaryActivity
                                     {...props}
+                                    getSelectedActivity={this.getSelectedActivity}
                               />}
                 </CollaborateScreenStack.Screen>
                 <CollaborateScreenStack.Screen

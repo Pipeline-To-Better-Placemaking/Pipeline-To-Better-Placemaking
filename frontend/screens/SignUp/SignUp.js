@@ -128,7 +128,7 @@ class SignUp extends Component {
             })
         }
 
-        await fetch('https://msrplacetest.herokuapp.com/api/users/', {
+        await fetch('https://measuringplacesd.herokuapp.com/api/users/', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

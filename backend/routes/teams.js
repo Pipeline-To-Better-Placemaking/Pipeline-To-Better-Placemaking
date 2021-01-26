@@ -18,11 +18,15 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
     const team = await Team.addTeam(newTeam)
 
+    // Add the new team to the user's teams
+    user.teams.push(team._id)
+    user.save()
+
     res.status(201).json(team)
 })
 
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    res.json(await Team.findById(req.params.id))
+    res.json(await Team.findById(req.params.id).populate('projects', 'title'))
 })
 
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {

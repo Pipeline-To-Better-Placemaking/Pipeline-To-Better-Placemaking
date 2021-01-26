@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import MyHeader from '../components/MyHeader.js';
+import MyHeader from '../components/Headers/MyHeader.js';
 import CreateTeamCard from './Team/CreateTeamCard.js';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
@@ -13,9 +14,7 @@ class Collaborate extends Component {
         super(props);
 
         this.state = {
-            data: [{
-                title: 'Team Name'
-            }],
+            data: props.getTeams(),
             createTeam: false,
             tempTeamName: ' '
         }
@@ -33,7 +32,7 @@ class Collaborate extends Component {
         });
     }
 
-    onCreateTeam(visible, submit) {
+    async onCreateTeam(visible, submit) {
         if (visible) {
             this.setState({
                 createTeam: true
@@ -49,18 +48,69 @@ class Collaborate extends Component {
         }
     }
 
-    addNewTeam(teamName) {
-        let temp = {
-            title: teamName
-        };
-        this.state.data.push(temp);
-        this.setState({
-            data: this.state.data
+    async addNewTeam(teamName) {
+        let token = await AsyncStorage.getItem("@token");
+        let teams = this.state.data;
+        let team = null;
+        // Save the new team
+        try {
+            const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                    title: teamName,
+                    description: "description"
+                })
+            })
+            team = await response.json()
+        } catch (error) {
+            console.log("error", error)
+        }
+
+        // Add the new team
+        teams.push({
+           _id: team._id,
+           title: team.title
         });
+
+        await AsyncStorage.setItem("@teams", JSON.stringify(teams))
+
+        // Update
+        await this.props.updateTeams(teams);
+        await this.setState({
+            data: teams
+        });
+        console.log("teams: ");
+        console.log(this.state.data);
+        // Open team Page
+        this.props.setSelectedTeam(team);
+        this.props.navigation.navigate("TeamPage");
     }
 
-    openTeamPage(item) {
-        this.props.setSelectedTeam(item);
+    async openTeamPage(item) {
+        let token = await AsyncStorage.getItem("@token");
+        let teamDetails = null
+        // Get the team information
+        await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + item._id, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+            }
+        })
+        .then((response) => (response.json()))
+        .then(async (res) => (
+                teamDetails = res
+            ))
+        .catch((error) => (console.log(error)))
+        // Update
+        console.log("Selected Team: ", teamDetails);
+        this.props.setSelectedTeam(teamDetails);
         this.props.navigation.navigate("TeamPage");
     }
 
@@ -114,7 +164,7 @@ class Collaborate extends Component {
                 <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
                     <List
                       style={{maxHeight:'100%', maxWidth:'90%'}}
-                      data={this.state.data}
+                      data={this.props.getTeams()}
                       ItemSeparatorComponent={Divider}
                       renderItem={renderItem}
                     />

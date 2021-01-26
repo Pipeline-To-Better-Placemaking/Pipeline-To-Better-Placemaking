@@ -54,7 +54,7 @@ class ChangeNameScreen extends Component {
         console.log("Confirming change...")
         let success = false
 
-        await fetch('https://msrplacetest.herokuapp.com/api/users/', {
+        await fetch('https://measuringplacesd.herokuapp.com/api/users/', {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -104,7 +104,7 @@ class ChangeNameScreen extends Component {
                         style={styles.inputBox}
                     />
                 </View>
-                
+
                 <Button size='giant' onPress={this.onConfirmChange} style={styles.confirmChangeButton}>
                     <Text style={styles.confirmChangeText}>
                         Confirm Change

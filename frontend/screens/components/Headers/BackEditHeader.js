@@ -2,9 +2,9 @@ import React, { Component } from 'react';
  import { View} from 'react-native';
 
  import { Text, Button, Icon} from '@ui-kitten/components';
- import styles from './projectStyles.js';
+ import styles from './backHeaderStyles.js';
 
- class ProjectHeader extends Component {
+ class BackEditHeader extends Component {
 
      constructor(props){
          super(props);
@@ -33,11 +33,11 @@ import React, { Component } from 'react';
                            {this.props.headerText}
                      </Text>
                  <View style={styles.rightContent}>
-                     <Button accessoryLeft={MenuIcon} onPress={this.props.openMenu} style={styles.button}/>
+                     <Button accessoryLeft={MenuIcon} onPress={this.props.openEditMenu} style={styles.button}/>
                  </View>
              </View>
          );
      }
  }
 
- export default ProjectHeader;
+ export default BackEditHeader;

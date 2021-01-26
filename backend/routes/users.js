@@ -34,7 +34,7 @@ router.post('/', async (req, res, next) => {
 // Return all info if the token matches the user id
 // Return limited info otherwise
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    const user = await User.findById(req.params.id)
+    const user = await User.findById(req.params.id).populate('teams', 'title')
 
     if (req.params.id === await req.user._id) {
         return res.json(user)

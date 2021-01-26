@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import MyHeader from '../components/MyHeader.js';
+import MyHeader from '../components/Headers/MyHeader.js';
 import HomeResultView from './ResultView.js';
 import HomeMapView from './HomeMapView.js';
 import DummyResult from '../components/DummyResult.js';
-import ConfirmCompare from '../components/ConfirmCompare.js';
+import ConfirmCompare from '../components/Compare/ConfirmCompare.js';
 
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
@@ -26,7 +26,6 @@ class HomeScreen extends Component {
         this.compareIncrement = this.compareIncrement.bind(this);
         this.compareDecrement = this.compareDecrement.bind(this);
         this.addToSelectedProjects = this.addToSelectedProjects.bind(this);
-        // this.removeFromSelectedProjectes = this.removeFromSelectedProjectes.bind(this)
     }
 
     onComparePress() {
@@ -122,7 +121,7 @@ class HomeScreen extends Component {
                 </ScrollView>
 
                 <ConfirmCompare 
-                    navigation={this.props.navigation} 
+                    navigation={this.props.navigation}
                     compare={this.state.compare} 
                     selected={this.state.compareCount}
                     selectedProjects={this.state.selectedProjects}
