@@ -36,6 +36,10 @@ module.exports.updateTeam = async function (teamId, newTeam){
     )
 }
 
+module.exports.deleteTeam = async function(teamId){
+  return await Teams.findByIdAndDelete(teamId)
+}
+
 module.exports.allTeamsShort = async function (count = 10, first = 0,userId = -1){
   if (userId != -1){
     return await Teams.find().skip(first).limit(count)
@@ -94,6 +98,18 @@ module.exports.isAdmin = async function(teamId, uID){
   doc = Teams.find({
     _id: teamId,
     users: {$elemMatch: {userId:uID, role:'admin'}}
+  })
+
+  if (doc.length === 0){
+    return false
+  }
+  return true
+}
+
+module.exports.isOwner = async function(teamId, uID){
+  doc = Teams.find({
+    _id: teamId,
+    users: {$elemMatch: {userId:uID, role:'owner'}}
   })
 
   if (doc.length === 0){

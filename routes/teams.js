@@ -1,9 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const Team = require('../models/teams.js')
+const Project = require('../models/projects.js')
+const Stationary_Map = require('../models/stationary_maps.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
+const { json } = require('express')
 
 
 
@@ -47,6 +50,27 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         })
     }
     
+})
+
+router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    team = await Team.findById(req.params.id)
+    if(await Team.isOwner(team._id,user._id)){
+    
+        for(var i = 0; i < team.projects.length; i++ ){
+            proj = team.projects[0]
+            await Stationary_Map.projectCleanup(proj)
+        }
+        await Project.teamCleanup(team._id)
+        res.json(await Team.deleteTeam(team._id))
+
+    }
+    else{
+        res.json({
+            msg: 'unauthorized'
+        })
+    }
+
 })
 
 module.exports = router
