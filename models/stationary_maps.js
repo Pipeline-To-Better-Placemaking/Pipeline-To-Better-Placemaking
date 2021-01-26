@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const config = require('../utils/config.js')
 const uniqueValidator = require('mongoose-unique-validator')
 
+const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Entry = mongoose.Schema({
@@ -21,18 +22,18 @@ const Entry = mongoose.Schema({
         type:String,
         enum:['waiting','eating','talking','exercising']
     },
-    time:{type:String},
+    time:{type:Date},
 })
 
 
 const stationary_schema = mongoose.Schema({
     project:{type:ObjectId},
     owner:{type:ObjectId},
-    area:{type;ObjectId},
+    area:{type:ObjectId},
     claimed:{type:Boolean,
              default:false},
-    start_time:{type:String},
-    end_time:{type:String},
+    start_time:{type:Date},
+    end_time:{type:Date},
     data:{type:[Entry]},
     complete:{type:Boolean,
               default:false}
