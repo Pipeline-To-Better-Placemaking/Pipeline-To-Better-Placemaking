@@ -37,6 +37,10 @@ module.exports.addProject = async function(newProject){
     return await Projects.findById(project._id)
 }
 
+module.exports.deleteProject = async function(projectId){
+  return await Projects.findByIdAndDelete(projectId)
+}
+
 module.exports.addActivity = async function (projectId, activityId, testType){
   return await Projects.updateOne(
     {_id:projectId},
@@ -58,15 +62,15 @@ module.exports.updateProject = async function (projectId, newProject){
     )
 }
 
-module.exports.addTest = async function(projectId, type){
-    Projects.updateOne({
-        _id: projectId
-      }, {
-        $push:
-         {
-          activities:{activity:projectId, testType:type}
-        }
-      })
+module.exports.removeActivity = async function(projectId, testId){
+  return await Projects.updateOne({
+    _id:projectId
+  },{
+    $pull:
+    {
+      activities:{activity:testId}
+    }
+  })
 }
 
 module.exports.getProjectById = async function(projectId){
