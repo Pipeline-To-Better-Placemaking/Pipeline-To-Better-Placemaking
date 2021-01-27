@@ -141,6 +141,28 @@ echo
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
-     http://localhost:8080/api/projects/${PROJECT} 
+     http://localhost:8080/api/stationary_maps/${MAP} 
+
+echo 
+echo 
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request POST \
+      -d  "{
+           \"location\": {\"latitude\": 8.602413253152307, \"longitude\": -7.20019937739713},  
+           \"age\": \"<15\", 
+           \"posture\": \"sitting(informal)\" , 
+           \"activity\": \"talking\" , 
+           \"time\": \"2012-04-23T12:25:43.511Z\" 
+          }"  \
+     http://localhost:8080/api/stationary_maps/${MAP}/data
+
+echo
+echo
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/stationary_maps/${MAP} 
 
 echo 
