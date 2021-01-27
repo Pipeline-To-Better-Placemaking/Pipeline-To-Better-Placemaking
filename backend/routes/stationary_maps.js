@@ -80,4 +80,18 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 
 })
 
+router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    map = await Map.findById(req.params.id)
+    project = await Project.findById(map.project)
+    if(await Team.isUser(project.team,user._id)){
+        res.json(await Map.addEntry(map._id,req.body))
+    }
+    else{
+        res.json({
+            msg: 'unauthorized'
+        })
+    }
+})
+
 module.exports = router

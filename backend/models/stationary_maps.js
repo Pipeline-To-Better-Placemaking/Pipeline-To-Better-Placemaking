@@ -8,8 +8,8 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Entry = mongoose.Schema({
 
-    location: {lat: Number,
-               long: Number},
+    location: {latitude: Number,
+               longitude: Number},
     age:{
         type:String,
         enum:['<15','15-30','30-45','45-60','60+']
@@ -56,8 +56,11 @@ module.exports.projectCleanup = async function(projectId){
     )
 }
 
-module.exports.addEntry = async function(testId, marker){
-
+module.exports.addEntry = async function(mapId, newEntry){
+    return await Maps.updateOne(
+        {_id:mapId},
+        {$push: {data:newEntry}}
+      )
 }
 
 module.exports.deleteEntry = async function(testId, markerId){
