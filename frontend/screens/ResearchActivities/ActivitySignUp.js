@@ -71,7 +71,16 @@ class ActivitySignUp extends Component {
     render() {
 
         const signUpCard = ({item, index}) => (
-            <SignUpCard item={item} names={this.state.positionNameArray}/>
+            <SignUpCard 
+                navigation={this.props.navigation}
+                item={item}
+                names={this.state.positionNameArray}
+                activityDetails={({
+                    location: this.state.location,
+                    area: this.state.area,
+                    markers: this.state.standingPoints
+                })}
+                />
         );
 
         return(
