@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Project = require('../models/projects.js')
 const Team = require('../models/teams.js')
+const Stationary_Map = require('../models/stationary_maps.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
@@ -58,6 +59,36 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         })
     }
     
+})
+
+router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    if(await Team.isAdmin(project.team,user._id)){
+        await Team.removeProject(project.team,project._id)
+        await Stationary_Map.projectCleanup(project._id)
+        res.json(await Project.deleteProject(project._id))
+
+    }
+    else{
+        res.json({
+            msg: 'unauthorized'
+        })
+    }
+
+})
+
+router.post('/:id/areas', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    if(await Team.isUser(project.team,user._id)){
+        res.json(await Project.addArea(project._id,req.body.area))
+    }
+    else{
+        res.json({
+            msg: 'unauthorized'
+        })
+    }
 })
 
 module.exports = router

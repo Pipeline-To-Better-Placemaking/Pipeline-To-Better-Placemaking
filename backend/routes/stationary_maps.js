@@ -53,7 +53,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     project = await Project.findById(map.project)
 
     if (await Team.isAdmin(project.team,user._id)){
-        res.status(201).json(await Project.updateProject(req.params.id,newProject))
+        res.status(201).json(await Map.updateMap(req.params.id,newProject))
     }
 
     else{
@@ -62,6 +62,36 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         })
     }
     
+})
+
+router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    map = await Map.findById(req.params.id)
+    project = await Project.findById(map.project)
+    if(await Team.isAdmin(project.team,user._id)){
+        res.json(await Project.removeActivity(map.project,map._id))
+        await Map.deleteMap(map._id)
+    }
+    else{
+        res.json({
+            msg: 'unauthorized'
+        })
+    }
+
+})
+
+router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    map = await Map.findById(req.params.id)
+    project = await Project.findById(map.project)
+    if(await Team.isUser(project.team,user._id)){
+        res.json(await Map.addEntry(map._id,req.body))
+    }
+    else{
+        res.json({
+            msg: 'unauthorized'
+        })
+    }
 })
 
 module.exports = router
