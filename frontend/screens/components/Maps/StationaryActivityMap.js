@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MapView, { PROVIDER_GOOGLE, Marker, Polygon, Callout } from 'react-native-maps'
+import MapView, { PROVIDER_GOOGLE, Marker, Image, Polygon, Callout } from 'react-native-maps'
 import { View } from 'react-native';
 import { Text, Button, Input, Icon, Divider, List, ListItem} from '@ui-kitten/components';
 
@@ -12,15 +12,24 @@ class StationaryActivityMap extends Component {
             location: props.location,
             markers: props.markers,
         }
+
+        console.log("Position: " + JSON.stringify(this.props.position))
     }
 
     render() {
+
+        const DataPin = (props) => (
+
+            <Icon {...props} fill="blue" style={{width: 20, height: 20}} name={"radio-button-off"}/>
+        )
+
         const ShowPolygon = () => {
             if(this.props.markers === null) {
                 return (null);
             }
             else {
-                return (this.props.markers.map((coord, index) => (
+                return (
+                    this.props.markers.map((coord, index) => (
                     <MapView.Marker
                         key={index}
                         coordinate = {{
@@ -28,6 +37,7 @@ class StationaryActivityMap extends Component {
                             longitude: coord.longitude
                         }}
                     >
+                        <DataPin/>
                     </MapView.Marker>
                     )))
                 }
@@ -52,6 +62,14 @@ class StationaryActivityMap extends Component {
 
                     onPress={event => this.props.addMarker(event.nativeEvent.coordinate)}
                 >
+                    <MapView.Marker
+                        coordinate = {{
+                            latitude: this.props.position[0].latitude,
+                            longitude: this.props.position[0].longitude
+                        }}
+                    >
+                    </MapView.Marker>
+
                     <MapView.Polygon
                      coordinates={this.props.area}
                      strokeWidth={3}

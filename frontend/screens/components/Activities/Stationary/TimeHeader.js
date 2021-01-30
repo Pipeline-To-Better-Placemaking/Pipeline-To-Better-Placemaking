@@ -4,8 +4,6 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, Card, SelectItem } from '@ui-kitten/components';
 import * as Location from 'expo-location';
 
-var intervalID = 0
-
 class TimeHeader extends Component {
 
     constructor(props){
@@ -17,6 +15,8 @@ class TimeHeader extends Component {
             time: timeString,
             start: props.start
         }
+
+        this.timeStart = this.timeStart.bind(this)
     }
 
     formatInitialTime = (time) => {
@@ -39,6 +39,8 @@ class TimeHeader extends Component {
             this.setState({
                 time: "00:00"
             })
+
+            clearInterval(this.interval)
 
             return;
         }
@@ -76,20 +78,27 @@ class TimeHeader extends Component {
 
         let newTimeString = minuteString + colon + secondsString
 
+        console.log("Time: " + newTimeString)
+
         this.setState({
             time: newTimeString
         })
     }
 
-    timeStart = () => {
-
-        intervalID = setInterval(
+    timeStart() {
+    
+        this.interval = setInterval(
             this.reformatTime
         , 1000)
+
+        // console.log("IntervalID: " + this.interval)
     }
 
     componentWillUnmount() {
-        clearInterval(intervalID);
+
+        // console.log("Unmounted IntervalID: " + this.interval)
+        
+        clearInterval(this.interval);
     }
 
     render() {

@@ -28,7 +28,7 @@ class ActivitySignUp extends Component {
 
             location: project.subareas[0].area[0], // pick the first point for now
             area: project.subareas[0].area,
-            positionNameArray: nameArray
+            positionNameArray: nameArray,
         }
 
         this.openPrevPage = this.openPrevPage.bind(this);

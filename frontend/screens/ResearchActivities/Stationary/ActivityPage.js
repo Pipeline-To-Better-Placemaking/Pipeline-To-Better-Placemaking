@@ -8,7 +8,7 @@ import BackEditHeader from '../../components/Headers/BackEditHeader.js'
 import styles from '../../CompareResults/compareStyles.js';
 import StationaryActivityMap from '../../components/Maps/StationaryActivityMap.js';
 import TimeHeader from '../../components/Activities/Stationary/TimeHeader.js';
-import DataEntryPopover from '../../components/Activities/Stationary/DataEntryPopover.js';
+import DataEntryModal from '../../components/Activities/Stationary/DataEntryModal.js';
 
 class StationaryActivity extends Component {
 
@@ -20,17 +20,15 @@ class StationaryActivity extends Component {
             location: this.props.route.params.activityDetails.location,
             area: this.props.route.params.activityDetails.area,
             position: [this.props.route.params.position],
+            start: true,
             dataPopover: false,
             tempMarker: [],
-            data: [{
-                location: [],
-                gender: {},
-                age: {},
-                action: {}
-            }]
+            data: [{}],
+            markers: []
         }
 
         this.openPrevPage = this.openPrevPage.bind(this);
+        this.setStart = this.setStart.bind(this);
     }
 
     openPrevPage() {
@@ -38,43 +36,53 @@ class StationaryActivity extends Component {
     }
 
     onPointCreate = async (marker) => {
-        console.log("Opening Modal.")
 
-        console.log("DataEntry Modal: " + this.state.dataPopover)
+        if (this.state.start) {
 
-        await this.setState({
-            dataPopover: true,
-            tempMarker: marker
-        })
-
-        console.log("DataEntry Modal: " + this.state.dataPopover)
+            await this.setState({
+                dataPopover: true,
+                tempMarker: marker
+            })
+        }
     }
 
-    closeData = () => {
+    closeData = (data) => {
 
+        if (data.ageIndex > -1 && data.genderIndex > -1 && data.activityIndex > -1) {
+
+            let pointData = {
+                age: data.age,
+                gender: data.gender,
+                activity: data.activity,
+                location: this.state.tempMarker
+            }
+
+            let currentData = this.state.data
+            currentData.push(pointData)
+
+            let markers = this.state.markers
+            markers.push(this.state.tempMarker)
+
+            this.setState({
+                data: currentData,
+                dataPopover: false,
+                markers: markers
+            })
+        }
+    }
+
+    setStart() {
         this.setState({
-            dataPopover: false
+            start: true
         })
     }
 
     render() {
 
-        const Map = () => {
-            return(<View style={styles.mapContainer}>
-
-                <StationaryActivityMap
-                    location={this.state.location}
-                    area={this.state.area}
-                    markers={this.state.position}
-                    addMarker={this.onPointCreate}
-                />
-
-            </View>)
-        }
 
         const TimeBar = () => {
             return (
-                <TimeHeader time={this.props.route.params.time}/>
+                <TimeHeader setStart={this.setStart} time={this.props.route.params.time}/>
             )
         }
 
@@ -85,7 +93,7 @@ class StationaryActivity extends Component {
 
                 <TimeBar/>
 
-                <DataEntryPopover
+                <DataEntryModal
                     visible={this.state.dataPopover}
                     anchor={TimeBar}
                     closeData={this.closeData}
@@ -95,12 +103,11 @@ class StationaryActivity extends Component {
                     <StationaryActivityMap
                         location={this.state.location}
                         area={this.state.area}
-                        markers={this.state.position}
+                        position={this.state.position}
+                        markers={this.state.markers}
                         addMarker={this.onPointCreate}
                     />
                 </View>
-
-
 
             </View>
         );
