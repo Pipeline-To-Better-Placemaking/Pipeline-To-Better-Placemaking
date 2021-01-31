@@ -90,6 +90,12 @@ class DataEntryModal extends Component {
         }
 
         this.props.closeData(data)
+
+        this.setState({
+            ageIndex: -1,
+            genderIndex: -1,
+            activityIndex: -1
+        }) 
     }
 
     render() {

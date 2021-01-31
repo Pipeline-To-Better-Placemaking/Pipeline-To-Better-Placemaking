@@ -20,8 +20,10 @@ class TimeHeader extends Component {
     async timeStart() {
 
         this.props.setStart()
+    }
 
-        console.log("Start in header: " + this.props.start)
+    endTest = () => {
+        
     }
 
     render() {
@@ -29,12 +31,24 @@ class TimeHeader extends Component {
         const StartStopButton = () => {
             if (this.state.start) {
                 return(
-                    <Button status={'danger'} style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}> End </Button>
+                    <Button 
+                        status={'danger'}
+                        style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}
+                        onPress={this.endTest}
+                        >
+                            End 
+                        </Button>
                 )
             }
             else {
                 return(
-                    <Button style={{backgroundColor: '#006FD6'}} style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}} onPress={this.timeStart}> Start </Button>
+                    <Button 
+                        style={{backgroundColor: '#006FD6'}}
+                        style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}
+                        onPress={this.timeStart}
+                    >
+                        Start
+                    </Button>
                 )
             }
         }
