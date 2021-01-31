@@ -44,12 +44,11 @@ describe('When getting user info', () => {
 
         // Confirm that response contains user's info
         expect(response.body).toMatchObject({
-            id: id,
             firstname: testUser.firstname,
             lastname: testUser.lastname,
             email: testUser.email
         })
-        expect(response.body.isVerified).toBeDefined()
+        expect(response.body.is_verified).toBeDefined()
         expect(response.body.invites).toBeDefined()
         expect(response.body.teams).toBeDefined()
 
@@ -66,7 +65,6 @@ describe('When getting user info', () => {
 
         // Confirm that response contains user's info
         expect(response.body).toMatchObject({
-            id: id,
             firstname: testUser.firstname,
             lastname: testUser.lastname,
             email: testUser.email
@@ -74,7 +72,7 @@ describe('When getting user info', () => {
         expect(response.body.teams).toBeDefined()
 
         // Private info should not be included
-        expect(response.body.isVerified).not.toBeDefined()
+        expect(response.body.is_verified).not.toBeDefined()
         expect(response.body.invites).not.toBeDefined()
         // Password should not be included
         expect(response.body.password).not.toBeDefined()
