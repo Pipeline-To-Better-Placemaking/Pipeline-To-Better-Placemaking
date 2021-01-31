@@ -37,9 +37,6 @@ class DataOptionButton extends Component {
     }
 
     setDefaultAppearance = () => {
-
-        console.log("Age Matrix:" + this.props.selectionMatrix)
-        console.log("Index: " + this.props.index)
         
         if (!this.props.selectionMatrix[this.props.index] && this.state.selected == true){
             this.setState({

@@ -3,6 +3,8 @@ import MapView, { PROVIDER_GOOGLE, Marker, Image, Polygon, Callout } from 'react
 import { View } from 'react-native';
 import { Text, Button, Input, Icon, Divider, List, ListItem} from '@ui-kitten/components';
 
+const colors = ["blue", "red", "yellow", "green"]
+
 class StationaryActivityMap extends Component {
 
     constructor(props){
@@ -13,15 +15,16 @@ class StationaryActivityMap extends Component {
             markers: props.markers,
         }
 
-        console.log("Position: " + JSON.stringify(this.props.position))
     }
 
     render() {
 
-        const DataPin = (props) => (
+        const DataPin = (props) => {
 
-            <Icon {...props} fill="blue" style={{width: 20, height: 20}} name={"radio-button-off"}/>
-        )
+            return(
+                <View style={{backgroundColor: colors[props.index % 4], borderRadius: 150/2, borderWidth: 1, width: 20, height: 20}}/>
+            )
+        }
 
         const ShowPolygon = () => {
             if(this.props.markers === null) {
@@ -37,7 +40,7 @@ class StationaryActivityMap extends Component {
                             longitude: coord.longitude
                         }}
                     >
-                        <DataPin/>
+                        <DataPin index={index}/>
                     </MapView.Marker>
                     )))
                 }

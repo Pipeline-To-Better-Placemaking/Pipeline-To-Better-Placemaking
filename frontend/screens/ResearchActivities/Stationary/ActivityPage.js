@@ -41,12 +41,12 @@ class StationaryActivity extends Component {
 
             await this.setState({
                 dataPopover: true,
-                tempMarker: marker
+                tempMarker: marker,
             })
         }
     }
 
-    closeData = (data) => {
+    closeData = async (data) => {
 
         if (data.ageIndex > -1 && data.genderIndex > -1 && data.activityIndex > -1) {
 
@@ -63,7 +63,7 @@ class StationaryActivity extends Component {
             let markers = this.state.markers
             markers.push(this.state.tempMarker)
 
-            this.setState({
+            await this.setState({
                 data: currentData,
                 dataPopover: false,
                 markers: markers
@@ -106,6 +106,7 @@ class StationaryActivity extends Component {
                         position={this.state.position}
                         markers={this.state.markers}
                         addMarker={this.onPointCreate}
+                        colorIndex={this.state.colorIndex}
                     />
                 </View>
 
