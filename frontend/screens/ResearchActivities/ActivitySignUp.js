@@ -80,6 +80,7 @@ class ActivitySignUp extends Component {
                     area: this.state.area,
                     markers: this.state.standingPoints
                 })}
+                setStartTime={this.props.setStartTime}
                 />
         );
 

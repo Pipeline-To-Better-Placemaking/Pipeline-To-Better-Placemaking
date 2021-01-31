@@ -25,7 +25,9 @@ class CollaborateStack extends Component {
             selectedActivity: {},
             teams: props.teams,
             invites: props.invites,
-            activityTypes: ['Stationary Map', 'People Moving', 'Survey']
+            activityTypes: ['Stationary Map', 'People Moving', 'Survey'],
+            initialTimeStart: 1,
+            time: ""
         };
 
         this.setSelectedTeam = this.setSelectedTeam.bind(this);
@@ -90,6 +92,39 @@ class CollaborateStack extends Component {
         return this.state.activityTypes;
     }
 
+    setInitialTime = () => {
+        
+        this.setState({
+            initialTimeStart: 0
+        })
+    }
+
+    setTime = (time) => {
+
+        this.setState({
+            time: time
+        })
+    }
+
+    setStartTime = (time) => {
+
+        let newTime = this.formatInitialTime(time)
+
+        this.setState({
+            time: newTime
+        })
+
+    }
+
+    formatInitialTime = (time) => {
+
+        let timeString = time
+        timeString += ":"
+        timeString += "00"
+
+        return timeString
+    }
+
     render() {
         return(
             <CollaborateScreenStack.Navigator>
@@ -135,6 +170,7 @@ class CollaborateStack extends Component {
                                     getSelectedProject={this.getSelectedProject}
                                     getSelectedActivity={this.getSelectedActivity}
                                     getActivityTypes={this.getActivityTypes}
+                                    setStartTime={this.setStartTime}
                               />}
                 </CollaborateScreenStack.Screen>
                 <CollaborateScreenStack.Screen
@@ -143,6 +179,10 @@ class CollaborateStack extends Component {
                     {props => <StationaryActivity
                                     {...props}
                                     getSelectedActivity={this.getSelectedActivity}
+                                    initialTimeStart={this.state.initialTimeStart}
+                                    setInitialTime={this.setInitialTime}
+                                    time={this.state.time}
+                                    setTime={this.setTime}
                               />}
                 </CollaborateScreenStack.Screen>
                 <CollaborateScreenStack.Screen

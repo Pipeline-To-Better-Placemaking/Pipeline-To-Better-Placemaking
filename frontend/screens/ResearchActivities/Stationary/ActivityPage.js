@@ -20,7 +20,7 @@ class StationaryActivity extends Component {
             location: this.props.route.params.activityDetails.location,
             area: this.props.route.params.activityDetails.area,
             position: [this.props.route.params.position],
-            start: true,
+            start: false,
             dataPopover: false,
             tempMarker: [],
             data: [{}],
@@ -73,7 +73,7 @@ class StationaryActivity extends Component {
 
     setStart() {
         this.setState({
-            start: true
+            start: true,
         })
     }
 
@@ -82,7 +82,13 @@ class StationaryActivity extends Component {
 
         const TimeBar = () => {
             return (
-                <TimeHeader setStart={this.setStart} time={this.props.route.params.time}/>
+                <TimeHeader 
+                    start={this.state.start}
+                    setStart={this.setStart}
+                    time={this.props.time}
+                    initialTimeStart={this.props.initialTimeStart}
+                    setTime={this.props.setTime}
+                />
             )
         }
 

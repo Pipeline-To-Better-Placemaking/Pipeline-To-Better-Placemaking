@@ -32,10 +32,12 @@ class SignUpCard extends Component {
     }
 
     onPress = () => {
+
+        this.props.setStartTime(times[this.state.timeIndex])
+
         this.props.navigation.navigate("StationaryActivity", 
             {
                 activityDetails: this.props.activityDetails, 
-                time: times[this.state.timeIndex],
                 position: this.props.activityDetails.markers[this.state.index]
             }
         )
