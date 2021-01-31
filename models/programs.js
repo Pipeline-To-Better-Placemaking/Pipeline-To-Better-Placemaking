@@ -4,13 +4,23 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Entry = mongoose.Schema({
     location: {
-        lat: Number,
-        long: Number
+        lat: {
+            type: Number,
+            required: true
+        },
+        long: {
+            type: Number,
+            required: true
+        }
     },
-    address: String,
+    address: {
+        type: String,
+        required: true
+    },
     type: {
         type: String,
-        enum: ['residential','retail','restaurant','educational']
+        enum: ['residential','retail','restaurant','educational'],
+        required: true
     },
     floor: {
         type: Number,
@@ -24,10 +34,22 @@ const Entry = mongoose.Schema({
 })
 
 const program_schema = mongoose.Schema({
-    project: ObjectId,
-    owner: ObjectId,
-    data: Entry,
-    complete: Boolean
+    project: {
+        type: ObjectId,
+        required: true
+    },
+    owner: {
+        type: ObjectId,
+        required: true
+    },
+    data: {
+        type: Entry,
+        required: true
+    },
+    complete: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const Programs = module.exports = mongoose.model('Programs', program_schema)

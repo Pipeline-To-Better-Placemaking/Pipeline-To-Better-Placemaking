@@ -13,20 +13,14 @@ const rand = (min = 0, max = 50) => {
 const user_schema = mongoose.Schema({
     firstname: {
         type: String,
-        required: false,
-        unique: false,
         match: /[A-Za-z]/
     },
     lastname: {
         type: String,
-        required: false,
-        unique: false,
         match: /[A-Za-z]/
     },
     institution: {
         type: String,
-        required: false,
-        unique: false,
         match: /[A-Za-z ]/
     },
     email: {
@@ -39,11 +33,17 @@ const user_schema = mongoose.Schema({
         type: String,
         required: true
     },
-    is_verified: Boolean,
-    vefification_code: String,
+    is_verified: {
+        type: Boolean,
+        default: false
+    },
+    verification_code: String,
     verification_timeout: String,
     invites: [ObjectId],
-    teams: [{ type: ObjectId, ref: 'Teams' }]
+    teams: [{
+        type: ObjectId,
+        ref: 'Teams'
+    }]
 })
 
 user_schema.plugin(uniqueValidator)

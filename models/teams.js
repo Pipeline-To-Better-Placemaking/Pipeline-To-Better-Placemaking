@@ -1,20 +1,41 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const team_schema = mongoose.Schema({
-    title: String,
+    title: {
+        type: String,
+        required: true,
+        unique: true
+    },
     description: String,
-    public: Boolean,
-    projects: [{ type: ObjectId, ref: 'Projects' }],
+    public: {
+        type: Boolean,
+        default: false
+    },
+    projects: [{
+        type: ObjectId,
+        ref: 'Projects'
+    }],
+    owner: {
+        type: ObjectId,
+        required: true
+    },
     users: [{
-        user: ObjectId,
+        user: {
+            type: ObjectId,
+            required: true
+        },
         role: {
             type: String,
-            enum: ['owner','admin','user']
+            enum: ['owner','admin','user'],
+            required: true
         }
     }]
 })
+
+team_schema.plugin(uniqueValidator)
 
 const Teams = module.exports = mongoose.model('Teams', team_schema)
 
