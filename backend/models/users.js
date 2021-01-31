@@ -13,20 +13,14 @@ const rand = (min = 0, max = 50) => {
 const user_schema = mongoose.Schema({
     firstname: {
         type: String,
-        required: false,
-        unique: false,
         match: /[A-Za-z]/
     },
     lastname: {
         type: String,
-        required: false,
-        unique: false,
         match: /[A-Za-z]/
     },
     institution: {
         type: String,
-        required: false,
-        unique: false,
         match: /[A-Za-z ]/
     },
     email: {
@@ -39,11 +33,17 @@ const user_schema = mongoose.Schema({
         type: String,
         required: true
     },
-    is_verified: { type: Boolean },
-    vefification_code: { type: String },
-    verification_timeout: { type:String },
-    invites: [{ type: ObjectId }],
-    teams: [{ type: ObjectId, ref: 'Teams' }]
+    is_verified: {
+        type: Boolean,
+        default: false
+    },
+    verification_code: String,
+    verification_timeout: String,
+    invites: [ObjectId],
+    teams: [{
+        type: ObjectId,
+        ref: 'Teams'
+    }]
 })
 
 user_schema.plugin(uniqueValidator)
@@ -78,9 +78,13 @@ module.exports.comparePassword = async function(candidatePassword, hash) {
     return await bcrypt.compare(candidatePassword, hash)
 }
 
+// Verify a user's email address with the given verification code.
+// Returns true if the user was successfully verified,
+// Returns false if the code is incorrect or expired.
 module.exports.verifyEmail = async function(userId, code) {
     
-    var user = await Users.findById(userId)
+    const user = await Users.findById(userId)
+    if (!user) return false
     
     if (code == user.verification_code && user.expiryTime < new Date()) {
         await Users.updateOne(
@@ -95,6 +99,9 @@ module.exports.verifyEmail = async function(userId, code) {
     }
 }
 
+// Generate a verification code to verify the user's email address
+// and update the active code in the user's data.
+// Returns the code generated.
 module.exports.createVerification = async function(userId) {
     const num = rand(100000, 9999999)
     const verificationString = String(num).padStart(7, '0')

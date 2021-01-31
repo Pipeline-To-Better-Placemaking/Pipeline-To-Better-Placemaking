@@ -5,36 +5,60 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Entry = mongoose.Schema({
     location: {
-        latitude: Number,
-        longitude: Number
+        latitude: {
+            type: Number,
+            required: true
+        },
+        longitude: {
+            type: Number,
+            required: true
+        }
     },
     age: {
         type: String,
-        enum: ['<15','15-30','30-45','45-60','60+']
+        enum: ['<15','15-30','30-45','45-60','60+'],
+        required: true
     },
     posture: {
         type: String,
-        enum: ['sitting(formal)','sitting(informal)','standing','laying']
+        enum: ['sitting(formal)','sitting(informal)','standing','laying'],
+        required: true
     },
     activity: {
         type: String,
-        enum: ['waiting','eating','talking','exercising']
+        enum: ['waiting','eating','talking','exercising'],
+        required: true
     },
-    time: { type: Date },
+    time: {
+        type: Date,
+        required: true
+    }
 })
 
 
 const stationary_schema = mongoose.Schema({
-    project: { type: ObjectId },
-    owner: { type: ObjectId },
-    area: { type: ObjectId },
+    project: {
+        type: ObjectId,
+        required: true
+    },
+    owner: {
+        type: ObjectId,
+        required: true
+    },
+    area: {
+        type: ObjectId,
+        required: true
+    },
     claimed: {
         type: Boolean,
         default: false
     },
-    start_time: { type: Date },
-    end_time: { type: Date },
-    data: [{ type: Entry }],
+    start_time: {
+        type: Date,
+        required: true
+    },
+    end_time: Date,
+    data: [Entry],
     complete: {
         type: Boolean,
         default: false
