@@ -1,26 +1,50 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const project_schema = mongoose.Schema({
-    title: String,
+    title: {
+        type: String,
+        required: true,
+        unique: true
+    },
     description: String,
-    team: ObjectId,
-    area: ObjectId,
+    team: {
+        type: ObjectId,
+        required: true
+    },
+    area: {
+        type: ObjectId,
+        required: true
+    },
     subareas: [{
         area: [{
-            latitude: Number,
-            longitude: Number
+            latitude: {
+                type: Number,
+                required: true
+            },
+            longitude: {
+                type: Number,
+                required: true
+            }
         }]
     }],
     activities: [{
-        activity: ObjectId,
+        activity: {
+            type: ObjectId,
+            required: true,
+            unique: true
+        },
         test_type: {
             type: String,
-            enum: ['survey','stationary','moving', 'program']
+            enum: ['survey','stationary','moving', 'program'],
+            required: true
         }
     }],
 })
+
+project_schema.plugin(uniqueValidator)
 
 const Projects = module.exports = mongoose.model('Projects', project_schema)
 

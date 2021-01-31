@@ -4,27 +4,50 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Entry = mongoose.Schema({
     path: [{
-        lat: Number,
-        long: Number
+        lat: {
+            type: Number,
+            required: true
+        },
+        long: {
+            type: Number,
+            required: true
+        }
     }],
     age: {
         type: String,
-        enum: ['<15','15-30','30-45','45-60','60+']
+        enum: ['<15','15-30','30-45','45-60','60+'],
+        required: true
     },
     mode: {
         type: String,
-        enum: ['running','walking','biking','skateboarding','other']
+        enum: ['running','walking','biking','skateboarding','other'],
+        required: true
     },
-    time: String
+    time: {
+        type: Date,
+        required: true
+    }
 })
 
 const moving_schema = mongoose.Schema({
-    project: ObjectId,
-    owner: ObjectId,
-    start_time: String,
-    end_time: String,
+    project: {
+        type: ObjectId,
+        required: true
+    },
+    owner: {
+        type: ObjectId,
+        required: true
+    },
+    start_time: {
+        type: Date,
+        required: true
+    },
+    end_time: Date,
     data: [Entry],
-    complete: Boolean
+    complete: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const Movings = module.exports = mongoose.model('Moving_Maps', moving_schema)

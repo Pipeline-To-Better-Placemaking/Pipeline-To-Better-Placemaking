@@ -3,7 +3,10 @@ const mongoose = require('mongoose')
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const survey_schema = mongoose.Schema({
-    url: String,
+    url: {
+        type: String,
+        required: true
+    },
     answers: [String]
 })
 
