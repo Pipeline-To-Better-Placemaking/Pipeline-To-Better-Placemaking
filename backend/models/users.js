@@ -83,7 +83,8 @@ module.exports.comparePassword = async function(candidatePassword, hash) {
 // Returns false if the code is incorrect or expired.
 module.exports.verifyEmail = async function(userId, code) {
     
-    var user = await Users.findById(userId)
+    const user = await Users.findById(userId)
+    if (!user) return false
     
     if (code == user.verification_code && user.expiryTime < new Date()) {
         await Users.updateOne(
