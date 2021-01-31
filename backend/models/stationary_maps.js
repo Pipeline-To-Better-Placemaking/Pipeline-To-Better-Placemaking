@@ -20,7 +20,7 @@ const Entry = mongoose.Schema({
         type: String,
         enum: ['waiting','eating','talking','exercising']
     },
-    time: { type: Date },
+    time: Date,
 })
 
 

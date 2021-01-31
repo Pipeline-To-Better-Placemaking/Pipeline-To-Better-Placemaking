@@ -3,25 +3,21 @@ const mongoose = require('mongoose')
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const project_schema = mongoose.Schema({
-    title: { type: String },
-    description: { type: String },
-    team: { type: ObjectId },
-    area: { type: ObjectId },
+    title: String,
+    description: String,
+    team: ObjectId,
+    area: ObjectId,
     subareas: [{
-        type: {
-            area: [{
-                latitude: Number,
-                longitude: Number
-            }]
-        }
+        area: [{
+            latitude: Number,
+            longitude: Number
+        }]
     }],
     activities: [{
-        type: {
-            activity: ObjectId,
-            test_type: {
-                type: String,
-                enum: ['survey','stationary','moving', 'program']
-            }
+        activity: ObjectId,
+        test_type: {
+            type: String,
+            enum: ['survey','stationary','moving', 'program']
         }
     }],
 })
