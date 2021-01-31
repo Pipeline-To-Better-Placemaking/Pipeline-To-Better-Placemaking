@@ -17,7 +17,7 @@ const testUser = {
 describe('Model functions', () => {
     let id = null
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         // Begin with a known user record in the database
         await User.deleteMany({})
         const user = new User({
@@ -51,7 +51,7 @@ describe('Model functions', () => {
             expect(user.verification_code).not.toBeDefined()
             expect(user.verification_timeout).not.toBeDefined()
 
-            const code = await User.createVerification('0000')
+            const code = await User.createVerification('0' + String(id).slice(0, -1))
             // Code should not be generated if the user does not exist
             expect(code).not.toBeDefined()
             user = await User.findById(id)
