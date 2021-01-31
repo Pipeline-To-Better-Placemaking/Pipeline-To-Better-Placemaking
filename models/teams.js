@@ -3,17 +3,15 @@ const mongoose = require('mongoose')
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const team_schema = mongoose.Schema({
-    title: { type: String },
-    description: { type: String },
-    public: { type: Boolean },
+    title: String,
+    description: String,
+    public: Boolean,
     projects: [{ type: ObjectId, ref: 'Projects' }],
     users: [{
-        type: {
-            user: ObjectId,
-            role: {
-                type: String,
-                enum: ['owner','admin','user']
-            }
+        user: ObjectId,
+        role: {
+            type: String,
+            enum: ['owner','admin','user']
         }
     }]
 })

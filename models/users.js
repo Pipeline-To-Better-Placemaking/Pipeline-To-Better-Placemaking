@@ -39,10 +39,10 @@ const user_schema = mongoose.Schema({
         type: String,
         required: true
     },
-    is_verified: { type: Boolean },
-    vefification_code: { type: String },
-    verification_timeout: { type:String },
-    invites: [{ type: ObjectId }],
+    is_verified: Boolean,
+    vefification_code: String,
+    verification_timeout: String,
+    invites: [ObjectId],
     teams: [{ type: ObjectId, ref: 'Teams' }]
 })
 
@@ -78,6 +78,9 @@ module.exports.comparePassword = async function(candidatePassword, hash) {
     return await bcrypt.compare(candidatePassword, hash)
 }
 
+// Verify a user's email address with the given verification code.
+// Returns true if the user was successfully verified,
+// Returns false if the code is incorrect or expired.
 module.exports.verifyEmail = async function(userId, code) {
     
     var user = await Users.findById(userId)
@@ -95,6 +98,9 @@ module.exports.verifyEmail = async function(userId, code) {
     }
 }
 
+// Generate a verification code to verify the user's email address
+// and update the active code in the user's data.
+// Returns the code generated.
 module.exports.createVerification = async function(userId) {
     const num = rand(100000, 9999999)
     const verificationString = String(num).padStart(7, '0')
