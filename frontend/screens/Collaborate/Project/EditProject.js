@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Modal, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Text, Button, Input, Icon, Divider, Card } from '@ui-kitten/components';
+import { Text, Button, Input, Icon, Divider, Card, List, ListItem } from '@ui-kitten/components';
 import * as Location from 'expo-location';
 
-import CreateNewProjectMap from '../../components/Maps/CreateNewProjectMap.js';
+import EditAreaMap from '../../components/Maps/EditAreaMap.js';
+import SubAreasMap from '../../components/Maps/SubAreasMap.js';
 
 import styles from './createProjectViewStyles.js';
 
@@ -20,16 +21,28 @@ class EditProject extends Component {
             projName: project.title,
             locName: project.description,
             subareas: project.subareas,
+
+            location: project.subareas[0].area[0],
+            areaToEdit: [],
+            editAreaVisible: false,
+            areaName: "test",
+            areaIndex: 0
         }
 
-        this.onDismissProject = this.onCreateProject.bind(this, false);
-        this.onUpdateProject = this.onCreateProject.bind(this, true);
-        this.comfirmEditProject = this.comfirmEditProject.bind(this);
-
+        this.cancelEditProject = this.cancelEditProject.bind(this);
+        this.updateProject = this.updateProject.bind(this);
+        this.updateProjectName = this.updateProjectName.bind(this);
+        this.updateSubAreas = this.updateSubAreas.bind(this);
         this.onDeleteProject = this.onDeleteProject.bind(this);
 
+        // Edit Sub Areas
         this.addMarker = this.addMarker.bind(this);
         this.removeMarker = this.removeMarker.bind(this);
+        this.editArea = this.editArea.bind(this);
+        this.newSubArea = this.newSubArea.bind(this);
+        this.saveArea = this.saveArea.bind(this);
+        this.deleteArea = this.deleteArea.bind(this);
+        this.cancelEditArea = this.cancelEditArea.bind(this);
     }
 
     addMarker(coordinates) {
@@ -37,34 +50,88 @@ class EditProject extends Component {
             latitude: coordinates.latitude,
             longitude: coordinates.longitude
          };
-        /*this.state.tempArea.push(temp);
+        let tempArea = [...this.state.areaToEdit];
+        tempArea.push(temp);
         this.setState({
-          tempArea: this.state.tempArea
-      });*/
+          areaToEdit: tempArea
+        });
     }
 
     removeMarker(marker, index) {
-      /*this.state.tempArea.splice(index, 1);
-      this.setState({
-        tempArea: this.state.tempArea
-    });*/
+        let tempArea = [...this.state.areaToEdit];
+        tempArea.splice(index, 1);
+        this.setState({
+          areaToEdit: tempArea
+        });
     }
 
-    async onCreateProject(submit) {
-        if (submit) {
-            let goodName = this.state.projName.trim().length !== 0;
-            //let goodArea = this.state.tempArea.length > 2;
-            if (goodName){
-               this.comfirmEditProject(this.state.projName.trim(), this.state.area);
-               this.props.viewEditPage();
-            }
+    editArea(item, index) {
+        this.setState({
+            location: item.area[0],
+            areaToEdit: item.area,
+            areaName: "Area " + (index + 1),
+            areaIndex: index,
+            editAreaVisible: true,
+        });
+    }
+
+    newSubArea() {
+        this.setState({
+            location: this.state.subareas[0].area[0],
+            areaToEdit: [],
+            areaName: "New Area " + (this.state.subareas.length + 1),
+            areaIndex: this.state.subareas.length,
+            editAreaVisible: true,
+        });
+    }
+
+    saveArea() {
+        let tempArea = {
+          area: this.state.areaToEdit
+        };
+        if(this.state.subareas.length === this.state.areaIndex) {
+            this.state.subareas.push(tempArea);
         } else {
-            this.props.viewEditPage();
+            this.state.subareas[this.state.areaIndex] = tempArea;
         }
+        this.setState({
+            editAreaVisible: false,
+            subareas: this.state.subareas
+        });
+    }
+
+    deleteArea() {
+        if(this.state.areaIndex !== 0 && this.state.subareas.length > this.state.areaIndex) {
+            this.state.subareas.splice(this.state.areaIndex, 1);
+        }
+
+        this.setState({
+            editAreaVisible: false,
+            subareas: this.state.subareas
+        });
+    }
+
+    cancelEditArea() {
+        this.setState({
+            editAreaVisible: false
+        });
+    }
+
+    cancelEditProject() {
         this.props.viewEditPage();
     }
 
-    async comfirmEditProject(projectName, subareas) {
+    async updateProject() {
+        let name = this.state.projName.trim();
+        let goodName = name.length !== 0;
+        if (goodName) {
+           this.updateProjectName(name);
+        }
+        this.updateSubAreas(this.state.subareas);
+        this.props.viewEditPage();
+    }
+
+    async updateProjectName(projectName) {
         let token = await AsyncStorage.getItem("@token")
         let success = false
 
@@ -82,14 +149,41 @@ class EditProject extends Component {
         })
         .then((response) => (response.json()))
         .then(async (res) => (
-            console.log(res)
+            console.log("response to UpdateName\n", res)
         ))
-        .catch((error) => (console.log(error), success = false))
+        .catch((error) => (console.log("error\n", error), success = false))
 
         // Update
         let tempProject = this.state.project;
         tempProject.title = projectName;
         await this.props.setSelectedProject(tempProject);
+    }
+
+    async updateSubAreas(subareas) {
+        let token = await AsyncStorage.getItem("@token")
+        let success = false
+
+        // Change the info
+        await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + this.state.project._id, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                subareas: subareas
+            })
+        })
+        .then((response) => (response.json()))
+        .then(async (res) => (
+            console.log("response to Update Subareas\n", res)
+        ))
+        .catch((error) => (console.log("error\n", error), success = false))
+
+        // Update
+        let tempProject = this.state.project;
+        await this.props.setSelectedProject(this.state.project);
     }
 
     async onDeleteProject() {
@@ -125,12 +219,24 @@ class EditProject extends Component {
           <Icon {...props} name='checkmark-outline'/>
         );
 
-        const SearchIcon = (props) => (
-          <Icon {...props} name='search-outline'/>
+        const PlusIcon = (props) => (
+          <Icon {...props} name='plus-outline'/>
+        );
+
+        const EditIcon = (props) => (
+          <Icon {...props} name='edit-outline'/>
         );
 
         const DeleteIcon = (props) => (
           <Icon {...props} name='trash-2-outline'/>
+        );
+
+        const renderListItem = ({ item, index }) => (
+            <ListItem
+              title={`Area ${index+1} `}
+              accessoryRight={EditIcon}
+              onPress={() => this.editArea(item, index)}
+            />
         );
 
         return(
@@ -149,21 +255,59 @@ class EditProject extends Component {
                       />
                   </View>
 
+                  <View style={{height:'40%'}}>
+                      <SubAreasMap
+                        location={this.state.subareas[0].area[0]}
+                        subareas={this.state.subareas}
+                      />
+                  </View>
+
+                  <EditAreaMap
+                    location={this.state.location}
+                    area={this.state.areaToEdit}
+                    addMarker={this.addMarker}
+                    removeMarker={this.removeMarker}
+                    editAreaVisible={this.state.editAreaVisible}
+                    areaName={this.state.areaName}
+                    onSave={this.saveArea}
+                    onDelete={this.deleteArea}
+                    onCancel={this.cancelEditArea}
+                  />
+
+                  <View style={{flexDirection:'row', justifyContent: 'space-between', margin:5}}>
+                      <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
+                        <Text style={{fontSize:25}} >Areas </Text>
+                      </View>
+                      <Button
+                          status='info'
+                          onPress={this.newSubArea}
+                          accessoryLeft={PlusIcon}
+                      >
+                            Create New Subarea
+                      </Button>
+                  </View>
+
+                  <List
+                    data={this.state.subareas}
+                    ItemSeparatorComponent={Divider}
+                    renderItem={renderListItem}
+                  />
+
                   <View style={{flexDirection:'row', justifyContent:'space-around', marginTop:40}}>
                       <Button onPress={this.onDeleteProject}
                               status='danger'
                               accessoryLeft={DeleteIcon}>
-                        Delete
+                        Delete Project
                       </Button>
                   </View>
 
                   <View style={{flexDirection:'row', justifyContent:'space-around', marginTop:40}}>
-                      <Button onPress={this.onDismissProject}
+                      <Button onPress={this.cancelEditProject}
                               status='danger'
                               accessoryLeft={CancelIcon}>
                         Cancel
                       </Button>
-                      <Button onPress={this.onUpdateProject}
+                      <Button onPress={this.updateProject}
                               status='success'
                               accessoryLeft={CreateIcon}>
                         Update

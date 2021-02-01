@@ -7,18 +7,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         flexDirection:'column',
         margin:20,
-        ...Platform.select({
-          ios: {
-            marginTop:50
-          },
-          android: {
-            marginTop:20
-          },
-          default: {
-            // other platforms, web for example
-            marginTop:50
-          }
-      })
+        marginTop:50
     },
 
     projName: {
