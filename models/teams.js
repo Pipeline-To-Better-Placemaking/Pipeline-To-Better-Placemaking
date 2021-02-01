@@ -18,10 +18,6 @@ const team_schema = mongoose.Schema({
         type: ObjectId,
         ref: 'Projects'
     }],
-    owner: {
-        type: ObjectId,
-        required: true
-    },
     users: [{
         user: {
             type: ObjectId,

@@ -7,7 +7,6 @@ const project_schema = mongoose.Schema({
     title: {
         type: String,
         required: true,
-        unique: true
     },
     description: String,
     team: {
@@ -15,7 +14,8 @@ const project_schema = mongoose.Schema({
         required: true
     },
     area: {
-        type: ObjectId,
+        type: Number,
+        default: 0,
         required: true
     },
     subareas: [{
@@ -50,11 +50,9 @@ const Projects = module.exports = mongoose.model('Projects', project_schema)
 
 module.exports.addProject = async function(newProject) {
     const project = await newProject.save()
-    const mainArea = project.subareas[0]._id
-
     await Projects.updateOne(
         { _id: project._id },
-        { $set: {area: mainArea}}
+        { $set: {area: 0}}
     )
 
     return await Projects.findById(project._id)

@@ -12,7 +12,6 @@ const { models } = require('mongoose')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
-    
 
     if(await Team.isAdmin(req.body.team,user._id)){
     
@@ -68,7 +67,6 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
         await Team.removeProject(project.team,project._id)
         await Stationary_Map.projectCleanup(project._id)
         res.json(await Project.deleteProject(project._id))
-
     }
     else{
         res.json({
