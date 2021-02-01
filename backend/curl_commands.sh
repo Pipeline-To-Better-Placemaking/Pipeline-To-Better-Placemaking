@@ -77,7 +77,7 @@ AREA=$(curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
      http://localhost:8080/api/projects/${PROJECT} \
-     | jq -r '.area' )
+     | jq -r '.subareas[0]._id' )
 
 
 USER=$(curl -H "Authorization: Bearer ${TOKEN}" \
