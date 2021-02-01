@@ -73,7 +73,7 @@ class EditTeam extends Component {
 
     async onDeleteTeam() {
         // should probs have something for comfirm Delete first
-        /*let token = await AsyncStorage.getItem("@token")
+        let token = await AsyncStorage.getItem("@token")
         let success = false
 
         // Delete
@@ -87,21 +87,21 @@ class EditTeam extends Component {
         })
         .then((response) => (response.json()))
         .then(async (res) => (
-            console.log(res)
+            console.log("deleted team ", res)
         ))
         .catch((error) => (console.log(error), success = false))
 
         // Update
+        await this.props.viewEditPage();
         let teams = await AsyncStorage.getItem("@teams");
         teams = JSON.parse(teams);
-        let changeIndex = teams.findIndex(element => element._id === tempTeam._id);
+        let changeIndex = teams.findIndex(element => element._id === this.state.team._id);
         const newTeams = [...teams];
         newTeams.splice(changeIndex, 1);
         await AsyncStorage.setItem("@teams", JSON.stringify(newTeams));
         await this.props.updateTeams(newTeams);
-        await this.props.setSelectedTeam(null);
-        // this.props.viewEditPage();
-        this.props.navigation.navigate("Collaborate");*/
+        await this.props.setSelectedTeam({title:'', projects:[]});
+        this.props.exit();
     }
 
     render() {

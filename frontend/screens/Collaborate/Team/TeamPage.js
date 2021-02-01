@@ -136,6 +136,7 @@ class TeamPage extends Component {
                 />
 
                 <EditTeam
+                    exit={this.openPrevPage}
                     editTeam={this.state.editPageVisible}
                     viewEditPage={this.viewEditPage}
                     updateTeams={this.props.updateTeams}
