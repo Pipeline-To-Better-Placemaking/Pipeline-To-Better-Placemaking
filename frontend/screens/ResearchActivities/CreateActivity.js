@@ -3,6 +3,7 @@ import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView
 import { Text, Button, Input, Icon, Divider, Card, Select, SelectItem, Datepicker, Popover, List } from '@ui-kitten/components';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Location from 'expo-location';
+import TimerSelector from '../components/Project/TimerSelector.js'
 
 import styles from './createActivityStyles.js';
 
@@ -20,6 +21,7 @@ class CreateActivity extends Component {
             tempDate: time,
             selectedActivity: 0,
             listOfTimes: [],
+            listOfTimeLimits: [],
             isTimePickerVisible:false,
             currTime: time,
             currIndex: -1,
@@ -44,13 +46,21 @@ class CreateActivity extends Component {
         let activityTypes = this.props.getActivityTypes();
 
         if (submit) {
+
+            let signUpCardData = {
+              listOfTimes: this.state.listOfTimes,
+              listOfTimeLimits: this.state.listOfTimeLimits
+            }
+
              // save
             let activityDay = {
                 title: this.state.tempTitle,
                 type: this.state.tempType,
                 date: this.state.tempDate,
-                signUpSlots: this.state.listOfTimes,
-                standingPointData: []
+                signUpSlots: signUpCardData, 
+
+                standingPointData: [],
+
             };
 
             await this.props.addTempData(activityDay);
@@ -69,6 +79,7 @@ class CreateActivity extends Component {
             tempDate: time,
             selectedActivity: 0,
             listOfTimes: [],
+            listOfTimeLimits: [],
             standingPointData: []
         });
       }
@@ -130,16 +141,23 @@ class CreateActivity extends Component {
             timeVal: time,
             timeString: this.getTimeStr(time),
         };
+
         this.state.listOfTimes.push(temp);
+        this.state.listOfTimeLimits.push("5")
+
         this.setState({
             listOfTimes: this.state.listOfTimes,
+            listOfTimeLimits: this.state.listOfTimeLimits
         });
     }
 
     delete(value, timeIndex) {
         this.state.listOfTimes.splice(timeIndex, 1);
+        this.state.listOfTimeLimits.splice(timeIndex, 1);
+
         this.setState({
-            listOfTimes: this.state.listOfTimes
+            listOfTimes: this.state.listOfTimes,
+            listOfTimeLimits: this.state.listOfTimeLimits
         });
     }
 
@@ -149,6 +167,16 @@ class CreateActivity extends Component {
             currIndex: index,
             isTimePickerVisible:true
         });
+    }
+
+    addTimerList = (index, time) => {
+
+      this.state.listOfTimeLimits[index] = time
+
+      this.setState({
+        listOfTimeLimits: this.state.listOfTimeLimits
+      })
+
     }
 
     render() {
@@ -182,7 +210,7 @@ class CreateActivity extends Component {
         );
 
         const TimePicker = ({item, index}) => (
-            <View style={{justifyContent:'flex-start'}}>
+            <View style={{justifyContent:'flex-start', marginLeft: -25}}>
               <Button
                 onPress={() => this.viewTime(item, index)}
                 accessoryRight={ClockIcon}
@@ -202,7 +230,7 @@ class CreateActivity extends Component {
         );
 
         const Delete = ({item, index}) => (
-            <View style={{justifyContent:'flex-end'}}>
+            <View style={{justifyContent:'flex-end', width: 115}}>
                 <Button
                   onPress={() => this.delete(item, index)}
                   accessoryRight={DeleteIcon}
@@ -215,10 +243,16 @@ class CreateActivity extends Component {
 
         const signUpCard = ({item, index}) => (
             <Card>
+
               <View style={styles.activityView}>
                 <TimePicker {...{item, index}} />
                 <Delete {...{item, index}} />
               </View>
+
+              <Text>
+                    Time Limit:{'\t\t\t     '}
+                    <TimerSelector addTimerList={this.addTimerList} index={index}/>
+              </Text>
             </Card>
         );
 

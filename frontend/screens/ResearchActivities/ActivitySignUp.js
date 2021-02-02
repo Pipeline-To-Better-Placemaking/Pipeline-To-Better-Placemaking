@@ -19,11 +19,15 @@ class ActivitySignUp extends Component {
         let activity = props.getSelectedActivity();
         let nameArray= this.createPositionNameArray(activity.standingPointData);
 
+        // console.log("Project: " + JSON.stringify(project))
+        // console.log("Activity: " + JSON.stringify(activity))
+
         this.state = {
             title: activity.title,
             type: activity.type,
             date: activity.date,
-            signUpSlots: activity.signUpSlots,
+            signUpSlots: activity.signUpSlots.listOfTimes,
+            signUpSlotsTimeLimits: activity.signUpSlots.listOfTimeLimits,
             standingPoints: activity.standingPointData,
 
             location: project.subareas[0].area[0], // pick the first point for now
@@ -71,10 +75,13 @@ class ActivitySignUp extends Component {
     render() {
 
         const signUpCard = ({item, index}) => (
+
             <SignUpCard 
                 navigation={this.props.navigation}
                 item={item}
                 names={this.state.positionNameArray}
+                timeLimit={this.state.signUpSlotsTimeLimits[index]}
+                index={index}
                 activityDetails={({
                     location: this.state.location,
                     area: this.state.area,

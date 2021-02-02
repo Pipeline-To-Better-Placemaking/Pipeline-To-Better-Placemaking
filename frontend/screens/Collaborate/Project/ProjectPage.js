@@ -174,6 +174,7 @@ class ProjectPage extends Component {
                     navigation={this.props.navigation}
                     location={this.state.location}
                     area={this.state.area}
+                    setStartTime={this.props.setStartTime}
                 />
 
                 <StandingPointScreen

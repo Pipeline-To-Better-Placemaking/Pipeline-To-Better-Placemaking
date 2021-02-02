@@ -4,8 +4,6 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, Card, SelectItem } from '@ui-kitten/components';
 import * as Location from 'expo-location';
 
-const times = ["5", "10", "15", "20", "25", "30"]
-
 class SignUpCard extends Component {
 
     constructor(props){
@@ -15,8 +13,9 @@ class SignUpCard extends Component {
             index: -1,
             positionNameArray: props.names,
             item: props.item,
-            timeIndex: -1
         }
+
+        console.log("Item: " + props.item)
     }
 
     setIndex = (index) => {
@@ -25,15 +24,9 @@ class SignUpCard extends Component {
         })
     }
 
-    setTimeIndex = (index) => {
-        this.setState({
-            timeIndex: index-1
-        })
-    }
-
     onPress = () => {
 
-        this.props.setStartTime(times[this.state.timeIndex])
+        this.props.setStartTime(this.props.timeLimit)
 
         this.props.navigation.navigate("StationaryActivity", 
             {
@@ -58,19 +51,6 @@ class SignUpCard extends Component {
             );
         }
 
-        const TimerSelector = () => {
-
-            return(
-                <Select style={{width: 100}} placeholder={' '} value={times[this.state.timeIndex]} onSelect={index => this.setTimeIndex(index)}>
-                    {times.map((time, key) => {
-                        return(
-                            <SelectItem title={time} key={key}/>
-                        )})
-                    }
-                </Select>
-            )
-        }
-
         return(
             <Card>
                 <View>
@@ -78,15 +58,10 @@ class SignUpCard extends Component {
                         Position: {'\t\t'} 
                         <PositionSelector/>
                     </Text>
-                    <Text style={{fontSize: 18, marginBottom: 20}}>
-                        Time Limit: {'\t'} 
-                        <TimerSelector/> {'\t'}
-                        mins
-                    </Text>
-                        
                 </View>
 
                 <Text style={{fontSize:18, marginBottom: 10}}>Time Start: {'\t'} {this.state.item.timeString}</Text>
+                <Text style={{fontSize:18, marginBottom: 10}}>Time Limit: {'\t'} {this.props.timeLimit} min.</Text>
                 <Button onPress={this.onPress}>
                     Sign Up / Begin
                 </Button>

@@ -83,8 +83,6 @@ class CollaborateStack extends Component {
 
     getSelectedActivity() {
 
-        console.log("Getting activity: " + JSON.stringify(this.state.selectedActivity))
-
         return this.state.selectedActivity;
     }
 
@@ -159,6 +157,7 @@ class CollaborateStack extends Component {
                                     getSelectedProject={this.getSelectedProject}
                                     setSelectedActivity={this.setSelectedActivity}
                                     getActivityTypes={this.getActivityTypes}
+                                    setStartTime={this.setStartTime}
                                     navigation={this.props.navigation}
                               />}
                 </CollaborateScreenStack.Screen>
