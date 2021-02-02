@@ -72,6 +72,19 @@ module.exports.addMap = async function(newMap) {
     return await newMap.save()
 }
 
+module.exports.updateMap = async function (projectId, newMap) {
+    return await Maps.updateOne(
+        { _id: projectId },
+        { $set: {
+            owner: newMap.owner,
+            start_time: newMap.start_time,
+            end_time: newMap.end_time,
+            area: newMap.area,
+            claimed: newMap.claimed
+        }}
+    )
+}
+
 module.exports.deleteMap = async function(mapId) {
     return await Maps.findByIdAndDelete(mapId)
 }
@@ -87,8 +100,12 @@ module.exports.addEntry = async function(mapId, newEntry) {
     )
 }
 
-module.exports.deleteEntry = async function(testId, markerId) {
-
+module.exports.deleteEntry = async function(mapId, entryId) {
+    return await Maps.updateOne(
+        { _id: mapId },
+        { $pull: { data: {_id:entryId }}
+    }
+    )
 }
 
 module.exports.claim = async function(testId, userId) {

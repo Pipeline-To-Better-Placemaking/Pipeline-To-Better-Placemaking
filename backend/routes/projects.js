@@ -39,19 +39,24 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 })
 
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    user = await req.user
+    user = await req.user   
+    project = await Project.findById(req.params.id)
     let newProject = new Project({
-        title: req.body.title,
-        description: req.body.description,
-        points: req.body.points
+        title: (req.body.title ? req.body.title : project.title),
+        description: (req.body.description ? req.body.description : project.description),
+        area: (req.body.area ? req.body.area : project.area)
     })
 
-    project = await Project.findById(req.params.id)
-
     if (await Team.isAdmin(project.team,user._id)){
-        res.status(201).json(await Project.updateProject(req.params.id,newProject))
-    }
-
+        if (newProject.area > project.subareas.length){
+            res.json({
+                msg:'Index of area is invalid'
+            })
+        } 
+        else{
+            res.status(201).json(await Project.updateProject(req.params.id,newProject))
+        }
+    }  
     else{
         res.json({
             msg: 'unauthorized'
@@ -88,5 +93,53 @@ router.post('/:id/areas', passport.authenticate('jwt',{session:false}), async (r
         })
     }
 })
+
+router.put('/:id/areas/:areaId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user   
+    project = await Project.findById(req.params.id)
+    if (await Team.isAdmin(project.team,user._id)){
+        res.status(201).json(await Project.updateArea(project._id,req.params.areaId,req.body.area))
+    }  
+    else{
+        res.json({
+            msg: 'unauthorized'
+        })
+    }  
+})
+
+router.put('/:id/areas/', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    project = await Project.findById(req.params.id)
+    if (await Team.isAdmin(project.team,user._id)){
+
+        if(req.body.areas){
+            for(var i = 0; i < req.body.areas.length; i++){
+                await Project.updateArea(project._id,req.body.areas[i].id,req.body.areas[i].points)
+            }
+            res.status(201).json(await Project.findById(req.params.id))
+        }
+        else{
+            res.status(201).json(await Project.updateArea(project._id,area.id,req.body.area))
+        }   
+    }
+    else{
+        res.json({
+            msg: 'unauthorized'
+        })
+    }
+})
+router.delete('/:id/areas/:areadId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    if(await Team.isAdmin(project.team,user._id)){
+        res.status(201).json(await Project.deleteArea(project._id,req.params.areaId))
+    }
+    else{
+        res.json({
+            msg: 'unauthorized'
+        })
+    }
+
+})
+
 
 module.exports = router

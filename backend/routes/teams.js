@@ -34,10 +34,11 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
+    team = await Team.findById(req.params.id)
     let newTeam = new Team({
-        title: req.body.title,
-        description: req.body.description,
-        public: req.body.public
+        title: (req.body.title ? req.body.title : team.title),
+        description: (req.body.description ? req.body.description : team.description),
+        public: (req.body.public ? req.body.public : team.public)
     })
 
     if (await Team.isAdmin(req.params.id,user._id)){
