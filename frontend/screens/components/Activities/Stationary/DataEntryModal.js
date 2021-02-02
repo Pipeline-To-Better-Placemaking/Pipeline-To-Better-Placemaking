@@ -9,6 +9,7 @@ import DataOptionButton from './DataOptionButton.js';
 const age = ["0 - 14", "15 - 24", "25 - 64", "65+"]
 const gender = ["Male", "Female"]
 const activity = ["Talking", "Transit Waiting", "Recreation", "Eating"]
+const posture = ["Standing", "Sitting", "Laying", "Lounging"]
 
 class DataEntryModal extends Component {
 
@@ -20,14 +21,17 @@ class DataEntryModal extends Component {
             ageIndex: -1,
             genderIndex: -1,
             activityIndex: -1,
+            postureIndex: -1,
             ageMatrix: [0, 0, 0, 0],
             genderMatrix: [0, 0],
-            activityMatrix: [0, 0, 0, 0]
+            activityMatrix: [0, 0, 0, 0],
+            postureMatrix: [0, 0, 0, 0]
         }
 
         this.setAgeIndex = this.setAgeIndex.bind(this)
         this.setGenderIndex = this.setGenderIndex.bind(this)
         this.setActivityIndex = this.setActivityIndex.bind(this)
+        this.setPostureIndex = this.setPostureIndex.bind(this)
     }
 
     setAgeIndex(index){
@@ -78,15 +82,35 @@ class DataEntryModal extends Component {
         })
     }
 
+    setPostureIndex(index){
+
+        let postureMatrix = this.state.postureMatrix
+
+
+        for (let i = 0; i < postureMatrix.length; i++){
+            postureMatrix[i] = 0
+        }
+
+        postureMatrix[index] = 1
+
+        this.setState({
+            postureMatrix: index,
+            postureMatrix: postureMatrix
+        })
+    }
+
     sendData = () => {
 
         let data = {
             ageIndex: this.state.ageIndex,
             genderIndex: this.state.genderIndex,
             activityIndex: this.state.activityIndex,
+            postureIndex: this.state.postureIndex,
             age: age[this.state.ageIndex],
             gender: gender[this.state.genderIndex],
-            activity: activity[this.state.activityIndex]
+            activity: activity[this.state.activityIndex],
+            posture: posture[this.state.postureIndex]
+
         }
 
         this.props.closeData(data)
@@ -94,7 +118,8 @@ class DataEntryModal extends Component {
         this.setState({
             ageIndex: -1,
             genderIndex: -1,
-            activityIndex: -1
+            activityIndex: -1,
+            postureIndex: -1
         }) 
     }
 
@@ -107,8 +132,8 @@ class DataEntryModal extends Component {
                         <Text category={'h1'} style={{alignSelf: 'center'}}>Data</Text>
                         <Text category={'s1'} style={{alignSelf: 'center', marginTop: -20}}>___________</Text>
                         <View style={{flexDirection: 'column', marginLeft: 15}}>
-                            <Text category={'h6'} style={{marginBottom: 10}}> Age: </Text>
 
+                            <Text category={'h6'} style={{marginBottom: 10}}> Age: </Text>
                             <View style={{flexDirection: 'row',}}>
                                 <DataOptionButton index={0} selectionMatrix={this.state.ageMatrix} setIndex={this.setAgeIndex} text={"0 - 14"}/>
                                 <DataOptionButton index={1} selectionMatrix={this.state.ageMatrix} setIndex={this.setAgeIndex} text={"15 - 24"}/>
@@ -119,14 +144,12 @@ class DataEntryModal extends Component {
                             </View>
 
                             <Text category={'h6'} style={{marginBottom: 10, marginTop: 25}}> Gender: </Text>
-
                             <View style={{flexDirection: 'row',}}>
                                 <DataOptionButton index={0} selectionMatrix={this.state.genderMatrix} setIndex={this.setGenderIndex} text={"Male"}/>
                                 <DataOptionButton index={1} selectionMatrix={this.state.genderMatrix} setIndex={this.setGenderIndex} text={"Female"}/>
                             </View>
 
                             <Text category={'h6'} style={{marginBottom: 10, marginTop: 25}}> Activity: </Text>
-
                             <View style={{flexDirection: 'row', marginTop: 10}}>
                                 <DataOptionButton index={0} selectionMatrix={this.state.activityMatrix} setIndex={this.setActivityIndex} text={"Talking"}/>
                                 <DataOptionButton index={1} selectionMatrix={this.state.activityMatrix} setIndex={this.setActivityIndex} text={"Transit Waiting"}/>
@@ -134,6 +157,16 @@ class DataEntryModal extends Component {
                             <View style={{flexDirection: 'row', marginTop: 10}}>
                                 <DataOptionButton index={2} selectionMatrix={this.state.activityMatrix} setIndex={this.setActivityIndex} text={"Recreation"}/>
                                 <DataOptionButton index={3} selectionMatrix={this.state.activityMatrix} setIndex={this.setActivityIndex} text={"Eating"}/>
+                            </View>
+
+                            <Text category={'h6'} style={{marginBottom: 10, marginTop: 25}}> Posture: </Text>
+                            <View style={{flexDirection: 'row', marginTop: 10}}>
+                                <DataOptionButton index={0} selectionMatrix={this.state.postureMatrix} setIndex={this.setPostureIndex} text={"Standing"}/>
+                                <DataOptionButton index={1} selectionMatrix={this.state.postureMatrix} setIndex={this.setPostureIndex} text={"Sitting"}/>
+                            </View>
+                            <View style={{flexDirection: 'row', marginTop: 10}}>
+                                <DataOptionButton index={2} selectionMatrix={this.state.postureMatrix} setIndex={this.setPostureIndex} text={"Laying"}/>
+                                <DataOptionButton index={3} selectionMatrix={this.state.postureMatrix} setIndex={this.setPostureIndex} text={"Lounging"}/>
                             </View>
 
                         </View>

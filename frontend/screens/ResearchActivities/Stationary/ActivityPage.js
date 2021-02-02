@@ -54,6 +54,7 @@ class StationaryActivity extends Component {
                 age: data.age,
                 gender: data.gender,
                 activity: data.activity,
+                posture: data.posture,
                 location: this.state.tempMarker
             }
 
