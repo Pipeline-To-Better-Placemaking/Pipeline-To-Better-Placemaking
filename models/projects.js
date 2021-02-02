@@ -64,7 +64,7 @@ module.exports.updateProject = async function (projectId, newProject) {
         { $set: {
             title: newProject.title,
             description: newProject.description,
-            points: newProject.points
+            area: newProject.area
         }}
     )
 }
@@ -101,4 +101,21 @@ module.exports.addArea = async function(projectId, newArea) {
         { _id: projectId },
         { $push: { subareas: { area: newArea }}}
     )
+}
+
+module.exports.updateArea = async function(projectId, areaId, newArea){
+return await Projects.updateOne(
+    {
+        _id: projectId,
+        'subareas._id': areaId 
+    },
+    { $set: { "subareas.$.area": newArea }}
+)
+}
+
+module.exports.deleteArea = async function(projectId, areaId) {
+  return await Projects.updateOne(
+      { _id: projectId },
+      { $pull: { subareas: { _id: areaId }}}
+  )
 }

@@ -25,7 +25,7 @@ echo
 TEAM=$(curl -H "Authorization: Bearer ${TOKEN}" \
         -H 'Content-Type: application/json' \
         --request POST \
-        -d '{"title": "Testing","description": "a cool testing thing"}'\
+        -d '{"title": "Testing","description": "a cool testing thidddddddng"}'\
         http://localhost:8080/api/teams \
         | jq -r '._id' )
 
@@ -39,7 +39,7 @@ echo
 curl -H "Authorization: Bearer ${TOKEN}" \
      -H 'Content-Type: application/json' \
      --request PUT \
-     -d '{"title": "Look ma I changed it","description": "a cool testing thingy"}'\
+     -d '{"title": "Look ma I changed it"}'\
      http://localhost:8080/api/teams/${TEAM}
 echo 
 
@@ -136,7 +136,7 @@ curl -H 'Content-Type: application/json' \
       }" \
      http://localhost:8080/api/projects/${PROJECT}/areas
 
-echo
+echo 
 echo
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
@@ -149,16 +149,17 @@ echo
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request POST \
-      -d  "{
+      -d  "{\"entries\":[{
            \"location\": {\"latitude\": 8.602413253152307, \"longitude\": -7.20019937739713},  
            \"age\": \"<15\", 
            \"posture\": \"sitting(informal)\" , 
            \"activity\": \"talking\" , 
            \"time\": \"2012-04-23T12:25:43.511Z\" 
-          }"  \
+          }]}"  \
      http://localhost:8080/api/stationary_maps/${MAP}/data
 
 echo
+
 echo
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
@@ -166,3 +167,13 @@ curl -H 'Content-Type: application/json' \
      http://localhost:8080/api/stationary_maps/${MAP} 
 
 echo 
+
+MAPDATA=$(curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/stationary_maps/${MAP} \
+     | jq -r '.data[0]._id')
+
+echo  MAPDATA
+echo ${MAPDATA}
+echo
