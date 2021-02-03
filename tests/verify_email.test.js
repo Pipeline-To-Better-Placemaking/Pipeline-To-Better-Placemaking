@@ -5,7 +5,7 @@ const api = supertest(app)
 const th = require('./test_helper')
 const User = require('../models/users')
 
-const baseUrl = '/api/users'
+const baseUrl = '/api/verify'
 
 const testUser = {
     firstname: 'John',
@@ -93,6 +93,117 @@ describe('Model functions', () => {
             // Verification should fail
             expect(success).toEqual(false)
             expect(user.is_verified).toEqual(false)
+        })
+    })
+})
+
+describe('When a new user has just been created', () => {
+    describe('verifying the user\'s email address', () => {
+        // The user's id
+        let id = null
+        // The user's email verification code
+        let code = null
+
+        beforeAll(async () => {
+            // Create a new user
+            await User.deleteMany({})
+            const user = new User({
+                firstname: testUser.firstname,
+                lastname: testUser.lastname,
+                email: testUser.email,
+                password: testUser.password
+            })
+            const savedUser = await User.addUser(user)
+            id = savedUser._id
+            code = savedUser.verification_code
+        })
+
+        test('fails (400) if the specified email is not associated with an existing user', async () => {
+            await api
+                .post(`${baseUrl}?email=nobody@gmail.com&code=${code}`)
+                .expect(400)
+
+            // User's email should still not be verified
+            const user = await User.findById(id)
+            expect(user.is_verified).toEqual(false)
+        })
+    
+        test('fails (403) if the verification code is incorrect', async () => {
+            await api
+                .post(`${baseUrl}?email=${testUser.email}&code=${'0' + String(code).slice(0, -1)}`)
+                .expect(403)
+
+            // User's email should still not be verified
+            const user = await User.findById(id)
+            expect(user.is_verified).toEqual(false)
+        })
+    
+        test('succeeds (200) if the verification code is correct', async () => {
+            // User's email should not yet be verified
+            let user = await User.findById(id)
+            expect(user.is_verified).toEqual(false)
+
+            await api
+                .post(`${baseUrl}?email=${testUser.email}&code=${code}`)
+                .expect(200)
+
+            // User's email should now be verified
+            user = await User.findById(id)
+            expect(user.is_verified).toEqual(true)
+        })
+    })
+
+    describe('generating a new verification code', () => {
+        // The user's id
+        let id = null
+        // User's authentication token
+        let token = null
+        
+        beforeAll(async () => {
+            // Create a new user
+            await User.deleteMany({})
+            const user = new User({
+                firstname: testUser.firstname,
+                lastname: testUser.lastname,
+                email: testUser.email,
+                password: testUser.password
+            })
+            const savedUser = await User.addUser(user)
+            id = savedUser._id
+            token = th.getToken(user)
+        })
+
+        test('succeeds (200) if valid token is given', async () => {
+            // Save user's current verification code
+            let user = await User.findById(id)
+            const initialCode = user.verification_code
+            
+            await api
+                .get(`${baseUrl}/newcode`)
+                .set('Authorization', 'Bearer ' + token)
+                .expect(200)
+
+            // Verification code should have changed
+            user = await User.findById(id)
+            expect(user.verification_code).not.toEqual(initialCode)
+        })
+
+        test('fails (401) if token is missing or invalid', async () => {
+            // Save user's current verification code
+            let user = await User.findById(id)
+            const initialCode = user.verification_code
+            
+            await api
+                .get(`${baseUrl}/newcode`)
+                .expect(401)
+            await api
+                .get(`${baseUrl}/newcode`)
+                .set('Authorization', 'Bearer 0' + String(token).slice(0, -1))
+                .expect(401)
+
+            // Verification code should not have changed
+            user = await User.findById(id)
+            expect(user.verification_code).toEqual(initialCode)
         })
     })
 })
