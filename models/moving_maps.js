@@ -52,8 +52,6 @@ const moving_schema = mongoose.Schema({
 
 const Movings = module.exports = mongoose.model('Moving_Maps', moving_schema)
 
-const Maps = module.exports = mongoose.model('Stationary_Maps', stationary_schema)
-
 module.exports.addMap = async function(newMap) {
     return await newMap.save()
 }
