@@ -38,7 +38,7 @@ const user_schema = mongoose.Schema({
         default: false
     },
     verification_code: String,
-    verification_timeout: String,
+    verification_timeout: Date,
     invites: [ObjectId],
     teams: [{
         type: ObjectId,
@@ -86,7 +86,7 @@ module.exports.verifyEmail = async function(userId, code) {
     const user = await Users.findById(userId)
     if (!user) return false
     
-    if (code == user.verification_code && user.expiryTime < new Date()) {
+    if (code === user.verification_code && user.verification_timeout < new Date()) {
         await Users.updateOne(
             { _id: userId },
             { $set: { is_verified: true }}
@@ -106,13 +106,20 @@ module.exports.createVerification = async function(userId) {
     const num = rand(100000, 9999999)
     const verificationString = String(num).padStart(7, '0')
     const expiryTime = new Date() + 10 + 60 * 1000
-    await Users.updateOne(
+
+    const res = await Users.updateOne(
         { _id: userId },
         { $set: {
             verification_code: verificationString,
             verification_timeout: expiryTime
         }}
     )
+
+    // No such user was found
+    if (res.n === 0) {
+        return undefined
+    }
+
     return verificationString
 }
 
