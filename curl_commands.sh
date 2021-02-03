@@ -177,3 +177,23 @@ MAPDATA=$(curl -H 'Content-Type: application/json' \
 echo  MAPDATA
 echo ${MAPDATA}
 echo
+echo
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+        --request PUT \
+         -d "{
+           \"location\": {\"latitude\": 8.602413253152307, \"longitude\": -7.20019937739713},   
+           \"posture\": \"sitting(formal)\" , 
+           \"activity\": \"talking\" , 
+           \"time\": \"2012-04-23T12:25:43.511Z\" 
+          }"  \
+     http://localhost:8080/api/stationary_maps/${MAP}/data/${MAPDATA} 
+
+echo
+echo
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/stationary_maps/${MAP} 
+echo
+echo
