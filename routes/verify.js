@@ -7,15 +7,49 @@ const xoauth2 = require('xoauth2')
 const express = require('express')
 const router = express.Router()
 
-// Send verification email
+// Verify the email address with the given verification code
+router.post('/', async (req, res, next) => {
+    // Paramters are missing
+    if (!req.query.email || !req.query.code) {
+        return res.status(400).json({
+            
+        })
+    }
+
+    const user = User.getUserByEmail(req.query.email)
+    // Email is not associated with an existing user
+    if (!user) {
+        return res.status(400).json({
+
+        })
+    }
+
+    if (User.verifyEmail(user._id, req.query.code)){
+        return res.status(200).json({
+            msg:"Success"
+        })
+    }
+    else{
+        return res.status(403).json({
+            msg:"Failiure"
+        })
+    }
+})
+
+// Generate a new email verification code and send an email to the user containing the new code
 router.post('/newcode',passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    const code = await User.createVerification(req.user._id)
+    // Code generation failed
+    if (!code) {
+        return res.status(401)
+    }
 
-    let user = await req.user
-    userId = user._id
-    code = await User.createVerification(userId)
+    // Terminate early in testing mode so we don't end up sending a bunch of emails
+    if (process.env.NODE_ENV === 'test') {
+        return res.status(200)
+    }
 
-
-    var transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         auth: {
             xoauth2: xoauth2.createXOAuth2Generator({
@@ -28,7 +62,7 @@ router.post('/newcode',passport.authenticate('jwt',{session:false}), async (req,
         }
     })
 
-    var mailOptions = {
+    const mailOptions = {
         from: config.PROJECT_EMAIL,
         to: await req.user.emai,
         subject: "Email Verification",
@@ -45,22 +79,6 @@ router.post('/newcode',passport.authenticate('jwt',{session:false}), async (req,
             res.status(200)
         }
     })
-
-})
-
-// Verify user's email
-router.post('/submit', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    var correct = User.verifyEmail(await req.user._id, await req.body.code)
-    if (correct){
-        res.status(200).json({
-            msg:"Success"
-        })
-    }
-    else{
-        res.status(401).json({
-            msg:"Failiure"
-        })
-    }
 })
 
 module.exports = router
