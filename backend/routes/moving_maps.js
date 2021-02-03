@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Map = require('../models/stationary_maps.js')
+const Map = require('../models/moving_maps.js')
 const Project = require('../models/projects.js')
 const Team = require('../models/teams.js')
 const passport = require('passport')
@@ -26,7 +26,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
         const map = await Map.addMap(newMap)
 
-        await Project.addActivity(req.body.project,map._id,'stationary')
+        await Project.addActivity(req.body.project,map._id,'moving')
 
         res.status(201).json(map)
 
@@ -111,10 +111,9 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 
     const newData = {
         _id: oldData._id,
-        location: (req.body.location ? req.body.location : oldData.location),
+        path: (req.body.path ? req.body.path : oldData.path),
         age: (req.body.age ? req.body.age : oldData.age),
-        posture: (req.body.posture ? req.body.posture : oldData.posture),
-        activity: (req.body.activity ? req.body.activity : oldData.activity),
+        mode: (req.body.mode ? req.body.mode : oldData.mode),
         time: (req.body.time ? req.body.time : oldData.time)
     }
 

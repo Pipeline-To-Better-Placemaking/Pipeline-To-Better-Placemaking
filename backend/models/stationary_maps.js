@@ -100,22 +100,28 @@ module.exports.addEntry = async function(mapId, newEntry) {
     )
 }
 
+module.exports.findData = async function(mapId, entryId){
+    const out = (await Maps.find({
+        _id: mapId,
+        'data._id': entryId 
+    },
+    {'data.$':1}))
+
+    return out[0].data[0]
+}
+
+module.exports.updateData = async function(mapId, dataId, newEntry){
+    return await Maps.updateOne(
+        {
+            _id: mapId,
+            'data._id': dataId 
+        },
+        { $set: { "data.$": newEntry}}
+    )}
+
 module.exports.deleteEntry = async function(mapId, entryId) {
     return await Maps.updateOne(
         { _id: mapId },
         { $pull: { data: {_id:entryId }}
-    }
-    )
-}
-
-module.exports.claim = async function(testId, userId) {
-
-}
-
-module.exports.complete = async function(testId) {
-
-}
-
-module.exports.getData = async function(testId) {
-
+        })
 }

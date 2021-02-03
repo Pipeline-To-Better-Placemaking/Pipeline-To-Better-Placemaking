@@ -52,32 +52,62 @@ const moving_schema = mongoose.Schema({
 
 const Movings = module.exports = mongoose.model('Moving_Maps', moving_schema)
 
-module.exports.addTest = async function addTest(newTest) {
-    
+const Maps = module.exports = mongoose.model('Stationary_Maps', stationary_schema)
+
+module.exports.addMap = async function(newMap) {
+    return await newMap.save()
 }
 
-module.exports.addEntry = async function(testId, entry) {
-    Movings.updateOne(
-        { _id: testId },
-        { $addToSetid: { data: entry }}
+module.exports.updateMap = async function (projectId, newMap) {
+    return await Maps.updateOne(
+        { _id: projectId },
+        { $set: {
+            owner: newMap.owner,
+            start_time: newMap.start_time,
+            end_time: newMap.end_time,
+            area: newMap.area,
+            claimed: newMap.claimed
+        }}
     )
 }
 
-module.exports.deleteEntry = async function(testId, entryId) {
-    Movings.updateOne(
-        { _id: testId },
-        { $pull: { data: { _id: entryId }}}
+module.exports.deleteMap = async function(mapId) {
+    return await Maps.findByIdAndDelete(mapId)
+}
+
+module.exports.projectCleanup = async function(projectId) {
+    return await Maps.deleteMany({ project: projectId })
+}
+
+module.exports.addEntry = async function(mapId, newEntry) {
+    return await Maps.updateOne(
+        { _id: mapId },
+        { $push: { data: newEntry }}
     )
 }
 
-module.exports.claim = async function(testId, userId) {
+module.exports.findData = async function(mapId, entryId){
+    const out = (await Maps.find({
+        _id: mapId,
+        'data._id': entryId 
+    },
+    {'data.$':1}))
 
+    return out[0].data[0]
 }
 
-module.exports.complete = async function(testId) {
+module.exports.updateData = async function(mapId, dataId, newEntry){
+    return await Maps.updateOne(
+        {
+            _id: mapId,
+            'data._id': dataId 
+        },
+        { $set: { "data.$": newEntry}}
+    )}
 
-}
-
-module.exports.getData = async function(testId) {
-
+module.exports.deleteEntry = async function(mapId, entryId) {
+    return await Maps.updateOne(
+        { _id: mapId },
+        { $pull: { data: {_id:entryId }}
+        })
 }
