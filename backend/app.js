@@ -46,21 +46,23 @@ app.use('/api/verify',          verifyApi)
 app.use('/api/stationary_maps', stationApi)
 app.use('/api/moving_maps',     movingApi)
 
-app.use(errorHandler)
-
 app.use(passport.initialize());
 app.use(passport.session());
 require('./utils/passport.js')(passport)
 
 const expressSession = require('express-session')({
-  secret: config.PRIVATE_KEY,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {maxAge: 1000}
+    secret: config.PRIVATE_KEY,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {maxAge: 1000}
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressSession);
+
+// Handles errors. express-async-errors ensures this is invoked automatically
+// by any errors thrown anywhere in previous routes or middlewares.
+app.use(errorHandler)
 
 const server = app.listen(config.PORT, () => {
     log.info(`Server is running on port ${config.PORT}`)

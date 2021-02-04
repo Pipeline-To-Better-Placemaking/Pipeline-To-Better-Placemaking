@@ -5,6 +5,8 @@ const User = require('../models/users')
 const express = require('express')
 const router = express.Router()
 
+const { UnauthorizedError } = require('../utils/errors')
+
 // Login -
 // Generates and responds w/ json web token if email and password match a user
 // Responds w/ 401 otherwise
@@ -15,10 +17,7 @@ router.post('/', async (req,res,next) => {
 
     // Email or password is missing
     if (!email || !password) {
-        return res.status(401).json({
-            success: false,
-            msg: 'Invalid email or password'
-        })
+        throw new UnauthorizedError('Invalid email or password')
     }
 
     const user = await User.getUserByEmail(email)
@@ -28,10 +27,7 @@ router.post('/', async (req,res,next) => {
 
     // Email or password is invalid
     if (!(user && passwordMatch)) {
-        return res.status(401).json({
-            success: false,
-            msg: 'Invalid email or password'
-        })
+        throw new UnauthorizedError('Invalid email or password')
     }
 
     var shortUser = {

@@ -7,21 +7,19 @@ const xoauth2 = require('xoauth2')
 const express = require('express')
 const router = express.Router()
 
+const { BadRequestError, ForbiddenError, InternalServerError } = require('../utils/errors')
+
 // Verify the email address with the given verification code
 router.post('/', async (req, res, next) => {
     // Paramters are missing
     if (!req.query.email || !req.query.code) {
-        return res.status(400).json({
-            
-        })
+        throw new BadRequestError('Missing required parameters: email or code')
     }
 
     const user = User.getUserByEmail(req.query.email)
     // Email is not associated with an existing user
     if (!user) {
-        return res.status(400).json({
-
-        })
+        throw new BadRequestError('Specified email is unused or invalid')
     }
 
     if (User.verifyEmail(user._id, req.query.code)){
@@ -29,10 +27,8 @@ router.post('/', async (req, res, next) => {
             msg:"Success"
         })
     }
-    else{
-        return res.status(403).json({
-            msg:"Failiure"
-        })
+    else {
+        throw new ForbiddenError('Verification code is incorrect or expired')
     }
 })
 
@@ -41,7 +37,7 @@ router.post('/newcode',passport.authenticate('jwt',{session:false}), async (req,
     const code = await User.createVerification(req.user._id)
     // Code generation failed
     if (!code) {
-        return res.status(401)
+        throw new InternalServerError('The server encountered a problem')
     }
 
     // Terminate early in testing mode so we don't end up sending a bunch of emails
@@ -71,8 +67,7 @@ router.post('/newcode',passport.authenticate('jwt',{session:false}), async (req,
 
     transporter.sendMail(mailOptions, function(error,info){
         if (error) {
-            console.log(error)
-            res.json({msg:'error'})
+            throw new InternalServerError('The server encountered a problem')
         }
         else{
             console.log("message sent")
