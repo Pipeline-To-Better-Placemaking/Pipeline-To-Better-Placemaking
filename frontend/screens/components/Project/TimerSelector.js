@@ -4,7 +4,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, Card, SelectItem } from '@ui-kitten/components';
 import * as Location from 'expo-location';
 
-const times = ["5", "10", "15", "20", "25", "30"]
+const times = ["5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", "60"]
 
 class TimerSelector extends Component {
 
@@ -30,7 +30,12 @@ class TimerSelector extends Component {
     render() {
 
         return(
-            <Select style={{width: 116, }} placeholder={' '} value={times[this.state.timeIndex]} onSelect={index => this.setTimerIndex(index)}>
+            <Select
+                style={{width:110}}
+                placeholder={times[0]}
+                value={times[this.state.timeIndex]}
+                onSelect={index => this.setTimerIndex(index)}
+            >
                 {times.map((time, key) => {
                     return(
                         <SelectItem title={time} key={key}/>

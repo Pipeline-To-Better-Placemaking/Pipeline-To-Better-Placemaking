@@ -57,7 +57,7 @@ class CreateActivity extends Component {
                 title: this.state.tempTitle,
                 type: this.state.tempType,
                 date: this.state.tempDate,
-                signUpSlots: signUpCardData, 
+                signUpSlots: signUpCardData,
 
                 standingPointData: [],
 
@@ -210,7 +210,7 @@ class CreateActivity extends Component {
         );
 
         const TimePicker = ({item, index}) => (
-            <View style={{justifyContent:'flex-start', marginLeft: -25}}>
+            <View style={{marginLeft:-20}}>
               <Button
                 onPress={() => this.viewTime(item, index)}
                 accessoryRight={ClockIcon}
@@ -230,29 +230,32 @@ class CreateActivity extends Component {
         );
 
         const Delete = ({item, index}) => (
-            <View style={{justifyContent:'flex-end', width: 115}}>
+            <View>
                 <Button
                   onPress={() => this.delete(item, index)}
                   accessoryRight={DeleteIcon}
                   status='danger'
-                  >
-                    Remove
-                </Button>
+                 />
             </View>
         );
 
         const signUpCard = ({item, index}) => (
             <Card>
+              <View style={{flexDirection:'row', justifyContent:'flex-start'}}>
 
-              <View style={styles.activityView}>
-                <TimePicker {...{item, index}} />
-                <Delete {...{item, index}} />
+                <View style={{flex:1, flexDirection:'column', alignItems:'flex-start'}}>
+                    <TimePicker {...{item, index}} />
+                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                        <Text>Time Limit (min): </Text>
+                        <TimerSelector addTimerList={this.addTimerList} index={index}/>
+                    </View>
+                </View>
+
+                <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+                    <Delete {...{item, index}}/>
+                </View>
+
               </View>
-
-              <Text>
-                    Time Limit:{'\t\t\t     '}
-                    <TimerSelector addTimerList={this.addTimerList} index={index}/>
-              </Text>
             </Card>
         );
 
@@ -272,9 +275,11 @@ class CreateActivity extends Component {
 
                       <View style={styles.activityView}>
                           <Text>Select a Research Activity: </Text>
-                          <Select style={{flex:1}}
+                          <Select
+                            style={{flex:1}}
                             value={activityTypes[this.state.selectedActivity.row]}
                             selectedIndex={this.state.selectedActivity}
+                            placeholder={activityTypes[0]}
                             onSelect={activity => this.setSelectedActivity(activity)}
                             >
                             {activityTypes.map((item, index) =>
