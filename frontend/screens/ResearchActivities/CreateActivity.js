@@ -230,11 +230,12 @@ class CreateActivity extends Component {
         );
 
         const Delete = ({item, index}) => (
-            <View>
+            <View style={{marginRight:-20, marginTop:-10}}>
                 <Button
                   onPress={() => this.delete(item, index)}
                   accessoryRight={DeleteIcon}
                   status='danger'
+                  appearance='ghost'
                  />
             </View>
         );
@@ -251,7 +252,7 @@ class CreateActivity extends Component {
                     </View>
                 </View>
 
-                <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+                <View style={{alignItems:'flex-end'}}>
                     <Delete {...{item, index}}/>
                 </View>
 
