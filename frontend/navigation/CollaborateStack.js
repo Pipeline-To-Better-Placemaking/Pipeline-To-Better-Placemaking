@@ -153,6 +153,8 @@ class CollaborateStack extends Component {
                     options={{headerShown: false}}>
                     {props => <ProjectPage
                                     {...props}
+                                    setSelectedTeam={this.setSelectedTeam}
+                                    getSelectedTeam={this.getSelectedTeam}
                                     setSelectedProject={this.setSelectedProject}
                                     getSelectedProject={this.getSelectedProject}
                                     setSelectedActivity={this.setSelectedActivity}

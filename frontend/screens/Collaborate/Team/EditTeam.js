@@ -92,7 +92,9 @@ class EditTeam extends Component {
         .catch((error) => (console.log(error), success = false))
 
         // Update
+        // Turn off Modal View
         await this.props.viewEditPage();
+        // Adjust the local list of Teams
         let teams = await AsyncStorage.getItem("@teams");
         teams = JSON.parse(teams);
         let changeIndex = teams.findIndex(element => element._id === this.state.team._id);
@@ -101,6 +103,7 @@ class EditTeam extends Component {
         await AsyncStorage.setItem("@teams", JSON.stringify(newTeams));
         await this.props.updateTeams(newTeams);
         await this.props.setSelectedTeam({title:'', projects:[]});
+        // Open Previous Page
         this.props.exit();
     }
 

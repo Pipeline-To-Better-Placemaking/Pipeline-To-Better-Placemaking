@@ -127,7 +127,7 @@ class EditProject extends Component {
         if (goodName) {
            this.updateProjectName(name);
         }
-        this.updateSubAreas(this.state.subareas);
+        //this.updateSubAreas(this.state.subareas);
         this.props.viewEditPage();
     }
 
@@ -157,6 +157,15 @@ class EditProject extends Component {
         let tempProject = this.state.project;
         tempProject.title = projectName;
         await this.props.setSelectedProject(tempProject);
+
+        // update Project name on previous Team Page
+        let selectedTeam = this.props.getSelectedTeam();
+        let projects = selectedTeam.projects;
+        let changeIndex = projects.findIndex(element => element._id === this.state.project._id);
+        const newProjects = [...projects];
+        newProjects[changeIndex] = tempProject; // set the new name
+        selectedTeam.projects = newProjects;
+        await this.props.setSelectedTeam(selectedTeam);
     }
 
     async updateSubAreas(subareas) {
@@ -164,7 +173,7 @@ class EditProject extends Component {
         let success = false
 
         // Change the info
-        await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + this.state.project._id, {
+        await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + this.state.project._id + '/areas', {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -172,7 +181,7 @@ class EditProject extends Component {
                 'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({
-                subareas: subareas
+                areas: subareas
             })
         })
         .then((response) => (response.json()))
@@ -188,7 +197,7 @@ class EditProject extends Component {
 
     async onDeleteProject() {
         // should probs have something for comfirm Delete first
-        /*let token = await AsyncStorage.getItem("@token")
+        let token = await AsyncStorage.getItem("@token")
         let success = false
 
         // Delete
@@ -206,7 +215,20 @@ class EditProject extends Component {
         ))
         .catch((error) => (console.log(error), success = false))
 
-        // Update*/
+        // Update
+        // Turn off the Modal view
+        this.props.viewEditPage();
+        // Adjust the local list of Projects on the selectedTeam
+        let selectedTeam = this.props.getSelectedTeam();
+        let projects = selectedTeam.projects;
+        let changeIndex = projects.findIndex(element => element._id === this.state.project._id);
+        const newProjects = [...projects];
+        newProjects.splice(changeIndex, 1); // remove project from list
+        selectedTeam.projects = newProjects;
+        await this.props.setSelectedTeam(selectedTeam);
+        await this.props.setSelectedProject({title:''});
+        // Open previous page
+        this.props.exit();
     }
 
     render() {

@@ -190,6 +190,9 @@ class ProjectPage extends Component {
                     viewEditPage={this.viewEditPage}
                     getSelectedProject={this.props.getSelectedProject}
                     setSelectedProject={this.props.setSelectedProject}
+                    setSelectedTeam={this.props.setSelectedTeam}
+                    getSelectedTeam={this.props.getSelectedTeam}
+                    exit={this.openPrevPage}
                 />
 
                 <View style={{height:'45%'}}>
