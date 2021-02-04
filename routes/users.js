@@ -2,6 +2,7 @@ const express = require('express')
 const passport = require('passport')
 const router = express.Router()
 const User = require('../models/users.js')
+const { BadRequestError } = require('../utils/errors.js')
 
 // Create a new user
 router.post('/', async (req, res, next) => {
@@ -12,10 +13,7 @@ router.post('/', async (req, res, next) => {
         !/\d/g.test(req.body.password) ||           // Must contain at least one digit
         !/[!@#$%^&*]/g.test(req.body.password) ||   // Must contain at least one symbol
         !/[A-Z]/g.test(req.body.password)) {        // Must contain at least one uppercase letter
-        return res.status(400).json({
-            success: false,
-            msg: 'Missing or invalid password'
-        })
+        throw new BadRequestError('Missing or invalid field: password')
     }
 
     let newUser = new User({
