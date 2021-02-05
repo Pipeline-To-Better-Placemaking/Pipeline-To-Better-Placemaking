@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 const { models } = require('mongoose')
 
+const { UnauthorizedError } = require('../utils/errors')
+
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.body.project)
@@ -32,7 +34,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
     }
     else{
-        res.json({msg:'unauthorized'})
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }   
 })
 
@@ -59,9 +61,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     }
 
     else{
-        res.json({
-            msg: 'unauthorized'
-        })
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }
     
 })
@@ -75,9 +75,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
         await Map.deleteMap(map._id)
     }
     else{
-        res.json({
-            msg: 'unauthorized'
-        })
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }
 
 })
@@ -97,9 +95,7 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
        }
     }
     else{
-        res.json({
-            msg: 'unauthorized'
-        })
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }
 })
 
@@ -119,12 +115,11 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
     }
 
     if (map.owner.toString() == user._id.toString()){
-        res.status(201).json(await Map.updateData(map._id,oldData._id,newData))
+        await Map.updateData(map._id,oldData._id,newData)
+        res.status(201).json(await Map.findById(req.params.id))
     }  
     else{
-        res.json({
-            msg: 'unauthorized'
-        })
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }  
 })
 
@@ -135,9 +130,7 @@ router.delete('/:id/data/:data_id',passport.authenticate('jwt',{session:false}),
         res.json(await Map.deleteEntry(map._id,req.params.data_id))
     }
     else{
-        res.json({
-            msg: 'unauthorized'
-        })
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }
 })
 

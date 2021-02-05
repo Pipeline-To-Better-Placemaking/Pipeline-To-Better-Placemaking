@@ -197,3 +197,10 @@ curl -H 'Content-Type: application/json' \
      http://localhost:8080/api/stationary_maps/${MAP} 
 echo
 echo
+echo
+curl --header "Content-Type: application/json" \
+      --request POST \
+      -d '{"email": "appddles@gmail.com","password": "What@1234"}'\
+      http://localhost:8080/api/login
+      
+echo

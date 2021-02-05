@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 const { models } = require('mongoose')
 
-
+const { UnauthorizedError } = require('../utils/errors')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
@@ -30,7 +30,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
     }
     else{
-        res.json({msg:'unauthorized'})
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }   
 })
 
@@ -58,9 +58,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         }
     }  
     else{
-        res.json({
-            msg: 'unauthorized'
-        })
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }
     
 })
@@ -74,9 +72,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
         res.json(await Project.deleteProject(project._id))
     }
     else{
-        res.json({
-            msg: 'unauthorized'
-        })
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }
 
 })
@@ -88,9 +84,7 @@ router.post('/:id/areas', passport.authenticate('jwt',{session:false}), async (r
         res.json(await Project.addArea(project._id,req.body.area))
     }
     else{
-        res.json({
-            msg: 'unauthorized'
-        })
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }
 })
 
@@ -101,9 +95,7 @@ router.put('/:id/areas/:areaId', passport.authenticate('jwt',{session:false}), a
         res.status(201).json(await Project.updateArea(project._id,req.params.areaId,req.body.area))
     }  
     else{
-        res.json({
-            msg: 'unauthorized'
-        })
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }  
 })
 
@@ -118,13 +110,12 @@ router.put('/:id/areas/', passport.authenticate('jwt',{session:false}), async (r
             res.status(201).json(await Project.findById(req.params.id))
         }
         else{
-            res.status(201).json(await Project.updateArea(project._id,area.id,req.body.area))
+            await Project.updateArea(project._id,area.id,req.body.area)
+            res.status(201).json(await Project.findById(req.params.id))
         }   
     }
     else{
-        res.json({
-            msg: 'unauthorized'
-        })
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }
 })
 router.delete('/:id/areas/:areadId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
@@ -134,11 +125,8 @@ router.delete('/:id/areas/:areadId', passport.authenticate('jwt',{session:false}
         res.status(201).json(await Project.deleteArea(project._id,req.params.areaId))
     }
     else{
-        res.json({
-            msg: 'unauthorized'
-        })
+        throw new UnauthorizedError('You do not have permision to perform this operation')
     }
-
 })
 
 
