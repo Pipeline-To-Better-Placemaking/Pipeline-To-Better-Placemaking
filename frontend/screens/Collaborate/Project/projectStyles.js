@@ -40,17 +40,7 @@ export const styles = StyleSheet.create({
     },
 
     menu: {
-        ...Platform.select({
-          ios: {
-              marginRight:15
-          },
-          android: {
-            margin:20
-          },
-          default: {
-            // other platforms, web for example
-          }
-        })
+        marginRight:15
     },
 
     header: {

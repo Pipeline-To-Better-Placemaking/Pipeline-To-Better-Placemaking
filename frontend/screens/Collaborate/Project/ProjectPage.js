@@ -5,6 +5,7 @@ import BackEditHeader from '../../components/Headers/BackEditHeader.js';
 import ViewProjectMap from '../../components/Maps/ViewProjectMap.js';
 import CreateActivity from '../../ResearchActivities/CreateActivity.js';
 import EditProject from './EditProject.js';
+import EditArea from './EditArea.js';
 
 import { Text, Button, Input, Icon, Popover, Divider,
          List, ListItem, Card, Drawer, DrawerItem, OverflowMenu, MenuItem } from '@ui-kitten/components';
@@ -25,6 +26,8 @@ class ProjectPage extends Component {
             location: project.subareas[0].area[0], // pick the first point for now
             area: project.subareas[0].area,
             editPageVisible: false,
+            areaPageVisible: false,
+            editMenuVisible: false,
             createActivity: false,
             stationaryModal: false,
             data: [],
@@ -33,7 +36,9 @@ class ProjectPage extends Component {
         }
 
         this.openPrevPage = this.openPrevPage.bind(this);
+        this.editMenuVisible = this.editMenuVisible.bind(this);
         this.viewEditPage = this.viewEditPage.bind(this);
+        this.viewAreaPage = this.viewAreaPage.bind(this);
 
         this.addActivity = this.addActivity.bind(this);
         this.addTempData = this.addTempData.bind(this);
@@ -61,10 +66,28 @@ class ProjectPage extends Component {
         this.props.navigation.navigate("TeamPage");
     }
 
+    editMenuVisible() {
+        this.setState({
+            editMenuVisible: !this.state.editMenuVisible,
+        });
+    }
+
     viewEditPage() {
         this.setState({
             editPageVisible: !this.state.editPageVisible,
         });
+        if (this.state.editPageVisible){
+            this.editMenuVisible();
+        }
+    }
+
+    viewAreaPage() {
+        this.setState({
+            areaPageVisible: !this.state.areaPageVisible,
+        });
+        if (this.state.areaPageVisible){
+            this.editMenuVisible();
+        }
     }
 
     setCreateActivity(value, cancel) {
@@ -126,8 +149,21 @@ class ProjectPage extends Component {
             <BackEditHeader
                 headerText={this.props.getSelectedProject().title}
                 prevPage={this.openPrevPage}
-                openEditMenu={this.viewEditPage}
+                openEditMenu={this.editMenuVisible}
             />
+        );
+
+        const myMenu = () => (
+            <OverflowMenu
+              anchor={myHeader}
+              visible={this.state.editMenuVisible}
+              onBackdropPress={this.editMenuVisible}
+              placement={'bottom end'}
+              style={styles.menu}
+              >
+                  <MenuItem title='Edit Project' onPress={this.viewEditPage}/>
+                  <MenuItem title='Edit Area(s)' onPress={this.viewAreaPage}/>
+              </OverflowMenu>
         );
 
         const LocationInfo = () => (
@@ -170,7 +206,7 @@ class ProjectPage extends Component {
                     setCreateActivity={this.setCreateActivity}
                     addTempData={this.addTempData}
                     getActivityTypes={this.props.getActivityTypes}
-                    anchor={myHeader}
+                    anchor={myMenu}
                     navigation={this.props.navigation}
                     location={this.state.location}
                     area={this.state.area}
@@ -188,6 +224,16 @@ class ProjectPage extends Component {
                 <EditProject
                     editProject={this.state.editPageVisible}
                     viewEditPage={this.viewEditPage}
+                    getSelectedProject={this.props.getSelectedProject}
+                    setSelectedProject={this.props.setSelectedProject}
+                    setSelectedTeam={this.props.setSelectedTeam}
+                    getSelectedTeam={this.props.getSelectedTeam}
+                    exit={this.openPrevPage}
+                />
+
+                <EditArea
+                    editProject={this.state.areaPageVisible}
+                    viewEditPage={this.viewAreaPage}
                     getSelectedProject={this.props.getSelectedProject}
                     setSelectedProject={this.props.setSelectedProject}
                     setSelectedTeam={this.props.setSelectedTeam}

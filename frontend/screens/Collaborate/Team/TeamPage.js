@@ -64,7 +64,8 @@ class TeamPage extends Component {
 
     async setProjectData(data) {
         let token = await AsyncStorage.getItem("@token");
-        let projects = this.state.data;
+        let projects = await AsyncStorage.getItem("@projects");
+        projects = JSON.parse(projects);
         let project = null;
         // Save the new project
         try {
@@ -89,9 +90,15 @@ class TeamPage extends Component {
         console.log(project);
 
         // Update
-        await this.state.data.push(project);
+        projects.push(project);
         await this.setState({
-            data: this.state.data
+            data: projects
+        });
+        await AsyncStorage.setItem("@projects", JSON.stringify(projects));
+        let currentTeam = this.state.team;
+        currentTeam.projects = projects;
+        await this.setState({
+            team: currentTeam
         });
 
         // Open Project Page

@@ -45,7 +45,7 @@ class CollaborateStack extends Component {
     }
 
     async updateTeams(teams) {
-        this.setState({
+        await this.setState({
             teams: teams
         })
     }
@@ -91,7 +91,7 @@ class CollaborateStack extends Component {
     }
 
     setInitialTime = () => {
-        
+
         this.setState({
             initialTimeStart: 0
         })

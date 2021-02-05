@@ -50,7 +50,8 @@ class Collaborate extends Component {
 
     async addNewTeam(teamName) {
         let token = await AsyncStorage.getItem("@token");
-        let teams = this.state.data;
+        let teams = await AsyncStorage.getItem("@teams")
+        teams = JSON.parse(teams);
         let team = null;
         // Save the new team
         try {
@@ -109,6 +110,7 @@ class Collaborate extends Component {
             ))
         .catch((error) => (console.log(error)))
         // Update
+        await AsyncStorage.setItem("@projects", JSON.stringify(teamDetails.projects));
         console.log("Selected Team: ", teamDetails);
         this.props.setSelectedTeam(teamDetails);
         this.props.navigation.navigate("TeamPage");
