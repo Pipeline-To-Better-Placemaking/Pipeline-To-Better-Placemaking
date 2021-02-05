@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 const { json } = require('express')
 
-
+const { UnauthorizedError } = require('../utils/errors')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
@@ -35,22 +35,21 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     team = await Team.findById(req.params.id)
-    let newTeam = new Team({
-        title: (req.body.title ? req.body.title : team.title),
-        description: (req.body.description ? req.body.description : team.description),
-        public: (req.body.public ? req.body.public : team.public)
-    })
 
     if (await Team.isAdmin(req.params.id,user._id)){
+        
+        let newTeam = new Team({
+            title: (req.body.title ? req.body.title : team.title),
+            description: (req.body.description ? req.body.description : team.description),
+            public: (req.body.public ? req.body.public : team.public)
+        })
+        
         res.status(201).json(await Team.updateTeam(req.params.id,newTeam))
     }
 
     else{
-        res.json({
-            msg: unauthorized
-        })
+        throw new UnauthorizedError('You do not have permisions to perform this operation')
     }
-    
 })
 
 router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
@@ -67,9 +66,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 
     }
     else{
-        res.json({
-            msg: 'unauthorized'
-        })
+        throw new UnauthorizedError('You do not have permisions to perform this operation')
     }
 
 })
