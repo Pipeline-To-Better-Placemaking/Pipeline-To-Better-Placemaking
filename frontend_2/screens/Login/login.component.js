@@ -1,7 +1,7 @@
 import React from 'react';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { SafeAreaView, View } from 'react-native';
-import { Divider, Icon, Layout, Text, Button, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
+import { ScrollView, View } from 'react-native';
+import { Divider, Icon, Layout, Text, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { BlueViewableArea } from '../components/content.component';
 import { styles } from './login.styles';
 
 const BackIcon = (props) => (
@@ -9,8 +9,6 @@ const BackIcon = (props) => (
 );
 
 export const LoginScreen = ({ navigation }) => {
-
-  const statusBarHeight = getStatusBarHeight();
 
   const navigateBack = () => {
     navigation.goBack();
@@ -25,15 +23,15 @@ export const LoginScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={{flex: 1, backgroundColor:'#006FD6'}}>
-      <SafeAreaView style={{flex: 1, backgroundColor:'#006FD6', marginTop:statusBarHeight, alignItems:'center'}}>
+    <BlueViewableArea>
+      <ScrollView contentContainerStyle={styles.container}>
         <Text category='h1' status='control'>Login</Text>
         <Button style={styles.logInButton} onPress={navigateLogin}>
           <Text style={styles.logInText}>
               Log In
           </Text>
         </Button>
-      </SafeAreaView>
-    </View>
+      </ScrollView>
+    </BlueViewableArea>
   );
 };

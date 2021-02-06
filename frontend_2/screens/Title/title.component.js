@@ -1,7 +1,7 @@
 import React from 'react';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { SafeAreaView, View, ScrollView, Pressable, Image } from 'react-native';
+import { View, ScrollView, Pressable, Image } from 'react-native';
 import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction, Button } from '@ui-kitten/components';
+import { BlueViewableArea } from '../components/content.component';
 import { styles } from './title.styles';
 
 const ImageCircleCity = (props) => (
@@ -24,8 +24,6 @@ const ImageCircleConstruction = (props) => (
 
 export const TitleScreen = ({ navigation }) => {
 
-  const statusBarHeight = getStatusBarHeight();
-
   const navigateLogin = () => {
     navigation.navigate('Login');
   };
@@ -35,38 +33,36 @@ export const TitleScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor:'#006FD6'}}>
-      <SafeAreaView style={{flex: 1, backgroundColor:'#006FD6', marginTop:statusBarHeight}}>
-        <ScrollView contentContainerStyle={styles.container}>
+    <BlueViewableArea>
+      <ScrollView contentContainerStyle={styles.container}>
 
-          <View style={{flexDirection:'row', margin:30, marginRight:-50}}>
-            <View style={{marginRight:-50}}>
-              <ImageCircleCity/>
-            </View>
-            <View style={{marginTop:50}}>
-              <ImageCircleConstruction/>
-            </View>
+        <View style={{flexDirection:'row', margin:30, marginRight:-50}}>
+          <View style={{marginRight:-50}}>
+            <ImageCircleCity/>
           </View>
+          <View style={{marginTop:50}}>
+            <ImageCircleConstruction/>
+          </View>
+        </View>
 
 
-          <Text style={{margin:5}} category='h1' status='control'>
-              2+ Community
+        <Text style={{margin:5}} category='h1' status='control'>
+            2+ Community
+        </Text>
+
+        <Button style={styles.logInButton} onPress={navigateLogin}>
+          <Text style={styles.logInText}>
+              Log In
           </Text>
+        </Button>
 
-          <Button style={styles.logInButton} onPress={navigateLogin}>
-            <Text style={styles.logInText}>
-                Log In
-            </Text>
-          </Button>
+        <Button style={styles.logInButton} onPress={navigateSignUp}>
+          <Text style={styles.logInText}>
+              Sign Up
+          </Text>
+        </Button>
 
-          <Button style={styles.logInButton} onPress={navigateSignUp}>
-            <Text style={styles.logInText}>
-                Sign Up
-            </Text>
-          </Button>
-
-        </ScrollView>
-      </SafeAreaView>
-    </View>
+      </ScrollView>
+    </BlueViewableArea>
   );
 };
