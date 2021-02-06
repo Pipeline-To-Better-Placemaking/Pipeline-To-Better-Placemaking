@@ -52,10 +52,9 @@ export const TabNavigation = () => {
           })
           result = await response.json()
           console.log(result)
-          success = result.success
+          success = true
       } catch (error) {
           console.log(error)
-          success = false
       }
 
       if (success) {
