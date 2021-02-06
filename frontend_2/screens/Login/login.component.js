@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { ScrollView, View, TouchableWithoutFeedback, Modal } from 'react-native';
 import { Divider, Icon, Layout, Text, Button, Input, Spinner } from '@ui-kitten/components';
 import { BlueViewableArea } from '../components/content.component';
-import * as Location from 'expo-location';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { styles } from './login.styles';
 
-export const LoginScreen = ({ navigation }) => {
+export const LoginScreen = ( props ) => {
 
   const [email, setEamil] = useState('');
   const [password, setPassword] = useState('');
@@ -18,7 +17,7 @@ export const LoginScreen = ({ navigation }) => {
   };
 
   const navigateBack = () => {
-    navigation.goBack();
+    props.navigation.goBack();
   };
 
   const navigateLogin = async () => {
@@ -65,39 +64,7 @@ export const LoginScreen = ({ navigation }) => {
         success = false
     }
 
-    if (!success){
-       console.log("fail");
-    }
-    else {
-        console.log("Authentication successful")
-
-        await AsyncStorage.setItem('@token', token);
-        await AsyncStorage.setItem('@id', id);
-
-        //this.props.getCoords(defaultLocation);
-
-        let enabled = await Location.hasServicesEnabledAsync();
-
-        console.log(enabled);
-
-        if (enabled)
-        {
-            let status = await Location.requestPermissionsAsync();
-
-            console.log(status);
-
-            if (status.granted)
-            {
-                console.log("Gathering location...");
-
-                let location = await Location.getCurrentPositionAsync({});
-
-                //this.props.getCoords(location);
-            }
-        }
-
-        navigation.navigate('TabNavigation');
-    }
+    props.navigation.navigate('TabNavigation');
 
     setLoading(false);
   };

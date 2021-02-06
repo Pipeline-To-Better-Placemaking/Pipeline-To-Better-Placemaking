@@ -7,22 +7,29 @@ import { TabNavigation } from './tabNavigation.component';
 
 const { Navigator, Screen } = createStackNavigator();
 
-export const AppNavigator = () => (
-  <NavigationContainer>
-    <Navigator headerMode='none'>
-      <Screen
-        name='Title'
-        component={TitleScreen}
-      />
-      <Screen
-        name='Login'
-        component={LoginScreen}
-      />
-      <Screen
-        name="TabNavigation"
-        component={TabNavigation}
-      >
-      </Screen>
-    </Navigator>
-  </NavigationContainer>
-);
+export const AppNavigator = (props) => {
+
+  console.log("App navigator props: " + JSON.stringify(props))
+
+  return(
+    <NavigationContainer>
+      <Navigator headerMode='none'>
+        <Screen
+          name='Title'
+          component={TitleScreen}
+        />
+        <Screen
+          name='Login'
+          component={LoginScreen}
+        />
+        <Screen
+          name="TabNavigation"
+        >
+          {props => <TabNavigation {...props}
+                      location={props.location}>
+                    </TabNavigation>}
+        </Screen>
+      </Navigator>
+    </NavigationContainer>
+  )
+};
