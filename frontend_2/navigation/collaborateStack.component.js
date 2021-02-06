@@ -8,17 +8,15 @@ const { Navigator, Screen } = createStackNavigator();
 
 export function CollaborateStack(props) {
 
+  const [team, setTeam] = useState(null);
+
   return (
     <Navigator headerMode='none'>
-      <Screen
-        name='Collaborate'
-      >
-      {props => <Collaborate {...props} />}
+      <Screen name='Collaborate'>
+        {props => <Collaborate {...props} setTeam={setTeam} />}
       </Screen>
-      <Screen
-        name='TeamPage'
-        component={TeamPage}
-      >
+      <Screen name='TeamPage'>
+        {props => <TeamPage {...props} team={team} />}
       </Screen>
     </Navigator>
   );

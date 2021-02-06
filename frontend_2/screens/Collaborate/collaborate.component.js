@@ -27,7 +27,7 @@ export function Collaborate(props) {
   }, []);
 
   const openTeamPage = async (item) => {
-    //setTeam(item)
+    props.setTeam(item)
     props.navigation.navigate('TeamPage')
   };
 
