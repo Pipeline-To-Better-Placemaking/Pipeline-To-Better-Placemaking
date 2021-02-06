@@ -4,6 +4,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Layout, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../components/headers.component';
+import { TeamPage } from './Team/team.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
 import { styles } from './collaborate.styles';
 
@@ -38,6 +39,7 @@ const MainContent = () => (
             </Button>
         </View>
     </View>
+    <Divider style={{marginTop: 5}} />
 
     <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
 

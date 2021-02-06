@@ -1,36 +1,79 @@
-import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { Divider, Icon, Layout, Text, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import React, { useState } from 'react';
+import { ScrollView, View, TouchableWithoutFeedback } from 'react-native';
+import { Divider, Icon, Layout, Text, Button, Input } from '@ui-kitten/components';
 import { BlueViewableArea } from '../components/content.component';
 import { styles } from './login.styles';
 
-const BackIcon = (props) => (
-  <Icon {...props} name='arrow-back' />
-);
-
 export const LoginScreen = ({ navigation }) => {
+
+  const [email, setEamil] = useState('');
+  const [password, setPassword] = useState('');
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+  const toggleSecureEntry = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
 
   const navigateBack = () => {
     navigation.goBack();
   };
 
   const navigateLogin = () => {
+    console.log("email: ", email);
     navigation.navigate('TabNavigation');
   };
 
-  const BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack}/>
+  const LoginButton = () => (
+    <Button style={styles.logInButton} onPress={navigateLogin}>
+      <Text style={styles.logInText}>
+          Log In
+      </Text>
+    </Button>
+  );
+
+  const BackButton = () => (
+    <Button appearance={'ghost'} onPress={navigateBack} style={{marginTop:15}}>
+      <Text status={'control'} category='h5'>
+           &larr; Back
+      </Text>
+    </Button>
+  );
+
+  const eyeIcon = (props) => (
+    <TouchableWithoutFeedback onPress={toggleSecureEntry}>
+      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'}/>
+    </TouchableWithoutFeedback>
   );
 
   return (
     <BlueViewableArea>
       <ScrollView contentContainerStyle={styles.container}>
         <Text category='h1' status='control'>Login</Text>
-        <Button style={styles.logInButton} onPress={navigateLogin}>
-          <Text style={styles.logInText}>
-              Log In
-          </Text>
-        </Button>
+        <View>
+          <Text category='label' style={styles.inputText}> Email Address: </Text>
+          <Input
+            placeholder='Email address...'
+            value={email}
+            onChangeText={(nextValue) => setEamil(nextValue)}
+            style={styles.inputBox}
+            autoCapitalize='none'
+            keyboardType="email-address"
+          />
+        </View>
+        <View>
+          <Text category='label' style={styles.inputText}> Password:</Text>
+          <Input
+            value={password}
+            placeholder='Password...'
+            autoCapitalize='none'
+            style={styles.inputBox}
+            accessoryRight={eyeIcon}
+            secureTextEntry={secureTextEntry}
+            onChangeText={nextValue => setPassword(nextValue)}
+          />
+        </View>
+        <LoginButton />
+        <BackButton />
       </ScrollView>
     </BlueViewableArea>
   );
