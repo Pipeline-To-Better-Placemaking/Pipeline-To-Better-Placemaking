@@ -9,13 +9,6 @@ import { UserSettingsStack } from './userStack.component';
 import { CollaborateStack } from './collaborateStack.component';
 
 const { Navigator, Screen } = createBottomTabNavigator();
-var teams;
-var invites;
-var userDetails = {
-    firstname: '',
-    lastname: '',
-    email: ''
-};
 
 const PersonIcon = (props) => (
     <Icon {...props} name='person-outline'/>
@@ -48,35 +41,33 @@ export const TabNavigation = (props) => {
       let token = await AsyncStorage.getItem("@token")
       let id = await AsyncStorage.getItem("@id")
       let success = false
+      let result = null
 
-      await fetch('https://measuringplacesd.herokuapp.com/api/users/' + id, {
-          method: 'GET',
-          headers: {
-              Accept: 'application/json',
-                  'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
-          }
-      })
-      .then((response) => (response.json()))
-      .then(async (res) => (
-              console.log(res),
+      try {
+          const response = await fetch('https://measuringplacesd.herokuapp.com/api/users/' + id, {
+              method: 'GET',
+              headers: {
+                  Accept: 'application/json',
+                      'Content-Type': 'application/json',
+                      'Authorization': 'Bearer ' + token
+              }
+          })
+          result = await response.json()
+          console.log(result)
+          success = result.success
+      } catch (error) {
+          console.log(error)
+          success = false
+      }
 
-              await AsyncStorage.setItem("@firstName", res.firstname),
-              await AsyncStorage.setItem("@lastName", res.lastname),
-              await AsyncStorage.setItem("@email", res.email),
-              await AsyncStorage.setItem("@teams", JSON.stringify(res.teams)),
-              await AsyncStorage.setItem("@invites", JSON.stringify(res.invites)),
-
-              userDetails = {
-                  firstName: res.firstname,
-                  lastName: res.lastname,
-                  email: res.email
-              },
-              teams = res.teams,
-              invites = res.invites
-          ))
-      .catch((error) => (console.log(error), success = false))
+      if (success) {
+          await AsyncStorage.setItem("@firstName", result.firstname)
+          await AsyncStorage.setItem("@lastName", result.lastname)
+          await AsyncStorage.setItem("@email", result.email)
+          await AsyncStorage.setItem("@teams", JSON.stringify(result.teams))
+          await AsyncStorage.setItem("@invites", JSON.stringify(result.invites))
     }
+  }
 
     fetchMyAPI()
   }, [])

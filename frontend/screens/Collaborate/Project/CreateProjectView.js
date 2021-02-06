@@ -18,7 +18,8 @@ class CreateProjectView extends Component {
                 "latitude": 28.602413253152307,
                 "longitude": -81.20019937739713,
             },
-            tempArea: []
+            tempArea: [],
+            tempSearchText: '',
         }
 
         this.onDismissCreateProject = this.onCreateProject.bind(this, false);
@@ -28,6 +29,9 @@ class CreateProjectView extends Component {
         this.addMarker = this.addMarker.bind(this);
         this.removeMarker = this.removeMarker.bind(this);
         this.getLocationName = this.getLocationName.bind(this);
+
+        this.search = this.search.bind(this);
+        this.setTempSearch = this.setTempSearch.bind(this);
     }
 
     setTempProjectName(event) {
@@ -112,6 +116,22 @@ class CreateProjectView extends Component {
         this.props.setProjectData(temp);
     }
 
+    setTempSearch(event) {
+        this.setState({
+            tempSearchText: event
+        });
+    }
+
+    async search() {
+        console.log("searching: ", this.state.tempSearchText);
+        let location = await Location.geocodeAsync(this.state.tempSearchText, true);
+        if(location.length !== 0){
+            await this.setState({
+                tempLocation: location[0]
+            });
+        }
+    }
+
     render() {
 
         const CancelIcon = (props) => (
@@ -148,12 +168,14 @@ class CreateProjectView extends Component {
                           <Input
                               style={{flex:1}}
                               placeholder='Enter a Location...'
-
+                              onChangeText={this.setTempSearch}
                           />
                           <Button
-                                  status='info'
-                                  accessoryLeft={SearchIcon}
-                                  style={{marginLeft:10}}/>
+                            onPress={this.search}
+                            status='info'
+                            accessoryLeft={SearchIcon}
+                            style={{marginLeft:10}}
+                            />
                       </View>
 
                       <View style={styles.mapHeight}>
