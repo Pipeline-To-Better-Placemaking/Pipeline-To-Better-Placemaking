@@ -12,19 +12,24 @@ const ForwardIcon = (props) => (
   <Icon {...props} name='arrow-ios-forward'/>
 );
 
-export const Collaborate = ({ navigation }) => {
+export function Collaborate(props) {
 
   const [teams, setTeams] = useState(null);
 
   useEffect(() => {
-    async function fetchMyAPI() {
+    async function getTeams() {
       let teamsList = await AsyncStorage.getItem('@teams');
       teamsList = JSON.parse(teamsList);
       setTeams(teamsList)
     }
 
-    fetchMyAPI()
+    getTeams()
   }, []);
+
+  const openTeamPage = async (item) => {
+    //setTeam(item)
+    props.navigation.navigate('TeamPage')
+  };
 
   const teamItem = ({ item, index }) => (
       <ListItem
@@ -33,7 +38,7 @@ export const Collaborate = ({ navigation }) => {
                   {`${item.title}`}
               </Text>}
         accessoryRight={ForwardIcon}
-        onPress={() => navigation.navigate('TeamPage')}
+        onPress={() => openTeamPage(item)}
       />
   );
 
