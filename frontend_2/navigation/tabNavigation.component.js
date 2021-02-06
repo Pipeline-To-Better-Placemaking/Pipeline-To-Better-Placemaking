@@ -9,13 +9,6 @@ import { UserSettingsStack } from './userStack.component';
 import { CollaborateStack } from './collaborateStack.component';
 
 const { Navigator, Screen } = createBottomTabNavigator();
-var teams;
-var invites;
-var userDetails = {
-    firstname: '',
-    lastname: '',
-    email: ''
-};
 
 const PersonIcon = (props) => (
     <Icon {...props} name='person-outline'/>
@@ -71,14 +64,6 @@ export const TabNavigation = () => {
           await AsyncStorage.setItem("@email", result.email)
           await AsyncStorage.setItem("@teams", JSON.stringify(result.teams))
           await AsyncStorage.setItem("@invites", JSON.stringify(result.invites))
-
-          userDetails = {
-              firstName: result.firstname,
-              lastName: result.lastname,
-              email: result.email
-          }
-          teams = result.teams
-          invites = result.invites
     }
   }
 

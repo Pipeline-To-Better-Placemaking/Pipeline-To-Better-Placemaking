@@ -245,6 +245,18 @@ class EditArea extends Component {
               >
                 <View style={styles.container}>
 
+                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                    <Text style={{fontSize:25}}>Edit Area(s)</Text>
+                    <Button
+                      style={{marginBottom:5}}
+                      onPress={this.onClosePage}
+                      status='info'
+                      appearance={'outline'}
+                    >
+                    Done
+                    </Button>
+                </View>
+
                   <View style={{height:'40%'}}>
                       <SubAreasMap
                         location={this.state.subareas[0].area[0]}
@@ -282,15 +294,6 @@ class EditArea extends Component {
                     ItemSeparatorComponent={Divider}
                     renderItem={renderListItem}
                   />
-
-                  <View style={{flexDirection:'row', justifyContent:'space-around', marginTop:40}}>
-                      <Button
-                        onPress={this.onClosePage}
-                        status='danger'
-                      >
-                        Close
-                      </Button>
-                  </View>
 
                 </View>
             </Modal>
