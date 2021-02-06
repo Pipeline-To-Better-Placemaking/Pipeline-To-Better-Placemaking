@@ -34,7 +34,7 @@ const MainContent = () => (
             <Text style={styles.teamText}> Teams </Text>
         </View>
         <View style={styles.createTeamButtonView}>
-            <Button status='primary' appearance='outline' onPress={this.onOpenCreateTeam}>
+            <Button status='primary' appearance='outline'>
                 Create New
             </Button>
         </View>
