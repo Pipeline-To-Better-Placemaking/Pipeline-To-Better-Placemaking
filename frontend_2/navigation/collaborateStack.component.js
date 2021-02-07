@@ -5,18 +5,33 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Collaborate } from '../screens/Collaborate/collaborate.component';
 import { TeamPage } from '../screens/Collaborate/Team/team.component';
 import { ProjectPage } from '../screens/Collaborate/Project/project.component';
+import { ActivitySignUpPage } from '../screens/Collaborate/Activities/activitySignUp.component';
 
 const { Navigator, Screen } = createStackNavigator();
 
 export function CollaborateStack(props) {
 
+  // Array with activity names
+  const activityTypes = ['Stationary Map', 'People Moving', 'Survey'];
+
+  // These are used for api calls
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
+
+  // list of current users invites to Teams
   const [invites, setInvites] = useState(null);
-  const [teams, setTeams] = useState(null);
+
+  // The selected Team and List of Teams the User is a member of
   const [team, setTeam] = useState(null);
-  const [projects, setProjects] = useState(null);
+  const [teams, setTeams] = useState(null);
+
+  // The selected Project and List of Projects for the selected Team
   const [project, setProject] = useState(null);
+  const [projects, setProjects] = useState(null);
+
+  // The selected Activity and List of Activities for the selected Project
+  const [activity, setActivity] = useState(null);
+  const [activities, setActivities] = useState(null);
 
   useEffect(() => {
     async function getTokens() {
@@ -69,6 +84,8 @@ export function CollaborateStack(props) {
             setProject={setProject}
             projects={projects}
             setProjects={setProjects}
+            activities={activities}
+            setActivities={setActivities}
           />
         }
       </Screen>
@@ -84,6 +101,26 @@ export function CollaborateStack(props) {
             setProject={setProject}
             projects={projects}
             setProjects={setProjects}
+            activity={activity}
+            setActivity={setActivity}
+            activities={activities}
+            setActivities={setActivities}
+            activityTypes={activityTypes}
+          />
+        }
+      </Screen>
+      <Screen name='ActivitySignUpPage'>
+        {props =>
+          <ActivitySignUpPage
+            {...props}
+            token={token}
+            userId={userId}
+            team={team}
+            project={project}
+            activity={activity}
+            setActivity={setActivity}
+            activities={activities}
+            setActivities={setActivities}
           />
         }
       </Screen>

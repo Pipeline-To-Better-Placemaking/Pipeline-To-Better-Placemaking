@@ -17,8 +17,33 @@ export function TeamPage(props) {
   const [visible, setVisible] = useState(false);
 
   const openProjectPage = async (item) => {
-    props.setProject(item)
-    props.navigation.navigate('ProjectPage')
+    let success = false
+    let projectDetails = null
+    // Get the team information
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + item._id, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            }
+        })
+        projectDetails = await response.json();
+        success = true
+    } catch (error) {
+        console.log("error", error)
+    }
+    // if successfully retrieved project info, Update
+    if(success) {
+      console.log("Project Team: ", projectDetails);
+      // set selected project page information
+      props.setProject(projectDetails)
+      props.setActivities(projectDetails.activities);
+
+      // open project page
+      props.navigation.navigate('ProjectPage')
+    }
   };
 
   const renderAnchor = () => (
