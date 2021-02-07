@@ -8,7 +8,7 @@ import { HomeMapView } from '../components/Maps/home.map.component.js';
 import { HomeResultView } from './home.result.component.js'
 import { styles } from './home.styles';
 
-export const HomeScreen = ( location, selectedProjects, setProjects, removeFromSelectedProjects) => {
+export const HomeScreen = ( selectedProjects, setProjects, removeFromSelectedProjects) => {
 
   const [compare, setCompare] = useState(false)
 
@@ -44,7 +44,7 @@ export const HomeScreen = ( location, selectedProjects, setProjects, removeFromS
       <ContentContainer>
 
         {/* <View style={{height:'35%'}}> */}
-          <HomeMapView location={location}/>
+          {/* <HomeMapView location={location}/> */}
         {/* </View> */}
 
         <HomeResultView onComparePress={onComparePress}/>

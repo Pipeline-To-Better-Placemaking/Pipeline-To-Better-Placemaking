@@ -7,9 +7,9 @@ import { TabNavigation } from './tabNavigation.component';
 
 const { Navigator, Screen } = createStackNavigator();
 
-export const AppNavigator = (props) => {
+export function AppNavigator (props) {
 
-  console.log("App navigator props: " + JSON.stringify(props))
+  console.log("Main navigator props: " + JSON.stringify(props))
 
   return(
     <NavigationContainer>
@@ -26,7 +26,7 @@ export const AppNavigator = (props) => {
           name="TabNavigation"
         >
           {props => <TabNavigation {...props}
-                      location={props.location}>
+                      location ={props.location}>
                     </TabNavigation>}
         </Screen>
       </Navigator>

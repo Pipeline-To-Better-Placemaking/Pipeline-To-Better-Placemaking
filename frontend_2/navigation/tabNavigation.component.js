@@ -34,8 +34,6 @@ const BottomTabBar = ({ navigation, state }) => (
 
 export const TabNavigation = (props) => {
 
-  console.log("Tab Props: " + JSON.stringify(props))
-
   useEffect(() => {
     async function fetchMyAPI() {
       let token = await AsyncStorage.getItem("@token")
@@ -86,7 +84,7 @@ export const TabNavigation = (props) => {
         name="HomeScreenStack"
       >
         {props => <HomeScreenStack {...props}
-                      location={location}>
+                      location={props.location}>
                   </HomeScreenStack>}
       </Screen>
       <Screen

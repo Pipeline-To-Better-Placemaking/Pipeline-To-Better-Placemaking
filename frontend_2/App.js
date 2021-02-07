@@ -28,6 +28,7 @@ export default () => {
       console.log("Getting location...")
       let loc = await Location.getCurrentPositionAsync({})
       console.log("Location: " + JSON.stringify(loc))
+      await AsyncStorage.setItem("@location", JSON.stringify(loc))
       setLocation(loc);
     })();
   }, []);

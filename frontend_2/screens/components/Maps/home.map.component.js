@@ -6,10 +6,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const HomeMapView = async () => {
 
-    let location = await AsyncStorage.getItem("@location");
-    console.log("Location in map: " + location)
-    console.log("Location Coords: " + location.coords)
-
     return (
             <MapView
                 provider={PROVIDER_GOOGLE}
