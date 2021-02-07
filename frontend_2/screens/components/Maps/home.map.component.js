@@ -4,9 +4,12 @@ import { View } from 'react-native';
 import styles from './homeMapViewStyles.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const HomeMapView = async () => {
+export function HomeMapView(props) {
+
+    var location = props.location
 
     return (
+            <View>
             <MapView
                 provider={PROVIDER_GOOGLE}
                 style={styles.mapStyle}
@@ -29,5 +32,6 @@ export const HomeMapView = async () => {
                 />
 
             </MapView>
+            </View>
     );
 }

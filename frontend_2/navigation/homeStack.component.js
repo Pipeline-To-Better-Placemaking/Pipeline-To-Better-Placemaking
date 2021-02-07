@@ -7,6 +7,7 @@ const { Navigator, Screen } = createStackNavigator();
 
 export function HomeScreenStack(props){
 
+  var location = props.location
   const [selectedProjects, setSelectedProjects] = useState([])
 
   removeFromSelectedProjects = async (name) => {
@@ -34,7 +35,8 @@ export function HomeScreenStack(props){
       {props => <HomeScreen {...props}
                   selectedProjects={selectedProjects}
                   setProjects={getSelectedProjects}
-                  removeFromSelectedProjects = {this.removeFromSelectedProjects}
+                  removeFromSelectedProjects = {removeFromSelectedProjects}
+                  location={location}
                 >
                 </HomeScreen>}
       </Screen>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TitleScreen } from '../screens/Title/title.component';
@@ -9,7 +9,7 @@ const { Navigator, Screen } = createStackNavigator();
 
 export function AppNavigator (props) {
 
-  console.log("Main navigator props: " + JSON.stringify(props))
+  var location = props.location
 
   return(
     <NavigationContainer>
@@ -26,7 +26,7 @@ export function AppNavigator (props) {
           name="TabNavigation"
         >
           {props => <TabNavigation {...props}
-                      location ={props.location}>
+                      location ={location}>
                     </TabNavigation>}
         </Screen>
       </Navigator>
