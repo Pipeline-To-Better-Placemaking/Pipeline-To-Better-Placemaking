@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction, IndexPath, Select, SelectItem } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Datepicker } from '@ui-kitten/components';
+import { DateTimePickerModal, DateTimePicker } from "react-native-modal-datetime-picker";
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './form.styles';
@@ -9,6 +10,9 @@ import { styles } from './form.styles';
 export function CreateTimeSlots(props) {
 
   const today = new Date();
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+  const [timeValue, setTimeValue] = useState(today);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const getTimeStr = (time) => {
       let hours = time.getHours();
@@ -30,10 +34,35 @@ export function CreateTimeSlots(props) {
       return hours + ":" + minutes + morning;
   }
 
+  const viewTime = (item, index) => {
+    setTimeValue(props.timeSlots[index].timeVal);
+    setSelectedIndex(index);
+    setTimePickerVisibility(true);
+  }
+
+  const setTime = (time) => {
+    let tempList = [...props.timeSlots];
+    let timeSlot = {...tempList[selectedIndex]};
+
+    timeSlot.timeVal = time;
+    timeSlot.timeString = getTimeStr(time);
+
+    tempList[selectedIndex] = timeSlot;
+    props.setTimeSlots(timeSlots => [...tempList]);
+    setTimeValue(time);
+    setTimePickerVisibility(false);
+  }
+
   const createTime = () => {
+    // this uses the last value in the timeSlots list as the new start time value
+    let time = timeValue;
+    let length = props.timeSlots.length;
+    if (length > 0) {
+      time = props.timeSlots[length-1].timeVal;
+    }
     let temp = {
-        timeVal: today,
-        timeString: getTimeStr(today),
+        timeVal: time,
+        timeString: getTimeStr(time),
     };
     props.setTimeSlots(timeSlots => [...timeSlots,temp]);
   }
@@ -46,12 +75,20 @@ export function CreateTimeSlots(props) {
   const TimePicker = ({item, index}) => (
       <View style={{marginLeft:-20}}>
         <Button
+          onPress={() => viewTime(item, index)}
           accessoryRight={ClockIcon}
           appearance='ghost'
           >
           <Text>Time </Text>
           <Text>{item.timeString} </Text>
         </Button>
+        <DateTimePickerModal
+          isVisible={isTimePickerVisible}
+          mode="time"
+          date={timeValue}
+          onConfirm={setTime}
+          onCancel={() => setTimePickerVisibility(false)}
+        />
       </View>
   );
 
@@ -72,6 +109,7 @@ export function CreateTimeSlots(props) {
 
           <View style={{flex:1, flexDirection:'column', alignItems:'flex-start'}}>
               <TimePicker {...{item, index}} />
+
           </View>
 
           <View style={{alignItems:'flex-end'}}>
