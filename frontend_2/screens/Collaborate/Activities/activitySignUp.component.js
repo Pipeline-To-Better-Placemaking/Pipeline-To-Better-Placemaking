@@ -9,6 +9,8 @@ import { styles } from './activitySignUp.styles';
 
 export function ActivitySignUpPage(props) {
 
+  console.log("Selected Activity:\n", props.activity);
+
   return (
     <ViewableArea>
       <Header text={"Activity Sign Up Page"}/>

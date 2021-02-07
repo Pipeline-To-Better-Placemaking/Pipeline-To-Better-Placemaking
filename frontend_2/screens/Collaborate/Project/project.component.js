@@ -4,7 +4,6 @@ import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/component
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../../components/headers.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
-import { CreateActivityPopUp } from './createActivityForm.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './project.styles';
 
@@ -49,10 +48,6 @@ export function ProjectPage(props) {
     }*/
   };
 
-  const renderAnchor = () => (
-    <View />
-  );
-
   const activityItem = ({ item, index }) => (
       <ListItem
         title={
@@ -63,18 +58,9 @@ export function ProjectPage(props) {
         onPress={() => openActivityPage(item)}
       />
   );
-// change onPress function for "Create Research Activity" Button to props.navigation.navigate('CreateActivityStack')
-// to see the bottom bar disappear
+
   return (
     <ViewableArea>
-      <CreateActivityPopUp
-        anchor={renderAnchor}
-        visible={createNewActivityVisible}
-        setVisible={setCreateNewActivityVisible}
-        activities={props.activities}
-        setActivities={props.setActivities}
-        activityTypes={props.activityTypes}
-      />
       <Header text={props.project.title}/>
       <ContentContainer>
 
@@ -84,7 +70,7 @@ export function ProjectPage(props) {
                 <Text style={styles.teamText}>Sign Up</Text>
             </View>
             <View style={styles.createTeamButtonView}>
-                <Button status='primary' appearance='outline' onPress={() => setCreateNewActivityVisible(true)}>
+                <Button status='primary' appearance='outline' onPress={() => props.navigation.navigate('CreateActivityStack')}>
                     Create Research Activity
                 </Button>
             </View>
