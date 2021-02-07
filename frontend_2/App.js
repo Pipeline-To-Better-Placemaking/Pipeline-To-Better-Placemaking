@@ -14,8 +14,7 @@ export default () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(nextTheme);
   };
-
-
+  
   return (
       <>
       <IconRegistry icons={EvaIconsPack}/>

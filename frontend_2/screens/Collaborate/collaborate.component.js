@@ -78,7 +78,7 @@ export function Collaborate(props) {
     } catch (error) {
         console.log("error", error)
     }
-    // if successfully retrived team info, Update
+    // if successfully retrieved team info, Update
     if(success) {
       console.log("Selected Team: ", teamDetails);
       // set selected team
