@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View, TouchableWithoutFeedback, Modal } from 'react-native';
 import { Divider, Icon, Layout, Text, Button, Input, Spinner } from '@ui-kitten/components';
 import { BlueViewableArea } from '../components/content.component';
+import * as Location from 'expo-location';
 
 import { styles } from './login.styles';
 
 export const LoginScreen = ( props ) => {
+
+
+  console.log("Login Props: " + JSON.stringify(props))
 
   const [email, setEamil] = useState('');
   const [password, setPassword] = useState('');
@@ -20,21 +24,33 @@ export const LoginScreen = ( props ) => {
     props.navigation.goBack();
   };
 
+  const checkLogin = (locationComplete) => {
+
+    console.log("Checking login...")
+    console.log("location completion: " + locationComplete)
+
+    if (locationComplete) {
+        console.log("Navigating...")
+        setLoading(false);
+        props.navigation.navigate('TabNavigation');
+    }
+  }
+
   const navigateLogin = async () => {
     setLoading(true);
 
     let defaultLocation = {
-          "timestamp": 0,
-          "coords": {
-            "accuracy": -1,
-            "altitude": -1,
-            "altitudeAccuracy": -1,
-            "heading": -1,
-            "latitude": 28.602413253152307,
-            "longitude": -81.20019937739713,
-            "speed": 0
-          }
-        };
+      "timestamp": 0,
+      "coords": {
+        "accuracy": -1,
+        "altitude": -1,
+        "altitudeAccuracy": -1,
+        "heading": -1,
+        "latitude": 28.602413253152307,
+        "longitude": -81.20019937739713,
+        "speed": 0
+      }
+    };
 
     let success = false
     let token = ''
@@ -53,20 +69,34 @@ export const LoginScreen = ( props ) => {
             })
         })
         const res = await response.json()
+
         console.log(res)
         success = res.success
         if (success){
           token = res.token
           id = res.user.id
+
+          let { status } = await Location.requestPermissionsAsync();
+          if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+          }
+    
+          console.log("Getting location...")
+          let location = await Location.getCurrentPositionAsync({})
+          console.log("Location: " + JSON.stringify(location))
+    
+          await props.setLocation(location);
+
+          setLoading(false)
+
+          props.navigation.navigate("TabNavigation")
         }
     } catch (error) {
         console.log(error)
         success = false
     }
 
-    props.navigation.navigate('TabNavigation');
-
-    setLoading(false);
   };
 
   const LoginButton = () => (

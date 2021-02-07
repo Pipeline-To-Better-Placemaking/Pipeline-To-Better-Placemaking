@@ -9,7 +9,7 @@ const { Navigator, Screen } = createStackNavigator();
 
 export function AppNavigator (props) {
 
-  var location = props.location
+  const [location, setLocation] = useState(null)
 
   return(
     <NavigationContainer>
@@ -20,8 +20,11 @@ export function AppNavigator (props) {
         />
         <Screen
           name='Login'
-          component={LoginScreen}
-        />
+        >
+          {props => <LoginScreen {...props}
+                      setLocation={setLocation}>
+                    </LoginScreen>}
+        </Screen>
         <Screen
           name="TabNavigation"
         >
