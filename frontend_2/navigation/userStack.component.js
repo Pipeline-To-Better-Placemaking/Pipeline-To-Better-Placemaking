@@ -5,12 +5,14 @@ import { UserSettings } from '../screens/UserSettings/userSettings.component';
 
 const { Navigator, Screen } = createStackNavigator();
 
-export const UserSettingsStack = () => (
-  <Navigator headerMode='none'>
-    <Screen
-      name='UserSettings'
-      component={UserSettings}
-    >
-    </Screen>
-  </Navigator>
-);
+export function UserSettingsStack() {
+  return (
+    <Navigator headerMode='none'>
+      <Screen
+        name='UserSettings'
+        component={UserSettings}
+      >
+      </Screen>
+    </Navigator>
+  );
+};

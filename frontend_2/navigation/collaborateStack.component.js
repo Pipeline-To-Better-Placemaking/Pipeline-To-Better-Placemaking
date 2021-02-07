@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CreateActivityStack } from './createActivityStack.component.js';
 import { Collaborate } from '../screens/Collaborate/collaborate.component';
 import { TeamPage } from '../screens/Collaborate/Team/team.component';
 import { ProjectPage } from '../screens/Collaborate/Project/project.component';
@@ -92,6 +93,26 @@ export function CollaborateStack(props) {
       <Screen name='ProjectPage'>
         {props =>
           <ProjectPage
+            {...props}
+            token={token}
+            userId={userId}
+            team={team}
+            setTeams={setTeams}
+            project={project}
+            setProject={setProject}
+            projects={projects}
+            setProjects={setProjects}
+            activity={activity}
+            setActivity={setActivity}
+            activities={activities}
+            setActivities={setActivities}
+            activityTypes={activityTypes}
+          />
+        }
+      </Screen>
+      <Screen name='CreateActivityStack'>
+        {props =>
+          <CreateActivityStack
             {...props}
             token={token}
             userId={userId}

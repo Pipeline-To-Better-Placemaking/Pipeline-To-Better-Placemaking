@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { BottomNavigation, BottomNavigationTab, Layout, Text, Icon } from '@ui-kitten/components';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HomeScreenStack } from './homeStack.component';
@@ -22,19 +21,29 @@ const HomeIcon = (props) => (
     <Icon {...props} name='home-outline'/>
 );
 
-const BottomTabBar = ({ navigation, state }) => (
-  <BottomNavigation
-    selectedIndex={state.index}
-    onSelect={index => navigation.navigate(state.routeNames[index])}>
-    <BottomNavigationTab icon={ClipBoardIcon}/>
-    <BottomNavigationTab icon={HomeIcon}/>
-    <BottomNavigationTab icon={PersonIcon}/>
-  </BottomNavigation>
-);
+function BottomTabBar({ state, descriptors, navigation }) {
+  const focusedOptions = descriptors[state.routes[state.index].key].options;
+
+  /// Hide the tab bar
+  if (focusedOptions.tabBarVisible === false) {
+    return null;
+  }
+
+  return (
+    <BottomNavigation
+      keyboardHidesNavigationBar={true}
+      selectedIndex={state.index}
+      onSelect={index => navigation.navigate(state.routeNames[index])}>
+      <BottomNavigationTab icon={ClipBoardIcon}/>
+      <BottomNavigationTab icon={HomeIcon}/>
+      <BottomNavigationTab icon={PersonIcon}/>
+    </BottomNavigation>
+  );
+};
 
 export function TabNavigation(props) {
 
-  var location = props.location
+  var location = props.location;
 
   useEffect(() => {
     async function fetchMyAPI() {
@@ -71,6 +80,20 @@ export function TabNavigation(props) {
     fetchMyAPI()
   }, [])
 
+  // Hide Tabs for these screens within the 3 stack screens (CollaborateStack, HomeScreenStack, UserSettingsStack)
+  const tabHiddenRoutes = ["CreateActivityStack"];
+
+  function getTabBarVisibility(route) {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    if (tabHiddenRoutes.includes(routeName)) {
+      //console.log("route: ", routeName, ", hide");
+      return false;
+    } else {
+      //console.log("route: ", routeName, ", show");
+      return true;
+    }
+  };
+
   return (
     <Navigator
       initialRouteName="HomeScreenStack"
@@ -78,20 +101,43 @@ export function TabNavigation(props) {
     >
       <Screen
         name="CollaborateStack"
-        component={CollaborateStack}
+        options={({ route }) => ({
+          tabBarVisible: getTabBarVisibility(route),
+        })}
       >
+        {props =>
+          <CollaborateStack
+            {...props}
+          >
+          </CollaborateStack>
+        }
       </Screen>
       <Screen
         name="HomeScreenStack"
+        options={({ route }) => ({
+          tabBarVisible: getTabBarVisibility(route),
+        })}
       >
-        {props => <HomeScreenStack {...props}
-                      location={location}>
-                  </HomeScreenStack>}
+        {props =>
+          <HomeScreenStack
+            {...props}
+            location={location}
+          >
+          </HomeScreenStack>
+        }
       </Screen>
       <Screen
         name="UserSettingsStack"
-        component={UserSettingsStack}
+        options={({ route }) => ({
+          tabBarVisible: getTabBarVisibility(route),
+        })}
       >
+        {props =>
+          <UserSettingsStack
+            {...props}
+          >
+          </UserSettingsStack>
+        }
       </Screen>
     </Navigator>
   );

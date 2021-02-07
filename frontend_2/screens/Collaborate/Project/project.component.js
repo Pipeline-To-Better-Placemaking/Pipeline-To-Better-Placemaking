@@ -63,7 +63,8 @@ export function ProjectPage(props) {
         onPress={() => openActivityPage(item)}
       />
   );
-
+// change onPress function for "Create Research Activity" Button to props.navigation.navigate('CreateActivityStack')
+// to see the bottom bar disappear
   return (
     <ViewableArea>
       <CreateActivityPopUp
