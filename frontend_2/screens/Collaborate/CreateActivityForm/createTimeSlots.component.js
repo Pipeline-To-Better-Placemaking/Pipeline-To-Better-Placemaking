@@ -10,6 +10,8 @@ import { styles } from './form.styles';
 export function CreateTimeSlots(props) {
 
   const today = new Date();
+
+  // This is the index of the current time slot we're modifying
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   // start time
@@ -22,9 +24,18 @@ export function CreateTimeSlots(props) {
   // number of researchers
   const [researchersVisible, setResearchersVisible] = useState(false);
 
-  // Duration (time limit)
+  // duration (time limit)
   const [durationVisible, setDurationVisible] = useState(false);
 
+  // select multiple standing points
+  const [tempPoints, setTempPoints] = useState([]);
+  const [selectPointsVisible, setSelectPointsVisible] = useState(false);
+  const [selectedPointsIndex, setSelectedPointsIndex] = useState([]);
+  const groupDisplayValues = selectedPointsIndex.map(index => {
+    return "Point " + (index.row + 1);
+  });
+
+  // helper function to get a readable time string value
   const getTimeStr = (time) => {
       let hours = time.getHours();
       let minutes = `${time.getMinutes()}`;
@@ -46,8 +57,11 @@ export function CreateTimeSlots(props) {
   }
 
   const editTime = (item, index) => {
+    // load the current value
     setTimeValue(props.timeSlots[index].timeVal);
+    // set the index for which time slot we're editing
     setSelectedIndex(index);
+    // view the modal
     setTimePickerVisibility(true);
   }
 
@@ -81,6 +95,9 @@ export function CreateTimeSlots(props) {
         timeString: getTimeStr(time),
         numResearchers: '1',
         duration: '30',
+        assignedPoints: [],
+        assignedPointsString: '',
+        assignedPointIndicies: [],
     };
     props.setTimeSlots(timeSlots => [...timeSlots,temp]);
   }
@@ -91,8 +108,11 @@ export function CreateTimeSlots(props) {
   }
 
   const editResearchers = (item, index) => {
+    // load the current value
     setTempNum(props.timeSlots[index].numResearchers);
+    // set the index for which time slot we're editing
     setSelectedIndex(index);
+    // view the modal
     setResearchersVisible(true);
   }
 
@@ -112,8 +132,11 @@ export function CreateTimeSlots(props) {
   }
 
   const editDuration = (item, index) => {
+    // load the current value
     setTempNum(props.timeSlots[index].duration);
+    // set the index for which time slot we're editing
     setSelectedIndex(index);
+    // view the modal
     setDurationVisible(true);
   }
 
@@ -132,6 +155,37 @@ export function CreateTimeSlots(props) {
     props.setTimeSlots(timeSlots => [...tempList]);
   }
 
+  const editPoints = (item, index) => {
+    // load the current value
+    setSelectedPointsIndex(props.timeSlots[index].assignedPointIndicies);
+    // set the index for which time slot we're editing
+    setSelectedIndex(index);
+    // view the modal
+    setSelectPointsVisible(true);
+  };
+
+  const confirmPointsModal = () => {
+    // Get info
+    let tempList = [...props.timeSlots];
+    let timeSlot = {...tempList[selectedIndex]};
+
+    // set new value
+    timeSlot.assignedPoints = selectedPointsIndex.map(value => {
+      console.log('index', value.row);
+      return props.standingPoints[value.row];
+    })
+
+    timeSlot.assignedPointIndicies = selectedPointsIndex;
+    timeSlot.assignedPointsString = groupDisplayValues.join(', ');
+
+    // put the item back in the list
+    tempList[selectedIndex] = timeSlot;
+
+    // Update
+    props.setTimeSlots(timeSlots => [...tempList]);
+    setSelectPointsVisible(false);
+  }
+
   const confirmModal = () => {
     if (researchersVisible) {
       setResearchers()
@@ -144,6 +198,7 @@ export function CreateTimeSlots(props) {
   const dimissModal = () => {
     setResearchersVisible(false);
     setDurationVisible(false);
+    setSelectPointsVisible(false);
   }
 
   const TimePicker = ({item, index}) => (
@@ -168,6 +223,7 @@ export function CreateTimeSlots(props) {
 
   const EnterNumberModal = () => (
     <Modal
+      style={{width:'60%'}}
       visible={researchersVisible || durationVisible}
       backdropStyle={styles.backdrop}
       onBackdropPress={dimissModal}
@@ -181,6 +237,31 @@ export function CreateTimeSlots(props) {
           keyboardType="numeric"
         />
         <Button onPress={confirmModal}>
+          Comfirm
+        </Button>
+      </Card>
+    </Modal>
+  );
+
+  const SelectPointsModal = () => (
+    <Modal
+      style={{width:'80%'}}
+      visible={selectPointsVisible}
+      backdropStyle={styles.backdrop}
+      onBackdropPress={dimissModal}
+    >
+      <Card disabled={true}>
+        <Text>Select Points: </Text>
+        <Select
+         multiSelect={true}
+         value={groupDisplayValues.join(', ')}
+         selectedIndex={selectedPointsIndex}
+         onSelect={index => setSelectedPointsIndex(index)}>
+         {props.standingPoints.map((value, index) => {
+           return (<SelectItem key={index} title={"Point " + (index+1)}/>);
+         })}
+       </Select>
+        <Button onPress={confirmPointsModal}>
           Comfirm
         </Button>
       </Card>
@@ -213,6 +294,20 @@ export function CreateTimeSlots(props) {
       </View>
   );
 
+  const SelectPoints = ({item, index}) => (
+      <View style={{flexDirection:'row'}}>
+        <Button
+          disabled={props.standingPoints.length <= 0}
+          style={{marginLeft:-20}}
+          onPress={() => editPoints(item, index)}
+          accessoryRight={PinIcon}
+          appearance='ghost'
+        >
+          <Text>Standing Points: {item.assignedPointsString}</Text>
+        </Button>
+      </View>
+  );
+
   const Delete = ({item, index}) => (
       <View style={{marginRight:-20, marginTop:-10}}>
           <Button
@@ -232,6 +327,7 @@ export function CreateTimeSlots(props) {
               <TimePicker {...{item, index}} />
               <Duration {...{item, index}} />
               <NumResearchers {...{item, index}} />
+              <SelectPoints {...{item, index}} />
           </View>
 
           <View style={{alignItems:'flex-end'}}>
@@ -248,6 +344,8 @@ export function CreateTimeSlots(props) {
         <View style={styles.container}>
 
           <EnterNumberModal />
+
+          <SelectPointsModal />
 
           <View style={styles.activityView}>
             <Text>Create New Research Activity</Text>
@@ -270,6 +368,7 @@ export function CreateTimeSlots(props) {
           </View>
 
           <List
+            style={{marginTop:15, marginBottom:15}}
             data={props.timeSlots}
             ItemSeparatorComponent={Divider}
             renderItem={signUpCard}
@@ -336,4 +435,8 @@ const PlusIcon = (props) => (
 
 const ResearchersIcon = (props) => (
   <Icon {...props} name='people-outline'/>
+);
+
+const PinIcon = (props) => (
+  <Icon {...props} name='pin-outline'/>
 );

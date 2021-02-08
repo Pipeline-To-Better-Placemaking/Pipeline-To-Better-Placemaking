@@ -19,7 +19,6 @@ export const styles = StyleSheet.create({
     btnView: {
         justifyContent:'center',
         alignItems:'center',
-        margin:5
     },
 
     backdrop: {

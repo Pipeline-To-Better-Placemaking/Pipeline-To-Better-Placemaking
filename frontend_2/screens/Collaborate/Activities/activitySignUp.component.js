@@ -10,7 +10,26 @@ import { styles } from './activitySignUp.styles';
 
 export function ActivitySignUpPage(props) {
 
-  console.log("Selected Activity:\n", props.activity);
+  const timeSlotCard = ({item, index}) => (
+    <Card disabled={true}>
+      <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+        <View style={{flexDirection:'column'}}>
+          <Text>Start Time {item.timeString}</Text>
+          <Text>Time Limit: {item.duration} (min)</Text>
+          <Text>Standing Points: {item.assignedPointsString}</Text>
+          <Text>List of users who have signed Up </Text>
+        </View>
+        <View style={{flexDirection:'column', justifyContent:'space-around'}}>
+          <Button status='info' style={{margin:5}}>
+            Sign Up
+          </Button>
+          <Button status='success' style={{margin:5}}>
+            Begin
+          </Button>
+        </View>
+      </View>
+    </Card>
+  );
 
   return (
     <ViewableArea>
@@ -23,7 +42,16 @@ export function ActivitySignUpPage(props) {
             markers={props.activity.standingPoints}
           />
         </View>
-        <Text>This is the Activity Sign Up Page</Text>
+        <View style={{margin:15}}>
+          <Text category='s1'>{props.activity.activity} Activity</Text>
+          <Text category='s1'>Day: {props.activity.date.toLocaleDateString()}</Text>
+        </View>
+        <List
+          style={{maxHeight:400}}
+          data={props.activity.timeSlots}
+          ItemSeparatorComponent={Divider}
+          renderItem={timeSlotCard}
+        />
       </ContentContainer>
     </ViewableArea>
   );
