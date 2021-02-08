@@ -1,18 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction, IndexPath, Select, SelectItem } from '@ui-kitten/components';
+import { Layout, TopNavigation, TopNavigationAction, IndexPath, Select, SelectItem, Modal } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Datepicker } from '@ui-kitten/components';
 import { DateTimePickerModal, DateTimePicker } from "react-native-modal-datetime-picker";
 import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { StopWatch } from '../../components/Icons/reactIcons.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './form.styles';
 
 export function CreateTimeSlots(props) {
 
   const today = new Date();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  // start time
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [timeValue, setTimeValue] = useState(today);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  // used for Modal
+  const [tempNum, setTempNum] = useState('');
+
+  // number of researchers
+  const [researchersVisible, setResearchersVisible] = useState(false);
+
+  // Duration (time limit)
+  const [durationVisible, setDurationVisible] = useState(false);
 
   const getTimeStr = (time) => {
       let hours = time.getHours();
@@ -34,20 +46,25 @@ export function CreateTimeSlots(props) {
       return hours + ":" + minutes + morning;
   }
 
-  const viewTime = (item, index) => {
+  const editTime = (item, index) => {
     setTimeValue(props.timeSlots[index].timeVal);
     setSelectedIndex(index);
     setTimePickerVisibility(true);
   }
 
   const setTime = (time) => {
+    // Get info
     let tempList = [...props.timeSlots];
     let timeSlot = {...tempList[selectedIndex]};
 
+    // set new value
     timeSlot.timeVal = time;
     timeSlot.timeString = getTimeStr(time);
 
+    // put the item back in the list
     tempList[selectedIndex] = timeSlot;
+
+    // Update
     props.setTimeSlots(timeSlots => [...tempList]);
     setTimeValue(time);
     setTimePickerVisibility(false);
@@ -63,6 +80,8 @@ export function CreateTimeSlots(props) {
     let temp = {
         timeVal: time,
         timeString: getTimeStr(time),
+        numResearchers: '1',
+        duration: '30',
     };
     props.setTimeSlots(timeSlots => [...timeSlots,temp]);
   }
@@ -72,14 +91,70 @@ export function CreateTimeSlots(props) {
     props.setTimeSlots(timeSlots => [...timeSlots]);
   }
 
+  const editResearchers = (item, index) => {
+    setTempNum(props.timeSlots[index].numResearchers);
+    setSelectedIndex(index);
+    setResearchersVisible(true);
+  }
+
+  const setResearchers = () => {
+    // Get info
+    let tempList = [...props.timeSlots];
+    let timeSlot = {...tempList[selectedIndex]};
+
+    // set new value
+    timeSlot.numResearchers = tempNum;
+
+    // put the item back in the list
+    tempList[selectedIndex] = timeSlot;
+
+    // Update
+    props.setTimeSlots(timeSlots => [...tempList]);
+  }
+
+  const editDuration = (item, index) => {
+    setTempNum(props.timeSlots[index].duration);
+    setSelectedIndex(index);
+    setDurationVisible(true);
+  }
+
+  const setDuration = () => {
+    // Get info
+    let tempList = [...props.timeSlots];
+    let timeSlot = {...tempList[selectedIndex]};
+
+    // set new value
+    timeSlot.duration = tempNum;
+
+    // put the item back in the list
+    tempList[selectedIndex] = timeSlot;
+
+    // Update
+    props.setTimeSlots(timeSlots => [...tempList]);
+  }
+
+  const confirmModal = () => {
+    if (researchersVisible) {
+      setResearchers()
+    } else if (durationVisible) {
+      setDuration()
+    }
+    dimissModal();
+  }
+
+  const dimissModal = () => {
+    setResearchersVisible(false);
+    setDurationVisible(false);
+  }
+
   const TimePicker = ({item, index}) => (
       <View style={{marginLeft:-20}}>
         <Button
-          onPress={() => viewTime(item, index)}
+          onPress={() => editTime(item, index)}
           accessoryRight={ClockIcon}
           appearance='ghost'
           >
-          <Text>Time </Text>
+          <Text>Start Time </Text>
           <Text>{item.timeString} </Text>
         </Button>
         <DateTimePickerModal
@@ -89,6 +164,53 @@ export function CreateTimeSlots(props) {
           onConfirm={setTime}
           onCancel={() => setTimePickerVisibility(false)}
         />
+      </View>
+  );
+
+  const EnterNumberModal = () => (
+    <Modal
+      visible={researchersVisible || durationVisible}
+      backdropStyle={styles.backdrop}
+      onBackdropPress={dimissModal}
+    >
+      <Card disabled={true}>
+        <Text>Enter Number:          </Text>
+        <Input
+          placeholder={''}
+          value={tempNum}
+          onChangeText={(nextValue) => setTempNum(nextValue)}
+          keyboardType="numeric"
+        />
+        <Button onPress={confirmModal}>
+          Comfirm
+        </Button>
+      </Card>
+    </Modal>
+  );
+
+  const NumResearchers = ({item, index}) => (
+      <View style={{flexDirection:'row'}}>
+        <Button
+          style={{marginLeft:-20}}
+          onPress={() => editResearchers(item, index)}
+          accessoryRight={ResearchersIcon}
+          appearance='ghost'
+        >
+          <Text>Number of Researchers: {item.numResearchers}</Text>
+        </Button>
+      </View>
+  );
+
+  const Duration = ({item, index}) => (
+      <View style={{flexDirection:'row'}}>
+        <Button
+          style={{marginLeft:-20}}
+          onPress={() => editDuration(item, index)}
+          accessoryRight={ClockIcon}
+          appearance='ghost'
+        >
+          <Text>Time Limit: {item.duration} (min)</Text>
+        </Button>
       </View>
   );
 
@@ -109,7 +231,8 @@ export function CreateTimeSlots(props) {
 
           <View style={{flex:1, flexDirection:'column', alignItems:'flex-start'}}>
               <TimePicker {...{item, index}} />
-
+              <Duration {...{item, index}} />
+              <NumResearchers {...{item, index}} />
           </View>
 
           <View style={{alignItems:'flex-end'}}>
@@ -124,6 +247,8 @@ export function CreateTimeSlots(props) {
     <ViewableArea>
       <ContentContainer>
         <View style={styles.container}>
+
+          <EnterNumberModal />
 
           <View style={styles.activityView}>
             <Text>Create New Research Activity</Text>
@@ -208,4 +333,8 @@ const ClockIcon = (props) => (
 
 const PlusIcon = (props) => (
   <Icon {...props} name='plus-outline'/>
+);
+
+const ResearchersIcon = (props) => (
+  <Icon {...props} name='people-outline'/>
 );
