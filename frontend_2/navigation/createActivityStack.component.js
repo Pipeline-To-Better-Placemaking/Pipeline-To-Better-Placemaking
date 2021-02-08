@@ -12,10 +12,33 @@ const { Navigator, Screen } = createStackNavigator();
 
 export function CreateActivityStack(props) {
 
+  // List of activity types
+  const activityTypes = [...props.activityTypes];
+  // these are the activites that require standing points to be defined
+  const activitesRequirePoints = ['Stationary Map', 'People Moving'];
+
+  // This is the unique name the user gives the Activity
   const [activityName, setActivityName] = useState('');
+
+  // This is the index of the selected Activity from the lsit of activityTypes
   const [selectedActivityIndex, setSelectedActivityIndex] = useState(new IndexPath(0));
+
+  // Only use the Day from this value, this is the date the user selects for the Activity to take place
   const [date, setDate] = useState(new Date());
+
+  // This is a list of all of the Time Slot Cards for the activity day
   const [timeSlots, setTimeSlots] = useState([]);
+
+  // This is the list of points, the user can set to reccomend where a researcher stands
+  const [standingPoints, setStandingPoints] = useState([]);
+  // This boolean identitifies whether or not standing points are required for this type of activity
+  const [pointsRequired, setPointsRequired] = useState(true);
+
+  // This is the selected sub area
+  const [area, setArea] = useState(props.project.subareas[0].area);
+  // This boolean is used to determine if there's more than 1 sub area for the user to choose from
+  // if there's only 1 sub area, then they don't need to select a sub location
+  const selectArea = (props.project.subareas.length > 1);
 
   const create = () => {
     // some error checking if they don't fill everything out
@@ -25,15 +48,17 @@ export function CreateActivityStack(props) {
       row = 0;
     }
     if(activityName.length <= 0) {
-      name = props.activityTypes[row];
+      name = activityTypes[row];
     }
 
     // the activity info
     let temp = {
       title: name,
       date: date,
-      activity: props.activityTypes[row],
+      activity: activityTypes[row],
       timeSlots: timeSlots,
+      standingPoints: standingPoints,
+      area: area,
     };
     // TODO: POST the activity
 
@@ -42,6 +67,17 @@ export function CreateActivityStack(props) {
 
     // Navigate back to Project page
     props.navigation.navigate('ProjectPage')
+  };
+
+  const setSelectedActivity = (index) => {
+    setSelectedActivityIndex(index);
+    let tempName = activityTypes[index.row];
+
+    if(activitesRequirePoints.includes(tempName)){
+      setPointsRequired(true);
+    } else {
+      setPointsRequired(false);
+    }
   };
 
   return (
@@ -53,10 +89,12 @@ export function CreateActivityStack(props) {
             activityName={activityName}
             setActivityName={setActivityName}
             selectedActivityIndex={selectedActivityIndex}
-            setSelectedActivityIndex={setSelectedActivityIndex}
+            setSelectedActivity={setSelectedActivity}
             date={date}
             setDate={setDate}
-            activityTypes={props.activityTypes}
+            activityTypes={activityTypes}
+            selectArea={selectArea}
+            pointsRequired={pointsRequired}
           />
         }
       </Screen>
@@ -64,6 +102,9 @@ export function CreateActivityStack(props) {
         {props =>
           <SelectLocation
             {...props}
+            area={area}
+            setArea={setArea}
+            pointsRequired={pointsRequired}
           />
         }
       </Screen>
@@ -71,6 +112,9 @@ export function CreateActivityStack(props) {
         {props =>
           <CreateStandingPoints
             {...props}
+            area={area}
+            standingPoints={standingPoints}
+            setStandingPoints={setStandingPoints}
           />
         }
       </Screen>
@@ -80,6 +124,7 @@ export function CreateActivityStack(props) {
             {...props}
             timeSlots={timeSlots}
             setTimeSlots={setTimeSlots}
+            standingPoints={standingPoints}
             create={create}
           />
         }

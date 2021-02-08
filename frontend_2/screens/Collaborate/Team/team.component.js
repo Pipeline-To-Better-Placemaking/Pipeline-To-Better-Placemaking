@@ -43,6 +43,25 @@ export function TeamPage(props) {
 
       // open project page
       props.navigation.navigate('ProjectPage')
+    } else {
+      // set fake data because *cries*
+      projectDetails = {
+        _id:'0',
+        title:'Project Sad',
+        description:"cries",
+        subareas:[{
+          _id:'0',
+          area:[
+            {latitude:28.60275207150067, longitude:-81.20052214711905},
+            {latitude:28.602640803731394, longitude:-81.19969569146633},
+            {latitude:28.601981731115934, longitude:-81.2004641443491},
+          ],
+        }]
+      }
+
+      props.setProject(projectDetails)
+      props.setActivities(projectDetails.activities);
+      props.navigation.navigate('ProjectPage')
     }
   };
 
@@ -67,7 +86,7 @@ export function TeamPage(props) {
       <ContentContainer>
         <View style={styles.teamTextView}>
             <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
-                <Text style={styles.teamText}> Teams </Text>
+                <Text style={styles.teamText}> Projects </Text>
             </View>
             <View style={styles.createTeamButtonView}>
                 <Button status='primary' appearance='outline' onPress={() => setVisible(true)}>

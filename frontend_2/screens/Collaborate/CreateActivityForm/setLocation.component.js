@@ -8,6 +8,14 @@ import { styles } from './form.styles';
 
 export function SelectLocation(props) {
 
+  const next = () => {
+    if (props.pointsRequired) {
+      props.navigation.navigate('CreateStandingPoints');
+    } else {
+      props.navigation.navigate('CreateTimeSlots');
+    }
+  }
+
   return (
     <ViewableArea>
       <ContentContainer>
@@ -30,14 +38,14 @@ export function SelectLocation(props) {
 
           <View style={styles.activityView}>
             <Button
-              onPress={() => props.navigation.navigate('IntialForm')}
+              onPress={() => props.navigation.goBack()}
               status='info'
               accessoryLeft={BackIcon}
             >
               Back
             </Button>
             <Button
-              onPress={() => props.navigation.navigate('CreateStandingPoints')}
+              onPress={next}
               status='info'
               accessoryRight={ForwardIcon}
             >

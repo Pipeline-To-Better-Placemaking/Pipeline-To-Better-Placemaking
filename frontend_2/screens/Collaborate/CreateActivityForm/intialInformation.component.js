@@ -8,8 +8,18 @@ import { styles } from './form.styles';
 
 export function IntialForm(props) {
 
-  const activityTypes = ['Stationary Map', 'People Moving', 'Survey'];
+  const activityTypes = props.activityTypes;
   const today = new Date();
+
+  const next = () => {
+    if(props.selectArea) {
+      props.navigation.navigate('SelectLocation')
+    } else if (props.pointsRequired) {
+      props.navigation.navigate('CreateStandingPoints')
+    } else {
+      props.navigation.navigate('CreateTimeSlots')
+    }
+  };
 
   return (
     <ViewableArea>
@@ -44,7 +54,7 @@ export function IntialForm(props) {
               placeholder={activityTypes[0]}
               value={activityTypes[props.selectedActivityIndex.row]}
               selectedIndex={props.selectedActivityIndex}
-              onSelect={index => props.setSelectedActivityIndex(index)}
+              onSelect={index => props.setSelectedActivity(index)}
             >
               {activityTypes.map((item, index) =>
                   <SelectItem key="{item}" title={item}/>
@@ -69,7 +79,7 @@ export function IntialForm(props) {
           <View style={styles.activityView}>
             <View />
             <Button
-              onPress={() => props.navigation.navigate('SelectLocation')}
+              onPress={next}
               status='info'
               accessoryRight={ForwardIcon}
             >

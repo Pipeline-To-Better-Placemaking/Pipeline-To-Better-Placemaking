@@ -3,6 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Layout, TopNavigation, TopNavigationAction, IndexPath, Select, SelectItem } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Datepicker } from '@ui-kitten/components';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { MapAddPoints } from '../../components/Maps/mapPoints.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './form.styles';
 
@@ -28,9 +29,16 @@ export function CreateStandingPoints(props) {
             <Text>Create Standing Points</Text>
           </View>
 
+          <MapAddPoints
+            location={props.area[0]}
+            area={props.area}
+            markers={props.standingPoints}
+            setMarkers={props.setStandingPoints}
+          />
+
           <View style={styles.activityView}>
             <Button
-              onPress={() => props.navigation.navigate('SelectLocation')}
+              onPress={() => props.navigation.goBack()}
               status='info'
               accessoryLeft={BackIcon}
             >

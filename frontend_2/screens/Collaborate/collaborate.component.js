@@ -76,7 +76,7 @@ export function Collaborate(props) {
         teamDetails = await response.json();
         success = true
     } catch (error) {
-        console.log("error", error)
+        console.log("error getting team\n", error)
     }
     // if successfully retrieved team info, Update
     if(success) {
@@ -89,6 +89,23 @@ export function Collaborate(props) {
       props.setProjects(teamDetails.projects)
 
       // open team page
+      props.navigation.navigate('TeamPage')
+    } else {
+      // set fake data because *cries*
+      teamDetails = {
+        _id:'0',
+        projects:[{
+          _id:'0',
+          title:'Project Sad',
+          description:"cries"
+        }],
+        title:'Team Crying',
+        description:"sad"
+      }
+
+      props.setTeam(teamDetails)
+      await AsyncStorage.setItem("@projects", JSON.stringify(teamDetails.projects));
+      props.setProjects(teamDetails.projects)
       props.navigation.navigate('TeamPage')
     }
   };

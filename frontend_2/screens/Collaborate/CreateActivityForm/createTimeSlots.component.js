@@ -4,7 +4,6 @@ import { Layout, TopNavigation, TopNavigationAction, IndexPath, Select, SelectIt
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Datepicker } from '@ui-kitten/components';
 import { DateTimePickerModal, DateTimePicker } from "react-native-modal-datetime-picker";
 import { ViewableArea, ContentContainer } from '../../components/content.component';
-import { StopWatch } from '../../components/Icons/reactIcons.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './form.styles';
 
@@ -278,7 +277,7 @@ export function CreateTimeSlots(props) {
 
           <View style={styles.activityView}>
             <Button
-              onPress={() => props.navigation.navigate('CreateStandingPoints')}
+              onPress={() => props.navigation.goBack()}
               status='info'
               accessoryLeft={BackIcon}
             >
