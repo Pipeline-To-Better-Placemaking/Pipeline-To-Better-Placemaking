@@ -111,6 +111,7 @@ export function TabNavigation(props) {
         {props =>
           <CollaborateStack
             {...props}
+            location={location}
           >
           </CollaborateStack>
         }

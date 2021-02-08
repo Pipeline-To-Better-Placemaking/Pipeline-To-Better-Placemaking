@@ -87,6 +87,7 @@ export function CollaborateStack(props) {
             setProjects={setProjects}
             activities={activities}
             setActivities={setActivities}
+            location={props.location}
           />
         }
       </Screen>

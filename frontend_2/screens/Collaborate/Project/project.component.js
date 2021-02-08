@@ -3,6 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../../components/headers.component';
+import { MapViewArea } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './project.styles';
@@ -64,6 +65,12 @@ export function ProjectPage(props) {
       <Header text={props.project.title}/>
       <ContentContainer>
 
+        <View style={{height:'45%'}}>
+          <MapViewArea
+            location={props.project.subareas[0].area[0]}
+            area={props.project.subareas[0].area}
+          />
+        </View>
 
         <View style={styles.teamTextView}>
             <View style={{flexDirection:'column', justifyContent:'flex-end'}}>

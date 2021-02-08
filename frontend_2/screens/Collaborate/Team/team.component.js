@@ -4,6 +4,7 @@ import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/component
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../../components/headers.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { CreateProject } from './createProjectModal.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './team.styles';
 
@@ -13,7 +14,6 @@ const ForwardIcon = (props) => (
 
 export function TeamPage(props) {
 
-  const [projectName, setProjectName] = useState('');
   const [visible, setVisible] = useState(false);
 
   const openProjectPage = async (item) => {
@@ -65,9 +65,9 @@ export function TeamPage(props) {
     }
   };
 
-  const renderAnchor = () => (
-    <Divider style={{marginTop: 5}} />
-  );
+  const navigateProjectPage = () => {
+    props.navigation.navigate('ProjectPage');
+  }
 
   const projectItem = ({ item, index }) => (
       <ListItem
@@ -84,9 +84,23 @@ export function TeamPage(props) {
     <ViewableArea>
       <Header text={props.team.title}/>
       <ContentContainer>
+        <CreateProject
+          visible={visible}
+          setVisible={setVisible}
+          create={navigateProjectPage}
+          token={props.token}
+          team={props.team}
+          project={props.project}
+          setProject={props.setProject}
+          projects={props.projects}
+          setProjects={props.setProjects}
+          setActivities={props.setActivities}
+          location={props.location}
+        />
+
         <View style={styles.teamTextView}>
             <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
-                <Text style={styles.teamText}> Projects </Text>
+                <Text style={styles.teamText}>Projects </Text>
             </View>
             <View style={styles.createTeamButtonView}>
                 <Button status='primary' appearance='outline' onPress={() => setVisible(true)}>

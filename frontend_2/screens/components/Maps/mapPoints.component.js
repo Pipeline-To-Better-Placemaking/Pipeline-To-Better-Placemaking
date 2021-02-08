@@ -13,6 +13,14 @@ import { Text, Button, Input, Icon, Divider, List, ListItem} from '@ui-kitten/co
     markers={}
     setMarkers={}
 
+  MapAddArea:
+    - Displays at location a List of points
+    - Lets the user add and delete points from markers
+    Need:
+    location={}
+    markers={}
+    setMarkers={}
+
   MapViewPoints:
     - Displays at location, 1 sub area, and markers on the Map
     Need:
@@ -104,7 +112,29 @@ export function MapAddPoints(props) {
     );
 }
 
-export function MapViewPoints(props) {
+export function MapAddArea(props) {
+
+  const removeMarker = (item, index) => {
+    props.markers.splice(index, 1);
+    props.setMarkers(markers => [...markers]);
+  };
+
+  const addMarker = (coordinates) => {
+    let point = {
+        latitude: coordinates.latitude,
+        longitude: coordinates.longitude
+    };
+    props.setMarkers(markers => [...markers,point]);
+  };
+
+  const renderItem = ({ item, index }) => (
+    <ListItem
+      title={`Point ${index+1}: `}
+      description={`${item.latitude}, ${item.longitude}`}
+      accessoryRight={DeleteIcon}
+      onPress={() => removeMarker(item, index)}
+    />
+  );
 
   const ShowPolygon = () => {
     if(props.markers === null) {
@@ -118,7 +148,66 @@ export function MapViewPoints(props) {
                   latitude: coord.latitude,
                   longitude: coord.longitude
               }}
+          >
+            <Callout>
+              <Text>Position {index+1}</Text>
+            </Callout>
+          </MapView.Marker>
+          )))
+      }
+    };
+
+    return(
+      <View>
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          style={{height:'55%'}}
+          initialCamera ={{
+            center:{
+                latitude: props.location.latitude,
+                longitude: props.location.longitude
+            },
+            pitch: 10,
+            heading: -1,
+            altitude: -1,
+            zoom: 17
+          }}
+          onPress={event => addMarker(event.nativeEvent.coordinate)}
+        >
+          <ShowPolygon/>
+        </MapView>
+
+        <View style={{height:'40%', marginTop:20}}>
+          <List
+            style={{marginBottom: -100}}
+            data={props.markers}
+            ItemSeparatorComponent={Divider}
+            renderItem={renderItem}
           />
+        </View>
+      </View>
+    );
+}
+
+export function MapViewPoints(props) {
+
+  const ShowPolygon = () => {
+    if(props.markers === null) {
+      return (null);
+    }
+    else {
+      return (props.markers.map((coord, index) => (
+          <MapView.Marker
+            key={index}
+            coordinate = {{
+                latitude: coord.latitude,
+                longitude: coord.longitude
+            }}
+          >
+            <Callout>
+              <Text>Position {index+1}</Text>
+            </Callout>
+          </MapView.Marker>
           )))
       }
     };
@@ -146,6 +235,35 @@ export function MapViewPoints(props) {
            fillColor={'rgba(0,0,0,0.5)'}
           />
           <ShowPolygon/>
+        </MapView>
+      </View>
+    );
+}
+
+export function MapViewArea(props) {
+
+    return(
+      <View>
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          style={{height:'100%'}}
+          initialCamera ={{
+            center:{
+                latitude: props.location.latitude,
+                longitude: props.location.longitude
+            },
+            pitch: 10,
+            heading: -1,
+            altitude: -1,
+            zoom: 17
+          }}
+        >
+          <MapView.Polygon
+           coordinates={props.area}
+           strokeWidth={3}
+           strokeColor={'rgba(255,0,0,0.5)'}
+           fillColor={'rgba(0,0,0,0.5)'}
+          />
         </MapView>
       </View>
     );
