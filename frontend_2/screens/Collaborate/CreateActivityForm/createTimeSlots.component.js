@@ -171,7 +171,6 @@ export function CreateTimeSlots(props) {
 
     // set new value
     timeSlot.assignedPoints = selectedPointsIndex.map(value => {
-      console.log('index', value.row);
       return props.standingPoints[value.row];
     })
 
@@ -236,7 +235,7 @@ export function CreateTimeSlots(props) {
           onChangeText={(nextValue) => setTempNum(nextValue)}
           keyboardType="numeric"
         />
-        <Button onPress={confirmModal}>
+        <Button style={{marginTop:5}} onPress={confirmModal}>
           Comfirm
         </Button>
       </Card>
@@ -261,7 +260,7 @@ export function CreateTimeSlots(props) {
            return (<SelectItem key={index} title={"Point " + (index+1)}/>);
          })}
        </Select>
-        <Button onPress={confirmPointsModal}>
+        <Button style={{marginTop:10}} onPress={confirmPointsModal}>
           Comfirm
         </Button>
       </Card>

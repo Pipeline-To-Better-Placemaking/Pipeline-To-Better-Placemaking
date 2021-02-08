@@ -17,7 +17,7 @@ export function ActivitySignUpPage(props) {
           <Text>Start Time {item.timeString}</Text>
           <Text>Time Limit: {item.duration} (min)</Text>
           <Text>Standing Points: {item.assignedPointsString}</Text>
-          <Text>List of users who have signed Up </Text>
+          <Text>Number of Researchers: {item.numResearchers}</Text>
         </View>
         <View style={{flexDirection:'column', justifyContent:'space-around'}}>
           <Button status='info' style={{margin:5}}>
