@@ -82,6 +82,7 @@ export function ProjectPage(props) {
                 </Button>
             </View>
         </View>
+        <Divider style={{marginTop: 5}} />
 
         <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
           <List
