@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, TouchableWithoutFeedback, Modal } from 'react-native';
 import { Divider, Icon, Layout, Text, Button, Input, Spinner } from '@ui-kitten/components';
 import { BlueViewableArea } from '../components/content.component';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 
 import { styles } from './login.styles';
 
 export const LoginScreen = ( props ) => {
-
-
-  console.log("Login Props: " + JSON.stringify(props))
 
   const [email, setEamil] = useState('');
   const [password, setPassword] = useState('');
@@ -23,18 +21,6 @@ export const LoginScreen = ( props ) => {
   const navigateBack = () => {
     props.navigation.goBack();
   };
-
-  const checkLogin = (locationComplete) => {
-
-    console.log("Checking login...")
-    console.log("location completion: " + locationComplete)
-
-    if (locationComplete) {
-        console.log("Navigating...")
-        setLoading(false);
-        props.navigation.navigate('TabNavigation');
-    }
-  }
 
   const navigateLogin = async () => {
     setLoading(true);
@@ -70,11 +56,14 @@ export const LoginScreen = ( props ) => {
         })
         const res = await response.json()
 
-        console.log(res)
+        console.log("Login res: " + JSON.stringify(res))
         success = res.success
         if (success){
           token = res.token
           id = res.user.id
+
+          await AsyncStorage.setItem("@token", token)
+          await AsyncStorage.setItem("@id", id)
 
           let { status } = await Location.requestPermissionsAsync();
           if (status !== 'granted') {
@@ -82,9 +71,7 @@ export const LoginScreen = ( props ) => {
             return;
           }
     
-          console.log("Getting location...")
           let location = await Location.getCurrentPositionAsync({})
-          console.log("Location: " + JSON.stringify(location))
     
           await props.setLocation(location);
 

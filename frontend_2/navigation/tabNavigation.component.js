@@ -53,19 +53,22 @@ export function TabNavigation(props) {
       let result = null
 
       try {
+          console.log("Inside try")
+          console.log("Token: " + token)
+          console.log("Id: " + id)
           const response = await fetch('https://measuringplacesd.herokuapp.com/api/users/' + id, {
-              method: 'GET',
-              headers: {
-                  Accept: 'application/json',
-                      'Content-Type': 'application/json',
-                      'Authorization': 'Bearer ' + token
-              }
-          })
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
           result = await response.json()
           console.log(result)
           success = true
       } catch (error) {
-          console.log(error)
+          console.log("ERROR: " +error)
       }
 
       if (success) {
