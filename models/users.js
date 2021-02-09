@@ -50,7 +50,7 @@ user_schema.plugin(uniqueValidator)
 
 const Users = module.exports = mongoose.model('Users', user_schema)
 
-module.exports.getUserByEmail = async function(email) {
+module.exports.findUserByEmail = async function(email) {
     const query = { email: email }
     return await Users.findOne(query)
 }
@@ -123,18 +123,23 @@ module.exports.createVerification = async function(userId) {
     return verificationString
 }
 
-module.exports.getInvites = async function(userId) {
-    return await Users.findById(userId).invites
-}
-
-module.exports.createInvite = async function(userId, teamId) {
+module.exports.addTeam = async function(userId, teamId) {
     await Users.updateOne(
         { _id: userId },
-        { $addToSetid: { invites: teamId }}
+        { $push: { teams: teamId }}
+    )
+}
+module.exports.addInvite = async function(userId, teamId) {
+    await Users.updateOne(
+        { _id: userId },
+        { $push: { invites: teamId }}
     )
 }
 
 module.exports.deleteInvite = async function(userId,teamId) {
+    
+    console.log(teamId)
+    
     await Users.updateOne(
         { _id: userId },
         { $pull: { invites: teamId }}

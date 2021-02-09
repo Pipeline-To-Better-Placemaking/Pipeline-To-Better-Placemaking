@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 const { models } = require('mongoose')
 
-const { UnauthorizedError } = require('../utils/errors')
+const { BadRequestError, UnauthorizedError } = require('../utils/errors')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
@@ -49,10 +49,8 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 
     if (await Team.isAdmin(project.team,user._id)){
         if (newProject.area > project.subareas.length){
-            res.json({
-                msg:'Index of area is invalid'
-            })
-        } 
+            throw new BadRequestError('Cannot set main area to non-existant subarea')
+        }
         else{
             res.status(201).json(await Project.updateProject(req.params.id,newProject))
         }
@@ -81,6 +79,10 @@ router.post('/:id/areas', passport.authenticate('jwt',{session:false}), async (r
     user = await req.user
     project = await Project.findById(req.params.id)
     if(await Team.isUser(project.team,user._id)){
+        
+        if(req.body.area.length < 3)
+            throw new BadRequestError('Areas require at least three points')
+        
         res.json(await Project.addArea(project._id,req.body.area))
     }
     else{
@@ -104,6 +106,11 @@ router.put('/:id/areas/', passport.authenticate('jwt',{session:false}), async (r
     if (await Team.isAdmin(project.team,user._id)){
 
         if(req.body.areas){
+            
+            for(var i = 0; i < req.body.areas.length; i++){
+                if(req.body.areas[i].length < 3)
+                throw new BadRequestError('Area ' + i + ' requires at least three points.')
+            }
             for(var i = 0; i < req.body.areas.length; i++){
                 await Project.updateArea(project._id,req.body.areas[i].id,req.body.areas[i].points)
             }

@@ -22,12 +22,11 @@ curl -H 'Accept: application/json' \
 echo 
 echo
 
-TEAM=$(curl -H "Authorization: Bearer ${TOKEN}" \
-        -H 'Content-Type: application/json' \
-        --request POST \
-        -d '{"title": "Testing","description": "a cool testing thidddddddng"}'\
-        http://localhost:8080/api/teams \
-        | jq -r '._id' )
+TEAM=$(curl -H 'Accept: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/users/ \
+     | jq -r '.teams[0]' )
 
 
 curl -H 'Content-Type: application/json' \
@@ -197,10 +196,50 @@ curl -H 'Content-Type: application/json' \
      http://localhost:8080/api/stationary_maps/${MAP} 
 echo
 echo
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request POST \
+     -d '{"userEmail": "doggies@gmail.com"}' \
+     http://localhost:8080/api/teams/${TEAM}/invites
 echo
-curl --header "Content-Type: application/json" \
+
+TOKEN=$(curl --header "Content-Type: application/json" \
       --request POST \
-      -d '{"email": "appddles@gmail.com","password": "What@1234"}'\
-      http://localhost:8080/api/login
-      
+      -d '{"email": "doggies@gmail.com","password": "What@1234"}'\
+      http://localhost:8080/api/login \
+      | jq -r '.token')
+
+echo
+echo
+curl -H 'Accept: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/users/
+
+echo
+echo
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request POST \
+     -d "{\"responses\": [{\"team\": \"${TEAM}\", \"accept\": true}]}" \
+     http://localhost:8080/api/users/invites/
+
+echo
+echo 
+
+curl -H 'Accept: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/users/
+
+echo
+echo
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/teams/${TEAM} 
+
+echo
 echo

@@ -20,7 +20,7 @@ router.post('/', async (req,res,next) => {
         throw new UnauthorizedError('Invalid email or password')
     }
 
-    const user = await User.getUserByEmail(email)
+    const user = await User.findUserByEmail(email)
     const passwordMatch = (user === null)
         ? false // User was not found
         : await User.comparePassword(password, user.password)
