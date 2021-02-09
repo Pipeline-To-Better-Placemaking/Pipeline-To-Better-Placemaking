@@ -1,5 +1,6 @@
 const express = require('express')
 const passport = require('passport')
+const Team = require('../models/teams.js')
 const router = express.Router()
 const User = require('../models/users.js')
 
@@ -78,13 +79,18 @@ router.post('/invites', passport.authenticate('jwt',{session:false}), async (req
 
     let user = await req.user
 
-    for( response in req.body.responses){
-        if (response.accept == true){
-            //accept the invite by adding the user to the team
-            //will add once I have the function written
+    for( i = 0; i < req.body.responses.length; i++){
+
+        var response = req.body.responses[i]
+
+        if (response.accept == true && user.invites.includes(response.team)){
+            await Team.addUser(response.team,user._id)
+            await User.addTeam(user._id, response.team)
         }
-        User.deleteInvite(await user._id,response.teamId)
+        await User.deleteInvite(user._id,response.team)
     }
+
+    res.status(200).json(user)
 
 })
 
