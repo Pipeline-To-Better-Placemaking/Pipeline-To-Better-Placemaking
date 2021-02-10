@@ -10,6 +10,46 @@ import { styles } from './activitySignUp.styles';
 
 export function ActivitySignUpPage(props) {
 
+  const activityList = ["Stationary Map", "People Count", "Survey"]
+
+  const onBeginPress = (index) => {
+
+    // console.log("Activity Props: " + JSON.stringify(props.activity))
+
+    if (props.activity.activity == activityList[0]) {
+
+      // console.log("Activity Props: " + JSON.stringify(props.activity))d
+      // console.log("Area: " + props.activity.area)
+      // console.log("Standing points: " + props.activity.standingPoints)
+
+      // console.log("Time slot: " + JSON.stringify(item));
+
+      let activityDetails = {
+        location: props.activity.area[0],
+        area: props.activity.area,
+        markers: props.activity.timeSlots[index].assignedPoints,
+        duration: props.activity.timeSlots[index].duration
+      }
+      // console.log("Index: " + index)
+      // console.log("Activity Details: " + JSON.stringify(activityDetails))
+
+      console.log("Activity markers: " + JSON.stringify(activityDetails.markers))
+
+      props.navigation.navigate("StationaryActivity", 
+          {
+              activityDetails: activityDetails, 
+              position: activityDetails.markers
+          }
+      )
+    }
+    else if (props.activity.activity == activityList[1]){
+
+    }
+    else if (props.activity.activity == activityList[2]){
+
+    }
+  }
+
   const timeSlotCard = ({item, index}) => (
     <Card disabled={true}>
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
@@ -23,7 +63,7 @@ export function ActivitySignUpPage(props) {
           <Button status='info' style={{margin:5}}>
             Sign Up
           </Button>
-          <Button status='success' style={{margin:5}}>
+          <Button status='success' style={{margin:5}} onPress={() => onBeginPress(index)}>
             Begin
           </Button>
         </View>

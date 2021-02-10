@@ -80,9 +80,9 @@ export const HomeScreen = ( props ) => {
 
         {/* <ConfirmCompare 
             navigation={this.props.navigation}
-            compare={this.state.compare} 
-            selected={this.state.compareCount}
-            selectedProjects={this.state.selectedProjects}
+            compare={.compare} 
+            selected={.compareCount}
+            selectedProjects={.selectedProjects}
             removeFromSelectedProjectes={this.props.removeFromSelectedProjectes}
         /> */}
                 

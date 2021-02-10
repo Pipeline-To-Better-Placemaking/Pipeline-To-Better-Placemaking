@@ -75,14 +75,14 @@ export const LoginScreen = ( props ) => {
     
           await props.setLocation(location);
 
-          setLoading(false)
-
           props.navigation.navigate("TabNavigation")
         }
     } catch (error) {
         console.log(error)
         success = false
     }
+
+    setLoading(false)
 
   };
 
