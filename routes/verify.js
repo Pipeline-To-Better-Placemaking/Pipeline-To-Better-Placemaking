@@ -39,10 +39,12 @@ router.post('/newcode',passport.authenticate('jwt',{session:false}), async (req,
     if (!code) {
         throw new InternalServerError('The server encountered a problem')
     }
-
+    
     // Terminate early in testing mode so we don't end up sending a bunch of emails
     if (process.env.NODE_ENV === 'test') {
-        return res.status(200)
+        return res.status(200).json({
+            msg:"Success"
+        })
     }
 
     const transporter = nodemailer.createTransport({
