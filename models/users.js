@@ -60,7 +60,10 @@ module.exports.addUser = async function(newUser) {
     const salt  = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(newUser.password, salt)
     newUser.password = hash
-    return await newUser.save()
+    const savedUser = await newUser.save()
+    // Generate an email verification code
+    await Users.createVerification(savedUser._id)
+    return savedUser
 }
 
 module.exports.updateUser = async function(userId, newUser) {

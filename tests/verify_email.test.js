@@ -32,32 +32,34 @@ describe('Model functions', () => {
 
     describe('createVerification', () => {
         test('succeeds with a valid user id', async () => {
+            // Get user's verification code before it is regenerated
             let user = await User.findById(id)
-            // User should not have a code before one is created
-            expect(user.verification_code).not.toBeDefined()
-            expect(user.verification_timeout).not.toBeDefined()
+            const codeBefore = user.verification_code
 
+            // Regenerate the user's code
             const code = await User.createVerification(id)
+
+            // User should now have a new code
             user = await User.findById(id)
-            // User should now have a code
             expect(user.verification_code).toBeDefined()
             expect(user.verification_timeout).toBeDefined()
             expect(code).toEqual(user.verification_code)
+            expect(user.verification_code).not.toEqual(codeBefore)
         })
 
         test('fails with an invalid user id', async () => {
+            // Get user's verification code before it is regenerated
             let user = await User.findById(id)
-            // User should not have a code before one is created
-            expect(user.verification_code).not.toBeDefined()
-            expect(user.verification_timeout).not.toBeDefined()
+            const codeBefore = user.verification_code
 
+            // Try to regenerate a nonexistent user's code
             const code = await User.createVerification('0' + String(id).slice(0, -1))
-            // Code should not be generated if the user does not exist
+
+            // New code should not have been generated
             expect(code).not.toBeDefined()
+            // User's code should be the same as before
             user = await User.findById(id)
-            // User should still not have a code
-            expect(user.verification_code).not.toBeDefined()
-            expect(user.verification_timeout).not.toBeDefined()
+            expect(user.verification_code).toEqual(codeBefore)
         })
     })
 
