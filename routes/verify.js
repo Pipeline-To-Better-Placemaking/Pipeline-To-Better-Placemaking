@@ -11,18 +11,18 @@ const { BadRequestError, ForbiddenError, InternalServerError } = require('../uti
 
 // Verify the email address with the given verification code
 router.post('/', async (req, res, next) => {
-    // Paramters are missing
+    // Parameters are missing
     if (!req.query.email || !req.query.code) {
         throw new BadRequestError('Missing required parameters: email or code')
     }
 
-    const user = User.getUserByEmail(req.query.email)
+    const user = await User.findUserByEmail(req.query.email)
     // Email is not associated with an existing user
     if (!user) {
         throw new BadRequestError('Specified email is unused or invalid')
     }
 
-    if (User.verifyEmail(user._id, req.query.code)){
+    if (await User.verifyEmail(user._id, req.query.code)){
         return res.status(200).json({
             msg:"Success"
         })
