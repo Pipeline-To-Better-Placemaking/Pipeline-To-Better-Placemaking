@@ -63,7 +63,7 @@ module.exports.addUser = async function(newUser) {
     const savedUser = await newUser.save()
     // Generate an email verification code
     await Users.createVerification(savedUser._id)
-    return savedUser
+    return Users.findById(savedUser._id)
 }
 
 module.exports.updateUser = async function(userId, newUser) {
