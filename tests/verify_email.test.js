@@ -181,7 +181,7 @@ describe('When a new user has just been created', () => {
             const initialCode = user.verification_code
             
             await api
-                .get(`${baseUrl}/newcode`)
+                .post(`${baseUrl}/newcode`)
                 .set('Authorization', 'Bearer ' + token)
                 .expect(200)
 
@@ -196,10 +196,10 @@ describe('When a new user has just been created', () => {
             const initialCode = user.verification_code
             
             await api
-                .get(`${baseUrl}/newcode`)
+                .post(`${baseUrl}/newcode`)
                 .expect(401)
             await api
-                .get(`${baseUrl}/newcode`)
+                .post(`${baseUrl}/newcode`)
                 .set('Authorization', 'Bearer 0' + String(token).slice(0, -1))
                 .expect(401)
 
