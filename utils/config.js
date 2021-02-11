@@ -1,8 +1,7 @@
 require('dotenv').config()
 
 let PORT = process.env.PORT
-// let DB_URI = process.env.DB_URI
-let DB_URI = 'mongodb+srv://measuringPlaceAdmin:pass@measuringplace0.aaab2.mongodb.net/testdb'
+let DB_URI = process.env.DB_URI
 let PRIVATE_KEY = process.env.PRIVATE_KEY
 let PROJECT_EMAIL = process.env.PROJECT_EMAIL
 let CLIENT_ID = process.env.CLIENT_ID
@@ -11,8 +10,7 @@ let REFRESH_TOKEN = process.env.REFRESH_TOKEN
 let ACCESS_TOKEN = process.env.ACCESS_TOKEN
 
 if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
-	//DB_URI = process.env.TEST_DB_URI
-	DB_URI = 'mongodb+srv://bruh:pass@cluster0.yniot.mongodb.net/testdb'
+	DB_URI = process.env.TEST_DB_URI
     PRIVATE_KEY = process.env.TEST_PRIVATE_KEY
 }
 
