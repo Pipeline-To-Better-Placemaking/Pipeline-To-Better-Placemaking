@@ -40,41 +40,56 @@ router.post('/newcode',passport.authenticate('jwt',{session:false}), async (req,
         throw new InternalServerError('The server encountered a problem')
     }
     
-    // Terminate early in testing mode so we don't end up sending a bunch of emails
+    // Don't send emails when the test suites are running
     if (process.env.NODE_ENV === 'test') {
         return res.status(200).json({
-            msg:"Success"
+            success: true,
+            message: 'Verification code reset; sending emails is disabled in testing mode'
         })
     }
-
+    
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         auth: {
-            xoauth2: xoauth2.createXOAuth2Generator({
-                user: config.PROJECT_EMAIL,
-                clientId: config.CLIENT_ID,
-                clientSecret: config.CLIENT_SECRET,
-                refreshToken: config.REFRESH_TOKEN, 
-                accessToken: config.ACCESS_TOKEN
-            })
+            type: 'OAuth2',
+            user: config.PROJECT_EMAIL,
+            clientId: config.CLIENT_ID,
+            clientSecret: config.CLIENT_SECRET,
+            refreshToken: config.REFRESH_TOKEN, 
+            accessToken: config.ACCESS_TOKEN
+        },
+        tls: {
+            // Don't require cert if being run from localhost
+            rejectUnauthorized: (process.env.NODE_ENV === 'dev') ? false : true
         }
     })
 
+    const emailHTML = `
+        <h3>Hello from 2+ Community!</h3>
+        <p>Thank you for creating a Measuring Place account. Please enter the code below in the app to verify your email address.</p>
+
+        <p><b>Your code is:</b> ${code}</p>
+    `
+    
     const mailOptions = {
-        from: config.PROJECT_EMAIL,
-        to: await req.user.emai,
-        subject: "Email Verification",
-        text: "Hello from Place Makers, your verification code is: \n" + code + "\n Thanks!"
+        from: `"2+ Community" <${config.PROJECT_EMAIL}>`,
+        to: req.user.email,
+        subject: 'Email Verification',
+        text: `Thank you for creating a Measuring Place account. 
+            Please enter the following code in the app to verify your email address: ${code}`,
+        html: emailHTML
     }
 
-    transporter.sendMail(mailOptions, function(error,info){
+    transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
+            console.log(error)
             throw new InternalServerError('The server encountered a problem')
         }
-        else{
-            console.log("message sent")
-            res.status(200)
-        }
+        console.log(`Sent email to ${req.user.email}`)
+        res.status(200).json({
+            success: true,
+            message: 'Verification code reset; please check your email'
+        })
     })
 })
 
