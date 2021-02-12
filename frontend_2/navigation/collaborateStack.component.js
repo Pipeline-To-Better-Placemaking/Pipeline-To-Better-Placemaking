@@ -7,6 +7,7 @@ import { Collaborate } from '../screens/Collaborate/collaborate.component';
 import { TeamPage } from '../screens/Collaborate/Team/team.component';
 import { ProjectPage } from '../screens/Collaborate/Project/project.component';
 import { ActivitySignUpPage } from '../screens/Collaborate/Activities/activitySignUp.component';
+import { StationaryActivity } from '../screens/Collaborate/ResearchActivities/Stationary/stationaryActivity.component'
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -144,6 +145,19 @@ export function CollaborateStack(props) {
             activities={activities}
             setActivities={setActivities}
           />
+        }
+      </Screen>
+
+      <Screen
+        name="StationaryActivity">
+        {props => <StationaryActivity
+                        {...props}
+                        getSelectedActivity={activities}
+                        // initialTimeStart={.initialTimeStart}
+                        // setInitialTime={this.setInitialTime}
+                        // time={.time}
+                        // setTime={this.setTime}
+                    ></StationaryActivity>
         }
       </Screen>
     </Navigator>
