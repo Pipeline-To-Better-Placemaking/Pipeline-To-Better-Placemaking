@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, KeyboardAvoidingView } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component'; 
 import { Header } from '../../../components/headers.component';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { StationaryActivityMap } from '../../../components/Maps/stationaryActivityMap.component.js';
 import { Timer } from '../../../components/timer.component.js';
@@ -18,7 +19,6 @@ export function StationaryActivity(props) {
     const [tempMarker, setTempMarker] = useState([])
     const [data, setData] = useState([{}])
     const [markers, setMarkers] = useState([])
-    const [duration] = useState(props.route.params.activityDetails.duration)
 
     const openPrevPage = () => {
         props.navigation.navigate("SignUpPage");
@@ -46,8 +46,10 @@ export function StationaryActivity(props) {
                 location: tempMarker
             }
 
-            data.push(pointData)
-            markers.push(tempMarker)
+            setData(() => data.concat(pointData))
+            setMarkers(() => markers.concat(tempMarker))
+
+            console.log("Data: " +  JSON.stringify(data))
 
             setDataModal(false)
         }
@@ -87,7 +89,7 @@ export function StationaryActivity(props) {
                     <StartStopButton/>
 
                     {/* <Text style={{fontSize:20, marginLeft: 10, marginTop: 7}}> */}
-                    <Timer start={start} timer={duration}/>
+                    <Timer start={start}/>
                     {/* </Text> */}
                 </View>
             </View>
@@ -107,7 +109,6 @@ export function StationaryActivity(props) {
                         closeData={closeData}
                     />
 
-    
                     <StationaryActivityMap
                         location={location}
                         area={area}

@@ -12,7 +12,7 @@ export function ActivitySignUpPage(props) {
 
   const activityList = ["Stationary Map", "People Count", "Survey"]
 
-  const onBeginPress = (index) => {
+  const onBeginPress = async (index) => {
 
     // console.log("Activity Props: " + JSON.stringify(props.activity))
 
@@ -24,11 +24,12 @@ export function ActivitySignUpPage(props) {
 
       // console.log("Time slot: " + JSON.stringify(item));
 
+      await AsyncStorage.setItem("@time", props.activity.timeSlots[index].duration)
+
       let activityDetails = {
         location: props.activity.area[0],
         area: props.activity.area,
         markers: props.activity.timeSlots[index].assignedPoints,
-        duration: props.activity.timeSlots[index].duration
       }
       // console.log("Index: " + index)
       // console.log("Activity Details: " + JSON.stringify(activityDetails))

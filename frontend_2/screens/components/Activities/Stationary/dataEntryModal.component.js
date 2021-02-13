@@ -4,7 +4,10 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, Ke
 import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, SelectItem } from '@ui-kitten/components';
 import * as Location from 'expo-location';
 import styles from './dataEntryModalStyles.js';
-import { DataOptionButton } from './dataOptionButton.component.js';
+import { DataGroupAge } from './dataGroupAge.component.js';
+import { DataGroupGender } from './dataGroupGender.component.js';
+import { DataGroupActivity } from './dataGroupActivity.component.js';
+import { DataGroupPosture } from './dataGroupPosture.component.js';
 
 const age = ["0 - 14", "15 - 24", "25 - 64", "65+"]
 const gender = ["Male", "Female"]
@@ -14,76 +17,55 @@ const posture = ["Standing", "Sitting", "Laying", "Lounging"]
 export function DataEntryModal(props) {
 
     const [visible] = useState(props.visible)
+
     const [ageIndex, setAgeIndex] = useState(-1)
     const [genderIndex, setGenderIndex] = useState(-1)
     const [activityIndex, setActivityIndex] = useState(-1)
     const [postureIndex, setPostureIndex] = useState(-1)
-    const [ageMatrix, setAgeMatrix] = useState([0,0,0,0])
-    const [genderMatrix, setGenderMatrix] = useState([0,0,0,0])
-    const [activityMatrix, setActivityMatrix] = useState([0,0,0,0])
-    const [postureMatrix, setPostureMatrix] = useState([0,0,0,0])
 
+    const [ageMatrix, setAgeMatrix] = useState([])
+    const [genderMatrix, setGenderMatrix] = useState([])
+    const [activityMatrix, setActivityMatrix] = useState([])
+    const [postureMatrix, setPostureMatrix] = useState([])
 
-    const _setAgeIndex = async (index) => {
-
+    const setAgeData = async(index, matrix) => {
         
+        await setAgeIndex(index)
+        await setAgeMatrix(matrix)
     }
 
-    const _setGenderIndex = (index) => {
+    const setGenderData = async(index, matrix) => {
 
-        setGenderMatrix([0,0,0,0])
-
-        let mat = genderMatrix
-        mat[index] = 1
-
-        setGenderMatrix(mat)
-        setGenderIndex(index)
+        await setGenderIndex(index)
+        await setGenderMatrix(matrix)
     }
 
-    const _setActivityIndex = (index) => {
+    const setActivityData = async(index, matrix) => {
 
-        setActivityMatrix([0,0,0,0])
-
-        let mat = activityMatrix
-        mat[index] = 1
-
-        setActivityMatrix(mat)
-        setActivityIndex(index)
+        await setActivityIndex(index)
+        await setActivityMatrix(matrix)
     }
 
-    const _setPostureIndex = (index) => {
+    const setPostureData = async(index, matrix) => {
 
-        setPostureMatrix([0,0,0,0])
-
-        let mat = postureMatrix
-        mat[index] = 1
-
-        setPostureMatrix(mat)
-        setPostureIndex(index)
+        await setPostureIndex(index)
+        await setPostureMatrix(matrix)
     }
 
     const sendData = async () => {
-
-        // console.log("Sending data...")
 
         let data = {
             ageIndex: ageIndex,
             genderIndex: genderIndex,
             activityIndex: activityIndex,
             postureIndex: postureIndex,
-            age: age[ageIndex],
-            gender: gender[genderIndex],
-            activity: activity[activityIndex],
-            posture: posture[postureIndex]
-
+            age: ageMatrix[ageIndex],
+            gender: genderMatrix[genderIndex],
+            activity: activityMatrix[activityIndex],
+            posture: postureMatrix[postureIndex]
         }
 
         await props.closeData(data)
-
-        setAgeIndex(-1)
-        setGenderIndex(-1)
-        setActivityIndex(-1)
-        setPostureIndex(-1)
     }
 
     
@@ -96,22 +78,17 @@ export function DataEntryModal(props) {
                     <Text category={'s1'} style={{alignSelf: 'center', marginTop: -20}}>___________</Text>
                     <View style={{flexDirection: 'column', marginLeft: 15}}>
 
-                        <Text category={'h6'} style={{marginBottom: 10}}> Age: </Text>
-                        <View style={{flexDirection: 'row',}}>
-                            <DataOptionButton index={0} selectionMatrix={ageMatrix} setIndex={_setAgeIndex} text={"0 - 14"}/>
-                            <DataOptionButton index={1} selectionMatrix={ageMatrix} setIndex={_setAgeIndex} text={"15 - 24"}/>
-                        </View>
-                        <View style={{flexDirection: 'row', marginTop: 10}}>
-                            <DataOptionButton index={2} selectionMatrix={ageMatrix} setIndex={_setAgeIndex} text={"25 - 64"}/>
-                            <DataOptionButton index={3} selectionMatrix={ageMatrix} setIndex={_setAgeIndex} text={"65+"}/>
-                        </View>
+                        <DataGroupAge setAgeData={setAgeData}/>
+                        <DataGroupGender setGenderData={setGenderData}/>
+                        <DataGroupActivity setActivityData={setActivityData}/>
+                        <DataGroupPosture setPostureData={setPostureData}/>
 
-                        <Text category={'h6'} style={{marginBottom: 10, marginTop: 25}}> Gender: </Text>
+                        {/* <Text category={'h6'} style={{marginBottom: 10, marginTop: 25}}> Gender: </Text>
                         <View style={{flexDirection: 'row',}}>
                             <DataOptionButton index={0} selectionMatrix={genderMatrix} setIndex={_setGenderIndex} text={"Male"}/>
                             <DataOptionButton index={1} selectionMatrix={genderMatrix} setIndex={_setGenderIndex} text={"Female"}/>
-                        </View>
-
+                        </View> */}
+{/* 
                         <Text category={'h6'} style={{marginBottom: 10, marginTop: 25}}> Activity: </Text>
                         <View style={{flexDirection: 'row', marginTop: 10}}>
                             <DataOptionButton index={0} selectionMatrix={activityMatrix} setIndex={_setActivityIndex} text={"Talking"}/>
@@ -130,7 +107,7 @@ export function DataEntryModal(props) {
                         <View style={{flexDirection: 'row', marginTop: 10}}>
                             <DataOptionButton index={2} selectionMatrix={postureMatrix} setIndex={_setPostureIndex} text={"Laying"}/>
                             <DataOptionButton index={3} selectionMatrix={postureMatrix} setIndex={_setPostureIndex} text={"Lounging"}/>
-                        </View>
+                        </View> */}
 
                     </View>
 

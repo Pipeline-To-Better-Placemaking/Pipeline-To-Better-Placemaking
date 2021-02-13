@@ -35,6 +35,8 @@ export function CollaborateStack(props) {
   const [activity, setActivity] = useState(null);
   const [activities, setActivities] = useState(null);
 
+  const [time, setTime] = useState('');
+
   useEffect(() => {
     async function getTokens() {
       // used for api calls
@@ -144,6 +146,7 @@ export function CollaborateStack(props) {
             setActivity={setActivity}
             activities={activities}
             setActivities={setActivities}
+            setTime={setTime}
           />
         }
       </Screen>
@@ -155,8 +158,7 @@ export function CollaborateStack(props) {
                         getSelectedActivity={activities}
                         // initialTimeStart={.initialTimeStart}
                         // setInitialTime={this.setInitialTime}
-                        // time={.time}
-                        // setTime={this.setTime}
+                        time={time}
                     ></StationaryActivity>
         }
       </Screen>
