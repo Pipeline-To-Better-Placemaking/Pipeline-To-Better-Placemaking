@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from '../screens/Home/home.component';
+import { CompareScreen } from '../screens/Compare/compare.component.js';
 
 const { Navigator, Screen } = createStackNavigator();
 
 export function HomeScreenStack(props){
 
   var location = props.location
+
   const [selectedProjects, setSelectedProjects] = useState([])
 
   removeFromSelectedProjects = async (name) => {
@@ -40,6 +42,17 @@ export function HomeScreenStack(props){
                 >
                 </HomeScreen>}
       </Screen>
+
+      <Screen
+          name="CompareScreen"
+      >
+          {props => <CompareScreen {...props} 
+                      removeFromSelectedProjects={removeFromSelectedProjects}
+                      selectedProjects={selectedProjects}
+                      compareCount={selectedProjects.length}>
+                      </CompareScreen>}
+      </Screen>
+
     </Navigator>
   )
 };

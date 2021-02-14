@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, CheckBox, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
 import styles from './dummyResultStyles.js';
@@ -10,32 +10,34 @@ export const DummyResult = ( props ) => {
 
     onCheckBoxPress = async () => {
 
-        setChecked(!checked)
+        let check = !checked
 
-        if (checked){
-            props.addProject(props.projectArea)
-            setAdded(!added)
+        await setChecked(check)
+
+        if (check){
+            await props.addProject(props.projectArea)
+            await setAdded(!added)
         }
         else {
-            props.removeProject(props.projectArea)
-            setAdded(!added)
+            await props.removeProject(props.projectArea)
+            await setAdded(!added)
         }
     }
-    
-    componentDidUpdate = async () => {
 
+    useEffect(() => {
+        
         if (!props.inList(props.projectArea) && added && checked){
             setAdded(false)
             setChecked(false)
         }
-    }
+    })
 
-    const CompareCheckBox = (props) => {
+    const CompareCheckBox = () => {
 
         if (props.compare)
         {
             return(
-                <CheckBox checked={props.checked} onChange={onCheckBoxPress} status={'control'} style={styles.resultBoxCheckBox}/>
+                <CheckBox checked={checked} onChange={onCheckBoxPress} status={'control'} style={styles.resultBoxCheckBox}/>
             );
         }
         else

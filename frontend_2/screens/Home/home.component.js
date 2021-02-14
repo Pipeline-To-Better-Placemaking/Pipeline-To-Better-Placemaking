@@ -5,12 +5,14 @@ import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
 import { DummyResult } from '../components/dummyResult.component.js';
 import { HomeMapView } from '../components/Maps/home.map.component.js';
-import { HomeResultView } from './home.result.component.js'
+import { HomeResultView } from './home.result.component.js';
+import { ConfirmCompare } from '../components/Compare/confrimCompare.component.js';
 import { styles } from './home.styles';
 
 export const HomeScreen = ( props ) => {
 
   const [compare, setCompare] = useState(false)
+  const [selectedProjects, setSelectedProjects] = useState(props.selectedProjects)
 
   var location = props.location
 
@@ -20,13 +22,13 @@ export const HomeScreen = ( props ) => {
 
   addToSelectedProjects = async (name) => {
 
-    selectedProjectsArray = selectedProjects
+    let selectedProjectsArray = selectedProjects
 
     selectedProjectsArray.push(name)
 
-    setSelectedProjects(selectedProjectsArray)
+    await setSelectedProjects(selectedProjectsArray)
 
-    await setProjects(selectedProjectsArray)
+    await props.setProjects(selectedProjectsArray)
   }
 
   inSelectedProject = (name) => {
@@ -78,13 +80,10 @@ export const HomeScreen = ( props ) => {
                 />
         </ScrollView>
 
-        {/* <ConfirmCompare 
-            navigation={this.props.navigation}
-            compare={.compare} 
-            selected={.compareCount}
-            selectedProjects={.selectedProjects}
-            removeFromSelectedProjectes={this.props.removeFromSelectedProjectes}
-        /> */}
+        <ConfirmCompare 
+            compare={compare}
+            navigation={props.navigation}
+        />
                 
       </ContentContainer>
     </ViewableArea>
