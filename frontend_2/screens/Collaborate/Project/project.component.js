@@ -17,6 +17,7 @@ export function ProjectPage(props) {
   const [createNewActivityVisible, setCreateNewActivityVisible] = useState(false);
 
   const openActivityPage = async (item) => {
+    console.log("selected activity: ", item);
     props.setActivity(item)
     props.navigation.navigate('ActivitySignUpPage')
     /*
