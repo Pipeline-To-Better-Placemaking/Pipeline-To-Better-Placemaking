@@ -33,11 +33,13 @@ export const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 150/2,
-        borderColor: 'black',
+        borderColor: '#006FD6',
         borderWidth: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#006FD6',
         alignSelf: 'center',
-        marginBottom: 10
+        marginBottom: 10,
+		justifyContent: 'center',
+		alignItems: 'center'
     },
 
     userIcon: {
@@ -51,5 +53,11 @@ export const styles = StyleSheet.create({
     iconSize: {
         width: 100,
         height: 100
-    }
+    },
+
+	userInitials: {
+		fontSize: 150/2,
+		textAlign: 'center',
+		color: '#FFFFFF'
+	}
 });
