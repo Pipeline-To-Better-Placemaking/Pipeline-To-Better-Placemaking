@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { Header } from '../../components/headers.component';
-import { MapViewPoints } from '../../components/Maps/mapPoints.component';
-import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { Header } from '../../../components/headers.component';
+import { MapViewPoints } from '../../../components/Maps/mapPoints.component';
+import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './activitySignUp.styles';
 
@@ -36,9 +36,9 @@ export function ActivitySignUpPage(props) {
 
       console.log("Activity markers: " + JSON.stringify(activityDetails.markers))
 
-      props.navigation.navigate("StationaryActivity", 
+      props.navigation.navigate("StationaryActivity",
           {
-              activityDetails: activityDetails, 
+              activityDetails: activityDetails,
               position: activityDetails.markers
           }
       )

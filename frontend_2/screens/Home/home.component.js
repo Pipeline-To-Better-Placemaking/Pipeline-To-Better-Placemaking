@@ -5,7 +5,7 @@ import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
 import { DummyResult } from '../components/dummyResult.component.js';
 import { HomeMapView } from '../components/Maps/home.map.component.js';
-import { HomeResultView } from './home.result.component.js';
+import { HomeResultView } from './homeResult.component.js';
 import { ConfirmCompare } from '../components/Compare/confrimCompare.component.js';
 import { styles } from './home.styles';
 
@@ -50,29 +50,29 @@ export const HomeScreen = ( props ) => {
         <View style={{height:'35%'}}>
           <HomeMapView location={location}/>
         </View>
-        
+
         <HomeResultView onComparePress={onComparePress}/>
 
         <ScrollView>
-            <DummyResult 
+            <DummyResult
                 inList={inSelectedProject}
-                compare={compare} 
+                compare={compare}
                 addProject={addToSelectedProjects}
                 removeProject={removeFromSelectedProjects}
                 projectArea={"Lake Lilian"}
                 projectComment={"Pavillion at Lake Lilian"}
                 />
-            <DummyResult 
+            <DummyResult
                 inList={inSelectedProject}
-                compare={compare} 
+                compare={compare}
                 addProject={addToSelectedProjects}
                 removeProject={removeFromSelectedProjects}
                 projectArea={"Lake Eola"}
                 projectComment={"East side of Lake Eola"}
                 />
-            <DummyResult 
+            <DummyResult
                 inList={inSelectedProject}
-                compare={compare} 
+                compare={compare}
                 addProject={addToSelectedProjects}
                 removeProject={removeFromSelectedProjects}
                 projectArea={"J. Blanchard Park"}
@@ -80,11 +80,11 @@ export const HomeScreen = ( props ) => {
                 />
         </ScrollView>
 
-        <ConfirmCompare 
+        <ConfirmCompare
             compare={compare}
             navigation={props.navigation}
         />
-                
+
       </ContentContainer>
     </ViewableArea>
   );

@@ -3,10 +3,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IndexPath } from '@ui-kitten/components';
-import { IntialForm } from '../screens/Collaborate/CreateActivityForm/intialInformation.component';
-import { SelectLocation } from '../screens/Collaborate/CreateActivityForm/setLocation.component';
-import { CreateStandingPoints } from '../screens/Collaborate/CreateActivityForm/createStandingPoints.component';
-import { CreateTimeSlots } from '../screens/Collaborate/CreateActivityForm/createTimeSlots.component';
+import { IntialForm } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/intialInformation.component';
+import { SelectLocation } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/setLocation.component';
+import { CreateStandingPoints } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/createStandingPoints.component';
+import { CreateTimeSlots } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/createTimeSlots.component';
 
 const { Navigator, Screen } = createStackNavigator();
 

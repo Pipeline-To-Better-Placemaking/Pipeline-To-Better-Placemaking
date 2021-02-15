@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
-import { styles } from '../../Compare/compareStyles.js'
+import { styles } from '../../Home/Compare/compare.styles.js'
 
 export function EmptyCompareBox(props) {
 

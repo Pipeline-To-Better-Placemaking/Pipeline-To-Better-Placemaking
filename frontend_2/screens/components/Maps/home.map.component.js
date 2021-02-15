@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import { View } from 'react-native';
-import styles from './homeMapViewStyles.js';
+import styles from './home.map.styles.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function HomeMapView(props) {

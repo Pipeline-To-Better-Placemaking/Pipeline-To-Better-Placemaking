@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, Ke
 
 import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, SelectItem } from '@ui-kitten/components';
 import * as Location from 'expo-location';
-import styles from './dataEntryModalStyles.js';
+import styles from './dataEntryModal.styles.js';
 
 export function DataGroupPosture(props) {
 
@@ -13,7 +13,7 @@ export function DataGroupPosture(props) {
     const _setPostureIndex = async (index) => {
 
 
-        let mat = [0,0,0,0]        
+        let mat = [0,0,0,0]
         mat[index] = 1
 
         await setPostureIndex(index)

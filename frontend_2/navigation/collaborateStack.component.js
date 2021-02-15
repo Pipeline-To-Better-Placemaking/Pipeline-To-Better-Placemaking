@@ -6,7 +6,7 @@ import { CreateActivityStack } from './createActivityStack.component.js';
 import { Collaborate } from '../screens/Collaborate/collaborate.component';
 import { TeamPage } from '../screens/Collaborate/Team/team.component';
 import { ProjectPage } from '../screens/Collaborate/Project/project.component';
-import { ActivitySignUpPage } from '../screens/Collaborate/Activities/activitySignUp.component';
+import { ActivitySignUpPage } from '../screens/Collaborate/ResearchActivities/SignUp/activitySignUp.component';
 import { StationaryActivity } from '../screens/Collaborate/ResearchActivities/Stationary/stationaryActivity.component'
 
 const { Navigator, Screen } = createStackNavigator();

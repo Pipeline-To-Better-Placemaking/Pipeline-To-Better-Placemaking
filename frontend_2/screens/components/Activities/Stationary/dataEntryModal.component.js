@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, Ke
 
 import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, SelectItem } from '@ui-kitten/components';
 import * as Location from 'expo-location';
-import styles from './dataEntryModalStyles.js';
+import styles from './dataEntryModal.styles.js';
 import { DataGroupAge } from './dataGroupAge.component.js';
 import { DataGroupGender } from './dataGroupGender.component.js';
 import { DataGroupActivity } from './dataGroupActivity.component.js';
@@ -29,7 +29,7 @@ export function DataEntryModal(props) {
     const [postureMatrix, setPostureMatrix] = useState([])
 
     const setAgeData = async(index, matrix) => {
-        
+
         await setAgeIndex(index)
         await setAgeMatrix(matrix)
     }
@@ -68,7 +68,7 @@ export function DataEntryModal(props) {
         await props.closeData(data)
     }
 
-    
+
 
     return(
         <Modal transparent={true} animationType='slide'visible={props.visible}>
@@ -88,7 +88,7 @@ export function DataEntryModal(props) {
                             <DataOptionButton index={0} selectionMatrix={genderMatrix} setIndex={_setGenderIndex} text={"Male"}/>
                             <DataOptionButton index={1} selectionMatrix={genderMatrix} setIndex={_setGenderIndex} text={"Female"}/>
                         </View> */}
-{/* 
+{/*
                         <Text category={'h6'} style={{marginBottom: 10, marginTop: 25}}> Activity: </Text>
                         <View style={{flexDirection: 'row', marginTop: 10}}>
                             <DataOptionButton index={0} selectionMatrix={activityMatrix} setIndex={_setActivityIndex} text={"Talking"}/>

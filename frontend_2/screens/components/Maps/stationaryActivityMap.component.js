@@ -12,7 +12,7 @@ export function StationaryActivityMap(props) {
     const DataPin = (props) => {
 
         return(
-            <View style={{backgroundColor: colors[props.index % 4], borderRadius: 150/2, borderWidth: 1, width: 20, height: 20}}/>
+            <View style={{backgroundColor: colors[props.index % 4], borderRadius: 150/2, borderWidth: 1, width: 15, height: 15}}/>
         )
     }
 
@@ -38,7 +38,7 @@ export function StationaryActivityMap(props) {
 
     const StandingPoints = () => {
         return (
-            props.position.map((coord, index) => 
+            props.position.map((coord, index) =>
                 <MapView.Marker
                 key={index}
                 coordinate = {{

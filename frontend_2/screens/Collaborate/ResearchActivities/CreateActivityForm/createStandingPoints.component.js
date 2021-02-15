@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction, IndexPath, Select, SelectItem } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Datepicker } from '@ui-kitten/components';
-import { ViewableArea, ContentContainer } from '../../components/content.component';
-import { MapAddPoints } from '../../components/Maps/mapPoints.component';
+import { ViewableArea, ContentContainer } from '../../../components/content.component';
+import { MapAddPoints } from '../../../components/Maps/mapPoints.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './form.styles';
 

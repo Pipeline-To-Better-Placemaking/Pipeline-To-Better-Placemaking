@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { View,  ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
-import { styles } from './compareStyles'
+import { styles } from './compare.styles'
 
-import { EmptyCompareBox } from '../components/Compare/emptyCompareBox.component.js';
-import { CompareBox } from '../components/Compare/compareBox.component.js'
-import { Header } from '../components/headers.component';
-import { ViewableArea, ContentContainer } from '../components/content.component';
+import { EmptyCompareBox } from '../../components/Compare/emptyCompareBox.component.js';
+import { CompareBox } from '../../components/Compare/compareBox.component.js'
+import { Header } from '../../components/headers.component';
+import { ViewableArea, ContentContainer } from '../../components/content.component';
 
 
 export function CompareScreen(props) {
@@ -15,7 +15,7 @@ export function CompareScreen(props) {
     const [compareCount, setCompareCount] = useState(props.compareCount)
 
     const removeCard = (name) => {
-        
+
         setCompareCount(compareCount-1)
 
         props.removeFromSelectedProjects(name)

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
-import styles from './resultViewStyles.js';
+import styles from './homeResult.styles.js';
 
 export const HomeResultView = (props) => {
 

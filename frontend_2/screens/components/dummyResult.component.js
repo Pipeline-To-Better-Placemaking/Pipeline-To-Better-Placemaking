@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, CheckBox, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
-import styles from './dummyResultStyles.js';
+import styles from './dummyResult.styles.js';
 
 export const DummyResult = ( props ) => {
 
@@ -25,7 +25,7 @@ export const DummyResult = ( props ) => {
     }
 
     useEffect(() => {
-        
+
         if (!props.inList(props.projectArea) && added && checked){
             setAdded(false)
             setChecked(false)
@@ -52,7 +52,7 @@ export const DummyResult = ( props ) => {
             <View style={styles.resultTab}>
                 <CompareCheckBox/>
             </View>
-            
+
             <View style={styles.resultBox}>
                 <Text category={'s1'} style={styles.resultBoxText}>
                     {props.projectArea}
