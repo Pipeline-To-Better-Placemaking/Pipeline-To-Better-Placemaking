@@ -26,8 +26,6 @@ export function ActivitySignUpPage(props) {
 
       await AsyncStorage.setItem("@time", props.activity.timeSlots[index].duration)
 
-      // get the list of points for each index
-
       let activityDetails = {
         location: props.activity.area[0],
         area: props.activity.area,
@@ -50,6 +48,16 @@ export function ActivitySignUpPage(props) {
     }
     else if (props.activity.activity == activityList[2]){
 
+      await AsyncStorage.setItem("@time", props.activity.timeSlots[index].duration)
+
+      props.navigation.navigate("SurveyActivity",
+        {
+            activityDetails: {
+              location: props.activity.area[0],
+              area: props.activity.area,
+            },
+        }
+      )
     }
   }
 
