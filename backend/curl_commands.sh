@@ -4,22 +4,18 @@ TOKEN=$(curl --header "Content-Type: application/json" \
       http://localhost:8080/api/login \
       | jq -r '.token')
 
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request PUT \
+     -d '{"firstname": "Tomathy", "lastname": "james"}' \
+     http://localhost:8080/api/users/
+
 curl -H 'Accept: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
      http://localhost:8080/api/users/
 
 echo
-echo
-
-
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-   --request POST \
-     -d "{\"title\": \"proj1\",\"description\": \"thingy\",
-          \"team\": \"${TEAM}\"
-      }" \
-     http://localhost:8080/api/teams/
 echo
 
 TEAM=$(curl -H 'Accept: application/json' \
@@ -46,13 +42,15 @@ curl -H 'Accept: application/json' \
      --request GET \
      http://localhost:8080/api/users/
 
+echo 
 echo
 
-#curl -H 'Content-Type: application/json' \
-#    -H "Authorization: Bearer ${TOKEN}" \
-#     --request GET \
-#     http://localhost:8080/api/teams/${TEAM}
-#echo
+
+curl -H 'Content-Type: application/json' \
+    -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/teams/${TEAM}
+echo
 
 #curl -H "Authorization: Bearer ${TOKEN}" \
 #     -H 'Content-Type: application/json' \
