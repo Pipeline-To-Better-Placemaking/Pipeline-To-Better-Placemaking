@@ -6,8 +6,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 const team_schema = mongoose.Schema({
     title: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     description: String,
     public: {

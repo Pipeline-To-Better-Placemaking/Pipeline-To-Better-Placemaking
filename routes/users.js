@@ -38,6 +38,14 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     const user = await User.findById(req.params.id).select('-password').populate('teams', 'title')
 
     if (req.params.id === await req.user._id) {
+        for(var i = 0; i < user.invites.length; i++){
+            var id = user.invites[i]; 
+            var teamName = (await Team.findById(user.invites[i])).team
+            user.invites[i] = ({
+                                team: id,
+                                name: teamName
+                              })  
+        }
         return res.json(user)
     }
 
@@ -47,7 +55,15 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 })
 
 router.get('/', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    const user = await User.findById((await req.user)._id)
+    var user = await User.findById((await req.user)._id)
+    for(var i = 0; i < user.invites.length; i++){
+        var id = user.invites[i]; 
+        var teamName = (await Team.findById(user.invites[i])).title
+        user.invites[i] = ({
+                            team: id,
+                            name: teamName
+                          })  
+    }
     return res.status(200).json(user)
 })
 
@@ -69,6 +85,9 @@ router.put('/', passport.authenticate('jwt',{session:false}), async (req, res, n
 
 // Get user's invites
 router.get('/invites', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    
+    var user = await User.findById(await req.user._id)
+    
     res.status(200).json({
         invites: await User.getInvites(await req.user._id)
     })
