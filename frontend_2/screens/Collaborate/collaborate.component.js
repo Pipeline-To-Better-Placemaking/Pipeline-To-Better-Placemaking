@@ -50,7 +50,7 @@ export function Collaborate(props) {
       // clear Projects
       props.setProjects(null)
       // set the selected Team
-      props.setTeam(item)
+      props.setTeam(newTeam)
       // open Team Page
       props.navigation.navigate('TeamPage')
     }
