@@ -141,8 +141,6 @@ module.exports.addInvite = async function(userId, teamId) {
 
 module.exports.deleteInvite = async function(userId,teamId) {
     
-    console.log(teamId)
-    
     await Users.updateOne(
         { _id: userId },
         { $pull: { invites: teamId }}

@@ -4,6 +4,17 @@ TOKEN=$(curl --header "Content-Type: application/json" \
       http://localhost:8080/api/login \
       | jq -r '.token')
 
+     echo
+     echo
+
+curl --header "Content-Type: application/json" \
+      --request POST \
+      -d '{"email": "apples@gmail.com","password": "What@s1234"}'\
+      http://localhost:8080/api/login 
+
+      echo
+      echo
+
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request PUT \
@@ -22,7 +33,7 @@ TEAM=$(curl -H 'Accept: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
      http://localhost:8080/api/users/ \
-     | jq -r '.teams[0]' )
+     | jq -r '.teams[1]' )
 
 curl -H 'Content-Type: application/json' \
     -H "Authorization: Bearer ${TOKEN}" \
@@ -36,6 +47,12 @@ TOKEN=$(curl --header "Content-Type: application/json" \
       -d '{"email": "dog@gmail.com","password": "What@1234"}'\
       http://localhost:8080/api/login \
       | jq -r '.token')
+
+curl -H 'Content-Type: application/json' \
+   -H "Authorization: Bearer ${TOKEN}" \
+     --request POST \
+    -d "{\"responses\": [{\"team\": \"${TEAM}\", \"accept\": true}]}" \
+     http://localhost:8080/api/users/invites/
 
 curl -H 'Accept: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
