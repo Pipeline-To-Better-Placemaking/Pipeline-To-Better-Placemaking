@@ -95,8 +95,6 @@ export function CreateTimeSlots(props) {
         timeString: getTimeStr(time),
         numResearchers: '1',
         duration: '30',
-        assignedPoints: [],
-        assignedPointsString: '',
         assignedPointIndicies: [],
     };
     props.setTimeSlots(timeSlots => [...timeSlots,temp]);
@@ -170,12 +168,7 @@ export function CreateTimeSlots(props) {
     let timeSlot = {...tempList[selectedIndex]};
 
     // set new value
-    timeSlot.assignedPoints = selectedPointsIndex.map(value => {
-      return props.standingPoints[value.row];
-    })
-
     timeSlot.assignedPointIndicies = selectedPointsIndex;
-    timeSlot.assignedPointsString = groupDisplayValues.join(', ');
 
     // put the item back in the list
     tempList[selectedIndex] = timeSlot;
@@ -198,6 +191,14 @@ export function CreateTimeSlots(props) {
     setResearchersVisible(false);
     setDurationVisible(false);
     setSelectPointsVisible(false);
+  }
+
+  const getPointsString = (timeSlot) => {
+    let tempPoints = [];
+    timeSlot.assignedPointIndicies.map(index => {
+      tempPoints.push("Point " + (index.row + 1));
+    });
+    return tempPoints.join(', ');
   }
 
   const TimePicker = ({item, index}) => (
@@ -302,7 +303,7 @@ export function CreateTimeSlots(props) {
           accessoryRight={PinIcon}
           appearance='ghost'
         >
-          <Text>Standing Points: {item.assignedPointsString}</Text>
+          <Text>Standing Points: {getPointsString(item)}</Text>
         </Button>
       </View>
   );
