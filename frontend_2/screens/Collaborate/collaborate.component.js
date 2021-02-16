@@ -7,10 +7,6 @@ import { ViewableArea, ContentContainer } from '../components/content.component'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './collaborate.styles';
 
-const ForwardIcon = (props) => (
-  <Icon {...props} name='arrow-ios-forward'/>
-);
-
 export function Collaborate(props) {
 
   const [teamName, setTeamName] = useState('');
@@ -110,6 +106,66 @@ export function Collaborate(props) {
     }
   };
 
+  const acceptInvite = async (invite) => {
+    let success = false;
+
+    // Accept Invite
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/users/invites/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            },
+            body: JSON.stringify({
+                team: invite._id,
+                accept: true,
+            })
+        })
+        success = true
+    } catch (error) {
+        console.log("error accepting invite: ", error)
+    }
+
+    if(success) {
+      console.log("success, accepted invite");
+      // TODO: some stuff to update the list of Teams, remove the invite from the displayed list
+    } else {
+      console.log("success false, didn't accept invite");
+    }
+  }
+
+  const declineInvite = async (invite) => {
+    let success = false;
+
+    // Decline Invite
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/users/invites/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            },
+            body: JSON.stringify({
+                team: invite._id,
+                accept: false,
+            })
+        })
+        success = true
+    } catch (error) {
+        console.log("error declining invite: ", error)
+    }
+
+    if(success) {
+      console.log("success, declined invite");
+      // TODO: remove the invite from the displayed list
+    } else {
+      console.log("success false, didn't decline invite");
+    }
+  }
+
   const renderAnchor = () => (
     <Divider style={{marginTop: 5}} />
   );
@@ -131,8 +187,14 @@ export function Collaborate(props) {
               <Text style={{fontSize:20}}>
                   {`${item.title}`}
               </Text>}
-        accessoryRight={ForwardIcon}
-      />
+      >
+        <Button
+          status='success'
+          accessoryRight={CreateIcon}
+          onPress={() => acceptInvite(item)}
+        >
+        </Button>
+      </ListItem>
   );
 
   return (
@@ -188,15 +250,30 @@ export function Collaborate(props) {
 
         <Divider style={{marginTop: 5}} />
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
-          <List
-            style={{maxHeight:'100%', maxWidth:'90%'}}
-            data={props.invites}
-            ItemSeparatorComponent={Divider}
-            renderItem={inviteItem}
-          />
-        </View>
+
       </ContentContainer>
     </ViewableArea>
   );
 };
+/* // This is the list of invites, I removed it for now so I don't break anything by accident
+<View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
+  <List
+    style={{maxHeight:'100%', maxWidth:'90%'}}
+    data={props.invites}
+    ItemSeparatorComponent={Divider}
+    renderItem={inviteItem}
+  />
+</View>
+*/
+
+const ForwardIcon = (props) => (
+  <Icon {...props} name='arrow-ios-forward'/>
+);
+
+const CancelIcon = (props) => (
+  <Icon {...props} name='close-outline'/>
+);
+
+const CreateIcon = (props) => (
+  <Icon {...props} name='checkmark-outline'/>
+);
