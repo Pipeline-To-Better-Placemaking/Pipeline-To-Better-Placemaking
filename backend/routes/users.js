@@ -35,17 +35,10 @@ router.post('/', async (req, res, next) => {
 // Return limited info otherwise
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     // Make a query for the user, excluding the password field
-    const user = await User.findById(req.params.id).select('-password').populate('teams', 'title')
+    const user = await (await User.findById(req.params.id).select('-password').populate('teams', 'title')).populate('invites','title')
 
     if (req.params.id === await req.user._id) {
-        for(var i = 0; i < user.invites.length; i++){
-            var id = user.invites[i]; 
-            var teamName = (await Team.findById(user.invites[i])).team
-            user.invites[i] = ({
-                                team: id,
-                                name: teamName
-                              })  
-        }
+
         return res.json(user)
     }
 
@@ -55,13 +48,13 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 })
 
 router.get('/', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    var user = await User.findById((await req.user)._id)
+    var user = await User.findById(await req.user).select('-password').populate('teams', 'title')
     for(var i = 0; i < user.invites.length; i++){
         var id = user.invites[i]; 
         var teamName = (await Team.findById(user.invites[i])).title
         user.invites[i] = ({
                             team: id,
-                            name: teamName
+                            title: teamName
                           })  
     }
     return res.status(200).json(user)
