@@ -108,7 +108,7 @@ export function Collaborate(props) {
 
   const acceptInvite = async (invite) => {
     let success = false;
-
+    let res = null;
     // Accept Invite
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/users/invites/', {
@@ -119,15 +119,19 @@ export function Collaborate(props) {
                     'Authorization': 'Bearer ' + props.token
             },
             body: JSON.stringify({
-                team: invite._id,
-                accept: true,
+                responses:
+                [{
+                  team: invite, //change this later to be ._id
+                  accept: true
+                  }]
             })
         })
+        res = await response.json();
         success = true
     } catch (error) {
         console.log("error accepting invite: ", error)
     }
-
+    console.log("response", res);
     if(success) {
       console.log("success, accepted invite");
       // TODO: some stuff to update the list of Teams, remove the invite from the displayed list
@@ -149,8 +153,11 @@ export function Collaborate(props) {
                     'Authorization': 'Bearer ' + props.token
             },
             body: JSON.stringify({
-                team: invite._id,
-                accept: false,
+              responses:
+              [{
+                team: invite, //change this later to be ._id
+                accept: false
+                }]
             })
         })
         success = true
@@ -249,7 +256,14 @@ export function Collaborate(props) {
         </View>
 
         <Divider style={{marginTop: 5}} />
-
+        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
+          <List
+            style={{maxHeight:'100%', maxWidth:'90%'}}
+            data={props.invites}
+            ItemSeparatorComponent={Divider}
+            renderItem={inviteItem}
+          />
+        </View>
 
       </ContentContainer>
     </ViewableArea>

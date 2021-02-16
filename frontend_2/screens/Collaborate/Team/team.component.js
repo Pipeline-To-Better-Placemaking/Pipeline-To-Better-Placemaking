@@ -87,13 +87,14 @@ export function TeamPage(props) {
       <ListItem
         title={
               <Text style={{fontSize:20}}>
-                  {`${item.user}`}
+                  {`${item.firstname}`} {`${item.lastname}`}
               </Text>}
       />
   );
 
   const sendInvite = async () => {
     let success = false;
+    let res  = null;
 
     // Send invite by user email
     try {
@@ -108,11 +109,15 @@ export function TeamPage(props) {
                 userEmail: email,
             })
         })
+        res = await response
         success = true
     } catch (error) {
-        console.log("error inviting user", error)
+        console.log("error inviting user: ", error)
     }
-
+    console.log("status: ", res.status);
+    console.log("ok: ", res.ok);
+    console.log("response: ", JSON.stringify(res));
+    success = res.ok
     // reset states
     setInviteVisible(false)
     setEmail('')
@@ -156,7 +161,7 @@ export function TeamPage(props) {
               activeOpacity={1}
               onPressOut={() => {setInviteVisible(false); setEmail('');}}
             >
-            <Card disabled={true} style={{width:'100%'}}>
+            <Card disabled={true} style={{width:'80%', margin:5}}>
               <Text>Enter a user Email: </Text>
               <Input
                   placeholder='Type Here...'
@@ -165,7 +170,7 @@ export function TeamPage(props) {
                   autoCapitalize='none'
                   keyboardType="email-address"
               />
-              <Button onPress={() => sendInvite()}>
+              <Button style={{marginTop:10}} onPress={() => sendInvite()}>
                 Invite!
               </Button>
             </Card>
