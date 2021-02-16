@@ -86,8 +86,6 @@ router.post('/:id/invites', passport.authenticate('jwt',{session:false}), async 
         if(newMember.teams.includes(team._id))
             throw new BadRequestError('User is already a member of team')
 
-            console.log(newMember.invites)
-
         if(newMember.invites.includes(team._id))
             throw new BadRequestError('User already has invite to team')
         
