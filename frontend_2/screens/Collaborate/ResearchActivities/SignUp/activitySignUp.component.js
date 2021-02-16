@@ -29,7 +29,7 @@ export function ActivitySignUpPage(props) {
       let activityDetails = {
         location: props.activity.area[0],
         area: props.activity.area,
-        markers: props.activity.timeSlots[index].assignedPoints,
+        markers: getPointsLocations(props.activity.timeSlots[index]),
       }
       // console.log("Index: " + index)
       // console.log("Activity Details: " + JSON.stringify(activityDetails))
@@ -48,7 +48,33 @@ export function ActivitySignUpPage(props) {
     }
     else if (props.activity.activity == activityList[2]){
 
+      await AsyncStorage.setItem("@time", props.activity.timeSlots[index].duration)
+
+      props.navigation.navigate("SurveyActivity",
+        {
+            activityDetails: {
+              location: props.activity.area[0],
+              area: props.activity.area,
+            },
+        }
+      )
     }
+  }
+
+  const getPointsLocations = (timeSlot) => {
+    let tempPoints = [];
+    timeSlot.assignedPointIndicies.map(index => {
+      tempPoints.push(props.activity.standingPoints[index.row]);
+    });
+    return tempPoints;
+  }
+
+  const getPointsString = (timeSlot) => {
+    let tempPoints = [];
+    timeSlot.assignedPointIndicies.map(index => {
+      tempPoints.push("Point " + (index.row + 1));
+    });
+    return tempPoints.join(', ');
   }
 
   const timeSlotCard = ({item, index}) => (
@@ -57,7 +83,7 @@ export function ActivitySignUpPage(props) {
         <View style={{flexDirection:'column'}}>
           <Text>Start Time {item.timeString}</Text>
           <Text>Time Limit: {item.duration} (min)</Text>
-          <Text>Standing Points: {item.assignedPointsString}</Text>
+          <Text>Standing Points: {getPointsString(item)}</Text>
           <Text>Number of Researchers: {item.numResearchers}</Text>
         </View>
         <View style={{flexDirection:'column', justifyContent:'space-around'}}>

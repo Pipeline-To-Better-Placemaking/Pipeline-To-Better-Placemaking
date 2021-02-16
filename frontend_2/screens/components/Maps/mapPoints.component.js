@@ -27,6 +27,12 @@ import { Text, Button, Input, Icon, Divider, List, ListItem} from '@ui-kitten/co
     location={}
     area={}
     markers={}
+
+  MapViewArea:
+    - Displays at location, 1 sub area
+    Need:
+    location={}
+    area={}
 */
 
 export function MapAddPoints(props) {
