@@ -121,7 +121,7 @@ export function Collaborate(props) {
             body: JSON.stringify({
                 responses:
                 [{
-                  team: invite._id,
+                  team: invite, //change this later to be ._id
                   accept: true
                   }]
             })
@@ -153,8 +153,11 @@ export function Collaborate(props) {
                     'Authorization': 'Bearer ' + props.token
             },
             body: JSON.stringify({
-                team: invite._id,
-                accept: false,
+              responses:
+              [{
+                team: invite, //change this later to be ._id
+                accept: false
+                }]
             })
         })
         success = true
