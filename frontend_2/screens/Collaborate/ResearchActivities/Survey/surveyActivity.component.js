@@ -12,6 +12,14 @@ export function SurveyActivity(props) {
 
   let surveyLink = 'http://ucf.qualtrics.com/jfe/form/SV_9vozKCHxjfyAHJ3';
 
+  const [location] = useState(props.route.params.activityDetails.location)
+  const [area] = useState(props.route.params.activityDetails.area)
+  const [start, setStart] = useState(false)
+
+  const endActivity = () => {
+    props.navigation.navigate("ActivitySignUpPage");
+  }
+
   const QRCode = (props) => (
       <Image
         style={{height:'100%', width:'100%'}}
@@ -19,18 +27,51 @@ export function SurveyActivity(props) {
       />
   );
 
-  const [location] = useState(props.route.params.activityDetails.location)
-  const [area] = useState(props.route.params.activityDetails.area)
-  const [start, setStart] = useState(false)
+  const StartStopButton = () => {
+    if (start) {
+      return(
+        <Button
+          status={'danger'}
+          style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}
+          onPress={() => endActivity()}
+        >
+          End
+        </Button>
+      )
+    }
+    else {
+      return(
+        <Button
+          style={{backgroundColor: '#006FD6'}}
+          style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}
+          onPress={() => setStart(true)}
+        >
+          Start
+        </Button>
+      )
+    }
+  }
 
-  const openPrevPage = () => {
-    props.navigation.navigate("SignUpPage");
+  const TimeBar = () => {
+    return(
+      <View>
+        <View style={{height: 60, flexDirection: 'row'}}>
+
+          <StartStopButton/>
+
+          {/* <Text style={{fontSize:20, marginLeft: 10, marginTop: 7}}> */}
+          <Timer start={start}/>
+          {/* </Text> */}
+        </View>
+      </View>
+    )
   }
 
   return(
     <ViewableArea>
       <Header text={'Survey Activity'}/>
       <ContentContainer>
+      <TimeBar/>
       <View style={{flex:1, flexDirection:'column'}}>
           <View style={{height:'40%'}}>
             <MapViewArea
