@@ -17,19 +17,14 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     if(await Team.isAdmin(project.team,user._id)){
     
         let newMap = new Map({
-            owner: req.body.owner,
-            claimed: req.body.claimed,
+            title: req.body.title,
             area: req.body.area,
             project: req.body.project,
-            start_time: req.body.start_time,
-            end_time: req.body.end_time
-
+            date: req.body.date
         })
 
         const map = await Map.addMap(newMap)
-
         await Project.addActivity(req.body.project,map._id,'stationary')
-
         res.status(201).json(map)
 
     }
@@ -39,7 +34,17 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 })
 
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    res.json(await Map.findById(req.params.id))
+    var map = await Map.findById(req.params.id)
+  
+    project = await Project.findById(map.project)
+    fullArea = await Project.getArea(project._id,map.area)
+    console.log(fullArea.area)
+    console.log(map)
+    map.area = {area: fullArea.area}
+  
+    res.status(200).json(map)
+
+    
 })
 
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
@@ -47,10 +52,8 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     map = await Map.findById(req.params.id)
     
     let newMap = new Map({
-        owner: (req.body.owner ? req.body.owner : map.owner),
-        claimed: (req.body.claimed ? req.body.claimed : map.claimed),
-        start_time: (req.body.start_time ? req.body.start_time : map.start_time),
-        end_time: (req.body.end_time ? req.body.end_time : map.end_time),
+        title: (req.body.title ? req.body.title : map.title),
+        date: (req.body.date ? req.body.date : map.date),
         area: (req.body.area ? req.body.area : map.area)
     })
 

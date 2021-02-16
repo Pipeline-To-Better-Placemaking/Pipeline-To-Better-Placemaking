@@ -78,7 +78,7 @@ module.exports.removeProject = async function(teamId, projectId) {
 
 
 module.exports.promote = async function(teamId, userId) {
-    Teams.updateOne(
+    return await Teams.updateOne(
         {
             _id: teamsId,
             users: { $elemMatch: { userId: uId, roll: 'user' }}
@@ -87,7 +87,7 @@ module.exports.promote = async function(teamId, userId) {
     )
 }
 module.exports.demote = async function(teamsId, uId) {
-    Teams.updateOne(
+    return await Teams.updateOne(
         {
             _id: teamsId,
             users: { $elemMatch: { userId: uId, roll: 'admin' }}
@@ -97,12 +97,13 @@ module.exports.demote = async function(teamsId, uId) {
 }
 
 module.exports.isAdmin = async function(teamId, uId) {
-    const doc = Teams.find(
+    const doc = await Teams.find(
         {
             _id: teamId,
             users: {
                 $elemMatch: {
-                    userId: uId, $or: [
+                    user: uId,
+                     $or: [
                         { role: 'admin' },
                         { role: 'owner' }
                     ]
@@ -111,6 +112,8 @@ module.exports.isAdmin = async function(teamId, uId) {
         }
     )
 
+    team = await Teams.findById(teamId)
+
     if (doc.length === 0) {
         return false
     }
@@ -118,10 +121,10 @@ module.exports.isAdmin = async function(teamId, uId) {
 }
 
 module.exports.isOwner = async function(teamId, uId) {
-    const doc = Teams.find(
+    const doc = await Teams.find(
         {
             _id: teamId,
-            users: { $elemMatch: { userId: uId, role: 'owner' }}
+            users: { $elemMatch: { user: uId, role: 'owner' }}
         }
     )
 
@@ -132,10 +135,10 @@ module.exports.isOwner = async function(teamId, uId) {
 }
 
 module.exports.isUser = async function(teamId, uId) {
-    const doc = Teams.find(
+    const doc = await Teams.find(
         {
             _id: teamId,
-            users: { $elemMatch: { userId: uId }}
+            users: { $elemMatch: { user: uId }}
         }
     )
 
@@ -146,15 +149,15 @@ module.exports.isUser = async function(teamId, uId) {
 }
 
 module.exports.addUser = async function(teamsId, uId) {
-    Teams.updateOne(
+    await Teams.updateOne(
         { _id: teamsId },
-        { $addToSetid: { users: { userId: uId, roll: 'user' }}}
+        { $push: { users: { user: uId, role: 'user' }}}
     )
 }
 
 module.exports.removeUser = async function(TeamsId, uId) {
-    Teams.updateOne(
+    await Teams.updateOne(
         { _id: TeamsId },
-        { $pull: { users: { userId: uId, roll: 'user' }}}
+        { $pull: { users: { user: uId, role: 'user' }}}
     )
 }

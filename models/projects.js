@@ -48,6 +48,7 @@ project_schema.plugin(uniqueValidator)
 
 const Projects = module.exports = mongoose.model('Projects', project_schema)
 
+
 module.exports.addProject = async function(newProject) {
     const project = await newProject.save()
     await Projects.updateOne(
@@ -101,6 +102,16 @@ module.exports.addArea = async function(projectId, newArea) {
         { _id: projectId },
         { $push: { subareas: { area: newArea }}}
     )
+}
+
+module.exports.getArea = async function(projectId, areaId) {
+    const out = (await Projects.find({
+        _id: projectId,
+        'subareas._id': areaId 
+    },
+    {'subareas.$':1}))
+    
+    return out[0].subareas[0]
 }
 
 module.exports.updateArea = async function(projectId, areaId, newArea){
