@@ -24,11 +24,11 @@ export function DataGroupPosture(props) {
     return(
         <View style={{marginTop: 20}}>
         <Text category={'h6'} style={{marginBottom: 10}}> Posture: </Text>
-            <View style={{flexDirection: 'row',}}>
+            <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
                 <Button style={{width:150, marginRight: 45}} appearance={postureMatrix[0] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(0)}>Standing</Button>
                 <Button style={{width:150}} appearance={postureMatrix[1] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(1)}>Sitting</Button>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <View style={{flexDirection: 'row', marginTop: 10, justifyContent:'space-around'}}>
                 <Button style={{width:150, marginRight: 45}} appearance={postureMatrix[2] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(2)}>Laying Down</Button>
                 <Button style={{width:150}} appearance={postureMatrix[3] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(3)}>Squating</Button>
             </View>

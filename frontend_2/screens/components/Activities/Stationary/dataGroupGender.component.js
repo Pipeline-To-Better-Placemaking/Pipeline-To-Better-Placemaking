@@ -24,7 +24,7 @@ export function DataGroupGender(props) {
     return(
         <View style={{marginTop: 25}}>
         <Text category={'h6'} style={{marginBottom: 10}}> Gender: </Text>
-            <View style={{flexDirection: 'row',}}>
+            <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
                 <Button style={{width:150, marginRight: 45}} appearance={genderMatrix[0] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(0)}>Male</Button>
                 <Button style={{width:150}} appearance={genderMatrix[1] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(1)}>Female</Button>
             </View>

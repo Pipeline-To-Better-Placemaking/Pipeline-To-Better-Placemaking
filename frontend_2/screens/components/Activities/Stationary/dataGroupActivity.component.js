@@ -24,11 +24,11 @@ export function DataGroupActivity(props) {
     return(
         <View style={{marginTop: 20}}>
         <Text category={'h6'} style={{marginBottom: 10}}> Activity: </Text>
-            <View style={{flexDirection: 'row',}}>
+            <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
                 <Button style={{width:150, marginRight: 45}} appearance={activityMatrix[0] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(0)}>Talking</Button>
                 <Button style={{width:150}} appearance={activityMatrix[1] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(1)}>Transit Waiting</Button>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <View style={{flexDirection: 'row', marginTop: 10, justifyContent:'space-around'}}>
                 <Button style={{width:150, marginRight: 45}} appearance={activityMatrix[2] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(2)}>Recreation</Button>
                 <Button style={{width:150}} appearance={activityMatrix[3] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(3)}>Eating</Button>
             </View>
