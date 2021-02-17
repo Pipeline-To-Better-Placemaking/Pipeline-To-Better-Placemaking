@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { HeaderBack } from '../../../components/headers.component';
-import { MapViewPoints } from '../../../components/Maps/mapPoints.component';
+import { MapWrapper, ShowArea, ShowMarkers } from '../../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './activitySignUp.styles';
@@ -103,11 +103,10 @@ export function ActivitySignUpPage(props) {
       <HeaderBack {...props} text={props.activity.title}/>
       <ContentContainer>
         <View style={{height:'40%'}}>
-          <MapViewPoints
-            location={props.activity.area[0]}
-            area={props.activity.area}
-            markers={props.activity.standingPoints}
-          />
+          <MapWrapper location={props.activity.area[0]} mapHeight={'100%'}>
+            <ShowArea area={props.activity.area} />
+            <ShowMarkers markers={props.activity.standingPoints} />
+          </MapWrapper>
         </View>
         <View style={{margin:15}}>
           <Text category='s1'>{props.activity.activity} Activity</Text>

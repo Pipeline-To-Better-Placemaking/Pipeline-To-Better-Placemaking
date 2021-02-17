@@ -4,7 +4,7 @@ import { ViewableArea, ContentContainer } from '../../../components/content.comp
 import { Header } from '../../../components/headers.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { MapViewArea } from '../../../components/Maps/mapPoints.component.js';
+import { MapWrapper, ShowArea } from '../../../components/Maps/mapPoints.component.js';
 import { Timer } from '../../../components/timer.component.js';
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
 
@@ -74,10 +74,9 @@ export function SurveyActivity(props) {
       <TimeBar/>
       <View style={{flex:1, flexDirection:'column'}}>
           <View style={{height:'40%'}}>
-            <MapViewArea
-                location={location}
-                area={area}
-            />
+            <MapWrapper location={location} mapHeight={'100%'}>
+              <ShowArea area={area} />
+            </MapWrapper>
           </View>
 
           <View style={{flexDirection:'row', margin:10, marginRight:10}}>

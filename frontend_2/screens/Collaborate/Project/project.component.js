@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { HeaderBackEdit } from '../../components/headers.component';
-import { MapViewArea } from '../../components/Maps/mapPoints.component';
+import { MapWrapper, ShowArea } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './project.styles';
@@ -16,7 +16,7 @@ export function ProjectPage(props) {
 
   const [createNewActivityVisible, setCreateNewActivityVisible] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
-  
+
   const openActivityPage = async (item) => {
     console.log("selected activity: ", item);
     props.setActivity(item)
@@ -68,10 +68,9 @@ export function ProjectPage(props) {
       <ContentContainer>
 
         <View style={{height:'45%'}}>
-          <MapViewArea
-            location={props.project.subareas[0].area[0]}
-            area={props.project.subareas[0].area}
-          />
+          <MapWrapper location={props.project.subareas[0].area[0]} mapHeight={'100%'}>
+            <ShowArea area={props.project.subareas[0].area} />
+          </MapWrapper>
         </View>
 
         <View style={styles.teamTextView}>

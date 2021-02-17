@@ -38,9 +38,11 @@ export function CreateActivityStack(props) {
 
   // This is the selected sub area
   const [area, setArea] = useState(props.project.subareas[0].area);
+  const [selectedAreaIndex, setSelectedAreaIndex] = React.useState(0);
   // This boolean is used to determine if there's more than 1 sub area for the user to choose from
   // if there's only 1 sub area, then they don't need to select a sub location
   const selectArea = (props.project.subareas.length > 1);
+  const [subareas, setSubareas] = useState(props.project.subareas);
 
   const create = () => {
     // some error checking if they don't fill everything out
@@ -112,6 +114,9 @@ export function CreateActivityStack(props) {
             {...props}
             area={area}
             setArea={setArea}
+            subareas={subareas}
+            selectedAreaIndex={selectedAreaIndex}
+            setSelectedAreaIndex={setSelectedAreaIndex}
             pointsRequired={pointsRequired}
             headerText={headerText}
             exit={exit}

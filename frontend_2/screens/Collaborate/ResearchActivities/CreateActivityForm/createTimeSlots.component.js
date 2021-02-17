@@ -235,7 +235,7 @@ export function CreateTimeSlots(props) {
           placeholder={''}
           value={tempNum}
           onChangeText={(nextValue) => setTempNum(nextValue)}
-          keyboardType="numeric"
+          keyboardType="number-pad"
         />
         <Button style={{marginTop:5}} onPress={confirmModal}>
           Comfirm

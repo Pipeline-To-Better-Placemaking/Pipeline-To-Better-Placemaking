@@ -1,124 +1,16 @@
 import React, { useState } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker, Polygon, Callout } from 'react-native-maps'
-import { View } from 'react-native';
-import { Text, Button, Input, Icon, Divider, List, ListItem} from '@ui-kitten/components';
+import { View, ScrollView } from 'react-native';
+import { Text, Button, Input, Icon, Divider, List, ListItem, Radio, RadioGroup } from '@ui-kitten/components';
 
-/*
-  MapAddPoints:
-    - Displays at location, 1 sub area, and a List of points
-    - Lets the user add and delete points from markers
-    Need:
-    location={}
-    area={}
-    markers={}
-    setMarkers={}
-
-  MapAddArea:
-    - Displays at location a List of points
-    - Lets the user add and delete points from markers
-    Need:
-    location={}
-    markers={}
-    setMarkers={}
-
-  MapViewPoints:
-    - Displays at location, 1 sub area, and markers on the Map
-    Need:
-    location={}
-    area={}
-    markers={}
-
-  MapViewArea:
-    - Displays at location, 1 sub area
-    Need:
-    location={}
-    area={}
+/* This needs:
+location={}
+markers={}
+setMarkers={}
+mapHeight={}
+listHeight={}
 */
-
-export function MapAddPoints(props) {
-
-  const removeMarker = (item, index) => {
-    props.markers.splice(index, 1);
-    props.setMarkers(markers => [...markers]);
-  };
-
-  const addMarker = (coordinates) => {
-    let point = {
-        latitude: coordinates.latitude,
-        longitude: coordinates.longitude
-    };
-    props.setMarkers(markers => [...markers,point]);
-  };
-
-  const renderItem = ({ item, index }) => (
-    <ListItem
-      title={`Point ${index+1}: `}
-      description={`${item.latitude}, ${item.longitude}`}
-      accessoryRight={DeleteIcon}
-      onPress={() => removeMarker(item, index)}
-    />
-  );
-
-  const ShowPolygon = () => {
-    if(props.markers === null) {
-      return (null);
-    }
-    else {
-      return (props.markers.map((coord, index) => (
-          <MapView.Marker
-              key={index}
-              coordinate = {{
-                  latitude: coord.latitude,
-                  longitude: coord.longitude
-              }}
-          >
-            <Callout>
-              <Text>Position {index+1}</Text>
-            </Callout>
-          </MapView.Marker>
-          )))
-      }
-    };
-
-    return(
-      <View>
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          style={{height:'50%'}}
-          initialCamera ={{
-            center:{
-                latitude: props.location.latitude,
-                longitude: props.location.longitude
-            },
-            pitch: 10,
-            heading: -1,
-            altitude: -1,
-            zoom: 17
-          }}
-          onPress={event => addMarker(event.nativeEvent.coordinate)}
-        >
-          <MapView.Polygon
-           coordinates={props.area}
-           strokeWidth={3}
-           strokeColor={'rgba(255,0,0,0.5)'}
-           fillColor={'rgba(0,0,0,0.5)'}
-          />
-          <ShowPolygon/>
-        </MapView>
-
-        <View style={{height:'50%', marginTop:20}}>
-          <List
-            style={{marginBottom: -100}}
-            data={props.markers}
-            ItemSeparatorComponent={Divider}
-            renderItem={renderItem}
-          />
-        </View>
-      </View>
-    );
-}
-
-export function MapAddArea(props) {
+export function MapAdd({children, ...props}) {
 
   const removeMarker = (item, index) => {
     props.markers.splice(index, 1);
@@ -142,32 +34,11 @@ export function MapAddArea(props) {
     />
   );
 
-  const ShowPolygon = () => {
-    if(props.markers === null) {
-      return (null);
-    }
-    else {
-      return (props.markers.map((coord, index) => (
-          <MapView.Marker
-              key={index}
-              coordinate = {{
-                  latitude: coord.latitude,
-                  longitude: coord.longitude
-              }}
-          >
-            <Callout>
-              <Text>Position {index+1}</Text>
-            </Callout>
-          </MapView.Marker>
-          )))
-      }
-    };
-
     return(
       <View>
         <MapView
           provider={PROVIDER_GOOGLE}
-          style={{height:'55%'}}
+          style={{height:props.mapHeight}}
           initialCamera ={{
             center:{
                 latitude: props.location.latitude,
@@ -180,10 +51,10 @@ export function MapAddArea(props) {
           }}
           onPress={event => addMarker(event.nativeEvent.coordinate)}
         >
-          <ShowPolygon/>
+          {children}
         </MapView>
 
-        <View style={{height:'40%', marginTop:20}}>
+        <View style={{height:props.listHeight, marginTop:20}}>
           <List
             style={{marginBottom: -100}}
             data={props.markers}
@@ -195,85 +66,91 @@ export function MapAddArea(props) {
     );
 }
 
-export function MapViewPoints(props) {
+export const SelectArea = ({areas, selectedIndex, setSelectedIndex}) => {
 
-  const ShowPolygon = () => {
-    if(props.markers === null) {
-      return (null);
-    }
-    else {
-      return (props.markers.map((coord, index) => (
-          <MapView.Marker
-            key={index}
-            coordinate = {{
-                latitude: coord.latitude,
-                longitude: coord.longitude
-            }}
-          >
-            <Callout>
-              <Text>Position {index+1}</Text>
-            </Callout>
-          </MapView.Marker>
-          )))
-      }
+  return (
+    <View style={{flex:1, flexDirection:'column'}}>
+      <MapWrapper location={areas[selectedIndex].area[0]} mapHeight={'80%'}>
+        <ShowArea area={areas[selectedIndex].area}/>
+      </MapWrapper>
+      <ScrollView style={{maxheight:'30%', marginTop:-100}}>
+        <RadioGroup
+          selectedIndex={selectedIndex}
+          onChange={index => setSelectedIndex(index)}>
+          {areas.map((area, index) => (
+                <Radio key={index}><Text style={{fontSize:20}}>Area {index+1} </Text></Radio>
+            ))}
+        </RadioGroup>
+      </ScrollView>
+    </View>
+  )
+};
+
+export const MapWrapper = ({children, location, mapHeight}) => {
+  return (
+    <View>
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        style={{height:mapHeight}}
+        initialCamera ={{
+          center:{
+              latitude: location.latitude,
+              longitude: location.longitude
+          },
+          pitch: 10,
+          heading: -1,
+          altitude: -1,
+          zoom: 17
+        }}
+      >
+        {children}
+      </MapView>
+    </View>)
+  };
+
+  export const ShowArea = ({area}) => {
+    return (
+        <MapView.Polygon
+          coordinates={area}
+          strokeWidth={3}
+          strokeColor={'rgba(255,0,0,0.5)'}
+          fillColor={'rgba(0,0,0,0.5)'}
+        />
+        )
     };
 
-    return(
-      <View>
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          style={{height:'100%'}}
-          initialCamera ={{
-            center:{
-                latitude: props.location.latitude,
-                longitude: props.location.longitude
-            },
-            pitch: 10,
-            heading: -1,
-            altitude: -1,
-            zoom: 17
+export const ShowAreas = ({areas}) => {
+  return (areas.map((area, index) => (
+      <MapView.Polygon
+        coordinates={area.area}
+        strokeWidth={3}
+        strokeColor={'rgba(255,0,0,0.5)'}
+        fillColor={'rgba(0,0,0,0.5)'}
+        key={index}
+      />
+      )))
+  };
+
+export const ShowMarkers = ({markers}) => {
+  if(markers === null) {
+    return (null);
+  }
+  else {
+    return (markers.map((coord, index) => (
+        <MapView.Marker
+          key={index}
+          coordinate = {{
+              latitude: coord.latitude,
+              longitude: coord.longitude
           }}
         >
-          <MapView.Polygon
-           coordinates={props.area}
-           strokeWidth={3}
-           strokeColor={'rgba(255,0,0,0.5)'}
-           fillColor={'rgba(0,0,0,0.5)'}
-          />
-          <ShowPolygon/>
-        </MapView>
-      </View>
-    );
-}
-
-export function MapViewArea(props) {
-
-    return(
-      <View>
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          style={{height:'100%'}}
-          initialCamera ={{
-            center:{
-                latitude: props.location.latitude,
-                longitude: props.location.longitude
-            },
-            pitch: 10,
-            heading: -1,
-            altitude: -1,
-            zoom: 17
-          }}
-        >
-          <MapView.Polygon
-           coordinates={props.area}
-           strokeWidth={3}
-           strokeColor={'rgba(255,0,0,0.5)'}
-           fillColor={'rgba(0,0,0,0.5)'}
-          />
-        </MapView>
-      </View>
-    );
-}
+          <Callout>
+            <Text>Position {index+1}</Text>
+          </Callout>
+        </MapView.Marker>
+        )))
+    }
+  };
 
 const DeleteIcon = (props) => (
   <Icon {...props} name='trash-2-outline'/>

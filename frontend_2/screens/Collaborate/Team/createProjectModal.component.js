@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Layout, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../../components/headers.component';
-import { MapAddArea } from '../../components/Maps/mapPoints.component';
+import { MapAdd, ShowMarkers } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -112,11 +112,15 @@ export function CreateProject(props) {
           </View>
 
           <View style={styles.mapHeight}>
-            <MapAddArea
+            <MapAdd
               location={location}
               markers={markers}
               setMarkers={setMarkers}
-            />
+              mapHeight={'55%'}
+              listHeight={'40%'}
+            >
+              <ShowMarkers markers={markers}/>
+            </MapAdd>
           </View>
 
           <View style={{flexDirection:'row', justifyContent:'space-around', marginTop:'30%'}}>

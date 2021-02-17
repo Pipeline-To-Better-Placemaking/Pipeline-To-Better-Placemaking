@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Layout, TopNavigation, TopNavigationAction, IndexPath, Select, SelectItem } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Datepicker } from '@ui-kitten/components';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
-import { MapAddPoints } from '../../../components/Maps/mapPoints.component';
+import { MapAdd, ShowArea, ShowMarkers } from '../../../components/Maps/mapPoints.component';
 import { HeaderExit } from '../../../components/headers.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './form.styles';
@@ -21,12 +21,16 @@ export function CreateStandingPoints(props) {
           </View>
 
           <View style={{maxHeight:'70%'}}>
-            <MapAddPoints
+            <MapAdd
               location={props.area[0]}
-              area={props.area}
               markers={props.standingPoints}
               setMarkers={props.setStandingPoints}
-            />
+              mapHeight={'50%'}
+              listHeight={'50%'}
+            >
+              <ShowArea area={props.area} />
+              <ShowMarkers markers={props.standingPoints} />
+            </MapAdd>
           </View>
 
           <View style={{flexDirection:'row', justifyContent:'space-around', marginTop:'40%'}}>
