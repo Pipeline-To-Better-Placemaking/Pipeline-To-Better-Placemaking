@@ -14,50 +14,33 @@ export function ActivitySignUpPage(props) {
 
   const onBeginPress = async (index) => {
 
-    // console.log("Activity Props: " + JSON.stringify(props.activity))
-
     if (props.activity.activity == activityList[0]) {
-
-      // console.log("Activity Props: " + JSON.stringify(props.activity))d
-      // console.log("Area: " + props.activity.area)
-      // console.log("Standing points: " + props.activity.standingPoints)
-
-      // console.log("Time slot: " + JSON.stringify(item));
-
-      await AsyncStorage.setItem("@time", props.activity.timeSlots[index].duration)
 
       let activityDetails = {
         location: props.activity.area[0],
         area: props.activity.area,
-        markers: getPointsLocations(props.activity.timeSlots[index]),
+        position: getPointsLocations(props.activity.timeSlots[index]),
+        time: (parseInt(props.activity.timeSlots[index].duration)* 60),
+        timeLeft: (parseInt(props.activity.timeSlots[index].duration)* 60)
       }
-      // console.log("Index: " + index)
-      // console.log("Activity Details: " + JSON.stringify(activityDetails))
 
-      console.log("Activity markers: " + JSON.stringify(activityDetails.markers))
+      props.setTimeSlot(activityDetails);
 
-      props.navigation.navigate("StationaryActivity",
-          {
-              activityDetails: activityDetails,
-              position: activityDetails.markers
-          }
-      )
+      props.navigation.navigate("StationaryActivity")
     }
     else if (props.activity.activity == activityList[1]){
 
     }
     else if (props.activity.activity == activityList[2]){
 
-      await AsyncStorage.setItem("@time", props.activity.timeSlots[index].duration)
-
-      props.navigation.navigate("SurveyActivity",
-        {
-            activityDetails: {
-              location: props.activity.area[0],
-              area: props.activity.area,
-            },
-        }
-      )
+      let activityDetails = {
+        location: props.activity.area[0],
+        area: props.activity.area,
+        time: (parseInt(props.activity.timeSlots[index].duration)* 60),
+        timeLeft: (parseInt(props.activity.timeSlots[index].duration)* 60)
+      }
+      props.setTimeSlot(activityDetails);
+      props.navigation.navigate("SurveyActivity")
     }
   }
 

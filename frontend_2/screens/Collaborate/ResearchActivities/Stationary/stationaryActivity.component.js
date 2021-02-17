@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, KeyboardAvoidingView } from 'react-native';
-import { ViewableArea, ContentContainer } from '../../../components/content.component'; 
+import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { StationaryActivityMap } from '../../../components/Maps/stationaryActivityMap.component.js';
 import { Timer } from '../../../components/timer.component.js';
+import CountDown from 'react-native-countdown-component';
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
 
 export function StationaryActivity(props) {
 
 
-    const [location] = useState(props.route.params.activityDetails.location)
-    const [area] = useState(props.route.params.activityDetails.area)
-    const [position] = useState(props.route.params.position)
+    const [location] = useState(props.timeSlot.location)
+    const [area] = useState(props.timeSlot.area)
+    const [position] = useState(props.timeSlot.position)
     const [start, setStart] = useState(false)
     const [dataModal, setDataModal] = useState(false)
     const [tempMarker, setTempMarker] = useState([])
@@ -55,24 +56,37 @@ export function StationaryActivity(props) {
         }
     }
 
+    const endActivity = () => {
+      setStart(false)
+      props.navigation.navigate("ActivitySignUpPage");
+    }
+
+    const updateTime = (value) => {
+      //console.log("timer: ", value);
+      let temp = props.timeSlot;
+      temp.timeLeft = value;
+      props.setTimeSlot(temp);
+    }
+
     const StartStopButton = () => {
 
         if (start) {
             return(
-                <Button 
+                <Button
                     status={'danger'}
                     style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}
+                    onPress={() => endActivity()}
                     >
-                        End 
+                        End
                     </Button>
             )
         }
         else {
             return(
-                <Button 
+                <Button
                     style={{backgroundColor: '#006FD6'}}
                     style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}
-                    onPress={setStart}
+                    onPress={() => setStart(true)}
                 >
                     Start
                 </Button>
@@ -87,16 +101,25 @@ export function StationaryActivity(props) {
                 <View style={{height: 60, flexDirection: 'row'}}>
 
                     <StartStopButton/>
-
-                    {/* <Text style={{fontSize:20, marginLeft: 10, marginTop: 7}}> */}
-                    <Timer start={start}/>
-                    {/* </Text> */}
+                    <View style={{marginLeft: 175, marginTop: 5}}>
+                        <CountDown
+                            running={start}
+                            until={props.timeSlot.timeLeft}
+                            onChange={(value) => updateTime(value)}
+                            size={20}
+                            digitStyle={{backgroundColor: 'white'}}
+                            digitTxtStyle={{color: 'black'}}
+                            timeToShow={['M', 'S']}
+                            timeLabels={{m: '', s: ''}}
+                            showSeparator
+                        />
+                    </View>
                 </View>
             </View>
         )
     }
 
-    return(              
+    return(
         <ViewableArea>
             <Header text={'Stationary Activity'}/>
             <ContentContainer>

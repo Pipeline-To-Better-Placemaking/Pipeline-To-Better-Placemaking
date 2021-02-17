@@ -36,7 +36,8 @@ export function CollaborateStack(props) {
   const [activity, setActivity] = useState(null);
   const [activities, setActivities] = useState(null);
 
-  const [time, setTime] = useState('');
+  // Used for starting an Activity timeSlot
+  const [timeSlot, setTimeSlot] = useState(null);
 
   useEffect(() => {
     async function getTokens() {
@@ -147,7 +148,7 @@ export function CollaborateStack(props) {
             setActivity={setActivity}
             activities={activities}
             setActivities={setActivities}
-            setTime={setTime}
+            setTimeSlot={setTimeSlot}
           />
         }
       </Screen>
@@ -156,9 +157,8 @@ export function CollaborateStack(props) {
         {props => <StationaryActivity
                         {...props}
                         getSelectedActivity={activities}
-                        // initialTimeStart={.initialTimeStart}
-                        // setInitialTime={this.setInitialTime}
-                        time={time}
+                        timeSlot={timeSlot}
+                        setTimeSlot={setTimeSlot}
                     ></StationaryActivity>
         }
       </Screen>
@@ -168,7 +168,8 @@ export function CollaborateStack(props) {
           <SurveyActivity
               {...props}
               getSelectedActivity={activities}
-              time={time}
+              timeSlot={timeSlot}
+              setTimeSlot={setTimeSlot}
           />
         }
       </Screen>

@@ -6,26 +6,27 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { MapWrapper, ShowArea } from '../../../components/Maps/mapPoints.component.js';
 import { Timer } from '../../../components/timer.component.js';
+import CountDown from 'react-native-countdown-component';
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
 
 export function SurveyActivity(props) {
 
   let surveyLink = 'http://ucf.qualtrics.com/jfe/form/SV_9vozKCHxjfyAHJ3';
 
-  const [location] = useState(props.route.params.activityDetails.location)
-  const [area] = useState(props.route.params.activityDetails.area)
+  const [location] = useState(props.timeSlot.location)
+  const [area] = useState(props.timeSlot.area)
   const [start, setStart] = useState(false)
 
   const endActivity = () => {
+    setStart(false)
     props.navigation.navigate("ActivitySignUpPage");
   }
 
-  const QRCode = (props) => (
-      <Image
-        style={{height:'100%', width:'100%'}}
-        source={require('./surveyQRCode.png')}
-      />
-  );
+  const updateTime = (value) => {
+    let temp = props.timeSlot;
+    temp.timeLeft = value;
+    props.setTimeSlot(temp);
+  }
 
   const StartStopButton = () => {
     if (start) {
@@ -59,9 +60,19 @@ export function SurveyActivity(props) {
 
           <StartStopButton/>
 
-          {/* <Text style={{fontSize:20, marginLeft: 10, marginTop: 7}}> */}
-          <Timer start={start}/>
-          {/* </Text> */}
+          <View style={{marginLeft: 175, marginTop: 5}}>
+              <CountDown
+                  running={start}
+                  until={props.timeSlot.timeLeft}
+                  onChange={(value) => updateTime(value)}
+                  size={20}
+                  digitStyle={{backgroundColor: 'white'}}
+                  digitTxtStyle={{color: 'black'}}
+                  timeToShow={['M', 'S']}
+                  timeLabels={{m: '', s: ''}}
+                  showSeparator
+              />
+          </View>
         </View>
       </View>
     )
@@ -93,7 +104,10 @@ export function SurveyActivity(props) {
           </View>
 
           <View style={{flex:1, alignItems:'center'}}>
-            <QRCode />
+            <Image
+              style={{height:'100%', width:'100%'}}
+              source={require('./surveyQRCode.png')}
+            />
           </View>
         </View>
       </ContentContainer>
