@@ -15,25 +15,27 @@ export function CreateStandingPoints(props) {
       <HeaderExit text={props.headerText} exit={props.exit}/>
       <ContentContainer>
         <View style={styles.container}>
+          <View style={styles.container, {justifyContent:'flex-start'}}>
 
-          <View style={styles.activityView, {justifyContent:'center'}}>
-            <Text style={{textAlign:'center', marginBottom:5, fontSize:20}} category='s1'>Create Standing Points</Text>
+            <View style={styles.activityView, {justifyContent:'center'}}>
+              <Text style={{textAlign:'center', marginBottom:5, fontSize:20}} category='s1'>Create Standing Points</Text>
+            </View>
+
+            <View style={{maxHeight:'80%'}}>
+              <MapAdd
+                location={props.area[0]}
+                markers={props.standingPoints}
+                setMarkers={props.setStandingPoints}
+                mapHeight={'50%'}
+                listHeight={'50%'}
+              >
+                <ShowArea area={props.area} />
+                <ShowMarkers markers={props.standingPoints} />
+              </MapAdd>
+            </View>
           </View>
 
-          <View style={{maxHeight:'70%'}}>
-            <MapAdd
-              location={props.area[0]}
-              markers={props.standingPoints}
-              setMarkers={props.setStandingPoints}
-              mapHeight={'50%'}
-              listHeight={'50%'}
-            >
-              <ShowArea area={props.area} />
-              <ShowMarkers markers={props.standingPoints} />
-            </MapAdd>
-          </View>
-
-          <View style={{flexDirection:'row', justifyContent:'space-around', marginTop:'40%'}}>
+          <View style={styles.activityView}>
             <Button
               onPress={() => props.navigation.goBack()}
               status='info'

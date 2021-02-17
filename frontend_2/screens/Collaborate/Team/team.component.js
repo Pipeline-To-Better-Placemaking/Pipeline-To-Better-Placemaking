@@ -120,9 +120,9 @@ export function TeamPage(props) {
     } catch (error) {
         console.log("error inviting user: ", error)
     }
-    console.log("status: ", res.status);
+    //console.log("status: ", res.status);
     console.log("ok: ", res.ok);
-    console.log("response: ", JSON.stringify(res));
+    //console.log("response: ", JSON.stringify(res));
     success = res.ok
     // reset states
     setInviteVisible(false)

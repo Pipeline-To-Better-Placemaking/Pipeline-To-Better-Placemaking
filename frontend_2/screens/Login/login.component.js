@@ -66,14 +66,14 @@ export const LoginScreen = ( props ) => {
           await AsyncStorage.setItem("@id", id)
 
           let { status } = await Location.requestPermissionsAsync();
-          if (status !== 'granted') {
-            setErrorMsg('Permission to access location was denied');
-            return;
+
+          if (status === 'granted') {
+            defaultLocation = await Location.getCurrentPositionAsync({})
+          } else {
+            console.log('Permission to access location was denied');
           }
-    
-          let location = await Location.getCurrentPositionAsync({})
-    
-          await props.setLocation(location);
+
+          await props.setLocation(defaultLocation);
 
           props.navigation.navigate("TabNavigation")
         }

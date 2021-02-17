@@ -27,44 +27,46 @@ export function IntialForm(props) {
       <HeaderExit text={props.headerText} exit={props.exit}/>
       <ContentContainer>
         <View style={styles.container}>
+          <View style={styles.container, {justifyContent: 'space-between'}}>
 
-          <View style={styles.activityView}>
-            <Text>Name: </Text>
-            <Input
-              placeholder={activityTypes[0]}
-              value={props.activityName}
-              onChangeText={(nextValue) => props.setActivityName(nextValue)}
-              style={{flex:1}}
-            />
-          </View>
+            <View style={styles.activityView}>
+              <Text>Name: </Text>
+              <Input
+                placeholder={activityTypes[0]}
+                value={props.activityName}
+                onChangeText={(nextValue) => props.setActivityName(nextValue)}
+                style={{flex:1}}
+              />
+            </View>
 
-          <View style={styles.activityView}>
-            <Text>Select a Research Activity: </Text>
-            <Select
-              style={{flex:1}}
-              placeholder={activityTypes[0]}
-              value={activityTypes[props.selectedActivityIndex.row]}
-              selectedIndex={props.selectedActivityIndex}
-              onSelect={index => props.setSelectedActivity(index)}
-            >
-              {activityTypes.map((item, index) =>
-                  <SelectItem key="{item}" title={item}/>
-              )}
-            </Select>
-          </View>
+            <View style={styles.activityView}>
+              <Text>Select a Research Activity: </Text>
+              <Select
+                style={{flex:1}}
+                placeholder={activityTypes[0]}
+                value={activityTypes[props.selectedActivityIndex.row]}
+                selectedIndex={props.selectedActivityIndex}
+                onSelect={index => props.setSelectedActivity(index)}
+              >
+                {activityTypes.map((item, index) =>
+                    <SelectItem key="{item}" title={item}/>
+                )}
+              </Select>
+            </View>
 
-          <View style={styles.activityView}>
-            <Text>Select a Date: </Text>
-            <Datepicker
-              style={{flex:1}}
-              placeholder='Pick Date'
-              min={props.today}
-              date={props.date}
-              value={props.date}
-              onSelect={nextDate => props.setDate(nextDate)}
-              accessoryRight={CalendarIcon}
-              placement={'bottom end'}
-            />
+            <View style={styles.activityView}>
+              <Text>Select a Date: </Text>
+              <Datepicker
+                style={{flex:1}}
+                placeholder='Pick Date'
+                min={props.today}
+                date={props.date}
+                value={props.date}
+                onSelect={nextDate => props.setDate(nextDate)}
+                accessoryRight={CalendarIcon}
+                placement={'bottom end'}
+              />
+            </View>
           </View>
 
           <View style={styles.activityView}>

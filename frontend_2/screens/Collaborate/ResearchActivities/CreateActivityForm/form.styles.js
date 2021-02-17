@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
 
     container:{
         flex:1,
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         flexDirection:'column',
         margin:5
     },

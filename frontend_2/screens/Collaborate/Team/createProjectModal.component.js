@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert,SafeAreaView, Modal } from 'react-native';
+import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../../components/headers.component';
@@ -21,7 +21,7 @@ export function CreateProject(props) {
   const confirmCreateProject = async () => {
     let success = false
     let projectDetails = null
-    console.log("description: ", getLocationName(markers[0]));
+    //console.log("description: ", getLocationName(markers[0]));
     // Save the new project
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/', {
