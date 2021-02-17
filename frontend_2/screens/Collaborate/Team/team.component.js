@@ -8,10 +8,6 @@ import { CreateProject } from './createProjectModal.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './team.styles';
 
-const ForwardIcon = (props) => (
-  <Icon {...props} name='arrow-ios-forward'/>
-);
-
 export function TeamPage(props) {
 
   const [createProjectVisible, setCreateProjectVisible] = useState(false);
@@ -82,14 +78,23 @@ export function TeamPage(props) {
       />
   );
 
-  // change this to first and last name, also maybe role
   const memberItem = ({ item, index }) => (
-      <ListItem
-        title={
-              <Text style={{fontSize:20}}>
-                  {`${item.firstname}`} {`${item.lastname}`}
-              </Text>}
-      />
+      <ListItem style={{justifyContent:'space-between'}}>
+        <Text style={{fontSize:20}}>
+            {`${item.firstname}`} {`${item.lastname}`}
+        </Text>
+        <View style={{flexDirection:'row'}}>
+        {(item.role ==='owner' ?
+          <Button
+            appearance='ghost'
+            disabled={true}
+            accessoryRight={AwardIcon}
+          />
+          :
+          <Text></Text>
+        )}
+        </View>
+      </ListItem>
   );
 
   const sendInvite = async () => {
@@ -224,3 +229,11 @@ export function TeamPage(props) {
     </ViewableArea>
   );
 };
+
+const ForwardIcon = (props) => (
+  <Icon {...props} name='arrow-ios-forward'/>
+);
+
+const AwardIcon = (props) => (
+  <Icon {...props} name='award-outline'/>
+);
