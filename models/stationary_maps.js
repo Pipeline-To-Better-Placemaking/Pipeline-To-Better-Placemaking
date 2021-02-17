@@ -61,8 +61,8 @@ const stationary_schema = mongoose.Schema({
     standingPoints:[{
                     latitude:Number,
                     longitude:Number
-                    }]
-
+                    }],
+    date: Date
 })
 
 

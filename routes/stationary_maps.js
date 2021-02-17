@@ -34,13 +34,14 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 })
 
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    
     var map = await Map.findById(req.params.id)
-  
+    console.log(map)
     project = await Project.findById(map.project)
     fullArea = await Project.getArea(project._id,map.area)
-    console.log(fullArea.area)
+    console.log(fullArea)
     console.log(map)
-    map.area = {area: fullArea.area}
+    map.area = fullArea.area[1]._id
   
     res.status(200).json(map)
 

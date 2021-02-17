@@ -4,6 +4,7 @@ TOKEN=$(curl --header "Content-Type: application/json" \
       http://localhost:8080/api/login \
       | jq -r '.token')
 
+
 curl -H 'Accept: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
@@ -19,43 +20,66 @@ echo
 
 
 
+PROJECT=$(curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/teams/${TEAM}  \
+     | jq -r '.projects[0]._id' )
+
+AREA=$(curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/projects/${PROJECT} \
+     | jq -r '.subareas[0]._id' )
+USER=$(curl -H "Authorization: Bearer ${TOKEN}" \
+        -H 'Content-Type: application/json' \
+       --request GET \
+        http://localhost:8080/api/users/ \
+        | jq -r '._id')
+
+
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
-     http://localhost:8080/api/teams/${TEAM}
+     http://localhost:8080/api/projects/${PROJECT}
+ 
+echo
+echo
+
+
+MAP=$(curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/projects/${PROJECT} \
+     | jq -r '.activities[0].activity')
+
+echo
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/stationary_maps/${MAP} 
 
 echo
 echo
 
 curl -H 'Content-Type: application/json' \
-    -H "Authorization: Bearer ${TOKEN}" \
+     -H "Authorization: Bearer ${TOKEN}" \
      --request POST \
-     -d '{"userEmail": "dog@gmail.com"}' \
+     -d '{"userEmail": "dogg@gmail.com"}' \
      http://localhost:8080/api/teams/${TEAM}/invites
-
-echo
 echo
 
 TOKEN=$(curl --header "Content-Type: application/json" \
       --request POST \
-      -d '{"email": "dog@gmail.com","password": "What@1234"}'\
+      -d '{"email": "dogg@gmail.com","password": "What@1234"}'\
       http://localhost:8080/api/login \
       | jq -r '.token')
 
-curl -H 'Accept: application/json' \
+curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
      http://localhost:8080/api/users/
-
-echo
-echo
-
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request POST \
-     -d "{\"responses\": [{\"team\": \"${TEAM}\", \"accept\": true}]}" \
-     http://localhost:8080/api/users/invites/
-
 
 
 

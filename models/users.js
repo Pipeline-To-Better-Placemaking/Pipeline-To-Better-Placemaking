@@ -39,7 +39,10 @@ const user_schema = mongoose.Schema({
     },
     verification_code: String,
     verification_timeout: Date,
-    invites: [ObjectId],
+    invites: [{
+        type: ObjectId,
+        ref: 'Teams'
+    }],
     teams: [{
         type: ObjectId,
         ref: 'Teams'
