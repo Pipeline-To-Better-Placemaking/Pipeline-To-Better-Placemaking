@@ -121,7 +121,7 @@ export function Collaborate(props) {
             body: JSON.stringify({
                 responses:
                 [{
-                  team: invite, //change this later to be ._id
+                  team: invite._id,
                   accept: true
                   }]
             })
@@ -131,10 +131,23 @@ export function Collaborate(props) {
     } catch (error) {
         console.log("error accepting invite: ", error)
     }
-    console.log("response", res);
+    //console.log("response", res);
     if(success) {
       console.log("success, accepted invite");
-      // TODO: some stuff to update the list of Teams, remove the invite from the displayed list
+      // Add the new team to the list of teams
+      props.teams.push({
+         _id: invite._id,
+         title: invite.title
+      });
+      props.setTeams(props.teams)
+      await AsyncStorage.setItem("@teams", JSON.stringify(props.teams))
+
+      // Remove the invite from the local list of invites
+      let changeIndex = props.invites.findIndex(element => element._id === invite._id);
+      const newInvites = [...props.invites];
+      newInvites.splice(changeIndex, 1);
+      await AsyncStorage.setItem("@invites", JSON.stringify(newInvites));
+      await props.setInvites(newInvites);
     } else {
       console.log("success false, didn't accept invite");
     }
@@ -155,7 +168,7 @@ export function Collaborate(props) {
             body: JSON.stringify({
               responses:
               [{
-                team: invite, //change this later to be ._id
+                team: invite._id,
                 accept: false
                 }]
             })
@@ -167,7 +180,12 @@ export function Collaborate(props) {
 
     if(success) {
       console.log("success, declined invite");
-      // TODO: remove the invite from the displayed list
+      // Remove the invite from the local list of invites
+      let changeIndex = props.invites.findIndex(element => element._id === invite._id);
+      const newInvites = [...props.invites];
+      newInvites.splice(changeIndex, 1);
+      await AsyncStorage.setItem("@invites", JSON.stringify(newInvites));
+      await props.setInvites(newInvites);
     } else {
       console.log("success false, didn't decline invite");
     }
@@ -189,18 +207,23 @@ export function Collaborate(props) {
   );
 
   const inviteItem = ({ item, index }) => (
-      <ListItem
-        title={
-              <Text style={{fontSize:20}}>
-                  {`${item.title}`}
-              </Text>}
-      >
-        <Button
-          status='success'
-          accessoryRight={CreateIcon}
-          onPress={() => acceptInvite(item)}
-        >
-        </Button>
+      <ListItem style={{justifyContent:'space-between'}}>
+        <Text style={{fontSize:20}}>
+            {`${item.title}`}
+        </Text>
+        <View style={{flexDirection:'row'}}>
+          <Button
+            status='success'
+            accessoryRight={CreateIcon}
+            onPress={() => acceptInvite(item)}
+          />
+          <Button
+          style={{marginLeft:5}}
+            status='danger'
+            accessoryRight={CancelIcon}
+            onPress={() => declineInvite(item)}
+          />
+        </View>
       </ListItem>
   );
 
@@ -240,7 +263,7 @@ export function Collaborate(props) {
 
         </Popover>
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
+        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'40%', marginTop:15}}>
           <List
             style={{maxHeight:'100%', maxWidth:'90%'}}
             data={props.teams}
@@ -256,7 +279,7 @@ export function Collaborate(props) {
         </View>
 
         <Divider style={{marginTop: 5}} />
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
+        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'40%', marginTop:15}}>
           <List
             style={{maxHeight:'100%', maxWidth:'90%'}}
             data={props.invites}
@@ -269,16 +292,6 @@ export function Collaborate(props) {
     </ViewableArea>
   );
 };
-/* // This is the list of invites, I removed it for now so I don't break anything by accident
-<View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
-  <List
-    style={{maxHeight:'100%', maxWidth:'90%'}}
-    data={props.invites}
-    ItemSeparatorComponent={Divider}
-    renderItem={inviteItem}
-  />
-</View>
-*/
 
 const ForwardIcon = (props) => (
   <Icon {...props} name='arrow-ios-forward'/>
