@@ -7,12 +7,14 @@ import { ThemeContext } from '../../theme-context';
 export const ViewableArea = ({ children }) => {
 
   const statusBarHeight = getStatusBarHeight();
+  const theme = useTheme();
 
   return (
     <View style={{ flex: 1, backgroundColor: '#006FD6'}}>
       <SafeAreaView style={{flex: 1, marginTop:statusBarHeight}}>
         {children}
       </SafeAreaView>
+      <SafeAreaView style={{backgroundColor:theme['background-basic-color-1']}}/>
     </View>
  );
 };
