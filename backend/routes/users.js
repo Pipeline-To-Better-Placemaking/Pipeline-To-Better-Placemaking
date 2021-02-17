@@ -35,7 +35,7 @@ router.post('/', async (req, res, next) => {
 // Return limited info otherwise
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     // Make a query for the user, excluding the password field
-    const user = await (await User.findById(req.params.id).select('-password').populate('teams', 'title')).populate('invites','title')
+    const user = await (await User.findById(req.params.id).select('-password').populate('teams', 'title').populate('invites','title'))
 
     if (req.params.id === await req.user._id) {
 
@@ -48,15 +48,8 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 })
 
 router.get('/', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    var user = await User.findById(await req.user).select('-password').populate('teams', 'title')
-    for(var i = 0; i < user.invites.length; i++){
-        var id = user.invites[i]; 
-        var teamName = (await Team.findById(user.invites[i])).title
-        user.invites[i] = ({
-                            team: id,
-                            title: teamName
-                          })  
-    }
+    var user = await (await User.findById(await req.user).select('-password').populate('teams', 'title').populate('invites','title'))
+    console.log(user)
     return res.status(200).json(user)
 })
 
@@ -74,16 +67,6 @@ router.put('/', passport.authenticate('jwt',{session:false}), async (req, res, n
     user = await User.updateUser(user._id, newUser)
 
     res.status(200).json(user)
-})
-
-// Get user's invites
-router.get('/invites', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    
-    var user = await User.findById(await req.user._id)
-    
-    res.status(200).json({
-        invites: await User.getInvites(await req.user._id)
-    })
 })
 
 // Accept invite
