@@ -1,16 +1,21 @@
 import React, {useState} from 'react';
-import { SafeAreaView, View, ScrollView, Pressable, Image, Modal } from 'react-native';
-import { Divider, Icon, Layout, Input, Text, TopNavigation, TopNavigationAction, Button } from '@ui-kitten/components';
+import { View, Modal } from 'react-native';
+import { Icon, Input, Text, Button } from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
 import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
 import { styles } from './userSettings.styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PropsService } from '@ui-kitten/components/devsupport';
 
 export function UserSettings(props) {
 
 	const [modalVisible, setModalVisible] = useState(false);
+	const [firstNameText, setFirstNameText] = useState(props.firstName);
+	const [lastNameText, setLastNameText] = useState(props.lastName);
+	const [emailText, setEmailText] = useState(props.lastName);
 
-  const themeContext = React.useContext(ThemeContext);
+	const themeContext = React.useContext(ThemeContext);
 
 	const UserIcon = (props) => (
 		<Icon {...props} fill='grey' style={styles.iconSize} name='person'/>
@@ -18,7 +23,52 @@ export function UserSettings(props) {
 
 	const editIcon = (props) => (
 		<Icon {...props} fill='white' name='edit'/>
-	)
+	);
+
+	const closeIcon = (props) => (
+		<Icon {...props} fill='white' name='close'/>
+	);
+
+	const confirmIcon = (props) => (
+		<Icon {...props} fill='white' name='checkmark'/>
+	);
+
+	const mailIcon = (props) => (
+		<Icon {...props} fill='white' name='email'/>
+	);
+	
+	const themeIcon = (props) => {
+		if(themeContext.theme == 'light') {
+			return(
+				<Icon {...props} fill='white' name='moon'/>
+			);
+		}
+
+		return(
+			<Icon {...props} fill='white' name='sun'/>
+		);
+	}
+
+	const cancelEditProfile = () => {
+		setFirstNameText(props.firstName)
+		setLastNameText(props.lastName)
+		setEmailText(props.email)
+		setModalVisible(!modalVisible)
+	}
+
+	const confirmEditProfile = async () => {
+		props.setFirstName(firstNameText)
+		await AsyncStorage.setItem('@firstName', props.firstName)
+
+		props.setLastName(lastNameText)
+		await AsyncStorage.setItem('@lastName', props.lastName)
+
+		props.setEmail(emailText)
+		await AsyncStorage.setItem('@email', props.email)
+
+		setModalVisible(!modalVisible)
+		// call backend and update values
+	}
 
   return (
     <ViewableArea>
@@ -28,24 +78,35 @@ export function UserSettings(props) {
 				<Modal animationType="slide" visible={modalVisible}	onRequestClose={() => {setModalVisible(!modalVisible)}}>
 					<ViewableArea>
 							<Header text={'Edit Profile'}/>
+							<ContentContainer>
+								<Input
+									label = 'First Name'
+									placeholder = 'First Name'
+									value={firstNameText}
+									onChangeText={nextValue => setFirstNameText(nextValue)}
+								/>
 
-							<Input
-								label = 'Edit First Name'
-								placeholder = 'First Name'
-								//value={value}
-								//onChangeText={nextValue => setValue(nextValue)}
-							/>
+								<Input
+									label = 'Last Name'
+									placeholder = 'Last Name'
+									value={lastNameText}
+									onChangeText={nextValue => setLastNameText(nextValue)}
+								/>
 
-							<Input
-								label = 'Edit Last Name'
-								placeholder = 'Last Name'
-								//value={value}
-								//onChangeText={nextValue => setValue(nextValue)}
-							/>
+								<Input
+									label = 'Email'
+									placeholder = 'Email'
+									value={emailText}
+									onChangeText={nextValue => setEmailText(nextValue)}
+								/>
 
-							<Button style={{margin:5}} onPress={() => setModalVisible(!modalVisible)}>
-								Cancel
-							</Button>
+								<Button style={{margin:5}} onPress={() => confirmEditProfile()} accessoryRight = {confirmIcon}>
+									CONFIRM
+								</Button>
+								<Button style={{margin:5}} onPress={() => cancelEditProfile()} accessoryRight = {closeIcon}>
+									CANCEL
+								</Button>
+							</ContentContainer>
 					</ViewableArea>
 				</Modal>
 
@@ -60,12 +121,20 @@ export function UserSettings(props) {
 					<Text style={{fontSize: 20, alignSelf: 'center'}}> {props.email} </Text>
 				</View>
 
-        <Button style={{margin:5}} onPress={themeContext.toggleTheme}>
+				<Button style={{margin:5}} onPress={() => setModalVisible(!modalVisible)} accessoryRight = {editIcon}>
+          EDIT PROFILE
+        </Button>
+
+				<Button style={{margin:5}} onPress={themeContext.toggleTheme} accessoryRight = {themeIcon}>
           TOGGLE THEME
         </Button>
 
-				<Button style={{margin:5}} onPress={() => setModalVisible(!modalVisible)} accessoryRight = {editIcon}>
-          EDIT
+				<Button style={{margin:5}} onPress={themeContext.toggleTheme}>
+          CHANGE PASSWORD
+        </Button>
+
+				<Button style={{margin:5}} onPress={() => setModalVisible(!modalVisible)} accessoryRight = {mailIcon}>
+          VERIFY EMAIL
         </Button>
 
 			</ContentContainer>
