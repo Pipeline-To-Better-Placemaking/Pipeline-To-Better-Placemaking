@@ -3,6 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Layout, TopNavigation, TopNavigationAction, IndexPath, Select, SelectItem } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Datepicker } from '@ui-kitten/components';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
+import { HeaderExit } from '../../../components/headers.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './form.styles';
 
@@ -23,19 +24,9 @@ export function IntialForm(props) {
 
   return (
     <ViewableArea>
+      <HeaderExit text={props.headerText} exit={props.exit}/>
       <ContentContainer>
         <View style={styles.container}>
-
-          <View style={styles.activityView}>
-            <Text>Create New Research Activity</Text>
-            <Button
-              onPress={() => props.navigation.navigate('ProjectPage')}
-              status={'danger'}
-              appearance={'ghost'}
-              accessoryLeft={CancelIcon}
-            >
-            </Button>
-          </View>
 
           <View style={styles.activityView}>
             <Text>Name: </Text>

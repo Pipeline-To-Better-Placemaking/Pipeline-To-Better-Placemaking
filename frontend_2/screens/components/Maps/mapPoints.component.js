@@ -84,7 +84,7 @@ export function MapAddPoints(props) {
       <View>
         <MapView
           provider={PROVIDER_GOOGLE}
-          style={{height:'40%'}}
+          style={{height:'50%'}}
           initialCamera ={{
             center:{
                 latitude: props.location.latitude,
@@ -106,7 +106,7 @@ export function MapAddPoints(props) {
           <ShowPolygon/>
         </MapView>
 
-        <View style={{height:'40%', marginTop:20}}>
+        <View style={{height:'50%', marginTop:20}}>
           <List
             style={{marginBottom: -100}}
             data={props.markers}

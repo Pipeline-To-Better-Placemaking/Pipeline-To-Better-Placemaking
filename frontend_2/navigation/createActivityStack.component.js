@@ -12,6 +12,8 @@ const { Navigator, Screen } = createStackNavigator();
 
 export function CreateActivityStack(props) {
 
+  let headerText = "Create Research Activity";
+
   // List of activity types
   const activityTypes = [...props.activityTypes];
   // these are the activites that require standing points to be defined
@@ -80,6 +82,10 @@ export function CreateActivityStack(props) {
     }
   };
 
+  const exit = () => {
+    props.navigation.navigate('ProjectPage')
+  }
+
   return (
     <Navigator headerMode='none'>
       <Screen name='IntialForm'>
@@ -95,6 +101,8 @@ export function CreateActivityStack(props) {
             activityTypes={activityTypes}
             selectArea={selectArea}
             pointsRequired={pointsRequired}
+            headerText={headerText}
+            exit={exit}
           />
         }
       </Screen>
@@ -105,6 +113,8 @@ export function CreateActivityStack(props) {
             area={area}
             setArea={setArea}
             pointsRequired={pointsRequired}
+            headerText={headerText}
+            exit={exit}
           />
         }
       </Screen>
@@ -115,6 +125,8 @@ export function CreateActivityStack(props) {
             area={area}
             standingPoints={standingPoints}
             setStandingPoints={setStandingPoints}
+            headerText={headerText}
+            exit={exit}
           />
         }
       </Screen>
@@ -126,6 +138,8 @@ export function CreateActivityStack(props) {
             setTimeSlots={setTimeSlots}
             standingPoints={standingPoints}
             create={create}
+            headerText={headerText}
+            exit={exit}
           />
         }
       </Screen>

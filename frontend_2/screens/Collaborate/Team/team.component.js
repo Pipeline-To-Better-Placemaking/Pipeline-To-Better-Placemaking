@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, Modal, TouchableOpacity } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { Header } from '../../components/headers.component';
+import { HeaderBackEdit } from '../../components/headers.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import { CreateProject } from './createProjectModal.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,6 +12,7 @@ export function TeamPage(props) {
 
   const [createProjectVisible, setCreateProjectVisible] = useState(false);
   const [inviteVisible, setInviteVisible] = useState(false);
+  const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [email, setEmail] = useState('');
 
   const openProjectPage = async (item) => {
@@ -137,7 +138,7 @@ export function TeamPage(props) {
 
   return (
     <ViewableArea>
-      <Header text={props.team.title}/>
+      <HeaderBackEdit {...props} text={props.team.title} setEditMenuVisible={setEditMenuVisible}/>
       <ContentContainer>
         <CreateProject
           visible={createProjectVisible}

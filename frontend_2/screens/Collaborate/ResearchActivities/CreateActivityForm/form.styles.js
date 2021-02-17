@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
         flex:1,
         justifyContent: 'flex-start',
         flexDirection:'column',
-        margin:10
+        margin:5
     },
 
     activityView: {

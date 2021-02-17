@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { Header } from '../../components/headers.component';
+import { HeaderBackEdit } from '../../components/headers.component';
 import { MapViewArea } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,7 +15,8 @@ const ForwardIcon = (props) => (
 export function ProjectPage(props) {
 
   const [createNewActivityVisible, setCreateNewActivityVisible] = useState(false);
-
+  const [editMenuVisible, setEditMenuVisible] = useState(false);
+  
   const openActivityPage = async (item) => {
     console.log("selected activity: ", item);
     props.setActivity(item)
@@ -63,7 +64,7 @@ export function ProjectPage(props) {
 
   return (
     <ViewableArea>
-      <Header text={props.project.title}/>
+      <HeaderBackEdit {...props} text={props.project.title} setEditMenuVisible={setEditMenuVisible}/>
       <ContentContainer>
 
         <View style={{height:'45%'}}>
