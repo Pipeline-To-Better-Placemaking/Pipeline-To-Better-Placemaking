@@ -4,7 +4,7 @@ const Team = require('../models/teams.js')
 const router = express.Router()
 const User = require('../models/users.js')
 
-const { BadRequestError } = require('../utils/errors.js')
+const { BadRequestError, NotFoundError } = require('../utils/errors.js')
 
 // Create a new user
 router.post('/', async (req, res, next) => {
@@ -30,27 +30,28 @@ router.post('/', async (req, res, next) => {
     res.status(201).json(user)
 })
 
-// Get user info -
-// Return all info if the token matches the user id
-// Return limited info otherwise
-router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    // Make a query for the user, excluding the password field
-    const user = await (await User.findById(req.params.id).select('-password').populate('teams', 'title').populate('invites','title'))
+// Get another user's info
+router.get('/:id', async (req, res, next) => {
+    // Make a query for the user, excluding fields that contain private info
+    const user = await User.findById(req.params.id)
+        .select('-password -is_verified -verification_code -verification_timeout -invites')
+        .populate('teams', 'title')
 
-    if (req.params.id === await req.user._id) {
+    if (!user) throw new NotFoundError('The requested user was not found')
 
-        return res.json(user)
-    }
-
-    // Remove invites as they should only be seen by the user
-    delete user.invites
     res.status(200).json(user)
 })
 
+// Get my own user info, requires token authentication
+// TODO: this should probably use a different path than just /
 router.get('/', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    var user = await (await User.findById(await req.user).select('-password').populate('teams', 'title').populate('invites','title'))
-    console.log(user)
-    return res.status(200).json(user)
+    // Make a query for the user, excluding fields that the user should not see
+    const user = await User.findById(req.user._id)
+        .select('-password -verification_code -verification_timeout')
+        .populate('teams', 'title')
+        .populate('invites','title')
+
+    res.status(200).json(user)
 })
 
 // Update user info
