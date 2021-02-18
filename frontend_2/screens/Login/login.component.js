@@ -9,7 +9,7 @@ import { styles } from './login.styles';
 
 export const LoginScreen = ( props ) => {
 
-  const [email, setEamil] = useState('');
+  const [email, setEamil] = useState('');   //TODO: Fix typo
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loading, setLoading] = useState(false);

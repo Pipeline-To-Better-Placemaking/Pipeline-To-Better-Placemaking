@@ -29,7 +29,7 @@ export const TitleScreen = ({ navigation }) => {
   };
 
   const navigateSignUp = () => {
-    //navigation.navigate('SignUp');
+    navigation.navigate('SignUp');
   };
 
   return (

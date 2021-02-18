@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TitleScreen } from '../screens/Title/title.component';
 import { LoginScreen } from '../screens/Login/login.component';
+import { SignUpScreen } from '../screens/SignUp/signup.component';
 import { TabNavigation } from './tabNavigation.component';
 
 const { Navigator, Screen } = createStackNavigator();
@@ -24,6 +25,11 @@ export function AppNavigator (props) {
           {props => <LoginScreen {...props}
                       setLocation={setLocation}>
                     </LoginScreen>}
+        </Screen>
+        <Screen
+          name='SignUp'
+        >
+          {props => <SignUpScreen {...props}/>}
         </Screen>
         <Screen
           name="TabNavigation"
