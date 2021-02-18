@@ -138,7 +138,7 @@ export function TeamPage(props) {
 
   return (
     <ViewableArea>
-      <HeaderBackEdit {...props} text={props.team.title} setEditMenuVisible={setEditMenuVisible}/>
+      <HeaderBackEdit {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}/>
       <ContentContainer>
         <CreateProject
           visible={createProjectVisible}

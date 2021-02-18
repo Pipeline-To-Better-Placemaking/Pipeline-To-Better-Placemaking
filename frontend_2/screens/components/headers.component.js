@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image } from 'react-native';
-import { Text, Button, Input, Icon } from '@ui-kitten/components';
+import { Text, Button, Input, Icon, MenuItem, OverflowMenu } from '@ui-kitten/components';
 import styles from './headers.styles';
 
 export function Header(props) {
@@ -55,7 +55,29 @@ export function HeaderExit(props) {
   );
 };
 
-export function HeaderBackEdit(props) {
+export function HeaderBackEdit({children, ...props}) {
+  const EditMenu = () => (
+    <OverflowMenu
+      anchor={editButton}
+      visible={props.editMenuVisible}
+      onBackdropPress={() => props.setEditMenuVisible(false)}
+      placement={'bottom end'}
+      style={styles.menu}
+    >
+      {children}
+    </OverflowMenu>
+  );
+
+  const editButton = () => (
+    <Button
+      accessoryLeft={MenuIcon}
+      onPress={() => props.setEditMenuVisible(!props.editMenuVisible)}
+      appearance={'ghost'}
+      status={'control'}
+      size='small'
+    />
+  )
+
   return (
     <View style={styles.header}>
       <View style={styles.leftContent}>
@@ -72,13 +94,7 @@ export function HeaderBackEdit(props) {
         {props.text}
       </Text>
       <View style={styles.rightContent}>
-        <Button
-          accessoryLeft={MenuIcon}
-          onPress={() => props.setEditMenuVisible()}
-          appearance={'ghost'}
-          status={'control'}
-          size='small'
-        />
+        <EditMenu />
       </View>
     </View>
   );

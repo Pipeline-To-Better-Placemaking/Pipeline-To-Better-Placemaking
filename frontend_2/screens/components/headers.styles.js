@@ -26,6 +26,10 @@ export const styles = StyleSheet.create({
         marginLeft: 25,
       },
 
+    menu: {
+        marginRight:15
+    },
+
 });
 
 export default styles;

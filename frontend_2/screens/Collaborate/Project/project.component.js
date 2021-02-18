@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem, OverflowMenu } from '@ui-kitten/components';
 import { HeaderBackEdit } from '../../components/headers.component';
 import { MapWrapper, ShowArea } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { EditSubAreas } from './editSubareas.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './project.styles';
 
@@ -16,6 +17,8 @@ export function ProjectPage(props) {
 
   const [createNewActivityVisible, setCreateNewActivityVisible] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
+  const [editProjectVisible, setEditProjectVisible] = useState(false);
+  const [editAreasVisible, setEditAreasVisible] = useState(false);
 
   const openActivityPage = async (item) => {
     console.log("selected activity: ", item);
@@ -64,7 +67,11 @@ export function ProjectPage(props) {
 
   return (
     <ViewableArea>
-      <HeaderBackEdit {...props} text={props.project.title} setEditMenuVisible={setEditMenuVisible}/>
+      <HeaderBackEdit {...props} text={props.project.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
+        <MenuItem title='Edit Project' onPress={() => {setEditMenuVisible(false); setEditProjectVisible(true)}}/>
+        <MenuItem title='Edit Area(s)' onPress={() => {setEditMenuVisible(false); setEditAreasVisible(true)}}/>
+      </HeaderBackEdit>
+      <EditSubAreas {...props} subareas={props.project.subareas} visible={editAreasVisible} setVisible={setEditAreasVisible} />
       <ContentContainer>
 
         <View style={{height:'45%'}}>
