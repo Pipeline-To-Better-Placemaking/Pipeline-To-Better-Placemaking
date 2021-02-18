@@ -18,8 +18,20 @@ const getUsers = async () => {
     return users.map(u => u.toJSON())
 }
 
+const getUnusedUserId = async () => {
+    const user = new User({
+        email: 'temp@gmail.com',
+        password: '123!@#ABC'
+    })
+    await user.save()
+    await user.remove()
+
+    return user._id.toString()
+}
+
 module.exports = {
     getToken,
     decodeToken,
-    getUsers
+    getUsers,
+    getUnusedUserId
 }
