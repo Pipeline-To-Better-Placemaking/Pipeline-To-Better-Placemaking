@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker, Image, Polygon, Callout } from 'react-native-maps'
 import { View } from 'react-native';
 import { Text, Button, Input, Icon, Divider, List, ListItem} from '@ui-kitten/components';
+import { MapAreaWrapper, ShowArea } from './mapPoints.component';
 
 export function StationaryActivityMap(props) {
 
@@ -52,21 +53,10 @@ export function StationaryActivityMap(props) {
     return(
 
         <View>
-            <MapView
-                provider={PROVIDER_GOOGLE}
-                style={{height:'100%'}}
-                initialCamera ={{
-                    center:{
-                        latitude: location.latitude,
-                        longitude: location.longitude
-                    },
-                    pitch: 10,
-                    heading: -1,
-                    altitude: -1,
-                    zoom: 17
-                }}
-
-                onPress={event => props.addMarker(event.nativeEvent.coordinate)}
+            <MapAreaWrapper
+                area={props.area}
+                mapHeight={'100%'}
+                onPress={props.addMarker}
             >
                 <StandingPoints/>
 
@@ -79,7 +69,7 @@ export function StationaryActivityMap(props) {
 
                 <ShowPolygon/>
 
-            </MapView>
+            </MapAreaWrapper>
         </View>
     )
 };

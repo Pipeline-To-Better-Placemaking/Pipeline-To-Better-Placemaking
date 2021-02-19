@@ -34,20 +34,30 @@ export function MapAdd({children, ...props}) {
     />
   );
 
+  // This is basically a default zoom level
+  let location = {
+    latitude: props.location.latitude,
+    longitude: props.location.longitude,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
+  };
+
+  // If we have markers, then we can calculate the zoom level
+  if (props.markers !== null && props.markers.length >= 2) {
+    location = getRegionForCoordinates(props.markers);
+  }
+
     return(
       <View>
         <MapView
           provider={PROVIDER_GOOGLE}
           style={{height:props.mapHeight}}
-          initialCamera ={{
-            center:{
-                latitude: props.location.latitude,
-                longitude: props.location.longitude
-            },
-            pitch: 10,
-            heading: -1,
-            altitude: -1,
-            zoom: 17
+          zoomEnabled
+          initialRegion={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+            latitudeDelta: location.latitudeDelta,
+            longitudeDelta: location.longitudeDelta,
           }}
           onPress={event => addMarker(event.nativeEvent.coordinate)}
         >
@@ -70,9 +80,9 @@ export const SelectArea = ({areas, selectedIndex, setSelectedIndex}) => {
 
   return (
     <View style={{flex:1, flexDirection:'column'}}>
-      <MapWrapper location={areas[selectedIndex].area[0]} mapHeight={'80%'}>
+      <MapAreaWrapper area={areas[selectedIndex].area} mapHeight={'80%'}>
         <ShowArea area={areas[selectedIndex].area}/>
-      </MapWrapper>
+      </MapAreaWrapper>
       <ScrollView style={{maxheight:'30%', marginTop:-100}}>
         <RadioGroup
           selectedIndex={selectedIndex}
@@ -85,6 +95,61 @@ export const SelectArea = ({areas, selectedIndex, setSelectedIndex}) => {
     </View>
   )
 };
+
+export const MapAreaWrapper = ({children, area, mapHeight, onPress}) => {
+  const location = getRegionForCoordinates(area);
+  return (
+    <View>
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        style={{height:mapHeight}}
+        zoomEnabled
+        initialRegion={{
+          latitude: location.latitude,
+          longitude: location.longitude,
+          latitudeDelta: location.latitudeDelta,
+          longitudeDelta: location.longitudeDelta,
+        }}
+        onPress={event => onPress(event.nativeEvent.coordinate)}
+      >
+        {children}
+      </MapView>
+    </View>)
+  };
+
+// https://github.com/react-native-maps/react-native-maps/issues/505
+export function getRegionForCoordinates(points) {
+    // points should be an array of { latitude: X, longitude: Y }
+    let minX, maxX, minY, maxY;
+
+    // init first point
+    ((point) => {
+      minX = point.latitude;
+      maxX = point.latitude;
+      minY = point.longitude;
+      maxY = point.longitude;
+    })(points[0]);
+
+    // calculate rect
+    points.map((point) => {
+      minX = Math.min(minX, point.latitude);
+      maxX = Math.max(maxX, point.latitude);
+      minY = Math.min(minY, point.longitude);
+      maxY = Math.max(maxY, point.longitude);
+    });
+
+    const midX = (minX + maxX) / 2;
+    const midY = (minY + maxY) / 2;
+    const deltaX = (maxX - minX) + 0.001; // 0.001 adds some buffer space
+    const deltaY = (maxY - minY) + 0.001; // 0.001 adds some buffer space
+
+    return {
+      latitude: midX,
+      longitude: midY,
+      latitudeDelta: deltaX,
+      longitudeDelta: deltaY
+    };
+}
 
 export const MapWrapper = ({children, location, mapHeight}) => {
   return (

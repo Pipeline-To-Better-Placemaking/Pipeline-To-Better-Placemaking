@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { MapWrapper, ShowAreas, MapAdd } from '../../components/Maps/mapPoints.component';
+import { MapAreaWrapper, ShowAreas, MapAdd } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -86,12 +86,12 @@ export function EditSubAreas(props) {
           </View>
 
           <View style={{height:'50%'}}>
-            <MapWrapper
-              location={location}
+            <MapAreaWrapper
+              area={props.subareas[0].area}
               mapHeight={'100%'}
             >
               <ShowAreas areas={props.subareas}/>
-            </MapWrapper>
+            </MapAreaWrapper>
           </View>
 
           <View style={{flexDirection:'row', justifyContent: 'space-between', margin:5}}>
