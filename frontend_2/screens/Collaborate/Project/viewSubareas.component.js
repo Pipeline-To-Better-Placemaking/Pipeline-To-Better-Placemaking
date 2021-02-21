@@ -15,7 +15,7 @@ export function EditSubAreas(props) {
     area: props.subareas[0].area[0],
     newArea: true,
     index: 1,
-    id: '',
+    _id: '',
     location: location,
     title:'Area ',
 };
@@ -31,14 +31,15 @@ export function EditSubAreas(props) {
     temp.area = area;
     temp.newArea = newArea;
     temp.index = index;
-    temp.id = '';
+    temp._id = '';
     temp.location = location;
     temp.title = 'Area ' + (index + 1);
 
     if(!newArea) {
       temp.location = area.area[0];
-      temp.id = area._id;
+      temp._id = area._id;
       temp.area = area.area;
+      //temp.title = area.title; // TODO
     }
 
     await setAreaInfo(temp);

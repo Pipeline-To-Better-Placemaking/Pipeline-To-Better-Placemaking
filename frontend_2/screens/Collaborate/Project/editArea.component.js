@@ -12,17 +12,29 @@ export function EditPoints(props) {
     return (null)
   }
 
+  const [areaName, setAreaName] = useState(props.areaInfo.title);
+
   const cancel = () => {
+    setAreaName('');
     props.setVisible(false);
   }
 
   const done = () => {
-    if(props.areaInfo.newArea){
+    if(props.areaInfo.newArea) {
       saveNewArea();
     } else {
       saveEditArea();
     }
+    setAreaName('');
     props.setVisible(false);
+  }
+
+  const getName = () => {
+    if(areaName === null || areaName.trim() === '' || areaName.trim().length <= 0) {
+      return props.areaInfo.title;
+    } else {
+      return areaName;
+    }
   }
 
   const saveNewArea = async() => {
@@ -42,6 +54,7 @@ export function EditPoints(props) {
                   'Authorization': 'Bearer ' + token
           },
           body: JSON.stringify({
+              //title: getName() // TODO
               area: props.tempArea
           })
       })
@@ -52,9 +65,9 @@ export function EditPoints(props) {
     }
     //console.log("response ", res);
     if(success) {
-      // update list of sub Areas (This has to be done by just updateing the project)
+      // update list of sub Areas (This has to be done by just updating the project)
       let tempArea = {
-        _id: 0, // need to get this from the response if sub area is created
+        _id: 0, // TODO: need to get this from the response if sub area is created
         area: props.tempArea,
       }
       let tempSubareas = [...props.project.subareas];
@@ -75,7 +88,7 @@ export function EditPoints(props) {
           const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
                                         props.project._id +
                                         '/areas/' +
-                                        props.areaInfo.id, {
+                                        props.areaInfo._id, {
               method: 'PUT',
               headers: {
                   Accept: 'application/json',
@@ -83,6 +96,7 @@ export function EditPoints(props) {
                       'Authorization': 'Bearer ' + token
               },
               body: JSON.stringify({
+                  //title: getName() // TODO
                   area: props.tempArea
               })
           })
@@ -95,7 +109,7 @@ export function EditPoints(props) {
         if(success) {
           // update list of sub Areas (This has to be done by just updateing the project)
           let tempArea = {
-            _id: props.areaInfo.id,
+            _id: props.areaInfo._id,
             area: props.tempArea,
           }
           let tempSubareas = [...props.project.subareas];
@@ -107,38 +121,62 @@ export function EditPoints(props) {
     }
 
     const deleteArea = async() => {
-        /*if(props.areaInfo.index !== 0 && this.state.subareas.length > this.state.areaIndex) {
-            this.state.subareas.splice(this.state.areaIndex, 1);
-            let token = await AsyncStorage.getItem("@token")
-            let success = false
-            let res = null
-            console.log("deleteing area with id:", this.state.areaItem._id);
-            // Delete area
-            try {
-                const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
-                                              this.state.project._id +
-                                              '/areas/' +
-                                              this.state.areaItem._id, {
-                    method: 'DELETE',
-                    headers: {
-                        Accept: 'application/json',
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Bearer ' + token
-                    }
-                })
-                res = await response.json()
-            } catch (error) {
-                console.log("error ", error)
-            }
-            console.log("response ", res);
-        }//*/
+      // do not delete the project perimeter, or a newArea
+      if(props.areaInfo.index !== 0 && props.project.subareas.length > props.areaInfo.index && !props.areaInfo.newArea) {
+          let token = await AsyncStorage.getItem("@token")
+          let success = false
+          let res = null
+          console.log("deleteing area with id:", props.areaInfo._id);
+          // Delete area
+          try {
+              const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
+                                            props.project._id +
+                                            '/areas/' +
+                                            props.areaInfo._id, {
+                  method: 'DELETE',
+                  headers: {
+                      Accept: 'application/json',
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Bearer ' + token
+                  }
+              })
+              res = await response.json()
+              success = true
+          } catch (error) {
+              console.log("error ", error)
+          }
+          console.log("response ", res);
+
+          if (success) {
+            // update list of subAreas
+            let tempSubareas = [...props.project.subareas];
+            tempSubareas.splice(props.areaInfo.index, 1);
+            let tempProject = {...props.project};
+            tempProject.subareas = tempSubareas;
+            props.setProject(tempProject);
+          }
+      }
+
+      props.setVisible(false);
     }
 
   return (
     <ModalContainer {...props} visible={props.visible}>
       <View style={{justifyContent:'flex-start'}}>
-        <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-          <Text style={{fontSize:25}}>{props.areaInfo.title}</Text>
+        <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginBottom: 5}}>
+          <Input
+            onChangeText={(value) => setAreaName(value)}
+            placeholder={'Enter Area Name...'}
+            style={{flex:1, marginRight: 5, fontSize:25}}
+          >
+            {props.areaInfo.title}
+          </Input>
+          <Button
+            status='danger'
+            onPress={() => cancel()}
+          >
+            Cancel
+          </Button>
         </View>
 
         <View style={{height:'80%'}}>
@@ -156,14 +194,14 @@ export function EditPoints(props) {
 
       <View style={{flexDirection:'row', justifyContent: 'space-between', margin:5}}>
         <Button
-          status='info'
-          onPress={() => cancel()}
-          accessoryLeft={CancelIcon}
+          status='danger'
+          onPress={() => deleteArea()}
+          accessoryLeft={DeleteIcon}
         >
-          Cancel
+          Delete
         </Button>
         <Button
-          status='info'
+          status='success'
           onPress={() => done()}
           accessoryLeft={CreateIcon}
         >
