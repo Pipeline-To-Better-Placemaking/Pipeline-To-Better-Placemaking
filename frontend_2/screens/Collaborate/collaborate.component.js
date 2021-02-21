@@ -224,7 +224,7 @@ export function Collaborate(props) {
             onPress={() => acceptInvite(item)}
           />
           <Button
-          style={{marginLeft:5}}
+            style={{marginLeft:15}}
             status='danger'
             accessoryRight={CancelIcon}
             onPress={() => declineInvite(item)}
