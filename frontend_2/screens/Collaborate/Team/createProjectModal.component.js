@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../../components/headers.component';
 import { MapAdd, ShowMarkers } from '../../components/Maps/mapPoints.component';
-import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { ModalContainer} from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import * as Location from 'expo-location';
 import { styles } from './createProjectModal.styles';
 
@@ -15,8 +13,6 @@ export function CreateProject(props) {
   const [location, setLocation] = useState({latitude:28.60275207150067, longitude:-81.20052214711905}); //useState(props.location.coords); doesn'twork
   const [markers, setMarkers] = useState([]);
   const [projectName, setProjectName] = useState('');
-  const theme = useTheme();
-  const statusBarHeight = getStatusBarHeight();
 
   const confirmCreateProject = async () => {
     let success = false
@@ -80,65 +76,56 @@ export function CreateProject(props) {
   }
 
   return (
-    <Modal
-      animationType='slide'
-      visible={props.visible}
-    >
-      <View style={{flex: 1, backgroundColor:theme['background-basic-color-1']}}>
-        <SafeAreaView style={{flex: 1, backgroundColor:theme['background-basic-color-1'], marginTop:statusBarHeight,margin:20}}>
-
-          <View style={styles.projName}>
-              <Text>Enter a Project Name: </Text>
-              <Input
-                value={projectName}
-                style={{flex:1}}
-                placeholder='Type Here...'
-                onChangeText={setProjectName}
-              />
-          </View>
-
-          <Text style={{marginTop:20}}>Search: </Text>
-
-          <View style={styles.searchView}>
-              <Input
-                  style={{flex:1}}
-                  placeholder='Enter a Location...'
-              />
-              <Button
-                status='info'
-                accessoryLeft={SearchIcon}
-                style={{marginLeft:10}}
-                />
-          </View>
-
-          <View style={styles.mapHeight}>
-            <MapAdd
-              location={location}
-              markers={markers}
-              setMarkers={setMarkers}
-              mapHeight={'55%'}
-              listHeight={'40%'}
-            >
-              <ShowMarkers markers={markers}/>
-            </MapAdd>
-          </View>
-
-          <View style={{flexDirection:'row', justifyContent:'space-around', marginTop:'30%'}}>
-              <Button onPress={() => close()}
-                      status='danger'
-                      accessoryLeft={CancelIcon}>
-                Cancel
-              </Button>
-              <Button onPress={confirmCreateProject}
-                      status='success'
-                      accessoryLeft={CreateIcon}>
-                Create
-              </Button>
-          </View>
-
-        </SafeAreaView>
+    <ModalContainer {...props} visible={props.visible}>
+      <View style={styles.projName}>
+          <Text>Enter a Project Name: </Text>
+          <Input
+            value={projectName}
+            style={{flex:1}}
+            placeholder='Type Here...'
+            onChangeText={setProjectName}
+          />
       </View>
-    </Modal>
+
+      <Text style={{marginTop:20}}>Search: </Text>
+
+      <View style={styles.searchView}>
+          <Input
+              style={{flex:1}}
+              placeholder='Enter a Location...'
+          />
+          <Button
+            status='info'
+            accessoryLeft={SearchIcon}
+            style={{marginLeft:10}}
+            />
+      </View>
+
+      <View style={styles.mapHeight}>
+        <MapAdd
+          location={location}
+          markers={markers}
+          setMarkers={setMarkers}
+          mapHeight={'55%'}
+          listHeight={'40%'}
+        >
+          <ShowMarkers markers={markers}/>
+        </MapAdd>
+      </View>
+
+      <View style={{flexDirection:'row', justifyContent:'space-around', marginTop:'30%'}}>
+          <Button onPress={() => close()}
+                  status='danger'
+                  accessoryLeft={CancelIcon}>
+            Cancel
+          </Button>
+          <Button onPress={confirmCreateProject}
+                  status='success'
+                  accessoryLeft={CreateIcon}>
+            Create
+          </Button>
+      </View>
+    </ModalContainer>
   );
 };
 

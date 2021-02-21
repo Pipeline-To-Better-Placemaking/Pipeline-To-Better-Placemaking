@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { MapWrapper, ShowAreas, MapAdd, ShowMarkers } from '../../components/Maps/mapPoints.component';
-import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { ModalContainer } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import * as Location from 'expo-location';
 
 export function EditPoints(props) {
@@ -13,9 +11,6 @@ export function EditPoints(props) {
   if(props.areaInfo === null) {
     return (null)
   }
-
-  const theme = useTheme();
-  const statusBarHeight = getStatusBarHeight();
 
   const cancel = () => {
     props.setVisible(false);
@@ -140,58 +135,42 @@ export function EditPoints(props) {
     }
 
   return (
-    <Modal
-      animationType='slide'
-      visible={props.visible}
-    >
-      <View style={{flex: 1, backgroundColor:theme['background-basic-color-1']}}>
-        <SafeAreaView
-          style={{
-            flex: 1,
-            flexDirection:'column',
-            justifyContent:'space-between',
-            backgroundColor:theme['background-basic-color-1'],
-            marginTop:statusBarHeight,margin:20
-          }}
-        >
-          <View style={{justifyContent:'flex-start'}}>
-            <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-              <Text style={{fontSize:25}}>{props.areaInfo.title}</Text>
-            </View>
+    <ModalContainer {...props} visible={props.visible}>
+      <View style={{justifyContent:'flex-start'}}>
+        <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+          <Text style={{fontSize:25}}>{props.areaInfo.title}</Text>
+        </View>
 
-            <View style={{height:'80%'}}>
-              <MapAdd
-                location={props.areaInfo.location}
-                markers={props.tempArea}
-                setMarkers={props.setTempArea}
-                mapHeight={'60%'}
-                listHeight={'40%'}
-              >
-                <ShowMarkers markers={props.tempArea}/>
-              </MapAdd>
-            </View>
-          </View>
-
-          <View style={{flexDirection:'row', justifyContent: 'space-between', margin:5}}>
-            <Button
-              status='info'
-              onPress={() => cancel()}
-              accessoryLeft={CancelIcon}
-            >
-              Cancel
-            </Button>
-            <Button
-              status='info'
-              onPress={() => done()}
-              accessoryLeft={CreateIcon}
-            >
-              Done
-            </Button>
-          </View>
-
-        </SafeAreaView>
+        <View style={{height:'80%'}}>
+          <MapAdd
+            location={props.areaInfo.location}
+            markers={props.tempArea}
+            setMarkers={props.setTempArea}
+            mapHeight={'60%'}
+            listHeight={'40%'}
+          >
+            <ShowMarkers markers={props.tempArea}/>
+          </MapAdd>
+        </View>
       </View>
-    </Modal>
+
+      <View style={{flexDirection:'row', justifyContent: 'space-between', margin:5}}>
+        <Button
+          status='info'
+          onPress={() => cancel()}
+          accessoryLeft={CancelIcon}
+        >
+          Cancel
+        </Button>
+        <Button
+          status='info'
+          onPress={() => done()}
+          accessoryLeft={CreateIcon}
+        >
+          Done
+        </Button>
+      </View>
+    </ModalContainer>
   )
 };
 

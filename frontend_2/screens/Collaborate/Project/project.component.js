@@ -5,7 +5,7 @@ import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Menu
 import { HeaderBackEdit } from '../../components/headers.component';
 import { MapAreaWrapper, ShowArea } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
-import { EditSubAreas } from './editSubareas.component';
+import { EditSubAreas } from './viewSubareas.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './project.styles';
 
@@ -19,6 +19,8 @@ export function ProjectPage(props) {
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [editProjectVisible, setEditProjectVisible] = useState(false);
   const [editAreasVisible, setEditAreasVisible] = useState(false);
+  const [editActivityVisible, setEditActivityVisible] = useState(false);
+  const [editStandingPointsVisible, setEditStandingPointsVisible] = useState(false);
 
   const openActivityPage = async (item) => {
     console.log("selected activity: ", item);
@@ -69,7 +71,9 @@ export function ProjectPage(props) {
     <ViewableArea>
       <HeaderBackEdit {...props} text={props.project.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
         <MenuItem title='Edit Project' onPress={() => {setEditMenuVisible(false); setEditProjectVisible(true)}}/>
-        <MenuItem title='Edit Area(s)' onPress={() => {setEditMenuVisible(false); setEditAreasVisible(true)}}/>
+        <MenuItem title='Area(s)' onPress={() => {setEditMenuVisible(false); setEditAreasVisible(true)}}/>
+        <MenuItem title='Standing Points' onPress={() => {setEditMenuVisible(false); setEditStandingPointsVisible(true)}}/>
+        <MenuItem title='Activity Information' onPress={() => {setEditMenuVisible(false); setEditActivityVisible(true)}}/>
       </HeaderBackEdit>
       <EditSubAreas {...props} subareas={props.project.subareas} visible={editAreasVisible} setVisible={setEditAreasVisible} />
       <ContentContainer>

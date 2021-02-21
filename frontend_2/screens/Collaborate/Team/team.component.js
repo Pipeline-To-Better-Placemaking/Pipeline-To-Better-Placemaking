@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { HeaderBackEdit } from '../../components/headers.component';
-import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { ViewableArea, ContentContainer, PopUpContainer } from '../../components/content.component';
 import { CreateProject } from './createProjectModal.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './team.styles';
@@ -66,6 +66,11 @@ export function TeamPage(props) {
 
   const navigateProjectPage = () => {
     props.navigation.navigate('ProjectPage');
+  }
+
+  const closePopUp = () => {
+    setInviteVisible(false);
+    setEmail('');
   }
 
   const projectItem = ({ item, index }) => (
@@ -139,6 +144,23 @@ export function TeamPage(props) {
   return (
     <ViewableArea>
       <HeaderBackEdit {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}/>
+      <PopUpContainer
+        {...props}
+        visible={inviteVisible}
+        closePopUp={closePopUp}
+      >
+        <Text>Enter a user Email: </Text>
+        <Input
+            placeholder='Type Here...'
+            value={email}
+            onChangeText={(nextValue) => setEmail(nextValue)}
+            autoCapitalize='none'
+            keyboardType="email-address"
+        />
+        <Button style={{marginTop:10}} onPress={() => sendInvite()}>
+          Invite!
+        </Button>
+      </PopUpContainer>
       <ContentContainer>
         <CreateProject
           visible={createProjectVisible}
@@ -153,36 +175,6 @@ export function TeamPage(props) {
           setActivities={props.setActivities}
           location={props.location}
         />
-
-        <Modal
-          style={{width:'80%'}}
-          animationType="fade"
-          transparent={true}
-          visible={inviteVisible}
-          backdropStyle={styles.backdrop}
-          onRequestClose={() => {setInviteVisible(false); setEmail('');}}
-        >
-          <TouchableOpacity
-              style={styles.modalBackgroundStyle}
-              activeOpacity={1}
-              onPressOut={() => {setInviteVisible(false); setEmail('');}}
-            >
-            <Card disabled={true} style={{width:'80%', margin:5}}>
-              <Text>Enter a user Email: </Text>
-              <Input
-                  placeholder='Type Here...'
-                  value={email}
-                  onChangeText={(nextValue) => setEmail(nextValue)}
-                  autoCapitalize='none'
-                  keyboardType="email-address"
-              />
-              <Button style={{marginTop:10}} onPress={() => sendInvite()}>
-                Invite!
-              </Button>
-            </Card>
-          </TouchableOpacity>
-
-        </Modal>
 
         <View style={styles.teamTextView}>
             <View style={{flexDirection:'column', justifyContent:'flex-end'}}>

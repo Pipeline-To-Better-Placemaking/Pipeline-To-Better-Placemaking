@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../components/headers.component';
-import { ViewableArea, ContentContainer } from '../components/content.component';
+import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './collaborate.styles';
 
@@ -41,10 +41,11 @@ export function Collaborate(props) {
 
     // if successful post, update
     if(success) {
-      props.teams.push({
-         _id: newTeam._id,
-         title: newTeam.title
-      });
+      // TODO: ask that the backend sends the first and last name with the list of users for a new team
+      // or just set them ourselves for now since it's the current user
+      console.log("new team: ", newTeam);
+
+      props.teams.push(newTeam);
       props.setTeams(props.teams)
       await AsyncStorage.setItem("@teams", JSON.stringify(props.teams))
       // clear Projects
@@ -191,6 +192,11 @@ export function Collaborate(props) {
     }
   }
 
+  const closePopUp = () => {
+    setVisible(false);
+    setTeamName('');
+  }
+
   const renderAnchor = () => (
     <Divider style={{marginTop: 5}} />
   );
@@ -230,6 +236,21 @@ export function Collaborate(props) {
   return (
     <ViewableArea>
       <Header text={'Collaborate'}/>
+      <PopUpContainer
+        {...props}
+        visible={visible}
+        closePopUp={closePopUp}
+      >
+        <Text>Enter Team Name </Text>
+        <Input
+            placeholder='Type Here...'
+            value={teamName}
+            onChangeText={nextValue => setTeamName(nextValue)}
+        />
+        <Button onPress={() => createTeam()}>
+          Create New Team!
+        </Button>
+      </PopUpContainer>
       <ContentContainer>
         <View style={styles.teamTextView}>
             <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
@@ -241,27 +262,7 @@ export function Collaborate(props) {
                 </Button>
             </View>
         </View>
-        <Popover
-          visible={visible}
-          backdropStyle={styles.backdrop}
-          onBackdropPress={() => {setVisible(false); setTeamName('');}}
-          anchor={renderAnchor}
-        >
-          <View style={styles.modalBackgroundStyle}>
-            <Card disabled={true}>
-              <Text>Enter Team Name </Text>
-              <Input
-                  placeholder='Type Here...'
-                  value={teamName}
-                  onChangeText={nextValue => setTeamName(nextValue)}
-              />
-              <Button onPress={() => createTeam()}>
-                Create New Team
-              </Button>
-            </Card>
-          </View>
-
-        </Popover>
+        <Divider style={{marginTop: 5}} />
 
         <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'40%', marginTop:15}}>
           <List
