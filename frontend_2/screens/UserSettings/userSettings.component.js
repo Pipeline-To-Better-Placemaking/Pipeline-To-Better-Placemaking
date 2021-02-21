@@ -57,17 +57,70 @@ export function UserSettings(props) {
 	}
 
 	const confirmEditProfile = async () => {
-		props.setFirstName(firstNameText)
-		await AsyncStorage.setItem('@firstName', props.firstName)
+		let editedFirstName = firstNameText
+		let editedLastName = lastNameText
 
-		props.setLastName(lastNameText)
-		await AsyncStorage.setItem('@lastName', props.lastName)
+		// if any profile data input is empty do not update that data
+		if(editedFirstName == "" || editedFirstName == null)
+			editedFirstName = props.firstName
 
-		props.setEmail(emailText)
-		await AsyncStorage.setItem('@email', props.email)
+		if(lastNameText == "" || lastNameText == null)
+			editedLastName = props.lastName
 
-		setModalVisible(!modalVisible)
-		// call backend and update values
+		updateUser(editedFirstName, editedLastName)
+	}
+
+	// backend call
+	const updateUser = async (editedFirstName, editedLastName) => {
+		let success = false
+		let result = null
+
+		try {
+			console.log("Trying to update a user")
+
+			const response = await fetch('https://measuringplacesd.herokuapp.com/api/users/', {
+				method: 'PUT',
+				headers: {
+					Accept: 'application/json',
+						'Content-Type': 'application/json',
+						'Authorization': 'Bearer ' + props.token
+				},
+
+				body: JSON.stringify({
+					firstname: editedFirstName,
+					lastname: editedLastName
+				})
+			})
+
+			result = await response.text()
+			console.log(result)
+			success = true
+		} catch (error) {
+				console.log("ERROR: " + error)
+		}
+
+		// if user details were properly updated in the backend change them locally
+		if(success) {
+			props.setFirstName(editedFirstName)
+			await AsyncStorage.setItem('@firstName', props.firstName)
+	
+			props.setLastName(editedLastName)
+			await AsyncStorage.setItem('@lastName', props.lastName)
+	
+			//props.setEmail(emailText)
+			//await AsyncStorage.setItem('@email', props.email)
+
+			setModalVisible(!modalVisible)
+		} else {
+			cancelEditProfile()
+		}
+	}
+
+	const logOut = () => {
+		// Possible improvements
+		// 1) Clean the async storage
+		// 2) Delete the user token (log out a user from a session)
+		props.navigation.navigate('Title')
 	}
 
   return (
@@ -93,12 +146,14 @@ export function UserSettings(props) {
 									onChangeText={nextValue => setLastNameText(nextValue)}
 								/>
 
+								{/* Email can't be changed with API yet
 								<Input
 									label = 'Email'
 									placeholder = 'Email'
 									value={emailText}
 									onChangeText={nextValue => setEmailText(nextValue)}
 								/>
+								*/}
 
 								<Button style={{margin:5}} onPress={() => confirmEditProfile()} accessoryRight = {confirmIcon}>
 									CONFIRM
@@ -129,12 +184,12 @@ export function UserSettings(props) {
           TOGGLE THEME
         </Button>
 
-				<Button style={{margin:5}} onPress={themeContext.toggleTheme}>
+				<Button style={{margin:5}}>
           CHANGE PASSWORD
         </Button>
 
-				<Button style={{margin:5}} onPress={() => setModalVisible(!modalVisible)} accessoryRight = {mailIcon}>
-          VERIFY EMAIL
+				<Button style={{margin:5}} status='danger' onPress={() => logOut()}>
+          LOG OUT
         </Button>
 
 			</ContentContainer>
