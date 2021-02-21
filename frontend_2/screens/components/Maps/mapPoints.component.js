@@ -214,7 +214,6 @@ export const ShowAreas = ({areas}) => {
         strokeColor={'rgba(255,0,0,0.5)'}
         fillColor={'rgba(0,0,0,0.5)'}
         key={area._id}
-        tappable={true}
       >
       </MapView.Polygon>
       <MapView.Marker
@@ -233,7 +232,7 @@ export const ShowAreas = ({areas}) => {
 };
 
 export const ShowMarkers = ({markers}) => {
-  if(markers === null) {
+  if(markers === null || markers.length === 0) {
     return (null);
   }
   else {
@@ -357,6 +356,41 @@ export function MapAddArea({children, ...props}) {
           renderItem={renderItem}
         />
       </View>
+    </View>
+  );
+}
+
+/* This needs:
+area={}
+marker={}
+setMarker={}
+*/
+export function MapAddOne({children, ...props}) {
+
+  // This is basically a default zoom level
+  let location = getRegionForCoordinates(props.areas[0].area)
+
+  return(
+    <View>
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        style={{height:'100%'}}
+        zoomEnabled
+        initialRegion={{
+          latitude: location.latitude,
+          longitude: location.longitude,
+          latitudeDelta: location.latitudeDelta,
+          longitudeDelta: location.longitudeDelta,
+        }}
+        onPress={event => props.setMarker(event.nativeEvent.coordinate)}
+      >
+        <MapView.Marker
+          coordinate={props.marker}
+          draggable={true}
+        />
+        <ShowAreas areas={props.areas}/>
+        {children}
+      </MapView>
     </View>
   );
 }
