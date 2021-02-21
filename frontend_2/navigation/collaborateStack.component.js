@@ -97,6 +97,8 @@ export function CollaborateStack(props) {
             token={token}
             userId={userId}
             team={team}
+            setTeam={setTeam}
+            teams={teams}
             setTeams={setTeams}
             project={project}
             setProject={setProject}
@@ -115,7 +117,7 @@ export function CollaborateStack(props) {
             token={token}
             userId={userId}
             team={team}
-            setTeams={setTeams}
+            setTeam={setTeam}
             project={project}
             setProject={setProject}
             projects={projects}

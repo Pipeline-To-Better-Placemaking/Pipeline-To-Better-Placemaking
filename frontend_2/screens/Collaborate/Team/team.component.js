@@ -14,6 +14,17 @@ export function TeamPage(props) {
   const [inviteVisible, setInviteVisible] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [email, setEmail] = useState('');
+  const [projects, setProjects] = useState(props.projects);
+
+  useEffect(() => {
+    async function getTokens() {
+      let projectList = await AsyncStorage.getItem("@projects");
+      projectList = JSON.parse(projectList);
+      setProjects(projectList);
+    }
+
+    getTokens()
+  }, []);
 
   const openProjectPage = async (item) => {
     let success = false
@@ -161,21 +172,14 @@ export function TeamPage(props) {
           Invite!
         </Button>
       </PopUpContainer>
+      <CreateProject
+        {...props}
+        visible={createProjectVisible}
+        setVisible={setCreateProjectVisible}
+        create={navigateProjectPage}
+        setProjects={setProjects}
+      />
       <ContentContainer>
-        <CreateProject
-          visible={createProjectVisible}
-          setVisible={setCreateProjectVisible}
-          create={navigateProjectPage}
-          token={props.token}
-          team={props.team}
-          project={props.project}
-          setProject={props.setProject}
-          projects={props.projects}
-          setProjects={props.setProjects}
-          setActivities={props.setActivities}
-          location={props.location}
-        />
-
         <View style={styles.teamTextView}>
             <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
                 <Text style={styles.teamText}>Projects </Text>
@@ -191,7 +195,7 @@ export function TeamPage(props) {
         <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
           <List
             style={{maxHeight:'100%', maxWidth:'90%'}}
-            data={props.projects}
+            data={projects}
             ItemSeparatorComponent={Divider}
             renderItem={projectItem}
           />
