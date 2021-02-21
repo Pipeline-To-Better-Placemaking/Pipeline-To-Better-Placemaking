@@ -95,6 +95,7 @@ export function CreateTimeSlots(props) {
         timeVal: time,
         timeString: getTimeStr(time),
         numResearchers: '1',
+        researchers: [],
         duration: '30',
         assignedPointIndicies: [],
     };
