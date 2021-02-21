@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../../components/headers.component';
-import { MapAdd, ShowMarkers } from '../../components/Maps/mapPoints.component';
+import { MapAddArea, ShowMarkers } from '../../components/Maps/mapPoints.component';
 import { ModalContainer} from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
@@ -102,15 +102,14 @@ export function CreateProject(props) {
       </View>
 
       <View style={styles.mapHeight}>
-        <MapAdd
+        <MapAddArea
           location={location}
           markers={markers}
           setMarkers={setMarkers}
           mapHeight={'55%'}
           listHeight={'40%'}
         >
-          <ShowMarkers markers={markers}/>
-        </MapAdd>
+        </MapAddArea>
       </View>
 
       <View style={{flexDirection:'row', justifyContent:'space-around', marginTop:'30%'}}>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker, Image, Polygon, Callout } from 'react-native-maps'
 import { View } from 'react-native';
 import { Text, Button, Input, Icon, Divider, List, ListItem} from '@ui-kitten/components';
-import { MapAreaWrapper, ShowArea } from './mapPoints.component';
+import { PressMapAreaWrapper, ShowArea } from './mapPoints.component';
 
 export function StationaryActivityMap(props) {
 
@@ -53,7 +53,7 @@ export function StationaryActivityMap(props) {
     return(
 
         <View>
-            <MapAreaWrapper
+            <PressMapAreaWrapper
                 area={props.area}
                 mapHeight={'100%'}
                 onPress={props.addMarker}
@@ -69,7 +69,7 @@ export function StationaryActivityMap(props) {
 
                 <ShowPolygon/>
 
-            </MapAreaWrapper>
+            </PressMapAreaWrapper>
         </View>
     )
 };

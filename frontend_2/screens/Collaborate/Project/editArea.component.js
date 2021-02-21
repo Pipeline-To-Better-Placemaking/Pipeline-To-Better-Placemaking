@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { MapWrapper, ShowAreas, MapAdd, ShowMarkers } from '../../components/Maps/mapPoints.component';
+import { MapWrapper, ShowAreas, MapAddArea, ShowMarkers } from '../../components/Maps/mapPoints.component';
 import { ModalContainer } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
@@ -180,15 +180,14 @@ export function EditPoints(props) {
         </View>
 
         <View style={{height:'80%'}}>
-          <MapAdd
+          <MapAddArea
             location={props.areaInfo.location}
             markers={props.tempArea}
             setMarkers={props.setTempArea}
             mapHeight={'60%'}
             listHeight={'40%'}
           >
-            <ShowMarkers markers={props.tempArea}/>
-          </MapAdd>
+          </MapAddArea>
         </View>
       </View>
 
