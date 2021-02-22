@@ -1,7 +1,7 @@
-curl --header "Content-Type: application/json" \
-      --request POST \
-      -d '{"email": "apple@gmail.com","password": "What@1234", "firstname": "chuck", "lastname": "E"}'\
-      http://localhost:8080/api/users
+#curl --header "Content-Type: application/json" \
+#      --request POST \
+#      -d '{"email": "apple@gmail.com","password": "What@1234", "firstname": "chuck", "lastname": "E"}'\
+#      http://localhost:8080/api/users
 
 TOKEN=$(curl --header "Content-Type: application/json" \
       --request POST \

@@ -57,12 +57,22 @@ const stationary_schema = mongoose.Schema({
         required: true,
         ref: 'Users'
     }],
+
+    maxResearchers:{
+        type: Number,
+        required: true,
+        default: 1
+    },
+
     duration:{
         type: Number,
         required: true
     },
 
-    startTime: Date,
+    date:{
+        type: Date,
+        required: true
+    },
 
     data:[Entry]   
 })
@@ -95,12 +105,35 @@ module.exports.projectCleanup = async function(projectId) {
     return await Maps.deleteMany({ project: projectId })
 }
 
+
+
 module.exports.addEntry = async function(mapId, newEntry) {
     return await Maps.updateOne(
         { _id: mapId },
         { $push: { data: newEntry }}
     )
 }
+
+module.exports.addResearcher = async function(mapId, userId){
+    await Maps.updateOne(
+        { _id: mapId },
+        { $push: { users: userId}}
+    )
+}
+
+module.exports.isResearcher = async function(mapId, userId){
+    const doc = await Maps.find(
+        {
+            _id: mapId, 
+            researchers: { $elemMatch:  userId }
+        }
+    )
+    if (doc.length === 0) {
+        return false
+    }
+    return true
+}
+    
 
 module.exports.findData = async function(mapId, entryId){
     const out = (await Maps.find({

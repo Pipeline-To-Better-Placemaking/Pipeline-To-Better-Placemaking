@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 const { models } = require('mongoose')
 
-const { UnauthorizedError } = require('../utils/errors')
+const { UnauthorizedError, BadRequestError } = require('../utils/errors')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
@@ -19,8 +19,11 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
         let newMap = new Map({
             title: req.body.title,
             area: req.body.area,
+            standingPoints: req.body.standingPoints,
+            researchers: req.body.researchers,
             project: req.body.project,
-            date: req.body.date
+            date: req.body.date,
+            duration: project.stationaryDuration
         })
 
         const map = await Map.addMap(newMap)
@@ -34,18 +37,22 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 })
 
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    
-    var map = await Map.findById(req.params.id)
-    console.log(map)
-    project = await Project.findById(map.project)
-    fullArea = await Project.getArea(project._id,map.area)
-    console.log(fullArea)
-    console.log(map)
-    map.area = fullArea.area[1]._id
-  
+    const map = await  Map.findById(req.params.id).populate('area').populate('standingPoints').populate('researchers','firstname')
     res.status(200).json(map)
+})
 
-    
+router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    map = await Map.findById(req.params.id)
+    project = await Project.findById(map.project)
+    user = await req.user
+    if(map.researchers.length < map.maxResearchers)
+        if(Team.isUser(project.team,user._id))
+            return await Map.addResearcher(map._id,user._id)
+        else
+            throw new UnauthorizedError('You do not have permision to perform this operation')
+    else 
+        throw new BadRequestError('Research team is already full')
+
 })
 
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
@@ -55,7 +62,9 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     let newMap = new Map({
         title: (req.body.title ? req.body.title : map.title),
         date: (req.body.date ? req.body.date : map.date),
-        area: (req.body.area ? req.body.area : map.area)
+        area: (req.body.area ? req.body.area : map.area),
+        researchers: (req.body.reaserchers ? req.body.reaserchers : map.researchers),
+        standingPoints: (req.body.standingPoints ? req.body.standingPoints : req.body.standingPoints)
     })
 
     project = await Project.findById(map.project)
@@ -87,7 +96,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
-    if(map.owner.toString() == user._id.toString()){
+    if(Map.isResearcher(map._id, user._id)){
         if(req.body.entries){
             for(var i = 0; i < req.body.entries.length; i++){
                 await Map.addEntry(map._id,req.body.entries[i])
@@ -105,9 +114,9 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
 
 router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user   
-    map = await Map.findById(req.params.id)
+    mapId = req.params.id
 
-    oldData = await Map.findData(map._id, req.params.data_id)
+    oldData = await Map.findData(mapId, req.params.data_id)
 
     const newData = {
         _id: oldData._id,
@@ -118,8 +127,8 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
         time: (req.body.time ? req.body.time : oldData.time)
     }
 
-    if (map.owner.toString() == user._id.toString()){
-        await Map.updateData(map._id,oldData._id,newData)
+    if (Map.isResearcher(mapId, user._id)){
+        await Map.updateData(mapId,oldData._id,newData)
         res.status(201).json(await Map.findById(req.params.id))
     }  
     else{
@@ -130,7 +139,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 router.delete('/:id/data/:data_id',passport.authenticate('jwt',{session:false}), async (req, res, next) => { 
     user = await req.user
     map = await Map.findById(req.params.id)
-    if(map.owner.toString() == user._id.toString()){
+    if(Map.isResearcher(map._id, user._id)){
         res.json(await Map.deleteEntry(map._id,req.params.data_id))
     }
     else{
