@@ -23,7 +23,8 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
             researchers: req.body.researchers,
             project: req.body.project,
             date: req.body.date,
-            duration: project.stationaryDuration
+            duration: project.stationaryDuration,
+            maxResearchers: req.body.maxResearchers
         })
 
         const map = await Map.addMap(newMap)
