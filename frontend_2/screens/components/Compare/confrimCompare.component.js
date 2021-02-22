@@ -6,7 +6,7 @@ import { styles } from '../../Home/home.styles.js';
 export function ConfirmCompare(props) {
 
     const onCompareConfirm = () => {
-        console.log("Props: " + JSON.stringify(props));
+        //console.log("Props: " + JSON.stringify(props));
 
         props.navigation.navigate("CompareScreen");
     }

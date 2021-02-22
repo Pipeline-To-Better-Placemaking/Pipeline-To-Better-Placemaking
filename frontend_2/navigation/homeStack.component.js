@@ -83,7 +83,7 @@ export function HomeScreenStack(props){
     var index = selectedProjectsArray.indexOf(name)
     selectedProjectsArray.splice(index, 1)
 
-    console.log("Array: " + JSON.stringify(selectedProjectsArray))
+    //console.log("Array: " + JSON.stringify(selectedProjectsArray))
 
     setSelectedProjects(selectedProjectsArray)
   }
