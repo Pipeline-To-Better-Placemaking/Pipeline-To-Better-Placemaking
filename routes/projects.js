@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const Project = require('../models/projects.js')
 const Team = require('../models/teams.js')
+const Area = require('../models/areas.js')
+const Standing_Point = require('../models/standing_points.js')
 const Stationary_Map = require('../models/stationary_maps.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
@@ -14,20 +16,42 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     user = await req.user
 
     if(await Team.isAdmin(req.body.team,user._id)){
-    
+
+        if(req.body.points < 3)
+            throw new BadRequestError('Areas require at least three points')
+
+        let newArea = new Area({
+            points: req.body.points
+        })
+        newArea.save()
+
+        var pointIds = []
+        for(var i = 0; i < req.body.standingPoints.length; i++){
+            let newPoint = new Standing_Point({
+                longitude: req.body.standingPoints[i].longitude,
+                latitude: req.body.standingPoints[i].latitude,
+                title: req.body.standingPoints[i].title
+            })
+            newPoint.save()
+            pointIds[i] = newPoint._id
+        }
         let newProject = new Project({
             title: req.body.title,
             description: req.body.description,
-            subareas: [{area:req.body.points}],
-            team: req.body.team
+            area: newArea._id,
+            subareas: [newArea._id],
+            standingPoints: pointIds,
+            team: req.body.team,
+            surveyDuration: req.body.surveyDuration,
+            movingDuration: req.body.stationaryDuration,
+            stationaryDuration: req.body.surveyDuration
+        
         })
 
         const project = await Project.addProject(newProject)
 
         await Team.addProject(req.body.team,project._id)
-
         res.status(201).json(project)
-
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
@@ -35,7 +59,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 })
 
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    res.json(await Project.findById(req.params.id))
+    res.json(await Project.findById(req.params.id).populate('area').populate('subareas').populate('standingPoints'))
 })
 
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
@@ -58,7 +82,6 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
     }
-    
 })
 
 router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
