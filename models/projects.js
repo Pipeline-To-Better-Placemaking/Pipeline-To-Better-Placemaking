@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
+const Area = require('../models/areas.js')
+const Standing_Point = require('../models/standing_points.js')
+const Stationary_Map = require('../models/stationary_maps.js')
+
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const project_schema = mongoose.Schema({
@@ -81,6 +85,17 @@ module.exports.updateProject = async function (projectId, newProject) {
 }
 
 module.exports.deleteProject = async function(projectId) {
+
+    project = await Projects.findById(projectId)
+
+    await Stationary_Map.projectCleanup(project._id)
+
+    for(var i = 0; i < project.subareas.length; i++)   
+        await Area.findByIdAndDelete(project.subareas[i])
+    
+    for(var i = 0; i < project.standingPoints.length; i++)   
+        await Area.findByIdAndDelete(project.standingPoints[i])
+
     return await Projects.findByIdAndDelete(projectId)
 }
 
@@ -115,8 +130,24 @@ module.exports.addArea = async function(projectId, areaId) {
 }
 
 module.exports.deleteArea = async function(projectId, areaId) {
-  return await Projects.updateOne(
+    await Area.findByIdAndDelete(areaId)
+    return await Projects.updateOne(
       { _id: projectId },
       { $pull: { subareas: areaId}}
+  )
+}
+
+module.exports.addPoint = async function(projectId, pointId) {
+    return await Projects.updateOne(
+        { _id: projectId },
+        { $push: { standingPoints:  pointId}}
+    )
+}
+
+module.exports.deletePoint = async function(projectId, pointId) {
+    await Standing_Point.findByIdAndDelete(pointId)
+    return await Projects.updateOne(
+      { _id: projectId },
+      { $pull: { standingPoints: pointId}}
   )
 }
