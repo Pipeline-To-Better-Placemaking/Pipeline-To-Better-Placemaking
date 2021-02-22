@@ -32,37 +32,39 @@ const Entry = mongoose.Schema({
     time: {
         type: Date,
         required: true
-    }
+    },
 })
-
-const TimeSlot = mongoose.Schema({
-    time: Date,
-    numResearchers: Number,
-    researchers: [ObjectId],
-    duration: Number,
-    assignedPoints: [Number],
-    data: [Entry]
-})
-
-
 const stationary_schema = mongoose.Schema({
+    
+    title:String,
+    
     project: {
         type: ObjectId,
         required: true
     },
-
-    title:String,
-    timeSlots:[TimeSlot],
- 
     area: {
         type: ObjectId,
+        required: true,
+        ref: 'Areas'
+    },
+    standingPoints: [{
+        type: ObjectId,
+        required: true,
+        ref: 'Standing_Points'
+    }],
+    researchers: [{
+        type: ObjectId,
+        required: true,
+        ref: 'Users'
+    }],
+    duration:{
+        type: Number,
         required: true
     },
-    standingPoints:[{
-                    latitude:Number,
-                    longitude:Number
-                    }],
-    date: Date
+
+    startTime: Date,
+
+    data:[Entry]   
 })
 
 

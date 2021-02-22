@@ -1,3 +1,8 @@
+curl --header "Content-Type: application/json" \
+      --request POST \
+      -d '{"email": "apple@gmail.com","password": "What@1234", "firstname": "chuck", "lastname": "E"}'\
+      http://localhost:8080/api/users
+
 TOKEN=$(curl --header "Content-Type: application/json" \
       --request POST \
       -d '{"email": "apple@gmail.com","password": "What@1234"}'\
@@ -10,15 +15,36 @@ curl -H 'Accept: application/json' \
      --request GET \
      http://localhost:8080/api/users/
 
+echo
+
+#curl -H 'Content-Type: application/json' \
+#     -H "Authorization: Bearer ${TOKEN}" \
+#     --request POST \
+#      -d "{\"title\": \"team1\",\"description\": \"thingy\"
+#      }" \
+#     http://localhost:8080/api/teams/
+
 TEAM=$(curl -H 'Accept: application/json' \
     -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
-     http://localhost:8080/api/users/ \
-     | jq -r '.teams[1]._id' )
-echo
-echo
+    http://localhost:8080/api/users/ \
+     | jq -r '.teams[0]._id' )
 
+echo TEAM: ${TEAM}
 
+#curl -H 'Content-Type: application/json' \
+#     -H "Authorization: Bearer ${TOKEN}" \
+#     --request POST \
+#      -d "{\"title\": \"proj1\",\"description\": \"thingy\",
+#          \"standingPoints\":[{\"latitude\": 25, \"longitude\": 56, \"title\": \"Statue\"}],
+#          \"points\":[{\"latitude\": 28.602413253152307, \"longitude\": -70.20019937739713},
+#                    {\"latitude\": 20.602413253152307, \"longitude\": -81.20019937739713},
+#                      {\"latitude\": 38.602413253152307, \"longitude\": -81.20019937739713}],
+#          \"team\": \"${TEAM}\"
+##      }" \
+ #    http://localhost:8080/api/projects/
+
+#echo
 
 PROJECT=$(curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
@@ -26,62 +52,55 @@ PROJECT=$(curl -H 'Content-Type: application/json' \
      http://localhost:8080/api/teams/${TEAM}  \
      | jq -r '.projects[0]._id' )
 
-AREA=$(curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-     http://localhost:8080/api/projects/${PROJECT} \
-     | jq -r '.subareas[0]._id' )
-USER=$(curl -H "Authorization: Bearer ${TOKEN}" \
-        -H 'Content-Type: application/json' \
-       --request GET \
-        http://localhost:8080/api/users/ \
-        | jq -r '._id')
-
+echo
+echo
 
 curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
+    -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
      http://localhost:8080/api/projects/${PROJECT}
- 
-echo
-echo
-
-
-MAP=$(curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-     http://localhost:8080/api/projects/${PROJECT} \
-     | jq -r '.activities[0].activity')
 
 echo
 
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-     http://localhost:8080/api/stationary_maps/${MAP} 
 
-echo
-echo
-
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request POST \
-     -d '{"userEmail": "dogg@gmail.com"}' \
-     http://localhost:8080/api/teams/${TEAM}/invites
-echo
-
-TOKEN=$(curl --header "Content-Type: application/json" \
-      --request POST \
-      -d '{"email": "dogg@gmail.com","password": "What@1234"}'\
-      http://localhost:8080/api/login \
-      | jq -r '.token')
-
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-     http://localhost:8080/api/users/
+#AREA=$(curl -H 'Content-Type: application/json' \
+#     -H "Authorization: Bearer ${TOKEN}" \
+#     --request GET \
+#     http://localhost:8080/api/projects/${PROJECT} \
+#     | jq -r '.subareas[0]._id' )
+#USER=$(curl -H "Authorization: Bearer ${TOKEN}" \
+#        -H 'Content-Type: application/json' \
+#       --request GET \
+#        http://localhost:8080/api/users/ \
+#        | jq -r '._id')
 
 
+#curl -H 'Content-Type: application/json' \
+#     -H "Authorization: Bearer ${TOKEN}" \
+#     --request GET \
+#     http://localhost:8080/api/projects/${PROJECT}
+
+
+
+#MAP=$(curl -H 'Content-Type: application/json' \
+#     -H "Authorization: Bearer ${TOKEN}" \
+#     --request GET \
+#     http://localhost:8080/api/projects/${PROJECT} \
+#     | jq -r '.activities[0].activity')
+
+#echo
+
+#curl -H 'Content-Type: application/json' \
+#     -H "Authorization: Bearer ${TOKEN}" \
+#     --request GET \
+#     http://localhost:8080/api/stationary_maps/${MAP} 
+
+#curl -H 'Content-Type: application/json' \
+#     -H "Authorization: Bearer ${TOKEN}" \
+#     --request POST \
+#     -d '{"userEmail": "dogg@gmail.com"}' \
+#     http://localhost:8080/api/teams/${TEAM}/invites
+#echo
 
 #curl -H 'Content-Type: application/json' \
 #     -H "Authorization: Bearer ${TOKEN}" \
