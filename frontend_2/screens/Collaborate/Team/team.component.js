@@ -29,7 +29,7 @@ export function TeamPage(props) {
   const openProjectPage = async (item) => {
     let success = false
     let projectDetails = null
-    // Get the team information
+    // Get the project information
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + item._id, {
             method: 'GET',
@@ -46,7 +46,7 @@ export function TeamPage(props) {
     }
     // if successfully retrieved project info, Update
     if(success) {
-      console.log("Project Team: ", projectDetails);
+      console.log("Project: ", projectDetails);
       // set selected project page information
       props.setProject(projectDetails)
       props.setActivities(projectDetails.activities);
