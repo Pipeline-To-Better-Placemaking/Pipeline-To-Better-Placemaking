@@ -7,6 +7,8 @@ import { MapAreaWrapper, ShowArea } from '../../components/Maps/mapPoints.compon
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import { EditSubAreas } from './viewSubareas.component';
 import { EditStandingPoints } from './viewStandingPoints.component';
+import { EditActivityInfo } from './editActivityInfo.component';
+import { EditProjectPage } from './editProjectPage.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './project.styles';
 
@@ -76,6 +78,11 @@ export function ProjectPage(props) {
         <MenuItem title='Standing Points' onPress={() => {setEditMenuVisible(false); setEditStandingPointsVisible(true)}}/>
         <MenuItem title='Activity Information' onPress={() => {setEditMenuVisible(false); setEditActivityVisible(true)}}/>
       </HeaderBackEdit>
+      <EditProjectPage
+        {...props}
+        visible={editProjectVisible}
+        setVisible={setEditProjectVisible}
+      />
       <EditSubAreas
         {...props}
         subareas={props.project.subareas}
@@ -88,6 +95,11 @@ export function ProjectPage(props) {
         standingPoints={[]}
         visible={editStandingPointsVisible}
         setVisible={setEditStandingPointsVisible}
+      />
+      <EditActivityInfo
+        {...props}
+        visible={editActivityVisible}
+        setVisible={setEditActivityVisible}
       />
       <ContentContainer>
 

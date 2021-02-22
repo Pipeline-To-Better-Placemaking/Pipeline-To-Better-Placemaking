@@ -44,6 +44,28 @@ export function ActivitySignUpPage(props) {
     }
   }
 
+  const onSignUp = async (timeSlot, index) => {
+    let tempActivity = {...props.activity};
+    let tempTimeSlots = [...props.activity.timeSlots];
+    let tempSlot = {...timeSlot};
+    let tempResearchers = [...timeSlot.researchers];
+    let max = timeSlot.numResearchers;
+    let len = timeSlot.researchers.length;
+
+    if(max > 0 && (max-len) > 0 ) {
+      //TODO: update the Activity to sign user up for time slot
+
+      // add user locally
+      tempResearchers.push(props.username);
+      // this feels like nonsense lol but it works
+      tempSlot.researchers = tempResearchers;
+      tempTimeSlots[index] = tempSlot;
+      tempActivity.timeSlots = tempTimeSlots;
+      props.setActivity(tempActivity);
+    }
+
+  }
+
   const getPointsLocations = (timeSlot) => {
     let tempPoints = [];
     timeSlot.assignedPointIndicies.map(index => {
@@ -60,17 +82,38 @@ export function ActivitySignUpPage(props) {
     return tempPoints.join(', ');
   }
 
+  const getName = (timeSlot, index) => {
+    if(timeSlot.researchers !== null && timeSlot.researchers.length > index) {
+      return timeSlot.researchers[index];
+    } else {
+      return " ...";
+    }
+  }
+
+  const getResearchers = (timeSlot) => {
+    if(timeSlot.numResearchers <= 0){
+      return "    none";
+    }
+    let names = [];
+    for (let i = 0; i < timeSlot.numResearchers; i++) {
+      names.push("    " + (i+1) + ". " + getName(timeSlot, i));
+    }
+    let str = names.join('\n');
+    return str;
+  }
+
   const timeSlotCard = ({item, index}) => (
     <Card disabled={true}>
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
         <View style={{flexDirection:'column'}}>
           <Text>Start Time {item.timeString}</Text>
-          <Text>Time Limit: {item.duration} (min)</Text>
+          <Text>Time at Site: {item.duration} (min)</Text>
           <Text>Standing Points: {getPointsString(item)}</Text>
-          <Text>Number of Researchers: {item.numResearchers}</Text>
+          <Text>Researchers:</Text>
+          <Text>{getResearchers(item)}</Text>
         </View>
         <View style={{flexDirection:'column', justifyContent:'space-around'}}>
-          <Button status='info' style={{margin:5}}>
+          <Button status='info' style={{margin:5}} onPress={() => onSignUp(item, index)}>
             Sign Up
           </Button>
           <Button status='success' style={{margin:5}} onPress={() => onBeginPress(index)}>

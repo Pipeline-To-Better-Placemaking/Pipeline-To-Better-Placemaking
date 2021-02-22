@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Modal } from 'react-native';
+import { View, Modal, ScrollView } from 'react-native';
 import { Icon, Input, Text, Button } from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
 import { Header } from '../components/headers.component';
@@ -36,7 +36,7 @@ export function UserSettings(props) {
 	const mailIcon = (props) => (
 		<Icon {...props} fill='white' name='email'/>
 	);
-	
+
 	const themeIcon = (props) => {
 		if(themeContext.theme == 'light') {
 			return(
@@ -103,10 +103,10 @@ export function UserSettings(props) {
 		if(success) {
 			props.setFirstName(editedFirstName)
 			await AsyncStorage.setItem('@firstName', props.firstName)
-	
+
 			props.setLastName(editedLastName)
 			await AsyncStorage.setItem('@lastName', props.lastName)
-	
+
 			//props.setEmail(emailText)
 			//await AsyncStorage.setItem('@email', props.email)
 
@@ -132,15 +132,17 @@ export function UserSettings(props) {
 					<ViewableArea>
 							<Header text={'Edit Profile'}/>
 							<ContentContainer>
+                <View style={{margin:20}}>
+
+                <Text category='s1'>First Name:</Text>
 								<Input
-									label = 'First Name'
 									placeholder = 'First Name'
 									value={firstNameText}
 									onChangeText={nextValue => setFirstNameText(nextValue)}
 								/>
 
+                <Text category='s1'>Last Name:</Text>
 								<Input
-									label = 'Last Name'
 									placeholder = 'Last Name'
 									value={lastNameText}
 									onChangeText={nextValue => setLastNameText(nextValue)}
@@ -155,42 +157,58 @@ export function UserSettings(props) {
 								/>
 								*/}
 
-								<Button style={{margin:5}} onPress={() => confirmEditProfile()} accessoryRight = {confirmIcon}>
-									CONFIRM
-								</Button>
-								<Button style={{margin:5}} onPress={() => cancelEditProfile()} accessoryRight = {closeIcon}>
-									CANCEL
-								</Button>
+                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+  								<Button
+                    status={'danger'}
+                    style={{margin:5}}
+                    onPress={() => cancelEditProfile()}
+                    accessoryLeft = {closeIcon}
+                  >
+  									CANCEL
+  								</Button>
+                  <Button
+                    status={'success'}
+                    style={{margin:5}}
+                    onPress={() => confirmEditProfile()}
+                    accessoryRight = {confirmIcon}
+                  >
+  									CONFIRM
+  								</Button>
+                </View>
+                </View>
 							</ContentContainer>
 					</ViewableArea>
 				</Modal>
 
-				<View style={styles.circle}>
-						<Text style = {styles.userInitials}>
-							{props.firstName && props.firstName[0]}{props.lastName && props.lastName[0]}
-						</Text>
-				</View>
+        <ScrollView style={{margin:5, marginRight:20, marginLeft:20}}>
 
-				<View style={styles.userDetails}>
-					<Text style={{fontSize: 20, alignSelf: 'center'}}> {props.firstName} {props.lastName} </Text>
-					<Text style={{fontSize: 20, alignSelf: 'center'}}> {props.email} </Text>
-				</View>
+  				<View style={styles.circle}>
+  						<Text style={styles.userInitials}>
+  							{props.firstName && props.firstName[0]}{props.lastName && props.lastName[0]}
+  						</Text>
+  				</View>
 
-				<Button style={{margin:5}} onPress={() => setModalVisible(!modalVisible)} accessoryRight = {editIcon}>
-          EDIT PROFILE
-        </Button>
+  				<View style={styles.userDetails}>
+  					<Text style={{fontSize: 20, alignSelf: 'center'}}> {props.firstName} {props.lastName} </Text>
+  					<Text style={{fontSize: 20, alignSelf: 'center'}}> {props.email} </Text>
+  				</View>
 
-				<Button style={{margin:5}} onPress={themeContext.toggleTheme} accessoryRight = {themeIcon}>
-          TOGGLE THEME
-        </Button>
+  				<Button style={{margin:5}} onPress={() => setModalVisible(!modalVisible)} accessoryRight = {editIcon}>
+            EDIT PROFILE
+          </Button>
 
-				<Button style={{margin:5}}>
-          CHANGE PASSWORD
-        </Button>
+  				<Button style={{margin:5}} onPress={themeContext.toggleTheme} accessoryRight = {themeIcon}>
+            TOGGLE THEME
+          </Button>
 
-				<Button style={{margin:5}} status='danger' onPress={() => logOut()}>
-          LOG OUT
-        </Button>
+  				<Button style={{margin:5}}>
+            CHANGE PASSWORD
+          </Button>
+
+  				<Button style={{margin:5}} status='danger' onPress={() => logOut()}>
+            LOG OUT
+          </Button>
+        </ScrollView>
 
 			</ContentContainer>
     </ViewableArea>

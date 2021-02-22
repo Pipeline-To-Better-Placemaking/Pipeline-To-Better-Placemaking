@@ -51,6 +51,15 @@ export function CreateProject(props) {
       props.setProject(projectDetails)
       props.setActivities(projectDetails.activities);
 
+      //push the team info
+      let selectedTeam = {...props.team};
+      let tempProjects = [...props.team.projects];
+      tempProjects.push(projectDetails);
+      selectedTeam.projects = tempProjects;
+      props.setProjects(tempProjects);
+      props.setTeam(team => selectedTeam);
+      await AsyncStorage.setItem("@projects", JSON.stringify(tempProjects));
+
       // open project page
       close();
       props.create();

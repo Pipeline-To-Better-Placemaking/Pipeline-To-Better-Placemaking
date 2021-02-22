@@ -14,11 +14,22 @@ export function TeamPage(props) {
   const [inviteVisible, setInviteVisible] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [email, setEmail] = useState('');
+  const [projects, setProjects] = useState(props.projects);
+
+  useEffect(() => {
+    async function getTokens() {
+      let projectList = await AsyncStorage.getItem("@projects");
+      projectList = JSON.parse(projectList);
+      setProjects(projectList);
+    }
+
+    getTokens()
+  }, []);
 
   const openProjectPage = async (item) => {
     let success = false
     let projectDetails = null
-    // Get the team information
+    // Get the project information
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + item._id, {
             method: 'GET',
@@ -35,7 +46,7 @@ export function TeamPage(props) {
     }
     // if successfully retrieved project info, Update
     if(success) {
-      console.log("Project Team: ", projectDetails);
+      console.log("Project: ", projectDetails);
       // set selected project page information
       props.setProject(projectDetails)
       props.setActivities(projectDetails.activities);
@@ -161,21 +172,14 @@ export function TeamPage(props) {
           Invite!
         </Button>
       </PopUpContainer>
+      <CreateProject
+        {...props}
+        visible={createProjectVisible}
+        setVisible={setCreateProjectVisible}
+        create={navigateProjectPage}
+        setProjects={setProjects}
+      />
       <ContentContainer>
-        <CreateProject
-          visible={createProjectVisible}
-          setVisible={setCreateProjectVisible}
-          create={navigateProjectPage}
-          token={props.token}
-          team={props.team}
-          project={props.project}
-          setProject={props.setProject}
-          projects={props.projects}
-          setProjects={props.setProjects}
-          setActivities={props.setActivities}
-          location={props.location}
-        />
-
         <View style={styles.teamTextView}>
             <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
                 <Text style={styles.teamText}>Projects </Text>
@@ -191,7 +195,7 @@ export function TeamPage(props) {
         <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
           <List
             style={{maxHeight:'100%', maxWidth:'90%'}}
-            data={props.projects}
+            data={projects}
             ItemSeparatorComponent={Divider}
             renderItem={projectItem}
           />

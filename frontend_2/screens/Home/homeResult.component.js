@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Input, Icon, Modal } from '@ui-kitten/components';
+import { ConfirmCompare } from '../components/Compare/confrimCompare.component.js';
 import styles from './homeResult.styles.js';
 
 export const HomeResultView = (props) => {
@@ -13,13 +14,20 @@ export const HomeResultView = (props) => {
                     <Text style={styles.resultText}> Results </Text>
                 </View>
 
-                <View style={styles.resultCompareButtonView}>
-                    <Button status='primary' appearance='outline' onPress={props.onComparePress}>
-                        Compare
-                    </Button>
-                </View>
+                <ConfirmCompare {...props} />
 
-            </View>
+                <View style={styles.resultCompareButtonView}>
+                  {(props.compare ?
+                    <Button status='danger' appearance='outline' onPress={props.onComparePress}>
+                        Cancel
+                    </Button>
+                     :
+                     <Button status='primary' appearance='outline' onPress={props.onComparePress}>
+                         Compare
+                     </Button>
+                   )}
+                </View>
+              </View>
 
             <View style={styles.resultLine}></View>
         </View>

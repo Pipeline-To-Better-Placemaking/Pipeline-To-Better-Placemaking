@@ -42,8 +42,8 @@ export function Collaborate(props) {
     // if successful post, update
     if(success) {
       // TODO: ask that the backend sends the first and last name with the list of users for a new team
-      // or just set them ourselves for now since it's the current user
-      console.log("new team: ", newTeam);
+      newTeam.users[0].firstname = props.firstname;
+      newTeam.users[0].lastname = props.lastname;
 
       props.teams.push(newTeam);
       props.setTeams(props.teams)
@@ -224,7 +224,7 @@ export function Collaborate(props) {
             onPress={() => acceptInvite(item)}
           />
           <Button
-          style={{marginLeft:5}}
+            style={{marginLeft:15}}
             status='danger'
             accessoryRight={CancelIcon}
             onPress={() => declineInvite(item)}

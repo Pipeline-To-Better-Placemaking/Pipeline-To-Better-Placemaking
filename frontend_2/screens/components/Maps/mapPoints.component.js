@@ -212,7 +212,7 @@ export const ShowAreas = ({areas}) => {
         coordinates={area.area}
         strokeWidth={3}
         strokeColor={'rgba(255,0,0,0.5)'}
-        fillColor={'rgba(0,0,0,0.5)'}
+        fillColor={'rgba(0,0,0,0.2)'}
         key={area._id}
       >
       </MapView.Polygon>
@@ -223,8 +223,8 @@ export const ShowAreas = ({areas}) => {
             longitude: center[index].longitude
         }}
       >
-        <View style={{backgroundColor:'rgba(255, 255, 255, 0.7)'}}>
-          <Text>Area {index+1}</Text>
+        <View>
+          <Text status={'control'} style={{fontWeight: "bold", backgroundColor:'rgba(0,0,0,0.5)'}}>Area {index+1}</Text>
         </View>
       </MapView.Marker>
       </View>
