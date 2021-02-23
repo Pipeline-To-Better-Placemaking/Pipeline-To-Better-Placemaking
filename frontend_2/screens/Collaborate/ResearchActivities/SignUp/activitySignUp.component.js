@@ -24,7 +24,16 @@ export function ActivitySignUpPage(props) {
         timeLeft:props.activity.duration
       }
 
+      let initialActivityDetails = {
+        location: props.activity.area.points[0],
+        area: props.activity.area.points,
+        position: props.activity.standingPoints,
+        time: props.activity.duration,
+        timeLeft:props.activity.duration
+      }
+
       props.setTimeSlot(activityDetails);
+      props.setInitialTimeSlot(initialActivityDetails);
 
       props.navigation.navigate("StationaryActivity")
     }
@@ -39,6 +48,8 @@ export function ActivitySignUpPage(props) {
       activityDetails.timeLeft = (parseInt(props.activity.timeSlots[index].duration)* 60);
 
       props.setTimeSlot(activityDetails);
+      props.setInitialTimeSlot(activityDetails);
+      
       props.navigation.navigate("SurveyActivity")
     }
   }

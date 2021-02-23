@@ -38,6 +38,7 @@ export function CollaborateStack(props) {
 
   // Used for starting an Activity (time slot user has selected for the activity)
   const [timeSlot, setTimeSlot] = useState(null);
+  const [initialTimeSlot, setInitialTimeSlot] = useState(null)
 
   const [username, setUsername] = useState('username');
   const [firstname, setFirstname] = useState('first name');
@@ -163,6 +164,7 @@ export function CollaborateStack(props) {
             activities={activities}
             setActivities={setActivities}
             setTimeSlot={setTimeSlot}
+            setInitialTimeSlot={setInitialTimeSlot}
             username={username}
           />
         }
@@ -173,6 +175,7 @@ export function CollaborateStack(props) {
                         {...props}
                         getSelectedActivity={activities}
                         timeSlot={timeSlot}
+                        initialTimeSlot={initialTimeSlot}
                         setTimeSlot={setTimeSlot}
                     ></StationaryActivity>
         }

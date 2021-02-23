@@ -145,6 +145,7 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
 
 // https://github.com/react-native-maps/react-native-maps/issues/505
 export function getRegionForCoordinates(points) {
+
     if(points === null && points.length <= 0){
       return {
         latitude: 28.60275207150067,

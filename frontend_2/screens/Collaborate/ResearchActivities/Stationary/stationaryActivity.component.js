@@ -8,6 +8,7 @@ import { StationaryActivityMap } from '../../../components/Maps/stationaryActivi
 import { Timer } from '../../../components/timer.component.js';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
+import CountDown from 'react-native-countdown-component';
 
 export function StationaryActivity(props) {
 
@@ -15,7 +16,6 @@ export function StationaryActivity(props) {
     const [location] = useState(props.timeSlot.location)
     const [area] = useState(props.timeSlot.area)
     const [position] = useState(props.timeSlot.position)
-    const [initialTime] = useState(props.timeSlot.time)
     const [start, setStart] = useState(false)
     const [moving, setMoving] = useState(false)
     const [standingIndex, setStandingIndex] = useState(0)
@@ -71,7 +71,6 @@ export function StationaryActivity(props) {
         console.log("Resetting...")
         console.log("StandingIndex: " + standingIndex)
         console.log("StandingPointLength: " + standingPointLength)
-        console.log("Initial time: " + JSON.stringify(initialTime))
 
         if (standingIndex < standingPointLength-1){
             console.log("Increasing index")
@@ -82,8 +81,7 @@ export function StationaryActivity(props) {
             setMoving(true)
         }
         else if (standingIndex == standingPointLength-1){
-            console.log("Returning")
-            return;
+            props.navigation.navigate("ActivitySignUpPage");
         }
     }
 
@@ -92,8 +90,6 @@ export function StationaryActivity(props) {
         setStart(true)
         setMoving(false)
         setRecenter(false)
-        props.setTimeSlot(initialTime)
-
     }
 
     const StartStopButton = () => {
@@ -122,6 +118,24 @@ export function StationaryActivity(props) {
         }
     }
 
+    const updateTime = (value) => {
+        console.log("timer: ", value-1);
+        console.log("Time left: " + JSON.stringify(props.timeSlot.timeLeft))
+        console.log("Initial time slot time left: " + JSON.stringify(props.initialTimeSlot.timeLeft))
+        let temp = props.timeSlot;
+        temp.timeLeft = value-1;
+        props.setTimeSlot(temp);
+
+        if (value-1 == 0){
+            console.log("Initial time slot time left: " + JSON.stringify(props.initialTimeSlot.timeLeft))
+            let resetSlot = props.timeSlot;
+            resetSlot.timeLeft = props.initialTimeSlot.timeLeft;
+            props.setTimeSlot(resetSlot);
+
+            restart()
+        }
+    }
+
     const TimeBar = () => {
 
         return(
@@ -130,11 +144,19 @@ export function StationaryActivity(props) {
 
                     <StartStopButton/>
 
-                    <Timer  timeSlot={props.timeSlot}
-                            setTimeSlot={props.setTimeSlot}
-                            start={start}
-                            restart={restart}
-                    />
+                    <View style={{marginLeft: 175, marginTop: 5}}>
+                        <CountDown
+                            running={start}
+                            until={props.timeSlot.timeLeft}
+                            onChange={(value) => updateTime(value)}
+                            size={20}
+                            digitStyle={{backgroundColor: 'white'}}
+                            digitTxtStyle={{color: 'black'}}
+                            timeToShow={['M', 'S']}
+                            timeLabels={{m: '', s: ''}}
+                            showSeparator
+                        />
+                    </View>
                 </View>
             </View>
         )
