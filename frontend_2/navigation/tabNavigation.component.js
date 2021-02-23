@@ -9,18 +9,6 @@ import { CollaborateStack } from './collaborateStack.component';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
-const PersonIcon = (props) => (
-    <Icon {...props} name='person-outline'/>
-);
-
-const ClipBoardIcon = (props) => (
-    <Icon {...props} name='clipboard-outline'/>
-);
-
-const HomeIcon = (props) => (
-    <Icon {...props} name='home-outline'/>
-);
-
 function BottomTabBar({ state, descriptors, navigation }) {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
@@ -29,11 +17,20 @@ function BottomTabBar({ state, descriptors, navigation }) {
     return null;
   }
 
+  const nav = (index) => {
+    // if already on this tab, go to top of stack
+    if (index === state.index && navigation.canGoBack()) {
+      navigation.popToTop();
+    } else {
+      navigation.navigate(state.routeNames[index]);
+    }
+  }
+
   return (
     <BottomNavigation
       keyboardHidesNavigationBar={true}
       selectedIndex={state.index}
-      onSelect={index => navigation.navigate(state.routeNames[index])}>
+      onSelect={index => nav(index)}>
       <BottomNavigationTab icon={ClipBoardIcon}/>
       <BottomNavigationTab icon={HomeIcon}/>
       <BottomNavigationTab icon={PersonIcon}/>
@@ -44,16 +41,17 @@ function BottomTabBar({ state, descriptors, navigation }) {
 export function TabNavigation(props) {
 
   var location = props.location;
+  let setSignedIn = props.setSignedIn;
 
   useEffect(() => {
     async function fetchMyAPI() {
       let token = await AsyncStorage.getItem("@token")
       let id = await AsyncStorage.getItem("@id")
+
       let success = false
       let result = null
 
       try {
-          console.log("Inside try")
           console.log("Token: " + token)
           console.log("Id: " + id)
           const response = await fetch('https://measuringplacesd.herokuapp.com/api/users/' + id, {
@@ -61,14 +59,14 @@ export function TabNavigation(props) {
             headers: {
                 Accept: 'application/json',
                     'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + token
             }
         })
           result = await response.json()
-          console.log(result)
+          console.log("user info response:", result)
           success = true
       } catch (error) {
-          console.log("ERROR: " +error)
+          console.log("ERROR: " + error)
       }
 
       if (success) {
@@ -139,6 +137,7 @@ export function TabNavigation(props) {
         {props =>
           <UserSettingsStack
             {...props}
+            setSignedIn={setSignedIn}
           >
           </UserSettingsStack>
         }
@@ -146,3 +145,15 @@ export function TabNavigation(props) {
     </Navigator>
   );
 };
+
+const PersonIcon = (props) => (
+    <Icon {...props} name='person-outline'/>
+);
+
+const ClipBoardIcon = (props) => (
+    <Icon {...props} name='clipboard-outline'/>
+);
+
+const HomeIcon = (props) => (
+    <Icon {...props} name='home-outline'/>
+);

@@ -23,6 +23,7 @@ export function CreateActivityStack(props) {
 
   // This is the index of the selected Activity from the lsit of activityTypes
   const [selectedActivityIndex, setSelectedActivityIndex] = useState(new IndexPath(0));
+  const [selectedActivity, setActivity] = useState('Stationary Map');
 
   // Only use the Day from this value, this is the date the user selects for the Activity to take place
   const [date, setDate] = useState(new Date());
@@ -50,27 +51,57 @@ export function CreateActivityStack(props) {
     if(row == undefined) {
       row = 0;
     }
-    if(activityName.length <= 0) {
+    if(activityName.trim().length <= 0) {
       name = activityTypes[row];
     }
 
-    // the activity info
-    let temp = {
-      title: name,
-      date: date,
-      activity: activityTypes[row],
-      timeSlots: timeSlots,
-      standingPoints: timeSlots[0].assignedPointIndicies.map(index => {
-        return standingPoints[index.row];
-      }),
-      area: area,
-    };
-    console.log("temp:", temp);
-    // TODO: POST the activity
+    // Stationary Map
+    if(row === 0) {
+      timeSlots.map(timeSlot => {
+        postSM(timeSlot, name);
+      })
+    } // People Moving
+    else if (row === 1) {
+      // some fake activity info until we set up the api calls
+      let activityDetails = {
+        title: name,
+        date: date.toLocaleString(),
+        activity: activityTypes[row],
+        test_type: activityTypes[row],
+        timeSlots: timeSlots,
+        standingPoints: timeSlots[0].assignedPointIndicies.map(index => {
+          return standingPoints[index.row];
+        }),
+        area: area,
+      };
+      props.setActivities(values => [...values,activityDetails]);
+    } // Survey
+    else if (row === 2) {
+      let activityDetails = {
+        title: name,
+        date: date.toLocaleString(),
+        activity: activityTypes[row],
+        test_type: activityTypes[row],
+        timeSlots: timeSlots,
+        area: area,
+      };
+      props.setActivities(values => [...values,activityDetails]);
+    }
+
+    // Navigate back to Project page
+    props.navigation.navigate('ProjectPage')
+  };
+
+  const postSM = async (timeSlot, name) => {
     let success = false
     let activityDetails = null
-    //console.log("description: ", getLocationName(markers[0]));
-    // Save the new project
+    let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
+    if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
+      selectedPoints = timeSlot.assignedPointIndicies.map(index => {
+        return standingPoints[index.row];
+      });
+    }
+    // Save the activity
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/', {
             method: 'POST',
@@ -82,34 +113,35 @@ export function CreateActivityStack(props) {
             body: JSON.stringify({
                 title: name,
                 area: area._id,
-                standingPoints: temp.standingPoints,
+                standingPoints: selectedPoints,
                 project: props.project._id,
                 date: date,
-                maxResearchers: timeSlots[0].numResearchers
+                maxResearchers: parseInt(timeSlot.maxResearchers),
+                duration: parseInt(timeSlot.duration)
             })
         })
         activityDetails = await response.json()
         success = true
     } catch (error) {
-        console.log("error", error)
+        console.log("ERROR: ", error)
     }
-    console.log("created Activity: ", activityDetails);
+    console.log("create SM activity response:", activityDetails);
     if(activityDetails.success !== undefined){
       success = activityDetails.success
       console.log("success: ", success);
     }
 
-
-    // update activites list
-    props.setActivities([temp]);
-
-    // Navigate back to Project page
-    props.navigation.navigate('ProjectPage')
-  };
+    if(success){
+      // TODO: I'm not sure I have the right id, or am doing this correctly to click an activity after
+      // creation, this needs some work
+      props.setActivities(values => [...values,activityDetails]);
+    }
+  }
 
   const setSelectedActivity = (index) => {
     setSelectedActivityIndex(index);
     let tempName = activityTypes[index.row];
+    setActivity(tempName);
 
     if(activitesRequirePoints.includes(tempName)){
       setPointsRequired(true);
@@ -134,10 +166,10 @@ export function CreateActivityStack(props) {
             setSelectedActivity={setSelectedActivity}
             date={date}
             setDate={setDate}
-            activityTypes={activityTypes}
             selectArea={selectArea}
             headerText={headerText}
             exit={exit}
+            activityTypes={activityTypes}
           />
         }
       </Screen>
@@ -162,6 +194,7 @@ export function CreateActivityStack(props) {
             timeSlots={timeSlots}
             setTimeSlots={setTimeSlots}
             standingPoints={standingPoints}
+            selectedActivity={selectedActivity}
             create={create}
             headerText={headerText}
             exit={exit}

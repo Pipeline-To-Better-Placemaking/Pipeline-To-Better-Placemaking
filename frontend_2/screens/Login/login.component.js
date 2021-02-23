@@ -74,6 +74,7 @@ export const LoginScreen = ( props ) => {
           }
 
           await props.setLocation(defaultLocation);
+          await props.setSignedIn(true);
 
           props.navigation.navigate("TabNavigation")
         }

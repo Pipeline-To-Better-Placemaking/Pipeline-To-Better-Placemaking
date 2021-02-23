@@ -28,7 +28,7 @@ export function ProjectPage(props) {
   const openActivityPage = async (item) => {
     let success = false
     let activityDetails = null
-    console.log("activity: ", item);
+
     if(item.test_type === 'stationary') {
       // Get the activity information
       try {
@@ -49,6 +49,7 @@ export function ProjectPage(props) {
 
     } else {
       activityDetails = item;
+      success = true;
     }
 
     if(activityDetails.success !== undefined){
@@ -60,7 +61,7 @@ export function ProjectPage(props) {
       console.log("selected activity: ", activityDetails);
       activityDetails.test_type = item.test_type;
       // set selected activity
-      props.setActivity(activityDetails)
+      props.setActivity(activityDetails);
 
       // open activity page
       props.navigation.navigate('ActivitySignUpPage')
@@ -130,7 +131,7 @@ export function ProjectPage(props) {
         </View>
         <Divider style={{marginTop: 5}} />
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
+        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'45%', marginTop:15}}>
           <List
             style={{maxHeight:'100%', maxWidth:'90%'}}
             data={props.activities}

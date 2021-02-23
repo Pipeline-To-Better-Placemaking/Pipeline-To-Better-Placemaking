@@ -28,17 +28,16 @@ export function ActivitySignUpPage(props) {
 
       props.navigation.navigate("StationaryActivity")
     }
-    else if (props.activity.activity == activityList[1]){
+    else if (props.activity.test_type == activityList[1]){
 
     }
-    else if (props.activity.activity == activityList[2]){
+    else if (props.activity.test_type == activityList[2]){
 
-      let activityDetails = {
-        location: props.activity.area[0],
-        area: props.activity.area,
-        time: (parseInt(props.activity.timeSlots[index].duration)* 60),
-        timeLeft: (parseInt(props.activity.timeSlots[index].duration)* 60)
-      }
+      let activityDetails = {...props.activity};
+      activityDetails.location = props.activity.area[0];
+      activityDetails.time = (parseInt(props.activity.timeSlots[index].duration)* 60);
+      activityDetails.timeLeft = (parseInt(props.activity.timeSlots[index].duration)* 60);
+
       props.setTimeSlot(activityDetails);
       props.navigation.navigate("SurveyActivity")
     }
@@ -108,8 +107,8 @@ export function ActivitySignUpPage(props) {
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
         <View style={{flexDirection:'column'}}>
           <Text>Start Time </Text>
-          <Text>Time at Site: {item.duration} (min)</Text>
-          <Text>Standing Points: {getPointsString(item)}</Text>
+          <Text>{(props.activity.test_type === 'Survey' ? "Time at Site:" : "Time per Standing Point:")} {item.duration} (min)</Text>
+          {(props.activity.test_type === 'Survey' ? null : <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>)}
           <Text>Researchers:</Text>
           <Text>{getResearchers(item)}</Text>
         </View>
@@ -132,11 +131,11 @@ export function ActivitySignUpPage(props) {
         <View style={{height:'40%'}}>
           <MapAreaWrapper area={props.activity.area.points} mapHeight={'100%'}>
             <ShowArea area={props.activity.area.points} />
-            <ShowMarkers markers={props.activity.standingPoints} />
+            {(props.activity.test_type === 'Survey' ? null : <ShowMarkers markers={props.activity.standingPoints} />)}
           </MapAreaWrapper>
         </View>
         <View style={{margin:15}}>
-          <Text category='s1'>{props.activity.activity} Activity</Text>
+          <Text category='s1'>Activity: {props.activity.test_type}</Text>
           <Text category='s1'>Day: {props.activity.date}</Text>
         </View>
         <List

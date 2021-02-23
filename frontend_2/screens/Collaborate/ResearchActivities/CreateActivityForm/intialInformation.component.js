@@ -9,7 +9,6 @@ import { styles } from './form.styles';
 
 export function IntialForm(props) {
 
-  const activityTypes = props.activityTypes;
   const today = new Date();
 
   const next = () => {
@@ -30,7 +29,7 @@ export function IntialForm(props) {
             <View style={styles.activityView}>
               <Text>Name: </Text>
               <Input
-                placeholder={activityTypes[0]}
+                placeholder={props.activityTypes[0]}
                 value={props.activityName}
                 onChangeText={(nextValue) => props.setActivityName(nextValue)}
                 style={{flex:1}}
@@ -41,12 +40,12 @@ export function IntialForm(props) {
               <Text>Select a Research Activity: </Text>
               <Select
                 style={{flex:1}}
-                placeholder={activityTypes[0]}
-                value={activityTypes[props.selectedActivityIndex.row]}
+                placeholder={props.activityTypes[0]}
+                value={props.activityTypes[props.selectedActivityIndex.row]}
                 selectedIndex={props.selectedActivityIndex}
                 onSelect={index => props.setSelectedActivity(index)}
               >
-                {activityTypes.map((item, index) =>
+                {props.activityTypes.map((item, index) =>
                     <SelectItem key="{item}" title={item}/>
                 )}
               </Select>

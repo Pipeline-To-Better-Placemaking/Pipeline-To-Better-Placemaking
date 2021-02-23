@@ -18,8 +18,8 @@ export function HomeScreenStack(props){
   const [selectedTeam, setSelectedTeam] = useState(null);
 
   // These are used for api calls
-  const [token, setToken] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [token, setToken] = useState('');
+  const [userId, setUserId] = useState('');
 
   useEffect(() => {
     async function getInfo() {
@@ -34,9 +34,11 @@ export function HomeScreenStack(props){
       await setProjectList([]);
       let teamsList = await AsyncStorage.getItem('@teams');
       teamsList = JSON.parse(teamsList);
-      teamsList.map((team, index) => {
-        setTeamDetails(team);
-      });
+      if (teamsList !== null) {
+        teamsList.map((team, index) => {
+          setTeamDetails(team);
+        });
+      }
 
     }
 

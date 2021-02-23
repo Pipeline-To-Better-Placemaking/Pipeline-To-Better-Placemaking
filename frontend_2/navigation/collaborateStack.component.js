@@ -32,11 +32,11 @@ export function CollaborateStack(props) {
   const [project, setProject] = useState(null);
   const [projects, setProjects] = useState([]);
 
-  // The selected Activity and List of Activities for the selected Project
+  // The selected Activity and List of Activities for the selected Project (Sign Up Page)
   const [activity, setActivity] = useState(null);
   const [activities, setActivities] = useState([]);
 
-  // Used for starting an Activity timeSlot
+  // Used for starting an Activity (time slot user has selected for the activity)
   const [timeSlot, setTimeSlot] = useState(null);
 
   const [username, setUsername] = useState('username');

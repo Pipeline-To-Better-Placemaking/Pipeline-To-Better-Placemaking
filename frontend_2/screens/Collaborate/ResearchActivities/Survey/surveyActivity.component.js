@@ -14,7 +14,7 @@ export function SurveyActivity(props) {
   let surveyLink = 'http://ucf.qualtrics.com/jfe/form/SV_9vozKCHxjfyAHJ3';
 
   const [location] = useState(props.timeSlot.location)
-  const [area] = useState(props.timeSlot.area)
+  const [area] = useState(props.timeSlot.area.points)
   const [start, setStart] = useState(false)
 
   const endActivity = () => {

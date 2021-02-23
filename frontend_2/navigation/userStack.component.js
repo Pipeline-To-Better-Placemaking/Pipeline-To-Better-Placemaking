@@ -9,24 +9,26 @@ const { Navigator, Screen } = createStackNavigator();
 
 export function UserSettingsStack(props) {
 
+  let setSignedIn = props.setSignedIn;
+
 	// These are used for api calls
-	const [token, setToken] = useState(null);
-	const [userId, setUserId] = useState(null);
+	const [token, setToken] = useState('');
+	const [userId, setUserId] = useState('');
 
 	// user info
-	const [firstName, setFirstName] = useState(null);
-	const [lastName, setLastName] = useState(null);
-	const [email, setEmail] = useState(null);
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [email, setEmail] = useState('');
 
 	useEffect(() => {
 		async function getTokens() {
 			// used for api calls
 			let token = await AsyncStorage.getItem("@token");
 			setToken(token);
-	
+
 			let id = await AsyncStorage.getItem("@id");
 			setUserId(id);
-	
+
 			let firstName = await AsyncStorage.getItem('@firstName');
 			setFirstName(firstName);
 
@@ -36,27 +38,31 @@ export function UserSettingsStack(props) {
 			let email = await AsyncStorage.getItem("@email");
 			setEmail(email);
 		}
-	
+
 		getTokens()
 
-		
+
 	}, []);
 
 	return (
-        <Navigator headerMode='none'>
-            <Screen name='UserSettings'>
-                {props => <UserSettings {...props}
-                    firstName = {firstName}
-                    lastName = {lastName}
-                    email = {email}
-					token = {token}
-					userId = {userId}
-                    setFirstName = {setFirstName}
-                    setLastName = {setLastName}
-                    setEmail = {setEmail}
-                >
-                </UserSettings>}
-            </Screen>
-        </Navigator>
+    <Navigator headerMode='none'>
+      <Screen name='UserSettings'>
+        {props =>
+          <UserSettings
+            {...props}
+            firstName={firstName}
+            lastName={lastName}
+            email={email}
+  					token={token}
+  					userId={userId}
+            setFirstName={setFirstName}
+            setLastName={setLastName}
+            setEmail={setEmail}
+            setSignedIn={setSignedIn}
+          >
+          </UserSettings>
+        }
+      </Screen>
+    </Navigator>
     );
 };

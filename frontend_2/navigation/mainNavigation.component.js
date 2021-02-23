@@ -10,10 +10,27 @@ const { Navigator, Screen } = createStackNavigator();
 
 export function AppNavigator (props) {
 
-  const [location, setLocation] = useState(null)
+  const [location, setLocation] = useState(null);
+  const [signedIn, setSignedIn] = useState(false);
 
   return(
     <NavigationContainer>
+      {(signedIn ?
+        <Navigator headerMode='none'>
+        <Screen
+          name="TabNavigation"
+        >
+          {props =>
+            <TabNavigation
+              {...props}
+              location={location}
+              setSignedIn={setSignedIn}
+            >
+            </TabNavigation>
+          }
+        </Screen>
+        </Navigator>
+      :
       <Navigator headerMode='none'>
         <Screen
           name='Title'
@@ -22,23 +39,28 @@ export function AppNavigator (props) {
         <Screen
           name='Login'
         >
-          {props => <LoginScreen {...props}
-                      setLocation={setLocation}>
-                    </LoginScreen>}
+          {props =>
+            <LoginScreen
+              {...props}
+              setLocation={setLocation}
+              setSignedIn={setSignedIn}
+            >
+            </LoginScreen>
+          }
         </Screen>
         <Screen
           name='SignUp'
         >
-          {props => <SignUpScreen {...props}/>}
-        </Screen>
-        <Screen
-          name="TabNavigation"
-        >
-          {props => <TabNavigation {...props}
-                      location ={location}>
-                    </TabNavigation>}
+          {props =>
+            <SignUpScreen
+              {...props}
+              setSignedIn={setSignedIn}
+            >
+            </SignUpScreen>
+          }
         </Screen>
       </Navigator>
+      )}
     </NavigationContainer>
   )
 };

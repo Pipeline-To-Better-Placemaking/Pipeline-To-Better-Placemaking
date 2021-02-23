@@ -94,7 +94,7 @@ export function CreateTimeSlots(props) {
     let temp = {
         timeVal: time,
         timeString: getTimeStr(time),
-        numResearchers: '1',
+        maxResearchers: '1',
         researchers: [],
         duration: '30',
         assignedPointIndicies: [],
@@ -109,7 +109,7 @@ export function CreateTimeSlots(props) {
 
   const editResearchers = (item, index) => {
     // load the current value
-    setTempNum(props.timeSlots[index].numResearchers);
+    setTempNum(props.timeSlots[index].maxResearchers);
     // set the index for which time slot we're editing
     setSelectedIndex(index);
     // view the modal
@@ -122,7 +122,7 @@ export function CreateTimeSlots(props) {
     let timeSlot = {...tempList[selectedIndex]};
 
     // set new value
-    timeSlot.numResearchers = tempNum;
+    timeSlot.maxResearchers = tempNum;
 
     // put the item back in the list
     tempList[selectedIndex] = timeSlot;
@@ -278,7 +278,7 @@ export function CreateTimeSlots(props) {
           accessoryRight={ResearchersIcon}
           appearance='ghost'
         >
-          <Text>Number of Researchers: {item.numResearchers}</Text>
+          <Text>Number of Researchers: {item.maxResearchers}</Text>
         </Button>
       </View>
   );
@@ -286,13 +286,12 @@ export function CreateTimeSlots(props) {
   const Duration = ({item, index}) => (
       <View style={{flexDirection:'row'}}>
         <Button
-          disabled={true}
           style={{marginLeft:-20}}
           onPress={() => editDuration(item, index)}
           accessoryRight={ClockIcon}
           appearance='ghost'
         >
-          <Text>Time at Site/StandingPoint: {item.duration} (min)</Text>
+          <Text>{(props.selectedActivity === 'Survey' ? "Time at Site" : "Time per Standing Point")}: {item.duration} (min)</Text>
         </Button>
       </View>
   );
@@ -330,7 +329,7 @@ export function CreateTimeSlots(props) {
               <TimePicker {...{item, index}} />
               <Duration {...{item, index}} />
               <NumResearchers {...{item, index}} />
-              <SelectPoints {...{item, index}} />
+              {(props.selectedActivity === 'Survey' ? null : <SelectPoints {...{item, index}} />)}
           </View>
 
           <View style={{alignItems:'flex-end'}}>
