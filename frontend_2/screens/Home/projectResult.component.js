@@ -38,8 +38,8 @@ export function ProjectResultPage(props) {
       <ContentContainer>
 
         <View style={{height:'45%'}}>
-          <MapAreaWrapper area={props.project.subareas[0].area} mapHeight={'100%'}>
-            <ShowArea area={props.project.subareas[0].area} />
+          <MapAreaWrapper area={props.project.subareas[0].points} mapHeight={'100%'}>
+            <ShowArea area={props.project.subareas[0].points} />
           </MapAreaWrapper>
         </View>
 

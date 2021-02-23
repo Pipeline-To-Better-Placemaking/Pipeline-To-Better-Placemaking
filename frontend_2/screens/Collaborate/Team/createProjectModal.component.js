@@ -42,7 +42,7 @@ export function CreateProject(props) {
         console.log("error", error)
     }
     console.log("created Project: ", projectDetails);
-    if (projectDetails.success == false){
+    if (projectDetails.success === undefined){
       success = false;
     }
     // if successfully created project info, Update

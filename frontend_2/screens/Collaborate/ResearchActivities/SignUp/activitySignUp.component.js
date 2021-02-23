@@ -10,18 +10,18 @@ import { styles } from './activitySignUp.styles';
 
 export function ActivitySignUpPage(props) {
 
-  const activityList = ["Stationary Map", "People Count", "Survey"]
+  const activityList = ["stationary", "People Count", "Survey"]
 
   const onBeginPress = async (index) => {
 
-    if (props.activity.activity == activityList[0]) {
+    if (props.activity.test_type == activityList[0]) {
 
       let activityDetails = {
-        location: props.activity.area[0],
-        area: props.activity.area,
-        position: getPointsLocations(props.activity.timeSlots[index]),
-        time: (parseInt(props.activity.timeSlots[index].duration)* 60),
-        timeLeft: (parseInt(props.activity.timeSlots[index].duration)* 60)
+        location: props.activity.area.points[0],
+        area: props.activity.area.points,
+        position: props.activity.area.points,
+        time: props.activity.duration*60,
+        timeLeft:props.activity.duration*60
       }
 
       props.setTimeSlot(activityDetails);
@@ -45,7 +45,7 @@ export function ActivitySignUpPage(props) {
   }
 
   const onSignUp = async (timeSlot, index) => {
-    let tempActivity = {...props.activity};
+    /*let tempActivity = {...props.activity};
     let tempTimeSlots = [...props.activity.timeSlots];
     let tempSlot = {...timeSlot};
     let tempResearchers = [...timeSlot.researchers];
@@ -62,7 +62,7 @@ export function ActivitySignUpPage(props) {
       tempTimeSlots[index] = tempSlot;
       tempActivity.timeSlots = tempTimeSlots;
       props.setActivity(tempActivity);
-    }
+    }*/
 
   }
 
@@ -75,11 +75,13 @@ export function ActivitySignUpPage(props) {
   }
 
   const getPointsString = (timeSlot) => {
+    /*
     let tempPoints = [];
     timeSlot.assignedPointIndicies.map(index => {
       tempPoints.push("Point " + (index.row + 1));
     });
-    return tempPoints.join(', ');
+    return tempPoints.join(', ');*/
+    return "test";
   }
 
   const getName = (timeSlot, index) => {
@@ -106,7 +108,7 @@ export function ActivitySignUpPage(props) {
     <Card disabled={true}>
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
         <View style={{flexDirection:'column'}}>
-          <Text>Start Time {item.timeString}</Text>
+          <Text>Start Time </Text>
           <Text>Time at Site: {item.duration} (min)</Text>
           <Text>Standing Points: {getPointsString(item)}</Text>
           <Text>Researchers:</Text>
@@ -129,18 +131,18 @@ export function ActivitySignUpPage(props) {
       <HeaderBack {...props} text={props.activity.title}/>
       <ContentContainer>
         <View style={{height:'40%'}}>
-          <MapAreaWrapper area={props.activity.area} mapHeight={'100%'}>
-            <ShowArea area={props.activity.area} />
+          <MapAreaWrapper area={props.activity.area.points} mapHeight={'100%'}>
+            <ShowArea area={props.activity.area.points} />
             <ShowMarkers markers={props.activity.standingPoints} />
           </MapAreaWrapper>
         </View>
         <View style={{margin:15}}>
           <Text category='s1'>{props.activity.activity} Activity</Text>
-          <Text category='s1'>Day: {props.activity.date.toLocaleDateString()}</Text>
+          <Text category='s1'>Day: {props.activity.date}</Text>
         </View>
         <List
           style={{maxHeight:400}}
-          data={props.activity.timeSlots}
+          data={[props.activity]}
           ItemSeparatorComponent={Divider}
           renderItem={timeSlotCard}
         />
