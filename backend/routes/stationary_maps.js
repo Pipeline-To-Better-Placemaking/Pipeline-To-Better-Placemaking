@@ -15,6 +15,28 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     project = await Project.findById(req.body.project)
 
     if(await Team.isAdmin(project.team,user._id)){
+
+        if(req.body.timeSlots.length > 0)
+            for(var i = 0; i < req.body.timeSlots.length; i++){
+                var slot = req.body.timeSlots[0]
+
+                let newMap = new Map({
+                    title: slot.title,
+                    area: slot.area,
+                    standingPoints: slot.standingPoints,
+                    researchers: slot.researchers,
+                    project: slot.project,
+                    date: slot.date,
+                    duration: project.stationaryDuration,
+                    maxResearchers: slot.maxResearchers
+                })
+
+                const map = await Map.addMap(newMap)
+                await Project.addActivity(req.body.project,map._id,'stationary')
+
+                res.status(201).json(await Project.findById(req.body.project))
+
+            }
     
         let newMap = new Map({
             title: req.body.title,
