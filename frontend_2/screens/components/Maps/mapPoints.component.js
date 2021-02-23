@@ -116,25 +116,31 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
     </View>)
  };
 
- export const PressMapAreaWrapper = ({children, area, mapHeight, onPress}) => {
-   const location = getRegionForCoordinates(area);
-   return (
-     <View>
-       <MapView
-         provider={PROVIDER_GOOGLE}
-         style={{height:mapHeight}}
-         zoomEnabled
-         initialRegion={{
-           latitude: location.latitude,
-           longitude: location.longitude,
-           latitudeDelta: location.latitudeDelta,
-           longitudeDelta: location.longitudeDelta,
-         }}
-         onPress={event => onPress(event.nativeEvent.coordinate)}
-       >
-         {children}
-       </MapView>
-     </View>)
+ export const PressMapAreaWrapper = ({children, area, mapHeight, onPress, recenter }) => {
+   
+  const [region, setRegion] = useState(getRegionForCoordinates(area));
+  const [defaultRegion] = useState(getRegionForCoordinates(area))
+
+  const regionChange = (newRegion) => {
+    setRegion(newRegion)
+  }
+
+    return (
+      <View>
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          style={{height:mapHeight}}
+          zoomEnabled
+          initialRegion={region}
+          region={recenter ? defaultRegion : region}
+          onRegionChangeComplete={(newRegion) => regionChange(newRegion)}
+          onPress={event => onPress(event.nativeEvent.coordinate)}
+        >
+          {children}
+        </MapView>
+      </View>
+      )
+
   };
 
 // https://github.com/react-native-maps/react-native-maps/issues/505

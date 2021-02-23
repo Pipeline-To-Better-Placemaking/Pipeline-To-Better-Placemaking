@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker, Image, Polygon, Callout } from 'react-native-maps'
 import { View } from 'react-native';
 import { Text, Button, Input, Icon, Divider, List, ListItem} from '@ui-kitten/components';
-import { PressMapAreaWrapper, ShowArea } from './mapPoints.component';
+import { PressMapAreaWrapper, ShowArea, getRegionForCoordinates } from './mapPoints.component';
 
 export function StationaryActivityMap(props) {
 
     const colors = ["blue", "red", "yellow", "green"]
-
-    const [location] = useState(props.location)
 
     const DataPin = (props) => {
 
@@ -57,6 +55,7 @@ export function StationaryActivityMap(props) {
                 area={props.area}
                 mapHeight={'100%'}
                 onPress={props.addMarker}
+                recenter={props.recenter}
             >
                 <MapView.Marker
                     coordinate = {props.position}
