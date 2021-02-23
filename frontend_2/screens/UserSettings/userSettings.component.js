@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Modal } from 'react-native';
+import { View, Modal, ScrollView } from 'react-native';
 import { Icon, Input, Text, Button } from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
 import { Header } from '../components/headers.component';
@@ -36,7 +36,7 @@ export function UserSettings(props) {
 	const mailIcon = (props) => (
 		<Icon {...props} fill='white' name='email'/>
 	);
-	
+
 	const themeIcon = (props) => {
 		if(themeContext.theme == 'light') {
 			return(
@@ -57,17 +57,70 @@ export function UserSettings(props) {
 	}
 
 	const confirmEditProfile = async () => {
-		props.setFirstName(firstNameText)
-		await AsyncStorage.setItem('@firstName', props.firstName)
+		let editedFirstName = firstNameText
+		let editedLastName = lastNameText
 
-		props.setLastName(lastNameText)
-		await AsyncStorage.setItem('@lastName', props.lastName)
+		// if any profile data input is empty do not update that data
+		if(editedFirstName == "" || editedFirstName == null)
+			editedFirstName = props.firstName
 
-		props.setEmail(emailText)
-		await AsyncStorage.setItem('@email', props.email)
+		if(lastNameText == "" || lastNameText == null)
+			editedLastName = props.lastName
 
-		setModalVisible(!modalVisible)
-		// call backend and update values
+		updateUser(editedFirstName, editedLastName)
+	}
+
+	// backend call
+	const updateUser = async (editedFirstName, editedLastName) => {
+		let success = false
+		let result = null
+
+		try {
+			console.log("Trying to update a user")
+
+			const response = await fetch('https://measuringplacesd.herokuapp.com/api/users/', {
+				method: 'PUT',
+				headers: {
+					Accept: 'application/json',
+						'Content-Type': 'application/json',
+						'Authorization': 'Bearer ' + props.token
+				},
+
+				body: JSON.stringify({
+					firstname: editedFirstName,
+					lastname: editedLastName
+				})
+			})
+
+			result = await response.text()
+			console.log(result)
+			success = true
+		} catch (error) {
+				console.log("ERROR: " + error)
+		}
+
+		// if user details were properly updated in the backend change them locally
+		if(success) {
+			props.setFirstName(editedFirstName)
+			await AsyncStorage.setItem('@firstName', props.firstName)
+
+			props.setLastName(editedLastName)
+			await AsyncStorage.setItem('@lastName', props.lastName)
+
+			//props.setEmail(emailText)
+			//await AsyncStorage.setItem('@email', props.email)
+
+			setModalVisible(!modalVisible)
+		} else {
+			cancelEditProfile()
+		}
+	}
+
+	const logOut = () => {
+		// Possible improvements
+		// 1) Clean the async storage
+		// 2) Delete the user token (log out a user from a session)
+		props.navigation.navigate('Title')
 	}
 
   return (
@@ -79,63 +132,83 @@ export function UserSettings(props) {
 					<ViewableArea>
 							<Header text={'Edit Profile'}/>
 							<ContentContainer>
+                <View style={{margin:20}}>
+
+                <Text category='s1'>First Name:</Text>
 								<Input
-									label = 'First Name'
 									placeholder = 'First Name'
 									value={firstNameText}
 									onChangeText={nextValue => setFirstNameText(nextValue)}
 								/>
 
+                <Text category='s1'>Last Name:</Text>
 								<Input
-									label = 'Last Name'
 									placeholder = 'Last Name'
 									value={lastNameText}
 									onChangeText={nextValue => setLastNameText(nextValue)}
 								/>
 
+								{/* Email can't be changed with API yet
 								<Input
 									label = 'Email'
 									placeholder = 'Email'
 									value={emailText}
 									onChangeText={nextValue => setEmailText(nextValue)}
 								/>
+								*/}
 
-								<Button style={{margin:5}} onPress={() => confirmEditProfile()} accessoryRight = {confirmIcon}>
-									CONFIRM
-								</Button>
-								<Button style={{margin:5}} onPress={() => cancelEditProfile()} accessoryRight = {closeIcon}>
-									CANCEL
-								</Button>
+                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+  								<Button
+                    status={'danger'}
+                    style={{margin:5}}
+                    onPress={() => cancelEditProfile()}
+                    accessoryLeft = {closeIcon}
+                  >
+  									CANCEL
+  								</Button>
+                  <Button
+                    status={'success'}
+                    style={{margin:5}}
+                    onPress={() => confirmEditProfile()}
+                    accessoryRight = {confirmIcon}
+                  >
+  									CONFIRM
+  								</Button>
+                </View>
+                </View>
 							</ContentContainer>
 					</ViewableArea>
 				</Modal>
 
-				<View style={styles.circle}>
-						<Text style = {styles.userInitials}>
-							{props.firstName && props.firstName[0]}{props.lastName && props.lastName[0]}
-						</Text>
-				</View>
+        <ScrollView style={{margin:5, marginRight:20, marginLeft:20}}>
 
-				<View style={styles.userDetails}>
-					<Text style={{fontSize: 20, alignSelf: 'center'}}> {props.firstName} {props.lastName} </Text>
-					<Text style={{fontSize: 20, alignSelf: 'center'}}> {props.email} </Text>
-				</View>
+  				<View style={styles.circle}>
+  						<Text style={styles.userInitials}>
+  							{props.firstName && props.firstName[0]}{props.lastName && props.lastName[0]}
+  						</Text>
+  				</View>
 
-				<Button style={{margin:5}} onPress={() => setModalVisible(!modalVisible)} accessoryRight = {editIcon}>
-          EDIT PROFILE
-        </Button>
+  				<View style={styles.userDetails}>
+  					<Text style={{fontSize: 20, alignSelf: 'center'}}> {props.firstName} {props.lastName} </Text>
+  					<Text style={{fontSize: 20, alignSelf: 'center'}}> {props.email} </Text>
+  				</View>
 
-				<Button style={{margin:5}} onPress={themeContext.toggleTheme} accessoryRight = {themeIcon}>
-          TOGGLE THEME
-        </Button>
+  				<Button style={{margin:5}} onPress={() => setModalVisible(!modalVisible)} accessoryRight = {editIcon}>
+            EDIT PROFILE
+          </Button>
 
-				<Button style={{margin:5}} onPress={themeContext.toggleTheme}>
-          CHANGE PASSWORD
-        </Button>
+  				<Button style={{margin:5}} onPress={themeContext.toggleTheme} accessoryRight = {themeIcon}>
+            TOGGLE THEME
+          </Button>
 
-				<Button style={{margin:5}} onPress={() => setModalVisible(!modalVisible)} accessoryRight = {mailIcon}>
-          VERIFY EMAIL
-        </Button>
+  				<Button style={{margin:5}}>
+            CHANGE PASSWORD
+          </Button>
+
+  				<Button style={{margin:5}} status='danger' onPress={() => logOut()}>
+            LOG OUT
+          </Button>
+        </ScrollView>
 
 			</ContentContainer>
     </ViewableArea>

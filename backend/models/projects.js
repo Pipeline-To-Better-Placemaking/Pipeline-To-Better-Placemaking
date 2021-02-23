@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
+const Area = require('../models/areas.js')
+const Standing_Point = require('../models/standing_points.js')
+const Stationary_Map = require('../models/stationary_maps.js')
+
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const project_schema = mongoose.Schema({
@@ -14,31 +18,45 @@ const project_schema = mongoose.Schema({
         required: true
     },
     area: {
-        type: Number,
-        default: 0,
-        required: true
+        type: ObjectId,
+        required: true,
+        ref: 'Areas'
     },
     subareas: [{
-        area: [{
-            latitude: {
-                type: Number,
-                required: true
-            },
-            longitude: {
-                type: Number,
-                required: true
-            }
-        }]
+        type: ObjectId,
+        required: true,
+        ref: 'Areas'
     }],
+    standingPoints:[{
+        type: ObjectId,
+        required: true,
+        ref: 'Standing_Points'
+    }],
+
+    surveyDuration:{
+        type: Number,
+        required: true,
+        default: 60
+    },
+    stationaryDuration: {
+        type: Number,
+        required: true,
+        default: 30
+    },
+    movingDuration: {
+        type: Number,
+        required: true,
+        default: 15
+    },
+
     activities: [{
         activity: {
             type: ObjectId,
             required: true,
-            unique: true
         },
         test_type: {
             type: String,
-            enum: ['survey','stationary','moving', 'program'],
+            enum: ['survey','stationary','moving'],
             required: true
         }
     }],
@@ -46,17 +64,13 @@ const project_schema = mongoose.Schema({
 
 project_schema.plugin(uniqueValidator)
 
-const Projects = module.exports = mongoose.model('Projects', project_schema)
+const Projects = mongoose.model('Projects', project_schema)
 
+module.exports = Projects
 
 module.exports.addProject = async function(newProject) {
-    const project = await newProject.save()
-    await Projects.updateOne(
-        { _id: project._id },
-        { $set: {area: 0}}
-    )
-
-    return await Projects.findById(project._id)
+    newProject.activities = []
+    return (await newProject.save())
 }
 
 module.exports.updateProject = async function (projectId, newProject) {
@@ -71,6 +85,17 @@ module.exports.updateProject = async function (projectId, newProject) {
 }
 
 module.exports.deleteProject = async function(projectId) {
+
+    project = await Projects.findById(projectId)
+
+    await Stationary_Map.projectCleanup(project._id)
+
+    for(var i = 0; i < project.subareas.length; i++)   
+        await Area.findByIdAndDelete(project.subareas[i])
+    
+    for(var i = 0; i < project.standingPoints.length; i++)   
+        await Area.findByIdAndDelete(project.standingPoints[i])
+
     return await Projects.findByIdAndDelete(projectId)
 }
 
@@ -97,36 +122,32 @@ module.exports.removeActivity = async function(projectId, testId) {
     )
 }
 
-module.exports.addArea = async function(projectId, newArea) {
+module.exports.addArea = async function(projectId, areaId) {
     return await Projects.updateOne(
         { _id: projectId },
-        { $push: { subareas: { area: newArea }}}
+        { $push: { subareas:  areaId}}
     )
 }
 
-module.exports.getArea = async function(projectId, areaId) {
-    const out = (await Projects.find({
-        _id: projectId,
-        'subareas._id': areaId 
-    },
-    {'subareas.$':1}))
-    
-    return out[0].subareas[0]
-}
-
-module.exports.updateArea = async function(projectId, areaId, newArea){
-return await Projects.updateOne(
-    {
-        _id: projectId,
-        'subareas._id': areaId 
-    },
-    { $set: { "subareas.$.area": newArea }}
-)
-}
-
 module.exports.deleteArea = async function(projectId, areaId) {
-  return await Projects.updateOne(
+    await Area.findByIdAndDelete(areaId)
+    return await Projects.updateOne(
       { _id: projectId },
-      { $pull: { subareas: { _id: areaId }}}
+      { $pull: { subareas: areaId}}
+  )
+}
+
+module.exports.addPoint = async function(projectId, pointId) {
+    return await Projects.updateOne(
+        { _id: projectId },
+        { $push: { standingPoints:  pointId}}
+    )
+}
+
+module.exports.deletePoint = async function(projectId, pointId) {
+    await Standing_Point.findByIdAndDelete(pointId)
+    return await Projects.updateOne(
+      { _id: projectId },
+      { $pull: { standingPoints: pointId}}
   )
 }

@@ -39,6 +39,10 @@ export function CollaborateStack(props) {
   // Used for starting an Activity timeSlot
   const [timeSlot, setTimeSlot] = useState(null);
 
+  const [username, setUsername] = useState('username');
+  const [firstname, setFirstname] = useState('first name');
+  const [lastname, setLastname] = useState('last name');
+
   useEffect(() => {
     async function getTokens() {
       // used for api calls
@@ -55,6 +59,12 @@ export function CollaborateStack(props) {
       let inviteList = await AsyncStorage.getItem('@invites');
       inviteList = JSON.parse(inviteList);
       setInvites(inviteList);
+
+      let first = await AsyncStorage.getItem('@firstName');
+      let last = await AsyncStorage.getItem('@lastName');
+      setFirstname(first);
+      setLastname(last);
+      setUsername(first + ' ' + last);
     }
 
     getTokens()
@@ -75,6 +85,8 @@ export function CollaborateStack(props) {
             setProjects={setProjects}
             invites={invites}
             setInvites={setInvites}
+            firstname={firstname}
+            lastname={lastname}
           />
         }
       </Screen>
@@ -85,6 +97,8 @@ export function CollaborateStack(props) {
             token={token}
             userId={userId}
             team={team}
+            setTeam={setTeam}
+            teams={teams}
             setTeams={setTeams}
             project={project}
             setProject={setProject}
@@ -103,7 +117,7 @@ export function CollaborateStack(props) {
             token={token}
             userId={userId}
             team={team}
-            setTeams={setTeams}
+            setTeam={setTeam}
             project={project}
             setProject={setProject}
             projects={projects}
@@ -149,6 +163,7 @@ export function CollaborateStack(props) {
             activities={activities}
             setActivities={setActivities}
             setTimeSlot={setTimeSlot}
+            username={username}
           />
         }
       </Screen>

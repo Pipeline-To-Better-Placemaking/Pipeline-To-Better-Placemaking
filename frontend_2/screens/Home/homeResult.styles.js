@@ -3,10 +3,11 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
 
     resultTextView: {
-        marginTop: 10,
+        marginTop: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginLeft: 30
+        alignItems:'flex-end',
+        marginLeft: 5,
     },
 
     resultText: {
@@ -15,11 +16,11 @@ export const styles = StyleSheet.create({
 
     resultLine: {
         borderBottomWidth: 2,
-        marginTop: 5
+        marginTop:5
     },
 
     resultCompareButtonView: {
-        marginRight: 30,
+        marginRight: 5,
     }
 
 });

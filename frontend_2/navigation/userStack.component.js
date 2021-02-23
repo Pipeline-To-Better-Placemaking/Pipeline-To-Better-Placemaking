@@ -49,6 +49,8 @@ export function UserSettingsStack(props) {
                     firstName = {firstName}
                     lastName = {lastName}
                     email = {email}
+					token = {token}
+					userId = {userId}
                     setFirstName = {setFirstName}
                     setLastName = {setLastName}
                     setEmail = {setEmail}

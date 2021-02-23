@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Pressable, Image } from 'react-native';
-import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction, Button } from '@ui-kitten/components';
+import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction, Button, List, ListItem } from '@ui-kitten/components';
 import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
 import { DummyResult } from '../components/dummyResult.component.js';
 import { HomeMapView } from '../components/Maps/home.map.component.js';
 import { HomeResultView } from './homeResult.component.js';
 import { ConfirmCompare } from '../components/Compare/confrimCompare.component.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './home.styles';
 
 export const HomeScreen = ( props ) => {
@@ -16,11 +17,11 @@ export const HomeScreen = ( props ) => {
 
   var location = props.location
 
-  onComparePress = () => {
+  const onComparePress = () => {
     setCompare(!compare)
   }
 
-  addToSelectedProjects = async (name) => {
+  const addToSelectedProjects = async (name) => {
 
     let selectedProjectsArray = selectedProjects
 
@@ -31,7 +32,7 @@ export const HomeScreen = ( props ) => {
     await props.setProjects(selectedProjectsArray)
   }
 
-  inSelectedProject = (name) => {
+  const inSelectedProject = (name) => {
 
     if (selectedProjects.includes(name)) {
       return true
@@ -41,6 +42,53 @@ export const HomeScreen = ( props ) => {
     }
   }
 
+  const openResultPage = async(item) => {
+    //TODO: Get Project Information
+    let success = false
+    let projectDetails = null
+    // Get the Project information
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + item._id, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            }
+        })
+        projectDetails = await response.json();
+        success = true
+    } catch (error) {
+        console.log("error", error)
+    }
+    // if successfully retrieved project info, Update
+    if(success) {
+      console.log("Project: ", projectDetails);
+      // set selected project page information
+      props.setSelectedProject(projectDetails);
+      props.setSelectedTeam(item.team);
+
+      // open results page
+      props.navigation.navigate('ProjectResultPage');
+    }
+  }
+
+  const resultItem = ({ item, index }) => (
+      <ListItem
+        onPress={() => openResultPage(item)}
+      >
+        <DummyResult
+          {...props}
+          key={index}
+          inList={inSelectedProject}
+          compare={compare}
+          addProject={addToSelectedProjects}
+          removeProject={props.removeFromSelectedProjects}
+          projectArea={item.title}
+          projectComment={item.description}
+        />
+      </ListItem>
+  );
 
   return (
     <ViewableArea>
@@ -51,39 +99,15 @@ export const HomeScreen = ( props ) => {
           <HomeMapView location={location}/>
         </View>
 
-        <HomeResultView onComparePress={onComparePress}/>
+        <HomeResultView {...props} onComparePress={onComparePress} compare={compare}/>
 
-        <ScrollView>
-            <DummyResult
-                inList={inSelectedProject}
-                compare={compare}
-                addProject={addToSelectedProjects}
-                removeProject={removeFromSelectedProjects}
-                projectArea={"Lake Lilian"}
-                projectComment={"Pavillion at Lake Lilian"}
-                />
-            <DummyResult
-                inList={inSelectedProject}
-                compare={compare}
-                addProject={addToSelectedProjects}
-                removeProject={removeFromSelectedProjects}
-                projectArea={"Lake Eola"}
-                projectComment={"East side of Lake Eola"}
-                />
-            <DummyResult
-                inList={inSelectedProject}
-                compare={compare}
-                addProject={addToSelectedProjects}
-                removeProject={removeFromSelectedProjects}
-                projectArea={"J. Blanchard Park"}
-                projectComment={"First mile of trails"}
-                />
-        </ScrollView>
-
-        <ConfirmCompare
-            compare={compare}
-            navigation={props.navigation}
-        />
+        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'55%', marginTop:15}}>
+          <List
+            data={props.projectList}
+            ItemSeparatorComponent={Divider}
+            renderItem={resultItem}
+          />
+        </View>
 
       </ContentContainer>
     </ViewableArea>

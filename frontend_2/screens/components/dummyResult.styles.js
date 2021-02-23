@@ -5,8 +5,6 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        marginTop: 8,
-        marginBottom: 8,
     },
 
     resultBox: {
@@ -25,14 +23,14 @@ export const styles = StyleSheet.create({
     },
 
     resultBoxText: {
-        marginLeft: 15,
+        marginLeft: 10,
         marginTop: 10,
         fontSize: 20
     },
 
     resultBoxComment: {
-        marginTop: 25,
-        marginLeft: 15,
+        marginTop: 10,
+        marginLeft: 25,
         fontSize: 12
     },
 

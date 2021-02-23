@@ -6,7 +6,7 @@ import { styles } from '../../Home/home.styles.js';
 export function ConfirmCompare(props) {
 
     const onCompareConfirm = () => {
-        console.log("Props: " + JSON.stringify(props));
+        //console.log("Props: " + JSON.stringify(props));
 
         props.navigation.navigate("CompareScreen");
     }
@@ -16,20 +16,12 @@ export function ConfirmCompare(props) {
         if (props.compare)
         {
             return (
-                <Button onPress={onCompareConfirm} style={styles.confirmCompareCount}>
-                    <Text style={styles.confirmCompareTextCount}>
-                        Confirm Compare
-                    </Text>
-                </Button>
-            );
-        }
-        else if (props.compare)
-        {
-            return (
-                <Button disabled={true} style={styles.confirmCompareNoCount}>
-                    <Text style={styles.confirmCompareTextNoCount}>
-                        Confirm Compare
-                    </Text>
+                <Button
+                  disabled={false}
+                  appearance={'outline'}
+                  onPress={onCompareConfirm}
+                >
+                  Confirm Compare
                 </Button>
             );
         }
@@ -40,8 +32,6 @@ export function ConfirmCompare(props) {
     }
 
     return(
-        <View>
-            <CompareButton/>
-        </View>
+        <CompareButton/>
     )
 }

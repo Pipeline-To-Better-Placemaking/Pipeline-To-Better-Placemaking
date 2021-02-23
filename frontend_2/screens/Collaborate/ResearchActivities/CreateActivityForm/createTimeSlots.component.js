@@ -95,6 +95,7 @@ export function CreateTimeSlots(props) {
         timeVal: time,
         timeString: getTimeStr(time),
         numResearchers: '1',
+        researchers: [],
         duration: '30',
         assignedPointIndicies: [],
     };
@@ -224,7 +225,7 @@ export function CreateTimeSlots(props) {
 
   const EnterNumberModal = () => (
     <Modal
-      style={{width:'60%'}}
+      style={{width:'80%'}}
       visible={researchersVisible || durationVisible}
       backdropStyle={styles.backdrop}
       onBackdropPress={dimissModal}

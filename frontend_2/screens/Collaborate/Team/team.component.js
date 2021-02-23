@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { HeaderBackEdit } from '../../components/headers.component';
-import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { ViewableArea, ContentContainer, PopUpContainer } from '../../components/content.component';
 import { CreateProject } from './createProjectModal.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './team.styles';
@@ -14,11 +14,22 @@ export function TeamPage(props) {
   const [inviteVisible, setInviteVisible] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [email, setEmail] = useState('');
+  const [projects, setProjects] = useState(props.projects);
+
+  useEffect(() => {
+    async function getTokens() {
+      let projectList = await AsyncStorage.getItem("@projects");
+      projectList = JSON.parse(projectList);
+      setProjects(projectList);
+    }
+
+    getTokens()
+  }, []);
 
   const openProjectPage = async (item) => {
     let success = false
     let projectDetails = null
-    // Get the team information
+    // Get the project information
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + item._id, {
             method: 'GET',
@@ -35,7 +46,7 @@ export function TeamPage(props) {
     }
     // if successfully retrieved project info, Update
     if(success) {
-      console.log("Project Team: ", projectDetails);
+      console.log("Project: ", projectDetails);
       // set selected project page information
       props.setProject(projectDetails)
       props.setActivities(projectDetails.activities);
@@ -66,6 +77,11 @@ export function TeamPage(props) {
 
   const navigateProjectPage = () => {
     props.navigation.navigate('ProjectPage');
+  }
+
+  const closePopUp = () => {
+    setInviteVisible(false);
+    setEmail('');
   }
 
   const projectItem = ({ item, index }) => (
@@ -139,51 +155,31 @@ export function TeamPage(props) {
   return (
     <ViewableArea>
       <HeaderBackEdit {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}/>
-      <ContentContainer>
-        <CreateProject
-          visible={createProjectVisible}
-          setVisible={setCreateProjectVisible}
-          create={navigateProjectPage}
-          token={props.token}
-          team={props.team}
-          project={props.project}
-          setProject={props.setProject}
-          projects={props.projects}
-          setProjects={props.setProjects}
-          setActivities={props.setActivities}
-          location={props.location}
+      <PopUpContainer
+        {...props}
+        visible={inviteVisible}
+        closePopUp={closePopUp}
+      >
+        <Text>Enter a user Email: </Text>
+        <Input
+            placeholder='Type Here...'
+            value={email}
+            onChangeText={(nextValue) => setEmail(nextValue)}
+            autoCapitalize='none'
+            keyboardType="email-address"
         />
-
-        <Modal
-          style={{width:'80%'}}
-          animationType="fade"
-          transparent={true}
-          visible={inviteVisible}
-          backdropStyle={styles.backdrop}
-          onRequestClose={() => {setInviteVisible(false); setEmail('');}}
-        >
-          <TouchableOpacity
-              style={styles.modalBackgroundStyle}
-              activeOpacity={1}
-              onPressOut={() => {setInviteVisible(false); setEmail('');}}
-            >
-            <Card disabled={true} style={{width:'80%', margin:5}}>
-              <Text>Enter a user Email: </Text>
-              <Input
-                  placeholder='Type Here...'
-                  value={email}
-                  onChangeText={(nextValue) => setEmail(nextValue)}
-                  autoCapitalize='none'
-                  keyboardType="email-address"
-              />
-              <Button style={{marginTop:10}} onPress={() => sendInvite()}>
-                Invite!
-              </Button>
-            </Card>
-          </TouchableOpacity>
-
-        </Modal>
-
+        <Button style={{marginTop:10}} onPress={() => sendInvite()}>
+          Invite!
+        </Button>
+      </PopUpContainer>
+      <CreateProject
+        {...props}
+        visible={createProjectVisible}
+        setVisible={setCreateProjectVisible}
+        create={navigateProjectPage}
+        setProjects={setProjects}
+      />
+      <ContentContainer>
         <View style={styles.teamTextView}>
             <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
                 <Text style={styles.teamText}>Projects </Text>
@@ -199,7 +195,7 @@ export function TeamPage(props) {
         <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
           <List
             style={{maxHeight:'100%', maxWidth:'90%'}}
-            data={props.projects}
+            data={projects}
             ItemSeparatorComponent={Divider}
             renderItem={projectItem}
           />

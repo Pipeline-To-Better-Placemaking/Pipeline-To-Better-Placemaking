@@ -9,7 +9,7 @@ import { styles } from './login.styles';
 
 export const LoginScreen = ( props ) => {
 
-  const [email, setEamil] = useState('');   //TODO: Fix typo
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -126,7 +126,7 @@ export const LoginScreen = ( props ) => {
           <Input
             placeholder='Email address...'
             value={email}
-            onChangeText={(nextValue) => setEamil(nextValue)}
+            onChangeText={(nextValue) => setEmail(nextValue)}
             style={styles.inputBox}
             autoCapitalize='none'
             keyboardType="email-address"
