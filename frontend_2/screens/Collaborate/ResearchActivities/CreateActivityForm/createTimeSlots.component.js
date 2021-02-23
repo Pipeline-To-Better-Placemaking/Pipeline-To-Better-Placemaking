@@ -33,7 +33,7 @@ export function CreateTimeSlots(props) {
   const [selectPointsVisible, setSelectPointsVisible] = useState(false);
   const [selectedPointsIndex, setSelectedPointsIndex] = useState([]);
   const groupDisplayValues = selectedPointsIndex.map(index => {
-    return "Point " + (index.row + 1);
+    return props.standingPoints[index.row].title;
   });
 
   // helper function to get a readable time string value
@@ -198,7 +198,7 @@ export function CreateTimeSlots(props) {
   const getPointsString = (timeSlot) => {
     let tempPoints = [];
     timeSlot.assignedPointIndicies.map(index => {
-      tempPoints.push("Point " + (index.row + 1));
+      tempPoints.push(props.standingPoints[index.row].title);
     });
     return tempPoints.join(', ');
   }
@@ -260,7 +260,7 @@ export function CreateTimeSlots(props) {
          selectedIndex={selectedPointsIndex}
          onSelect={index => setSelectedPointsIndex(index)}>
          {props.standingPoints.map((value, index) => {
-           return (<SelectItem key={index} title={"Point " + (index+1)}/>);
+           return (<SelectItem key={index} title={value.title}/>);
          })}
        </Select>
         <Button style={{marginTop:10}} onPress={confirmPointsModal}>
@@ -286,12 +286,13 @@ export function CreateTimeSlots(props) {
   const Duration = ({item, index}) => (
       <View style={{flexDirection:'row'}}>
         <Button
+          disabled={true}
           style={{marginLeft:-20}}
           onPress={() => editDuration(item, index)}
           accessoryRight={ClockIcon}
           appearance='ghost'
         >
-          <Text>Time Limit: {item.duration} (min)</Text>
+          <Text>Time at Site/StandingPoint: {item.duration} (min)</Text>
         </Button>
       </View>
   );

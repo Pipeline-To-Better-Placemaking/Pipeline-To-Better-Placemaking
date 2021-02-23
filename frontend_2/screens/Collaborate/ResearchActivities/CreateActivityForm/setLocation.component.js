@@ -11,16 +11,12 @@ import { styles } from './form.styles';
 export function SelectLocation(props) {
 
   const next = () => {
-    props.setArea(props.subareas[props.selectedAreaIndex].points);
-    if (props.pointsRequired) {
-      props.navigation.navigate('CreateStandingPoints');
-    } else {
-      props.navigation.navigate('CreateTimeSlots');
-    }
+    props.setArea(props.subareas[props.selectedAreaIndex]);
+    props.navigation.navigate('CreateTimeSlots');
   }
 
   const back = () => {
-    props.setArea(props.subareas[props.selectedAreaIndex].points);
+    props.setArea(props.subareas[props.selectedAreaIndex]);
     props.navigation.goBack();
   }
 

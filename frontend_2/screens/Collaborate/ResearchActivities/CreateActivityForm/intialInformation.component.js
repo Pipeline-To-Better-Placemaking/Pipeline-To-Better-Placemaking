@@ -15,8 +15,6 @@ export function IntialForm(props) {
   const next = () => {
     if(props.selectArea) {
       props.navigation.navigate('SelectLocation')
-    } else if (props.pointsRequired) {
-      props.navigation.navigate('CreateStandingPoints')
     } else {
       props.navigation.navigate('CreateTimeSlots')
     }

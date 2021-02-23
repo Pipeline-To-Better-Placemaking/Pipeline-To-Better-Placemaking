@@ -5,7 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IndexPath } from '@ui-kitten/components';
 import { IntialForm } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/intialInformation.component';
 import { SelectLocation } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/setLocation.component';
-import { CreateStandingPoints } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/createStandingPoints.component';
 import { CreateTimeSlots } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/createTimeSlots.component';
 
 const { Navigator, Screen } = createStackNavigator();
@@ -32,19 +31,19 @@ export function CreateActivityStack(props) {
   const [timeSlots, setTimeSlots] = useState([]);
 
   // This is the list of points, the user can set to reccomend where a researcher stands
-  const [standingPoints, setStandingPoints] = useState([]);
+  const [standingPoints, setStandingPoints] = useState(props.project.standingPoints);
   // This boolean identitifies whether or not standing points are required for this type of activity
   const [pointsRequired, setPointsRequired] = useState(true);
 
   // This is the selected sub area
-  const [area, setArea] = useState(props.project.subareas[0].points);
+  const [area, setArea] = useState(props.project.subareas[0]);
   const [selectedAreaIndex, setSelectedAreaIndex] = React.useState(0);
   // This boolean is used to determine if there's more than 1 sub area for the user to choose from
   // if there's only 1 sub area, then they don't need to select a sub location
   const selectArea = (props.project.subareas.length > 1);
   const [subareas, setSubareas] = useState(props.project.subareas);
 
-  const create = async () => {
+  const create = async () => { //TODO: check activity type
     // some error checking if they don't fill everything out
     let name = activityName;
     let row = selectedActivityIndex.row;
@@ -61,7 +60,9 @@ export function CreateActivityStack(props) {
       date: date,
       activity: activityTypes[row],
       timeSlots: timeSlots,
-      standingPoints: standingPoints,
+      standingPoints: timeSlots[0].assignedPointIndicies.map(index => {
+        return standingPoints[index.row];
+      }),
       area: area,
     };
     console.log("temp:", temp);
@@ -80,8 +81,8 @@ export function CreateActivityStack(props) {
             },
             body: JSON.stringify({
                 title: name,
-                area: props.project.subareas[0]._id,
-                standingPoints: props.project.standingPoints[0],
+                area: area._id,
+                standingPoints: temp.standingPoints,
                 project: props.project._id,
                 date: date,
                 maxResearchers: timeSlots[0].numResearchers
@@ -135,7 +136,6 @@ export function CreateActivityStack(props) {
             setDate={setDate}
             activityTypes={activityTypes}
             selectArea={selectArea}
-            pointsRequired={pointsRequired}
             headerText={headerText}
             exit={exit}
           />
@@ -150,19 +150,6 @@ export function CreateActivityStack(props) {
             subareas={subareas}
             selectedAreaIndex={selectedAreaIndex}
             setSelectedAreaIndex={setSelectedAreaIndex}
-            pointsRequired={pointsRequired}
-            headerText={headerText}
-            exit={exit}
-          />
-        }
-      </Screen>
-      <Screen name='CreateStandingPoints'>
-        {props =>
-          <CreateStandingPoints
-            {...props}
-            area={area}
-            standingPoints={standingPoints}
-            setStandingPoints={setStandingPoints}
             headerText={headerText}
             exit={exit}
           />

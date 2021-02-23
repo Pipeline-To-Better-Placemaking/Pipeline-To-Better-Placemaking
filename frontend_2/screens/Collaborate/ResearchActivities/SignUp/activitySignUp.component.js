@@ -19,7 +19,7 @@ export function ActivitySignUpPage(props) {
       let activityDetails = {
         location: props.activity.area.points[0],
         area: props.activity.area.points,
-        position: props.activity.area.points,
+        position: props.activity.standingPoints,
         time: props.activity.duration,
         timeLeft:props.activity.duration
       }
@@ -75,13 +75,12 @@ export function ActivitySignUpPage(props) {
   }
 
   const getPointsString = (timeSlot) => {
-    /*
+
     let tempPoints = [];
-    timeSlot.assignedPointIndicies.map(index => {
-      tempPoints.push("Point " + (index.row + 1));
+    timeSlot.standingPoints.map((point, index) => {
+      tempPoints.push(point.title);
     });
-    return tempPoints.join(', ');*/
-    return "test";
+    return tempPoints.join(', ');
   }
 
   const getName = (timeSlot, index) => {
@@ -93,11 +92,11 @@ export function ActivitySignUpPage(props) {
   }
 
   const getResearchers = (timeSlot) => {
-    if(timeSlot.numResearchers <= 0){
+    if(timeSlot.maxResearchers <= 0){
       return "    none";
     }
     let names = [];
-    for (let i = 0; i < timeSlot.numResearchers; i++) {
+    for (let i = 0; i < timeSlot.maxResearchers; i++) {
       names.push("    " + (i+1) + ". " + getName(timeSlot, i));
     }
     let str = names.join('\n');
