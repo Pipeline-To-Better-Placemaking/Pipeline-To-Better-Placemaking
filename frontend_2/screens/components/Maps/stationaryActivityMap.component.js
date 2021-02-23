@@ -37,18 +37,18 @@ export function StationaryActivityMap(props) {
          }
     }
 
-    const StandingPoints = () => {
-        return (
-            props.position.map((coord, index) =>
-                <MapView.Marker
-                key={index}
-                coordinate = {{
-                    latitude: coord.latitude,
-                    longitude: coord.longitude
-                }}
-                />
-            ))
-    }
+    // const StandingPoints = () => {
+    //     return (
+    //         props.position.map((coord, index) =>
+    //             <MapView.Marker
+    //             key={index}
+    //             coordinate = {{
+    //                 latitude: coord.latitude,
+    //                 longitude: coord.longitude
+    //             }}
+    //             />
+    //         ))
+    // }
 
     return(
 
@@ -58,7 +58,9 @@ export function StationaryActivityMap(props) {
                 mapHeight={'100%'}
                 onPress={props.addMarker}
             >
-                <StandingPoints/>
+                <MapView.Marker
+                    coordinate = {props.position}
+                />           
 
                 <MapView.Polygon
                     coordinates={props.area}

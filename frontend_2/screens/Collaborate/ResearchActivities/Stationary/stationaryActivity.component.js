@@ -15,7 +15,9 @@ export function StationaryActivity(props) {
     const [location] = useState(props.timeSlot.location)
     const [area] = useState(props.timeSlot.area)
     const [position] = useState(props.timeSlot.position)
+    const [initialTime] = useState(props.timeSlot.time)
     const [start, setStart] = useState(false)
+    const [standingIndex, setStandingIndex] = useState(0)
     const [dataModal, setDataModal] = useState(false)
     const [tempMarker, setTempMarker] = useState([])
     const [data, setData] = useState([{}])
@@ -61,11 +63,26 @@ export function StationaryActivity(props) {
       props.navigation.navigate("ActivitySignUpPage");
     }
 
-    const updateTime = (value) => {
-      //console.log("timer: ", value);
-      let temp = props.timeSlot;
-      temp.timeLeft = value;
-      props.setTimeSlot(temp);
+    const restart = () => {
+        let standingPointLength = Object.keys(props.timeSlot.position).length
+
+        console.log("Resetting...")
+        console.log("StandingIndex: " + standingIndex)
+        console.log("StandingPointLength: " + standingPointLength)
+        console.log("Initial time: " + JSON.stringify(initialTime))
+
+        if (standingIndex < standingPointLength-1){
+            console.log("Increasing index")
+
+            setStandingIndex(standingIndex+1)
+            setStart(false)
+            props.setTimeSlot(initialTime)
+
+        }
+        else if (standingIndex == standingPointLength-1){
+            console.log("Returning")
+            return;
+        }
     }
 
     const StartStopButton = () => {
@@ -81,7 +98,7 @@ export function StationaryActivity(props) {
                     </Button>
             )
         }
-        else {
+        else{
             return(
                 <Button
                     style={{backgroundColor: '#006FD6'}}
@@ -101,19 +118,12 @@ export function StationaryActivity(props) {
                 <View style={{height: 60, flexDirection: 'row'}}>
 
                     <StartStopButton/>
-                    <View style={{marginLeft: 175, marginTop: 5}}>
-                        <CountDown
-                            running={start}
-                            until={props.timeSlot.timeLeft}
-                            onChange={(value) => updateTime(value)}
-                            size={20}
-                            digitStyle={{backgroundColor: 'white'}}
-                            digitTxtStyle={{color: 'black'}}
-                            timeToShow={['M', 'S']}
-                            timeLabels={{m: '', s: ''}}
-                            showSeparator
-                        />
-                    </View>
+
+                    <Timer  timeSlot={props.timeSlot}
+                            setTimeSlot={props.setTimeSlot}
+                            start={start}
+                            restart={restart}
+                    />
                 </View>
             </View>
         )
@@ -135,7 +145,7 @@ export function StationaryActivity(props) {
                     <StationaryActivityMap
                         location={location}
                         area={area}
-                        position={position}
+                        position={position[standingIndex]}
                         markers={markers}
                         addMarker={onPointCreate}
                     />

@@ -8,16 +8,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function Timer(props) {
 
-    const [time] = useState(startTimerSetup)
+    const updateTime = (value) => {
+        console.log("timer: ", value-1);
+        let temp = props.timeSlot;
+        temp.timeLeft = value-1;
+        props.setTimeSlot(temp);
 
-    // useEffect(() => 
-    //     { startTimerSetup();}
-    // )
-
-    const startTimerSetup = async () => {
-        let timeLimit = await AsyncStorage.getItem("@time")
-        console.log("Time is: " + time)
-        return parseInt(timeLimit) * 60
+        if (value-1 == 0){
+            props.restart()
+        }
     }
 
     
@@ -25,7 +24,8 @@ export function Timer(props) {
         <View style={{marginLeft: 175, marginTop: 5}}>
             <CountDown
                 running={props.start}
-                until={time}
+                until={props.timeSlot.timeLeft}
+                onChange={(value) => updateTime(value)}
                 size={20}
                 digitStyle={{backgroundColor: 'white'}}
                 digitTxtStyle={{color: 'black'}}
