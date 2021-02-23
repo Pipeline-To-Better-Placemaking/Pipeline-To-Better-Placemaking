@@ -79,7 +79,7 @@ export function EditSubAreas(props) {
 
       <View style={{height:'50%'}}>
         <MapAreaWrapper
-          area={props.subareas[0].area}
+          area={props.subareas[0].points}
           mapHeight={'100%'}
         >
           <ShowAreas areas={props.subareas}/>

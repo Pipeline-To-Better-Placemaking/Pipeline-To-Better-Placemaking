@@ -20,8 +20,8 @@ export function ActivitySignUpPage(props) {
         location: props.activity.area.points[0],
         area: props.activity.area.points,
         position: props.activity.area.points,
-        time: props.activity.duration*60,
-        timeLeft:props.activity.duration*60
+        time: props.activity.duration,
+        timeLeft:props.activity.duration
       }
 
       props.setTimeSlot(activityDetails);

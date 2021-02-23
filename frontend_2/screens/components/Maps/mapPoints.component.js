@@ -117,7 +117,7 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
  };
 
  export const PressMapAreaWrapper = ({children, area, mapHeight, onPress, recenter }) => {
-   
+
   const [region, setRegion] = useState(getRegionForCoordinates(area));
   const [defaultRegion] = useState(getRegionForCoordinates(area))
 
@@ -219,7 +219,7 @@ export const MapWrapper = ({children, location, mapHeight}) => {
     };
 
 export const ShowAreas = ({areas}) => {
-  const center = areas.map((area, index) => getRegionForCoordinates(area.area));
+  const center = areas.map((area, index) => getRegionForCoordinates(area.points));
   return (areas.map((area, index) => (
     <View key={index}>
       <MapView.Polygon
@@ -231,7 +231,7 @@ export const ShowAreas = ({areas}) => {
       >
       </MapView.Polygon>
       <MapView.Marker
-        key={area.area[0]._id}
+        key={area.points[0]._id}
         coordinate = {{
             latitude: center[index].latitude,
             longitude: center[index].longitude
@@ -259,7 +259,7 @@ export const ShowMarkers = ({markers}) => {
           }}
         >
           <Callout>
-            <Text>Position {index+1}</Text>
+            <Text>{coord.title}</Text>
           </Callout>
         </MapView.Marker>
         )))
@@ -382,7 +382,7 @@ setMarker={}
 export function MapAddOne({children, ...props}) {
 
   // This is basically a default zoom level
-  let location = getRegionForCoordinates(props.areas[0].area)
+  let location = getRegionForCoordinates(props.areas[0].points)
 
   return(
     <View>

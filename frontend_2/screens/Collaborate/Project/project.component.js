@@ -101,7 +101,7 @@ export function ProjectPage(props) {
       <EditStandingPoints
         {...props}
         subareas={props.project.subareas}
-        standingPoints={[]}
+        standingPoints={props.project.standingPoints}
         visible={editStandingPointsVisible}
         setVisible={setEditStandingPointsVisible}
       />

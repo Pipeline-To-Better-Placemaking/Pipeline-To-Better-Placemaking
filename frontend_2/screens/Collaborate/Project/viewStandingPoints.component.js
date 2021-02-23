@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { MapAreaWrapper, ShowAreas, ShowMarkers } from '../../components/Maps/mapPoints.component';
+import { MapAreaWrapper, ShowAreas, ShowMarkers, getRegionForCoordinates } from '../../components/Maps/mapPoints.component';
 import { ModalContainer } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EditPoints } from './editStandingPoints.component';
@@ -10,13 +10,14 @@ import * as Location from 'expo-location';
 export function EditStandingPoints(props) {
 
   const [editPointVisible, setEditPointVisible] = useState(false);
-  const location = props.subareas[0].points[0];
+  let location = getRegionForCoordinates(props.subareas[0].points);
   const nullableEntry = {
     newPoint: true,
-    index: 1,
     _id: '',
-    location: location,
+    latitude: location.latitude,
+    longitude: location.longitude,
     title:'Point ',
+    index: 0
   };
 
   const [pointInfo, setPointInfo] = useState(nullableEntry);
@@ -28,15 +29,17 @@ export function EditStandingPoints(props) {
   const editPoint = async (newPoint, point, index) => {
     let temp = { ...pointInfo};
     temp.newPoint = newPoint;
-    temp.index = index;
-    temp._id = '';
-    temp.location = location;
+    temp._id = nullableEntry._id;
+    temp.latitude = nullableEntry.latitude;
+    temp.longitude = nullableEntry.longitude;
     temp.title = 'Point ' + (index + 1);
+    temp.index = index;
 
     if(!newPoint) {
-      temp.location = point.location;
+      temp.latitude = point.latitude;
+      temp.longitude = point.longitude;
       temp._id = point._id;
-      //temp.title = point.title; // TODO
+      temp.title = point.title;
     }
 
     await setPointInfo(temp);
@@ -45,7 +48,7 @@ export function EditStandingPoints(props) {
 
   const renderPointItem = ({ item, index }) => (
     <ListItem
-      title={`Point ${index+1} `}
+      title={item.title}
       accessoryRight={EditIcon}
       onPress={() => editPoint(false, item, index)}
     />
@@ -74,7 +77,7 @@ export function EditStandingPoints(props) {
 
       <View style={{height:'50%'}}>
         <MapAreaWrapper
-          area={props.subareas[0].area}
+          area={props.subareas[0].points}
           mapHeight={'100%'}
         >
           <ShowAreas areas={props.subareas}/>

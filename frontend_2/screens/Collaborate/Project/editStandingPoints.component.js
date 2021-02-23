@@ -8,7 +8,7 @@ import * as Location from 'expo-location';
 
 export function EditPoints(props) {
 
-  if(props.areaInfo === null) {
+  if(props.pointInfo === null) {
     return (null)
   }
 
@@ -38,8 +38,7 @@ export function EditPoints(props) {
   }
 
   const saveNewPoint = async() => {
-    /*
-    let token = await AsyncStorage.getItem("@token")
+    let token = props.token
     let success = false
     let res = null
 
@@ -47,7 +46,7 @@ export function EditPoints(props) {
     try {
       const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
                                     props.project._id +
-                                    '/areas', {
+                                    '/standing_points', {
           method: 'POST',
           headers: {
               Accept: 'application/json',
@@ -55,8 +54,9 @@ export function EditPoints(props) {
                   'Authorization': 'Bearer ' + token
           },
           body: JSON.stringify({
-              //title: getName() // TODO
-              area: props.tempArea
+              title: getName(),
+              latitude: props.pointInfo.latitude,
+              longitude: props.pointInfo.longitude
           })
       })
       res = await response.json()
@@ -64,24 +64,22 @@ export function EditPoints(props) {
     } catch (error) {
       console.log("error ", error)
     }
-    //console.log("response ", res);
+    console.log("response ", res);
     if(success) {
-      // update list of sub Areas (This has to be done by just updating the project)
-      let tempArea = {
-        _id: 0, // TODO: need to get this from the response if sub area is created
-        area: props.tempArea,
-      }
-      let tempSubareas = [...props.project.subareas];
-      tempSubareas[props.areaInfo.index] = tempArea;
+
+      // update list of standingPoints (This has to be done by just updating the project)
+      let tempPoint = {...props.pointInfo};
+      tempPoint._id = 0;
+      tempPoint.title = getName();
+      let tempPoints = [...props.project.standingPoints, tempPoint];
       let tempProject = {...props.project};
-      tempProject.subareas = tempSubareas;
+      tempProject.standingPoints = tempPoints;
       props.setProject(tempProject);
-    }//*/
+    }
   }
 
     const saveEditPoint = async() => {
-        /*
-        let token = await AsyncStorage.getItem("@token")
+        let token = props.token
         let success = false
         let res = null
 
@@ -89,8 +87,8 @@ export function EditPoints(props) {
         try {
           const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
                                         props.project._id +
-                                        '/areas/' +
-                                        props.areaInfo._id, {
+                                        '/standing_points/' +
+                                        props.pointInfo._id, {
               method: 'PUT',
               headers: {
                   Accept: 'application/json',
@@ -98,8 +96,9 @@ export function EditPoints(props) {
                       'Authorization': 'Bearer ' + token
               },
               body: JSON.stringify({
-                  //title: getName() // TODO
-                  area: props.tempArea
+                  title: getName(),
+                  latitude: props.pointInfo.latitude,
+                  longitude: props.pointInfo.longitude
               })
           })
           res = await response.json()
@@ -109,33 +108,30 @@ export function EditPoints(props) {
         }
         //console.log("response ", res);
         if(success) {
-          // update list of sub Areas (This has to be done by just updateing the project)
-          let tempArea = {
-            _id: props.areaInfo._id,
-            area: props.tempArea,
-          }
-          let tempSubareas = [...props.project.subareas];
-          tempSubareas[props.areaInfo.index] = tempArea;
+          let tempPoint = {...props.pointInfo};
+          tempPoint._id = 0;
+          tempPoint.title = getName();
+          let tempPoints = [...props.project.standingPoints];
+          tempPoints[props.pointInfo.index] = tempPoint;
           let tempProject = {...props.project};
-          tempProject.subareas = tempSubareas;
+          tempProject.standingPoints = tempPoints;
           props.setProject(tempProject);
-        } //*/
+        }
     }
 
     const deletePoint = async() => {
-      /*
       // do not delete a newPoint
-      if(!props.areaInfo.newPoint) {
-          let token = await AsyncStorage.getItem("@token")
+      if(props.pointInfo.index !== 0 && !props.pointInfo.newPoint) {
+          let token = props.token
           let success = false
           let res = null
-          console.log("deleteing area with id:", props.areaInfo._id);
-          // Delete area
+          console.log("deleteing area with id:", props.pointInfo._id);
+          // Delete point
           try {
               const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
                                             props.project._id +
-                                            '/areas/' +
-                                            props.areaInfo._id, {
+                                            '/standing_points/' +
+                                            props.pointInfo._id, {
                   method: 'DELETE',
                   headers: {
                       Accept: 'application/json',
@@ -152,20 +148,21 @@ export function EditPoints(props) {
 
           if (success) {
             // update list of subAreas
-            let tempSubareas = [...props.project.subareas];
-            tempSubareas.splice(props.areaInfo.index, 1);
+            let tempPoints = [...props.project.standingPoints];
+            tempPoints.splice(props.pointInfo.index, 1);
             let tempProject = {...props.project};
-            tempProject.subareas = tempSubareas;
+            tempProject.standingPoints = tempPoints;
             props.setProject(tempProject);
           }
-      }//*/
+      }
 
       props.setVisible(false);
     }
 
   const setMarker = (coords) => {
     let temp = {...props.pointInfo};
-    temp.location = coords;
+    temp.latitude = coords.latitude;
+    temp.longitude = coords.longitude;
     props.setPointInfo(point => temp);
   }
 
@@ -191,7 +188,7 @@ export function EditPoints(props) {
         <View style={{height:'90%'}}>
           <MapAddOne
             areas={props.subareas}
-            marker={props.pointInfo.location}
+            marker={props.pointInfo}
             setMarker={setMarker}
           >
           </MapAddOne>

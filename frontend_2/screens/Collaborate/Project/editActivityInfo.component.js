@@ -30,7 +30,7 @@ export function EditActivityInfo(props) {
           <Text category='s1'>Survey </Text>
           <Divider />
           <Text>Defaults: </Text>
-          <Text>        Time at Site: 30 (min)</Text>
+          <Text>        Time at Site: {props.project.surveyDuration} (min)</Text>
         </View>
 
         <View style={{marginBottom:30}}>
@@ -38,7 +38,7 @@ export function EditActivityInfo(props) {
           <Divider />
           <Text status='danger'>This activity requires Standing Points to be set.</Text>
           <Text>Defaults: </Text>
-          <Text>        Time per Standing Point: 15 (min)</Text>
+          <Text>        Time per Standing Point: {props.project.stationaryDuration} (min)</Text>
         </View>
 
         <View style={{marginBottom:30}}>
@@ -46,7 +46,7 @@ export function EditActivityInfo(props) {
           <Divider />
           <Text status='danger'>This activity requires Standing Points to be set.</Text>
           <Text>Defaults: </Text>
-          <Text>        Time per Standing Point: 15 (min)</Text>
+          <Text>        Time per Standing Point: {props.project.movingDuration} (min)</Text>
         </View>
       </View>
     </ModalContainer>

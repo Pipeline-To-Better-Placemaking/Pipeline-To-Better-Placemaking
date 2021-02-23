@@ -54,8 +54,8 @@ export function EditPoints(props) {
                   'Authorization': 'Bearer ' + token
           },
           body: JSON.stringify({
-              //title: getName() // TODO
-              area: props.tempArea
+              title: getName(),
+              points: props.tempArea
           })
       })
       res = await response.json()
@@ -68,7 +68,7 @@ export function EditPoints(props) {
       // update list of sub Areas (This has to be done by just updating the project)
       let tempArea = {
         _id: 0, // TODO: need to get this from the response if sub area is created
-        area: props.tempArea,
+        points: props.tempArea,
       }
       let tempSubareas = [...props.project.subareas];
       tempSubareas[props.areaInfo.index] = tempArea;
@@ -96,8 +96,8 @@ export function EditPoints(props) {
                       'Authorization': 'Bearer ' + token
               },
               body: JSON.stringify({
-                  //title: getName() // TODO
-                  area: props.tempArea
+                  title: getName(),
+                  points: props.tempArea
               })
           })
           res = await response.json()
@@ -107,10 +107,10 @@ export function EditPoints(props) {
         }
         //console.log("response ", res);
         if(success) {
-          // update list of sub Areas (This has to be done by just updateing the project)
+          // update list of sub Areas (This has to be done by just updating the project)
           let tempArea = {
             _id: props.areaInfo._id,
-            area: props.tempArea,
+            points: props.tempArea,
           }
           let tempSubareas = [...props.project.subareas];
           tempSubareas[props.areaInfo.index] = tempArea;
