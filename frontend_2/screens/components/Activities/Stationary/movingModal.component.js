@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, KeyboardAvoidingView } from 'react-native';
+import React from 'react';
+import { View, Modal } from 'react-native';
 
-import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, SelectItem } from '@ui-kitten/components';
-import * as Location from 'expo-location';
-import styles from './dataEntryModal.styles.js';
+import { Text, Button } from '@ui-kitten/components';
 
 export function MovingModal(props) {
 
+    // Confirm the researcher has moved to the next spot
     const confirm = () => {
         props.confirm()
     }

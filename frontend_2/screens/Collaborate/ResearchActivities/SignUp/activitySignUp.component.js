@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import React from 'react';
+import { View } from 'react-native';
+import { Text, Button, Divider, List, Card } from '@ui-kitten/components';
 import { HeaderBack } from '../../../components/headers.component';
 import { MapAreaWrapper, ShowArea, ShowMarkers } from '../../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { styles } from './activitySignUp.styles';
 
 export function ActivitySignUpPage(props) {
 
+  // Constant array of activities
   const activityList = ["stationary", "People Count", "Survey"]
 
   const onBeginPress = async (index) => {

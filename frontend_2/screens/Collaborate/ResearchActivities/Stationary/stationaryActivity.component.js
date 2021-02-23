@@ -1,34 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, KeyboardAvoidingView } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import { Button } from '@ui-kitten/components';
 import { StationaryActivityMap } from '../../../components/Maps/stationaryActivityMap.component.js';
-import { Timer } from '../../../components/timer.component.js';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
 import CountDown from 'react-native-countdown-component';
 
 export function StationaryActivity(props) {
 
-
+    /// Location, area, and standing points for SM
+    /// Bool indicating to the map to recenter
     const [location] = useState(props.timeSlot.location)
     const [area] = useState(props.timeSlot.area)
     const [position] = useState(props.timeSlot.position)
+    const [recenter, setRecenter] = useState(false)
+
+    // Begins the test
     const [start, setStart] = useState(false)
+    
+    // Shows the moving and data input modal
     const [moving, setMoving] = useState(false)
-    const [standingIndex, setStandingIndex] = useState(0)
     const [dataModal, setDataModal] = useState(false)
+
+    // The index of the standing points
+    const [standingIndex, setStandingIndex] = useState(0)
+
+    // Temp marker, inputted data points, and all of their locations
     const [tempMarker, setTempMarker] = useState([])
     const [data, setData] = useState([{}])
     const [markers, setMarkers] = useState([])
-    const [recenter, setRecenter] = useState(false)
+    
 
-    const openPrevPage = () => {
-        props.navigation.navigate("SignUpPage");
-    }
-
+    // Opens the data model and stores a temporary points
     const onPointCreate = async (marker) => {
 
         if (start) {
@@ -37,6 +42,7 @@ export function StationaryActivity(props) {
         }
     }
 
+    // Closes the modal and saves the data point
     const closeData = async (inf) => {
 
         console.log("Inf is: " + JSON.stringify(inf))
@@ -54,26 +60,22 @@ export function StationaryActivity(props) {
             setData(() => data.concat(pointData))
             setMarkers(() => markers.concat(tempMarker))
 
-            console.log("Data: " +  JSON.stringify(data))
-
             setDataModal(false)
         }
     }
 
+    // End Button press
     const endActivity = () => {
       setStart(false)
       props.navigation.navigate("ActivitySignUpPage");
     }
 
+    // Called when there is ore than one standing point
+    // This function ensures everything resets
     const restart = () => {
         let standingPointLength = Object.keys(props.timeSlot.position).length
 
-        console.log("Resetting...")
-        console.log("StandingIndex: " + standingIndex)
-        console.log("StandingPointLength: " + standingPointLength)
-
         if (standingIndex < standingPointLength-1){
-            console.log("Increasing index")
 
             setStandingIndex(standingIndex+1)
             setRecenter(true)
@@ -85,6 +87,7 @@ export function StationaryActivity(props) {
         }
     }
 
+    // Starts back up the activity
     const rebegin = () =>{
 
         setStart(true)
@@ -92,6 +95,7 @@ export function StationaryActivity(props) {
         setRecenter(false)
     }
 
+    // Start and Exit button
     const StartStopButton = () => {
 
         if (start) {
@@ -118,16 +122,15 @@ export function StationaryActivity(props) {
         }
     }
 
+    // Updates the time in TimeBar
     const updateTime = (value) => {
-        console.log("timer: ", value-1);
-        console.log("Time left: " + JSON.stringify(props.timeSlot.timeLeft))
-        console.log("Initial time slot time left: " + JSON.stringify(props.initialTimeSlot.timeLeft))
+
         let temp = props.timeSlot;
         temp.timeLeft = value-1;
         props.setTimeSlot(temp);
 
+        // If we hit 0, restart the timer
         if (value-1 == 0){
-            console.log("Initial time slot time left: " + JSON.stringify(props.initialTimeSlot.timeLeft))
             let resetSlot = props.timeSlot;
             resetSlot.timeLeft = props.initialTimeSlot.timeLeft;
             props.setTimeSlot(resetSlot);
@@ -136,6 +139,7 @@ export function StationaryActivity(props) {
         }
     }
 
+    // Count Down Timer and the Start/Exit button
     const TimeBar = () => {
 
         return(
@@ -162,6 +166,7 @@ export function StationaryActivity(props) {
         )
     }
 
+    // Main render
     return(
         <ViewableArea>
             <Header text={'Stationary Activity'}/>

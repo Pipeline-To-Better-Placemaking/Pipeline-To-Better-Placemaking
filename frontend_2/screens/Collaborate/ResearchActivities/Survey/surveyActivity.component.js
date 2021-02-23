@@ -5,7 +5,6 @@ import { Header } from '../../../components/headers.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { MapAreaWrapper, ShowArea } from '../../../components/Maps/mapPoints.component.js';
-import { Timer } from '../../../components/timer.component.js';
 import CountDown from 'react-native-countdown-component';
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
 

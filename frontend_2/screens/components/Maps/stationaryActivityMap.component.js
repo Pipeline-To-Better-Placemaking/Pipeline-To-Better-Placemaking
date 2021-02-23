@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import MapView, { PROVIDER_GOOGLE, Marker, Image, Polygon, Callout } from 'react-native-maps'
+import React from 'react';
+import MapView from 'react-native-maps'
 import { View } from 'react-native';
-import { Text, Button, Input, Icon, Divider, List, ListItem} from '@ui-kitten/components';
-import { PressMapAreaWrapper, ShowArea, getRegionForCoordinates } from './mapPoints.component';
+import { PressMapAreaWrapper } from './mapPoints.component';
 
 export function StationaryActivityMap(props) {
 
+    // Color constants for the data points
     const colors = ["blue", "red", "yellow", "green"]
 
+    // Custom colored data pin
     const DataPin = (props) => {
 
         return(
@@ -15,6 +16,7 @@ export function StationaryActivityMap(props) {
         )
     }
 
+    // Shows the project area, along with the plotted points
     const ShowPolygon = () => {
         if(props.markers === null) {
             return (null);
@@ -34,19 +36,6 @@ export function StationaryActivityMap(props) {
              )))
          }
     }
-
-    // const StandingPoints = () => {
-    //     return (
-    //         props.position.map((coord, index) =>
-    //             <MapView.Marker
-    //             key={index}
-    //             coordinate = {{
-    //                 latitude: coord.latitude,
-    //                 longitude: coord.longitude
-    //             }}
-    //             />
-    //         ))
-    // }
 
     return(
 
