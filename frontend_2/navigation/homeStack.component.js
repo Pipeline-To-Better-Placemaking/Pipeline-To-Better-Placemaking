@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from '../screens/Home/home.component';
 import { ProjectResultPage } from '../screens/Home/projectResult.component';
+import { ActivityResultPage } from '../screens/Home/activityResult.component';
 import { CompareScreen } from '../screens/Home/Compare/compare.component.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -12,10 +13,17 @@ export function HomeScreenStack(props){
 
   var location = props.location
 
+  // selected projects used for comparing
   const [selectedProjects, setSelectedProjects] = useState([]);
-  const [projectList, setProjectList] = useState([]);
+
+  // current project and list of projects to display and choose from
   const [selectedProject, setSelectedProject] = useState(null);
+  const [projectList, setProjectList] = useState([]);
+  // selected team, asscoiated with the project selected
   const [selectedTeam, setSelectedTeam] = useState(null);
+
+  // selected activity result information
+  const [selectedResult, setSelectedResult] = useState(null);
 
   // These are used for api calls
   const [token, setToken] = useState('');
@@ -122,13 +130,17 @@ export function HomeScreenStack(props){
       </Screen>
 
       <Screen
-          name="CompareScreen"
+        name="CompareScreen"
       >
-          {props => <CompareScreen {...props}
-                      removeFromSelectedProjects={removeFromSelectedProjects}
-                      selectedProjects={selectedProjects}
-                      compareCount={selectedProjects.length}>
-                      </CompareScreen>}
+      {props =>
+        <CompareScreen
+          {...props}
+          removeFromSelectedProjects={removeFromSelectedProjects}
+          selectedProjects={selectedProjects}
+          compareCount={selectedProjects.length}
+        >
+        </CompareScreen>
+      }
       </Screen>
       <Screen
         name='ProjectResultPage'
@@ -140,10 +152,24 @@ export function HomeScreenStack(props){
           userId={userId}
           project={selectedProject}
           team={selectedTeam}
+          setSelectedResult={setSelectedResult}
          />
        }
       </Screen>
-
+      <Screen
+        name='ActivityResultPage'
+      >
+      {props =>
+        <ActivityResultPage
+          {...props}
+          token={token}
+          userId={userId}
+          project={selectedProject}
+          team={selectedTeam}
+          selectedResult={selectedResult}
+         />
+       }
+      </Screen>
     </Navigator>
   )
 };

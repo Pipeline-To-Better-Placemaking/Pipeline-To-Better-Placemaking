@@ -15,6 +15,12 @@ export const styles = StyleSheet.create({
         marginLeft: 30
     },
 
+    margins: {
+      margin:5,
+      marginLeft:20,
+      marginRight:20
+    },
+
     teamText: {
         fontSize: 25,
     },
