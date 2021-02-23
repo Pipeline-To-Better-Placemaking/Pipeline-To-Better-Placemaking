@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, Modal, TouchableOpacity } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem } from '@ui-kitten/components';
 import { HeaderBackEdit } from '../../components/headers.component';
 import { ViewableArea, ContentContainer, PopUpContainer } from '../../components/content.component';
 import { CreateProject } from './createProjectModal.component';
+import { EditTeamPage } from './editTeam.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './team.styles';
 
@@ -13,6 +14,7 @@ export function TeamPage(props) {
   const [createProjectVisible, setCreateProjectVisible] = useState(false);
   const [inviteVisible, setInviteVisible] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
+  const [editTeamVisible, setEditTeamVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [projects, setProjects] = useState(props.projects);
 
@@ -43,6 +45,10 @@ export function TeamPage(props) {
         success = true
     } catch (error) {
         console.log("error", error)
+    }
+    if(projectDetails.success !== undefined){
+      success = projectDetails.success
+      console.log("success: ", success);
     }
     // if successfully retrieved project info, Update
     if(success) {
@@ -154,7 +160,14 @@ export function TeamPage(props) {
 
   return (
     <ViewableArea>
-      <HeaderBackEdit {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}/>
+      <HeaderBackEdit {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
+        <MenuItem title='Edit Team' onPress={() => {setEditMenuVisible(false); setEditTeamVisible(true)}}/>
+      </HeaderBackEdit>
+      <EditTeamPage
+        {...props}
+        visible={editTeamVisible}
+        setVisible={setEditTeamVisible}
+      />
       <PopUpContainer
         {...props}
         visible={inviteVisible}

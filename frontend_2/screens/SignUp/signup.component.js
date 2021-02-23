@@ -18,7 +18,7 @@ export const SignUpScreen = ( props ) => {
     const toggleSecureEntry = () => {
         setSecureTextEntry(!secureTextEntry);
     };
-    
+
     const navigateBack = () => {
         props.navigation.goBack();
     };
@@ -67,7 +67,7 @@ export const SignUpScreen = ( props ) => {
             </Text>
         </Button>
     );
-    
+
     const BackButton = () => (
         <Button appearance={'ghost'} onPress={navigateBack} style={{marginTop:15}}>
             <Text status={'control'} category='h5'>
@@ -75,7 +75,7 @@ export const SignUpScreen = ( props ) => {
             </Text>
         </Button>
     );
-    
+
     const eyeIcon = (props) => (
         <TouchableWithoutFeedback onPress={toggleSecureEntry}>
             <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'}/>

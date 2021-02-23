@@ -80,8 +80,8 @@ export const SelectArea = ({areas, selectedIndex, setSelectedIndex}) => {
 
   return (
     <View style={{flex:1, flexDirection:'column'}}>
-      <MapAreaWrapper area={areas[selectedIndex].area} mapHeight={'80%'}>
-        <ShowArea area={areas[selectedIndex].area}/>
+      <MapAreaWrapper area={areas[selectedIndex].points} mapHeight={'80%'}>
+        <ShowArea area={areas[selectedIndex].points}/>
       </MapAreaWrapper>
       <ScrollView style={{maxheight:'30%', marginTop:-100}}>
         <RadioGroup
@@ -139,6 +139,14 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
 
 // https://github.com/react-native-maps/react-native-maps/issues/505
 export function getRegionForCoordinates(points) {
+    if(points === null && points.length <= 0){
+      return {
+        latitude: 28.60275207150067,
+        longitude: -81.20052214711905,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01
+      };
+    }
     // points should be an array of { latitude: X, longitude: Y }
     let minX, maxX, minY, maxY;
 
@@ -209,7 +217,7 @@ export const ShowAreas = ({areas}) => {
   return (areas.map((area, index) => (
     <View key={index}>
       <MapView.Polygon
-        coordinates={area.area}
+        coordinates={area.points}
         strokeWidth={3}
         strokeColor={'rgba(255,0,0,0.5)'}
         fillColor={'rgba(0,0,0,0.2)'}

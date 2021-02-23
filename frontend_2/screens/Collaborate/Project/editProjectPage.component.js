@@ -45,7 +45,7 @@ export function EditProjectPage(props) {
           props.setTeam(team => selectedTeam);
           await AsyncStorage.setItem("@projects", JSON.stringify(tempProjects));
           // this is dumb defualt needed information
-          await props.setProject({title:'', subareas:[{area:[{latitude:0, longitude:0},{latitude:0, longitude:0},{latitude:0, longitude:0}]}]});
+          await props.setProject({title:'', subareas:[{points:[{latitude:0, longitude:0},{latitude:0, longitude:0},{latitude:0, longitude:0}]}]});
           props.setVisible(false);
           props.navigation.goBack();
         }

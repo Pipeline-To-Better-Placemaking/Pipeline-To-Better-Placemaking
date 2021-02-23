@@ -11,7 +11,7 @@ import { styles } from './form.styles';
 export function SelectLocation(props) {
 
   const next = () => {
-    props.setArea(props.subareas[props.selectedAreaIndex].area);
+    props.setArea(props.subareas[props.selectedAreaIndex].points);
     if (props.pointsRequired) {
       props.navigation.navigate('CreateStandingPoints');
     } else {
@@ -20,7 +20,7 @@ export function SelectLocation(props) {
   }
 
   const back = () => {
-    props.setArea(props.subareas[props.selectedAreaIndex].area);
+    props.setArea(props.subareas[props.selectedAreaIndex].points);
     props.navigation.goBack();
   }
 

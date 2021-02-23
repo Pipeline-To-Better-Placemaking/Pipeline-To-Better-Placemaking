@@ -76,7 +76,7 @@ export function TabNavigation(props) {
           await AsyncStorage.setItem("@lastName", result.lastname)
           await AsyncStorage.setItem("@email", result.email)
           await AsyncStorage.setItem("@teams", JSON.stringify(result.teams))
-          await AsyncStorage.setItem("@invites", JSON.stringify(result.invites))
+          //await AsyncStorage.setItem("@invites", JSON.stringify(result.invites))
     }
   }
 

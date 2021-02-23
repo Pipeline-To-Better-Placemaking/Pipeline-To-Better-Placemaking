@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../../components/headers.component';
-import { MapAddArea, ShowMarkers } from '../../components/Maps/mapPoints.component';
+import { MapAddArea, ShowMarkers , getRegionForCoordinates } from '../../components/Maps/mapPoints.component';
 import { ModalContainer} from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
@@ -17,6 +17,7 @@ export function CreateProject(props) {
   const confirmCreateProject = async () => {
     let success = false
     let projectDetails = null
+    let centerPoint = getRegionForCoordinates(markers);
     //console.log("description: ", getLocationName(markers[0]));
     // Save the new project
     try {
@@ -31,7 +32,8 @@ export function CreateProject(props) {
                 title: projectName,
                 description: "description",
                 points: markers,
-                team: props.team
+                team: props.team,
+                standingPoints:[{latitude: centerPoint.latitude, longitude: centerPoint.longitude, title: "center"}]
             })
         })
         projectDetails = await response.json()
@@ -45,6 +47,9 @@ export function CreateProject(props) {
     }
     // if successfully created project info, Update
     if(success) {
+      props.setVisible(false);
+      props.openProjectPage(projectDetails);
+      /*
       //console.log("created Project: ", projectDetails);
       props.setProjects(projects => [...projects,projectDetails]);
       // set selected project page information
@@ -62,7 +67,7 @@ export function CreateProject(props) {
 
       // open project page
       close();
-      props.create();
+      props.create();//*/
     }
   };
 
