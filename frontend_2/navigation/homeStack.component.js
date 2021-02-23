@@ -62,8 +62,14 @@ export function HomeScreenStack(props){
     } catch (error) {
         console.log("error getting team\n", error)
     }
+
+    if(teamDetails.success !== undefined){
+      success = teamDetails.success
+      console.log("success: ", success);
+    }
+
     // return team info
-    if(success) {
+    if(success && teamDetails.projects !== null) {
       //let list = [...projectList];
       teamDetails.projects.map((project, index) => {
         project.description = "Team: " + teamDetails.title + "\nLocation: " + project.description;

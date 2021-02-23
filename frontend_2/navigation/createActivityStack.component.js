@@ -44,7 +44,7 @@ export function CreateActivityStack(props) {
   const selectArea = (props.project.subareas.length > 1);
   const [subareas, setSubareas] = useState(props.project.subareas);
 
-  const create = () => {
+  const create = async () => {
     // some error checking if they don't fill everything out
     let name = activityName;
     let row = selectedActivityIndex.row;
@@ -64,7 +64,40 @@ export function CreateActivityStack(props) {
       standingPoints: standingPoints,
       area: area,
     };
+    console.log("temp:", temp);
     // TODO: POST the activity
+    let success = false
+    let activityDetails = null
+    //console.log("description: ", getLocationName(markers[0]));
+    // Save the new project
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            },
+            body: JSON.stringify({
+                title: name,
+                area: props.project.subareas[0]._id,
+                standingPoints: props.project.standingPoints[0],
+                project: props.project._id,
+                date: date,
+                maxResearchers: timeSlots[0].numResearchers
+            })
+        })
+        activityDetails = await response.json()
+        success = true
+    } catch (error) {
+        console.log("error", error)
+    }
+    console.log("created Activity: ", activityDetails);
+    if(activityDetails.success !== undefined){
+      success = activityDetails.success
+      console.log("success: ", success);
+    }
+
 
     // update activites list
     props.setActivities([temp]);

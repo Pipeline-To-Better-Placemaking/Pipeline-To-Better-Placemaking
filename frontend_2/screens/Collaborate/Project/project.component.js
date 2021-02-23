@@ -26,16 +26,13 @@ export function ProjectPage(props) {
   const [editStandingPointsVisible, setEditStandingPointsVisible] = useState(false);
 
   const openActivityPage = async (item) => {
-    console.log("selected activity: ", item);
-    props.setActivity(item)
-    props.navigation.navigate('ActivitySignUpPage')
-    /*
     let success = false
     let activityDetails = null
-    // Get the activity information
-    try {
-        // TODO: this will probably change later to get any of the activity types (or we do a GET for each type)
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + item._id, {
+    console.log("activity: ", item);
+    if(item.test_type === 'stationary') {
+      // Get the activity information
+      try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + item.activity, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -44,19 +41,31 @@ export function ProjectPage(props) {
             }
         })
         activityDetails = await response.json();
+        console.log("response activity: ", activityDetails);
         success = true
-    } catch (error) {
-        console.log("error", error)
+      } catch (error) {
+          console.log("error", error)
+      }
+
+    } else {
+      activityDetails = item;
+    }
+
+    if(activityDetails.success !== undefined){
+      success = activityDetails.success
+      console.log("success: ", success);
     }
     // if successfully retrieved activity info, Update
     if(success) {
-      console.log("Activity: ", activityDetails);
+      console.log("selected activity: ", activityDetails);
+      activityDetails.test_type = item.test_type;
       // set selected activity
       props.setActivity(activityDetails)
 
       // open activity page
       props.navigation.navigate('ActivitySignUpPage')
-    }*/
+    }//*/
+
   };
 
   const activityItem = ({ item, index }) => (
