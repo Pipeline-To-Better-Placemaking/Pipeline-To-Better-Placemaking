@@ -67,7 +67,7 @@ export function TeamPage(props) {
         description:"cries",
         subareas:[{
           _id:'0',
-          area:[
+          points:[
             {latitude:28.60275207150067, longitude:-81.20052214711905},
             {latitude:28.602640803731394, longitude:-81.19969569146633},
             {latitude:28.601981731115934, longitude:-81.2004641443491},
