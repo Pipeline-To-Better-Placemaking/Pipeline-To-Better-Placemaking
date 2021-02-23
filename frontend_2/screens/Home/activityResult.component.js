@@ -19,9 +19,13 @@ export function ActivityResultPage(props) {
           <Text category={'h5'}>Result Information</Text>
           <Divider style={{marginTop:5, marginBottom:10, borderWidth:0.5}} />
 
+          <Text>Team: {props.team.title}</Text>
+          <Text>Admin: {props.team.users[0].firstname} {props.team.users[0].lastname}</Text>
+
+          <Divider style={{marginTop:10, marginBottom:10}} />
+
           <Text>Location: {props.project.description}</Text>
           <Text>Area: </Text>
-          <Text>Admin: {props.team.users[0].firstname} {props.team.users[0].lastname}</Text>
 
           <Divider style={{marginTop:10, marginBottom:10}} />
 
