@@ -75,6 +75,11 @@ export function Collaborate(props) {
     } catch (error) {
         console.log("error getting team\n", error)
     }
+    if(teamDetails.success !== undefined){
+      success = teamDetails.success
+      console.log("success: ", success);
+    }
+
     // if successfully retrieved team info, Update
     if(success) {
       console.log("Selected Team: ", teamDetails);

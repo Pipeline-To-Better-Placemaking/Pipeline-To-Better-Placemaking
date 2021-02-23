@@ -9,10 +9,10 @@ import * as Location from 'expo-location';
 
 export function EditSubAreas(props) {
 
-  const location = props.subareas[0].area[0];
+  const location = props.subareas[0].points[0];
   const [editAreaVisible, setEditAreaVisible] = useState(false);
   const nullableEntry = {
-    area: props.subareas[0].area[0],
+    points: props.subareas[0].points[0],
     newArea: true,
     index: 1,
     _id: '',
@@ -28,7 +28,7 @@ export function EditSubAreas(props) {
 
   const editArea = async (newArea, area, index) => {
     let temp = { ...areaInfo};
-    temp.area = area;
+    temp.points = area;
     temp.newArea = newArea;
     temp.index = index;
     temp._id = '';
@@ -36,14 +36,14 @@ export function EditSubAreas(props) {
     temp.title = 'Area ' + (index + 1);
 
     if(!newArea) {
-      temp.location = area.area[0];
+      temp.location = area.points[0];
       temp._id = area._id;
-      temp.area = area.area;
+      temp.points = area.points;
       //temp.title = area.title; // TODO
     }
 
     await setAreaInfo(temp);
-    await setTempArea([...temp.area]);
+    await setTempArea([...temp.points]);
     setEditAreaVisible(true);
   }
 

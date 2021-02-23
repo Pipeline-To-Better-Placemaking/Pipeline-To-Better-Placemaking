@@ -37,7 +37,7 @@ export function CreateActivityStack(props) {
   const [pointsRequired, setPointsRequired] = useState(true);
 
   // This is the selected sub area
-  const [area, setArea] = useState(props.project.subareas[0].area);
+  const [area, setArea] = useState(props.project.subareas[0].points);
   const [selectedAreaIndex, setSelectedAreaIndex] = React.useState(0);
   // This boolean is used to determine if there's more than 1 sub area for the user to choose from
   // if there's only 1 sub area, then they don't need to select a sub location
@@ -67,7 +67,7 @@ export function CreateActivityStack(props) {
     // TODO: POST the activity
 
     // update activites list
-    props.setActivities(activites => [...activites,temp]);
+    props.setActivities([temp]);
 
     // Navigate back to Project page
     props.navigation.navigate('ProjectPage')

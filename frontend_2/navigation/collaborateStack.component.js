@@ -22,19 +22,19 @@ export function CollaborateStack(props) {
   const [userId, setUserId] = useState(null);
 
   // list of current users invites to Teams
-  const [invites, setInvites] = useState(null);
+  const [invites, setInvites] = useState([]);
 
   // The selected Team and List of Teams the User is a member of
   const [team, setTeam] = useState(null);
-  const [teams, setTeams] = useState(null);
+  const [teams, setTeams] = useState([]);
 
   // The selected Project and List of Projects for the selected Team
   const [project, setProject] = useState(null);
-  const [projects, setProjects] = useState(null);
+  const [projects, setProjects] = useState([]);
 
   // The selected Activity and List of Activities for the selected Project
   const [activity, setActivity] = useState(null);
-  const [activities, setActivities] = useState(null);
+  const [activities, setActivities] = useState([]);
 
   // Used for starting an Activity timeSlot
   const [timeSlot, setTimeSlot] = useState(null);

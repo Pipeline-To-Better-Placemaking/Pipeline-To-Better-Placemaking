@@ -10,7 +10,7 @@ import * as Location from 'expo-location';
 export function EditStandingPoints(props) {
 
   const [editPointVisible, setEditPointVisible] = useState(false);
-  const location = props.subareas[0].area[0];
+  const location = props.subareas[0].points[0];
   const nullableEntry = {
     newPoint: true,
     index: 1,
