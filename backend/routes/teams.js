@@ -31,7 +31,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 })
 
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    var team = await Team.findById(req.params.id).populate('projects', 'title')
+    var team = await Team.findById(req.params.id).populate('projects', 'title description')
     for(var i = 0; i < team.users.length; i++){
         const user = await User.findById(team.users[i].user)
         myRole = team.users[i].role

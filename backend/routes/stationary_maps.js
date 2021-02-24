@@ -15,8 +15,8 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     project = await Project.findById(req.body.project)
 
     if(await Team.isAdmin(project.team,user._id)){
-
-        if(req.body.timeSlots.length > 0)
+        
+        if(req.body.timeSlots)
             for(var i = 0; i < req.body.timeSlots.length; i++){
                 var slot = req.body.timeSlots[0]
 
