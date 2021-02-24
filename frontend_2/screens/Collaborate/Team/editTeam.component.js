@@ -11,15 +11,33 @@ export function EditTeamPage(props) {
     props.setVisible(false);
   }
 
+	// Removes the team matching the ID from the local list of teams
+	const removeTeamFromList = async (teamID, teams) => {
+
+		// remove team from local list
+		for(let i = 0; i < teams.length; i++) {
+			if(teams[i]._id == teamID){
+				teams.splice(i, 1)
+			}
+		}
+
+		// Update async storage and props		
+		props.setVisible(false)
+    props.navigation.navigate('Collaborate')
+		props.setTeams(teams)
+		await AsyncStorage.setItem('@teams', JSON.stringify(teams))
+	}
+
   const deleteTeam = async () => {
-        // should probs have something for comfirm Delete first
+        // should probably have something for confirm Delete first
         let token = props.token
         let success = false
         let res = null
+				let deleteTeamID = props.team._id
 
-        // Delete
+				// Delete Team from backend
         try {
-          const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + props.team._id, {
+          const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + deleteTeamID, {
             method: 'DELETE',
             headers: {
               Accept: 'application/json',
@@ -34,10 +52,9 @@ export function EditTeamPage(props) {
             console.log("error", error)
         }
 
-        // Update
+        // Local Updates
         if (success) {
-          props.setVisible(false);
-          props.navigation.goBack();
+					removeTeamFromList(deleteTeamID, props.teams)         
         }
     }
 
