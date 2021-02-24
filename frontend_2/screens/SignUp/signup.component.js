@@ -10,7 +10,6 @@ export const SignUpScreen = ( props ) => {
     const [password, setPassword] = useState('');
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
-    const [institution, setInstitution] = useState('');
 
     const [secureTextEntry, setSecureTextEntry] = useState(true);   // Display dots instead of text in password field
     const [loading, setLoading] = useState(false);
@@ -33,7 +32,6 @@ export const SignUpScreen = ( props ) => {
         };
         if (firstname !== '') userBody.firstname = firstname;
         if (lastname !== '') userBody.lastname = lastname;
-        if (institution !== '') userBody.institution = institution;
 
         try {
             // Make an HTTP request to create a new user
@@ -134,16 +132,6 @@ export const SignUpScreen = ( props ) => {
                         placeholder='Last name...'
                         value={lastname}
                         onChangeText={(nextValue) => setLastname(nextValue)}
-                        style={styles.inputBox}
-                        autoCapitalize='none'
-                    />
-                </View>
-                <View>
-                    <Text category='label' style={styles.inputText}> Institution: </Text>
-                    <Input
-                        placeholder='Institution...'
-                        value={institution}
-                        onChangeText={(nextValue) => setInstitution(nextValue)}
                         style={styles.inputBox}
                         autoCapitalize='none'
                     />

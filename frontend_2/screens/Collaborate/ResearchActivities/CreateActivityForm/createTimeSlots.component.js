@@ -321,23 +321,23 @@ export function CreateTimeSlots(props) {
       </View>
   );
 
+// <Duration {...{item, index}} />
   const signUpCard = ({item, index}) => (
-      <Card>
-        <View style={{flexDirection:'row', justifyContent:'flex-start'}}>
+    <Card>
+      <View style={{flexDirection:'row', justifyContent:'flex-start'}}>
 
-          <View style={{flex:1, flexDirection:'column', alignItems:'flex-start'}}>
-              <TimePicker {...{item, index}} />
-              <Duration {...{item, index}} />
-              <NumResearchers {...{item, index}} />
-              {(props.selectedActivity === 'Survey' ? null : <SelectPoints {...{item, index}} />)}
-          </View>
-
-          <View style={{alignItems:'flex-end'}}>
-              <Delete {...{item, index}}/>
-          </View>
-
+        <View style={{flex:1, flexDirection:'column', alignItems:'flex-start'}}>
+          <TimePicker {...{item, index}} />
+          <NumResearchers {...{item, index}} />
+          {(props.selectedActivity === 'Survey' ? null : <SelectPoints {...{item, index}} />)}
         </View>
-      </Card>
+
+        <View style={{alignItems:'flex-end'}}>
+          <Delete {...{item, index}}/>
+        </View>
+
+      </View>
+    </Card>
   );
 
   return (

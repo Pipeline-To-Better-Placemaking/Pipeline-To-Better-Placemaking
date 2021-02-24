@@ -44,7 +44,7 @@ export function CreateActivityStack(props) {
   const selectArea = (props.project.subareas.length > 1);
   const [subareas, setSubareas] = useState(props.project.subareas);
 
-  const create = async () => { //TODO: check activity type
+  const create = async () => {
     // some error checking if they don't fill everything out
     let name = activityName;
     let row = selectedActivityIndex.row;
@@ -117,7 +117,6 @@ export function CreateActivityStack(props) {
                 project: props.project._id,
                 date: date,
                 maxResearchers: parseInt(timeSlot.maxResearchers),
-                duration: parseInt(timeSlot.duration)
             })
         })
         activityDetails = await response.json()
@@ -132,8 +131,8 @@ export function CreateActivityStack(props) {
     }
 
     if(success){
-      // TODO: I'm not sure I have the right id, or am doing this correctly to click an activity after
-      // creation, this needs some work
+      activityDetails.activity = activityDetails._id;
+      activityDetails.test_type = 'stationary';
       props.setActivities(values => [...values,activityDetails]);
     }
   }

@@ -18,7 +18,9 @@ export function ProjectResultPage(props) {
 
 
   const openActivityPage = async (item) => {
-    //console.log("selected activity: ", item);
+    //console.log("selected result: ", item);
+    props.setSelectedResult(item);
+    props.navigation.navigate("ActivityResultPage");
   };
 
   const activityItem = ({ item, index }) => (
@@ -37,7 +39,7 @@ export function ProjectResultPage(props) {
       <HeaderBack {...props} text={props.project.title}/>
       <ContentContainer>
 
-        <View style={{height:'45%'}}>
+        <View style={{height:'35%'}}>
           <MapAreaWrapper area={props.project.subareas[0].points} mapHeight={'100%'}>
             <ShowArea area={props.project.subareas[0].points} />
           </MapAreaWrapper>
