@@ -60,7 +60,7 @@ export const LoginScreen = ( props ) => {
         success = res.success
         if (success){
           token = res.token
-          id = res.user.id
+          id = res.user._id
 
           await AsyncStorage.setItem("@token", token)
           await AsyncStorage.setItem("@id", id)
