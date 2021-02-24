@@ -79,7 +79,10 @@ module.exports.updateProject = async function (projectId, newProject) {
         { $set: {
             title: newProject.title,
             description: newProject.description,
-            area: newProject.area
+            area: newProject.area,
+            surveyDuration: newProject.surveyDuration,
+            movingDuration: newProject.movingDuration,
+            stationaryDuration: newProject.stationaryDuration
         }}
     )
 }
