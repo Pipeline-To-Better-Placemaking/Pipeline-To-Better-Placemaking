@@ -42,11 +42,6 @@ const stationary_schema = mongoose.Schema({
         type: ObjectId,
         required: true
     },
-    area: {
-        type: ObjectId,
-        required: true,
-        ref: 'Areas'
-    },
     standingPoints: [{
         type: ObjectId,
         required: true,
@@ -64,8 +59,9 @@ const stationary_schema = mongoose.Schema({
         default: 1
     },
 
-    duration:{
-        type: Number,
+    sharedData:{
+        type: ObjectId,
+        ref: 'Stationary_Collection',
         required: true
     },
 
@@ -88,10 +84,9 @@ module.exports.updateMap = async function (projectId, newMap) {
     return await Maps.updateOne(
         { _id: projectId },
         { $set: {
-            owner: newMap.owner,
             title: newMap.title,
             date: newMap.date,
-            area: newMap.area,
+            maxResearchers: newMap.maxResearchers,
             standingPoints: newMap.standingPoints
         }}
     )
@@ -104,7 +99,6 @@ module.exports.deleteMap = async function(mapId) {
 module.exports.projectCleanup = async function(projectId) {
     return await Maps.deleteMany({ project: projectId })
 }
-
 
 
 module.exports.addEntry = async function(mapId, newEntry) {
@@ -121,6 +115,13 @@ module.exports.addResearcher = async function(mapId, userId){
     )
 }
 
+module.exports.removeResearcher = async function(mapId, userId){
+    await Maps.updateOne(
+        { _id: mapId },
+        { $pull: { users: userId}}
+    )
+}
+
 module.exports.isResearcher = async function(mapId, userId){
     const doc = await Maps.find(
         {
@@ -134,7 +135,6 @@ module.exports.isResearcher = async function(mapId, userId){
     return true
 }
     
-
 module.exports.findData = async function(mapId, entryId){
     const out = (await Maps.find({
         _id: mapId,
