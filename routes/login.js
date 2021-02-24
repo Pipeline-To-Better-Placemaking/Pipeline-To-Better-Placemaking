@@ -38,14 +38,15 @@ router.post('/', async (req,res,next) => {
         expiresIn: 86400 //1 day
     })
 
+    const fullUser = await User.findById(shortUser._id)
+    .select('-password -verification_code -verification_timeout')
+    .populate('teams', 'title')
+    .populate('invites','title')
+
     res.status(200).json({
         success: true,
         token: token,
-        user: {
-            id: user._id,
-            name: user.firstname,
-            email: user.email
-        }
+        user: fullUser            
     })
 })
 
