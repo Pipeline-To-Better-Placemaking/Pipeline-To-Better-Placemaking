@@ -4,7 +4,7 @@ const Project = require('../models/projects.js')
 const Team = require('../models/teams.js')
 const Area = require('../models/areas.js')
 const Standing_Point = require('../models/standing_points.js')
-const Stationary_Map = require('../models/stationary_maps.js')
+const Stationary_Collection = require('../models/stationary_maps.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
@@ -43,9 +43,6 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
             subareas: [newArea._id],
             standingPoints: pointIds,
             team: req.body.team,
-            surveyDuration: req.body.surveyDuration,
-            movingDuration: req.body.movingDuration,
-            stationaryDuration: req.body.stationaryDuration
         })
 
         const project = await Project.addProject(newProject)
@@ -59,7 +56,12 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 })
 
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    res.json(await Project.findById(req.params.id).populate('area').populate('subareas').populate('standingPoints'))
+    res.json(await Project.findById(req.params.id)
+                          .populate('area')
+                          .populate('subareas')
+                          .populate('standingPoints')
+                          .populate('stationaryCollections')
+            )
 })
 
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
@@ -69,9 +71,6 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         title: (req.body.title ? req.body.title : project.title),
         description: (req.body.description ? req.body.description : project.description),
         area: (req.body.area ? req.body.area : project.area),
-        surveyDuration: (req.body.surveyDuration ? req.body.surveyDuration : project.surveyDuration),
-        movingDuration: (req.body.movingDuration ? req.body.movingDuration : project.movingDuration),
-        stationaryDuration: (req.body.stationaryDuration ? req.body.stationaryDuration: project.stationaryDuration) 
     })
 
     if (await Team.isAdmin(project.team,user._id)){
@@ -105,19 +104,39 @@ router.post('/:id/areas', passport.authenticate('jwt',{session:false}), async (r
     user = await req.user
     project = await Project.findById(req.params.id)
 
-    let newArea = new Area({
-        title: req.body.title,
-        points: req.body.points
-    })
-
-    newArea.save()
-
     if(await Team.isUser(project.team,user._id)){
         
         if(req.body.points.length < 3)
             throw new BadRequestError('Areas require at least three points')
         
-        res.json(await Project.addArea(project._id,newArea._id))
+            let newArea = new Area({
+            title: req.body.title,
+            points: req.body.points
+        })
+
+        newArea.save()
+
+        await Project.addArea(project._id,newArea._id)
+        res.json(newArea)
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.put('/:id/areas/:areaId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    area = await Area.findById(req.params.areaId)
+    
+    if(await Team.isAdmin(project.team,user._id)){
+
+        let newArea = new Area({
+            title: (req.body.title ? req.body.title :  area.title),
+            points: (req.body.points ? req.body.points : area.points)
+        })
+
+        res.status(201).json(await Area.updateArea(req.params.areaId, newArea))
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
@@ -139,15 +158,37 @@ router.post('/:id/standing_points', passport.authenticate('jwt',{session:false})
     user = await req.user
     project = await Project.findById(req.params.id)
 
-    let newPoint = new Standing_Point({
-        longitude: req.body.longitude,
-        latitude: req.body.latitude,
-        title: req.body.title
-    })
-    newPoint.save()
+    if(await Team.isUser(project.team,user._id)){   
 
-    if(await Team.isUser(project.team,user._id)){      
-        res.json(await Project.addPoint(project._id,newPoint._id))
+        let newPoint = new Standing_Point({
+            longitude: req.body.longitude,
+            latitude: req.body.latitude,
+            title: req.body.title
+        })
+        newPoint.save()
+       
+        await Project.addPoint(project._id,newPoint._id)
+        res.json(newPoint)
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.put('/:id/standing_points/:pointId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    point = await Standing_Point.findById(req.params.areaId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+    
+        let newPoint = new Standing_Point({
+            title: (req.body.title ? req.body.title :  point.title),
+            latitude: (req.body.latitude ? req.body.latitude : point.latitude),
+            latitude: (req.body.longitude ? req.body.longitude : point.longitude)
+        })
+  
+        res.status(201).json(await Standing_Point.updateArea(req.params.pointId, newPoint))
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
@@ -159,6 +200,62 @@ router.delete('/:id/standing_points/:pointId', passport.authenticate('jwt',{sess
     project = await Project.findById(req.params.id)
     if(await Team.isAdmin(project.team,user._id)){
         res.status(201).json(await Project.deletePoint(project._id,req.params.pointId))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.post('/:id/stationary_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+
+    if(await Team.isUser(project.team,user._id)){   
+
+        let newCollection = new Stationary_Collection({
+            title: req.body.title,
+            data: req.body.date,
+            area: req.body.area,
+            duration: req.body.duration
+        })
+
+        newPoint.save()
+       
+        await Project.addStationaryCollection(project._id,newCollection._id)
+        res.json(newCollection)
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.put('/:id/stationary_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    point = await Standing_Point.findById(req.params.areaId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+    
+        
+        let newCollection = new Stationary_Collection({
+                title: (req.body.title ? req.body.tttle : collection.title),
+                data: (req.body.date ? req.body.date : collection.date),
+                area: (req.body.area ? req.body.area : collection.area),
+                duration: (req.body.duration ? req.body.duration : collection.duration)
+        })
+  
+        res.status(201).json(await Stationary_Collection.updateCollection(req.params.collectionId, newColletion))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.delete('/:id/stationary_collections/:colectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    if(await Team.isAdmin(project.team,user._id)){
+        res.status(201).json(await Project.deleteCollectoin(project._id,req.params.pointId))
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
