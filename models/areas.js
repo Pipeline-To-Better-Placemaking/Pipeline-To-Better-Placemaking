@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
 const area_schema = mongoose.Schema({
+    title: String,
     points: [{
         latitude: {
             type: Number,

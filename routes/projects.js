@@ -11,7 +11,6 @@ const config = require('../utils/config')
 const { models } = require('mongoose')
 
 const { BadRequestError, UnauthorizedError } = require('../utils/errors')
-const areas = require('../models/areas.js')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
@@ -22,6 +21,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
             throw new BadRequestError('Areas require at least three points')
 
         let newArea = new Area({
+            title: req.body.areaTitle,
             points: req.body.points
         })
         newArea.save()
@@ -71,7 +71,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         area: (req.body.area ? req.body.area : project.area),
         surveyDuration: (req.body.surveyDuration ? req.body.surveyDuration : project.surveyDuration),
         movingDuration: (req.body.movingDuration ? req.body.movingDuration : project.movingDuration),
-        stationaryDuration: (req.body.surveyDuration ? req.body.stationaryDuration: project.stationaryDuration) 
+        stationaryDuration: (req.body.stationaryDuration ? req.body.stationaryDuration: project.stationaryDuration) 
     })
 
     if (await Team.isAdmin(project.team,user._id)){
@@ -106,6 +106,7 @@ router.post('/:id/areas', passport.authenticate('jwt',{session:false}), async (r
     project = await Project.findById(req.params.id)
 
     let newArea = new Area({
+        title: req.body.title,
         points: req.body.points
     })
 
@@ -157,7 +158,7 @@ router.delete('/:id/standing_points/:pointId', passport.authenticate('jwt',{sess
     user = await req.user
     project = await Project.findById(req.params.id)
     if(await Team.isAdmin(project.team,user._id)){
-        res.status(201).json(await Project.deleteArea(project._id,req.params.pointId))
+        res.status(201).json(await Project.deletePoint(project._id,req.params.pointId))
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')

@@ -54,6 +54,11 @@ PROJECT=$(curl -H 'Content-Type: application/json' \
 
 echo
 echo
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/teams/${TEAM}
+echo
 
 curl -H 'Content-Type: application/json' \
     -H "Authorization: Bearer ${TOKEN}" \

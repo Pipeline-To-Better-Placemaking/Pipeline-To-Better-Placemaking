@@ -41,7 +41,7 @@ const project_schema = mongoose.Schema({
     stationaryDuration: {
         type: Number,
         required: true,
-        default: 30
+        default: 15
     },
     movingDuration: {
         type: Number,
