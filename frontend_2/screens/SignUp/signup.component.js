@@ -11,6 +11,9 @@ export const SignUpScreen = ( props ) => {
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
 
+    const [emailTouched, setEmailTouched] = useState(false);
+    const [passwordTouched, setPasswordTouched] = useState(false);
+
     const [secureTextEntry, setSecureTextEntry] = useState(true);   // Display dots instead of text in password field
     const [loading, setLoading] = useState(false);
 
@@ -58,9 +61,26 @@ export const SignUpScreen = ( props ) => {
         setLoading(false);
     };
 
-    const SignUpButton = () => (
-        <Button style={styles.signUpButton} onPress={handleSignup}>
-            <Text style={styles.signUpText}>
+    const checkEmail = () => {
+        if (!/.+\@.+\..+/g.test(email)) return false;
+        if (/\s/g.test(email)) return false;
+        return true;
+    }
+
+    const checkPassword = () => {
+        let rules = [];
+        if (password.length < 8) rules.push('Must be at least 8 characters long');
+        if (/\s/g.test(password)) rules.push('Must not have any spaces');
+        if (!/\d/g.test(password)) rules.push('Must have at least one digit');
+        if (!/[!@#$%^&*]/g.test(password)) rules.push('Must have one of the following: ! @ # $ % ^ & *');
+        if (!/[A-Z]/g.test(password)) rules.push('Must have at least one uppercase letter');
+
+        return rules;
+    }
+
+    const SignUpButton = ({ enabled }) => (
+        <Button style={[styles.signUpButton, !enabled && {backgroundColor: '#E6D88A'}]} onPress={handleSignup} disabled={!enabled}>
+            <Text style={[styles.signUpText, !enabled && {color: '#808080'}]}>
                 Sign Up
             </Text>
         </Button>
@@ -80,6 +100,9 @@ export const SignUpScreen = ( props ) => {
         </TouchableWithoutFeedback>
     );
 
+    const isValidEmail = checkEmail();
+    const passwordProblems = checkPassword();
+
     return (
         <BlueViewableArea>
             <ScrollView contentContainerStyle={styles.container}>
@@ -96,12 +119,19 @@ export const SignUpScreen = ( props ) => {
                 <View>
                     <Text category='label' style={styles.inputText}> Email Address: </Text>
                     <Input
-                        placeholder='Email address...'
                         value={email}
-                        onChangeText={(nextValue) => setEmail(nextValue)}
+                        placeholder='Email address...'
                         style={styles.inputBox}
                         autoCapitalize='none'
                         keyboardType="email-address"
+                        onFocus={() => setEmailTouched(true)}
+                        onChangeText={nextValue => setEmail(nextValue)}
+                        caption={
+                            emailTouched && !isValidEmail &&
+                            <Text style={{color: '#FF3D71'}}>
+                                Email address is not valid
+                            </Text>
+                        }
                     />
                 </View>
                 <View>
@@ -109,34 +139,41 @@ export const SignUpScreen = ( props ) => {
                     <Input
                         value={password}
                         placeholder='Password...'
-                        autoCapitalize='none'
                         style={styles.inputBox}
+                        autoCapitalize='none'
                         accessoryRight={eyeIcon}
                         secureTextEntry={secureTextEntry}
+                        onFocus={() => setPasswordTouched(true)}
                         onChangeText={nextValue => setPassword(nextValue)}
+                        caption={
+                            passwordTouched && passwordProblems.length > 0 &&
+                            <Text style={{color: '#FF3D71'}}>
+                                {passwordProblems.join('\n')}
+                            </Text>
+                        }
                     />
                 </View>
                 <View>
                     <Text category='label' style={styles.inputText}> First Name: </Text>
                     <Input
-                        placeholder='First name...'
                         value={firstname}
-                        onChangeText={(nextValue) => setFirstname(nextValue)}
+                        placeholder='First name...'
                         style={styles.inputBox}
                         autoCapitalize='none'
+                        onChangeText={(nextValue) => setFirstname(nextValue)}
                     />
                 </View>
                 <View>
                     <Text category='label' style={styles.inputText}> Last Name: </Text>
                     <Input
-                        placeholder='Last name...'
                         value={lastname}
-                        onChangeText={(nextValue) => setLastname(nextValue)}
+                        placeholder='Last name...'
                         style={styles.inputBox}
                         autoCapitalize='none'
+                        onChangeText={(nextValue) => setLastname(nextValue)}
                     />
                 </View>
-                <SignUpButton />
+                <SignUpButton enabled={isValidEmail && passwordProblems.length === 0}/>
                 <BackButton />
             </ScrollView>
         </BlueViewableArea>

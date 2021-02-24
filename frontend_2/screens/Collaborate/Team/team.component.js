@@ -191,6 +191,7 @@ export function TeamPage(props) {
         setVisible={setCreateProjectVisible}
         create={navigateProjectPage}
         setProjects={setProjects}
+        openProjectPage={openProjectPage}
       />
       <ContentContainer>
         <View style={styles.teamTextView}>
