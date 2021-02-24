@@ -35,6 +35,7 @@ router.get('/:id', async (req, res, next) => {
     // Make a query for the user, excluding fields that contain private info
     const user = await User.findById(req.params.id)
         .select('-password -is_verified -verification_code -verification_timeout -invites')
+        .populate('invites','title')
         .populate('teams', 'title')
 
     if (!user) throw new NotFoundError('The requested user was not found')
