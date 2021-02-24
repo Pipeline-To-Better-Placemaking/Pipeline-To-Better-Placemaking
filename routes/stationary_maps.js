@@ -86,8 +86,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         title: (req.body.title ? req.body.title : map.title),
         date: (req.body.date ? req.body.date : map.date),
         area: (req.body.area ? req.body.area : map.area),
-        researchers: (req.body.reaserchers ? req.body.reaserchers : map.researchers),
-        standingPoints: (req.body.standingPoints ? req.body.standingPoints : req.body.standingPoints)
+        standingPoints: (req.body.standingPoints ? req.body.standingPoints : map.standingPoints)
     })
 
     project = await Project.findById(map.project)
