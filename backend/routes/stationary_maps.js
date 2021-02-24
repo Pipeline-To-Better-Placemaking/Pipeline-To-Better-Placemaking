@@ -15,8 +15,8 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     project = await Project.findById(req.body.project)
 
     if(await Team.isAdmin(project.team,user._id)){
-
-        if(req.body.timeSlots.length > 0)
+        
+        if(req.body.timeSlots)
             for(var i = 0; i < req.body.timeSlots.length; i++){
                 var slot = req.body.timeSlots[0]
 
@@ -86,8 +86,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         title: (req.body.title ? req.body.title : map.title),
         date: (req.body.date ? req.body.date : map.date),
         area: (req.body.area ? req.body.area : map.area),
-        researchers: (req.body.reaserchers ? req.body.reaserchers : map.researchers),
-        standingPoints: (req.body.standingPoints ? req.body.standingPoints : req.body.standingPoints)
+        standingPoints: (req.body.standingPoints ? req.body.standingPoints : map.standingPoints)
     })
 
     project = await Project.findById(map.project)

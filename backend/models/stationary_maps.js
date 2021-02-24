@@ -89,10 +89,10 @@ module.exports.updateMap = async function (projectId, newMap) {
         { _id: projectId },
         { $set: {
             owner: newMap.owner,
-            start_time: newMap.start_time,
-            end_time: newMap.end_time,
+            title: newMap.title,
+            date: newMap.date,
             area: newMap.area,
-            claimed: newMap.claimed
+            standingPoints: newMap.standingPoints
         }}
     )
 }

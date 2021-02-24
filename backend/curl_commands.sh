@@ -9,6 +9,13 @@ TOKEN=$(curl --header "Content-Type: application/json" \
       http://localhost:8080/api/login \
       | jq -r '.token')
 
+curl --header "Content-Type: application/json" \
+      --request POST \
+      -d '{"email": "apple@gmail.com","password": "What@1234"}'\
+      http://localhost:8080/api/login
+
+      echo 
+      echo
 
 curl -H 'Accept: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
@@ -53,6 +60,11 @@ PROJECT=$(curl -H 'Content-Type: application/json' \
      | jq -r '.projects[0]._id' )
 
 echo
+echo
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/teams/${TEAM}
 echo
 
 curl -H 'Content-Type: application/json' \
