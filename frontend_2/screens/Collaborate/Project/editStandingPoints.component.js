@@ -64,13 +64,17 @@ export function EditPoints(props) {
     } catch (error) {
       console.log("error ", error)
     }
+    if(res.success !== undefined){
+      success = res.success
+      console.log("success: ", success);
+    }
     console.log("response ", res);
     if(success) {
 
       // update list of standingPoints (This has to be done by just updating the project)
       let tempPoint = {...props.pointInfo};
-      tempPoint._id = 0;
-      tempPoint.title = getName();
+      tempPoint._id = res._id;
+      tempPoint.title = res.title;
       let tempPoints = [...props.project.standingPoints, tempPoint];
       let tempProject = {...props.project};
       tempProject.standingPoints = tempPoints;
@@ -106,11 +110,13 @@ export function EditPoints(props) {
     } catch (error) {
       console.log("error ", error)
     }
-    //console.log("response ", res);
+    if(res.success !== undefined){
+      success = res.success
+      console.log("success: ", success);
+    }
+    console.log("response ", res);
     if(success) {
       let tempPoint = {...props.pointInfo};
-      tempPoint._id = 0;
-      tempPoint.title = getName();
       let tempPoints = [...props.project.standingPoints];
       tempPoints[props.pointInfo.index] = tempPoint;
       let tempProject = {...props.project};
@@ -144,8 +150,11 @@ export function EditPoints(props) {
       } catch (error) {
           console.log("error ", error)
       }
+      if(res.success !== undefined){
+        success = res.success
+        console.log("success: ", success);
+      }
       console.log("response ", res);
-
       if (success) {
         // update list of subAreas
         let tempPoints = [...props.project.standingPoints];

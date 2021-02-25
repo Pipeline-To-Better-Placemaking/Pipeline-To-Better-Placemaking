@@ -16,7 +16,7 @@ export function EditStandingPoints(props) {
     _id: '',
     latitude: location.latitude,
     longitude: location.longitude,
-    title:'Point ',
+    title:'Point ' + (props.standingPoints.length),
     index: 0
   };
 
@@ -32,7 +32,7 @@ export function EditStandingPoints(props) {
     temp._id = nullableEntry._id;
     temp.latitude = nullableEntry.latitude;
     temp.longitude = nullableEntry.longitude;
-    temp.title = 'Point ' + (index + 1);
+    temp.title = nullableEntry.title;
     temp.index = index;
 
     if(!newPoint) {
