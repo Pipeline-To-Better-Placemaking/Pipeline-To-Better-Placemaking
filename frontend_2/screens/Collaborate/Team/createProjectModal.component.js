@@ -39,24 +39,16 @@ export function CreateProject(props) {
         projectDetails = await response.json()
         success = true
     } catch (error) {
-        console.log("error", error)
+        console.log("ERROR: ", error)
     }
-    console.log("created Project: ", projectDetails);
+
     if (projectDetails.success !== undefined){
       success = projectDetails.success;
     }
     // if successfully created project info, Update
     if(success) {
-      props.setVisible(false);
-      props.openProjectPage(projectDetails);
-      /*
-      //console.log("created Project: ", projectDetails);
-      props.setProjects(projects => [...projects,projectDetails]);
-      // set selected project page information
-      props.setProject(projectDetails)
-      props.setActivities(projectDetails.activities);
-
-      //push the team info
+      console.log("created Project: ", projectDetails);
+      // Update local information
       let selectedTeam = {...props.team};
       let tempProjects = [...props.team.projects];
       tempProjects.push(projectDetails);
@@ -67,7 +59,7 @@ export function CreateProject(props) {
 
       // open project page
       close();
-      props.create();//*/
+      props.openProjectPage(projectDetails);
     }
   };
 

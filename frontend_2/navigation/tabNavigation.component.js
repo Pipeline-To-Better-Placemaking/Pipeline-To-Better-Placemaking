@@ -43,44 +43,6 @@ export function TabNavigation(props) {
   var location = props.location;
   let setSignedIn = props.setSignedIn;
 
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let token = await AsyncStorage.getItem("@token")
-      let id = await AsyncStorage.getItem("@id")
-
-      let success = false
-      let result = null
-
-      try {
-          console.log("Token: " + token)
-          console.log("Id: " + id)
-          const response = await fetch('https://measuringplacesd.herokuapp.com/api/users/' + id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-            }
-        })
-          result = await response.json()
-          console.log("user info response:", result)
-          success = true
-      } catch (error) {
-          console.log("ERROR: " + error)
-      }
-
-      if (success) {
-          await AsyncStorage.setItem("@firstName", result.firstname)
-          await AsyncStorage.setItem("@lastName", result.lastname)
-          await AsyncStorage.setItem("@email", result.email)
-          await AsyncStorage.setItem("@teams", JSON.stringify(result.teams))
-          //await AsyncStorage.setItem("@invites", JSON.stringify(result.invites))
-    }
-  }
-
-    fetchMyAPI()
-  }, [])
-
   // Hide Tabs for these screens within the 3 stack screens (CollaborateStack, HomeScreenStack, UserSettingsStack)
   const tabHiddenRoutes = ["CreateActivityStack", "StationaryActivity", "SurveyActivity"];
 
