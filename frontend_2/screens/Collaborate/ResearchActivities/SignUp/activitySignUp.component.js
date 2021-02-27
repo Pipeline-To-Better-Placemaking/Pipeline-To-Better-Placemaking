@@ -36,7 +36,26 @@ export function ActivitySignUpPage(props) {
       props.navigation.navigate("StationaryActivity")
     }
     else if (props.activity.test_type == activityList[1]){
+      let activityDetails = {
+        location: props.activity.area.points[0],
+        area: props.activity.area.points,
+        position: props.activity.standingPoints,
+        time: props.activity.duration,
+        timeLeft:props.activity.duration
+      }
 
+      let initialActivityDetails = {
+        location: props.activity.area.points[0],
+        area: props.activity.area.points,
+        position: props.activity.standingPoints,
+        time: props.activity.duration,
+        timeLeft:props.activity.duration
+      }
+
+      props.setTimeSlot(activityDetails);
+      props.setInitialTimeSlot(initialActivityDetails);
+
+      props.navigation.navigate("PeopleMovingActivity")
     }
     else if (props.activity.test_type == activityList[2]){
 

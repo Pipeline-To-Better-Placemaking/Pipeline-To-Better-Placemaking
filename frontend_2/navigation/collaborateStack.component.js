@@ -8,6 +8,7 @@ import { ProjectPage } from '../screens/Collaborate/Project/project.component';
 import { ActivitySignUpPage } from '../screens/Collaborate/ResearchActivities/SignUp/activitySignUp.component';
 import { StationaryActivity } from '../screens/Collaborate/ResearchActivities/Stationary/stationaryActivity.component'
 import { SurveyActivity } from '../screens/Collaborate/ResearchActivities/Survey/surveyActivity.component'
+import { PeopleMovingActivity } from '../screens/Collaborate/ResearchActivities/PeopleMoving/peopeMovingActivity.component.js';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -177,6 +178,18 @@ export function CollaborateStack(props) {
                         initialTimeSlot={initialTimeSlot}
                         setTimeSlot={setTimeSlot}
                     ></StationaryActivity>
+        }
+      </Screen>
+      <Screen
+        name="PeopleMovingActivity">
+        {props => <PeopleMovingActivity
+                    {...props}
+                    getSelectedActivity={activities}
+                    timeSlot={timeSlot}
+                    initialTimeSlot={initialTimeSlot}
+                    setTimeSlot={setTimeSlot}
+                  >
+                  </PeopleMovingActivity>
         }
       </Screen>
       <Screen
