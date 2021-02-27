@@ -64,13 +64,17 @@ export function EditPoints(props) {
     } catch (error) {
       console.log("error ", error)
     }
+    if(res.success !== undefined){
+      success = res.success
+      console.log("success: ", success);
+    }
     console.log("response ", res);
     if(success) {
 
       // update list of standingPoints (This has to be done by just updating the project)
       let tempPoint = {...props.pointInfo};
-      tempPoint._id = 0;
-      tempPoint.title = getName();
+      tempPoint._id = res._id;
+      tempPoint.title = res.title;
       let tempPoints = [...props.project.standingPoints, tempPoint];
       let tempProject = {...props.project};
       tempProject.standingPoints = tempPoints;
@@ -78,86 +82,91 @@ export function EditPoints(props) {
     }
   }
 
-    const saveEditPoint = async() => {
-        let token = props.token
-        let success = false
-        let res = null
+  const saveEditPoint = async() => {
+    let token = props.token
+    let success = false
+    let res = null
 
-        // Save the new area
-        try {
+    // Save the new area
+    try {
+      const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
+                                    props.project._id +
+                                    '/standing_points/' +
+                                    props.pointInfo._id, {
+          method: 'PUT',
+          headers: {
+              Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+              title: getName(),
+              latitude: props.pointInfo.latitude,
+              longitude: props.pointInfo.longitude
+          })
+      })
+      res = await response.json()
+      success = true
+    } catch (error) {
+      console.log("error ", error)
+    }
+    if(res.success !== undefined){
+      success = res.success
+      console.log("success: ", success);
+    }
+    console.log("response ", res);
+    if(success) {
+      let tempPoint = {...props.pointInfo};
+      let tempPoints = [...props.project.standingPoints];
+      tempPoints[props.pointInfo.index] = tempPoint;
+      let tempProject = {...props.project};
+      tempProject.standingPoints = tempPoints;
+      props.setProject(tempProject);
+    }
+  }
+
+  const deletePoint = async() => {
+    // do not delete a newPoint, must have at least 1 point
+    if(props.project.standingPoints.length-1 > 0 && !props.pointInfo.newPoint) {
+      let token = props.token
+      let success = false
+      let res = null
+      console.log("deleteing point with id:", props.pointInfo._id);
+      // Delete point
+      try {
           const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
                                         props.project._id +
                                         '/standing_points/' +
                                         props.pointInfo._id, {
-              method: 'PUT',
+              method: 'DELETE',
               headers: {
                   Accept: 'application/json',
                       'Content-Type': 'application/json',
                       'Authorization': 'Bearer ' + token
-              },
-              body: JSON.stringify({
-                  title: getName(),
-                  latitude: props.pointInfo.latitude,
-                  longitude: props.pointInfo.longitude
-              })
+              }
           })
           res = await response.json()
           success = true
-        } catch (error) {
+      } catch (error) {
           console.log("error ", error)
-        }
-        //console.log("response ", res);
-        if(success) {
-          let tempPoint = {...props.pointInfo};
-          tempPoint._id = 0;
-          tempPoint.title = getName();
-          let tempPoints = [...props.project.standingPoints];
-          tempPoints[props.pointInfo.index] = tempPoint;
-          let tempProject = {...props.project};
-          tempProject.standingPoints = tempPoints;
-          props.setProject(tempProject);
-        }
-    }
-
-    const deletePoint = async() => {
-      // do not delete a newPoint
-      if(props.pointInfo.index !== 0 && !props.pointInfo.newPoint) {
-          let token = props.token
-          let success = false
-          let res = null
-          console.log("deleteing area with id:", props.pointInfo._id);
-          // Delete point
-          try {
-              const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
-                                            props.project._id +
-                                            '/standing_points/' +
-                                            props.pointInfo._id, {
-                  method: 'DELETE',
-                  headers: {
-                      Accept: 'application/json',
-                          'Content-Type': 'application/json',
-                          'Authorization': 'Bearer ' + token
-                  }
-              })
-              res = await response.json()
-              success = true
-          } catch (error) {
-              console.log("error ", error)
-          }
-          console.log("response ", res);
-
-          if (success) {
-            // update list of subAreas
-            let tempPoints = [...props.project.standingPoints];
-            tempPoints.splice(props.pointInfo.index, 1);
-            let tempProject = {...props.project};
-            tempProject.standingPoints = tempPoints;
-            props.setProject(tempProject);
-          }
       }
-
-      props.setVisible(false);
+      if(res.success !== undefined){
+        success = res.success
+        console.log("success: ", success);
+      }
+      console.log("response ", res);
+      if (success) {
+        // update list of subAreas
+        let tempPoints = [...props.project.standingPoints];
+        tempPoints.splice(props.pointInfo.index, 1);
+        let tempProject = {...props.project};
+        tempProject.standingPoints = tempPoints;
+        props.setProject(tempProject);
+      }
     }
+
+    props.setVisible(false);
+  }
 
   const setMarker = (coords) => {
     let temp = {...props.pointInfo};

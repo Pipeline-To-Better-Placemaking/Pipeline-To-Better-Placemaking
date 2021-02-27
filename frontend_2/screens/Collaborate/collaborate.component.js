@@ -41,19 +41,14 @@ export function Collaborate(props) {
 
     // if successful post, update
     if(success) {
-      // TODO: ask that the backend sends the first and last name with the list of users for a new team
-      newTeam.users[0].firstname = props.firstname;
-      newTeam.users[0].lastname = props.lastname;
-
+      console.log("created Team: ", newTeam);
+      // Update local list info
       props.teams.push(newTeam);
-      props.setTeams(props.teams)
-      await AsyncStorage.setItem("@teams", JSON.stringify(props.teams))
-      // clear Projects
-      props.setProjects(null)
-      // set the selected Team
-      props.setTeam(newTeam)
-      // open Team Page
-      props.navigation.navigate('TeamPage')
+      props.setTeams(props.teams);
+      await AsyncStorage.setItem("@teams", JSON.stringify(props.teams));
+
+      // Open team page
+      openTeamPage(newTeam);
     }
   };
 
@@ -84,11 +79,11 @@ export function Collaborate(props) {
     if(success) {
       console.log("Selected Team: ", teamDetails);
       // set selected team
-      props.setTeam(teamDetails)
+      await props.setTeam(teamDetails)
 
       // set list of projects
       await AsyncStorage.setItem("@projects", JSON.stringify(teamDetails.projects));
-      props.setProjects(teamDetails.projects)
+      await props.setProjects(teamDetails.projects)
 
       // open team page
       props.navigation.navigate('TeamPage')

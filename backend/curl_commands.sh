@@ -9,6 +9,13 @@ TOKEN=$(curl --header "Content-Type: application/json" \
       http://localhost:8080/api/login \
       | jq -r '.token')
 
+curl --header "Content-Type: application/json" \
+      --request POST \
+      -d '{"email": "apple@gmail.com","password": "What@1234"}'\
+      http://localhost:8080/api/login
+
+      echo 
+      echo
 
 curl -H 'Accept: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
@@ -54,6 +61,11 @@ PROJECT=$(curl -H 'Content-Type: application/json' \
 
 echo
 echo
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/teams/${TEAM}
+echo
 
 curl -H 'Content-Type: application/json' \
     -H "Authorization: Bearer ${TOKEN}" \
@@ -63,17 +75,27 @@ curl -H 'Content-Type: application/json' \
 echo
 
 
-#AREA=$(curl -H 'Content-Type: application/json' \
-#     -H "Authorization: Bearer ${TOKEN}" \
-#     --request GET \
-#     http://localhost:8080/api/projects/${PROJECT} \
-#     | jq -r '.subareas[0]._id' )
-#USER=$(curl -H "Authorization: Bearer ${TOKEN}" \
-#        -H 'Content-Type: application/json' \
-#       --request GET \
-#        http://localhost:8080/api/users/ \
-#        | jq -r '._id')
+AREA=$(curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/projects/${PROJECT} \
+     | jq -r '.subareas[0]._id' )
+USER=$(curl -H "Authorization: Bearer ${TOKEN}" \
+        -H 'Content-Type: application/json' \
+       --request GET \
+        http://localhost:8080/api/users/ \
+        | jq -r '._id')
 
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request POST \
+      -d "{\"researchers\": [\"${USER}\"],  
+           \"maxResearchers\":  2, 
+           \"area\": \"${AREA}\" , 
+           \"project\": \"${PROJECT}\" , 
+           \"date\": \"2012-04-23T18:25:43.511Z\" 
+           }"  \
+     http://localhost:8080/api/stationary_maps/
 
 #curl -H 'Content-Type: application/json' \
 #     -H "Authorization: Bearer ${TOKEN}" \

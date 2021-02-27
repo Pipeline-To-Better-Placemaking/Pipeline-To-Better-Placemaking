@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { MapAreaWrapper, ShowAreas, MapAdd } from '../../components/Maps/mapPoints.component';
+import { MapAreaWrapper, ShowAreas, MapAdd, getRegionForCoordinates } from '../../components/Maps/mapPoints.component';
 import { ModalContainer } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EditPoints } from './editArea.component';
@@ -17,7 +17,7 @@ export function EditSubAreas(props) {
     index: 1,
     _id: '',
     location: location,
-    title:'Area ',
+    title:'Area ' + (props.subareas.length),
 };
   const [areaInfo, setAreaInfo] = useState(nullableEntry);
   const [tempArea, setTempArea] = useState([]);
@@ -31,15 +31,15 @@ export function EditSubAreas(props) {
     temp.points = area;
     temp.newArea = newArea;
     temp.index = index;
-    temp._id = '';
-    temp.location = location;
-    temp.title = 'Area ' + (index + 1);
+    temp._id = nullableEntry._id;
+    temp.location = nullableEntry.location;
+    temp.title = nullableEntry.title;
 
     if(!newArea) {
-      temp.location = area.points[0];
+      temp.location = getRegionForCoordinates(area.points);
       temp._id = area._id;
       temp.points = area.points;
-      //temp.title = area.title; // TODO
+      temp.title = area.title;
     }
 
     await setAreaInfo(temp);
@@ -49,7 +49,7 @@ export function EditSubAreas(props) {
 
   const renderAreaItem = ({ item, index }) => (
     <ListItem
-      title={`Area ${index+1} `}
+      title={(index === 0 ? 'Project Perimeter' : item.title)}
       accessoryRight={EditIcon}
       onPress={() => editArea(false, item, index)}
     />

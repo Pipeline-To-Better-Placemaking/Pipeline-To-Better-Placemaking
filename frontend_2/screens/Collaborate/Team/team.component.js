@@ -52,13 +52,13 @@ export function TeamPage(props) {
     }
     // if successfully retrieved project info, Update
     if(success) {
-      console.log("Project: ", projectDetails);
+      console.log("Selected Project: ", projectDetails);
       // set selected project page information
-      props.setProject(projectDetails)
-      props.setActivities(projectDetails.activities);
+      props.setProject(projectDetails);
+      props.setActivities(projectDetails.stationaryCollections);
 
       // open project page
-      props.navigation.navigate('ProjectPage')
+      props.navigation.navigate('ProjectPage');
     } else {
       // set fake data because *cries*
       projectDetails = {
@@ -73,11 +73,11 @@ export function TeamPage(props) {
             {latitude:28.601981731115934, longitude:-81.2004641443491},
           ],
         }]
-      }
+      };
 
-      props.setProject(projectDetails)
-      props.setActivities(projectDetails.activities);
-      props.navigation.navigate('ProjectPage')
+      props.setProject(projectDetails);
+      props.setActivities([]);
+      props.navigation.navigate('ProjectPage');
     }
   };
 
@@ -101,24 +101,29 @@ export function TeamPage(props) {
       />
   );
 
-  const memberItem = ({ item, index }) => (
+  const memberItem = ({ item, index }) => {
+    let owner = item.role === 'owner';
+    let ownerMe = item.user === props.userId;
+
+    return (
       <ListItem style={{justifyContent:'space-between'}}>
         <Text style={{fontSize:20}}>
             {`${item.firstname}`} {`${item.lastname}`}
         </Text>
         <View style={{flexDirection:'row'}}>
-        {(item.role ==='owner' ?
+        {(owner ?
           <Button
             appearance='ghost'
             disabled={true}
-            accessoryRight={AwardIcon}
+            accessoryRight={(ownerMe ? MyAwardIcon : AwardIcon)}
           />
-          :
-          <Text></Text>
+        :
+          null
         )}
         </View>
       </ListItem>
-  );
+    );
+  };
 
   const sendInvite = async () => {
     let success = false;
@@ -189,8 +194,8 @@ export function TeamPage(props) {
         {...props}
         visible={createProjectVisible}
         setVisible={setCreateProjectVisible}
-        create={navigateProjectPage}
         setProjects={setProjects}
+        openProjectPage={openProjectPage}
       />
       <ContentContainer>
         <View style={styles.teamTextView}>
@@ -243,7 +248,9 @@ export function TeamPage(props) {
 const ForwardIcon = (props) => (
   <Icon {...props} name='arrow-ios-forward'/>
 );
-
 const AwardIcon = (props) => (
   <Icon {...props} name='award-outline'/>
+);
+const MyAwardIcon = (props) => (
+  <Icon {...props} fill='#DEBD07' name='award'/>
 );

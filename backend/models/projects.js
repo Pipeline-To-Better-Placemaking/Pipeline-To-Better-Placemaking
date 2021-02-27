@@ -32,34 +32,11 @@ const project_schema = mongoose.Schema({
         required: true,
         ref: 'Standing_Points'
     }],
-
-    surveyDuration:{
-        type: Number,
-        required: true,
-        default: 60
-    },
-    stationaryDuration: {
-        type: Number,
-        required: true,
-        default: 30
-    },
-    movingDuration: {
-        type: Number,
-        required: true,
-        default: 15
-    },
-
-    activities: [{
-        activity: {
-            type: ObjectId,
-            required: true,
-        },
-        test_type: {
-            type: String,
-            enum: ['survey','stationary','moving'],
-            required: true
-        }
+    stationaryCollections:[{
+        type: ObjectId,
+        ref: 'Stationary_Collections'
     }],
+
 })
 
 project_schema.plugin(uniqueValidator)
@@ -69,7 +46,6 @@ const Projects = mongoose.model('Projects', project_schema)
 module.exports = Projects
 
 module.exports.addProject = async function(newProject) {
-    newProject.activities = []
     return (await newProject.save())
 }
 
@@ -79,7 +55,7 @@ module.exports.updateProject = async function (projectId, newProject) {
         { $set: {
             title: newProject.title,
             description: newProject.description,
-            area: newProject.area
+            area: newProject.area,
         }}
     )
 }
@@ -94,31 +70,35 @@ module.exports.deleteProject = async function(projectId) {
         await Area.findByIdAndDelete(project.subareas[i])
     
     for(var i = 0; i < project.standingPoints.length; i++)   
-        await Area.findByIdAndDelete(project.standingPoints[i])
+        await Standing_Point.findByIdAndDelete(project.standingPoints[i])
+
+    for(var i = 0; i < project.stationaryCollections.length; i++)   
+        await Stationary_collections.deleteCollection(project.stationaryCollections[i])
 
     return await Projects.findByIdAndDelete(projectId)
 }
 
 module.exports.teamCleanup = async function(teamId) {
-    return await Projects.deleteMany({ team: teamId })
+    const doc =  await Projects.find({ team: teamId })
+
+    for(var i = 0; i < doc.length; i++){
+        await Projects.deleteProject(doc[i]._id)
+    }
 }
 
-module.exports.addActivity = async function (projectId, activityId, testType) {
-    return await Projects.updateOne(
+module.exports.addStationaryCollection = async function (projectId, collectionId) {
+     return await Projects.updateOne(
         { _id: projectId },
-        { $push: {
-            activities: {
-                activity: activityId,
-                test_type: testType
-            }
-        }}
+        { $push: { stationaryCollections:  colletionId}}
     )
 }
 
-module.exports.removeActivity = async function(projectId, testId) {
+
+module.exports.deleteStationaryCollection = async function(projectId, collectionId) {
+    await Stationary_collections.findByIdAndDelete(collectionId)
     return await Projects.updateOne(
         { _id: projectId },
-        { $pull: { activities: { activity: testId }}}
+        { $pull: { stationaryCollections: collectionId}}
     )
 }
 

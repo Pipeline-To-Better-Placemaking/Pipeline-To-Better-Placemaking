@@ -38,9 +38,8 @@ export const LoginScreen = ( props ) => {
       }
     };
 
-    let success = false
-    let token = ''
-    let id = ''
+    let success = false;
+    let res = null;
 
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/login', {
@@ -53,38 +52,45 @@ export const LoginScreen = ( props ) => {
                 email: email,
                 password: password
             })
-        })
-        const res = await response.json()
-
-        console.log("Login res: " + JSON.stringify(res))
-        success = res.success
-        if (success){
-          token = res.token
-          id = res.user.id
-
-          await AsyncStorage.setItem("@token", token)
-          await AsyncStorage.setItem("@id", id)
-
-          let { status } = await Location.requestPermissionsAsync();
-
-          if (status === 'granted') {
-            defaultLocation = await Location.getCurrentPositionAsync({})
-          } else {
-            console.log('Permission to access location was denied');
-          }
-
-          await props.setLocation(defaultLocation);
-          await props.setSignedIn(true);
-
-          props.navigation.navigate("TabNavigation")
-        }
+        });
+        res = await response.json();
+        console.log("Login res: ", res.success);
+        success = res.success;
     } catch (error) {
-        console.log(error)
-        success = false
+        console.log("ERROR: ", error);
+        success = false;
     }
 
-    setLoading(false)
+    if (success) {
+      console.log("token: ", res.token);
+      console.log("userInfo: ", res.user);
 
+      await AsyncStorage.setItem("@token", res.token)
+      await AsyncStorage.setItem("@id", res.user._id)
+      await AsyncStorage.setItem("@isVerified", JSON.stringify(res.user.is_verified))
+      await AsyncStorage.setItem("@email", res.user.email)
+      await AsyncStorage.setItem("@firstName", res.user.firstname)
+      await AsyncStorage.setItem("@lastName", res.user.lastname)
+      await AsyncStorage.setItem("@teams", JSON.stringify(res.user.teams))
+      await AsyncStorage.setItem("@invites", JSON.stringify(res.user.invites))
+
+      let { status } = await Location.requestPermissionsAsync();
+
+      if (status === 'granted') {
+        defaultLocation = await Location.getCurrentPositionAsync({});
+      } else {
+        console.log('Permission to access location was denied');
+      }
+
+      await props.setLocation(defaultLocation);
+      await props.setSignedIn(true);
+
+      props.navigation.navigate("TabNavigation")
+    } else {
+      console.log("login failed: ", res.message);
+    }
+
+    setLoading(false);
   };
 
   const LoginButton = () => (

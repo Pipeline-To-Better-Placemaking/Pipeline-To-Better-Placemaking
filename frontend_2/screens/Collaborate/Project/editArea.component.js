@@ -63,13 +63,14 @@ export function EditPoints(props) {
     } catch (error) {
       console.log("error ", error)
     }
-    //console.log("response ", res);
+    if(res.success !== undefined){
+      success = res.success
+      console.log("success: ", success);
+    }
+    console.log("response ", res);
     if(success) {
       // update list of sub Areas (This has to be done by just updating the project)
-      let tempArea = {
-        _id: 0, // TODO: need to get this from the response if sub area is created
-        points: props.tempArea,
-      }
+      let tempArea = {...res};
       let tempSubareas = [...props.project.subareas];
       tempSubareas[props.areaInfo.index] = tempArea;
       let tempProject = {...props.project};
@@ -105,13 +106,14 @@ export function EditPoints(props) {
         } catch (error) {
           console.log("error ", error)
         }
-        //console.log("response ", res);
+        if(res.success !== undefined){
+          success = res.success
+          console.log("success: ", success);
+        }
+        console.log("response ", res);
         if(success) {
           // update list of sub Areas (This has to be done by just updating the project)
-          let tempArea = {
-            _id: props.areaInfo._id,
-            points: props.tempArea,
-          }
+          let tempArea = {...props.areaInfo};
           let tempSubareas = [...props.project.subareas];
           tempSubareas[props.areaInfo.index] = tempArea;
           let tempProject = {...props.project};
@@ -145,8 +147,11 @@ export function EditPoints(props) {
           } catch (error) {
               console.log("error ", error)
           }
+          if(res.success !== undefined){
+            success = res.success
+            console.log("success: ", success);
+          }
           console.log("response ", res);
-
           if (success) {
             // update list of subAreas
             let tempSubareas = [...props.project.subareas];

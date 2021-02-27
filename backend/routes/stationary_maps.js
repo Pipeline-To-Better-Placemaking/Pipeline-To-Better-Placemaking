@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Map = require('../models/stationary_maps.js')
 const Project = require('../models/projects.js')
+const Stationary_Collection = require('../models/stationary_collections.js')
 const Team = require('../models/teams.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
@@ -15,20 +16,40 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     project = await Project.findById(req.body.project)
 
     if(await Team.isAdmin(project.team,user._id)){
+        
+        if(req.body.timeSlots)
+            for(var i = 0; i < req.body.timeSlots.length; i++){
+                var slot = req.body.timeSlots[0]
+
+                let newMap = new Map({
+                    title: slot.title,
+                    standingPoints: slot.standingPoints,
+                    researchers: slot.researchers,
+                    project: req.body.project,
+                    sharedData: req.body.collection,
+                    date: slot.date,
+                    maxResearchers: slot.maxResearchers
+                })
+
+                const map = await Map.addMap(newMap)
+                await Stationary_Collection.addActivity(req.body.collection, map._id)
+
+                res.status(201).json(await Stationary_Collection.findById(req.body.collection))
+
+            }
     
         let newMap = new Map({
             title: req.body.title,
-            area: req.body.area,
             standingPoints: req.body.standingPoints,
             researchers: req.body.researchers,
             project: req.body.project,
-            date: req.body.date,
-            duration: project.stationaryDuration,
+            sharedData: req.body.collection,
+            date: req.body.date, 
             maxResearchers: req.body.maxResearchers
         })
 
         const map = await Map.addMap(newMap)
-        await Project.addActivity(req.body.project,map._id,'stationary')
+        await Stationary_Collection.addActivity(req.body.collection,map._id)
         res.status(201).json(map)
 
     }
@@ -38,7 +59,11 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 })
 
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    const map = await  Map.findById(req.params.id).populate('area').populate('standingPoints').populate('researchers','firstname')
+    const map = await  Map.findById(req.params.id)
+                           .populate('standingPoints')
+                           .populate('researchers','firstname lastname')
+                           .populate('shareData')
+                           .populate('sharedData.area')
     res.status(200).json(map)
 })
 
@@ -53,6 +78,13 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
             throw new UnauthorizedError('You do not have permision to perform this operation')
     else 
         throw new BadRequestError('Research team is already full')
+})
+
+router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    map = await Map.findById(req.params.id)
+    project = await Project.findById(map.project)
+    return await Map.removeResearcher(map._id,user._id)
+   
 
 })
 
@@ -64,8 +96,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         title: (req.body.title ? req.body.title : map.title),
         date: (req.body.date ? req.body.date : map.date),
         area: (req.body.area ? req.body.area : map.area),
-        researchers: (req.body.reaserchers ? req.body.reaserchers : map.researchers),
-        standingPoints: (req.body.standingPoints ? req.body.standingPoints : req.body.standingPoints)
+        standingPoints: (req.body.standingPoints ? req.body.standingPoints : map.standingPoints)
     })
 
     project = await Project.findById(map.project)

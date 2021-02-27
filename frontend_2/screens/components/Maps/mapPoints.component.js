@@ -88,8 +88,12 @@ export const SelectArea = ({areas, selectedIndex, setSelectedIndex}) => {
           selectedIndex={selectedIndex}
           onChange={index => setSelectedIndex(index)}>
           {areas.map((area, index) => (
-                <Radio key={index}><Text style={{fontSize:20}}>Area {index+1} </Text></Radio>
-            ))}
+            <Radio key={index}>
+              <Text style={{fontSize:20}}>
+                {(index === 0 ? 'Project Perimeter' : area.title)}
+              </Text>
+            </Radio>
+          ))}
         </RadioGroup>
       </ScrollView>
     </View>
@@ -143,6 +147,7 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
 
   };
 
+// get center point
 // https://github.com/react-native-maps/react-native-maps/issues/505
 export function getRegionForCoordinates(points) {
 
@@ -226,8 +231,8 @@ export const ShowAreas = ({areas}) => {
       <MapView.Polygon
         coordinates={area.points}
         strokeWidth={3}
-        strokeColor={'rgba(255,0,0,0.5)'}
-        fillColor={'rgba(0,0,0,0.2)'}
+        strokeColor={(index === 0 ? 'rgba(0,0,255,0.5)' : 'rgba(255,0,0,0.5)')}
+        fillColor={(index === 0 ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.2)')}
         key={area._id}
       >
       </MapView.Polygon>
@@ -239,7 +244,12 @@ export const ShowAreas = ({areas}) => {
         }}
       >
         <View>
-          <Text status={'control'} style={{fontWeight: "bold", backgroundColor:'rgba(0,0,0,0.5)'}}>Area {index+1}</Text>
+          <Text
+            status={'control'}
+            style={{fontWeight: "bold", backgroundColor:'rgba(0,0,0,0.5)'}}
+          >
+            {(index === 0 ? '' : area.title)}
+          </Text>
         </View>
       </MapView.Marker>
       </View>
