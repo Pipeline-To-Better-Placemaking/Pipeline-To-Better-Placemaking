@@ -83,32 +83,6 @@ export function DataEntryModal(props) {
                         <DataGroupActivity setActivityData={setActivityData}/>
                         <DataGroupPosture setPostureData={setPostureData}/>
 
-                        {/* <Text category={'h6'} style={{marginBottom: 10, marginTop: 25}}> Gender: </Text>
-                        <View style={{flexDirection: 'row',}}>
-                            <DataOptionButton index={0} selectionMatrix={genderMatrix} setIndex={_setGenderIndex} text={"Male"}/>
-                            <DataOptionButton index={1} selectionMatrix={genderMatrix} setIndex={_setGenderIndex} text={"Female"}/>
-                        </View> */}
-{/*
-                        <Text category={'h6'} style={{marginBottom: 10, marginTop: 25}}> Activity: </Text>
-                        <View style={{flexDirection: 'row', marginTop: 10}}>
-                            <DataOptionButton index={0} selectionMatrix={activityMatrix} setIndex={_setActivityIndex} text={"Talking"}/>
-                            <DataOptionButton index={1} selectionMatrix={activityMatrix} setIndex={_setActivityIndex} text={"Transit Waiting"}/>
-                        </View>
-                        <View style={{flexDirection: 'row', marginTop: 10}}>
-                            <DataOptionButton index={2} selectionMatrix={activityMatrix} setIndex={_setActivityIndex} text={"Recreation"}/>
-                            <DataOptionButton index={3} selectionMatrix={activityMatrix} setIndex={_setActivityIndex} text={"Eating"}/>
-                        </View>
-
-                        <Text category={'h6'} style={{marginBottom: 10, marginTop: 25}}> Posture: </Text>
-                        <View style={{flexDirection: 'row', marginTop: 10}}>
-                            <DataOptionButton index={0} selectionMatrix={postureMatrix} setIndex={_setPostureIndex} text={"Standing"}/>
-                            <DataOptionButton index={1} selectionMatrix={postureMatrix} setIndex={_setPostureIndex} text={"Sitting"}/>
-                        </View>
-                        <View style={{flexDirection: 'row', marginTop: 10}}>
-                            <DataOptionButton index={2} selectionMatrix={postureMatrix} setIndex={_setPostureIndex} text={"Laying"}/>
-                            <DataOptionButton index={3} selectionMatrix={postureMatrix} setIndex={_setPostureIndex} text={"Lounging"}/>
-                        </View> */}
-
                     </View>
 
                     <Button style={{marginTop: 15, marginBottom: 20, width: 100, alignSelf:'center'}} onPress={sendData}> Submit </Button>

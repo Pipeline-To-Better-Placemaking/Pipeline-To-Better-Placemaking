@@ -7,6 +7,7 @@ import { ViewableArea, ContentContainer } from '../../../components/content.comp
 import { Header } from '../../../components/headers.component';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import CountDown from 'react-native-countdown-component';
+import { DataEntryModal } from '../../../components/Activities/PeopleMoving/dataEntryModal.component.js';
 
 export function PeopleMovingActivity(props) {
 
@@ -24,6 +25,7 @@ export function PeopleMovingActivity(props) {
     const [moving, setMoving] = useState(false)
     const [dataModal, setDataModal] = useState(false)
     const [lineTools, setLineTools] = useState(false)
+    const [viewAllLines, setViewAllLines] = useState(false)
 
     // The index of the standing points
     const [standingIndex, setStandingIndex] = useState(0)
@@ -35,6 +37,7 @@ export function PeopleMovingActivity(props) {
     // Current path being drawn
     const [currentPath, setCurrentPath] = useState([])
     const [currentPathSize, setCurrentPathSize] = useState(0)
+    const [totalPaths, setTotalPaths] = useState([])
 
     // Updates the time in TimeBar
     const updateTime = (value) => {
@@ -143,7 +146,28 @@ export function PeopleMovingActivity(props) {
         setDataModal(true)
     }
 
-    const confirmData = () => {
+    const confirmData = (inf) => {
+        
+        if (inf.movementIndex > -1) {
+
+            let dat = {
+                movement: inf.movement,
+                path: currentPath
+            }
+
+            let totalLines = {
+                path: currentPath,
+                colorIndex: inf.movementIndex
+            }
+
+            let emptyPath = []
+
+            setData(data.concat(dat))
+            setTotalPaths(totalPaths.concat(totalLines))
+            setCurrentPath(emptyPath)
+            setCurrentPathSize(0)
+            setDataModal(false)
+        }
 
     }
 
@@ -151,6 +175,18 @@ export function PeopleMovingActivity(props) {
         let emptyPath = []
 
         setCurrentPath(emptyPath)
+    }
+
+    const viewAllDrawnLines = () => {
+
+        console.log("Viewing all visible lines... " + !viewAllLines)
+        setViewAllLines(!viewAllLines)
+    }
+
+    const VisibleIcon = () => {
+        return(
+            <Icon {...props}  style={{width: 25, height: 25}} fill='black' name='eye-outline'/>
+        )
     }
 
     // Count Down Timer and the Start/Exit button
@@ -162,7 +198,13 @@ export function PeopleMovingActivity(props) {
 
                     <StartStopButton/>
 
-                    <View style={{marginLeft: 175, marginTop: 5}}>
+                    <Button 
+                        style={{ marginTop: 5, marginLeft: 25, width: 50, height: 50, backgroundColor: 'white'}}
+                        accessoryLeft={VisibleIcon}
+                        onPress={viewAllDrawnLines}
+                    />
+
+                    <View style={{marginLeft: 100, marginTop: 5}}>
                         <CountDown
                             running={start}
                             until={props.timeSlot.timeLeft}
@@ -198,6 +240,12 @@ export function PeopleMovingActivity(props) {
 
                 <TimeBar/>
 
+                <DataEntryModal
+                    visible={dataModal}
+                    anchor={TimeBar}
+                    closeData={confirmData}
+                />
+
                 <MovingModal
                     moving={moving}
                     confirm={rebegin}
@@ -210,6 +258,8 @@ export function PeopleMovingActivity(props) {
                     addMarker={addLinePoint}
                     recenter={recenter}
                     lineTools={lineTools}
+                    totalPaths={totalPaths}
+                    viewAllLines={viewAllLines}
                 />
 
                 <LineToolBar/>
