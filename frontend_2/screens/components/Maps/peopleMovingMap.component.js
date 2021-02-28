@@ -16,26 +16,36 @@ export function PeopleMovingMap(props) {
         )
     }
 
-    const CreatePolyline = ({markers}) => {
+    const CreatePolyline = () => {
 
-        if(markers === null) {
+        console.log("Creating poly line")
+        console.log("MARKERS: " + JSON.stringify(props.markers))
+
+        if(props.markers === null || props.markers.length == 0) {
+            console.log("Empty path")
             return (null);
         }
 
-        else if (markers.length <= 1) {
+        else if (props.markers.length == 1) {
 
-            return (markers.map((coord, index) => (
+            console.log("First point added")
+
+
+            return (props.markers.map((coord, index) => (
                 <MapView.Marker
                     key={index}
-                    coordinate = {markers}
+                    coordinate = {props.markers[0]}
             />
         )));
 
         }
-        else if (markers.length > 1) {
+        else if (props.markers.length > 1) {
+
+            console.log("Drawning line")
+
             return (
                 <MapView.Polyline
-                    coordinates={markers}
+                    coordinates={props.markers}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}
                 />
@@ -69,7 +79,7 @@ export function PeopleMovingMap(props) {
         <View>
             <PressMapAreaWrapper
                 area={props.area}
-                mapHeight={'100%'}
+                mapHeight={props.lineTools ? '93%' : '100%'}
                 onPress={props.addMarker}
                 recenter={props.recenter}
             >
@@ -85,7 +95,8 @@ export function PeopleMovingMap(props) {
                 />
 
                 <ShowPolygon/>
-                <CreatePolyline {...props} markers={props.markers}/>
+                
+                <CreatePolyline/>
 
             </PressMapAreaWrapper>
         </View>

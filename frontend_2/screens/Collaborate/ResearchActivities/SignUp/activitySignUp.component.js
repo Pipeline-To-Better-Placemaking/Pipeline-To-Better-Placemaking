@@ -8,9 +8,11 @@ import { ViewableArea, ContentContainer } from '../../../components/content.comp
 export function ActivitySignUpPage(props) {
 
   // Constant array of activities
-  const activityList = ["stationary", "People Count", "Survey"]
+  const activityList = ["stationary", "People Moving", "Survey"]
 
   const onBeginPress = async (index) => {
+
+    console.log("Stuff: " + JSON.stringify(props.activity.test_type))
 
     if (props.activity.test_type == activityList[0]) {
 

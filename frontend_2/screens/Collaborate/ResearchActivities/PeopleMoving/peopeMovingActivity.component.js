@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component.js';
 import { PeopleMovingMap } from '../../../components/Maps/peopleMovingMap.component.js';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import * as Location from 'expo-location';
-
+import { ViewableArea, ContentContainer } from '../../../components/content.component';
+import { Header } from '../../../components/headers.component';
+import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
+import CountDown from 'react-native-countdown-component';
 
 export function PeopleMovingActivity(props) {
 
@@ -31,7 +33,7 @@ export function PeopleMovingActivity(props) {
     const [data, setData] = useState([{}])
 
     // Current path being drawn
-    const [currentPath, setCurrentPath] = useState([{}])
+    const [currentPath, setCurrentPath] = useState([])
     const [currentPathSize, setCurrentPathSize] = useState(0)
 
     // Updates the time in TimeBar
@@ -112,23 +114,24 @@ export function PeopleMovingActivity(props) {
     // Opens the data model and stores a temporary points
     const addLinePoint = async (marker) => {
 
-        if (currentPathSize == 0){
-            setLineTools(true)
+        if (start) {
+
+            if (currentPathSize == 0){
+                setLineTools(true)
+            }
+    
+            setCurrentPath(currentPath.concat(marker))
+            setCurrentPathSize(currentPathSize+1)
         }
-
-        let currPath = currentPath
-        currPath.concat(marker)
-
-        setCurrentPath(currPath)
-        setCurrentPathSize(currentPathSize+1)
     }
 
     const removeLastLinePoint = () => {
 
         if (currentPathSize > 0) {
-            let currPath = currentPath
+
+            let currPath = [...currentPath]
             currPath.splice(-1, 1)
-    
+
             setCurrentPath(currPath)
             setCurrentPathSize(currentPathSize-1)
         }
@@ -178,7 +181,7 @@ export function PeopleMovingActivity(props) {
     }
 
     const LineToolBar = () => {
-        if (lineTools) {
+        if (start && lineTools) {
             return (
                 <LineTools confirm={confirmLine} cancel={cancelLine} removeLastPoint={removeLastLinePoint}/>
             )
@@ -195,8 +198,6 @@ export function PeopleMovingActivity(props) {
 
                 <TimeBar/>
 
-                <LineToolBar/>
-
                 <MovingModal
                     moving={moving}
                     confirm={rebegin}
@@ -208,7 +209,10 @@ export function PeopleMovingActivity(props) {
                     markers={currentPath}
                     addMarker={addLinePoint}
                     recenter={recenter}
+                    lineTools={lineTools}
                 />
+
+                <LineToolBar/>
 
             </ContentContainer>
         </ViewableArea>
