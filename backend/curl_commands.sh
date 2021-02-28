@@ -105,12 +105,12 @@ COLLECTION=$(curl -H 'Content-Type: application/json' \
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request POST \
-      -d "{\"owner\": \"${USER}\",  
+      -d "{\"researchers\": [\"${USER}\"],  
            \"claimed\": \"true\", 
            \"area\": \"${AREA}\" , 
+           \"collection\": \"${COLLECTION}\",
            \"project\": \"${PROJECT}\" , 
-           \"start_time\": \"2012-04-23T18:25:43.511Z\" , 
-           \"end_time\": \"2012-05-23T18:25:43.511Z\"  }"  \
+           \"date\": \"2012-04-23T18:25:43.511Z\" }"  \
      http://localhost:8080/api/stationary_maps/
 
 #MAP=$(curl -H 'Content-Type: application/json' \
