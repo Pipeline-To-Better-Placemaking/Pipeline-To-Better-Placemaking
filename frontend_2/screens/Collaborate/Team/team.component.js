@@ -16,13 +16,13 @@ export function TeamPage(props) {
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [editTeamVisible, setEditTeamVisible] = useState(false);
   const [email, setEmail] = useState('');
-  const [projects, setProjects] = useState(props.projects);
+  //const [projects, setProjects] = useState(props.projects);
 
   useEffect(() => {
     async function getTokens() {
       let projectList = await AsyncStorage.getItem("@projects");
       projectList = JSON.parse(projectList);
-      setProjects(projectList);
+      props.setProjects(projectList);
     }
 
     getTokens()
@@ -194,7 +194,7 @@ export function TeamPage(props) {
         {...props}
         visible={createProjectVisible}
         setVisible={setCreateProjectVisible}
-        setProjects={setProjects}
+        setProjects={props.setProjects}
         openProjectPage={openProjectPage}
       />
       <ContentContainer>
@@ -213,7 +213,7 @@ export function TeamPage(props) {
         <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
           <List
             style={{maxHeight:'100%', maxWidth:'90%'}}
-            data={projects}
+            data={props.projects}
             ItemSeparatorComponent={Divider}
             renderItem={projectItem}
           />

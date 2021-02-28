@@ -11,8 +11,46 @@ export function EditProjectPage(props) {
     props.setVisible(false);
   }
 
+	const deleteProjectLocal = async (selectedTeam, tempProjects, deletedProjectID) => {
+		// Adjust the local list of Projects on the selectedTeam
+		//let selectedTeam = {...props.team};
+		//let tempProjects = [...props.team.projects];
+		//let changeIndex = tempProjects.findIndex(element => element._id === props.project._id);
+		for(let i = 0; i < tempProjects.length; i++) {
+			if(tempProjects[i]._id == deletedProjectID)
+				tempProjects.splice(i, 1)
+		}
+		// tempProjects.splice(changeIndex, 1); // remove project from list
+		selectedTeam.projects = [...tempProjects];
+		props.setTeam(selectedTeam);
+		//console.log("Updated Team with removed project")
+		//console.log(selectedTeam)
+		//console.log("prop team")
+		//console.log(props.team)
+		await AsyncStorage.setItem("@projects", JSON.stringify(tempProjects))
+		// this is dumb default needed information
+		await props.setProject({
+			title:'', 
+			subareas:[
+				{points:[
+					{latitude:0, longitude:0},
+					{latitude:0, longitude:0},
+					{latitude:0, longitude:0}
+				]}
+			],
+			standingPoints:[
+				{latitude:0, longitude:0}
+			]
+		});
+		//console.log("projects list before")
+		//console.log(props.projects)
+		props.setProjects([...tempProjects])
+		//console.log("these are the projects")
+		//console.log(props.projects)
+	}
+
   const deleteProject = async () => {
-        // should probs have something for comfirm Delete first
+        // should probably have something for confirm Delete first
         let token = props.token
         let success = false
         let res = null
@@ -35,20 +73,11 @@ export function EditProjectPage(props) {
 
         // Update
         if (success) {
-
-          // Adjust the local list of Projects on the selectedTeam
-          let selectedTeam = {...props.team};
-          let tempProjects = [...props.team.projects];
-          let changeIndex = tempProjects.findIndex(element => element._id === props.project._id);
-          tempProjects.splice(changeIndex, 1); // remove project from list
-          selectedTeam.projects = tempProjects;
-          props.setTeam(team => selectedTeam);
-          await AsyncStorage.setItem("@projects", JSON.stringify(tempProjects));
-          // this is dumb defualt needed information
-          await props.setProject({title:'', subareas:[{points:[{latitude:0, longitude:0},{latitude:0, longitude:0},{latitude:0, longitude:0}]}]});
-          props.setVisible(false);
-          props.navigation.goBack();
+					deleteProjectLocal({...props.team}, [...props.team.projects], props.project._id)
+					props.setVisible(false);
+          props.navigation.navigate('TeamPage');
         }
+
     }
 
   return (
