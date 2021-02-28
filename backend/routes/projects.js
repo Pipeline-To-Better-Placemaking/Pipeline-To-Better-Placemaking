@@ -214,12 +214,12 @@ router.post('/:id/stationary_collections', passport.authenticate('jwt',{session:
 
         let newCollection = new Stationary_Collection({
             title: req.body.title,
-            data: req.body.date,
+            date: req.body.date,
             area: req.body.area,
             duration: req.body.duration
         })
 
-        newPoint.save()
+        newCollection.save()
        
         await Project.addStationaryCollection(project._id,newCollection._id)
         res.json(newCollection)
@@ -239,7 +239,7 @@ router.put('/:id/stationary_collections/:collectionId', passport.authenticate('j
         
         let newCollection = new Stationary_Collection({
                 title: (req.body.title ? req.body.tttle : collection.title),
-                data: (req.body.date ? req.body.date : collection.date),
+                date: (req.body.date ? req.body.date : collection.date),
                 area: (req.body.area ? req.body.area : collection.area),
                 duration: (req.body.duration ? req.body.duration : collection.duration)
         })
