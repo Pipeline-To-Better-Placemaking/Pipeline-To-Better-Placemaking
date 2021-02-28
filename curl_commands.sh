@@ -1,7 +1,7 @@
-#curl --header "Content-Type: application/json" \
-#      --request POST \
-#      -d '{"email": "apple@gmail.com","password": "What@1234", "firstname": "chuck", "lastname": "E"}'\
-#      http://localhost:8080/api/users
+curl --header "Content-Type: application/json" \
+      --request POST \
+      -d '{"email": "apple@gmail.com","password": "What@1234", "firstname": "chuck", "lastname": "E"}'\
+      http://localhost:8080/api/users
 
 TOKEN=$(curl --header "Content-Type: application/json" \
       --request POST \
@@ -24,12 +24,12 @@ curl -H 'Accept: application/json' \
 
 echo
 
-#curl -H 'Content-Type: application/json' \
-#     -H "Authorization: Bearer ${TOKEN}" \
-#     --request POST \
-#      -d "{\"title\": \"team1\",\"description\": \"thingy\"
-#      }" \
-#     http://localhost:8080/api/teams/
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request POST \
+      -d "{\"title\": \"team1\",\"description\": \"thingy\"
+      }" \
+     http://localhost:8080/api/teams/
 
 TEAM=$(curl -H 'Accept: application/json' \
     -H "Authorization: Bearer ${TOKEN}" \
@@ -39,19 +39,19 @@ TEAM=$(curl -H 'Accept: application/json' \
 
 echo TEAM: ${TEAM}
 
-#curl -H 'Content-Type: application/json' \
-#     -H "Authorization: Bearer ${TOKEN}" \
-#     --request POST \
-#      -d "{\"title\": \"proj1\",\"description\": \"thingy\",
-#          \"standingPoints\":[{\"latitude\": 25, \"longitude\": 56, \"title\": \"Statue\"}],
-#          \"points\":[{\"latitude\": 28.602413253152307, \"longitude\": -70.20019937739713},
-#                    {\"latitude\": 20.602413253152307, \"longitude\": -81.20019937739713},
-#                      {\"latitude\": 38.602413253152307, \"longitude\": -81.20019937739713}],
-#          \"team\": \"${TEAM}\"
-##      }" \
- #    http://localhost:8080/api/projects/
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request POST \
+      -d "{\"title\": \"proj1\",\"description\": \"thingy\",
+          \"standingPoints\":[{\"latitude\": 25, \"longitude\": 56, \"title\": \"Statue\"}],
+          \"points\":[{\"latitude\": 28.602413253152307, \"longitude\": -70.20019937739713},
+                    {\"latitude\": 20.602413253152307, \"longitude\": -81.20019937739713},
+                      {\"latitude\": 38.602413253152307, \"longitude\": -81.20019937739713}],
+          \"team\": \"${TEAM}\"
+      }" \
+     http://localhost:8080/api/projects/
 
-#echo
+echo
 
 PROJECT=$(curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
@@ -89,13 +89,11 @@ USER=$(curl -H "Authorization: Bearer ${TOKEN}" \
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request POST \
-      -d "{\"researchers\": [\"${USER}\"],  
-           \"maxResearchers\":  2, 
+      -d "{\"title\": \"collection\",   
            \"area\": \"${AREA}\" , 
-           \"project\": \"${PROJECT}\" , 
            \"date\": \"2012-04-23T18:25:43.511Z\" 
            }"  \
-     http://localhost:8080/api/stationary_maps/
+     http://localhost:8080/api/projects/${PROJECT}/stationary_collections
 
 #curl -H 'Content-Type: application/json' \
 #     -H "Authorization: Bearer ${TOKEN}" \
