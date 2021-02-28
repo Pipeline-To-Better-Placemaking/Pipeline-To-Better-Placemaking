@@ -80,6 +80,7 @@ AREA=$(curl -H 'Content-Type: application/json' \
      --request GET \
      http://localhost:8080/api/projects/${PROJECT} \
      | jq -r '.subareas[0]._id' )
+
 USER=$(curl -H "Authorization: Bearer ${TOKEN}" \
         -H 'Content-Type: application/json' \
        --request GET \
@@ -95,12 +96,22 @@ curl -H 'Content-Type: application/json' \
            }"  \
      http://localhost:8080/api/projects/${PROJECT}/stationary_collections
 
-#curl -H 'Content-Type: application/json' \
-#     -H "Authorization: Bearer ${TOKEN}" \
-#     --request GET \
-#     http://localhost:8080/api/projects/${PROJECT}
+COLLECTION=$(curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/projects/${PROJECT} \
+     | jq -r '.stationaryCollections[0]._id' )
 
-
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request POST \
+      -d "{\"owner\": \"${USER}\",  
+           \"claimed\": \"true\", 
+           \"area\": \"${AREA}\" , 
+           \"project\": \"${PROJECT}\" , 
+           \"start_time\": \"2012-04-23T18:25:43.511Z\" , 
+           \"end_time\": \"2012-05-23T18:25:43.511Z\"  }"  \
+     http://localhost:8080/api/stationary_maps/
 
 #MAP=$(curl -H 'Content-Type: application/json' \
 #     -H "Authorization: Bearer ${TOKEN}" \
