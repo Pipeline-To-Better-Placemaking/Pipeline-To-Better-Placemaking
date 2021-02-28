@@ -219,7 +219,7 @@ router.post('/:id/stationary_collections', passport.authenticate('jwt',{session:
             duration: req.body.duration
         })
 
-        newCollection.save()
+        await newCollection.save()
        
         await Project.addStationaryCollection(project._id,newCollection._id)
         res.json(newCollection)
