@@ -58,6 +58,7 @@ export function TeamPage(props) {
           // set area
           let areaIndex = projectDetails.subareas.findIndex(element => element._id === collection.area);
           collection.area = projectDetails.subareas[areaIndex];
+          collection.date = new Date(collection.date)
         })
       }
 

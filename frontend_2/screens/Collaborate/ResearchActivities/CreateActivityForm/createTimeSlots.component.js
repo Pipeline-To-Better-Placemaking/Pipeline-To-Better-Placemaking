@@ -33,7 +33,7 @@ export function CreateTimeSlots(props) {
   // edit start time value for timeslot
   const editTime = (item, index) => {
     // load the current value
-    setTimeValue(props.timeSlots[index].timeVal);
+    setTimeValue(props.timeSlots[index].date);
     // set the index for which time slot we're editing
     setSelectedIndex(index);
     // view the modal
@@ -47,7 +47,7 @@ export function CreateTimeSlots(props) {
     let timeSlot = {...tempList[selectedIndex]};
 
     // set new value
-    timeSlot.timeVal = time;
+    timeSlot.date = time;
     timeSlot.timeString = getTimeStr(time);
 
     // put the item back in the list
@@ -68,7 +68,7 @@ export function CreateTimeSlots(props) {
     let length = props.timeSlots.length;
 
     if (length > 0) {
-      time = props.timeSlots[length-1].timeVal;
+      time = props.timeSlots[length-1].date;
       numPeeps = props.timeSlots[length-1].maxResearchers;
       indicies = props.timeSlots[length-1].assignedPointIndicies;
     }

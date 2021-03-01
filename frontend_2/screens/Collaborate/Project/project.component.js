@@ -88,6 +88,7 @@ export function ProjectPage(props) {
     // if successfully retrieved collection info, get maps
     if (success) {
       collectionDetails.test_type = item.test_type;
+      collectionDetails.date = new Date(collectionDetails.date)
       let areaIndex = props.project.subareas.findIndex(element => element._id === collectionDetails.area);
       collectionDetails.area = props.project.subareas[areaIndex];
       console.log("selected collection: ", collectionDetails);
@@ -122,6 +123,7 @@ export function ProjectPage(props) {
     }
     if (success) {
       // set selected timeSlots
+      timeSlotDetails.date = new Date(timeSlotDetails.date)
       console.log("time slot: ", timeSlotDetails);
       props.setTimeSlots(slots => [...slots,timeSlotDetails]);
     }

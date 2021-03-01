@@ -85,7 +85,7 @@ export function ActivitySignUpPage(props) {
   const signUpSMTimeSlot = async (timeSlot) => {
     let success = false
     let res = null
-    console.log("here");
+    console.log("here id: ", timeSlot._id);
     // TODO: fix this
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + timeSlot._id + '/claim', {
@@ -177,7 +177,7 @@ export function ActivitySignUpPage(props) {
     <Card disabled={true}>
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
         <View style={{flexDirection:'column'}}>
-          <Text>Start Time: {item.date}</Text>
+          <Text>Start Time: {getTimeStr(item.date)}</Text>
           {(props.activity.test_type === 'Survey' ? null : <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>)}
           <Text>Researchers:</Text>
           <Text>{getResearchers(item)}</Text>
@@ -206,7 +206,7 @@ export function ActivitySignUpPage(props) {
         </View>
         <View style={{margin:15}}>
           <Text category='s1'>Activity: {props.activity.test_type}</Text>
-          <Text category='s1'>Day: {props.activity.date}</Text>
+          <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
           <Text>{(props.activity.test_type === 'Survey' ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
         </View>
         <View style={{height:'50%'}}>
