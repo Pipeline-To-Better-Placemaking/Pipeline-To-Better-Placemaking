@@ -63,32 +63,12 @@ export function ActivitySignUpPage(props) {
     let max = timeSlot.maxResearchers;
     let len = timeSlot.researchers.length;
 
-    if(max > 0 && (max-len) > 0 ) {
-      //TODO: update the Activity to sign user up for time slot
+    if(max > 0 && (max-len) > 0) {
       let success = false
-      let res = null
-
-      try {
-          const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + timeSlot._id, {
-              method: 'PUT',
-              headers: {
-                  Accept: 'application/json',
-                      'Content-Type': 'application/json',
-                      'Authorization': 'Bearer ' + props.token
-              },
-              body: JSON.stringify({
-                 researcher: props.userId,
-              })
-          })
-          res = await response.json()
-          success = true
-      } catch (error) {
-          console.log("ERROR: ", error)
-      }
-      console.log("sign up user response:", res);
-      if (res.success !== undefined) {
-        success = res.success
-        console.log("success: ", success);
+      if (props.activity.test_type == activityList[0]) {
+        success = signUpSMTimeSlot(timeSlot);
+      } else {
+        success = true
       }
 
       if (success) {
@@ -100,6 +80,34 @@ export function ActivitySignUpPage(props) {
       }
     }
 
+  }
+
+  const signUpSMTimeSlot = async (timeSlot) => {
+    let success = false
+    let res = null
+    console.log("here");
+    // TODO: fix this
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + timeSlot._id + '/claim', {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            }
+        })
+        res = await response.json()
+        console.log("sign up user response:", res)
+        success = true
+    } catch (error) {
+        console.log("ERROR: ", error)
+    }
+    if (res !== null && res.success !== undefined) {
+      success = res.success
+      console.log("success: ", success);
+    }
+
+    return success;
   }
 
   const getPointsLocations = (timeSlot) => {
@@ -139,12 +147,37 @@ export function ActivitySignUpPage(props) {
     return str;
   }
 
+  // helper function to get a readable date string value
+  const getDayStr = (date) => {
+    return parseInt(date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear();
+  }
+
+  // helper function to get a readable time string value
+  const getTimeStr = (time) => {
+      let hours = time.getHours();
+      let minutes = `${time.getMinutes()}`;
+      let morning = " AM";
+      // 12 hour instead of 24
+      if (hours > 12) {
+          hours = hours - 12
+          morning = " PM";
+      } else if (hours === 12) {
+          morning = " PM";
+      } else if (hours === 0) {
+          hours = 12
+      }
+      // 2 digits
+      if (minutes.length !== 2) {
+          minutes = 0 + minutes;
+      }
+      return hours + ":" + minutes + morning;
+  }
+
   const timeSlotCard = ({item, index}) => (
     <Card disabled={true}>
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
         <View style={{flexDirection:'column'}}>
-          <Text>Start Time </Text>
-          <Text>{(props.activity.test_type === 'Survey' ? "Time at Site:" : "Time per Standing Point:")} {item.duration} (min)</Text>
+          <Text>Start Time: {item.date}</Text>
           {(props.activity.test_type === 'Survey' ? null : <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>)}
           <Text>Researchers:</Text>
           <Text>{getResearchers(item)}</Text>
@@ -174,6 +207,7 @@ export function ActivitySignUpPage(props) {
         <View style={{margin:15}}>
           <Text category='s1'>Activity: {props.activity.test_type}</Text>
           <Text category='s1'>Day: {props.activity.date}</Text>
+          <Text>{(props.activity.test_type === 'Survey' ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
         </View>
         <View style={{height:'50%'}}>
           <List

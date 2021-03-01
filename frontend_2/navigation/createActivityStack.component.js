@@ -71,6 +71,7 @@ export function CreateActivityStack(props) {
           });
         }
         timeSlot.standingPoints = selectedPoints;
+        timeSlot.date = timeSlot.date.toLocaleString();
       })
 
       let activityDetails = {
@@ -85,6 +86,10 @@ export function CreateActivityStack(props) {
       props.setActivities(values => [...values,activityDetails]);
     } // Survey
     else if (row === 2) {
+      timeSlots.map(timeSlot => {
+        timeSlot.date = timeSlot.date.toLocaleString();
+      })
+
       let activityDetails = {
         title: name,
         date: date.toLocaleString(),
@@ -173,7 +178,7 @@ export function CreateActivityStack(props) {
                 researchers: [],
                 project: props.project._id,
                 collection: id,
-                date: timeSlot.timeVal, // start time
+                date: timeSlot.date, // start time
                 maxResearchers: parseInt(timeSlot.maxResearchers),
             })
         })

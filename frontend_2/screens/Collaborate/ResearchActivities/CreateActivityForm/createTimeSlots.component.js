@@ -73,7 +73,7 @@ export function CreateTimeSlots(props) {
       indicies = props.timeSlots[length-1].assignedPointIndicies;
     }
     let temp = {
-        timeVal: time,
+        date: time,
         timeString: getTimeStr(time),
         maxResearchers: numPeeps,
         researchers: [],
