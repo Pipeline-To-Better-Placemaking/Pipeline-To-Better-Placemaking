@@ -15,19 +15,19 @@ export function HomeMapView(props) {
                 style={styles.mapStyle}
                 initialCamera ={{
                     center:{
-                        latitude: location.coords.latitude,
-                        longitude: location.coords.longitude
+                        latitude: location.latitude,
+                        longitude: location.longitude
                     },
                     pitch: 10,
-                    heading: location.coords.heading,
-                    altitude: location.coords.altitude,
+                    heading: -1,
+                    altitude: -1,
                     zoom: 17
                 }}
             >
                 <Marker
                     coordinate = {{
-                        latitude: location.coords.latitude,
-                        longitude: location.coords.longitude
+                        latitude: location.latitude,
+                        longitude: location.longitude
                     }}
                 />
 

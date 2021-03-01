@@ -13,6 +13,7 @@ import { PeopleMovingActivity } from '../screens/Collaborate/ResearchActivities/
 const { Navigator, Screen } = createStackNavigator();
 
 export function CollaborateStack(props) {
+  var location = props.location
 
   // Array with activity names
   const activityTypes = ['Stationary Map', 'People Moving', 'Survey'];
@@ -32,12 +33,13 @@ export function CollaborateStack(props) {
   const [project, setProject] = useState(null);
   const [projects, setProjects] = useState([]);
 
-  // The selected Activity and List of Activities for the selected Project (Sign Up Page)
+  // The selected Activity and List of Activities for the selected Project
   const [activity, setActivity] = useState(null);
   const [activities, setActivities] = useState([]);
 
   // Used for starting an Activity (time slot user has selected for the activity)
   const [timeSlot, setTimeSlot] = useState(null);
+  const [timeSlots, setTimeSlots] = useState([]);
   const [initialTimeSlot, setInitialTimeSlot] = useState(null)
 
   const [username, setUsername] = useState('username');
@@ -107,7 +109,7 @@ export function CollaborateStack(props) {
             setProjects={setProjects}
             activities={activities}
             setActivities={setActivities}
-            location={props.location}
+            location={location}
           />
         }
       </Screen>
@@ -128,6 +130,7 @@ export function CollaborateStack(props) {
             activities={activities}
             setActivities={setActivities}
             activityTypes={activityTypes}
+            setTimeSlots={setTimeSlots}
           />
         }
       </Screen>
@@ -163,6 +166,8 @@ export function CollaborateStack(props) {
             setActivity={setActivity}
             activities={activities}
             setActivities={setActivities}
+            timeSlots={timeSlots}
+            setTimeSlots={setTimeSlots}
             setTimeSlot={setTimeSlot}
             setInitialTimeSlot={setInitialTimeSlot}
             username={username}

@@ -9,10 +9,10 @@ export const styles = StyleSheet.create({
     },
 
     teamTextView: {
-        marginTop: 10,
+        marginTop: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginLeft: 30
+        marginLeft: 20
     },
 
     teamText: {
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     },
 
     createTeamButtonView: {
-        marginRight: 30,
+        marginRight: 20,
     },
 
     backdrop: {

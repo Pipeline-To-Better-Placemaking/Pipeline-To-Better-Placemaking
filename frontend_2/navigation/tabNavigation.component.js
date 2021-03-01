@@ -44,7 +44,7 @@ export function TabNavigation(props) {
   let setSignedIn = props.setSignedIn;
 
   // Hide Tabs for these screens within the 3 stack screens (CollaborateStack, HomeScreenStack, UserSettingsStack)
-  const tabHiddenRoutes = ["CreateActivityStack", "StationaryActivity", "SurveyActivity"];
+  const tabHiddenRoutes = ["CreateActivityStack", "StationaryActivity", "SurveyActivity", "PeopleMovingActivity"];
 
   function getTabBarVisibility(route) {
     const routeName = getFocusedRouteNameFromRoute(route);

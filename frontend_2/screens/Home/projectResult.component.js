@@ -14,7 +14,7 @@ const ForwardIcon = (props) => (
 
 export function ProjectResultPage(props) {
 
-  let fakeData =[{title:'Result Info'}];
+  let fakeData = [{title:'Result Info'}]; 
 
 
   const openActivityPage = async (item) => {

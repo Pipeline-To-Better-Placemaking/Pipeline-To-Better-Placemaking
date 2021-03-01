@@ -16,7 +16,6 @@ export function TeamPage(props) {
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [editTeamVisible, setEditTeamVisible] = useState(false);
   const [email, setEmail] = useState('');
-  //const [projects, setProjects] = useState(props.projects);
 
   useEffect(() => {
     async function getTokens() {
@@ -52,10 +51,19 @@ export function TeamPage(props) {
     }
     // if successfully retrieved project info, Update
     if(success) {
-      console.log("Selected Project: ", projectDetails);
       // set selected project page information
+      if(projectDetails.stationaryCollections !== null) {
+        projectDetails.stationaryCollections.map(collection => {
+          collection.test_type = 'stationary';
+          // set area
+          let areaIndex = projectDetails.subareas.findIndex(element => element._id === collection.area);
+          collection.area = projectDetails.subareas[areaIndex];
+        })
+      }
+
       props.setProject(projectDetails);
       props.setActivities(projectDetails.stationaryCollections);
+      console.log("Selected Project: ", projectDetails);
 
       // open project page
       props.navigation.navigate('ProjectPage');
@@ -194,7 +202,6 @@ export function TeamPage(props) {
         {...props}
         visible={createProjectVisible}
         setVisible={setCreateProjectVisible}
-        setProjects={props.setProjects}
         openProjectPage={openProjectPage}
       />
       <ContentContainer>

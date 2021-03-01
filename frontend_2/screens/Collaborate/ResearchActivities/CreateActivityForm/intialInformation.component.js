@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction, IndexPath, Select, SelectItem } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Datepicker } from '@ui-kitten/components';
-import { ViewableArea, ContentContainer } from '../../../components/content.component';
+import { ViewableArea, ContentContainer, EnterNumber } from '../../../components/content.component';
 import { HeaderExit } from '../../../components/headers.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './form.styles';
@@ -10,6 +10,8 @@ import { styles } from './form.styles';
 export function IntialForm(props) {
 
   const today = new Date();
+  const [editDurationVisible, setEditDurationVisible] = useState(false);
+
 
   const next = () => {
     if(props.selectArea) {
@@ -22,6 +24,13 @@ export function IntialForm(props) {
   return (
     <ViewableArea>
       <HeaderExit text={props.headerText} exit={props.exit}/>
+      <EnterNumber
+        {...props}
+        visible={editDurationVisible}
+        value={props.duration}
+        setValue={props.setDuration}
+        closePopUp={() => setEditDurationVisible(false)}
+      />
       <ContentContainer>
         <View style={styles.container}>
           <View style={styles.container, {justifyContent: 'space-between'}}>
@@ -56,7 +65,7 @@ export function IntialForm(props) {
               <Datepicker
                 style={{flex:1}}
                 placeholder='Pick Date'
-                min={props.today}
+                min={today}
                 date={props.date}
                 value={props.date}
                 onSelect={nextDate => props.setDate(nextDate)}
@@ -64,6 +73,20 @@ export function IntialForm(props) {
                 placement={'bottom end'}
               />
             </View>
+
+            <View style={styles.activityView}>
+              <Button
+                style={{marginLeft:-20}}
+                appearance={'ghost'}
+                onPress={() => setEditDurationVisible(true)}
+              >
+                <Text>
+                {(props.activityTypes[props.selectedActivityIndex.row] === 'Survey' ?
+                  "Time at Site" : "Time per Standing Point")}: {props.duration} (min)
+                </Text>
+              </Button>
+            </View>
+
           </View>
 
           <View style={styles.activityView}>

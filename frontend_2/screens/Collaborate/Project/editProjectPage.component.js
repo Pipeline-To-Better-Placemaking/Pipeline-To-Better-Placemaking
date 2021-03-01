@@ -12,25 +12,16 @@ export function EditProjectPage(props) {
   }
 
 	const deleteProjectLocal = async (selectedTeam, tempProjects, deletedProjectID) => {
-		// Adjust the local list of Projects on the selectedTeam
-		//let selectedTeam = {...props.team};
-		//let tempProjects = [...props.team.projects];
-		//let changeIndex = tempProjects.findIndex(element => element._id === props.project._id);
-		for(let i = 0; i < tempProjects.length; i++) {
-			if(tempProjects[i]._id == deletedProjectID)
-				tempProjects.splice(i, 1)
-		}
-		// tempProjects.splice(changeIndex, 1); // remove project from list
+    // find the project id to remove
+		let changeIndex = tempProjects.findIndex(element => element._id === deletedProjectID);
+		tempProjects.splice(changeIndex, 1); // remove project from list
 		selectedTeam.projects = [...tempProjects];
+    // update information
 		props.setTeam(selectedTeam);
-		//console.log("Updated Team with removed project")
-		//console.log(selectedTeam)
-		//console.log("prop team")
-		//console.log(props.team)
 		await AsyncStorage.setItem("@projects", JSON.stringify(tempProjects))
-		// this is dumb default needed information
+		// this is dumb default information needed so we don't get errors
 		await props.setProject({
-			title:'', 
+			title:'',
 			subareas:[
 				{points:[
 					{latitude:0, longitude:0},
@@ -42,11 +33,7 @@ export function EditProjectPage(props) {
 				{latitude:0, longitude:0}
 			]
 		});
-		//console.log("projects list before")
-		//console.log(props.projects)
 		props.setProjects([...tempProjects])
-		//console.log("these are the projects")
-		//console.log(props.projects)
 	}
 
   const deleteProject = async () => {
@@ -73,8 +60,8 @@ export function EditProjectPage(props) {
 
         // Update
         if (success) {
-					deleteProjectLocal({...props.team}, [...props.team.projects], props.project._id)
-					props.setVisible(false);
+          deleteProjectLocal({...props.team}, [...props.team.projects], props.project._id)
+          props.setVisible(false);
           props.navigation.navigate('TeamPage');
         }
 

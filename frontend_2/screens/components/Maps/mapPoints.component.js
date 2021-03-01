@@ -2,6 +2,66 @@ import React, { useState } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker, Polygon, Polyline, Callout } from 'react-native-maps'
 import { View, ScrollView } from 'react-native';
 import { Text, Button, Input, Icon, Divider, List, ListItem, Radio, RadioGroup } from '@ui-kitten/components';
+import * as Location from 'expo-location';
+
+// get center point
+// https://github.com/react-native-maps/react-native-maps/issues/505
+export function getRegionForCoordinates(points) {
+
+    if(points === null && points.length <= 0){
+      return {
+        latitude: 28.60275207150067,
+        longitude: -81.20052214711905,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01
+      };
+    }
+    // points should be an array of { latitude: X, longitude: Y }
+    let minX, maxX, minY, maxY;
+
+    // init first point
+    ((point) => {
+      minX = point.latitude;
+      maxX = point.latitude;
+      minY = point.longitude;
+      maxY = point.longitude;
+    })(points[0]);
+
+    // calculate rect
+    points.map((point) => {
+      minX = Math.min(minX, point.latitude);
+      maxX = Math.max(maxX, point.latitude);
+      minY = Math.min(minY, point.longitude);
+      maxY = Math.max(maxY, point.longitude);
+    });
+
+    const midX = (minX + maxX) / 2;
+    const midY = (minY + maxY) / 2;
+    const deltaX = (maxX - minX) + 0.001; // 0.001 adds some buffer space
+    const deltaY = (maxY - minY) + 0.001; // 0.001 adds some buffer space
+
+    return {
+      latitude: midX,
+      longitude: midY,
+      latitudeDelta: deltaX,
+      longitudeDelta: deltaY
+    };
+}
+
+export const getAreaName = async (area) => {
+    let centerPoint = await getRegionForCoordinates(area);
+    let retVal = await getLocationName(centerPoint);
+    return retVal;
+}
+
+export const getLocationName = async (loc) => {
+    let retVal = "location";
+    let locationInfo = await Location.reverseGeocodeAsync(loc);
+    if (locationInfo !== null && locationInfo.length >= 1){
+      retVal = locationInfo[0].name;
+    }
+    return retVal;
+}
 
 /* This needs:
 location={}
@@ -146,50 +206,6 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
       )
 
   };
-
-// get center point
-// https://github.com/react-native-maps/react-native-maps/issues/505
-export function getRegionForCoordinates(points) {
-
-    if(points === null && points.length <= 0){
-      return {
-        latitude: 28.60275207150067,
-        longitude: -81.20052214711905,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01
-      };
-    }
-    // points should be an array of { latitude: X, longitude: Y }
-    let minX, maxX, minY, maxY;
-
-    // init first point
-    ((point) => {
-      minX = point.latitude;
-      maxX = point.latitude;
-      minY = point.longitude;
-      maxY = point.longitude;
-    })(points[0]);
-
-    // calculate rect
-    points.map((point) => {
-      minX = Math.min(minX, point.latitude);
-      maxX = Math.max(maxX, point.latitude);
-      minY = Math.min(minY, point.longitude);
-      maxY = Math.max(maxY, point.longitude);
-    });
-
-    const midX = (minX + maxX) / 2;
-    const midY = (minY + maxY) / 2;
-    const deltaX = (maxX - minX) + 0.001; // 0.001 adds some buffer space
-    const deltaY = (maxY - minY) + 0.001; // 0.001 adds some buffer space
-
-    return {
-      latitude: midX,
-      longitude: midY,
-      latitudeDelta: deltaX,
-      longitudeDelta: deltaY
-    };
-}
 
 export const MapWrapper = ({children, location, mapHeight}) => {
   return (
