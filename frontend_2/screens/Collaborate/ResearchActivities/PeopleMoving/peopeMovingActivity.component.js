@@ -175,11 +175,11 @@ export function PeopleMovingActivity(props) {
         let emptyPath = []
 
         setCurrentPath(emptyPath)
+        setCurrentPathSize(0)
+        setLineTools(false)
     }
 
     const viewAllDrawnLines = () => {
-
-        console.log("Viewing all visible lines... " + !viewAllLines)
         setViewAllLines(!viewAllLines)
     }
 

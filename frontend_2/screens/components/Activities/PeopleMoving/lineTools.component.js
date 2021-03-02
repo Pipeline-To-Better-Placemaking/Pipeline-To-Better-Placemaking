@@ -2,35 +2,58 @@ import React from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import styles from './lineTools.styles.js';
 
 export function LineTools(props) {
 
     const ConfirmIcon = (props) => {
         return(
-            <Icon {...props} style={{width: 50, height: 50, }} fill='green' name='checkmark'/>
+            <View style={{alignSelf: 'center'}}>
+                <Icon {...props} style={styles.iconSize} fill='green' name='checkmark'/>
+            </View>
         )
     }
 
     const CancelIcon = (props) => {
         return(
-            <Icon {...props} style={{width: 50, height: 50, }} fill='red' name='close'/>
+            <View style={{alignSelf: 'center'}}>
+                <Icon {...props} style={styles.iconSize} fill='red' name='close'/>
+            </View>
         )
     }
 
     const RemoveIcon = (props) => {
         return(
-            <Icon {...props} style={{width: 50, height: 50, }} fill='black' name='trash'/>
+            <View style={{alignSelf: 'center'}}>
+                <Icon {...props} style={styles.iconSize} fill='black' name='trash'/>
+            </View>
         )
     }
 
     return (
-        <View style={{flex: 1, flexDirection: 'row', marginTop: -85}}>
+        <View style={{flex: 1, flexDirection: 'row', marginTop: -90}}>
 
-                <Button style={{backgroundColor: 'white', borderWidth: 0, height: 80, width: 125}} accessoryLeft={ConfirmIcon} onPress={props.confirm}/>
+            <Button style={styles.buttonStyle} onPress={props.confirm}>
+                <View style={{flexDirection:'column'}}>
+                    <Text category='s1' style={{alignSelf: 'center'}}> Confirm</Text>                
+                    <ConfirmIcon/>
+                </View>
+            </Button>
 
-                <Button style={{backgroundColor: 'white', borderWidth: 0, height: 80, width: 125}} accessoryLeft={CancelIcon} onPress={props.cancel}/>
+            <Button style={styles.buttonStyle} onPress={props.cancel}>
+                <View style={{flexDirection:'column'}}>
+                    <Text category='s1' style={{alignSelf: 'center'}}> Cancel </Text>                
+                    <CancelIcon/>
+                </View>
+            </Button>
 
-                <Button style={{backgroundColor: 'white', borderWidth: 0, height: 80, width: 125}} accessoryLeft={RemoveIcon} onPress={props.removeLastPoint}/>
+            <Button style={styles.buttonStyle} onPress={props.removeLastPoint}>
+                <View style={{flexDirection:'column'}}>
+                    <Text category='s1' style={{alignSelf: 'center'}}> Delete </Text>                
+                    <RemoveIcon/>
+                </View>
+            </Button>
+            
         </View>
     )
 }
