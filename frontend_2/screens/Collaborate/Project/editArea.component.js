@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { MapWrapper, ShowAreas, MapAddArea, ShowMarkers } from '../../components/Maps/mapPoints.component';
+import { MapWrapper, ShowAreas, MapAddArea, ShowMarkers, getAreaName } from '../../components/Maps/mapPoints.component';
 import { ModalContainer } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
@@ -83,8 +83,12 @@ export function EditPoints(props) {
         let token = await AsyncStorage.getItem("@token")
         let success = false
         let res = null
+        // if we're editing the project perimeter then update the location name
+        if(props.areaInfo.index === 0){
+          updateProjectPerimeter();
+        }
 
-        // Save the new area
+        // Save the area
         try {
           const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
                                         props.project._id +
@@ -163,6 +167,42 @@ export function EditPoints(props) {
       }
 
       props.setVisible(false);
+    }
+
+    const updateProjectPerimeter = async () => {
+      let token = await AsyncStorage.getItem("@token")
+      let success = false
+      let res = null
+      let description = await getAreaName(props.tempArea);
+
+      try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                description: description,
+            })
+        })
+        res = await response.json()
+        success = true
+      } catch (error) {
+        console.log("error ", error)
+      }
+      if(res.success !== undefined){
+        success = res.success
+        console.log("success: ", success);
+      }
+      console.log("response ", res);
+      if(success) {
+        // update project
+        let tempProject = {...props.project};
+        tempProject.description = description;
+        props.setProject(tempProject);
+      }
     }
 
   return (

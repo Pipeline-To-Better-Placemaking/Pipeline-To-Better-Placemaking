@@ -109,14 +109,14 @@ module.exports.addEntry = async function(mapId, newEntry) {
 }
 
 module.exports.addResearcher = async function(mapId, userId){
-    await Maps.updateOne(
+    return await Maps.updateOne(
         { _id: mapId },
         { $push: { users: userId}}
     )
 }
 
 module.exports.removeResearcher = async function(mapId, userId){
-    await Maps.updateOne(
+    return await Maps.updateOne(
         { _id: mapId },
         { $pull: { users: userId}}
     )

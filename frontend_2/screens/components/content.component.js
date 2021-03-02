@@ -1,7 +1,7 @@
 import React from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { SafeAreaView, View, TouchableOpacity, Modal } from 'react-native';
-import { useTheme, Card } from '@ui-kitten/components';
+import { useTheme, Card, Text, Button, Input } from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
 import { styles } from './content.styles';
 
@@ -98,5 +98,26 @@ export const PopUpContainer = ({ children, ...props }) => {
       </TouchableOpacity>
 
     </Modal>
+ );
+};
+
+export const EnterNumber = ({ children, ...props }) => {
+  return (
+    <PopUpContainer
+      {...props}
+      visible={props.visible}
+      closePopUp={props.closePopUp}
+    >
+      <Text>Enter Number: </Text>
+      <Input
+        placeholder={''}
+        value={props.value}
+        onChangeText={(nextValue) => props.setValue(nextValue)}
+        keyboardType="number-pad"
+      />
+      <Button style={{marginTop:5}} onPress={props.closePopUp}>
+        Comfirm
+      </Button>
+    </PopUpContainer>
  );
 };

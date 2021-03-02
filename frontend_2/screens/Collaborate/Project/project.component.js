@@ -7,7 +7,6 @@ import { MapAreaWrapper, ShowArea } from '../../components/Maps/mapPoints.compon
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import { EditSubAreas } from './viewSubareas.component';
 import { EditStandingPoints } from './viewStandingPoints.component';
-import { EditActivityInfo } from './editActivityInfo.component';
 import { EditProjectPage } from './editProjectPage.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './project.styles';
@@ -22,51 +21,112 @@ export function ProjectPage(props) {
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [editProjectVisible, setEditProjectVisible] = useState(false);
   const [editAreasVisible, setEditAreasVisible] = useState(false);
-  const [editActivityVisible, setEditActivityVisible] = useState(false);
   const [editStandingPointsVisible, setEditStandingPointsVisible] = useState(false);
 
-  const openActivityPage = async (item) => {
+  const openActivityPage = async (collectionDetails) => {
     let success = false
-    let activityDetails = null
 
-    if(item.test_type === 'stationary') {
-      // Get the activity information
-      try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + item.activity, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + props.token
-            }
+    console.log("selected collection: ", collectionDetails);
+    await props.setTimeSlots([]);
+
+    if(collectionDetails.test_type === 'stationary') {
+      // get the collection info
+      //collectionDetails = getSMCollection(collectionDetails);
+
+      // get the timeSlot info
+      if (collectionDetails !== null && collectionDetails.maps !== null && collectionDetails.maps.length >= 1) {
+        collectionDetails.maps.map(id => {
+          getSMTimeSlots(id);
         })
-        activityDetails = await response.json();
-        console.log("response activity: ", activityDetails);
         success = true
-      } catch (error) {
-          console.log("error", error)
       }
 
-    } else {
-      activityDetails = item;
+    } else { // this is for the other 2 activites that aren't hooked up yet
       success = true;
+      props.setTimeSlots([...collectionDetails.timeSlots]);
     }
 
-    if(activityDetails.success !== undefined){
-      success = activityDetails.success
-      console.log("success: ", success);
-    }
     // if successfully retrieved activity info, Update
     if(success) {
-      console.log("selected activity: ", activityDetails);
-      activityDetails.test_type = item.test_type;
+
       // set selected activity
-      props.setActivity(activityDetails);
+      props.setActivity(collectionDetails);
 
       // open activity page
       props.navigation.navigate('ActivitySignUpPage')
     }//*/
 
+  };
+
+  const getSMCollection = async (item) => {
+    let success = false
+    let collectionDetails = null
+
+    // Get the activity information
+    try {
+      const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
+                                                    props.project._id +
+                                                    '/stationary_collections/' + item._id, {
+          method: 'GET',
+          headers: {
+              Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + props.token
+          }
+      })
+      collectionDetails = await response.json();
+      console.log("response collection: ", collectionDetails);
+      success = true
+    } catch (error) {
+        console.log("error", error)
+    }
+
+    if (collectionDetails.success !== undefined) {
+      success = collectionDetails.success
+      console.log("success: ", success);
+    }
+    // if successfully retrieved collection info, get maps
+    if (success) {
+      collectionDetails.test_type = item.test_type;
+      collectionDetails.date = new Date(collectionDetails.date)
+      let areaIndex = props.project.subareas.findIndex(element => element._id === collectionDetails.area);
+      collectionDetails.area = props.project.subareas[areaIndex];
+      console.log("selected collection: ", collectionDetails);
+      return collectionDetails;
+    } else {
+      return null;
+    }
+  };
+
+  const getSMTimeSlots = async (timeId) => {
+    let success = false
+    let timeSlotDetails = null
+
+    // Get the activity information
+    try {
+      const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + timeId, {
+          method: 'GET',
+          headers: {
+              Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + props.token
+          }
+      })
+      timeSlotDetails = await response.json();
+      success = true
+    } catch (error) {
+        console.log("error", error)
+    }
+    if (timeSlotDetails.success !== undefined) {
+      success = timeSlotDetails.success
+      console.log("success: ", success);
+    }
+    if (success) {
+      // set selected timeSlots
+      timeSlotDetails.date = new Date(timeSlotDetails.date)
+      console.log("time slot: ", timeSlotDetails);
+      props.setTimeSlots(slots => [...slots,timeSlotDetails]);
+    }
   };
 
   const activityItem = ({ item, index }) => (
@@ -86,7 +146,6 @@ export function ProjectPage(props) {
         <MenuItem title='Edit Project' onPress={() => {setEditMenuVisible(false); setEditProjectVisible(true)}}/>
         <MenuItem title='Area(s)' onPress={() => {setEditMenuVisible(false); setEditAreasVisible(true)}}/>
         <MenuItem title='Standing Points' onPress={() => {setEditMenuVisible(false); setEditStandingPointsVisible(true)}}/>
-        <MenuItem title='Activity Information' onPress={() => {setEditMenuVisible(false); setEditActivityVisible(true)}}/>
       </HeaderBackEdit>
       <EditProjectPage
         {...props}
@@ -106,17 +165,16 @@ export function ProjectPage(props) {
         visible={editStandingPointsVisible}
         setVisible={setEditStandingPointsVisible}
       />
-      <EditActivityInfo
-        {...props}
-        visible={editActivityVisible}
-        setVisible={setEditActivityVisible}
-      />
       <ContentContainer>
 
         <View style={{height:'45%'}}>
           <MapAreaWrapper area={props.project.subareas[0].points} mapHeight={'100%'}>
             <ShowArea area={props.project.subareas[0].points} />
           </MapAreaWrapper>
+        </View>
+
+        <View style={styles.teamTextView}>
+          <Text >Location: {props.project.description}</Text>
         </View>
 
         <View style={styles.teamTextView}>
@@ -131,7 +189,7 @@ export function ProjectPage(props) {
         </View>
         <Divider style={{marginTop: 5}} />
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'45%', marginTop:15}}>
+        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'42%', marginTop:15}}>
           <List
             style={{maxHeight:'100%', maxWidth:'90%'}}
             data={props.activities}

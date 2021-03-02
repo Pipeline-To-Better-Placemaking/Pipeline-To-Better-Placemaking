@@ -55,7 +55,7 @@ module.exports.updateProject = async function (projectId, newProject) {
         { $set: {
             title: newProject.title,
             description: newProject.description,
-            area: newProject.area,
+            area: newProject.area
         }}
     )
 }
@@ -89,7 +89,7 @@ module.exports.teamCleanup = async function(teamId) {
 module.exports.addStationaryCollection = async function (projectId, collectionId) {
      return await Projects.updateOne(
         { _id: projectId },
-        { $push: { stationaryCollections:  colletionId}}
+        { $push: { stationaryCollections:  collectionId}}
     )
 }
 

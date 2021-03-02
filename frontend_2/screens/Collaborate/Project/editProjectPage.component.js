@@ -7,49 +7,142 @@ import * as Location from 'expo-location';
 
 export function EditProjectPage(props) {
 
+	const [projectTitleText, setProjectTitleText] = useState("");
+
+	useEffect(()=>{
+		setProjectTitleText(props.project.title)
+	}, [])
+
   const close = () => {
-    props.setVisible(false);
+		setProjectTitleText(props.project.title)
+    props.setVisible(false)
   }
 
+	const deleteProjectLocal = async (selectedTeam, tempProjects, deletedProjectID, tempTeams) => {
+
+    // Find indexes
+		let projectIndex = tempProjects.findIndex(element => element._id === deletedProjectID)
+		let teamIndex = tempTeams.findIndex(element => element._id === selectedTeam._id)
+
+		// Remove project from team, update team and teams
+		tempProjects.splice(projectIndex, 1)
+		selectedTeam.projects = [...tempProjects]
+		tempTeams[teamIndex] = selectedTeam
+
+		// Update the states
+		props.setTeam(selectedTeam)
+		props.setTeams([...tempTeams])
+		props.setProjects([...tempProjects])
+
+		// Dummy data for the project state
+		await props.setProject({
+			title:'',
+			subareas:[
+				{points:[
+					{latitude:0, longitude:0},
+					{latitude:0, longitude:0},
+					{latitude:0, longitude:0}
+				]}
+			],
+			standingPoints:[
+				{latitude:0, longitude:0}
+			]
+		});
+
+    // Update local storage
+		await AsyncStorage.setItem("@projects", JSON.stringify(tempProjects))
+		await AsyncStorage.setItem("@teams", JSON.stringify(tempTeams))
+	}
+
   const deleteProject = async () => {
-        // should probs have something for comfirm Delete first
-        let token = props.token
-        let success = false
-        let res = null
+		// should probably have something for confirm Delete first
+		let success = false
+		let result = null
 
-        // Delete
-        try {
-          const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id, {
-            method: 'DELETE',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
-            }
-          })
-          res = await response.json();
-          success = true
-        } catch (error) {
-            console.log("error", error)
-        }
+		// Delete
+		try {
+			const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id, {
+				method: 'DELETE',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer ' + props.token
+				}
+			})
+			result = await response.json()
+			success = true
+		} catch (error) {
+			console.log("error", error)
+		}
 
-        // Update
-        if (success) {
+		console.log(result)
 
-          // Adjust the local list of Projects on the selectedTeam
-          let selectedTeam = {...props.team};
-          let tempProjects = [...props.team.projects];
-          let changeIndex = tempProjects.findIndex(element => element._id === props.project._id);
-          tempProjects.splice(changeIndex, 1); // remove project from list
-          selectedTeam.projects = tempProjects;
-          props.setTeam(team => selectedTeam);
-          await AsyncStorage.setItem("@projects", JSON.stringify(tempProjects));
-          // this is dumb defualt needed information
-          await props.setProject({title:'', subareas:[{points:[{latitude:0, longitude:0},{latitude:0, longitude:0},{latitude:0, longitude:0}]}]});
-          props.setVisible(false);
-          props.navigation.goBack();
-        }
-    }
+		// Update
+		if (success) {
+			deleteProjectLocal({...props.team}, [...props.team.projects], props.project._id, [...props.teams])
+			props.setVisible(false);
+			props.navigation.navigate('TeamPage');
+		}
+	}
+
+	const updateProjectLocal = async (selectedTeam, tempProjects, updatedProject, updatedTitle, tempTeams) => {
+		
+		// Find indexes
+		let projectIndex = tempProjects.findIndex(element => element._id === updatedProject._id)
+		let teamIndex = tempTeams.findIndex(element => element._id === selectedTeam._id)
+
+		// Update teams, team, and project
+		updatedProject.title = updatedTitle
+		tempProjects[projectIndex] = updatedProject
+		selectedTeam.projects = [...tempProjects]
+		tempTeams[teamIndex] = selectedTeam
+
+		// Update the states
+		props.setProject(updatedProject)
+		props.setProjects([...tempProjects])
+		props.setTeam(selectedTeam)
+		props.setTeams(tempTeams)
+		
+		// Update local storage
+		await AsyncStorage.setItem("@projects", JSON.stringify(tempProjects))
+		await AsyncStorage.setItem("@teams", JSON.stringify(tempTeams))
+	}
+
+	const updateProject = async () => {
+		// should probably have something for confirm Delete first
+		let success = false
+		let result = null
+		let updatedProjectTitle = projectTitleText
+
+		if(updatedProjectTitle == "" || updatedProjectTitle == null)
+			updatedProjectTitle = props.project.title
+
+		// Delete
+		try {
+			const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + props.token
+        },
+
+        body: JSON.stringify({
+          title: updatedProjectTitle
+        })
+			})
+			result = await response.json();
+			success = true
+		} catch (error) {
+				console.log("error", error)
+		}
+
+		// Update
+		if (success) {
+			updateProjectLocal({...props.team}, [...props.team.projects], props.project, updatedProjectTitle, [...props.teams])
+			props.setVisible(false);
+		}
+	}
 
   return (
     <ModalContainer {...props} visible={props.visible}>
@@ -67,12 +160,17 @@ export function EditProjectPage(props) {
         </View>
 
         <View style={{marginTop:10, marginBottom:30}}>
-          <Text category='s1'>Project Name: </Text>
+          <Text category='s1'>Team Title: </Text>
+					<Input
+						placeholder = 'Team Title'
+						value={projectTitleText}
+						onChangeText={nextValue => setProjectTitleText(nextValue)}
+					/>
         </View>
 
         <View style={{marginBottom:30, flexDirection:'row', justifyContent:'space-between'}}>
           <Button status={'danger'} onPress={deleteProject}>Delete</Button>
-          <Button status={'success'}>Update!</Button>
+          <Button status={'success'} onPress={updateProject}>Update!</Button>
         </View>
       </View>
     </ModalContainer>

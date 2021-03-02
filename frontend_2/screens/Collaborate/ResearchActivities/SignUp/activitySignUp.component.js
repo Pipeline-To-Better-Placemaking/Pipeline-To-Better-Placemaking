@@ -10,30 +10,20 @@ export function ActivitySignUpPage(props) {
   // Constant array of activities
   const activityList = ["stationary", "People Moving", "Survey"]
 
-  const onBeginPress = async (index) => {
-
-    console.log("Stuff: " + JSON.stringify(props.activity.test_type))
+  const onBeginPress = async (timeSlot, index) => {
 
     if (props.activity.test_type == activityList[0]) {
 
       let activityDetails = {
         location: props.activity.area.points[0],
         area: props.activity.area.points,
-        position: props.activity.standingPoints,
+        position: timeSlot.standingPoints,
         time: props.activity.duration*60,
-        timeLeft:props.activity.duration*60
-      }
-
-      let initialActivityDetails = {
-        location: props.activity.area.points[0],
-        area: props.activity.area.points,
-        position: props.activity.standingPoints,
-        time: props.activity.duration*60,
-        timeLeft:props.activity.duration*60
+        timeLeft: props.activity.duration*60
       }
 
       props.setTimeSlot(activityDetails);
-      props.setInitialTimeSlot(initialActivityDetails);
+      props.setInitialTimeSlot(activityDetails);
 
       props.navigation.navigate("StationaryActivity")
     }
@@ -41,21 +31,13 @@ export function ActivitySignUpPage(props) {
       let activityDetails = {
         location: props.activity.area.points[0],
         area: props.activity.area.points,
-        position: props.activity.standingPoints,
-        time: props.activity.duration,
-        timeLeft:props.activity.duration
-      }
-
-      let initialActivityDetails = {
-        location: props.activity.area.points[0],
-        area: props.activity.area.points,
-        position: props.activity.standingPoints,
-        time: props.activity.duration,
-        timeLeft:props.activity.duration
+        position: timeSlot.standingPoints,
+        time: props.activity.duration*60,
+        timeLeft: props.activity.duration*60
       }
 
       props.setTimeSlot(activityDetails);
-      props.setInitialTimeSlot(initialActivityDetails);
+      props.setInitialTimeSlot(activityDetails);
 
       props.navigation.navigate("PeopleMovingActivity")
     }
@@ -63,8 +45,8 @@ export function ActivitySignUpPage(props) {
 
       let activityDetails = {...props.activity};
       activityDetails.location = props.activity.area[0];
-      activityDetails.time = (parseInt(props.activity.timeSlots[index].duration)* 60);
-      activityDetails.timeLeft = (parseInt(props.activity.timeSlots[index].duration)* 60);
+      activityDetails.time = props.activity.duration*60;
+      activityDetails.timeLeft = props.activity.duration*60;
 
       props.setTimeSlot(activityDetails);
       props.setInitialTimeSlot(activityDetails);
@@ -74,25 +56,58 @@ export function ActivitySignUpPage(props) {
   }
 
   const onSignUp = async (timeSlot, index) => {
-    /*let tempActivity = {...props.activity};
-    let tempTimeSlots = [...props.activity.timeSlots];
+    let tempTimeSlots = [...props.timeSlots];
+
     let tempSlot = {...timeSlot};
     let tempResearchers = [...timeSlot.researchers];
-    let max = timeSlot.numResearchers;
+    let max = timeSlot.maxResearchers;
     let len = timeSlot.researchers.length;
 
-    if(max > 0 && (max-len) > 0 ) {
-      //TODO: update the Activity to sign user up for time slot
+    if(max > 0 && (max-len) > 0) {
+      let success = false
+      if (props.activity.test_type == activityList[0]) {
+        success = signUpSMTimeSlot(timeSlot);
+      } else {
+        success = true
+      }
 
-      // add user locally
-      tempResearchers.push(props.username);
-      // this feels like nonsense lol but it works
-      tempSlot.researchers = tempResearchers;
-      tempTimeSlots[index] = tempSlot;
-      tempActivity.timeSlots = tempTimeSlots;
-      props.setActivity(tempActivity);
-    }*/
+      if (success) {
+        // add user locally
+        tempResearchers.push(props.username);
+        tempSlot.researchers = tempResearchers;
+        tempTimeSlots[index] = tempSlot;
+        props.setTimeSlots(tempTimeSlots);
+      }
+    }
 
+  }
+
+  const signUpSMTimeSlot = async (timeSlot) => {
+    let success = false
+    let res = null
+    console.log("here id: ", timeSlot._id);
+    // TODO: fix this
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + timeSlot._id + '/claim', {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            }
+        })
+        res = await response.json()
+        console.log("sign up user response:", res)
+        success = true
+    } catch (error) {
+        console.log("ERROR: ", error)
+    }
+    if (res !== null && res.success !== undefined) {
+      success = res.success
+      console.log("success: ", success);
+    }
+
+    return success;
   }
 
   const getPointsLocations = (timeSlot) => {
@@ -132,12 +147,37 @@ export function ActivitySignUpPage(props) {
     return str;
   }
 
+  // helper function to get a readable date string value
+  const getDayStr = (date) => {
+    return parseInt(date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear();
+  }
+
+  // helper function to get a readable time string value
+  const getTimeStr = (time) => {
+      let hours = time.getHours();
+      let minutes = `${time.getMinutes()}`;
+      let morning = " AM";
+      // 12 hour instead of 24
+      if (hours > 12) {
+          hours = hours - 12
+          morning = " PM";
+      } else if (hours === 12) {
+          morning = " PM";
+      } else if (hours === 0) {
+          hours = 12
+      }
+      // 2 digits
+      if (minutes.length !== 2) {
+          minutes = 0 + minutes;
+      }
+      return hours + ":" + minutes + morning;
+  }
+
   const timeSlotCard = ({item, index}) => (
     <Card disabled={true}>
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
         <View style={{flexDirection:'column'}}>
-          <Text>Start Time </Text>
-          <Text>{(props.activity.test_type === 'Survey' ? "Time at Site:" : "Time per Standing Point:")} {item.duration} (min)</Text>
+          <Text>Start Time: {getTimeStr(item.date)}</Text>
           {(props.activity.test_type === 'Survey' ? null : <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>)}
           <Text>Researchers:</Text>
           <Text>{getResearchers(item)}</Text>
@@ -146,7 +186,7 @@ export function ActivitySignUpPage(props) {
           <Button status='info' style={{margin:5}} onPress={() => onSignUp(item, index)}>
             Sign Up
           </Button>
-          <Button status='success' style={{margin:5}} onPress={() => onBeginPress(index)}>
+          <Button status='success' style={{margin:5}} onPress={() => onBeginPress(item, index)}>
             Begin
           </Button>
         </View>
@@ -161,19 +201,22 @@ export function ActivitySignUpPage(props) {
         <View style={{height:'40%'}}>
           <MapAreaWrapper area={props.activity.area.points} mapHeight={'100%'}>
             <ShowArea area={props.activity.area.points} />
-            {(props.activity.test_type === 'Survey' ? null : <ShowMarkers markers={props.activity.standingPoints} />)}
+            {(props.activity.test_type === 'Survey' ? null : <ShowMarkers markers={props.project.standingPoints} />)}
           </MapAreaWrapper>
         </View>
         <View style={{margin:15}}>
           <Text category='s1'>Activity: {props.activity.test_type}</Text>
-          <Text category='s1'>Day: {props.activity.date}</Text>
+          <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
+          <Text>{(props.activity.test_type === 'Survey' ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
         </View>
-        <List
-          style={{maxHeight:400}}
-          data={[props.activity]}
-          ItemSeparatorComponent={Divider}
-          renderItem={timeSlotCard}
-        />
+        <View style={{height:'50%'}}>
+          <List
+            style={{maxHeight:'100%'}}
+            data={props.timeSlots}
+            ItemSeparatorComponent={Divider}
+            renderItem={timeSlotCard}
+          />
+        </View>
       </ContentContainer>
     </ViewableArea>
   );

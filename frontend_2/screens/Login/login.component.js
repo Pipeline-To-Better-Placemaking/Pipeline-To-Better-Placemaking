@@ -26,16 +26,8 @@ export const LoginScreen = ( props ) => {
     setLoading(true);
 
     let defaultLocation = {
-      "timestamp": 0,
-      "coords": {
-        "accuracy": -1,
-        "altitude": -1,
-        "altitudeAccuracy": -1,
-        "heading": -1,
-        "latitude": 28.602413253152307,
-        "longitude": -81.20019937739713,
-        "speed": 0
-      }
+      "latitude": 28.602413253152307,
+      "longitude": -81.20019937739713,
     };
 
     let success = false;
@@ -78,6 +70,7 @@ export const LoginScreen = ( props ) => {
 
       if (status === 'granted') {
         defaultLocation = await Location.getCurrentPositionAsync({});
+        defaultLocation = defaultLocation.coords
       } else {
         console.log('Permission to access location was denied');
       }

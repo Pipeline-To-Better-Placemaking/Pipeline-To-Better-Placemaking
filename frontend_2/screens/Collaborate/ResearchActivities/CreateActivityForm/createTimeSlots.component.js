@@ -10,23 +10,17 @@ import { styles } from './form.styles';
 
 export function CreateTimeSlots(props) {
 
-  const today = new Date();
-
   // This is the index of the current time slot we're modifying
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   // start time
+  const today = new Date();
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [timeValue, setTimeValue] = useState(today);
 
-  // used for Modal
-  const [tempNum, setTempNum] = useState('');
-
   // number of researchers
   const [researchersVisible, setResearchersVisible] = useState(false);
-
-  // duration (time limit)
-  const [durationVisible, setDurationVisible] = useState(false);
+  const [tempNum, setTempNum] = useState(''); // used for Pop up
 
   // select multiple standing points
   const [tempPoints, setTempPoints] = useState([]);
@@ -36,43 +30,24 @@ export function CreateTimeSlots(props) {
     return props.standingPoints[index.row].title;
   });
 
-  // helper function to get a readable time string value
-  const getTimeStr = (time) => {
-      let hours = time.getHours();
-      let minutes = `${time.getMinutes()}`;
-      let morning = " AM";
-      // 12 hour instead of 24
-      if (hours > 12) {
-          hours = hours - 12
-          morning = " PM";
-      } else if (hours === 12) {
-          morning = " PM";
-      } else if (hours === 0) {
-          hours = 12
-      }
-      // 2 digits
-      if (minutes.length !== 2) {
-          minutes = 0 + minutes;
-      }
-      return hours + ":" + minutes + morning;
-  }
-
+  // edit start time value for timeslot
   const editTime = (item, index) => {
     // load the current value
-    setTimeValue(props.timeSlots[index].timeVal);
+    setTimeValue(props.timeSlots[index].date);
     // set the index for which time slot we're editing
     setSelectedIndex(index);
     // view the modal
     setTimePickerVisibility(true);
   }
 
+  // set the start time value for timeslot
   const setTime = (time) => {
     // Get info
     let tempList = [...props.timeSlots];
     let timeSlot = {...tempList[selectedIndex]};
 
     // set new value
-    timeSlot.timeVal = time;
+    timeSlot.date = time;
     timeSlot.timeString = getTimeStr(time);
 
     // put the item back in the list
@@ -84,24 +59,30 @@ export function CreateTimeSlots(props) {
     setTimePickerVisibility(false);
   }
 
+  // create a new timeslot
   const createTime = () => {
     // this uses the last value in the timeSlots list as the new start time value
     let time = timeValue;
+    let indicies = [];
+    let numPeeps = '1';
     let length = props.timeSlots.length;
+
     if (length > 0) {
-      time = props.timeSlots[length-1].timeVal;
+      time = props.timeSlots[length-1].date;
+      numPeeps = props.timeSlots[length-1].maxResearchers;
+      indicies = props.timeSlots[length-1].assignedPointIndicies;
     }
     let temp = {
-        timeVal: time,
+        date: time,
         timeString: getTimeStr(time),
-        maxResearchers: '1',
+        maxResearchers: numPeeps,
         researchers: [],
-        duration: '30',
-        assignedPointIndicies: [],
+        assignedPointIndicies: indicies,
     };
     props.setTimeSlots(timeSlots => [...timeSlots,temp]);
   }
 
+  // delete time slot
   const deleteTime = (value, timeIndex) => {
     props.timeSlots.splice(timeIndex, 1);
     props.setTimeSlots(timeSlots => [...timeSlots]);
@@ -123,30 +104,6 @@ export function CreateTimeSlots(props) {
 
     // set new value
     timeSlot.maxResearchers = tempNum;
-
-    // put the item back in the list
-    tempList[selectedIndex] = timeSlot;
-
-    // Update
-    props.setTimeSlots(timeSlots => [...tempList]);
-  }
-
-  const editDuration = (item, index) => {
-    // load the current value
-    setTempNum(props.timeSlots[index].duration);
-    // set the index for which time slot we're editing
-    setSelectedIndex(index);
-    // view the modal
-    setDurationVisible(true);
-  }
-
-  const setDuration = () => {
-    // Get info
-    let tempList = [...props.timeSlots];
-    let timeSlot = {...tempList[selectedIndex]};
-
-    // set new value
-    timeSlot.duration = tempNum;
 
     // put the item back in the list
     tempList[selectedIndex] = timeSlot;
@@ -183,15 +140,12 @@ export function CreateTimeSlots(props) {
   const confirmModal = () => {
     if (researchersVisible) {
       setResearchers()
-    } else if (durationVisible) {
-      setDuration()
     }
     dimissModal();
   }
 
   const dimissModal = () => {
     setResearchersVisible(false);
-    setDurationVisible(false);
     setSelectPointsVisible(false);
   }
 
@@ -223,10 +177,23 @@ export function CreateTimeSlots(props) {
       </View>
   );
 
+  const NumResearchers = ({item, index}) => (
+      <View style={{flexDirection:'row'}}>
+        <Button
+          style={{marginLeft:-20}}
+          onPress={() => editResearchers(item, index)}
+          accessoryRight={ResearchersIcon}
+          appearance='ghost'
+        >
+          <Text>Number of Researchers: {item.maxResearchers}</Text>
+        </Button>
+      </View>
+  );
+
   const EnterNumberModal = () => (
     <Modal
       style={{width:'80%'}}
-      visible={researchersVisible || durationVisible}
+      visible={researchersVisible}
       backdropStyle={styles.backdrop}
       onBackdropPress={dimissModal}
     >
@@ -270,32 +237,6 @@ export function CreateTimeSlots(props) {
     </Modal>
   );
 
-  const NumResearchers = ({item, index}) => (
-      <View style={{flexDirection:'row'}}>
-        <Button
-          style={{marginLeft:-20}}
-          onPress={() => editResearchers(item, index)}
-          accessoryRight={ResearchersIcon}
-          appearance='ghost'
-        >
-          <Text>Number of Researchers: {item.maxResearchers}</Text>
-        </Button>
-      </View>
-  );
-
-  const Duration = ({item, index}) => (
-      <View style={{flexDirection:'row'}}>
-        <Button
-          style={{marginLeft:-20}}
-          onPress={() => editDuration(item, index)}
-          accessoryRight={ClockIcon}
-          appearance='ghost'
-        >
-          <Text>{(props.selectedActivity === 'Survey' ? "Time at Site" : "Time per Standing Point")}: {item.duration} (min)</Text>
-        </Button>
-      </View>
-  );
-
   const SelectPoints = ({item, index}) => (
       <View style={{flexDirection:'row'}}>
         <Button
@@ -321,7 +262,6 @@ export function CreateTimeSlots(props) {
       </View>
   );
 
-// <Duration {...{item, index}} />
   const signUpCard = ({item, index}) => (
     <Card>
       <View style={{flexDirection:'row', justifyContent:'flex-start'}}>
@@ -343,12 +283,12 @@ export function CreateTimeSlots(props) {
   return (
     <ViewableArea>
       <HeaderExit text={props.headerText} exit={props.exit}/>
+
+      <EnterNumberModal />
+      <SelectPointsModal />
+
       <ContentContainer>
         <View style={styles.container}>
-
-          <EnterNumberModal />
-
-          <SelectPointsModal />
 
           <View style={styles.btnView}>
             <Button
@@ -388,6 +328,27 @@ export function CreateTimeSlots(props) {
     </ViewableArea>
   );
 };
+
+// helper function to get a readable time string value
+const getTimeStr = (time) => {
+    let hours = time.getHours();
+    let minutes = `${time.getMinutes()}`;
+    let morning = " AM";
+    // 12 hour instead of 24
+    if (hours > 12) {
+        hours = hours - 12
+        morning = " PM";
+    } else if (hours === 12) {
+        morning = " PM";
+    } else if (hours === 0) {
+        hours = 12
+    }
+    // 2 digits
+    if (minutes.length !== 2) {
+        minutes = 0 + minutes;
+    }
+    return hours + ":" + minutes + morning;
+}
 
 const ForwardIcon = (props) => (
   <Icon {...props} name='arrow-forward-outline'/>

@@ -53,7 +53,7 @@ module.exports.deleteCollection = async function(collectionId){
     return Collection.findByIdAndDelete(collectionId)
 }
 
-module.exports.addMap = async function(collectionId, mapId){
+module.exports.addActivity = async function(collectionId, mapId){
     return await Collection.updateOne(
         { _id: collectionId },
         { $push: { maps: mapId}}

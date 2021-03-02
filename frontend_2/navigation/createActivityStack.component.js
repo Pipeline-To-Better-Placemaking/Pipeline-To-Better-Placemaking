@@ -20,6 +20,7 @@ export function CreateActivityStack(props) {
 
   // This is the unique name the user gives the Activity
   const [activityName, setActivityName] = useState('');
+  const [duration, setDuration] = useState('15');
 
   // This is the index of the selected Activity from the lsit of activityTypes
   const [selectedActivityIndex, setSelectedActivityIndex] = useState(new IndexPath(0));
@@ -57,29 +58,38 @@ export function CreateActivityStack(props) {
 
     // Stationary Map
     if(row === 0) {
-      timeSlots.map(timeSlot => {
-        postSM(timeSlot, name);
-      })
+      postSM(name);
+
     } // People Moving
     else if (row === 1) {
       // some fake activity info until we set up the api calls
+      timeSlots.map(timeSlot => {
+        let selectedPoints = [...props.project.standingPoints];
+        if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
+          selectedPoints = timeSlot.assignedPointIndicies.map(index => {
+            return standingPoints[index.row];
+          });
+        }
+        timeSlot.standingPoints = selectedPoints;
+      })
+
       let activityDetails = {
         title: name,
-        date: date.toLocaleString(),
+        date: date,
+        duration: parseInt(duration),
         activity: activityTypes[row],
         test_type: activityTypes[row],
         timeSlots: timeSlots,
-        standingPoints: timeSlots[0].assignedPointIndicies.map(index => {
-          return standingPoints[index.row];
-        }),
         area: area,
       };
       props.setActivities(values => [...values,activityDetails]);
     } // Survey
     else if (row === 2) {
+
       let activityDetails = {
         title: name,
-        date: date.toLocaleString(),
+        date: date,
+        duration: parseInt(duration),
         activity: activityTypes[row],
         test_type: activityTypes[row],
         timeSlots: timeSlots,
@@ -92,7 +102,55 @@ export function CreateActivityStack(props) {
     props.navigation.navigate('ProjectPage')
   };
 
-  const postSM = async (timeSlot, name) => {
+  const postSM = async (name) => {
+    let success = false
+    let collectionDetails = null
+    // Save the activity
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + '/stationary_collections', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            },
+            body: JSON.stringify({
+                title: name,
+                date: date,
+                area: area._id,
+                duration: parseInt(duration),
+            })
+        })
+        collectionDetails = await response.json()
+        success = true
+    } catch (error) {
+        console.log("ERROR: ", error)
+    }
+    console.log("create SM collection response:", collectionDetails);
+    if(collectionDetails.success !== undefined) {
+      success = collectionDetails.success
+      console.log("success: ", success);
+    }
+
+    if(success) {
+      // create the time timeSlots
+      await timeSlots.map(timeSlot => {
+        postSMTimeSlot(timeSlot, name, collectionDetails._id)
+      });
+
+      // set the type
+      collectionDetails.test_type = 'stationary';
+
+      // get the area
+      let areaIndex = props.project.subareas.findIndex(element => element._id === collectionDetails.area);
+      collectionDetails.area = props.project.subareas[areaIndex];
+
+      // add the collection to the list
+      await props.setActivities(values => [...values, collectionDetails]);
+    }
+  }
+
+  const postSMTimeSlot = async (timeSlot, name, id) => {
     let success = false
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
@@ -112,10 +170,11 @@ export function CreateActivityStack(props) {
             },
             body: JSON.stringify({
                 title: name,
-                area: area._id,
                 standingPoints: selectedPoints,
+                researchers: [],
                 project: props.project._id,
-                date: date,
+                collection: id,
+                date: timeSlot.date, // start time
                 maxResearchers: parseInt(timeSlot.maxResearchers),
             })
         })
@@ -125,16 +184,11 @@ export function CreateActivityStack(props) {
         console.log("ERROR: ", error)
     }
     console.log("create SM activity response:", activityDetails);
-    if(activityDetails.success !== undefined){
+    if (activityDetails.success !== undefined) {
       success = activityDetails.success
       console.log("success: ", success);
     }
 
-    if(success){
-      activityDetails.activity = activityDetails._id;
-      activityDetails.test_type = 'stationary';
-      props.setActivities(values => [...values,activityDetails]);
-    }
   }
 
   const setSelectedActivity = (index) => {
@@ -169,6 +223,8 @@ export function CreateActivityStack(props) {
             headerText={headerText}
             exit={exit}
             activityTypes={activityTypes}
+            setDuration={setDuration}
+            duration={duration}
           />
         }
       </Screen>
