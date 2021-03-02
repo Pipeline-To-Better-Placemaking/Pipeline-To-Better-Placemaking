@@ -15,6 +15,7 @@ export function EditTeamPage(props) {
 
   const close = () => {
     props.setVisible(false);
+		setTeamTitleText(props.team.title)
   }
 
 	// Removes the team matching the ID from the local list of teams

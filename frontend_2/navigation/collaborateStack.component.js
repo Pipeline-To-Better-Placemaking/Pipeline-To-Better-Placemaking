@@ -121,6 +121,8 @@ export function CollaborateStack(props) {
             userId={userId}
             team={team}
             setTeam={setTeam}
+			teams={teams}
+            setTeams={setTeams}
             project={project}
             setProject={setProject}
             projects={projects}
