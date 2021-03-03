@@ -113,6 +113,31 @@ curl -H 'Content-Type: application/json' \
            \"date\": \"2012-04-23T18:25:43.511Z\" }"  \
      http://localhost:8080/api/stationary_maps/
 
+MAP=$(curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/projects/${PROJECT} \
+     | jq -r '.stationaryCollections[0].maps[0]' )
+
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request PUT \
+     http://localhost:8080/api/stationary_maps/${MAP}/claim
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request DELETE \
+     http://localhost:8080/api/stationary_maps/${MAP}/claim
+
+echo
+echo
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/stationary_maps/${MAP}
+
 #MAP=$(curl -H 'Content-Type: application/json' \
 #     -H "Authorization: Bearer ${TOKEN}" \
 #     --request GET \
