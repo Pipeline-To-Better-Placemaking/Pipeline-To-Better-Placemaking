@@ -35,7 +35,6 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                 await Stationary_Collection.addActivity(req.body.collection, map._id)
 
                 res.status(201).json(await Stationary_Collection.findById(req.body.collection))
-
             }
     
         let newMap = new Map({
@@ -82,7 +81,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
     user = await req.user
     if(map.researchers.length < map.maxResearchers)
         if(Team.isUser(project.team,user._id)){
-            res.status(200).json(Map.addResearcher(map._id,user._id))
+            res.status(200).json(await Map.addResearcher(map._id,user._id))
         }
         else
             throw new UnauthorizedError('You do not have permision to perform this operation')
