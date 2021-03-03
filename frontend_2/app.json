@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "frontend_2",
-    "slug": "frontend_2",
+    "name": "2+ Community",
+    "description": "Measure the qualities of public spaces",
+    "slug": "2plus-community",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -23,7 +24,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.measuringplace.twopluscommunity"
     },
     "web": {
       "favicon": "./assets/favicon.png"
