@@ -62,7 +62,16 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     const map = await  Map.findById(req.params.id)
                            .populate('standingPoints')
                            .populate('researchers','firstname lastname')
-                           .populate('shareData')
+                           .populate([
+                               {
+                                   path:'sharedData',
+                                   model:'Stationary_Collections',
+                                   select:'title duration',
+                                   populate: {
+                                    path: 'area',
+                                    model: 'Areas'
+                                   }
+                                }])
                            
     res.status(200).json(map)
 })
