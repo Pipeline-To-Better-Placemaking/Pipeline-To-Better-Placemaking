@@ -61,7 +61,7 @@ const stationary_schema = mongoose.Schema({
 
     sharedData:{
         type: ObjectId,
-        ref: 'Stationary_Collection',
+        ref: 'Stationary_Collections',
         required: true
     },
 
