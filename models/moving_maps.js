@@ -29,7 +29,7 @@ const Entry = mongoose.Schema({
         required: true
     }
 })
-const stationary_schema = mongoose.Schema({
+const moving_schema = mongoose.Schema({
     
     title:String,
     
@@ -56,7 +56,7 @@ const stationary_schema = mongoose.Schema({
 
     sharedData:{
         type: ObjectId,
-        ref: 'Stationary_Collections',
+        ref: 'Moving_Collections',
         required: true
     },
 
@@ -69,7 +69,7 @@ const stationary_schema = mongoose.Schema({
 })
 
 
-const Maps = module.exports = mongoose.model('Stationary_Maps', stationary_schema)
+const Maps = module.exports = mongoose.model('Moving_Maps', moving_schema)
 
 module.exports.addMap = async function(newMap) {
     return await newMap.save()

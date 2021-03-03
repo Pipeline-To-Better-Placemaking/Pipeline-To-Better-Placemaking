@@ -4,10 +4,10 @@ const uniqueValidator = require('mongoose-unique-validator')
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-const Stationary_Map = require('../models/stationary_maps.js')
+const Moving_Map = require('../models/moving_maps.js')
 
 
-const area_schema = mongoose.Schema({
+const collection_schema = mongoose.Schema({
     title: String,
     date: {
         type: Date,
@@ -28,12 +28,12 @@ const area_schema = mongoose.Schema({
 
     maps: [{
         type: ObjectId,
-        ref: 'Stationary_Maps'
+        ref: 'Moving_Maps'
     }]
 
 })
 
-const Collection = module.exports = mongoose.model('Stationary_Collections', area_schema)
+const Collection = module.exports = mongoose.model('Moving_Collections', collection_schema)
 
 module.exports.deleteMap = async function(collectionId, mapId){
     Collection.findByIdAndDelete(mapId)
