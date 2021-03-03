@@ -42,7 +42,6 @@ export function CollaborateStack(props) {
   const [timeSlots, setTimeSlots] = useState([]);
   const [initialTimeSlot, setInitialTimeSlot] = useState(null)
 
-  const [username, setUsername] = useState('username');
   const [firstname, setFirstname] = useState('first name');
   const [lastname, setLastname] = useState('last name');
 
@@ -67,7 +66,6 @@ export function CollaborateStack(props) {
       let last = await AsyncStorage.getItem('@lastName');
       setFirstname(first);
       setLastname(last);
-      setUsername(first + ' ' + last);
     }
 
     getTokens()
@@ -172,7 +170,8 @@ export function CollaborateStack(props) {
             setTimeSlots={setTimeSlots}
             setTimeSlot={setTimeSlot}
             setInitialTimeSlot={setInitialTimeSlot}
-            username={username}
+            firstname={firstname}
+            lastname={lastname}
           />
         }
       </Screen>
