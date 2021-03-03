@@ -111,7 +111,7 @@ export function ActivitySignUpPage(props) {
             }
         })
         res = await response.json()
-        console.log("sign up user response:", res)
+        //console.log("sign up user response:", res)
         success = true
     } catch (error) {
         console.log("ERROR: ", error)
@@ -134,7 +134,7 @@ export function ActivitySignUpPage(props) {
             }
         })
         res = await response.json()
-        console.log("remove user response:", res)
+        //console.log("remove user response:", res)
         success = true
     } catch (error) {
         console.log("ERROR: ", error)
