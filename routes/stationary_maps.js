@@ -63,7 +63,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                            .populate('standingPoints')
                            .populate('researchers','firstname lastname')
                            .populate('shareData')
-                           .populate('sharedData.area')
+                           
     res.status(200).json(map)
 })
 
@@ -72,8 +72,9 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
     project = await Project.findById(map.project)
     user = await req.user
     if(map.researchers.length < map.maxResearchers)
-        if(Team.isUser(project.team,user._id))
-            return await Map.addResearcher(map._id,user._id)
+        if(Team.isUser(project.team,user._id)){
+            res.status(200).json(Map.addResearcher(map._id,user._id))
+        }
         else
             throw new UnauthorizedError('You do not have permision to perform this operation')
     else 
@@ -83,8 +84,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
 router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
-    return await Map.removeResearcher(map._id,user._id)
-   
+    return res.status(200).json(await Map.removeResearcher(map._id,user._id))
 
 })
 
