@@ -12,14 +12,14 @@ const { Navigator, Screen } = createStackNavigator();
 export function HomeScreenStack(props){
 
   var location = props.location
+  let allProjects = props.allProjects
 
   // selected projects used for comparing
   const [selectedProjects, setSelectedProjects] = useState([]);
 
-  // current project and list of projects to display and choose from
+  // selected project
   const [selectedProject, setSelectedProject] = useState(null);
-  const [projectList, setProjectList] = useState([]);
-  // selected team, asscoiated with the project selected
+  // selected team, associated with the project selected
   const [selectedTeam, setSelectedTeam] = useState(null);
 
   // selected activity result information
@@ -37,61 +37,10 @@ export function HomeScreenStack(props){
 
       let id = await AsyncStorage.getItem("@id");
       setUserId(id);
-
-      // get list of projects for all teams the user is a member of
-      await setProjectList([]);
-      let teamsList = await AsyncStorage.getItem('@teams');
-      teamsList = JSON.parse(teamsList);
-      if (teamsList !== null) {
-        teamsList.map((team, index) => {
-          setTeamDetails(team);
-        });
-      }
-
     }
 
     getInfo()
   }, []);
-
-  const setTeamDetails = async (team) => {
-    let token = await AsyncStorage.getItem("@token");
-    let success = false
-    let teamDetails = null
-    // Get the team information
-    try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + team._id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-            }
-        })
-        teamDetails = await response.json();
-        success = true
-    } catch (error) {
-        console.log("error getting team\n", error)
-    }
-
-    if(teamDetails.success !== undefined){
-      success = teamDetails.success
-      console.log("success: ", success);
-    }
-
-    // return team info
-    if(success && teamDetails.projects !== null) {
-      //let list = [...projectList];
-      teamDetails.projects.map((project, index) => {
-        project.description = "Team: " + teamDetails.title + "\nLocation: " + project.description;
-        project.team = teamDetails;
-        projectList.push(project);
-      });
-      await setProjectList(projectList);
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   const removeFromSelectedProjects = async (name) => {
 
@@ -119,7 +68,7 @@ export function HomeScreenStack(props){
           setProjects={getSelectedProjects}
           removeFromSelectedProjects={removeFromSelectedProjects}
           location={location}
-          projectList={projectList}
+          allProjects={allProjects}
           token={token}
           userId={userId}
           selectedProject={selectedProject}

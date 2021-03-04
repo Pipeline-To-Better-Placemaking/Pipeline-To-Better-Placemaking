@@ -54,6 +54,7 @@ export function CreateProject(props) {
       tempProjects.push(projectDetails);
       selectedTeam.projects = tempProjects;
       props.setProjects(tempProjects);
+      props.addProject(projectDetails, props.team);
       props.setTeam(team => selectedTeam);
       await AsyncStorage.setItem("@projects", JSON.stringify(tempProjects));
 

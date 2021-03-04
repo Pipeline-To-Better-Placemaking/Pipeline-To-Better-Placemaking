@@ -13,7 +13,9 @@ import { PeopleMovingActivity } from '../screens/Collaborate/ResearchActivities/
 const { Navigator, Screen } = createStackNavigator();
 
 export function CollaborateStack(props) {
-  var location = props.location
+  var location = props.location;
+  let addProject= props.addProject;
+  let removeProject= props.removeProject;
 
   // Array with activity names
   const activityTypes = ['Stationary Map', 'People Moving', 'Survey'];
@@ -105,6 +107,8 @@ export function CollaborateStack(props) {
             setProject={setProject}
             projects={projects}
             setProjects={setProjects}
+            addProject={addProject}
+            removeProject={removeProject}
             activities={activities}
             setActivities={setActivities}
             location={location}
@@ -119,12 +123,14 @@ export function CollaborateStack(props) {
             userId={userId}
             team={team}
             setTeam={setTeam}
-			      teams={teams}
+            teams={teams}
             setTeams={setTeams}
             project={project}
             setProject={setProject}
             projects={projects}
             setProjects={setProjects}
+            addProject={addProject}
+            removeProject={removeProject}
             activity={activity}
             setActivity={setActivity}
             activities={activities}
