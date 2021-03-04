@@ -255,7 +255,63 @@ router.delete('/:id/stationary_collections/:colectionId', passport.authenticate(
     user = await req.user
     project = await Project.findById(req.params.id)
     if(await Team.isAdmin(project.team,user._id)){
-        res.status(201).json(await Project.deleteCollectoin(project._id,req.params.pointId))
+        res.status(201).json(await Project.deleteStationaryCollection(project._id,req.params.pointId))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.post('/:id/moving_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+
+    if(await Team.isUser(project.team,user._id)){   
+
+        let newCollection = new Moving_Collection({
+            title: req.body.title,
+            date: req.body.date,
+            area: req.body.area,
+            duration: req.body.duration
+        })
+
+        await newCollection.save()
+       
+        await Project.addMovingCollection(project._id,newCollection._id)
+        res.json(newCollection)
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.put('/:id/moving_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    point = await Standing_Point.findById(req.params.areaId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+    
+        
+        let newCollection = new Moving_Collection({
+                title: (req.body.title ? req.body.tttle : collection.title),
+                date: (req.body.date ? req.body.date : collection.date),
+                area: (req.body.area ? req.body.area : collection.area),
+                duration: (req.body.duration ? req.body.duration : collection.duration)
+        })
+  
+        res.status(201).json(await Moving_Collection.updateCollection(req.params.collectionId, newColletion))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.delete('/:id/moving_collections/:colectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    if(await Team.isAdmin(project.team,user._id)){
+        res.status(201).json(await Project.deleteMovingCollection(project._id,req.params.pointId))
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')

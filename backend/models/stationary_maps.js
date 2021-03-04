@@ -61,7 +61,7 @@ const stationary_schema = mongoose.Schema({
 
     sharedData:{
         type: ObjectId,
-        ref: 'Stationary_Collection',
+        ref: 'Stationary_Collections',
         required: true
     },
 
@@ -111,14 +111,14 @@ module.exports.addEntry = async function(mapId, newEntry) {
 module.exports.addResearcher = async function(mapId, userId){
     return await Maps.updateOne(
         { _id: mapId },
-        { $push: { users: userId}}
+        { $push: { researchers: userId}}
     )
 }
 
 module.exports.removeResearcher = async function(mapId, userId){
     return await Maps.updateOne(
         { _id: mapId },
-        { $pull: { users: userId}}
+        { $pull: { researchers: userId}}
     )
 }
 

@@ -105,13 +105,50 @@ COLLECTION=$(curl -H 'Content-Type: application/json' \
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request POST \
-      -d "{\"researchers\": [\"${USER}\"],  
-           \"claimed\": \"true\", 
+      -d "{\"researchers\": [],   
            \"area\": \"${AREA}\" , 
            \"collection\": \"${COLLECTION}\",
            \"project\": \"${PROJECT}\" , 
            \"date\": \"2012-04-23T18:25:43.511Z\" }"  \
      http://localhost:8080/api/stationary_maps/
+
+MAP=$(curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/projects/${PROJECT} \
+     | jq -r '.stationaryCollections[0].maps[0]' )
+
+echo
+echo "claim"
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request PUT \
+     http://localhost:8080/api/stationary_maps/${MAP}/claim
+
+echo "Check if claimed"
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/stationary_maps/${MAP}
+
+echo
+echo "uncalim"
+echo
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request DELETE \
+     http://localhost:8080/api/stationary_maps/${MAP}/claim
+
+echo
+echo
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/stationary_maps/${MAP}
 
 #MAP=$(curl -H 'Content-Type: application/json' \
 #     -H "Authorization: Bearer ${TOKEN}" \

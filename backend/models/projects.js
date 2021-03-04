@@ -36,6 +36,10 @@ const project_schema = mongoose.Schema({
         type: ObjectId,
         ref: 'Stationary_Collections'
     }],
+    movingCollections:[{
+        type: ObjectId,
+        ref: 'Moving_Collections'
+    }],
 
 })
 
@@ -93,13 +97,27 @@ module.exports.addStationaryCollection = async function (projectId, collectionId
     )
 }
 
-
 module.exports.deleteStationaryCollection = async function(projectId, collectionId) {
     await Stationary_collections.findByIdAndDelete(collectionId)
     return await Projects.updateOne(
         { _id: projectId },
         { $pull: { stationaryCollections: collectionId}}
     )
+}
+
+module.exports.addMovingCollection = async function (projectId, collectionId) {
+    return await Projects.updateOne(
+       { _id: projectId },
+       { $push: { movingCollections:  collectionId}}
+   )
+}
+
+module.exports.deleteMovingCollection = async function(projectId, collectionId) {
+   await Moving_collections.findByIdAndDelete(collectionId)
+   return await Projects.updateOne(
+       { _id: projectId },
+       { $pull: { movingCollections: collectionId}}
+   )
 }
 
 module.exports.addArea = async function(projectId, areaId) {
