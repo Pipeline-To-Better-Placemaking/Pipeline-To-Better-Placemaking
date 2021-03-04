@@ -43,7 +43,6 @@ export const HomeScreen = ( props ) => {
   }
 
   const openResultPage = async(item) => {
-    //TODO: Get Project Information
     let success = false
     let projectDetails = null
     // Get the Project information
@@ -103,7 +102,7 @@ export const HomeScreen = ( props ) => {
 
         <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'55%', marginTop:15}}>
           <List
-            data={props.projectList}
+            data={props.allProjects}
             ItemSeparatorComponent={Divider}
             renderItem={resultItem}
           />
