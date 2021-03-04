@@ -81,7 +81,7 @@ export function StationaryActivity(props) {
                 })
             })
 
-            info = await response.json()
+            let info = await response.json()
             console.log("Response: " + JSON.stringify(info))
             
         } catch (error) {
