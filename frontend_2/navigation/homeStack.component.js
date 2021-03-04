@@ -24,6 +24,7 @@ export function HomeScreenStack(props){
 
   // selected activity result information
   const [selectedResult, setSelectedResult] = useState(null);
+  const [results, setResults] =  useState([]);
 
   // These are used for api calls
   const [token, setToken] = useState('');
@@ -74,6 +75,8 @@ export function HomeScreenStack(props){
           selectedProject={selectedProject}
           setSelectedProject={setSelectedProject}
           setSelectedTeam={setSelectedTeam}
+          results={results}
+          setResults={setResults}
          />
        }
       </Screen>
@@ -101,6 +104,7 @@ export function HomeScreenStack(props){
           userId={userId}
           project={selectedProject}
           team={selectedTeam}
+          results={results}
           setSelectedResult={setSelectedResult}
          />
        }
@@ -116,6 +120,7 @@ export function HomeScreenStack(props){
           project={selectedProject}
           team={selectedTeam}
           selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
          />
        }
       </Screen>

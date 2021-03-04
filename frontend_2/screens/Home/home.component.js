@@ -5,8 +5,9 @@ import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
 import { DummyResult } from '../components/dummyResult.component.js';
 import { HomeMapView } from '../components/Maps/home.map.component.js';
-import { HomeResultView } from './homeResult.component.js';
 import { ConfirmCompare } from '../components/Compare/confrimCompare.component.js';
+import { getDayStr, getTimeStr } from '../components/timeStrings.component.js';
+import { HomeResultView } from './homeResult.component.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './home.styles';
 
@@ -60,6 +61,7 @@ export const HomeScreen = ( props ) => {
     } catch (error) {
         console.log("error", error)
     }
+
     // if successfully retrieved project info, Update
     if(success) {
       console.log("Project: ", projectDetails);
@@ -67,9 +69,36 @@ export const HomeScreen = ( props ) => {
       props.setSelectedProject(projectDetails);
       props.setSelectedTeam(item.team);
 
+      // get the SM results for the project
+      getSMResults(projectDetails, []);
+
       // open results page
       props.navigation.navigate('ProjectResultPage');
     }
+  }
+
+  const getSMResults = async(projectDetails, results) => {
+
+    // loop through all SM collections ad get all of the maps
+    for (let i = 0; i < projectDetails.stationaryCollections.length; i++) {
+      let collection = projectDetails.stationaryCollections[i];
+      if (collection.maps !== null) {
+        collection.maps.map(mapId => {
+          // not really sure what we'll need here to display for the list
+          // we could add the area
+          let day = new Date(collection.date)
+          let tempObj = {
+            title: getDayStr(day) + ' ' + collection.title,
+            day: collection.date,
+            test_type: "stationary",
+            _id: mapId
+          }
+          results.push(tempObj);
+        });
+      }
+    }
+
+    await props.setResults(results);
   }
 
   const resultItem = ({ item, index }) => (

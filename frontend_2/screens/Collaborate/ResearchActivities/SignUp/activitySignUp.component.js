@@ -4,6 +4,7 @@ import { Text, Button, Divider, List, Card } from '@ui-kitten/components';
 import { HeaderBack } from '../../../components/headers.component';
 import { MapAreaWrapper, ShowArea, ShowMarkers } from '../../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
+import { getDayStr, getTimeStr } from '../../../components/timeStrings.component';
 
 export function ActivitySignUpPage(props) {
 
@@ -182,32 +183,6 @@ export function ActivitySignUpPage(props) {
     }
     let str = names.join('\n');
     return str;
-  }
-
-  // helper function to get a readable date string value
-  const getDayStr = (date) => {
-    return parseInt(date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear();
-  }
-
-  // helper function to get a readable time string value
-  const getTimeStr = (time) => {
-      let hours = time.getHours();
-      let minutes = `${time.getMinutes()}`;
-      let morning = " AM";
-      // 12 hour instead of 24
-      if (hours > 12) {
-          hours = hours - 12
-          morning = " PM";
-      } else if (hours === 12) {
-          morning = " PM";
-      } else if (hours === 0) {
-          hours = 12
-      }
-      // 2 digits
-      if (minutes.length !== 2) {
-          minutes = 0 + minutes;
-      }
-      return hours + ":" + minutes + morning;
   }
 
   const timeSlotCard = ({item, index}) => (
