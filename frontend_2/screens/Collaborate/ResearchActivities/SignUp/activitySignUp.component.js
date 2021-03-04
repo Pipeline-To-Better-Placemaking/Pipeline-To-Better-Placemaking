@@ -14,7 +14,10 @@ export function ActivitySignUpPage(props) {
 
     if (props.activity.test_type == activityList[0]) {
 
+      console.log("Activity: " + JSON.stringify(props.activity))
+
       let activityDetails = {
+        id: props.activity.maps[0],
         location: props.activity.area.points[0],
         area: props.activity.area.points,
         position: timeSlot.standingPoints,

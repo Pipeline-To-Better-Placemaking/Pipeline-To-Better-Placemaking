@@ -29,7 +29,7 @@ export function StationaryActivity(props) {
 
     // Temp marker, inputted data points, and all of their locations
     const [tempMarker, setTempMarker] = useState([])
-    const [data, setData] = useState([{}])
+    const [data, setData] = useState([])
     const [markers, setMarkers] = useState([])
     
 
@@ -44,8 +44,6 @@ export function StationaryActivity(props) {
 
     // Closes the modal and saves the data point
     const closeData = async (inf) => {
-
-        console.log("Inf is: " + JSON.stringify(inf))
 
         if (inf.ageIndex > -1 && inf.genderIndex > -1 && inf.activityIndex > -1) {
 
@@ -65,9 +63,32 @@ export function StationaryActivity(props) {
     }
 
     // End Button press
-    const endActivity = () => {
-      setStart(false)
-      props.navigation.navigate("ActivitySignUpPage");
+    const endActivity = async () => {
+
+        setStart(false)
+
+        // Saves the SM data
+        try {
+            const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + props.timeSlot.id + '/data', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + props.token
+                },
+                body: JSON.stringify({
+                    entries: data
+                })
+            })
+
+            info = await response.json()
+            console.log("Response: " + JSON.stringify(info))
+            
+        } catch (error) {
+            console.log("ERROR: ", error)
+        }
+
+        props.navigation.navigate("ActivitySignUpPage");
     }
 
     // Called when there is ore than one standing point
@@ -185,7 +206,7 @@ export function StationaryActivity(props) {
                         confirm={rebegin}
                     />
 
-                    <StationaryActivityMap
+                    <StationaryActivityMap 
                         location={location}
                         area={area}
                         position={position[standingIndex]}

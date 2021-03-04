@@ -121,7 +121,7 @@ export function CollaborateStack(props) {
             userId={userId}
             team={team}
             setTeam={setTeam}
-			teams={teams}
+			      teams={teams}
             setTeams={setTeams}
             project={project}
             setProject={setProject}
@@ -182,6 +182,7 @@ export function CollaborateStack(props) {
                         {...props}
                         getSelectedActivity={activities}
                         timeSlot={timeSlot}
+                        token={token}
                         initialTimeSlot={initialTimeSlot}
                         setTimeSlot={setTimeSlot}
                     ></StationaryActivity>
