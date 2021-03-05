@@ -25,7 +25,12 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.measuringplace.twopluscommunity"
+      "package": "com.measuringplace.twopluscommunity",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCtLNOBqi_CiYQteBUGKS-8LJOz2jHoUT0"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
