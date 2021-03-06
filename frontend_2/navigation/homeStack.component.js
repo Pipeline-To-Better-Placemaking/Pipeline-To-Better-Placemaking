@@ -10,12 +10,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { Navigator, Screen } = createStackNavigator();
 
 export function HomeScreenStack(props){
-
+  // user location
   var location = props.location
-  let allProjects = props.allProjects
 
-  // selected projects used for comparing
+  // These are used for api calls
+  const [token, setToken] = useState('');
+  const [userId, setUserId] = useState('');
+
+  //** Compare **//
+  // selected projects
   const [selectedProjects, setSelectedProjects] = useState([]);
+
+  //** Results **//
+  let allProjects = props.allProjects
 
   // selected project
   const [selectedProject, setSelectedProject] = useState(null);
@@ -25,10 +32,6 @@ export function HomeScreenStack(props){
   // selected activity result information
   const [selectedResult, setSelectedResult] = useState(null);
   const [results, setResults] =  useState([]);
-
-  // These are used for api calls
-  const [token, setToken] = useState('');
-  const [userId, setUserId] = useState('');
 
   useEffect(() => {
     async function getInfo() {
@@ -43,19 +46,17 @@ export function HomeScreenStack(props){
     getInfo()
   }, []);
 
-  const removeFromSelectedProjects = async (name) => {
-
-    var selectedProjectsArray = [...selectedProjects];
-    var index = selectedProjectsArray.indexOf(name)
-    selectedProjectsArray.splice(index, 1)
-
-    //console.log("Array: " + JSON.stringify(selectedProjectsArray))
-
-    setSelectedProjects(selectedProjectsArray)
+  const addToSelectedProjects = async (project) => {
+    let selectedProjectsArray = [...selectedProjects]
+    selectedProjectsArray.push(project)
+    await setSelectedProjects(selectedProjectsArray)
   }
 
-  const getSelectedProjects = (projects) => {
-    setSelectedProjects(projects)
+  const removeFromSelectedProjects = async (project) => {
+    var selectedProjectsArray = [...selectedProjects];
+    var index = selectedProjectsArray.findIndex(element => element._id === project._id);
+    selectedProjectsArray.splice(index, 1)
+    await setSelectedProjects(selectedProjectsArray)
   }
 
   return (
@@ -64,14 +65,18 @@ export function HomeScreenStack(props){
         name='Home'
       >
       {props =>
-        <HomeScreen {...props}
-          selectedProjects={selectedProjects}
-          setProjects={getSelectedProjects}
-          removeFromSelectedProjects={removeFromSelectedProjects}
-          location={location}
-          allProjects={allProjects}
+        <HomeScreen
+          {...props}
+          // general
           token={token}
           userId={userId}
+          location={location}
+          // compare
+          selectedProjects={selectedProjects}
+          addToSelectedProjects={addToSelectedProjects}
+          removeFromSelectedProjects={removeFromSelectedProjects}
+          // results
+          allProjects={allProjects}
           selectedProject={selectedProject}
           setSelectedProject={setSelectedProject}
           setSelectedTeam={setSelectedTeam}
