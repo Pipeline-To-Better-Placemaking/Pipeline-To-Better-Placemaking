@@ -45,7 +45,7 @@ export function StationaryActivity(props) {
     // Closes the modal and saves the data point
     const closeData = async (inf) => {
 
-        if (inf.ageIndex > -1 && inf.genderIndex > -1 && inf.activityIndex > -1) {
+        if (inf.ageIndex > -1 && inf.genderIndex > -1 && inf.activityCount > 0) {
 
             let pointData = {
                 age: inf.age,

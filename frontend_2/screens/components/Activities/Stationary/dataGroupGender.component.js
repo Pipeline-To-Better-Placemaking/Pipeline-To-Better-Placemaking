@@ -12,7 +12,6 @@ export function DataGroupGender(props) {
 
     const _setGenderIndex = async (index) => {
 
-
         let mat = [0,0,0,0]
         mat[index] = 1
 
@@ -26,7 +25,7 @@ export function DataGroupGender(props) {
         <Text category={'h6'} style={{marginBottom: 10}}> Gender: </Text>
             <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
                 <Button style={{width:150, marginRight: 45}} appearance={genderMatrix[0] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(0)}>Male</Button>
-                <Button style={{width:150}} appearance={genderMatrix[1] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(1)}>Female</Button>
+                <Button style={{width:150, marginRight: 10}} appearance={genderMatrix[1] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(1)}>Female</Button>
             </View>
         </View>
     )

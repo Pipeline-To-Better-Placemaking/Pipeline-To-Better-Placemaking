@@ -32,6 +32,12 @@ export function ActivityResultPage(props) {
     return "\n\t" + user.firstname + ' ' + user.lastname;
   });
 
+  const viewMapResults = () => {
+    console.log("Selected result: " + JSON.stringify(props.selectedResult))
+
+    props.navigation.navigate("StationaryActivityResultView");
+  }
+
   return (
     <ViewableArea>
       <HeaderBack {...props} text={props.project.title}/>
@@ -64,6 +70,7 @@ export function ActivityResultPage(props) {
           <Button
             style={styles.margins}
             accessoryRight={MapIcon}
+            onPress={viewMapResults}
           >
             View Map Results
           </Button>

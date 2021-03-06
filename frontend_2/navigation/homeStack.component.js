@@ -5,6 +5,7 @@ import { HomeScreen } from '../screens/Home/home.component';
 import { ProjectResultPage } from '../screens/Home/projectResult.component';
 import { ActivityResultPage } from '../screens/Home/activityResult.component';
 import { CompareScreen } from '../screens/Home/Compare/compare.component.js';
+import { StationaryActivityResultView } from '../screens/Home/ResultsView/stationaryActivityResultView.js'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { Navigator, Screen } = createStackNavigator();
@@ -123,6 +124,18 @@ export function HomeScreenStack(props){
           setSelectedResult={setSelectedResult}
          />
        }
+      </Screen>
+      <Screen
+        name='StationaryActivityResultView'
+      >
+        {props => 
+          <StationaryActivityResultView
+            {...props}
+            project={selectedProject}
+            selectedResult={selectedResult}
+          >
+          </StationaryActivityResultView>
+        }
       </Screen>
     </Navigator>
   )
