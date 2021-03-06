@@ -162,6 +162,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
         _id: oldData._id,
         location: (req.body.location ? req.body.location : oldData.location),
         age: (req.body.age ? req.body.age : oldData.age),
+        gender: (req.body.gender ? req.body.gender : oldData.gender),
         posture: (req.body.posture ? req.body.posture : oldData.posture),
         activity: (req.body.activity ? req.body.activity : oldData.activity),
         time: (req.body.time ? req.body.time : oldData.time)

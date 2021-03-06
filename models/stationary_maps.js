@@ -24,6 +24,11 @@ const Entry = mongoose.Schema({
         enum: ['sitting(formal)','sitting(informal)','standing','laying'],
         required: true
     },
+    gender: {
+        type: String,
+        enum: ['male','female','other'],
+        required: true
+    },
     activity: {
         type: String,
         enum: ['waiting','eating','talking','exercising'],
