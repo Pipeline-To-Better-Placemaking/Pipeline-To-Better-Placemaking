@@ -23,11 +23,11 @@ export function CompareBox(props) {
                 <View style={styles.textContainer}>
 
                     <Text style={styles.projectText}>
-                        {props.projectName}
+                        {props.project.title}
 
                         <Button
                             appearance={"ghost"}
-                            onPress={() => props.removeCard(props.projectName)}
+                            onPress={() => props.removeCard(props.project)}
                             accessoryLeft={RemoveIcon}
                             style={styles.removeButton}
                         />

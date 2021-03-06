@@ -25,12 +25,12 @@ export function ProjectPage(props) {
   const [owner, setOwner] = useState(false);
 
   useEffect(() => {
-	  isTeamOwner(props.team.users, props.userID)
+	  isTeamOwner(props.team.users, props.userId)
   }, []);
 
   const isTeamOwner = (members, userID) => {
     let userIndex = members.findIndex(element => element.role == "owner")
-    if (members[userIndex]._id == userID) {
+    if (members[userIndex].user == userID) {
       setOwner(true);
     }
   }

@@ -35,12 +35,13 @@ export function CompareScreen(props) {
     const CompareBoxList = () => {
 
         return (
-            props.selectedProjects.map((name, key) => {
+            props.selectedProjects.map(project => {
                 return(
                 <CompareBox
+                    {...props}
+                    key={project._id}
+                    project={project}
                     removeCard={removeCard}
-                    key={key}
-                    projectName={name}
                     index={index}
                     setIndex={setIndex}
                 />)

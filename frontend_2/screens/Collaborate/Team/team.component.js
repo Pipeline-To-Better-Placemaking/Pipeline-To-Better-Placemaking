@@ -26,13 +26,15 @@ export function TeamPage(props) {
     }
 
     getTokens()
-	  isTeamOwner(props.team.users, props.userID)
+    isTeamOwner(props.team.users, props.userId)
   }, []);
 
   const isTeamOwner = (members, userID) => {
     let userIndex = members.findIndex(element => element.role == "owner")
-    if (members[userIndex]._id == userID) {
+    if (members[userIndex].user == userID) {
       setOwner(true);
+    } else {
+      setOwner(false);
     }
   }
 
@@ -181,7 +183,7 @@ export function TeamPage(props) {
 
   };
 
-  //console.log("Am I the owner of this team? answer: "+owner);
+  //console.log("Am I the owner of this team? answer: " + owner);
   return (
     <ViewableArea>
       {owner ? 

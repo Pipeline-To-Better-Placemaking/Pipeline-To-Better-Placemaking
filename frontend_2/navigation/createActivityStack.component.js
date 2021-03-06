@@ -58,10 +58,10 @@ export function CreateActivityStack(props) {
 
     // Stationary Map
     if(row === 0) {
-      postSM(name);
-
+      postCollection(name, 'stationary', '/stationary_collections', 'stationary_maps/');
     } // People Moving
     else if (row === 1) {
+      //postCollection(name, 'moving', '/moving_collections', 'moving_maps/');
       // some fake activity info until we set up the api calls
       timeSlots.map(timeSlot => {
         let selectedPoints = [...props.project.standingPoints];
@@ -85,7 +85,8 @@ export function CreateActivityStack(props) {
       props.setActivities(values => [...values,activityDetails]);
     } // Survey
     else if (row === 2) {
-
+      //postCollection(name, 'survey', '/survey_collections', 'survey_codes/'); // not sure what the routes will be for this one
+      // some fake activity info until we set up the api calls
       let activityDetails = {
         title: name,
         date: date,
@@ -102,12 +103,12 @@ export function CreateActivityStack(props) {
     props.navigation.navigate('ProjectPage')
   };
 
-  const postSM = async (name) => {
+  const postCollection = async (name, test_type, collectionName, timeSlotName) => {
     let success = false
     let collectionDetails = null
     // Save the activity
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + '/stationary_collections', {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + collectionName, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -126,7 +127,7 @@ export function CreateActivityStack(props) {
     } catch (error) {
         console.log("ERROR: ", error)
     }
-    console.log("create SM collection response:", collectionDetails);
+    console.log("create collection response:", collectionDetails);
     if(collectionDetails.success !== undefined) {
       success = collectionDetails.success
       console.log("success: ", success);
@@ -135,11 +136,11 @@ export function CreateActivityStack(props) {
     if(success) {
       // create the time timeSlots
       await timeSlots.map(timeSlot => {
-        postSMTimeSlot(timeSlot, name, collectionDetails._id)
+        postTimeSlot(timeSlot, name, collectionDetails._id, timeSlotName)
       });
 
       // set the type
-      collectionDetails.test_type = 'stationary';
+      collectionDetails.test_type = test_type;
 
       // get the area
       let areaIndex = props.project.subareas.findIndex(element => element._id === collectionDetails.area);
@@ -150,7 +151,7 @@ export function CreateActivityStack(props) {
     }
   }
 
-  const postSMTimeSlot = async (timeSlot, name, id) => {
+  const postTimeSlot = async (timeSlot, name, id, timeSlotName) => {
     let success = false
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
@@ -161,7 +162,7 @@ export function CreateActivityStack(props) {
     }
     // Save the activity
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/', {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -183,7 +184,7 @@ export function CreateActivityStack(props) {
     } catch (error) {
         console.log("ERROR: ", error)
     }
-    console.log("create SM activity response:", activityDetails);
+    console.log("create activity response:", activityDetails);
     if (activityDetails.success !== undefined) {
       success = activityDetails.success
       console.log("success: ", success);
