@@ -14,13 +14,39 @@ const ForwardIcon = (props) => (
 
 export function ProjectResultPage(props) {
 
-  let fakeData = [{title:'Result Info'}]; 
-
-
   const openActivityPage = async (item) => {
-    //console.log("selected result: ", item);
-    props.setSelectedResult(item);
-    props.navigation.navigate("ActivityResultPage");
+    let success = false
+    let result = null
+
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + item._id, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            }
+        })
+        result = await response.json();
+        console.log("map result: ", result);
+        success = true
+    } catch (error) {
+        console.log("error", error)
+    }
+
+    if (result === null) {
+      result = {
+        success: false,
+      }
+    }
+
+    if(success) {
+      result.test_type = 'stationary';
+      props.setSelectedResult(result);
+
+      // open results page
+      props.navigation.navigate("ActivityResultPage");
+    }
   };
 
   const activityItem = ({ item, index }) => (
@@ -62,7 +88,7 @@ export function ProjectResultPage(props) {
         <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
           <List
             style={{maxHeight:'100%', maxWidth:'90%'}}
-            data={fakeData}
+            data={props.results}
             ItemSeparatorComponent={Divider}
             renderItem={activityItem}
           />

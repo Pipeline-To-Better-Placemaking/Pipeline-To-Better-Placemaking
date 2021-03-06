@@ -15,18 +15,18 @@ export const DummyResult = ( props ) => {
         await setChecked(check)
 
         if (check){
-            await props.addProject(props.projectArea)
+            await props.addToSelectedProjects(props.project)
             await setAdded(!added)
         }
         else {
-            await props.removeProject(props.projectArea)
+            await props.removeFromSelectedProjects(props.project)
             await setAdded(!added)
         }
     }
 
     useEffect(() => {
 
-        if (!props.inList(props.projectArea) && added && checked){
+        if (!props.inList(props.project) && added && checked){
             setAdded(false)
             setChecked(false)
         }
@@ -55,10 +55,10 @@ export const DummyResult = ( props ) => {
 
             <View style={styles.resultBox}>
                 <Text category={'s1'} style={styles.resultBoxText}>
-                    {props.projectArea}
+                    {props.project.title}
                 </Text>
                 <Text category={'s2'} style={styles.resultBoxComment}>
-                    {props.projectComment}
+                    {props.project.description}
                 </Text>
             </View>
 

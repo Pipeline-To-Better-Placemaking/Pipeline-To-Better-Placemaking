@@ -9,10 +9,11 @@ import { DataGroupGender } from './dataGroupGender.component.js';
 import { DataGroupActivity } from './dataGroupActivity.component.js';
 import { DataGroupPosture } from './dataGroupPosture.component.js';
 
-const age = ["0 - 14", "15 - 24", "25 - 64", "65+"]
+const age = ["0 - 14", "15 - 21", "22 - 30", "30 - 50", "50 - 65", "65+"]
 const gender = ["Male", "Female"]
-const activity = ["Talking", "Transit Waiting", "Recreation", "Eating"]
-const posture = ["Standing", "Sitting", "Laying", "Lounging"]
+const activity = ["Socializing", "Waiting", "Recreation", "Eating", "Solitary"]
+const posture = ["Standing", "Sitting", "Laying", "Squatting"]
+const delimeter = ', '
 
 export function DataEntryModal(props) {
 
@@ -20,13 +21,15 @@ export function DataEntryModal(props) {
 
     const [ageIndex, setAgeIndex] = useState(-1)
     const [genderIndex, setGenderIndex] = useState(-1)
-    const [activityIndex, setActivityIndex] = useState(-1)
+    const [activityCount, setActivityCount] = useState(-1)
     const [postureIndex, setPostureIndex] = useState(-1)
 
     const [ageMatrix, setAgeMatrix] = useState([])
     const [genderMatrix, setGenderMatrix] = useState([])
     const [activityMatrix, setActivityMatrix] = useState([])
     const [postureMatrix, setPostureMatrix] = useState([])
+
+    const [activityList, setActivityList] = useState('')
 
     const setAgeData = async(index, matrix) => {
 
@@ -40,10 +43,32 @@ export function DataEntryModal(props) {
         await setGenderMatrix(matrix)
     }
 
-    const setActivityData = async(index, matrix) => {
+    const setActivityData = async(count, matrix) => {
 
-        await setActivityIndex(index)
+        await setActivityCount(count)
         await setActivityMatrix(matrix)
+
+        let activityArr = []
+
+        // Get the appropriate activity values
+        for (let i = 0; i < 5; i++) {
+            if (matrix[i] == 1) {
+                activityArr.push(activity[i])
+            }
+        }
+
+        let activityStr = ''
+
+        // Format activity string
+        activityArr.forEach(element => {
+            activityStr += element
+            activityStr += delimeter
+        });
+
+        // Remove extra delimeter
+        activityStr = activityStr.slice(0, -2)
+
+        await setActivityList(activityStr)
     }
 
     const setPostureData = async(index, matrix) => {
@@ -57,12 +82,12 @@ export function DataEntryModal(props) {
         let data = {
             ageIndex: ageIndex,
             genderIndex: genderIndex,
-            activityIndex: activityIndex,
+            activityCount: activityCount,
             postureIndex: postureIndex,
-            age: ageMatrix[ageIndex],
-            gender: genderMatrix[genderIndex],
-            activity: activityMatrix[activityIndex],
-            posture: postureMatrix[postureIndex]
+            age: age[ageIndex],
+            gender: gender[genderIndex],
+            activity: activityList,
+            posture: posture[postureIndex]
         }
 
         await props.closeData(data)

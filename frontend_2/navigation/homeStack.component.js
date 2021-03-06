@@ -5,29 +5,34 @@ import { HomeScreen } from '../screens/Home/home.component';
 import { ProjectResultPage } from '../screens/Home/projectResult.component';
 import { ActivityResultPage } from '../screens/Home/activityResult.component';
 import { CompareScreen } from '../screens/Home/Compare/compare.component.js';
+import { StationaryActivityResultView } from '../screens/Home/ResultsView/stationaryActivityResultView.js'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { Navigator, Screen } = createStackNavigator();
 
 export function HomeScreenStack(props){
-
+  // user location
   var location = props.location
-
-  // selected projects used for comparing
-  const [selectedProjects, setSelectedProjects] = useState([]);
-
-  // current project and list of projects to display and choose from
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [projectList, setProjectList] = useState([]);
-  // selected team, asscoiated with the project selected
-  const [selectedTeam, setSelectedTeam] = useState(null);
-
-  // selected activity result information
-  const [selectedResult, setSelectedResult] = useState(null);
 
   // These are used for api calls
   const [token, setToken] = useState('');
   const [userId, setUserId] = useState('');
+
+  //** Compare **//
+  // selected projects
+  const [selectedProjects, setSelectedProjects] = useState([]);
+
+  //** Results **//
+  let allProjects = props.allProjects
+
+  // selected project
+  const [selectedProject, setSelectedProject] = useState(null);
+  // selected team, associated with the project selected
+  const [selectedTeam, setSelectedTeam] = useState(null);
+
+  // selected activity result information
+  const [selectedResult, setSelectedResult] = useState(null);
+  const [results, setResults] =  useState([]);
 
   useEffect(() => {
     async function getInfo() {
@@ -37,75 +42,22 @@ export function HomeScreenStack(props){
 
       let id = await AsyncStorage.getItem("@id");
       setUserId(id);
-
-      // get list of projects for all teams the user is a member of
-      await setProjectList([]);
-      let teamsList = await AsyncStorage.getItem('@teams');
-      teamsList = JSON.parse(teamsList);
-      if (teamsList !== null) {
-        teamsList.map((team, index) => {
-          setTeamDetails(team);
-        });
-      }
-
     }
 
     getInfo()
   }, []);
 
-  const setTeamDetails = async (team) => {
-    let token = await AsyncStorage.getItem("@token");
-    let success = false
-    let teamDetails = null
-    // Get the team information
-    try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + team._id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-            }
-        })
-        teamDetails = await response.json();
-        success = true
-    } catch (error) {
-        console.log("error getting team\n", error)
-    }
-
-    if(teamDetails.success !== undefined){
-      success = teamDetails.success
-      console.log("success: ", success);
-    }
-
-    // return team info
-    if(success && teamDetails.projects !== null) {
-      //let list = [...projectList];
-      teamDetails.projects.map((project, index) => {
-        project.description = "Team: " + teamDetails.title + "\nLocation: " + project.description;
-        project.team = teamDetails;
-        projectList.push(project);
-      });
-      await setProjectList(projectList);
-      return true;
-    } else {
-      return false;
-    }
+  const addToSelectedProjects = async (project) => {
+    let selectedProjectsArray = [...selectedProjects]
+    selectedProjectsArray.push(project)
+    await setSelectedProjects(selectedProjectsArray)
   }
 
-  const removeFromSelectedProjects = async (name) => {
-
+  const removeFromSelectedProjects = async (project) => {
     var selectedProjectsArray = [...selectedProjects];
-    var index = selectedProjectsArray.indexOf(name)
+    var index = selectedProjectsArray.findIndex(element => element._id === project._id);
     selectedProjectsArray.splice(index, 1)
-
-    //console.log("Array: " + JSON.stringify(selectedProjectsArray))
-
-    setSelectedProjects(selectedProjectsArray)
-  }
-
-  const getSelectedProjects = (projects) => {
-    setSelectedProjects(projects)
+    await setSelectedProjects(selectedProjectsArray)
   }
 
   return (
@@ -114,17 +66,23 @@ export function HomeScreenStack(props){
         name='Home'
       >
       {props =>
-        <HomeScreen {...props}
-          selectedProjects={selectedProjects}
-          setProjects={getSelectedProjects}
-          removeFromSelectedProjects={removeFromSelectedProjects}
-          location={location}
-          projectList={projectList}
+        <HomeScreen
+          {...props}
+          // general
           token={token}
           userId={userId}
+          location={location}
+          // compare
+          selectedProjects={selectedProjects}
+          addToSelectedProjects={addToSelectedProjects}
+          removeFromSelectedProjects={removeFromSelectedProjects}
+          // results
+          allProjects={allProjects}
           selectedProject={selectedProject}
           setSelectedProject={setSelectedProject}
           setSelectedTeam={setSelectedTeam}
+          results={results}
+          setResults={setResults}
          />
        }
       </Screen>
@@ -152,6 +110,7 @@ export function HomeScreenStack(props){
           userId={userId}
           project={selectedProject}
           team={selectedTeam}
+          results={results}
           setSelectedResult={setSelectedResult}
          />
        }
@@ -167,8 +126,21 @@ export function HomeScreenStack(props){
           project={selectedProject}
           team={selectedTeam}
           selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
          />
        }
+      </Screen>
+      <Screen
+        name='StationaryActivityResultView'
+      >
+        {props => 
+          <StationaryActivityResultView
+            {...props}
+            project={selectedProject}
+            selectedResult={selectedResult}
+          >
+          </StationaryActivityResultView>
+        }
       </Screen>
     </Navigator>
   )

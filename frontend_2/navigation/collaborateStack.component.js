@@ -13,7 +13,9 @@ import { PeopleMovingActivity } from '../screens/Collaborate/ResearchActivities/
 const { Navigator, Screen } = createStackNavigator();
 
 export function CollaborateStack(props) {
-  var location = props.location
+  var location = props.location;
+  let addProject= props.addProject;
+  let removeProject= props.removeProject;
 
   // Array with activity names
   const activityTypes = ['Stationary Map', 'People Moving', 'Survey'];
@@ -42,7 +44,6 @@ export function CollaborateStack(props) {
   const [timeSlots, setTimeSlots] = useState([]);
   const [initialTimeSlot, setInitialTimeSlot] = useState(null)
 
-  const [username, setUsername] = useState('username');
   const [firstname, setFirstname] = useState('first name');
   const [lastname, setLastname] = useState('last name');
 
@@ -67,7 +68,6 @@ export function CollaborateStack(props) {
       let last = await AsyncStorage.getItem('@lastName');
       setFirstname(first);
       setLastname(last);
-      setUsername(first + ' ' + last);
     }
 
     getTokens()
@@ -107,6 +107,8 @@ export function CollaborateStack(props) {
             setProject={setProject}
             projects={projects}
             setProjects={setProjects}
+            addProject={addProject}
+            removeProject={removeProject}
             activities={activities}
             setActivities={setActivities}
             location={location}
@@ -121,12 +123,14 @@ export function CollaborateStack(props) {
             userId={userId}
             team={team}
             setTeam={setTeam}
-			teams={teams}
+            teams={teams}
             setTeams={setTeams}
             project={project}
             setProject={setProject}
             projects={projects}
             setProjects={setProjects}
+            addProject={addProject}
+            removeProject={removeProject}
             activity={activity}
             setActivity={setActivity}
             activities={activities}
@@ -172,7 +176,8 @@ export function CollaborateStack(props) {
             setTimeSlots={setTimeSlots}
             setTimeSlot={setTimeSlot}
             setInitialTimeSlot={setInitialTimeSlot}
-            username={username}
+            firstname={firstname}
+            lastname={lastname}
           />
         }
       </Screen>
@@ -182,6 +187,7 @@ export function CollaborateStack(props) {
                         {...props}
                         getSelectedActivity={activities}
                         timeSlot={timeSlot}
+                        token={token}
                         initialTimeSlot={initialTimeSlot}
                         setTimeSlot={setTimeSlot}
                     ></StationaryActivity>

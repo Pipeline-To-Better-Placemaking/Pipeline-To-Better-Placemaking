@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem, OverflowMenu } from '@ui-kitten/components';
-import { HeaderBackEdit } from '../../components/headers.component';
+import { HeaderBackEdit, HeaderBack } from '../../components/headers.component';
 import { MapAreaWrapper, ShowArea } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import { EditSubAreas } from './viewSubareas.component';
@@ -22,6 +22,18 @@ export function ProjectPage(props) {
   const [editProjectVisible, setEditProjectVisible] = useState(false);
   const [editAreasVisible, setEditAreasVisible] = useState(false);
   const [editStandingPointsVisible, setEditStandingPointsVisible] = useState(false);
+  const [owner, setOwner] = useState(false);
+
+  useEffect(() => {
+	  isTeamOwner(props.team.users, props.userId)
+  }, []);
+
+  const isTeamOwner = (members, userID) => {
+    let userIndex = members.findIndex(element => element.role == "owner")
+    if (members[userIndex].user == userID) {
+      setOwner(true);
+    }
+  }
 
   const openActivityPage = async (collectionDetails) => {
     let success = false
@@ -142,11 +154,15 @@ export function ProjectPage(props) {
 
   return (
     <ViewableArea>
-      <HeaderBackEdit {...props} text={props.project.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
-        <MenuItem title='Edit Project' onPress={() => {setEditMenuVisible(false); setEditProjectVisible(true)}}/>
-        <MenuItem title='Area(s)' onPress={() => {setEditMenuVisible(false); setEditAreasVisible(true)}}/>
-        <MenuItem title='Standing Points' onPress={() => {setEditMenuVisible(false); setEditStandingPointsVisible(true)}}/>
-      </HeaderBackEdit>
+      {owner ? 
+        <HeaderBackEdit {...props} text={props.project.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
+          <MenuItem title='Edit Project' onPress={() => {setEditMenuVisible(false); setEditProjectVisible(true)}}/>
+          <MenuItem title='Area(s)' onPress={() => {setEditMenuVisible(false); setEditAreasVisible(true)}}/>
+          <MenuItem title='Standing Points' onPress={() => {setEditMenuVisible(false); setEditStandingPointsVisible(true)}}/>
+        </HeaderBackEdit> :
+        <HeaderBack {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
+        </HeaderBack>
+      }
       <EditProjectPage
         {...props}
         visible={editProjectVisible}
@@ -182,9 +198,9 @@ export function ProjectPage(props) {
                 <Text style={styles.teamText}>Sign Up</Text>
             </View>
             <View style={styles.createTeamButtonView}>
-                <Button status='primary' appearance='outline' onPress={() => props.navigation.navigate('CreateActivityStack')}>
+                {owner && <Button status='primary' appearance='outline' onPress={() => props.navigation.navigate('CreateActivityStack')}>
                     Create Research Activity
-                </Button>
+                </Button>}
             </View>
         </View>
         <Divider style={{marginTop: 5}} />

@@ -4,6 +4,7 @@ import { Text, Button, Divider, List, Card } from '@ui-kitten/components';
 import { HeaderBack } from '../../../components/headers.component';
 import { MapAreaWrapper, ShowArea, ShowMarkers } from '../../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
+import { getDayStr, getTimeStr } from '../../../components/timeStrings.component';
 
 export function ActivitySignUpPage(props) {
 
@@ -14,7 +15,10 @@ export function ActivitySignUpPage(props) {
 
     if (props.activity.test_type == activityList[0]) {
 
+      console.log("Activity: " + JSON.stringify(props.activity))
+
       let activityDetails = {
+        id: props.activity.maps[0],
         location: props.activity.area.points[0],
         area: props.activity.area.points,
         position: timeSlot.standingPoints,
@@ -63,6 +67,18 @@ export function ActivitySignUpPage(props) {
     let max = timeSlot.maxResearchers;
     let len = timeSlot.researchers.length;
 
+    // if the researcher is already signed up and they press the button again, unsign them up
+    let findIndex = tempResearchers.findIndex(element => element._id === props.userId)
+    if (findIndex >= 0) {
+      max = -1; // don't add the user
+      removeSMUser(timeSlot);
+      tempResearchers.splice(findIndex, 1);
+      tempSlot.researchers = tempResearchers;
+      tempTimeSlots[index] = tempSlot;
+      props.setTimeSlots(tempTimeSlots);
+    }
+
+    // if there's space to add another researcher
     if(max > 0 && (max-len) > 0) {
       let success = false
       if (props.activity.test_type == activityList[0]) {
@@ -73,7 +89,11 @@ export function ActivitySignUpPage(props) {
 
       if (success) {
         // add user locally
-        tempResearchers.push(props.username);
+        tempResearchers.push({
+            _id:props.userId,
+            firstname:props.firstname,
+            lastname:props.lastname
+          });
         tempSlot.researchers = tempResearchers;
         tempTimeSlots[index] = tempSlot;
         props.setTimeSlots(tempTimeSlots);
@@ -85,8 +105,6 @@ export function ActivitySignUpPage(props) {
   const signUpSMTimeSlot = async (timeSlot) => {
     let success = false
     let res = null
-    console.log("here id: ", timeSlot._id);
-    // TODO: fix this
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + timeSlot._id + '/claim', {
             method: 'PUT',
@@ -97,14 +115,34 @@ export function ActivitySignUpPage(props) {
             }
         })
         res = await response.json()
-        console.log("sign up user response:", res)
+        //console.log("sign up user response:", res)
         success = true
     } catch (error) {
         console.log("ERROR: ", error)
+        success = false
     }
-    if (res !== null && res.success !== undefined) {
-      success = res.success
-      console.log("success: ", success);
+
+    return success;
+  }
+
+  const removeSMUser = async (timeSlot) => {
+    let success = false
+    let res = null
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + timeSlot._id + '/claim', {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            }
+        })
+        res = await response.json()
+        //console.log("remove user response:", res)
+        success = true
+    } catch (error) {
+        console.log("ERROR: ", error)
+        success = false
     }
 
     return success;
@@ -129,7 +167,7 @@ export function ActivitySignUpPage(props) {
 
   const getName = (timeSlot, index) => {
     if(timeSlot.researchers !== null && timeSlot.researchers.length > index) {
-      return timeSlot.researchers[index];
+      return timeSlot.researchers[index].firstname + " " + timeSlot.researchers[index].lastname;
     } else {
       return " ...";
     }
@@ -145,32 +183,6 @@ export function ActivitySignUpPage(props) {
     }
     let str = names.join('\n');
     return str;
-  }
-
-  // helper function to get a readable date string value
-  const getDayStr = (date) => {
-    return parseInt(date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear();
-  }
-
-  // helper function to get a readable time string value
-  const getTimeStr = (time) => {
-      let hours = time.getHours();
-      let minutes = `${time.getMinutes()}`;
-      let morning = " AM";
-      // 12 hour instead of 24
-      if (hours > 12) {
-          hours = hours - 12
-          morning = " PM";
-      } else if (hours === 12) {
-          morning = " PM";
-      } else if (hours === 0) {
-          hours = 12
-      }
-      // 2 digits
-      if (minutes.length !== 2) {
-          minutes = 0 + minutes;
-      }
-      return hours + ":" + minutes + morning;
   }
 
   const timeSlotCard = ({item, index}) => (

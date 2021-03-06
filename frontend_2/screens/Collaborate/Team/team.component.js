@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, Modal, TouchableOpacity } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem } from '@ui-kitten/components';
-import { HeaderBackEdit } from '../../components/headers.component';
+import { HeaderBackEdit, HeaderBack } from '../../components/headers.component';
 import { ViewableArea, ContentContainer, PopUpContainer } from '../../components/content.component';
 import { CreateProject } from './createProjectModal.component';
 import { EditTeamPage } from './editTeam.component';
@@ -16,6 +16,7 @@ export function TeamPage(props) {
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [editTeamVisible, setEditTeamVisible] = useState(false);
   const [email, setEmail] = useState('');
+  const [owner, setOwner] = useState(false);
 
   useEffect(() => {
     async function getTokens() {
@@ -25,7 +26,17 @@ export function TeamPage(props) {
     }
 
     getTokens()
+    isTeamOwner(props.team.users, props.userId)
   }, []);
+
+  const isTeamOwner = (members, userID) => {
+    let userIndex = members.findIndex(element => element.role == "owner")
+    if (members[userIndex].user == userID) {
+      setOwner(true);
+    } else {
+      setOwner(false);
+    }
+  }
 
   const openProjectPage = async (item) => {
     let success = false
@@ -172,11 +183,16 @@ export function TeamPage(props) {
 
   };
 
+  //console.log("Am I the owner of this team? answer: " + owner);
   return (
     <ViewableArea>
-      <HeaderBackEdit {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
+      {owner ? 
+        <HeaderBackEdit {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
         <MenuItem title='Edit Team' onPress={() => {setEditMenuVisible(false); setEditTeamVisible(true)}}/>
-      </HeaderBackEdit>
+        </HeaderBackEdit> :
+        <HeaderBack {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
+        </HeaderBack>
+      }
       <EditTeamPage
         {...props}
         visible={editTeamVisible}
@@ -211,9 +227,9 @@ export function TeamPage(props) {
                 <Text style={styles.teamText}>Projects </Text>
             </View>
             <View style={styles.createTeamButtonView}>
-                <Button status='primary' appearance='outline' onPress={() => setCreateProjectVisible(true)}>
+                {owner && <Button status='primary' appearance='outline' onPress={() => setCreateProjectVisible(true)}>
                     Create New
-                </Button>
+                </Button>}
             </View>
         </View>
         <Divider style={{marginTop: 5}} />
@@ -232,9 +248,9 @@ export function TeamPage(props) {
                 <Text style={styles.teamText}>Team Members </Text>
             </View>
             <View style={styles.createTeamButtonView}>
-                <Button status='primary' appearance='outline' onPress={() => setInviteVisible(true)}>
+                {owner && <Button status='primary' appearance='outline' onPress={() => setInviteVisible(true)}>
                     Invite
-                </Button>
+                </Button>}
             </View>
         </View>
         <Divider style={{marginTop: 5}} />
