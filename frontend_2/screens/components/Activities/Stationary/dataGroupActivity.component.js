@@ -27,7 +27,7 @@ export function DataGroupActivity(props) {
             await setActivityMatrix(mat)
             await setActivityCount(activityCount-1)
             await props.setActivityData(activityCount-1, mat)
-        }
+        }   
         else if (activityCount == 2 && mat[index] == 0) {
             await setActivityIndex(index)
             await setActivityMatrix(mat)

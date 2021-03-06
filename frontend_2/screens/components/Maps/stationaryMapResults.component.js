@@ -22,7 +22,7 @@ export function StationaryMapResults(props) {
         console.log("Age: " + JSON.stringify(props.point))
 
         return (
-            <View style={{flexDirection: 'column', width: 175}}>
+            <View style={{flexDirection: 'column', width: 190}}>
                 <View style={{flexDirection: 'row'}}>
                     <Text>
                         Age:

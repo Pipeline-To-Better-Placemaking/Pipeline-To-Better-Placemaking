@@ -29,7 +29,7 @@ export function DataEntryModal(props) {
     const [activityMatrix, setActivityMatrix] = useState([])
     const [postureMatrix, setPostureMatrix] = useState([])
 
-    const [activityList, setActivityList] = useState([])
+    const [activityList, setActivityList] = useState('')
 
     const setAgeData = async(index, matrix) => {
 
@@ -50,13 +50,25 @@ export function DataEntryModal(props) {
 
         let activityArr = []
 
+        // Get the appropriate activity values
         for (let i = 0; i < 5; i++) {
             if (matrix[i] == 1) {
                 activityArr.push(activity[i])
             }
         }
 
-        await setActivityList(activityArr)
+        let activityStr = ''
+
+        // Format activity string
+        activityArr.forEach(element => {
+            activityStr += element
+            activityStr += delimeter
+        });
+
+        // Remove extra delimeter
+        activityStr = activityStr.slice(0, -2)
+
+        await setActivityList(activityStr)
     }
 
     const setPostureData = async(index, matrix) => {
