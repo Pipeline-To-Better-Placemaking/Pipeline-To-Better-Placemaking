@@ -183,7 +183,7 @@ export function TeamPage(props) {
 
   };
 
-  console.log("Am I the owner of this team? answer: " + owner);
+  //console.log("Am I the owner of this team? answer: " + owner);
   return (
     <ViewableArea>
       {owner ? 
