@@ -55,15 +55,18 @@ export const HomeScreen = ( props ) => {
       props.setSelectedTeam(item.team);
 
       // get the SM results for the project
-      getSMResults(projectDetails, []);
-
+      let results = []
+      results = await getStationaryResults(projectDetails, results);
+      results = await getMovingResults(projectDetails, results);
+      //results = await getSurveyResults(projectDetails, results);
+      await props.setResults(results);
       // open results page
       props.navigation.navigate('ProjectResultPage');
     }
   }
 
-  const getSMResults = async(projectDetails, results) => {
-    // loop through all SM collections ad get all of the maps
+  const getStationaryResults = async(projectDetails, results) => {
+    // loop through all Stationary collections and get all of the maps
     for (let i = 0; i < projectDetails.stationaryCollections.length; i++) {
       let collection = projectDetails.stationaryCollections[i];
       if (collection.maps !== null) {
@@ -81,8 +84,47 @@ export const HomeScreen = ( props ) => {
         });
       }
     }
+    return results;
+  }
 
-    await props.setResults(results);
+  const getMovingResults = async(projectDetails, results) => {
+    // loop through all People Moving collections and get all of the maps
+    for (let i = 0; i < projectDetails.movingCollections.length; i++) {
+      let collection = projectDetails.movingCollections[i];
+      if (collection.maps !== null) {
+        collection.maps.map(mapId => {
+          let day = new Date(collection.date)
+          let tempObj = {
+            title: getDayStr(day) + ' ' + collection.title,
+            day: collection.date,
+            test_type: "moving",
+            _id: mapId
+          }
+          results.push(tempObj);
+        });
+      }
+    }
+    return results;
+  }
+
+  const getSurveyResults = async(projectDetails, results) => {
+    // loop through all survey collections and get all of the maps
+    for (let i = 0; i < projectDetails.surveyCollections.length; i++) {
+      let collection = projectDetails.surveyCollections[i];
+      if (collection.maps !== null) {
+        collection.maps.map(mapId => {
+          let day = new Date(collection.date)
+          let tempObj = {
+            title: getDayStr(day) + ' ' + collection.title,
+            day: collection.date,
+            test_type: "survey",
+            _id: mapId
+          }
+          results.push(tempObj);
+        });
+      }
+    }
+    return results;
   }
 
   const resultItem = ({ item, index }) => (

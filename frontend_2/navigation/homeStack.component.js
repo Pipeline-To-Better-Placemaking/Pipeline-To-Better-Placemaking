@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from '../screens/Home/home.component';
 import { ProjectResultPage } from '../screens/Home/projectResult.component';
 import { StationaryResultPage } from '../screens/Home/ResultPages/stationaryResultPage.component';
+import { MovingResultPage } from '../screens/Home/ResultPages/movingResultPage.component';
 import { CompareScreen } from '../screens/Home/Compare/compare.component.js';
 import { StationaryActivityResultView } from '../screens/Home/ResultPages/stationaryMapResults.component.js'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -121,6 +122,21 @@ export function HomeScreenStack(props){
       >
       {props =>
         <StationaryResultPage
+          {...props}
+          token={token}
+          userId={userId}
+          project={selectedProject}
+          team={selectedTeam}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+         />
+       }
+      </Screen>
+      <Screen
+        name='MovingResultPage'
+      >
+      {props =>
+        <MovingResultPage
           {...props}
           token={token}
           userId={userId}

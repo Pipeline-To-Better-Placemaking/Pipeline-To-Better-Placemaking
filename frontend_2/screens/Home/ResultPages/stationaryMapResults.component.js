@@ -26,7 +26,7 @@ export function StationaryActivityResultView(props) {
     // Main render
     return(
         <ViewableArea>
-            <HeaderBack {...props} text={props.selectedResult.sharedData.title + ": " + getTimeStr(startTime)}/>
+            <HeaderBack {...props} text={props.selectedResult.sharedData.title + " at " + getTimeStr(startTime)}/>
             <ContentContainer>
 
                 <StationaryMapResults

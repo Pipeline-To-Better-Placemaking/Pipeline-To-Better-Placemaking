@@ -15,6 +15,16 @@ const ForwardIcon = (props) => (
 export function ProjectResultPage(props) {
 
   const openActivityPage = async (item) => {
+    if (item.test_type === 'stationary') {
+      await getStationaryResults(item);
+    } else if (item.test_type === 'moving') {
+      await getMovingResults(item);
+    } else if (item.test_type === 'survey') {
+
+    }
+  };
+
+  const getStationaryResults = async (item) => {
     let success = false
     let result = null
 
@@ -32,25 +42,52 @@ export function ProjectResultPage(props) {
     } catch (error) {
         console.log("error", error)
     }
-
     if (result === null) {
-      result = {
-        success: false,
-      }
+      success = false;
     }
 
     if(success) {
       console.log("Selected result: ", result);
-      result.test_type = 'stationary';
       result.sharedData.date = item.day;
       await props.setSelectedResult(result);
-      await loadSMGraphData(result);
+      await formatStationaryGraphData(result);
       // open results page
       props.navigation.navigate("StationaryResultPage");
     }
   };
 
-  async function loadSMGraphData(result) {
+  const getMovingResults = async (item) => {
+    let success = false
+    let result = null
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/moving_maps/' + item._id, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            }
+        })
+        result = await response.json();
+        success = true
+    } catch (error) {
+        console.log("error", error)
+    }
+    if (result === null) {
+      success = false;
+    }
+
+    if(success) {
+      console.log("Selected result: ", result);
+      result.sharedData.date = item.day;
+      await props.setSelectedResult(result);
+      await formatMovingGraphData(result);
+      // open results page
+      props.navigation.navigate("MovingResultPage");
+    }
+  };
+
+  async function formatStationaryGraphData(result) {
     if (result.data !== null && result.data.length >= 1 && result.graph === undefined) {
       let tempResult = {...result};
       let graph = {
@@ -143,7 +180,41 @@ export function ProjectResultPage(props) {
       tempResult.graph = {...graph};
       await props.setSelectedResult(tempResult);
     }
+  }
 
+  async function formatMovingGraphData(result) {
+    if (result.data !== null && result.data.length >= 1 && result.graph === undefined) {
+      let tempResult = {...result};
+      let graph = {
+        data: [],
+        labels: [],
+      };
+      let index = -1;
+      let label = '';
+      await result.data.map(dataPoint => {
+        label = dataPoint.mode;
+        if (label !== undefined) {
+          if (graph.labels !== null && graph.labels.length > 0) {
+            index = graph.labels.findIndex(element => element === label);
+            // add category if it's not currently in the list
+            if (index < 0) {
+              index = graph.labels.length;
+              graph.labels = [...graph.labels, label];
+              graph.data = [...graph.data, Number(0)];
+            }
+          } else { // first entry
+            index = 0;
+            graph.labels = [label];
+            graph.data = [Number(0)];
+          }
+          // increase count
+          graph.data[index] = graph.data[index] + 1;
+        }
+      });
+      //console.log("resulting graph data: ", graph);
+      tempResult.graph = {...graph};
+      await props.setSelectedResult(tempResult);
+    }
   }
 
   const activityItem = ({ item, index }) => (

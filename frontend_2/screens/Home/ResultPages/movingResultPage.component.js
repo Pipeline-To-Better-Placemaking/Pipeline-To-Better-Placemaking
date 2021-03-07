@@ -10,7 +10,7 @@ import { MyBarChart } from '../../components/charts.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from '../projectResult.styles';
 
-export function StationaryResultPage(props) {
+export function MovingResultPage(props) {
 
   if (props.selectedResult === null ||
       props.selectedResult.graph === undefined
@@ -40,15 +40,10 @@ export function StationaryResultPage(props) {
   const chartWidth = Dimensions.get('window').width*0.95;
   const chartHeight = 210;
 
-  const color = '#006FD6';//'rgb(134, 65, 244)'; // '#006FD6'
-
-  const ageFill = color;
-  const genderFill = color;
-  const postureFill = color;
-  const activityFill = color;
+  const fillColor = '#006FD6';
 
   const viewMapResults = () => {
-    props.navigation.navigate("StationaryActivityResultView");
+
   }
 
   const emailResults = () => {
@@ -61,7 +56,7 @@ export function StationaryResultPage(props) {
       <ContentContainer>
         <ScrollView style={styles.margins}>
 
-          <Text category={'h5'}>Stationary Result Information</Text>
+          <Text category={'h5'}>Moving Result Information</Text>
           <Divider style={{marginTop:5, marginBottom:10, borderWidth:0.5}} />
 
           <Text>Team: {props.team.title}</Text>
@@ -105,44 +100,11 @@ export function StationaryResultPage(props) {
 
           <MyBarChart
             {...props}
-            title={"Age"}
+            title={"Movement"}
             rotation={0}
-            dataValues={props.selectedResult.graph.ageData}
-            dataLabels={props.selectedResult.graph.ageLabels}
-            barColor={ageFill}
-            width={chartWidth}
-            height={chartHeight}
-          />
-
-          <MyBarChart
-            {...props}
-            title={"Gender"}
-            rotation={0}
-            dataValues={props.selectedResult.graph.genderData}
-            dataLabels={props.selectedResult.graph.genderLabels}
-            barColor={genderFill}
-            width={chartWidth}
-            height={chartHeight}
-          />
-
-          <MyBarChart
-            {...props}
-            title={"Posture"}
-            rotation={0}
-            dataValues={props.selectedResult.graph.postureData}
-            dataLabels={props.selectedResult.graph.postureLabels}
-            barColor={postureFill}
-            width={chartWidth}
-            height={chartHeight}
-          />
-
-          <MyBarChart
-            {...props}
-            title={"Activity"}
-            rotation={-90}
-            dataValues={props.selectedResult.graph.activityData}
-            dataLabels={props.selectedResult.graph.activityLabels}
-            barColor={activityFill}
+            dataValues={props.selectedResult.graph.data}
+            dataLabels={props.selectedResult.graph.labels}
+            barColor={fillColor}
             width={chartWidth}
             height={chartHeight}
           />
