@@ -28,7 +28,6 @@ export function ProjectResultPage(props) {
             }
         })
         result = await response.json();
-        console.log("map result: ", result);
         success = true
     } catch (error) {
         console.log("error", error)
@@ -43,7 +42,7 @@ export function ProjectResultPage(props) {
     if(success) {
       result.test_type = 'stationary';
       props.setSelectedResult(result);
-
+      console.log("Selected result: ", result);
       // open results page
       props.navigation.navigate("ActivityResultPage");
     }

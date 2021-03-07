@@ -49,7 +49,7 @@ export const HomeScreen = ( props ) => {
 
     // if successfully retrieved project info, Update
     if(success) {
-      console.log("Project: ", projectDetails);
+      console.log("Selected Project: ", projectDetails);
       // set selected project page information
       props.setSelectedProject(projectDetails);
       props.setSelectedTeam(item.team);

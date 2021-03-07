@@ -13,16 +13,17 @@ export function ActivityResultPage(props) {
 
   if (props.selectedResult === null || props.selectedResult.success === false) {
     return (
-    <ViewableArea>
-      <HeaderBack {...props} text={"nope"}/>
-      <ContentContainer>
-        <ScrollView style={styles.margins}>
+      <ViewableArea>
+        <HeaderBack {...props} text={"nope"}/>
+        <ContentContainer>
+          <ScrollView style={styles.margins}>
 
-          <Text category={'h5'}>No result information for this activity</Text>
+            <Text category={'h5'}>No result information for this activity</Text>
 
-        </ScrollView>
-      </ContentContainer>
-    </ViewableArea>);
+          </ScrollView>
+        </ContentContainer>
+      </ViewableArea>
+    );
   }
 
   let areaTitle = (props.selectedResult.sharedData.area.title === undefined ? 'Project Perimeter' : props.selectedResult.sharedData.area.title)
@@ -33,14 +34,115 @@ export function ActivityResultPage(props) {
   });
 
   const viewMapResults = () => {
-    console.log("Selected result: " + JSON.stringify(props.selectedResult))
-
     props.navigation.navigate("StationaryActivityResultView");
+  }
+
+  const loadGraphResults = async () => {
+    if (props.selectedResult.test_type === 'stationary') {
+      await loadSMGraphData();
+      props.navigation.navigate("SMGraphResultPage");
+    }
+  }
+
+  async function loadSMGraphData() {
+    if (props.selectedResult.data !== null && props.selectedResult.data.length >= 1 && props.selectedResult.graph === undefined) {
+      let tempResult = {...props.selectedResult};
+      let graph = {
+        ageData: [],
+        ageLabels: [],
+        genderData: [],
+        genderLabels: [],
+        postureData: [],
+        postureLabels: [],
+        activityData: [],
+        activityLabels: [],
+      };
+      let index = -1;
+      let label = '';
+      await props.selectedResult.data.map(dataPoint => {
+        label = dataPoint.age;
+        if (label !== undefined) {
+          if (graph.ageLabels !== null && graph.ageLabels.length > 0) {
+            index = graph.ageLabels.findIndex(element => element === label);
+            // add category if it's not currently in the list
+            if (index < 0) {
+              index = graph.ageLabels.length;
+              graph.ageLabels = [...graph.ageLabels, label];
+              graph.ageData = [...graph.ageData, Number(0)];
+            }
+          } else { // first entry
+            index = 0;
+            graph.ageLabels = [label];
+            graph.ageData = [Number(0)];
+          }
+          // increase count
+          graph.ageData[index] = graph.ageData[index] + 1;
+        }
+        label = dataPoint.gender;
+        if (label !== undefined) {
+          if (graph.genderLabels !== null && graph.genderLabels.length > 0) {
+            index = graph.genderLabels.findIndex(element => element === label);
+            // add category if it's not currently in the list
+            if (index < 0) {
+              index = graph.genderLabels.length;
+              graph.genderLabels = [...graph.genderLabels, label];
+              graph.genderData = [...graph.genderData, Number(0)];
+            }
+          } else { // first entry
+            index = 0;
+            graph.genderLabels = [label];
+            graph.genderData = [Number(0)];
+          }
+          // increase count
+          graph.genderData[index] = graph.genderData[index] + 1;
+        }
+        label = dataPoint.posture;
+        if (label !== undefined) {
+          if (graph.postureLabels !== null && graph.postureLabels.length > 0) {
+            index = graph.postureLabels.findIndex(element => element === label);
+            // add category if it's not currently in the list
+            if (index < 0) {
+              index = graph.postureLabels.length;
+              graph.postureLabels = [...graph.postureLabels, label];
+              graph.postureData = [...graph.postureData, Number(0)];
+            }
+          } else { // first entry
+            index = 0;
+            graph.postureLabels = [label];
+            graph.postureData = [Number(0)];
+          }
+          // increase count
+          graph.postureData[index] = graph.postureData[index] + 1;
+        }
+        label = dataPoint.activity;
+        if (label !== undefined) {
+          if (graph.activityLabels !== null && graph.activityLabels.length > 0) {
+            index = graph.activityLabels.findIndex(element => element === label);
+            // add category if it's not currently in the list
+            if (index < 0) {
+              index = graph.activityLabels.length;
+              graph.activityLabels = [...graph.activityLabels, label];
+              graph.activityData = [...graph.activityData, Number(0)];
+            }
+          } else { // first entry
+            index = 0;
+            graph.activityLabels = [label];
+            graph.activityData = [Number(0)];
+          }
+          // increase count
+          graph.activityData[index] = graph.activityData[index] + 1;
+        }
+      });
+      //console.log("resulting graph data: ", graph);
+      tempResult.graph = {...graph};
+      await props.setSelectedResult(tempResult);
+    }
+
   }
 
   return (
     <ViewableArea>
-      <HeaderBack {...props} text={props.project.title}/>
+      <HeaderBack {...props} text={(props.project.title + ": " + props.selectedResult.sharedData.title)}/>
       <ContentContainer>
         <ScrollView style={styles.margins}>
 
@@ -75,6 +177,7 @@ export function ActivityResultPage(props) {
             View Map Results
           </Button>
           <Button
+            onPress={loadGraphResults}
             style={styles.margins}
             accessoryRight={ChartIcon}
           >
