@@ -5,6 +5,7 @@ const Team = require('../models/teams.js')
 const Area = require('../models/areas.js')
 const Standing_Point = require('../models/standing_points.js')
 const Stationary_Collection = require('../models/stationary_collections.js')
+const Moving_Collection = require('../models/moving_collections.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
@@ -238,7 +239,7 @@ router.put('/:id/stationary_collections/:collectionId', passport.authenticate('j
     
         
         let newCollection = new Stationary_Collection({
-                title: (req.body.title ? req.body.tttle : collection.title),
+                title: (req.body.title ? req.body.title : collection.title),
                 date: (req.body.date ? req.body.date : collection.date),
                 area: (req.body.area ? req.body.area : collection.area),
                 duration: (req.body.duration ? req.body.duration : collection.duration)
@@ -251,7 +252,7 @@ router.put('/:id/stationary_collections/:collectionId', passport.authenticate('j
     }
 })
 
-router.delete('/:id/stationary_collections/:colectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+router.delete('/:id/stationary_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.params.id)
     if(await Team.isAdmin(project.team,user._id)){
@@ -294,7 +295,7 @@ router.put('/:id/moving_collections/:collectionId', passport.authenticate('jwt',
     
         
         let newCollection = new Moving_Collection({
-                title: (req.body.title ? req.body.tttle : collection.title),
+                title: (req.body.title ? req.body.title : collection.title),
                 date: (req.body.date ? req.body.date : collection.date),
                 area: (req.body.area ? req.body.area : collection.area),
                 duration: (req.body.duration ? req.body.duration : collection.duration)
@@ -307,7 +308,7 @@ router.put('/:id/moving_collections/:collectionId', passport.authenticate('jwt',
     }
 })
 
-router.delete('/:id/moving_collections/:colectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+router.delete('/:id/moving_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.params.id)
     if(await Team.isAdmin(project.team,user._id)){
