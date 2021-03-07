@@ -4,6 +4,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 const Area = require('../models/areas.js')
 const Standing_Point = require('../models/standing_points.js')
 const Stationary_Map = require('../models/stationary_maps.js')
+const Moving_Map = require('../models/moving_maps.js')
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 

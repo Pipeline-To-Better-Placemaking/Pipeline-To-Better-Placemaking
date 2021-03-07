@@ -16,12 +16,12 @@ const Entry = mongoose.Schema({
     }],
     age: {
         type: String,
-        enum: ['<15','15-30','30-45','45-60','60+'],
+        enum: ['0-14','15-21','22-30','30-50','50-65','60+'],
         required: true
     },
     mode: {
         type: String,
-        enum: ['running','walking','biking','skateboarding','other'],
+        enum: ['running','walking','swimming','activity_on_wheels','handicap_assisted_wheels'],
         required: true
     },
     time: {

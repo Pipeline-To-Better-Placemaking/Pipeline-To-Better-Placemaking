@@ -138,12 +138,22 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
     map = await Map.findById(req.params.id)
     if(Map.isResearcher(map._id, user._id)){
         if(req.body.entries){
+            
+            for(var i = 0; i < req.body.entries.length; i++){
+                if (req.body.entries[i].activity.length > 2)
+                    throw new BadRequestError('Datapoints can only have two activies')
+            }
+
             for(var i = 0; i < req.body.entries.length; i++){
                 await Map.addEntry(map._id,req.body.entries[i])
-            }
+            } 
             res.status(201).json(await Project.findById(req.params.id))
         }
         else{
+
+            if (req.body.activity.length > 2)
+                    throw new BadRequestError('Datapoints can only have two activies')
+
             res.json(await Map.addEntry(map._id,req.body))
        }
     }
@@ -167,6 +177,9 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
         activity: (req.body.activity ? req.body.activity : oldData.activity),
         time: (req.body.time ? req.body.time : oldData.time)
     }
+
+    if (req.body.activity.length > 2)
+        throw new BadRequestError('Datapoints can only have two activies')
 
     if (Map.isResearcher(mapId, user._id)){
         await Map.updateData(mapId,oldData._id,newData)
