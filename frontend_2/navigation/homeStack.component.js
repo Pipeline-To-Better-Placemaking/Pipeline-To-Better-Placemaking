@@ -3,10 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from '../screens/Home/home.component';
 import { ProjectResultPage } from '../screens/Home/projectResult.component';
-import { ActivityResultPage } from '../screens/Home/activityResult.component';
+import { StationaryResultPage } from '../screens/Home/ResultPages/stationaryResultPage.component';
 import { CompareScreen } from '../screens/Home/Compare/compare.component.js';
-import { StationaryActivityResultView } from '../screens/Home/ResultsView/stationaryActivityResultView.js'
-import { SMGraphResultPage } from '../screens/Home/ResultsView/stationaryGraphs.component.js';
+import { StationaryActivityResultView } from '../screens/Home/ResultPages/stationaryMapResults.component.js'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { Navigator, Screen } = createStackNavigator();
@@ -112,15 +111,16 @@ export function HomeScreenStack(props){
           project={selectedProject}
           team={selectedTeam}
           results={results}
+          selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}
          />
        }
       </Screen>
       <Screen
-        name='ActivityResultPage'
+        name='StationaryResultPage'
       >
       {props =>
-        <ActivityResultPage
+        <StationaryResultPage
           {...props}
           token={token}
           userId={userId}
@@ -141,20 +141,6 @@ export function HomeScreenStack(props){
             selectedResult={selectedResult}
           >
           </StationaryActivityResultView>
-        }
-      </Screen>
-      <Screen
-        name='SMGraphResultPage'
-      >
-        {props =>
-          <SMGraphResultPage
-            {...props}
-            token={token}
-            userId={userId}
-            project={selectedProject}
-            team={selectedTeam}
-            result={selectedResult}
-           />
         }
       </Screen>
     </Navigator>

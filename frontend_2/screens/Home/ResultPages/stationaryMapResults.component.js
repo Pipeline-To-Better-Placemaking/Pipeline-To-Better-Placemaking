@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ViewableArea, ContentContainer } from '../../components/content.component.js'
-import { Header } from '../../components/headers.component';
+import { HeaderBack } from '../../components/headers.component';
+import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { StationaryMapResults } from '../../components/Maps/stationaryMapResults.component.js'
 
 export function StationaryActivityResultView(props) {
@@ -20,13 +21,15 @@ export function StationaryActivityResultView(props) {
     const [data, setData] = useState(props.selectedResult.data)
     const [markers, setMarkers] = useState([])
 
+    let startTime = new Date(props.selectedResult.date);
+
     // Main render
     return(
         <ViewableArea>
-            <Header text={'Stationary Activity'}/>
+            <HeaderBack {...props} text={props.selectedResult.sharedData.title + ": " + getTimeStr(startTime)}/>
             <ContentContainer>
 
-                <StationaryMapResults 
+                <StationaryMapResults
                     area={area}
                     position={position[standingIndex]}
                     dataMarkers={data}

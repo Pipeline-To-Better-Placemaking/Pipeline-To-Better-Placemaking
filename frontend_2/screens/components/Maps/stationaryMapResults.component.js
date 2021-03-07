@@ -19,7 +19,7 @@ export function StationaryMapResults(props) {
 
     const DataCallout = (props) => {
 
-        console.log("Age: " + JSON.stringify(props.point))
+        //console.log("Age: " + JSON.stringify(props.point))
 
         return (
             <View style={{flexDirection: 'column', width: 190}}>
@@ -96,7 +96,7 @@ export function StationaryMapResults(props) {
             >
                 <MapView.Marker
                     coordinate = {props.position}
-                />           
+                />
 
                 <MapView.Polygon
                     coordinates={props.area}

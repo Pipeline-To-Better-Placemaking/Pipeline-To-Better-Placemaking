@@ -40,13 +40,111 @@ export function ProjectResultPage(props) {
     }
 
     if(success) {
-      result.test_type = 'stationary';
-      props.setSelectedResult(result);
       console.log("Selected result: ", result);
+      result.test_type = 'stationary';
+      result.sharedData.date = item.day;
+      await props.setSelectedResult(result);
+      await loadSMGraphData(result);
       // open results page
-      props.navigation.navigate("ActivityResultPage");
+      props.navigation.navigate("StationaryResultPage");
     }
   };
+
+  async function loadSMGraphData(result) {
+    if (result.data !== null && result.data.length >= 1 && result.graph === undefined) {
+      let tempResult = {...result};
+      let graph = {
+        ageData: [],
+        ageLabels: [],
+        genderData: [],
+        genderLabels: [],
+        postureData: [],
+        postureLabels: [],
+        activityData: [],
+        activityLabels: [],
+      };
+      let index = -1;
+      let label = '';
+      await result.data.map(dataPoint => {
+        label = dataPoint.age;
+        if (label !== undefined) {
+          if (graph.ageLabels !== null && graph.ageLabels.length > 0) {
+            index = graph.ageLabels.findIndex(element => element === label);
+            // add category if it's not currently in the list
+            if (index < 0) {
+              index = graph.ageLabels.length;
+              graph.ageLabels = [...graph.ageLabels, label];
+              graph.ageData = [...graph.ageData, Number(0)];
+            }
+          } else { // first entry
+            index = 0;
+            graph.ageLabels = [label];
+            graph.ageData = [Number(0)];
+          }
+          // increase count
+          graph.ageData[index] = graph.ageData[index] + 1;
+        }
+        label = dataPoint.gender;
+        if (label !== undefined) {
+          if (graph.genderLabels !== null && graph.genderLabels.length > 0) {
+            index = graph.genderLabels.findIndex(element => element === label);
+            // add category if it's not currently in the list
+            if (index < 0) {
+              index = graph.genderLabels.length;
+              graph.genderLabels = [...graph.genderLabels, label];
+              graph.genderData = [...graph.genderData, Number(0)];
+            }
+          } else { // first entry
+            index = 0;
+            graph.genderLabels = [label];
+            graph.genderData = [Number(0)];
+          }
+          // increase count
+          graph.genderData[index] = graph.genderData[index] + 1;
+        }
+        label = dataPoint.posture;
+        if (label !== undefined) {
+          if (graph.postureLabels !== null && graph.postureLabels.length > 0) {
+            index = graph.postureLabels.findIndex(element => element === label);
+            // add category if it's not currently in the list
+            if (index < 0) {
+              index = graph.postureLabels.length;
+              graph.postureLabels = [...graph.postureLabels, label];
+              graph.postureData = [...graph.postureData, Number(0)];
+            }
+          } else { // first entry
+            index = 0;
+            graph.postureLabels = [label];
+            graph.postureData = [Number(0)];
+          }
+          // increase count
+          graph.postureData[index] = graph.postureData[index] + 1;
+        }
+        label = dataPoint.activity;
+        if (label !== undefined) {
+          if (graph.activityLabels !== null && graph.activityLabels.length > 0) {
+            index = graph.activityLabels.findIndex(element => element === label);
+            // add category if it's not currently in the list
+            if (index < 0) {
+              index = graph.activityLabels.length;
+              graph.activityLabels = [...graph.activityLabels, label];
+              graph.activityData = [...graph.activityData, Number(0)];
+            }
+          } else { // first entry
+            index = 0;
+            graph.activityLabels = [label];
+            graph.activityData = [Number(0)];
+          }
+          // increase count
+          graph.activityData[index] = graph.activityData[index] + 1;
+        }
+      });
+      //console.log("resulting graph data: ", graph);
+      tempResult.graph = {...graph};
+      await props.setSelectedResult(tempResult);
+    }
+
+  }
 
   const activityItem = ({ item, index }) => (
       <ListItem
