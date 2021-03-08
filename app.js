@@ -46,7 +46,7 @@ app.use('/api/users',           userApi)
 app.use('/api/verify',          verifyApi)
 app.use('/api/stationary_maps', stationApi)
 app.use('/api/moving_maps',     movingApi)
-app.use('/api/collections',      collectionAPI)
+app.use('/api/collections',     collectionAPI)
 
 app.use(passport.initialize());
 app.use(passport.session());
