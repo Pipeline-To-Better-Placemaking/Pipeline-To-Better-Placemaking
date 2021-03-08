@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const User = require('../models/users.js')
 const uniqueValidator = require('mongoose-unique-validator')
 
 const ObjectId = mongoose.Schema.Types.ObjectId
@@ -50,6 +51,9 @@ module.exports.updateTeam = async function (teamId, newTeam) {
 }
 
 module.exports.deleteTeam = async function(teamId) {
+
+    User.removeRefrences(teamId)
+
     return await Teams.findByIdAndDelete(teamId)
 }
 
@@ -70,6 +74,7 @@ module.exports.addProject = async function(teamId, projectId) {
 }
 
 module.exports.removeProject = async function(teamId, projectId) {
+
     return await Teams.updateOne(
         { _id: teamId },
         { $pull: { projects: projectId } }

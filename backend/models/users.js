@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
+
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const rand = (min = 0, max = 50) => {
@@ -130,13 +131,13 @@ module.exports.createVerification = async function(userId) {
 }
 
 module.exports.addTeam = async function(userId, teamId) {
-    await Users.updateOne(
+    return await Users.updateOne(
         { _id: userId },
         { $push: { teams: teamId }}
     )
 }
 module.exports.addInvite = async function(userId, teamId) {
-    await Users.updateOne(
+    return await Users.updateOne(
         { _id: userId },
         { $push: { invites: teamId }}
     )
@@ -144,8 +145,20 @@ module.exports.addInvite = async function(userId, teamId) {
 
 module.exports.deleteInvite = async function(userId,teamId) {
     
-    await Users.updateOne(
+    return await Users.updateOne(
         { _id: userId },
         { $pull: { invites: teamId }}
+    )
+}
+
+module.exports.removeRefrences = async function(teamId) {
+    
+    await Users.updateMany(
+        {},
+        { $pull: { invites: teamId }}
+    )
+    return await Users.updateMany(
+        {},
+        { $pull: {teams: teamId }}
     )
 }
