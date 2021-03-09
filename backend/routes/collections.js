@@ -12,16 +12,14 @@ const { BadRequestError, UnauthorizedError } = require('../utils/errors')
 
 
 router.get('/moving/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-
-    res.status(200).json(await Moving_Collection.findById(req.param.id)
+    res.status(200).json(await Moving_Collection.findById(req.params.id)
                                                 .populate('area')
                                                 .populate('maps'))
 
 })
 
 router.get('/stationary/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-
-    res.status(200).json(await Stationary_Collection.findById(req.param.id)
+    res.status(200).json(await Stationary_Collection.findById(req.params.id)
                                                 .populate('area')
                                                 .populate('maps'))
 
