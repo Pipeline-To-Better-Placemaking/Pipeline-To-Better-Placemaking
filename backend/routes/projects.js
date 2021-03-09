@@ -62,6 +62,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                           .populate('subareas')
                           .populate('standingPoints')
                           .populate('stationaryCollections')
+                          .populate('movingCollections')
             )
 })
 
