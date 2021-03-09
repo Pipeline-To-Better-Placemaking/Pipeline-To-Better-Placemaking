@@ -112,6 +112,21 @@ curl -H 'Content-Type: application/json' \
            \"date\": \"2012-04-23T18:25:43.511Z\" }"  \
      http://localhost:8080/api/stationary_maps/
 
+echo
+echo collection
+echo
+echo
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/collections/stationary/${COLLECTION} 
+
+echo
+echo
+
+
+
 MAP=$(curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
@@ -133,9 +148,6 @@ curl -H 'Content-Type: application/json' \
      --request GET \
      http://localhost:8080/api/stationary_maps/${MAP}
 
-echo
-echo "uncalim"
-echo
 
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
