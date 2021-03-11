@@ -28,7 +28,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                     project: req.body.project,
                     sharedData: req.body.collection,
                     date: slot.date,
-                    maxResearchers: slot.maxResearchers
+                    maxResearchers: slot.maxResearchers,
                 })
 
                 const map = await Map.addMap(newMap)
@@ -36,7 +36,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
                 res.status(201).json(await Stationary_Collection.findById(req.body.collection))
             }
-    
+
         let newMap = new Map({
             title: req.body.title,
             standingPoints: req.body.standingPoints,
@@ -44,9 +44,8 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
             project: req.body.project,
             sharedData: req.body.collection,
             date: req.body.date, 
-            maxResearchers: req.body.maxResearchers
+            maxResearchers: req.body.maxResearchers,
         })
-
         const map = await Map.addMap(newMap)
         await Stationary_Collection.addActivity(req.body.collection,map._id)
         res.status(201).json(map)
@@ -141,18 +140,18 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
             
             for(var i = 0; i < req.body.entries.length; i++){
                 if (req.body.entries[i].activity.length > 2)
-                    throw new BadRequestError('Datapoints can only have two activies')
+                    throw new BadRequestError('Datapoints can only have two activities')
             }
 
             for(var i = 0; i < req.body.entries.length; i++){
                 await Map.addEntry(map._id,req.body.entries[i])
             } 
-            res.status(201).json(await Project.findById(req.params.id))
+            res.status(201).json(await Map.findById(map._id))
         }
         else{
 
             if (req.body.activity.length > 2)
-                    throw new BadRequestError('Datapoints can only have two activies')
+                    throw new BadRequestError('Datapoints can only have two activities')
 
             res.json(await Map.addEntry(map._id,req.body))
        }
