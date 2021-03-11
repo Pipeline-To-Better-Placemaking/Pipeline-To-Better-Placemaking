@@ -112,6 +112,7 @@ module.exports.addEntry = async function(mapId, newEntry) {
         gender: newEntry.gender,
         posture: newEntry.posture,
         age: newEntry.age,
+        activity: newEntry.activity,
         location: newEntry.location
     })
 
