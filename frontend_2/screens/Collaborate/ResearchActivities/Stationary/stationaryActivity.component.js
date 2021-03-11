@@ -19,7 +19,7 @@ export function StationaryActivity(props) {
 
     // Begins the test
     const [start, setStart] = useState(false)
-    
+
     // Shows the moving and data input modal
     const [moving, setMoving] = useState(false)
     const [dataModal, setDataModal] = useState(false)
@@ -31,7 +31,7 @@ export function StationaryActivity(props) {
     const [tempMarker, setTempMarker] = useState([])
     const [data, setData] = useState([])
     const [markers, setMarkers] = useState([])
-    
+
 
     // Opens the data model and stores a temporary points
     const onPointCreate = async (marker) => {
@@ -52,7 +52,8 @@ export function StationaryActivity(props) {
                 gender: inf.gender,
                 activity: inf.activity,
                 posture: inf.posture,
-                location: tempMarker
+                location: tempMarker,
+                time: new Date(),
             }
 
             setData(() => data.concat(pointData))
@@ -69,7 +70,7 @@ export function StationaryActivity(props) {
 
         // Saves the SM data
         try {
-            const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + props.timeSlot.id + '/data', {
+            const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + props.timeSlot._id + '/data', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -83,7 +84,7 @@ export function StationaryActivity(props) {
 
             let info = await response.json()
             console.log("Response: " + JSON.stringify(info))
-            
+
         } catch (error) {
             console.log("ERROR: ", error)
         }
@@ -206,7 +207,7 @@ export function StationaryActivity(props) {
                         confirm={rebegin}
                     />
 
-                    <StationaryActivityMap 
+                    <StationaryActivityMap
                         location={location}
                         area={area}
                         position={position[standingIndex]}

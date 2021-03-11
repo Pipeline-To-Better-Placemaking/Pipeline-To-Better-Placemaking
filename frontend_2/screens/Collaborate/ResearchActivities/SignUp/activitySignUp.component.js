@@ -9,7 +9,7 @@ import { getDayStr, getTimeStr } from '../../../components/timeStrings.component
 export function ActivitySignUpPage(props) {
 
   // Constant array of activities
-  const activityList = ["stationary", "People Moving", "Survey"]
+  const activityList = ["stationary", "moving", "survey"]
 
   const onBeginPress = async (timeSlot, index) => {
 
@@ -66,12 +66,21 @@ export function ActivitySignUpPage(props) {
     let tempResearchers = [...timeSlot.researchers];
     let max = timeSlot.maxResearchers;
     let len = timeSlot.researchers.length;
+    let route = '';
+
+    if (props.activity.test_type === activityList[0]) {
+      route = 'stationary_maps/';
+    } else if (props.activity.test_type === activityList[1]) {
+      route = 'moving_maps/';
+    } else if (props.activity.test_type === activityList[2]) {
+      route = ''; // survey_codes
+    }
 
     // if the researcher is already signed up and they press the button again, unsign them up
     let findIndex = tempResearchers.findIndex(element => element._id === props.userId)
     if (findIndex >= 0) {
       max = -1; // don't add the user
-      removeSMUser(timeSlot);
+      removeUser(timeSlot, route);
       tempResearchers.splice(findIndex, 1);
       tempSlot.researchers = tempResearchers;
       tempTimeSlots[index] = tempSlot;
@@ -81,11 +90,7 @@ export function ActivitySignUpPage(props) {
     // if there's space to add another researcher
     if(max > 0 && (max-len) > 0) {
       let success = false
-      if (props.activity.test_type == activityList[0]) {
-        success = signUpSMTimeSlot(timeSlot);
-      } else {
-        success = true
-      }
+      success = signUpTimeSlot(timeSlot, route);
 
       if (success) {
         // add user locally
@@ -102,11 +107,11 @@ export function ActivitySignUpPage(props) {
 
   }
 
-  const signUpSMTimeSlot = async (timeSlot) => {
+  const signUpTimeSlot = async (timeSlot, route) => {
     let success = false
     let res = null
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + timeSlot._id + '/claim', {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + route + timeSlot._id + '/claim', {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -125,11 +130,11 @@ export function ActivitySignUpPage(props) {
     return success;
   }
 
-  const removeSMUser = async (timeSlot) => {
+  const removeUser = async (timeSlot, route) => {
     let success = false
     let res = null
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + timeSlot._id + '/claim', {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/'+ route + timeSlot._id + '/claim', {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',
@@ -190,7 +195,7 @@ export function ActivitySignUpPage(props) {
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
         <View style={{flexDirection:'column'}}>
           <Text>Start Time: {getTimeStr(item.date)}</Text>
-          {(props.activity.test_type === 'Survey' ? null : <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>)}
+          {(props.activity.test_type === activityList[2] ? null : <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>)}
           <Text>Researchers:</Text>
           <Text>{getResearchers(item)}</Text>
         </View>
@@ -213,13 +218,13 @@ export function ActivitySignUpPage(props) {
         <View style={{height:'40%'}}>
           <MapAreaWrapper area={props.activity.area.points} mapHeight={'100%'}>
             <ShowArea area={props.activity.area.points} />
-            {(props.activity.test_type === 'Survey' ? null : <ShowMarkers markers={props.project.standingPoints} />)}
+            {(props.activity.test_type === activityList[2] ? null : <ShowMarkers markers={props.project.standingPoints} />)}
           </MapAreaWrapper>
         </View>
         <View style={{margin:15}}>
           <Text category='s1'>Activity: {props.activity.test_type}</Text>
           <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
-          <Text>{(props.activity.test_type === 'Survey' ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
+          <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
         </View>
         <View style={{height:'50%'}}>
           <List

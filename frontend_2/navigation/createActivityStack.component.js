@@ -61,28 +61,7 @@ export function CreateActivityStack(props) {
       postCollection(name, 'stationary', '/stationary_collections', 'stationary_maps/');
     } // People Moving
     else if (row === 1) {
-      //postCollection(name, 'moving', '/moving_collections', 'moving_maps/');
-      // some fake activity info until we set up the api calls
-      timeSlots.map(timeSlot => {
-        let selectedPoints = [...props.project.standingPoints];
-        if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
-          selectedPoints = timeSlot.assignedPointIndicies.map(index => {
-            return standingPoints[index.row];
-          });
-        }
-        timeSlot.standingPoints = selectedPoints;
-      })
-
-      let activityDetails = {
-        title: name,
-        date: date,
-        duration: parseInt(duration),
-        activity: activityTypes[row],
-        test_type: activityTypes[row],
-        timeSlots: timeSlots,
-        area: area,
-      };
-      props.setActivities(values => [...values,activityDetails]);
+      postCollection(name, 'moving', '/moving_collections', 'moving_maps/');
     } // Survey
     else if (row === 2) {
       //postCollection(name, 'survey', '/survey_collections', 'survey_codes/'); // not sure what the routes will be for this one
@@ -92,7 +71,7 @@ export function CreateActivityStack(props) {
         date: date,
         duration: parseInt(duration),
         activity: activityTypes[row],
-        test_type: activityTypes[row],
+        test_type: "survey",
         timeSlots: timeSlots,
         area: area,
       };
