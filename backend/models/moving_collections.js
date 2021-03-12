@@ -48,7 +48,7 @@ module.exports.deleteCollection = async function(collectionId){
     collection = await Collection.findById(collectionId)
 
     for(var i = 0; i < collection.maps.length; i++)
-        await Stationary_Map.findByIdAndDelete(collection.maps[i])
+        await Moving_Map.findByIdAndDelete(collection.maps[i])
 
     return Collection.findByIdAndDelete(collectionId)
 }

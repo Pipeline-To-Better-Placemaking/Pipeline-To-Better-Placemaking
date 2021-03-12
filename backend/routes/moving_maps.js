@@ -163,8 +163,6 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
         const newData = {
             _id: oldData._id,
             path: (req.body.path ? req.body.path : oldData.path),
-            gender: (req.body.gender ? req.body.gender : oldData.gender),
-            age: (req.body.age ? req.body.age : oldData.age),
             mode: (req.body.mode ? req.body.mode : oldData.mode),
             time: (req.body.time ? req.body.time : oldData.time)
         }
