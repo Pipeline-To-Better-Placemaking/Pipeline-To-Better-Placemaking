@@ -14,16 +14,6 @@ const entrySchema = mongoose.Schema({
             required: true
         }
     }],
-    age: {
-        type: String,
-        enum: ['0-14','15-21','22-29','30-49','50-65','65+'],
-        required: true
-    },
-    gender: {
-        type: String,
-        enum: ['male','female','other'],
-        required: true
-    },
     mode: {
         type: String,
         enum: ['running','walking','swimming','activity_on_wheels','handicap_assisted_wheels'],
@@ -106,9 +96,7 @@ module.exports.projectCleanup = async function(projectId) {
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
         time: newEntry.time,
-        gender: newEntry.gender,
         mode : newEntry.mode,
-        age: newEntry.age,
         path: newEntry.path
     })
 
