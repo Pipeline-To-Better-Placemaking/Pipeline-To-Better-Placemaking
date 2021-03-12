@@ -162,7 +162,7 @@ export function UserSettings(props) {
 
         if(success) {
             setIsVerified(true);
-            await AsyncStorage.setItem('@isVerified', true);
+            await AsyncStorage.setItem('@isVerified', 'true');
             setVerifyModalVisible(false);
         } else {
             setVerificationError(true);
