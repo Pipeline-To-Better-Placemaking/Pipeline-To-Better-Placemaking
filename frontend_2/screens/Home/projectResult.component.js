@@ -28,6 +28,8 @@ export function ProjectResultPage(props) {
     let success = false
     let result = null
 
+    console.log("Getting stationary results")
+
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + item._id, {
             method: 'GET',
