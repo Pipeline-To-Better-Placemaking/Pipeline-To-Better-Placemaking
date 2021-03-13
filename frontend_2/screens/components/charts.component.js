@@ -15,6 +15,10 @@ height={}
 */
 export function MyBarChart({children, ...props}) {
 
+  if(props.dataLabels === null || props.dataLabels.length <= 0) {
+    return null;
+  }
+
   const theme = useTheme();
   const themeContext = React.useContext(ThemeContext);
 
