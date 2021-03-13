@@ -95,30 +95,13 @@ export function TabNavigation(props) {
 
     // return team info
     if(success && teamDetails.projects !== null) {
-
-      console.log("Team Details: " + JSON.stringify(teamDetails, 1))
-
+      console.log("teamDetails.projects: ", teamDetails.projects);
       teamDetails.projects.map((project, index) => {
 
         console.log("Project: " + JSON.stringify(project, 1))
 
         project.description = "Team: " + teamDetails.title + "\nLocation: " + project.description;
-        project.team = teamDetails;
-
-        var seen = [];
-    
-        console.log("Project: " + 
-    
-        JSON.stringify(project, function(key, val) {
-           if (val != null && typeof val == "object") {
-                if (seen.indexOf(val) >= 0) {
-                    return;
-                }
-                seen.push(val);
-            }
-            return val;
-        }, 1))
-
+        project.teamId = teamDetails._id;
         allProjects.push(project);
       });
       await setAllProjects(allProjects);
@@ -130,7 +113,7 @@ export function TabNavigation(props) {
 
   const addProject = async (projectDetails, teamDetails) => {
     projectDetails.description = "Team: " + teamDetails.title + "\nLocation: " + projectDetails.description;
-    projectDetails.team = teamDetails;
+    project.teamId = teamDetails._id;
     allProjects.push(projectDetails);
     await setAllProjects(allProjects);
   }
