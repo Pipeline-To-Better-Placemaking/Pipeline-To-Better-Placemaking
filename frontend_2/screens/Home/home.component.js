@@ -52,7 +52,7 @@ export const HomeScreen = ( props ) => {
       console.log("Selected Project: ", projectDetails);
       // set selected project page information
       props.setSelectedProject(projectDetails);
-      props.setSelectedTeam(item.team);
+      await getTeam(item.teamId);
 
       // get the SM results for the project
       let results = []
@@ -62,6 +62,37 @@ export const HomeScreen = ( props ) => {
       await props.setResults(results);
       // open results page
       props.navigation.navigate('ProjectResultPage');
+    }
+  }
+
+  const getTeam = async(id) => {
+    let token = await AsyncStorage.getItem("@token");
+    let success = false
+    let teamDetails = null
+    // Get the team information
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + id, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+            }
+        })
+        teamDetails = await response.json();
+        success = true
+    } catch (error) {
+        console.log("error getting team\n", error)
+    }
+
+    if(teamDetails.success !== undefined){
+      success = teamDetails.success
+      console.log("success: ", success);
+    }
+
+    // return team info
+    if(success) {
+      props.setSelectedTeam(teamDetails); 
     }
   }
 
