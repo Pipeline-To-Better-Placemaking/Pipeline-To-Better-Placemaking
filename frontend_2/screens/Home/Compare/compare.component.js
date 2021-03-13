@@ -11,14 +11,98 @@ import { ViewableArea, ContentContainer } from '../../components/content.compone
 
 export function CompareScreen(props) {
 
-    const [index, setIndex] = useState(0)
     const [compareCount, setCompareCount] = useState(props.compareCount)
+    const [compareCardData, setCompareCardData] = useState([])
+    const [results, setResults] = useState([])
 
-    const removeCard = (name) => {
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
+
+    const [titleIndex, setTitleIndex] = useState(0)
+    const activities = ['Stationary Activity Map', 'People Moving', 'Survey']
+
+    var seen = [];
+    
+    console.log("Selected Projects: " + 
+
+    JSON.stringify(props.selectedProjects, function(key, val) {
+       if (val != null && typeof val == "object") {
+            if (seen.indexOf(val) >= 0) {
+                return;
+            }
+            seen.push(val);
+        }
+        return val;
+    }, 1))
+
+    const removeCard = (name, index) => {
 
         setCompareCount(compareCount-1)
 
+        let tmp = compareCardData
+        tmp.splice(index, 1)
+
+        setCompareCardData(tmp)
         props.removeFromSelectedProjects(name)
+    }
+
+    const confirmCompare = async () => {
+
+        compareCardData.forEach(async compareCard => {
+
+            let id = compareCard.id
+            let result = null
+            let success = false
+
+            console.log("ID: " + id)
+
+            try {
+
+                console.log("Trying...")
+
+                const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + id, {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + props.token
+                    }
+                })
+
+                result = await response.json();
+                success = true
+
+                console.log("Result: " + JSON.stringify(result, 1))
+            } catch (error) {
+                console.log("error", error)
+            }
+
+            if (result === null) {
+              success = false;
+            }
+            else{
+                setResults(results.concat(result))
+
+                console.log("Results: " + JSON.stringify(results, 1))
+            }
+
+        });
+    }
+
+    const setData = (index, data) => {
+
+        if (compareCardData.length > index) {
+            
+            let tmp = compareCardData
+            tmp[index] = data
+
+            setCompareCardData(tmp)
+
+        } 
+        else{
+            setCompareCardData(compareCardData.concat(data))
+        }
+
     }
 
     const EmptyBox = () => {
@@ -34,16 +118,27 @@ export function CompareScreen(props) {
 
     const CompareBoxList = () => {
 
+        console.log("Results: " + JSON.stringify(props.results))
+
         return (
-            props.selectedProjects.map(project => {
+            props.selectedProjects.map( (project, index) => {
+                
                 return(
                 <CompareBox
                     {...props}
-                    key={project._id}
+                    key={index}
                     project={project}
                     removeCard={removeCard}
                     index={index}
-                    setIndex={setIndex}
+                    results={props.results}
+                    setData={setData}
+                    startDate={startDate}
+                    endDate={endDate}
+                    setStartDate={setStartDate}
+                    setEndDate={setEndDate}
+                    activities={activities}
+                    titleIndex={titleIndex}
+                    setTitleIndex={setTitleIndex}
                 />)
             })
         )
@@ -61,7 +156,7 @@ export function CompareScreen(props) {
                 <EmptyBox/>
 
                 <View>
-                    <Button style={styles.confirmCompare}> Confirm Compare </Button>
+                    <Button style={styles.confirmCompare} onPress={confirmCompare}> Confirm Compare </Button>
                 </View>
 
             </ScrollView>

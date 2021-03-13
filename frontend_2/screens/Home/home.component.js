@@ -137,6 +137,8 @@ export const HomeScreen = ( props ) => {
         inList={inSelectedProject}
         compare={compare}
         project={item}
+        addToSelectedProjects={props.addToSelectedProjects}
+        removeFromSelectedProjects={props.removeFromSelectedProjects}
       />
     </ListItem>
   );

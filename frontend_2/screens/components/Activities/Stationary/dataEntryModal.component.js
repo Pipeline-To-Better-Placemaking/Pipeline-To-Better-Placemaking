@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, KeyboardAvoidingView } from 'react-native';
+import { View, ScrollView, Modal } from 'react-native';
 
-import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, SelectItem } from '@ui-kitten/components';
-import * as Location from 'expo-location';
+import { Text, Button } from '@ui-kitten/components';
 import styles from './dataEntryModal.styles.js';
 import { DataGroupAge } from './dataGroupAge.component.js';
 import { DataGroupGender } from './dataGroupGender.component.js';
@@ -77,6 +76,7 @@ export function DataEntryModal(props) {
         await setPostureMatrix(matrix)
     }
 
+    // Sends the data to be stored
     const sendData = async () => {
 
         let data = {
@@ -92,8 +92,6 @@ export function DataEntryModal(props) {
 
         await props.closeData(data)
     }
-
-
 
     return(
         <Modal transparent={true} animationType='slide'visible={props.visible}>

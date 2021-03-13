@@ -34,6 +34,7 @@ export function HomeScreenStack(props){
   // selected activity result information
   const [selectedResult, setSelectedResult] = useState(null);
   const [results, setResults] =  useState([]);
+  const [compareResults, setCompareResults] = useState([]);
 
   useEffect(() => {
     async function getInfo() {
@@ -51,6 +52,7 @@ export function HomeScreenStack(props){
   const addToSelectedProjects = async (project) => {
     let selectedProjectsArray = [...selectedProjects]
     selectedProjectsArray.push(project)
+
     await setSelectedProjects(selectedProjectsArray)
   }
 
@@ -95,8 +97,10 @@ export function HomeScreenStack(props){
         <CompareScreen
           {...props}
           removeFromSelectedProjects={removeFromSelectedProjects}
+          results={results}
           selectedProjects={selectedProjects}
           compareCount={selectedProjects.length}
+          token={token}
         >
         </CompareScreen>
       }
