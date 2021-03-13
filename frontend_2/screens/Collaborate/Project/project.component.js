@@ -43,17 +43,29 @@ export function ProjectPage(props) {
 
     if(collectionDetails.test_type === 'stationary') {
       // get the collection info
-      //collectionDetails = getSMCollection(collectionDetails);
+      collectionDetails = await getCollection(collectionDetails, 'stationary/');
 
       // get the timeSlot info
-      if (collectionDetails !== null && collectionDetails.maps !== null && collectionDetails.maps.length >= 1) {
-        collectionDetails.maps.map(id => {
-          getSMTimeSlots(id);
+      if (collectionDetails !== null && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
+        collectionDetails.maps.map(item => {
+          getTimeSlots(item._id, 'stationary_maps/');
         })
         success = true
       }
 
-    } else { // this is for the other 2 activites that aren't hooked up yet
+    } else if(collectionDetails.test_type === 'moving') {
+      // get the collection info
+      collectionDetails = await getCollection(collectionDetails, 'moving/');
+
+      // get the timeSlot info
+      if (collectionDetails !== null && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
+        collectionDetails.maps.map(item => {
+          getTimeSlots(item._id, 'moving_maps/');
+        })
+        success = true
+      }
+
+    } else if(collectionDetails.test_type === 'survey') {
       success = true;
       props.setTimeSlots([...collectionDetails.timeSlots]);
     }
@@ -70,15 +82,14 @@ export function ProjectPage(props) {
 
   };
 
-  const getSMCollection = async (item) => {
+  const getCollection = async (item, collectionName) => {
     let success = false
     let collectionDetails = null
 
     // Get the activity information
     try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
-                                                    props.project._id +
-                                                    '/stationary_collections/' + item._id, {
+      const response = await fetch('https://measuringplacesd.herokuapp.com/api/collections/' +
+                                                    collectionName + item._id, {
           method: 'GET',
           headers: {
               Accept: 'application/json',
@@ -101,22 +112,22 @@ export function ProjectPage(props) {
     if (success) {
       collectionDetails.test_type = item.test_type;
       collectionDetails.date = new Date(collectionDetails.date)
-      let areaIndex = props.project.subareas.findIndex(element => element._id === collectionDetails.area);
-      collectionDetails.area = props.project.subareas[areaIndex];
-      console.log("selected collection: ", collectionDetails);
+      //let areaIndex = props.project.subareas.findIndex(element => element._id === collectionDetails.area);
+      //collectionDetails.area = props.project.subareas[areaIndex];
+      console.log("returning collection: ", collectionDetails);
       return collectionDetails;
     } else {
       return null;
     }
   };
 
-  const getSMTimeSlots = async (timeId) => {
+  const getTimeSlots = async (timeId, routeName) => {
     let success = false
     let timeSlotDetails = null
 
     // Get the activity information
     try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + timeId, {
+      const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + routeName + timeId, {
           method: 'GET',
           headers: {
               Accept: 'application/json',
@@ -154,7 +165,7 @@ export function ProjectPage(props) {
 
   return (
     <ViewableArea>
-      {owner ? 
+      {owner ?
         <HeaderBackEdit {...props} text={props.project.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
           <MenuItem title='Edit Project' onPress={() => {setEditMenuVisible(false); setEditProjectVisible(true)}}/>
           <MenuItem title='Area(s)' onPress={() => {setEditMenuVisible(false); setEditAreasVisible(true)}}/>

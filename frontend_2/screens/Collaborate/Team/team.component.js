@@ -73,8 +73,18 @@ export function TeamPage(props) {
         })
       }
 
+      if(projectDetails.movingCollections !== null) {
+        projectDetails.movingCollections.map(collection => {
+          collection.test_type = 'moving';
+          // set area
+          let areaIndex = projectDetails.subareas.findIndex(element => element._id === collection.area);
+          collection.area = projectDetails.subareas[areaIndex];
+          collection.date = new Date(collection.date)
+        })
+      }
+
       props.setProject(projectDetails);
-      props.setActivities(projectDetails.stationaryCollections);
+      props.setActivities([...projectDetails.stationaryCollections, ...projectDetails.movingCollections]);
       console.log("Selected Project: ", projectDetails);
 
       // open project page
@@ -186,7 +196,7 @@ export function TeamPage(props) {
   //console.log("Am I the owner of this team? answer: " + owner);
   return (
     <ViewableArea>
-      {owner ? 
+      {owner ?
         <HeaderBackEdit {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
         <MenuItem title='Edit Team' onPress={() => {setEditMenuVisible(false); setEditTeamVisible(true)}}/>
         </HeaderBackEdit> :

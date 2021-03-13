@@ -62,6 +62,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                           .populate('subareas')
                           .populate('standingPoints')
                           .populate('stationaryCollections')
+                          .populate('movingCollections')
             )
 })
 
@@ -317,6 +318,54 @@ router.delete('/:id/moving_collections/:collectionId', passport.authenticate('jw
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
     }
+})
+
+router.get('/:id/stationary_data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    res.json(await Project.findById(req.params.id)
+                          .populate('area')
+                          .populate([
+                            {
+                                path:'stationaryCollections',
+                                model:'Stationary_Collections',
+                                populate: {
+                                 path: 'area',
+                                 model: 'Areas'
+                                },
+                                populate: {
+                                    path: 'maps',
+                                    model: 'Stationary_Maps',
+                                    select: 'data date',
+                                    populate: {
+                                        path: 'standingPoints',
+                                        model: 'Standing_Points'
+                                    }
+                                   }
+                             }])
+            )
+})
+
+router.get('/:id/moving_data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    res.json(await Project.findById(req.params.id)
+                          .populate('area')
+                          .populate([
+                            {
+                                path:'movingCollections',
+                                model:'Moving_Collections',
+                                populate: {
+                                 path: 'area',
+                                 model: 'Areas'
+                                },
+                                populate: {
+                                    path: 'maps',
+                                    model: 'Moving_Maps',
+                                    select: 'data date',
+                                    populate: {
+                                        path: 'standingPoints',
+                                        model: 'Standing_Points'
+                                    }
+                                   }
+                             }])
+            )
 })
 
 module.exports = router

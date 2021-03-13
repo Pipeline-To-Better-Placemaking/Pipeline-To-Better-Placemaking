@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-const Entry = mongoose.Schema({
+const entrySchema = mongoose.Schema({
     location: {
         latitude: {
             type: Number,
@@ -16,7 +16,7 @@ const Entry = mongoose.Schema({
     },
     age: {
         type: String,
-        enum: ['0-14','15-21','22-30','30-50','50-65','60+'],
+        enum: ['0-14','15-21','22-29','30-49','50-65','65+'],
         required: true
     },
     posture: {
@@ -29,11 +29,11 @@ const Entry = mongoose.Schema({
         enum: ['male','female','other'],
         required: true
     },
-    activity: {
+    activity: [{
         type: String,
-        enum: ['waiting','eating','talking','exercising'],
+        enum: ['waiting','eating','socializing','recreation','solitarty'],
         required: true
-    },
+    }],
     time: {
         type: Date,
         required: true
@@ -75,11 +75,12 @@ const stationary_schema = mongoose.Schema({
         required: true
     },
 
-    data:[Entry]   
+    data:[entrySchema]   
 })
 
 
 const Maps = module.exports = mongoose.model('Stationary_Maps', stationary_schema)
+const Entry = mongoose.model('Stationary_Entry', entrySchema)
 
 module.exports.addMap = async function(newMap) {
     return await newMap.save()
@@ -105,11 +106,19 @@ module.exports.projectCleanup = async function(projectId) {
     return await Maps.deleteMany({ project: projectId })
 }
 
-
 module.exports.addEntry = async function(mapId, newEntry) {
+    var entry = new Entry({
+        time: newEntry.time,
+        gender: newEntry.gender,
+        posture: newEntry.posture,
+        age: newEntry.age,
+        activity: newEntry.activity,
+        location: newEntry.location
+    })
+
     return await Maps.updateOne(
         { _id: mapId },
-        { $push: { data: newEntry }}
+        { $push: { data: entry}}
     )
 }
 
@@ -128,12 +137,16 @@ module.exports.removeResearcher = async function(mapId, userId){
 }
 
 module.exports.isResearcher = async function(mapId, userId){
-    const doc = await Maps.find(
-        {
-            _id: mapId, 
-            researchers: { $elemMatch:  userId }
-        }
-    )
+    try{
+        const doc = await Maps.find(
+            {
+                _id: mapId, 
+                researchers: { $elemMatch:  userId }
+            }
+        )
+    }catch(error){
+        return false
+    }
     if (doc.length === 0) {
         return false
     }

@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-const Entry = mongoose.Schema({
+const entrySchema = mongoose.Schema({
     path: [{
         lat: {
             type: Number,
@@ -14,11 +14,6 @@ const Entry = mongoose.Schema({
             required: true
         }
     }],
-    age: {
-        type: String,
-        enum: ['0-14','15-21','22-30','30-50','50-65','60+'],
-        required: true
-    },
     mode: {
         type: String,
         enum: ['running','walking','swimming','activity_on_wheels','handicap_assisted_wheels'],
@@ -65,11 +60,13 @@ const moving_schema = mongoose.Schema({
         required: true
     },
 
-    data:[Entry]   
+    data:[entrySchema]   
 })
 
 
 const Maps = module.exports = mongoose.model('Moving_Maps', moving_schema)
+const Entry = mongoose.model('Moving_Entry', entrySchema)
+
 
 module.exports.addMap = async function(newMap) {
     return await newMap.save()
@@ -97,11 +94,18 @@ module.exports.projectCleanup = async function(projectId) {
 
 
 module.exports.addEntry = async function(mapId, newEntry) {
+    var entry = new Entry({
+        time: newEntry.time,
+        mode : newEntry.mode,
+        path: newEntry.path
+    })
+
     return await Maps.updateOne(
         { _id: mapId },
-        { $push: { data: newEntry }}
+        { $push: { data: entry}}
     )
 }
+
 
 module.exports.addResearcher = async function(mapId, userId){
     return await Maps.updateOne(
