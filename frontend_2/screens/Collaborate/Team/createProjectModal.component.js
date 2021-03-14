@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../../components/headers.component';
-import { MapAddArea, ShowMarkers , getAreaName, getRegionForCoordinates } from '../../components/Maps/mapPoints.component';
+import { MapAddArea, ShowMarkers , getAreaName, getRegionForCoordinates, getLocationAddress } from '../../components/Maps/mapPoints.component';
 import { ModalContainer} from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
@@ -13,6 +13,8 @@ export function CreateProject(props) {
   const [location, setLocation] = useState(props.location);
   const [markers, setMarkers] = useState([]);
   const [projectName, setProjectName] = useState('');
+  const [searchText, setSearchText] = useState('');
+  const [region, setRegion] = useState(null);
 
   const confirmCreateProject = async () => {
     let success = false
@@ -70,6 +72,19 @@ export function CreateProject(props) {
     props.setVisible(false);
   }
 
+  const searchLocation = async () => {
+    console.log("These are the coordinates");
+    const coords = await getLocationAddress(searchText);
+    if(coords != null){
+      setRegion({
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1
+      });
+    }
+  }
+
   return (
     <ModalContainer {...props} visible={props.visible}>
       <View style={styles.projName}>
@@ -88,10 +103,13 @@ export function CreateProject(props) {
           <Input
               style={{flex:1}}
               placeholder='Enter a Location...'
+              value={searchText}
+              onChangeText={nextValue => setSearchText(nextValue)}
           />
           <Button
             status='info'
             accessoryLeft={SearchIcon}
+            onPress = {searchLocation}
             style={{marginLeft:10}}
             />
       </View>
@@ -100,6 +118,8 @@ export function CreateProject(props) {
         <MapAddArea
           location={location}
           markers={markers}
+          region={region}
+          setRegion={setRegion}
           setMarkers={setMarkers}
           mapHeight={'55%'}
           listHeight={'40%'}

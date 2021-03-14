@@ -3,6 +3,7 @@ import MapView, { PROVIDER_GOOGLE, Marker, Polygon, Polyline, Callout } from 're
 import { View, ScrollView } from 'react-native';
 import { Text, Button, Input, Icon, Divider, List, ListItem, Radio, RadioGroup } from '@ui-kitten/components';
 import * as Location from 'expo-location';
+import { useEffect } from 'react';
 
 // get center point
 // https://github.com/react-native-maps/react-native-maps/issues/505
@@ -61,6 +62,20 @@ export const getLocationName = async (loc) => {
       retVal = locationInfo[0].name;
     }
     return retVal;
+}
+
+// TODO
+export const getLocationAddress = async (address) => {
+  let retVal = null;
+
+  let locationAddress = await Location.geocodeAsync(address);
+
+  if (locationAddress != null && locationAddress.length >= 1){
+    // console.log("The geolocation for " + address + " is this: " + locationAddress[0].longitude);
+    retVal = locationAddress[0];
+  }
+
+  return retVal;
 }
 
 /* This needs:
@@ -300,7 +315,31 @@ setMarkers={}
 mapHeight={}
 listHeight={}
 */
+
+// TODO
 export function MapAddArea({children, ...props}) {
+  const [region, setRegion] = useState({
+    latitude: props.location.latitude,
+    longitude: props.location.longitude,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
+  });
+
+  // console.log("Current region latitude: " + region.latitude);
+  /*
+  useEffect(() => {
+    if(props.region != null && props.region != region){
+      setRegion(props.region)
+      props.setRegion(null);
+    }
+  }, []);
+  */
+
+  useEffect(() => {
+    if(props.region != null) {
+      setRegion(props.region)
+    }
+  }, [props.region])
 
   // This is basically a default zoom level
   let location = {
@@ -309,6 +348,16 @@ export function MapAddArea({children, ...props}) {
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   };
+
+  let defaultRegion = {
+    latitude: location.latitude,
+    longitude: location.longitude,
+    latitudeDelta: location.latitudeDelta,
+    longitudeDelta: location.longitudeDelta,
+  };
+
+  //console.log("This is the region state: " + props.region.latitude);
+
   // If we have markers, then we can calculate the zoom level
   if (props.markers !== null && props.markers.length >= 2) {
     location = getRegionForCoordinates(props.markers);
@@ -377,12 +426,8 @@ export function MapAddArea({children, ...props}) {
         provider={PROVIDER_GOOGLE}
         style={{height:props.mapHeight}}
         zoomEnabled
-        initialRegion={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: location.latitudeDelta,
-          longitudeDelta: location.longitudeDelta,
-        }}
+        region={region}
+        onRegionChangeComplete={newRegion => setRegion(newRegion)}
         onPress={event => addMarker(event.nativeEvent.coordinate)}
       >
         <CreatePolygon {...props} markers={props.markers} />
