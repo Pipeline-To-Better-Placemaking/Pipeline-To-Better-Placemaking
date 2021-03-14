@@ -64,7 +64,6 @@ export const getLocationName = async (loc) => {
     return retVal;
 }
 
-// TODO
 export const getLocationAddress = async (address) => {
   let retVal = null;
 
@@ -316,7 +315,6 @@ mapHeight={}
 listHeight={}
 */
 
-// TODO
 export function MapAddArea({children, ...props}) {
   const [region, setRegion] = useState({
     latitude: props.location.latitude,
@@ -324,16 +322,6 @@ export function MapAddArea({children, ...props}) {
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   });
-
-  // console.log("Current region latitude: " + region.latitude);
-  /*
-  useEffect(() => {
-    if(props.region != null && props.region != region){
-      setRegion(props.region)
-      props.setRegion(null);
-    }
-  }, []);
-  */
 
   useEffect(() => {
     if(props.region != null) {
@@ -348,15 +336,6 @@ export function MapAddArea({children, ...props}) {
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   };
-
-  let defaultRegion = {
-    latitude: location.latitude,
-    longitude: location.longitude,
-    latitudeDelta: location.latitudeDelta,
-    longitudeDelta: location.longitudeDelta,
-  };
-
-  //console.log("This is the region state: " + props.region.latitude);
 
   // If we have markers, then we can calculate the zoom level
   if (props.markers !== null && props.markers.length >= 2) {
