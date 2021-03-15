@@ -101,11 +101,11 @@ module.exports.addStationaryCollection = async function (projectId, collectionId
 }
 
 module.exports.deleteStationaryCollection = async function(projectId, collectionId) {
-    await Stationary_Collection.deleteCollection(collectionId)
-    return await Projects.updateOne(
+    await Projects.updateOne(
         { _id: projectId },
         { $pull: { stationaryCollections: collectionId}}
     )
+    return await Stationary_Collection.deleteCollection(collectionId)
 }
 
 module.exports.addMovingCollection = async function (projectId, collectionId) {
@@ -116,11 +116,12 @@ module.exports.addMovingCollection = async function (projectId, collectionId) {
 }
 
 module.exports.deleteMovingCollection = async function(projectId, collectionId) {
-   await Moving_Collection.deleteCollection(collectionId)
-   return await Projects.updateOne(
+   
+   await Projects.updateOne(
        { _id: projectId },
        { $pull: { movingCollections: collectionId}}
    )
+   return await Moving_Collection.deleteCollection(collectionId)
 }
 
 module.exports.addArea = async function(projectId, areaId) {

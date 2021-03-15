@@ -135,6 +135,21 @@ MAP=$(curl -H 'Content-Type: application/json' \
       | jq -r '.stationaryCollections[0].maps[0]' )
 
 
+
+curl -H 'Content-Type: application/json' \
+    -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/projects/${PROJECT}
+
+echo
+
+COLLECTION=$(curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/projects/${PROJECT} \
+     | jq -r '.stationaryCollections[0]._id' )
+
+
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request DELETE \
@@ -153,7 +168,7 @@ curl -H 'Content-Type: application/json' \
 echo
 
 #MAP=$(curl -H 'Content-Type: application/json' \
-#     -H "Authorization: Bearer ${TOKEN}" \
+#     -H "Authorization: Bearer ${TOKEN}" \r
 #     --request GET \
 #     http://localhost:8080/api/projects/${PROJECT} \
 #     | jq -r '.activities[0].activity')
