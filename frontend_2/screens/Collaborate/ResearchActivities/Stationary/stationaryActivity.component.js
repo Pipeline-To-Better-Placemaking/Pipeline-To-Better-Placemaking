@@ -72,11 +72,9 @@ export function StationaryActivity(props) {
 
         console.log("Data being saved: " + JSON.stringify(data))
 
-        console.log("TimeSlotId: " + JSON.stringify(props.timeSlot.id._id))
-
         // Saves the SM data
         try {
-            const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + props.timeSlot.id._id + '/data', {
+            const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + props.timeSlot._id + '/data', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

@@ -113,7 +113,7 @@ export function TabNavigation(props) {
 
   const addProject = async (projectDetails, teamDetails) => {
     projectDetails.description = "Team: " + teamDetails.title + "\nLocation: " + projectDetails.description;
-    project.teamId = teamDetails._id;
+    projectDetails.teamId = teamDetails._id;
     allProjects.push(projectDetails);
     await setAllProjects(allProjects);
   }

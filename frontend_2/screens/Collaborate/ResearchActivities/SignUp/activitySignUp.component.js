@@ -15,15 +15,16 @@ export function ActivitySignUpPage(props) {
 
     if (props.activity.test_type == activityList[0]) {
 
-      console.log("Activity: " + JSON.stringify(props.activity))
+      //console.log("Activity: " + JSON.stringify(props.activity))
+      console.log("timeSlot: ", timeSlot);
 
       let activityDetails = {
-        id: props.activity.maps[0],
-        location: props.activity.area.points[0],
-        area: props.activity.area.points,
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
         position: timeSlot.standingPoints,
-        time: props.activity.duration*60,
-        timeLeft: props.activity.duration*60
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
       }
 
       props.setTimeSlot(activityDetails);
@@ -33,11 +34,12 @@ export function ActivitySignUpPage(props) {
     }
     else if (props.activity.test_type == activityList[1]){
       let activityDetails = {
-        location: props.activity.area.points[0],
-        area: props.activity.area.points,
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
         position: timeSlot.standingPoints,
-        time: props.activity.duration*60,
-        timeLeft: props.activity.duration*60
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
       }
 
       props.setTimeSlot(activityDetails);
