@@ -60,7 +60,7 @@ module.exports.addActivity = async function(collectionId, mapId){
     )
 }
 
-module.exports.updateColection = async function(collectionId, newCollection){
+module.exports.updateCollection = async function(collectionId, newCollection){
     return await Collection.updateOne(
         { _id: collectionId },
         { $set: {
