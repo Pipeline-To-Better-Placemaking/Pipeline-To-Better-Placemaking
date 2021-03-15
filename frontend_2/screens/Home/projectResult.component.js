@@ -220,6 +220,10 @@ export function ProjectResultPage(props) {
     }
   }
 
+  const emailResults = async () => {
+
+  }
+
   const activityItem = ({ item, index }) => (
       <ListItem
         title={
@@ -255,6 +259,16 @@ export function ProjectResultPage(props) {
             <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
                 <Text style={styles.teamText}>Research Results</Text>
             </View>
+            <Button
+              size={'small'}
+              style={{marginRight:10}}
+              status={'info'}
+              appearance={'outline'}
+              accessoryRight={MailIcon}
+              onPress={emailResults}
+            >
+              Email Me Results
+            </Button>
         </View>
         <Divider style={{marginTop: 5}} />
 
@@ -271,3 +285,7 @@ export function ProjectResultPage(props) {
     </ViewableArea>
   );
 };
+
+const MailIcon = (props) => (
+  <Icon {...props} name='email-outline'/>
+);

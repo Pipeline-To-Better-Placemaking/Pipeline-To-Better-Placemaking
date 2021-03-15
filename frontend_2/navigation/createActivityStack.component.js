@@ -181,6 +181,8 @@ export function CreateActivityStack(props) {
 
       // set the type
       collectionDetails.test_type = test_type;
+      // set the date
+      collectionDetails.date = new Date(collectionDetails.date)
 
       // get the area
       let areaIndex = props.project.subareas.findIndex(element => element._id === collectionDetails.area);
