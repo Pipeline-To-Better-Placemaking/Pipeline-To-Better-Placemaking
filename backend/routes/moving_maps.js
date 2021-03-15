@@ -125,6 +125,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
     project = await Project.findById(map.project)
     if(await Team.isAdmin(project.team,user._id)){
         res.json(await Moving_Collection.deleteMap(map.sharedData,map._id))
+
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')

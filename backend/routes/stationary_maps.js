@@ -124,6 +124,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
     project = await Project.findById(map.project)
     if(await Team.isAdmin(project.team,user._id)){
         res.json(await Stationary_Collection.deleteMap(map.sharedData,map._id))
+
         
     }
     else{
