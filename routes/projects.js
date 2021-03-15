@@ -246,7 +246,7 @@ router.put('/:id/stationary_collections/:collectionId', passport.authenticate('j
                 duration: (req.body.duration ? req.body.duration : collection.duration)
         })
   
-        res.status(201).json(await Stationary_Collection.updateCollection(req.params.collectionId, newColletion))
+        res.status(201).json(await Stationary_Collection.updateCollection(req.params.collectionId, newCollection))
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
@@ -302,7 +302,7 @@ router.put('/:id/moving_collections/:collectionId', passport.authenticate('jwt',
                 duration: (req.body.duration ? req.body.duration : collection.duration)
         })
   
-        res.status(201).json(await Moving_Collection.updateCollection(req.params.collectionId, newColletion))
+        res.status(201).json(await Moving_Collection.updateCollection(req.params.collectionId, newCollection))
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
