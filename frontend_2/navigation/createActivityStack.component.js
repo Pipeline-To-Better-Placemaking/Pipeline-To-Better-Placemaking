@@ -398,6 +398,9 @@ export function CreateActivityStack(props) {
       collections.splice(removeIndex, 1);
       await props.setActivities([...collections]);
     }
+    // done
+    props.setUpdateActivity(false);
+    props.navigation.navigate('ProjectPage')
   }
 
   const setSelectedActivity = (index) => {
