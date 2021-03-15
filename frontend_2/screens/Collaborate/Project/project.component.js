@@ -5,6 +5,7 @@ import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Menu
 import { HeaderBackEdit, HeaderBack } from '../../components/headers.component';
 import { MapAreaWrapper, ShowArea } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { getDayStr, getTimeStr } from '../../components/timeStrings.component';
 import { EditSubAreas } from './viewSubareas.component';
 import { EditStandingPoints } from './viewStandingPoints.component';
 import { EditProjectPage } from './editProjectPage.component';
@@ -142,9 +143,11 @@ export function ProjectPage(props) {
   const activityItem = ({ item, index }) => (
       <ListItem
         title={
-              <Text style={{fontSize:20}}>
-                  {`${item.title}`}
-              </Text>}
+          <Text style={{fontSize:20}}>
+              {`${item.title}`}
+          </Text>
+        }
+        description={getDayStr(item.date)}
         accessoryRight={ForwardIcon}
         onPress={() => openActivityPage(item)}
       />
