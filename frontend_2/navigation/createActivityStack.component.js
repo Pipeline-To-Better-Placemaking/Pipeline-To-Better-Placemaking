@@ -210,7 +210,7 @@ export function CreateActivityStack(props) {
                     'Authorization': 'Bearer ' + props.token
             },
             body: JSON.stringify({
-                title: name.// + ' (' + getTimeStr(timeSlot.date) + ')',
+                title: name,// + ' (' + getTimeStr(timeSlot.date) + ')',
                 standingPoints: selectedPoints,
                 researchers: [],
                 project: props.project._id,
