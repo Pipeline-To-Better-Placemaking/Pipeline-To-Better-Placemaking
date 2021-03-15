@@ -210,7 +210,7 @@ export function CreateActivityStack(props) {
                     'Authorization': 'Bearer ' + props.token
             },
             body: JSON.stringify({
-                title: name,
+                title: name.// + ' (' + getTimeStr(timeSlot.date) + ')',
                 standingPoints: selectedPoints,
                 researchers: [],
                 project: props.project._id,
@@ -327,7 +327,7 @@ export function CreateActivityStack(props) {
                     'Authorization': 'Bearer ' + props.token
             },
             body: JSON.stringify({
-                title: name,
+                title: name,// + ' (' + getTimeStr(timeSlot.date) + ')',
                 standingPoints: selectedPoints,
                 collection: id,
                 date: timeSlot.date, // start time
@@ -349,9 +349,6 @@ export function CreateActivityStack(props) {
   const deleteTimeSlot = async (timeSlot, timeSlotName) => {
     let success = false
     let res = null
-    console.log('timeSlotName...', timeSlotName);
-    console.log('deleting timeSlot...', timeSlot);
-    // Save the activity
     try {
       const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
           method: 'DELETE',
@@ -373,8 +370,6 @@ export function CreateActivityStack(props) {
     let success = false
     let res = null
     let collectionName = '/' + props.activity.test_type + '_collections';
-
-    // Save the activity
     try {
       const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
                                     props.project._id +
