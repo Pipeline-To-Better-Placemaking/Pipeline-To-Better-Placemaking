@@ -38,6 +38,7 @@ export function CollaborateStack(props) {
   // The selected Activity and List of Activities for the selected Project
   const [activity, setActivity] = useState(null);
   const [activities, setActivities] = useState([]);
+  const [pastActivities, setPastActivities] = useState([]);
   const [updateActivity, setUpdateActivity] = useState(false);
 
   // Used for starting an Activity (time slot user has selected for the activity)
@@ -128,6 +129,8 @@ export function CollaborateStack(props) {
             removeProject={removeProject}
             activities={activities}
             setActivities={setActivities}
+            pastActivities={pastActivities}
+            setPastActivities={setPastActivities}
             location={location}
           />
         }
@@ -154,6 +157,7 @@ export function CollaborateStack(props) {
             setUpdateActivity={setUpdateActivity}
             activities={activities}
             setActivities={setActivities}
+            pastActivities={pastActivities}
             activityTypes={activityTypes}
             setTimeSlots={setTimeSlots}
           />

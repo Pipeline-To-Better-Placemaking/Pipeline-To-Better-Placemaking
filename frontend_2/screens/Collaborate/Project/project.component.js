@@ -27,7 +27,6 @@ export function ProjectPage(props) {
   const openActivityPage = async (collectionDetails) => {
     let success = false
 
-    console.log("selected collection: ", collectionDetails);
     await props.setTimeSlots([]);
 
     if(collectionDetails.test_type === 'stationary') {
@@ -66,7 +65,7 @@ export function ProjectPage(props) {
 
       // open activity page
       props.navigation.navigate('ActivitySignUpPage')
-    }//*/
+    }
 
   };
 
@@ -86,7 +85,7 @@ export function ProjectPage(props) {
           }
       })
       collectionDetails = await response.json();
-      console.log("response collection: ", collectionDetails);
+      //console.log("response collection: ", collectionDetails);
       success = true
     } catch (error) {
         console.log("error", error)
@@ -102,7 +101,7 @@ export function ProjectPage(props) {
       collectionDetails.date = new Date(collectionDetails.date)
       //let areaIndex = props.project.subareas.findIndex(element => element._id === collectionDetails.area);
       //collectionDetails.area = props.project.subareas[areaIndex];
-      console.log("returning collection: ", collectionDetails);
+      //console.log("returning collection: ", collectionDetails);
       return collectionDetails;
     } else {
       return null;
@@ -135,7 +134,7 @@ export function ProjectPage(props) {
     if (success) {
       // set selected timeSlots
       timeSlotDetails.date = new Date(timeSlotDetails.date)
-      console.log("time slot: ", timeSlotDetails);
+      //console.log("time slot: ", timeSlotDetails);
       props.setTimeSlots(slots => [...slots,timeSlotDetails]);
     }
   };
@@ -210,7 +209,7 @@ export function ProjectPage(props) {
         </View>
         <Divider style={{marginTop: 5}} />
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'42%', marginTop:15}}>
+        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'42%'}}>
           <List
             style={{maxHeight:'100%', maxWidth:'90%'}}
             data={props.activities}

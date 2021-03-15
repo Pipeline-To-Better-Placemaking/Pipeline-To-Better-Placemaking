@@ -3,9 +3,11 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardA
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem } from '@ui-kitten/components';
 import { HeaderBackEdit, HeaderBack } from '../../components/headers.component';
+import { getDayStr, getTimeStr } from '../../components/timeStrings.component';
 import { ViewableArea, ContentContainer, PopUpContainer } from '../../components/content.component';
 import { CreateProject } from './createProjectModal.component';
 import { EditTeamPage } from './editTeam.component';
+import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './team.styles';
 
@@ -51,51 +53,59 @@ export function TeamPage(props) {
     }
     // if successfully retrieved project info, Update
     if(success) {
-      // set selected project page information
+      let today = new Date();
+
+      let pastStationaryCollections = [];
       if(projectDetails.stationaryCollections !== null) {
-        projectDetails.stationaryCollections.map(collection => {
+        for(let i = 0; i < projectDetails.stationaryCollections.length; i++) {
+          let collection = projectDetails.stationaryCollections[i];
           collection.test_type = 'stationary';
           // set area
           let areaIndex = projectDetails.subareas.findIndex(element => element._id === collection.area);
           collection.area = projectDetails.subareas[areaIndex];
-          collection.date = new Date(collection.date)
-        })
+          // handle date
+          collection.date = new Date(collection.date);
+          if (moment(today).isAfter(collection.date, 'day')) {
+            pastStationaryCollections.push(collection);
+          }
+          projectDetails.stationaryCollections[i] = collection;
+        }
+      }
+      // remove collections from the list that are in the past
+      for(let i = 0; i < pastStationaryCollections.length; i++) {
+        let removeIndex = projectDetails.stationaryCollections.findIndex(element => element._id === pastStationaryCollections[i]._id);
+        projectDetails.stationaryCollections.splice(removeIndex, 1);
       }
 
+      let pastMovingCollections = [];
       if(projectDetails.movingCollections !== null) {
-        projectDetails.movingCollections.map(collection => {
+        for(let i = 0; i < projectDetails.movingCollections.length; i++) {
+          let collection = projectDetails.movingCollections[i];
           collection.test_type = 'moving';
           // set area
           let areaIndex = projectDetails.subareas.findIndex(element => element._id === collection.area);
           collection.area = projectDetails.subareas[areaIndex];
-          collection.date = new Date(collection.date)
-        })
+          // handle date
+          collection.date = new Date(collection.date);
+          if (moment(today).isAfter(collection.date, 'day')) {
+            pastMovingCollections.push(collection);
+          }
+          projectDetails.movingCollections[i] = collection;
+        }
+      }
+      // remove collections from the list that are in the past
+      for(let i = 0; i < pastMovingCollections.length; i++) {
+        let removeIndex = projectDetails.movingCollections.findIndex(element => element._id === pastMovingCollections[i]._id);
+        projectDetails.movingCollections.splice(removeIndex, 1);
       }
 
+      // set selected project page information
       props.setProject(projectDetails);
       props.setActivities([...projectDetails.stationaryCollections, ...projectDetails.movingCollections]);
+      props.setPastActivities([...pastStationaryCollections, ...pastMovingCollections]);
       console.log("Selected Project: ", projectDetails);
 
       // open project page
-      props.navigation.navigate('ProjectPage');
-    } else {
-      // set fake data because *cries*
-      projectDetails = {
-        _id:'0',
-        title:'Project Sad',
-        description:"cries",
-        subareas:[{
-          _id:'0',
-          points:[
-            {latitude:28.60275207150067, longitude:-81.20052214711905},
-            {latitude:28.602640803731394, longitude:-81.19969569146633},
-            {latitude:28.601981731115934, longitude:-81.2004641443491},
-          ],
-        }]
-      };
-
-      props.setProject(projectDetails);
-      props.setActivities([]);
       props.navigation.navigate('ProjectPage');
     }
   };
