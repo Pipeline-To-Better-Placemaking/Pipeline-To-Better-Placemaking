@@ -89,14 +89,14 @@ USER=$(curl -H "Authorization: Bearer ${TOKEN}" \
         http://localhost:8080/api/users/ \
         | jq -r '._id')
 
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request POST \
-      -d "{\"title\": \"collection\",   
-           \"area\": \"${AREA}\" , 
-           \"date\": \"2012-04-23T18:25:43.511Z\" 
-           }"  \
-     http://localhost:8080/api/projects/${PROJECT}/stationary_collections
+#curl -H 'Content-Type: application/json' \
+#     -H "Authorization: Bearer ${TOKEN}" \
+#     --request POST \
+#      -d "{\"title\": \"collection\",   
+#           \"area\": \"${AREA}\" , 
+#           \"date\": \"2012-04-23T18:25:43.511Z\" 
+#           }"  \
+#     http://localhost:8080/api/projects/${PROJECT}/stationary_collections
 
 COLLECTION=$(curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
@@ -134,47 +134,23 @@ MAP=$(curl -H 'Content-Type: application/json' \
      http://localhost:8080/api/projects/${PROJECT} \
       | jq -r '.stationaryCollections[0].maps[0]' )
 
-echo
-echo "claim"
 
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
-     --request PUT \
-     http://localhost:8080/api/stationary_maps/${MAP}/claim
-
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request POST \
-      -d  "{\"location\": {\"latitude\": 8.602413253152307, \"longitude\": -7.20019937739713},  
-           \"age\": \"0-14\", 
-            \"posture\": \"sitting(informal)\" , 
-            \"gender\": \"female\",
-           \"activity\": [\"socializing\"] , 
-           \"time\": \"2012-04-23T12:25:43.511Z\" 
-          }"  \
-     http://localhost:8080/api/stationary_maps/${MAP}/data
-
+     --request DELETE \
+     http://localhost:8080/api/projects/${PROJECT}/stationary_collections/${COLLECTION} 
 
 echo
+echo "SDFSDFSDFSDFSDFFSDFSDF"
+echo ${COLLECTION}
 echo
 
 curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
+    -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
-     http://localhost:8080/api/stationary_maps/${MAP} 
-     
+     http://localhost:8080/api/projects/${PROJECT}
 
 echo
-echo
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-     http://localhost:8080/api/projects/${PROJECT}/stationary_data
-echo
-echo
-
-
-
 
 #MAP=$(curl -H 'Content-Type: application/json' \
 #     -H "Authorization: Bearer ${TOKEN}" \

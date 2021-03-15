@@ -5,6 +5,8 @@ const Area = require('../models/areas.js')
 const Standing_Point = require('../models/standing_points.js')
 const Stationary_Map = require('../models/stationary_maps.js')
 const Moving_Map = require('../models/moving_maps.js')
+const Stationary_Collection = require('../models/stationary_collections.js')
+const Moving_Collection = require('../models/moving_collections.js')
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
@@ -99,7 +101,7 @@ module.exports.addStationaryCollection = async function (projectId, collectionId
 }
 
 module.exports.deleteStationaryCollection = async function(projectId, collectionId) {
-    await Stationary_collections.deleteCollection(collectionId)
+    await Stationary_Collection.deleteCollection(collectionId)
     return await Projects.updateOne(
         { _id: projectId },
         { $pull: { stationaryCollections: collectionId}}
@@ -114,7 +116,7 @@ module.exports.addMovingCollection = async function (projectId, collectionId) {
 }
 
 module.exports.deleteMovingCollection = async function(projectId, collectionId) {
-   await Moving_collections.deleteCollection(collectionId)
+   await Moving_Collection.deleteCollection(collectionId)
    return await Projects.updateOne(
        { _id: projectId },
        { $pull: { movingCollections: collectionId}}
