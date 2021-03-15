@@ -22,18 +22,6 @@ export function ProjectPage(props) {
   const [editProjectVisible, setEditProjectVisible] = useState(false);
   const [editAreasVisible, setEditAreasVisible] = useState(false);
   const [editStandingPointsVisible, setEditStandingPointsVisible] = useState(false);
-  const [owner, setOwner] = useState(false);
-
-  useEffect(() => {
-	  isTeamOwner(props.team.users, props.userId)
-  }, []);
-
-  const isTeamOwner = (members, userID) => {
-    let userIndex = members.findIndex(element => element.role == "owner")
-    if (members[userIndex].user == userID) {
-      setOwner(true);
-    }
-  }
 
   const openActivityPage = async (collectionDetails) => {
     let success = false
@@ -44,21 +32,20 @@ export function ProjectPage(props) {
     if(collectionDetails.test_type === 'stationary') {
       // get the collection info
       collectionDetails = await getCollection(collectionDetails, 'stationary/');
-
+      success = (collectionDetails !== null)
       // get the timeSlot info
-      if (collectionDetails !== null && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
+      if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
         collectionDetails.maps.map(item => {
           getTimeSlots(item._id, 'stationary_maps/');
         })
-        success = true
       }
 
     } else if(collectionDetails.test_type === 'moving') {
       // get the collection info
       collectionDetails = await getCollection(collectionDetails, 'moving/');
-
+      success = (collectionDetails !== null)
       // get the timeSlot info
-      if (collectionDetails !== null && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
+      if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
         collectionDetails.maps.map(item => {
           getTimeSlots(item._id, 'moving_maps/');
         })
@@ -165,14 +152,14 @@ export function ProjectPage(props) {
 
   return (
     <ViewableArea>
-      {owner ?
+      {props.teamOwner() ?
         <HeaderBackEdit {...props} text={props.project.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
           <MenuItem title='Edit Project' onPress={() => {setEditMenuVisible(false); setEditProjectVisible(true)}}/>
           <MenuItem title='Area(s)' onPress={() => {setEditMenuVisible(false); setEditAreasVisible(true)}}/>
           <MenuItem title='Standing Points' onPress={() => {setEditMenuVisible(false); setEditStandingPointsVisible(true)}}/>
-        </HeaderBackEdit> :
-        <HeaderBack {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
-        </HeaderBack>
+        </HeaderBackEdit>
+      :
+        <HeaderBack {...props} text={props.team.title}/>
       }
       <EditProjectPage
         {...props}
@@ -209,9 +196,13 @@ export function ProjectPage(props) {
                 <Text style={styles.teamText}>Sign Up</Text>
             </View>
             <View style={styles.createTeamButtonView}>
-                {owner && <Button status='primary' appearance='outline' onPress={() => props.navigation.navigate('CreateActivityStack')}>
-                    Create Research Activity
-                </Button>}
+              {props.teamOwner() ?
+                <Button status='primary' appearance='outline' onPress={() => {props.setUpdateActivity(false); props.navigation.navigate('CreateActivityStack')}}>
+                  Create Research Activity
+                </Button>
+              :
+                null
+              }
             </View>
         </View>
         <Divider style={{marginTop: 5}} />

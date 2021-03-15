@@ -64,18 +64,18 @@ export function CreateTimeSlots(props) {
     // this uses the last value in the timeSlots list as the new start time value
     let time = timeValue;
     let indicies = [];
-    let numPeeps = '1';
+    let numResearchers = '1';
     let length = props.timeSlots.length;
 
     if (length > 0) {
       time = props.timeSlots[length-1].date;
-      numPeeps = props.timeSlots[length-1].maxResearchers;
+      numResearchers = props.timeSlots[length-1].maxResearchers;
       indicies = props.timeSlots[length-1].assignedPointIndicies;
     }
     let temp = {
         date: time,
         timeString: getTimeStr(time),
-        maxResearchers: numPeeps,
+        maxResearchers: numResearchers,
         researchers: [],
         assignedPointIndicies: indicies,
     };
@@ -112,11 +112,11 @@ export function CreateTimeSlots(props) {
     props.setTimeSlots(timeSlots => [...tempList]);
   }
 
-  const editPoints = (item, index) => {
+  const editPoints = async (item, index) => {
     // load the current value
-    setSelectedPointsIndex(props.timeSlots[index].assignedPointIndicies);
+    await setSelectedPointsIndex(props.timeSlots[index].assignedPointIndicies);
     // set the index for which time slot we're editing
-    setSelectedIndex(index);
+    await setSelectedIndex(index);
     // view the modal
     setSelectPointsVisible(true);
   };

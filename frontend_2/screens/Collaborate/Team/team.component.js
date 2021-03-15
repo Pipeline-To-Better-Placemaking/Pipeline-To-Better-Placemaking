@@ -16,7 +16,6 @@ export function TeamPage(props) {
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [editTeamVisible, setEditTeamVisible] = useState(false);
   const [email, setEmail] = useState('');
-  const [owner, setOwner] = useState(false);
 
   useEffect(() => {
     async function getTokens() {
@@ -26,17 +25,7 @@ export function TeamPage(props) {
     }
 
     getTokens()
-    isTeamOwner(props.team.users, props.userId)
   }, []);
-
-  const isTeamOwner = (members, userID) => {
-    let userIndex = members.findIndex(element => element.role == "owner")
-    if (members[userIndex].user == userID) {
-      setOwner(true);
-    } else {
-      setOwner(false);
-    }
-  }
 
   const openProjectPage = async (item) => {
     let success = false
@@ -157,25 +146,25 @@ export function TeamPage(props) {
 
   const sendInvite = async () => {
     let success = false;
-    let res  = null;
+    let res = null;
 
     // Send invite by user email
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/'+ props.team._id +'/invites', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + props.token
-            },
-            body: JSON.stringify({
-                userEmail: email,
-            })
+      const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/'+ props.team._id +'/invites', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + props.token
+        },
+        body: JSON.stringify({
+            userEmail: email,
         })
-        res = await response
-        success = true
+      })
+      res = await response
+      success = true
     } catch (error) {
-        console.log("error inviting user: ", error)
+      console.log("error inviting user: ", error)
     }
     //console.log("status: ", res.status);
     console.log("ok: ", res.ok);
@@ -193,15 +182,14 @@ export function TeamPage(props) {
 
   };
 
-  //console.log("Am I the owner of this team? answer: " + owner);
   return (
     <ViewableArea>
-      {owner ?
+      {props.teamOwner() ?
         <HeaderBackEdit {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
-        <MenuItem title='Edit Team' onPress={() => {setEditMenuVisible(false); setEditTeamVisible(true)}}/>
-        </HeaderBackEdit> :
-        <HeaderBack {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
-        </HeaderBack>
+          <MenuItem title='Edit Team' onPress={() => {setEditMenuVisible(false); setEditTeamVisible(true)}}/>
+        </HeaderBackEdit>
+      :
+        <HeaderBack {...props} text={props.team.title}/>
       }
       <EditTeamPage
         {...props}
@@ -237,9 +225,13 @@ export function TeamPage(props) {
                 <Text style={styles.teamText}>Projects </Text>
             </View>
             <View style={styles.createTeamButtonView}>
-                {owner && <Button status='primary' appearance='outline' onPress={() => setCreateProjectVisible(true)}>
-                    Create New
-                </Button>}
+              {props.teamOwner() ?
+                <Button status='primary' appearance='outline' onPress={() => setCreateProjectVisible(true)}>
+                  Create New
+                </Button>
+              :
+                null
+              }
             </View>
         </View>
         <Divider style={{marginTop: 5}} />
@@ -258,9 +250,13 @@ export function TeamPage(props) {
                 <Text style={styles.teamText}>Team Members </Text>
             </View>
             <View style={styles.createTeamButtonView}>
-                {owner && <Button status='primary' appearance='outline' onPress={() => setInviteVisible(true)}>
-                    Invite
-                </Button>}
+              {props.teamOwner() ?
+                <Button status='primary' appearance='outline' onPress={() => setInviteVisible(true)}>
+                  Invite
+                </Button>
+              :
+                null
+              }
             </View>
         </View>
         <Divider style={{marginTop: 5}} />
