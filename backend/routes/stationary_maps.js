@@ -102,7 +102,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     let newMap = new Map({
         title: (req.body.title ? req.body.title : map.title),
         date: (req.body.date ? req.body.date : map.date),
-        area: (req.body.area ? req.body.area : map.area),
+        maxResearchers: slot.maxResearchers,
         standingPoints: (req.body.standingPoints ? req.body.standingPoints : map.standingPoints)
     })
 
