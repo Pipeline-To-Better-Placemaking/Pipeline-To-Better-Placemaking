@@ -5,6 +5,7 @@ import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Menu
 import { HeaderBack } from '../components/headers.component';
 import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
+import { getDayStr, getTimeStr } from '../components/timeStrings.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './projectResult.styles';
 
@@ -222,9 +223,11 @@ export function ProjectResultPage(props) {
   const activityItem = ({ item, index }) => (
       <ListItem
         title={
-              <Text style={{fontSize:20}}>
-                  {`${item.title}`}
-              </Text>}
+          <Text style={{fontSize:20}}>
+              {`${item.title}`}
+          </Text>
+        }
+        description={getTimeStr(item.date) + ' - ' + getDayStr(item.day) + ' - ' + item.test_type}
         accessoryRight={ForwardIcon}
         onPress={() => openActivityPage(item)}
       />

@@ -66,7 +66,6 @@ export const HomeScreen = ( props ) => {
   }
 
   const getTeam = async(id) => {
-    let token = await AsyncStorage.getItem("@token");
     let success = false
     let teamDetails = null
     // Get the team information
@@ -76,7 +75,7 @@ export const HomeScreen = ( props ) => {
             headers: {
                 Accept: 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + props.token
             }
         })
         teamDetails = await response.json();
@@ -92,7 +91,7 @@ export const HomeScreen = ( props ) => {
 
     // return team info
     if(success) {
-      props.setSelectedTeam(teamDetails); 
+      props.setSelectedTeam(teamDetails);
     }
   }
 
@@ -100,19 +99,22 @@ export const HomeScreen = ( props ) => {
     // loop through all Stationary collections and get all of the maps
     for (let i = 0; i < projectDetails.stationaryCollections.length; i++) {
       let collection = projectDetails.stationaryCollections[i];
-      if (collection.maps !== null) {
-        collection.maps.map(mapId => {
-          // not really sure what we'll need here to display for the list
-          // we could add the area
-          let day = new Date(collection.date)
-          let tempObj = {
-            title: getDayStr(day) + ' ' + collection.title,
-            day: collection.date,
-            test_type: "stationary",
-            _id: mapId
-          }
-          results.push(tempObj);
-        });
+      for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
+        let mapId = collection.maps[j];
+        let day = new Date(collection.date)
+        let time = day;
+        let resultInfo = await getResultInfo(mapId, 'stationary_maps/');
+        if (resultInfo !== null) {
+          time = new Date(resultInfo.date); // start time
+        }
+        let tempObj = {
+          title: collection.title,
+          day: day,
+          date: time,
+          test_type: "stationary",
+          _id: mapId
+        }
+        results.push(tempObj);
       }
     }
     return results;
@@ -122,17 +124,22 @@ export const HomeScreen = ( props ) => {
     // loop through all People Moving collections and get all of the maps
     for (let i = 0; i < projectDetails.movingCollections.length; i++) {
       let collection = projectDetails.movingCollections[i];
-      if (collection.maps !== null) {
-        collection.maps.map(mapId => {
-          let day = new Date(collection.date)
-          let tempObj = {
-            title: getDayStr(day) + ' ' + collection.title,
-            day: collection.date,
-            test_type: "moving",
-            _id: mapId
-          }
-          results.push(tempObj);
-        });
+      for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
+        let mapId = collection.maps[j];
+        let day = new Date(collection.date);
+        let time = day;
+        let resultInfo = await getResultInfo(mapId, 'moving_maps/');
+        if (resultInfo !== null) {
+          time = new Date(resultInfo.date); // start time
+        }
+        let tempObj = {
+          title: collection.title,
+          day: day,
+          date: time,
+          test_type: "moving",
+          _id: mapId
+        }
+        results.push(tempObj);
       }
     }
     return results;
@@ -142,20 +149,49 @@ export const HomeScreen = ( props ) => {
     // loop through all survey collections and get all of the maps
     for (let i = 0; i < projectDetails.surveyCollections.length; i++) {
       let collection = projectDetails.surveyCollections[i];
-      if (collection.maps !== null) {
-        collection.maps.map(mapId => {
-          let day = new Date(collection.date)
-          let tempObj = {
-            title: getDayStr(day) + ' ' + collection.title,
-            day: collection.date,
-            test_type: "survey",
-            _id: mapId
-          }
-          results.push(tempObj);
-        });
+      for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
+        let mapId = collection.maps[j];
+        let day = new Date(collection.date);
+        let time = day;
+        let resultInfo = await getResultInfo(mapId, 'survey_codes/'); //TODO: not sure what this should be called
+        if (resultInfo !== null) {
+          time = new Date(resultInfo.date); // start time
+        }
+        let tempObj = {
+          title: collection.title,
+          day: day,
+          date: time,
+          test_type: "survey",
+          _id: mapId
+        }
+        results.push(tempObj);
       }
     }
     return results;
+  }
+
+  const getResultInfo = async (resultId, routePath) => {
+    let success = false
+    let res = null
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + routePath + resultId, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            }
+        })
+        res = await response.json();
+        success = true
+    } catch (error) {
+        console.log("error getting result information\n", error)
+    }
+    if(success) {
+      return res;
+    } else {
+      return null;
+    }
   }
 
   const resultItem = ({ item, index }) => (
