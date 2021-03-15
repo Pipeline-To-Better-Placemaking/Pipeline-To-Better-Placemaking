@@ -89,14 +89,14 @@ USER=$(curl -H "Authorization: Bearer ${TOKEN}" \
         http://localhost:8080/api/users/ \
         | jq -r '._id')
 
-#curl -H 'Content-Type: application/json' \
-#     -H "Authorization: Bearer ${TOKEN}" \
-#     --request POST \
-#      -d "{\"title\": \"collection\",   
-#           \"area\": \"${AREA}\" , 
-#           \"date\": \"2012-04-23T18:25:43.511Z\" 
-#           }"  \
-#     http://localhost:8080/api/projects/${PROJECT}/stationary_collections
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request POST \
+      -d "{\"title\": \"collection\",   
+           \"area\": \"${AREA}\" , 
+           \"date\": \"2012-04-23T18:25:43.511Z\" 
+           }"  \
+     http://localhost:8080/api/projects/${PROJECT}/stationary_collections
 
 COLLECTION=$(curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
@@ -134,36 +134,21 @@ MAP=$(curl -H 'Content-Type: application/json' \
      http://localhost:8080/api/projects/${PROJECT} \
       | jq -r '.stationaryCollections[0].maps[0]' )
 
-
-
-curl -H 'Content-Type: application/json' \
-    -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-     http://localhost:8080/api/projects/${PROJECT}
-
-echo
-
-COLLECTION=$(curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-     http://localhost:8080/api/projects/${PROJECT} \
-     | jq -r '.stationaryCollections[0]._id' )
-
-
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request DELETE \
-     http://localhost:8080/api/projects/${PROJECT}/stationary_collections/${COLLECTION} 
+     http://localhost:8080/api/stationary_maps/${MAP}
 
 echo
-echo "SDFSDFSDFSDFSDFFSDFSDF"
-echo ${COLLECTION}
+echo MAP ${MAP}
 echo
 
 curl -H 'Content-Type: application/json' \
-    -H "Authorization: Bearer ${TOKEN}" \
+     -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
-     http://localhost:8080/api/projects/${PROJECT}
+     http://localhost:8080/api/collections/stationary/${COLLECTION} 
+
+echo
 
 echo
 
