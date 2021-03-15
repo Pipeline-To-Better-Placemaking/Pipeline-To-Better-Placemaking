@@ -289,15 +289,15 @@ export function CreateActivityStack(props) {
         }
       }
 
-      await timesToAdd.map(timeSlot => {
-        postTimeSlot(timeSlot, name, props.activity._id, timeSlotName);
-      });
-      await timesToModify.map(timeSlot => {
-        putTimeSlot(timeSlot, name, props.activity._id, timeSlotName);
-      });
-      await timesToDelete.map(timeSlot => {
-        deleteTimeSlot(timeSlot, timeSlotName);
-      });
+      for (let i=0; i< timesToAdd.length; i++) {
+        await postTimeSlot(timesToAdd[i], name, props.activity._id, timeSlotName);
+      }
+      for (let i=0; i< timesToModify.length; i++) {
+        await postTimeSlot(timesToModify[i], name, props.activity._id, timeSlotName);
+      }
+      for (let i=0; i< timesToDelete.length; i++) {
+        await deleteTimeSlot(timesToDelete[i], timeSlotName);
+      }
 
       // modify collection name in the list
       let collections = [...props.activities];
@@ -349,6 +349,8 @@ export function CreateActivityStack(props) {
   const deleteTimeSlot = async (timeSlot, timeSlotName) => {
     let success = false
     let res = null
+    console.log('timeSlotName...', timeSlotName);
+    console.log('deleting timeSlot...', timeSlot);
     // Save the activity
     try {
       const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
