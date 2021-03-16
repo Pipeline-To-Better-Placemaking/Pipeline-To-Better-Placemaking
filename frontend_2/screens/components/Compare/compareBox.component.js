@@ -9,6 +9,11 @@ export function CompareBox(props) {
 
     const [index] = useState(props.index)
 
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
+    const [titleIndex, setTitleIndex] = useState(0)
+    const activities = ['Stationary Activity Map', 'People Moving', 'Survey']
+
     const RemoveIcon = (props) => {
         return (
             <Icon {...props} fill='#8F9BB3' style={styles.removeIcon} name='close-circle'/>
@@ -21,12 +26,13 @@ export function CompareBox(props) {
 
     const setStartDateData = async (startDate) => {
 
-        await props.setStartDate(startDate)
+        await setStartDate(startDate)
 
         let data = {
             id: props.project._id,
-            startData: startDate,
-            endDate: props.endDate
+            testType: props.testType,
+            startDate: startDate,
+            endDate: endDate
         }
 
         await props.setData(index, data)
@@ -36,12 +42,17 @@ export function CompareBox(props) {
 
         let data = {
             id: props.project._id,
-            startData: props.startDate,
+            testType: props.testType,
+            startDate: startDate,
             endDate: endDate
         }
 
-        props.setEndDate(endDate)
+        setEndDate(endDate)
         props.setData(index, data)
+    }
+
+    const setTitle = (index) => {
+        setTitleIndex(index)
     }
 
     return(
@@ -69,8 +80,8 @@ export function CompareBox(props) {
                     <Select 
                         status={'primary'}
                         style={styles.chooseTestButton}
-                        value={props.activities[props.titleIndex-1]}
-                        onSelect={index => props.setTitleIndex(index)}
+                        value={activities[titleIndex-1]}
+                        onSelect={index => setTitle(index)}
                         placeholder='Choose Test'
                     >
                         <SelectItem title='Stationary Activity Map'/>
@@ -81,9 +92,9 @@ export function CompareBox(props) {
                     <Datepicker
                         style={{marginTop: 30}}
                         placeholder={'Start Date'}
-                        max={props.endDate}
-                        date={props.startDate}
-                        value={props.startDate}
+                        max={endDate}
+                        date={startDate}
+                        value={startDate}
                         onSelect={nextDate => setStartDateData(nextDate)}
                         status={'primary'}
                         accessoryRight={CalendarIcon}
@@ -93,9 +104,9 @@ export function CompareBox(props) {
                     <Datepicker
                         style={{marginTop: 30}}
                         placeholder={'End Date'}
-                        min={props.startDate}
-                        date={props.endDate}
-                        value={props.endDate}
+                        min={startDate}
+                        date={endDate}
+                        value={endDate}
                         onSelect={nextDate => setEndDateData(nextDate)}
                         status={'primary'}
                         accessoryRight={CalendarIcon}
