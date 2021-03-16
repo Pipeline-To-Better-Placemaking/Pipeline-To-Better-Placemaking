@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Text, Button, Divider, List, Card } from '@ui-kitten/components';
-import { HeaderBack } from '../../../components/headers.component';
-import { MapAreaWrapper, ShowArea, ShowMarkers } from '../../../components/Maps/mapPoints.component';
+import { Text, Button, Divider, List, Card, MenuItem } from '@ui-kitten/components';
+import { HeaderBack, HeaderBackEdit } from '../../../components/headers.component';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
+import { MapAreaWrapper, ShowArea, ShowMarkers } from '../../../components/Maps/mapPoints.component';
 import { getDayStr, getTimeStr } from '../../../components/timeStrings.component';
 
 export function ActivitySignUpPage(props) {
@@ -11,19 +11,27 @@ export function ActivitySignUpPage(props) {
   // Constant array of activities
   const activityList = ["stationary", "moving", "survey"]
 
+  const [editMenuVisible, setEditMenuVisible] = useState(false);
+
+  const editActivityInfo = async () => {
+    await props.setUpdateActivity(true);
+    props.navigation.navigate('CreateActivityStack')
+  }
+
   const onBeginPress = async (timeSlot, index) => {
 
     if (props.activity.test_type == activityList[0]) {
 
-      console.log("Activity: " + JSON.stringify(props.activity))
+      //console.log("Activity: " + JSON.stringify(props.activity))
+      console.log("timeSlot: ", timeSlot);
 
       let activityDetails = {
-        id: props.activity.maps[0],
-        location: props.activity.area.points[0],
-        area: props.activity.area.points,
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
         position: timeSlot.standingPoints,
-        time: props.activity.duration*60,
-        timeLeft: props.activity.duration*60
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
       }
 
       props.setTimeSlot(activityDetails);
@@ -33,11 +41,12 @@ export function ActivitySignUpPage(props) {
     }
     else if (props.activity.test_type == activityList[1]){
       let activityDetails = {
-        location: props.activity.area.points[0],
-        area: props.activity.area.points,
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
         position: timeSlot.standingPoints,
-        time: props.activity.duration*60,
-        timeLeft: props.activity.duration*60
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
       }
 
       props.setTimeSlot(activityDetails);
@@ -213,7 +222,13 @@ export function ActivitySignUpPage(props) {
 
   return (
     <ViewableArea>
-      <HeaderBack {...props} text={props.activity.title}/>
+      {props.teamOwner() ?
+        <HeaderBackEdit {...props} text={props.activity.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
+          <MenuItem title='Edit Info' onPress={() => {setEditMenuVisible(false); editActivityInfo()}}/>
+        </HeaderBackEdit>
+      :
+        <HeaderBack {...props} text={props.activity.title}/>
+      }
       <ContentContainer>
         <View style={{height:'40%'}}>
           <MapAreaWrapper area={props.activity.area.points} mapHeight={'100%'}>

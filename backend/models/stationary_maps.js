@@ -29,11 +29,10 @@ const entrySchema = mongoose.Schema({
         enum: ['male','female','other'],
         required: true
     },
-    activity: [{
+    activity: {
         type: String,
-        enum: ['waiting','eating','socializing','recreation','solitarty'],
         required: true
-    }],
+    },
     time: {
         type: Date,
         required: true

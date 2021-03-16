@@ -51,10 +51,6 @@ export function StationaryResultPage(props) {
     props.navigation.navigate("StationaryActivityResultView");
   }
 
-  const emailResults = () => {
-
-  }
-
   return (
     <ViewableArea>
       <HeaderBack {...props} text={props.project.title + ": " + props.selectedResult.sharedData.title}/>
@@ -82,18 +78,11 @@ export function StationaryResultPage(props) {
 
           <Text>Researcher(s): {researchers} </Text>
 
-          <Divider style={{marginTop:10, marginBottom:20, borderWidth:0.5}} />
+          <Divider style={{marginTop:10, marginBottom:10, borderWidth:0.5}} />
 
-          <View style={{ marginBottom:20, flexDirection:'row', justifyContent:'space-between'}}>
+          <View style={{ marginBottom:10, flexDirection:'row', justifyContent:'center'}}>
             <Button
-              status={'info'}
-              appearance={'outline'}
-              accessoryRight={MailIcon}
-              onPress={emailResults}
-            >
-              Email Me Results
-            </Button>
-            <Button
+              style={{flex:1}}
               status={'info'}
               appearance={'outline'}
               accessoryRight={MapIcon}
@@ -163,8 +152,4 @@ const MapIcon = (props) => (
 // pie-chart-outline
 const ChartIcon = (props) => (
   <Icon {...props} name='file-text-outline'/>
-);
-
-const MailIcon = (props) => (
-  <Icon {...props} name='email-outline'/>
 );

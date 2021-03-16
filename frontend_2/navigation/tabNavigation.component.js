@@ -90,15 +90,15 @@ export function TabNavigation(props) {
 
     if(teamDetails.success !== undefined){
       success = teamDetails.success
-      console.log("success: ", success);
+      //console.log("success: ", success);
     }
 
     // return team info
     if(success && teamDetails.projects !== null) {
-      console.log("teamDetails.projects: ", teamDetails.projects);
+      //console.log("teamDetails.projects: ", teamDetails.projects);
       teamDetails.projects.map((project, index) => {
 
-        console.log("Project: " + JSON.stringify(project, 1))
+        //console.log("Project: " + JSON.stringify(project, 1))
 
         project.description = "Team: " + teamDetails.title + "\nLocation: " + project.description;
         project.teamId = teamDetails._id;
@@ -113,7 +113,7 @@ export function TabNavigation(props) {
 
   const addProject = async (projectDetails, teamDetails) => {
     projectDetails.description = "Team: " + teamDetails.title + "\nLocation: " + projectDetails.description;
-    project.teamId = teamDetails._id;
+    projectDetails.teamId = teamDetails._id;
     allProjects.push(projectDetails);
     await setAllProjects(allProjects);
   }

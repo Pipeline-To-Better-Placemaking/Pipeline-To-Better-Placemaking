@@ -22,11 +22,12 @@ export function StationaryActivityResultView(props) {
     const [markers, setMarkers] = useState([])
 
     let startTime = new Date(props.selectedResult.date);
+    let day = new Date(props.selectedResult.sharedData.date);
 
     // Main render
     return(
         <ViewableArea>
-            <HeaderBack {...props} text={props.selectedResult.sharedData.title + " at " + getTimeStr(startTime)}/>
+            <HeaderBack {...props} text={getDayStr(day)+ " - " + getTimeStr(startTime)}/>
             <ContentContainer>
 
                 <StationaryMapResults

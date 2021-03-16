@@ -36,7 +36,7 @@ const area_schema = mongoose.Schema({
 const Collection = module.exports = mongoose.model('Stationary_Collections', area_schema)
 
 module.exports.deleteMap = async function(collectionId, mapId){
-    Collection.findByIdAndDelete(mapId)
+    await Collection.findByIdAndDelete(mapId)
     return await Collection.updateOne(
         { _id: collectionId },
         { $pull: { maps: mapId}}
@@ -50,7 +50,7 @@ module.exports.deleteCollection = async function(collectionId){
     for(var i = 0; i < collection.maps.length; i++)
         await Stationary_Map.findByIdAndDelete(collection.maps[i])
 
-    return Collection.findByIdAndDelete(collectionId)
+    return await Collection.findByIdAndDelete(collectionId)
 }
 
 module.exports.addActivity = async function(collectionId, mapId){
@@ -60,7 +60,7 @@ module.exports.addActivity = async function(collectionId, mapId){
     )
 }
 
-module.exports.updateColection = async function(collectionId, newCollection){
+module.exports.updateCollection = async function(collectionId, newCollection){
     return await Collection.updateOne(
         { _id: collectionId },
         { $set: {
