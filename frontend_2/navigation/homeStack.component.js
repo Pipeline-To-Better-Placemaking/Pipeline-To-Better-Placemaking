@@ -7,6 +7,7 @@ import { StationaryResultPage } from '../screens/Home/ResultPages/stationaryResu
 import { MovingResultPage } from '../screens/Home/ResultPages/movingResultPage.component';
 import { CompareScreen } from '../screens/Home/Compare/compare.component.js';
 import { CompareFilteredView } from '../screens/Home/Compare/compareFilteredView.component.js'
+import { CompareResults } from '../screens/Home/Compare/compareResults.component.js'
 import { StationaryActivityResultView } from '../screens/Home/ResultPages/stationaryMapResults.component.js'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -36,7 +37,7 @@ export function HomeScreenStack(props){
   const [selectedResult, setSelectedResult] = useState(null);
   const [results, setResults] =  useState([]);
   const [compareResults, setCompareResults] = useState([]);
-  const [filterCriteria, setFilterCriteria] = useState([])
+  const [filterCriteria, setFilterCriteria] = useState([]);
 
   useEffect(() => {
     async function getInfo() {
@@ -101,7 +102,6 @@ export function HomeScreenStack(props){
           removeFromSelectedProjects={removeFromSelectedProjects}
           results={results}
           selectedProjects={selectedProjects}
-          setCompareResults={setCompareResults}
           setFilterCriteria={setFilterCriteria}
           compareCount={selectedProjects.length}
           token={token}
@@ -115,10 +115,22 @@ export function HomeScreenStack(props){
       {props =>
         <CompareFilteredView
           {...props}
-          results={compareResults}
           filterCriteria={filterCriteria}
+          setCompareResults={setCompareResults}
+          token={token}
         >
         </CompareFilteredView>
+      }
+      </Screen>
+      <Screen
+        name="CompareResults"
+      >
+      {props =>
+        <CompareResults
+          {...props}
+          results={compareResults}
+        >
+        </CompareResults>
       }
       </Screen>
       <Screen

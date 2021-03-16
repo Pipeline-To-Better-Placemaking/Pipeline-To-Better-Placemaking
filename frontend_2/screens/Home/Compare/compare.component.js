@@ -26,7 +26,6 @@ export function CompareScreen(props) {
         if (compareCardData.length == 0) {
 
             for(let i = 0; i < props.selectedProjects.length; i++) {
-                console.log("Project: " + JSON.stringify(props.selectedProjects[i]))
 
                 let data = {
                     id: props.selectedProjects[i]._id,
@@ -58,8 +57,6 @@ export function CompareScreen(props) {
 
             let date = null
 
-            console.log("Result: " + JSON.stringify(results[i]))
-
             filterCriteria.forEach(card => {
 
                 if (card.id == results[i]._id) {
@@ -67,28 +64,18 @@ export function CompareScreen(props) {
                 }
             })
 
-            console.log("Date: " + JSON.stringify(date))
-
             for(let j = 0; j < results[i].stationaryCollections.length; j++) {
-
-                console.log("Collection: " + JSON.stringify(results[i].stationaryCollections[j]))
 
                 let collection = results[i].stationaryCollections[j]
                 let collectionDate = new Date(collection.date)
-
-                console.log("Collection Date: " + collectionDate)
                 
                 if (collectionDate <= date.endDate && 
                     collectionDate >= date.startDate) {
-
-                    console.log("Pushing: " + JSON.stringify(collection))
 
                     filterData.push(collection)
                 }
             }
         }
-
-        console.log("FilterData: " + JSON.stringify(filterData))
 
         return filterData
     }
@@ -103,8 +90,6 @@ export function CompareScreen(props) {
 
             try {
 
-                console.log("Trying")
-
                 const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + id, {
                     method: 'GET',
                     headers: {
@@ -113,8 +98,6 @@ export function CompareScreen(props) {
                             'Authorization': 'Bearer ' + props.token
                     }
                 })
-
-                console.log("Fuck you.")
 
                 result = await response.json();
                 success = true
@@ -135,16 +118,9 @@ export function CompareScreen(props) {
             }
         }
 
-        console.log("Results: " + JSON.stringify(results))
-        console.log("compareCardData: " + JSON.stringify(compareCardData))
-
-        await props.setCompareResults(results)
-
         filterList(compareCardData).then(async res =>{
             await props.setFilterCriteria(res)
         })
-
-        console.log("Navigating")
 
         props.navigation.navigate('CompareFilteredView')
     }
