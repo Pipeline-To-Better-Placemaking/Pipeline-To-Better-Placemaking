@@ -58,15 +58,17 @@ router.get('/', passport.authenticate('jwt',{session:false}), async (req, res, n
 // Update user info
 router.put('/', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
 
-    user = await req.user
-
     let newUser = new User({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         instituion: req.body.instituion
     })
 
-    user = await User.updateUser(user._id, newUser)
+    if (req.body.password) {
+        newUser.password = await User.createPasswordHash(req.body.password)
+    }
+
+    const user = await User.updateUser(req.user._id, newUser)
 
     res.status(200).json(user)
 })
