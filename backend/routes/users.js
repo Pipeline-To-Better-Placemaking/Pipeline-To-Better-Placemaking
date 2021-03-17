@@ -6,15 +6,22 @@ const User = require('../models/users.js')
 
 const { BadRequestError, NotFoundError } = require('../utils/errors.js')
 
+const testPassword = (password) => {
+    if (!password ||                       // Password must be given
+        password.length < 8 ||             // Length must be >= 8 characters
+        /\s/g.test(password) ||            // Must not contain any whitespace characters
+        !/\d/g.test(password) ||           // Must contain at least one digit
+        !/[!@#$%^&*]/g.test(password) ||   // Must contain at least one symbol
+        !/[A-Z]/g.test(password)) {        // Must contain at least one uppercase letter
+        return false
+    }
+    return true
+}
+
 // Create a new user
 router.post('/', async (req, res, next) => {
     // Check password
-    if (!req.body.password ||                       // Password must be given
-        req.body.password.length < 8 ||             // Length must be >= 8 characters
-        /\s/g.test(req.body.password) ||            // Must not contain any whitespace characters
-        !/\d/g.test(req.body.password) ||           // Must contain at least one digit
-        !/[!@#$%^&*]/g.test(req.body.password) ||   // Must contain at least one symbol
-        !/[A-Z]/g.test(req.body.password)) {        // Must contain at least one uppercase letter
+    if (!testPassword(req.body.password)) {
         throw new BadRequestError('Missing or invalid field: password')
     }
 
@@ -65,6 +72,10 @@ router.put('/', passport.authenticate('jwt',{session:false}), async (req, res, n
     })
 
     if (req.body.password) {
+        // Check password
+        if (!testPassword(req.body.password)) {
+            throw new BadRequestError('Missing or invalid field: password')
+        }
         newUser.password = await User.createPasswordHash(req.body.password)
     }
 
