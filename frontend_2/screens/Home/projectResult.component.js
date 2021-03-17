@@ -5,6 +5,7 @@ import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Menu
 import { HeaderBack } from '../components/headers.component';
 import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
+import { getDayStr, getTimeStr } from '../components/timeStrings.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './projectResult.styles';
 
@@ -27,6 +28,8 @@ export function ProjectResultPage(props) {
   const getStationaryResults = async (item) => {
     let success = false
     let result = null
+
+    console.log("Getting stationary results")
 
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + item._id, {
@@ -217,12 +220,18 @@ export function ProjectResultPage(props) {
     }
   }
 
+  const emailResults = async () => {
+
+  }
+
   const activityItem = ({ item, index }) => (
       <ListItem
         title={
-              <Text style={{fontSize:20}}>
-                  {`${item.title}`}
-              </Text>}
+          <Text style={{fontSize:20}}>
+              {`${item.title}`}
+          </Text>
+        }
+        description={getTimeStr(item.date) + ' - ' + getDayStr(item.day) + ' - ' + item.test_type}
         accessoryRight={ForwardIcon}
         onPress={() => openActivityPage(item)}
       />
@@ -250,6 +259,16 @@ export function ProjectResultPage(props) {
             <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
                 <Text style={styles.teamText}>Research Results</Text>
             </View>
+            <Button
+              size={'small'}
+              style={{marginRight:10}}
+              status={'info'}
+              appearance={'outline'}
+              accessoryRight={MailIcon}
+              onPress={emailResults}
+            >
+              Email Me Results
+            </Button>
         </View>
         <Divider style={{marginTop: 5}} />
 
@@ -266,3 +285,7 @@ export function ProjectResultPage(props) {
     </ViewableArea>
   );
 };
+
+const MailIcon = (props) => (
+  <Icon {...props} name='email-outline'/>
+);

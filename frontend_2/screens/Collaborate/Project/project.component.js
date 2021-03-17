@@ -5,6 +5,7 @@ import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Menu
 import { HeaderBackEdit, HeaderBack } from '../../components/headers.component';
 import { MapAreaWrapper, ShowArea } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { getDayStr, getTimeStr } from '../../components/timeStrings.component';
 import { EditSubAreas } from './viewSubareas.component';
 import { EditStandingPoints } from './viewStandingPoints.component';
 import { EditProjectPage } from './editProjectPage.component';
@@ -22,43 +23,29 @@ export function ProjectPage(props) {
   const [editProjectVisible, setEditProjectVisible] = useState(false);
   const [editAreasVisible, setEditAreasVisible] = useState(false);
   const [editStandingPointsVisible, setEditStandingPointsVisible] = useState(false);
-  const [owner, setOwner] = useState(false);
-
-  useEffect(() => {
-	  isTeamOwner(props.team.users, props.userId)
-  }, []);
-
-  const isTeamOwner = (members, userID) => {
-    let userIndex = members.findIndex(element => element.role == "owner")
-    if (members[userIndex].user == userID) {
-      setOwner(true);
-    }
-  }
 
   const openActivityPage = async (collectionDetails) => {
     let success = false
 
-    console.log("selected collection: ", collectionDetails);
     await props.setTimeSlots([]);
 
     if(collectionDetails.test_type === 'stationary') {
       // get the collection info
       collectionDetails = await getCollection(collectionDetails, 'stationary/');
-
+      success = (collectionDetails !== null)
       // get the timeSlot info
-      if (collectionDetails !== null && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
+      if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
         collectionDetails.maps.map(item => {
           getTimeSlots(item._id, 'stationary_maps/');
         })
-        success = true
       }
 
     } else if(collectionDetails.test_type === 'moving') {
       // get the collection info
       collectionDetails = await getCollection(collectionDetails, 'moving/');
-
+      success = (collectionDetails !== null)
       // get the timeSlot info
-      if (collectionDetails !== null && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
+      if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
         collectionDetails.maps.map(item => {
           getTimeSlots(item._id, 'moving_maps/');
         })
@@ -78,7 +65,7 @@ export function ProjectPage(props) {
 
       // open activity page
       props.navigation.navigate('ActivitySignUpPage')
-    }//*/
+    }
 
   };
 
@@ -98,7 +85,7 @@ export function ProjectPage(props) {
           }
       })
       collectionDetails = await response.json();
-      console.log("response collection: ", collectionDetails);
+      //console.log("response collection: ", collectionDetails);
       success = true
     } catch (error) {
         console.log("error", error)
@@ -114,7 +101,7 @@ export function ProjectPage(props) {
       collectionDetails.date = new Date(collectionDetails.date)
       //let areaIndex = props.project.subareas.findIndex(element => element._id === collectionDetails.area);
       //collectionDetails.area = props.project.subareas[areaIndex];
-      console.log("returning collection: ", collectionDetails);
+      //console.log("returning collection: ", collectionDetails);
       return collectionDetails;
     } else {
       return null;
@@ -147,7 +134,7 @@ export function ProjectPage(props) {
     if (success) {
       // set selected timeSlots
       timeSlotDetails.date = new Date(timeSlotDetails.date)
-      console.log("time slot: ", timeSlotDetails);
+      //console.log("time slot: ", timeSlotDetails);
       props.setTimeSlots(slots => [...slots,timeSlotDetails]);
     }
   };
@@ -155,9 +142,11 @@ export function ProjectPage(props) {
   const activityItem = ({ item, index }) => (
       <ListItem
         title={
-              <Text style={{fontSize:20}}>
-                  {`${item.title}`}
-              </Text>}
+          <Text style={{fontSize:20}}>
+              {`${item.title}`}
+          </Text>
+        }
+        description={getDayStr(item.date)}
         accessoryRight={ForwardIcon}
         onPress={() => openActivityPage(item)}
       />
@@ -165,14 +154,14 @@ export function ProjectPage(props) {
 
   return (
     <ViewableArea>
-      {owner ?
+      {props.teamOwner() ?
         <HeaderBackEdit {...props} text={props.project.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
           <MenuItem title='Edit Project' onPress={() => {setEditMenuVisible(false); setEditProjectVisible(true)}}/>
           <MenuItem title='Area(s)' onPress={() => {setEditMenuVisible(false); setEditAreasVisible(true)}}/>
           <MenuItem title='Standing Points' onPress={() => {setEditMenuVisible(false); setEditStandingPointsVisible(true)}}/>
-        </HeaderBackEdit> :
-        <HeaderBack {...props} text={props.team.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
-        </HeaderBack>
+        </HeaderBackEdit>
+      :
+        <HeaderBack {...props} text={props.team.title}/>
       }
       <EditProjectPage
         {...props}
@@ -209,14 +198,18 @@ export function ProjectPage(props) {
                 <Text style={styles.teamText}>Sign Up</Text>
             </View>
             <View style={styles.createTeamButtonView}>
-                {owner && <Button status='primary' appearance='outline' onPress={() => props.navigation.navigate('CreateActivityStack')}>
-                    Create Research Activity
-                </Button>}
+              {props.teamOwner() ?
+                <Button status='primary' appearance='outline' onPress={() => {props.setUpdateActivity(false); props.navigation.navigate('CreateActivityStack')}}>
+                  Create Research Activity
+                </Button>
+              :
+                null
+              }
             </View>
         </View>
         <Divider style={{marginTop: 5}} />
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'42%', marginTop:15}}>
+        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'42%'}}>
           <List
             style={{maxHeight:'100%', maxWidth:'90%'}}
             data={props.activities}

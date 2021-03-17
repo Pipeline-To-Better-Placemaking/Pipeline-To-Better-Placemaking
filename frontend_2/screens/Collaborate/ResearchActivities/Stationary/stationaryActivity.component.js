@@ -56,6 +56,8 @@ export function StationaryActivity(props) {
                 time: new Date(),
             }
 
+            console.log("Point data: " + JSON.stringify(pointData))
+
             setData(() => data.concat(pointData))
             setMarkers(() => markers.concat(tempMarker))
 
@@ -67,6 +69,8 @@ export function StationaryActivity(props) {
     const endActivity = async () => {
 
         setStart(false)
+
+        console.log("Data being saved: " + JSON.stringify(data))
 
         // Saves the SM data
         try {

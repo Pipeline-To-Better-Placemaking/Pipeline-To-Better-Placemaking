@@ -44,21 +44,26 @@ export function IntialForm(props) {
                 style={{flex:1}}
               />
             </View>
-
-            <View style={styles.activityView}>
-              <Text>Select a Research Activity: </Text>
-              <Select
-                style={{flex:1}}
-                placeholder={props.activityTypes[0]}
-                value={props.activityTypes[props.selectedActivityIndex.row]}
-                selectedIndex={props.selectedActivityIndex}
-                onSelect={index => props.setSelectedActivity(index)}
-              >
-                {props.activityTypes.map((item, index) =>
-                    <SelectItem key="{item}" title={item}/>
-                )}
-              </Select>
-            </View>
+            {props.updateActivity ?
+              <View style={styles.activityView}>
+                <Text>Research Activity: {props.activityTypes[props.selectedActivityIndex.row]}</Text>
+              </View>
+            :
+              <View style={styles.activityView}>
+                <Text>Select a Research Activity: </Text>
+                <Select
+                  style={{flex:1}}
+                  placeholder={props.activityTypes[0]}
+                  value={props.activityTypes[props.selectedActivityIndex.row]}
+                  selectedIndex={props.selectedActivityIndex}
+                  onSelect={index => props.setSelectedActivity(index)}
+                >
+                  {props.activityTypes.map((item, index) =>
+                      <SelectItem key="{item}" title={item}/>
+                  )}
+                </Select>
+              </View>
+            }
 
             <View style={styles.activityView}>
               <Text>Select a Date: </Text>
@@ -90,7 +95,17 @@ export function IntialForm(props) {
           </View>
 
           <View style={styles.activityView}>
-            <View />
+            {props.updateActivity ?
+              <Button
+                onPress={props.deleteActivity}
+                status='danger'
+                accessoryLeft={DeleteIcon}
+              >
+                DELETE
+              </Button>
+            :
+              <View />
+            }
             <Button
               onPress={next}
               status='info'

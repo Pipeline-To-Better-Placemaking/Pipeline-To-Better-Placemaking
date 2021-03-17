@@ -38,6 +38,8 @@ export function CollaborateStack(props) {
   // The selected Activity and List of Activities for the selected Project
   const [activity, setActivity] = useState(null);
   const [activities, setActivities] = useState([]);
+  const [pastActivities, setPastActivities] = useState([]);
+  const [updateActivity, setUpdateActivity] = useState(false);
 
   // Used for starting an Activity (time slot user has selected for the activity)
   const [timeSlot, setTimeSlot] = useState(null);
@@ -73,6 +75,21 @@ export function CollaborateStack(props) {
     getTokens()
   }, []);
 
+  // returns true if the current user is the owner of the selected Team
+  const teamOwner = () => {
+    if (team === null || team.users === null) {
+      return false;
+    }
+    let members = team.users;
+    let ownerIndex = members.findIndex(element => element.role === "owner");
+    // if the owner id and current userId are the same, then this use is the owner
+    if (members[ownerIndex].user === userId) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   return (
     <Navigator headerMode='none'>
       <Screen name='Collaborate'>
@@ -101,6 +118,7 @@ export function CollaborateStack(props) {
             userId={userId}
             team={team}
             setTeam={setTeam}
+            teamOwner={teamOwner}
             teams={teams}
             setTeams={setTeams}
             project={project}
@@ -111,6 +129,8 @@ export function CollaborateStack(props) {
             removeProject={removeProject}
             activities={activities}
             setActivities={setActivities}
+            pastActivities={pastActivities}
+            setPastActivities={setPastActivities}
             location={location}
           />
         }
@@ -123,6 +143,7 @@ export function CollaborateStack(props) {
             userId={userId}
             team={team}
             setTeam={setTeam}
+            teamOwner={teamOwner}
             teams={teams}
             setTeams={setTeams}
             project={project}
@@ -133,8 +154,10 @@ export function CollaborateStack(props) {
             removeProject={removeProject}
             activity={activity}
             setActivity={setActivity}
+            setUpdateActivity={setUpdateActivity}
             activities={activities}
             setActivities={setActivities}
+            pastActivities={pastActivities}
             activityTypes={activityTypes}
             setTimeSlots={setTimeSlots}
           />
@@ -154,6 +177,8 @@ export function CollaborateStack(props) {
             setProjects={setProjects}
             activity={activity}
             setActivity={setActivity}
+            updateActivity={updateActivity}
+            setUpdateActivity={setUpdateActivity}
             activities={activities}
             setActivities={setActivities}
             activityTypes={activityTypes}
@@ -167,9 +192,11 @@ export function CollaborateStack(props) {
             token={token}
             userId={userId}
             team={team}
+            teamOwner={teamOwner}
             project={project}
             activity={activity}
             setActivity={setActivity}
+            setUpdateActivity={setUpdateActivity}
             activities={activities}
             setActivities={setActivities}
             timeSlots={timeSlots}
@@ -209,10 +236,10 @@ export function CollaborateStack(props) {
         name="SurveyActivity">
         {props =>
           <SurveyActivity
-              {...props}
-              getSelectedActivity={activities}
-              timeSlot={timeSlot}
-              setTimeSlot={setTimeSlot}
+            {...props}
+            getSelectedActivity={activities}
+            timeSlot={timeSlot}
+            setTimeSlot={setTimeSlot}
           />
         }
       </Screen>

@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     },
 
     emptyBox: {
-        height: 225,
+        height: 200,
         width: '80%',
         marginTop: 50,
         backgroundColor: 'transparent',
@@ -22,9 +22,9 @@ export const styles = StyleSheet.create({
     },
 
     box: {
-        height: 225,
+        height: 275,
         width: '80%',
-        marginTop: 50,
+        marginTop: 25,
         backgroundColor: 'transparent',
         alignSelf: 'center',
     },
@@ -37,6 +37,7 @@ export const styles = StyleSheet.create({
 
     projectText: {
         fontSize: 24,
+        marginTop: 5
     },
 
     textContainer: {
@@ -57,15 +58,12 @@ export const styles = StyleSheet.create({
     },
 
     removeButton: {
-        width: 30,
-        height: 30,
-        borderRadius: 150/2,
-        marginBottom: -12,
-        position: 'relative'
+        marginTop: -10,
+        marginLeft: 220,
+        position: 'absolute'
     },
 
     removeIcon: {
-        position: 'relative',
         width: 30,
         height: 30,
     },

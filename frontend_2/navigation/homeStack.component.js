@@ -6,6 +6,8 @@ import { ProjectResultPage } from '../screens/Home/projectResult.component';
 import { StationaryResultPage } from '../screens/Home/ResultPages/stationaryResultPage.component';
 import { MovingResultPage } from '../screens/Home/ResultPages/movingResultPage.component';
 import { CompareScreen } from '../screens/Home/Compare/compare.component.js';
+import { CompareFilteredView } from '../screens/Home/Compare/compareFilteredView.component.js'
+import { CompareResults } from '../screens/Home/Compare/compareResults.component.js'
 import { StationaryActivityResultView } from '../screens/Home/ResultPages/stationaryMapResults.component.js'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -34,6 +36,8 @@ export function HomeScreenStack(props){
   // selected activity result information
   const [selectedResult, setSelectedResult] = useState(null);
   const [results, setResults] =  useState([]);
+  const [compareResults, setCompareResults] = useState([]);
+  const [filterCriteria, setFilterCriteria] = useState([]);
 
   useEffect(() => {
     async function getInfo() {
@@ -51,6 +55,7 @@ export function HomeScreenStack(props){
   const addToSelectedProjects = async (project) => {
     let selectedProjectsArray = [...selectedProjects]
     selectedProjectsArray.push(project)
+
     await setSelectedProjects(selectedProjectsArray)
   }
 
@@ -95,10 +100,37 @@ export function HomeScreenStack(props){
         <CompareScreen
           {...props}
           removeFromSelectedProjects={removeFromSelectedProjects}
+          results={results}
           selectedProjects={selectedProjects}
+          setFilterCriteria={setFilterCriteria}
           compareCount={selectedProjects.length}
+          token={token}
         >
         </CompareScreen>
+      }
+      </Screen>
+      <Screen
+        name="CompareFilteredView"
+      >
+      {props =>
+        <CompareFilteredView
+          {...props}
+          filterCriteria={filterCriteria}
+          setCompareResults={setCompareResults}
+          token={token}
+        >
+        </CompareFilteredView>
+      }
+      </Screen>
+      <Screen
+        name="CompareResults"
+      >
+      {props =>
+        <CompareResults
+          {...props}
+          results={compareResults}
+        >
+        </CompareResults>
       }
       </Screen>
       <Screen

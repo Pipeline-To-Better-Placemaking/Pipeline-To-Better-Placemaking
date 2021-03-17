@@ -102,7 +102,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     let newMap = new Map({
         title: (req.body.title ? req.body.title : map.title),
         date: (req.body.date ? req.body.date : map.date),
-        area: (req.body.area ? req.body.area : map.area),
+        maxResearchers: (req.body.maxResearchers ? req.body.maxResearchers : map.maxResearchers),
         standingPoints: (req.body.standingPoints ? req.body.standingPoints : map.standingPoints)
     })
 
@@ -123,8 +123,9 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
     if(await Team.isAdmin(project.team,user._id)){
-        res.json(await Project.removeActivity(map.project,map._id))
-        await Map.deleteMap(map._id)
+        res.json(await Stationary_Collection.deleteMap(map.sharedData,map._id))
+
+        
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
@@ -137,22 +138,12 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
     map = await Map.findById(req.params.id)
     if(Map.isResearcher(map._id, user._id)){
         if(req.body.entries){
-            
-            for(var i = 0; i < req.body.entries.length; i++){
-                if (req.body.entries[i].activity.length > 2)
-                    throw new BadRequestError('Datapoints can only have two activities')
-            }
-
             for(var i = 0; i < req.body.entries.length; i++){
                 await Map.addEntry(map._id,req.body.entries[i])
             } 
             res.status(201).json(await Map.findById(map._id))
         }
         else{
-
-            if (req.body.activity.length > 2)
-                    throw new BadRequestError('Datapoints can only have two activities')
-
             res.json(await Map.addEntry(map._id,req.body))
        }
     }

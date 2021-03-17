@@ -87,23 +87,6 @@ export function Collaborate(props) {
 
       // open team page
       props.navigation.navigate('TeamPage')
-    } else {
-      // set fake data because *cries*
-      teamDetails = {
-        _id:'0',
-        projects:[{
-          _id:'0',
-          title:'Project Sad',
-          description:"cries"
-        }],
-        title:'Team Crying',
-        description:"sad"
-      }
-
-      props.setTeam(teamDetails)
-      await AsyncStorage.setItem("@projects", JSON.stringify(teamDetails.projects));
-      props.setProjects(teamDetails.projects)
-      props.navigation.navigate('TeamPage')
     }
   };
 

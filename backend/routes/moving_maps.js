@@ -103,7 +103,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     let newMap = new Map({
         title: (req.body.title ? req.body.title : map.title),
         date: (req.body.date ? req.body.date : map.date),
-        area: (req.body.area ? req.body.area : map.area),
+        maxResearchers: (req.body.maxResearchers ? req.body.maxResearchers : map.maxResearchers),
         standingPoints: (req.body.standingPoints ? req.body.standingPoints : map.standingPoints)
     })
 
@@ -124,8 +124,8 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
     if(await Team.isAdmin(project.team,user._id)){
-        res.json(await Project.removeActivity(map.project,map._id))
-        await Map.deleteMap(map._id)
+        res.json(await Moving_Collection.deleteMap(map.sharedData,map._id))
+
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
@@ -163,8 +163,6 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
         const newData = {
             _id: oldData._id,
             path: (req.body.path ? req.body.path : oldData.path),
-            gender: (req.body.gender ? req.body.gender : oldData.gender),
-            age: (req.body.age ? req.body.age : oldData.age),
             mode: (req.body.mode ? req.body.mode : oldData.mode),
             time: (req.body.time ? req.body.time : oldData.time)
         }
