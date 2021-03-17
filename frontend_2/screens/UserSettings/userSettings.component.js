@@ -15,6 +15,9 @@ export function UserSettings(props) {
   const [firstNameText, setFirstNameText] = useState(props.firstName);
   const [lastNameText, setLastNameText] = useState(props.lastName);
   const [emailText, setEmailText] = useState(props.lastName);
+  const [newPassword, setNewPassword] = useState('');
+  const [newPasswordVerify, setNewPasswordVerify] = useState('');
+  const [passwordTouched, setPasswordTouched] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [verificationError, setVerificationError] = useState(false);
@@ -65,25 +68,24 @@ export function UserSettings(props) {
     setFirstNameText(props.firstName)
     setLastNameText(props.lastName)
     setEmailText(props.email)
+    setNewPassword('')
+    setNewPasswordVerify('')
+    setPasswordTouched(false)
     setSettingsModalVisible(!settingsModalVisible)
   }
 
   const confirmEditProfile = async () => {
-    let editedFirstName = firstNameText
-    let editedLastName = lastNameText
-
+    const editedInfo = {}
     // if any profile data input is empty do not update that data
-    if(editedFirstName == "" || editedFirstName == null)
-      editedFirstName = props.firstName
+    if (firstNameText) editedInfo.firstname = firstNameText
+    if (lastNameText) editedInfo.lastname = lastNameText
+    if (newPassword) editedInfo.password = newPassword
 
-    if(lastNameText == "" || lastNameText == null)
-      editedLastName = props.lastName
-
-    updateUser(editedFirstName, editedLastName)
+    updateUser(editedInfo)
   }
 
   // backend call
-  const updateUser = async (editedFirstName, editedLastName) => {
+  const updateUser = async (editedInfo) => {
     let success = false
     let result = null
 
@@ -98,10 +100,7 @@ export function UserSettings(props) {
             'Authorization': 'Bearer ' + props.token
         },
 
-        body: JSON.stringify({
-          firstname: editedFirstName,
-          lastname: editedLastName
-        })
+        body: JSON.stringify(editedInfo)
       })
 
       result = await response.text()
@@ -113,15 +112,21 @@ export function UserSettings(props) {
 
     // if user details were properly updated in the backend change them locally
     if(success) {
-      props.setFirstName(editedFirstName)
-      await AsyncStorage.setItem('@firstName', props.firstName)
-
-      props.setLastName(editedLastName)
-      await AsyncStorage.setItem('@lastName', props.lastName)
+        if (editedInfo.firstname) {
+            props.setFirstName(editedInfo.firstname)
+            await AsyncStorage.setItem('@firstName', props.firstName)
+        }
+        if (editedInfo.lastname) {
+            props.setLastName(editedInfo.lastname)
+            await AsyncStorage.setItem('@lastName', props.lastName)
+        }
 
       //props.setEmail(emailText)
       //await AsyncStorage.setItem('@email', props.email)
 
+      setNewPassword('')
+      setNewPasswordVerify('')
+      setPasswordTouched(false)
       setSettingsModalVisible(!settingsModalVisible)
     } else {
       cancelEditProfile()
@@ -196,6 +201,19 @@ export function UserSettings(props) {
         }
   }
 
+  const checkPassword = () => {
+    let rules = [];
+    if (newPassword.length < 8) rules.push('Must be at least 8 characters long');
+    if (/\s/g.test(newPassword)) rules.push('Must not have any spaces');
+    if (!/\d/g.test(newPassword)) rules.push('Must have at least one digit');
+    if (!/[!@#$%^&*]/g.test(newPassword)) rules.push('Must have one of the following: ! @ # $ % ^ & *');
+    if (!/[A-Z]/g.test(newPassword)) rules.push('Must have at least one uppercase letter');
+
+    return rules;
+}
+
+  const passwordProblems = checkPassword();
+
   return (
     <ViewableArea>
       <Header text={'User Settings'}/>
@@ -230,6 +248,33 @@ export function UserSettings(props) {
                 />
                 */}
 
+                <Text category='s1'>Change password:</Text>
+                <Input
+                  placeholder = 'New password'
+                  value={newPassword}
+                  secureTextEntry={true}
+                  onFocus={() => setPasswordTouched(true)}
+                  onChangeText={nextValue => setNewPassword(nextValue)}
+                  caption={
+                    passwordTouched && passwordProblems.length > 0 &&
+                    <Text style={{color: '#FF3D71'}}>
+                        {passwordProblems.join('\n')}
+                    </Text>
+                  }
+                />
+                <Input
+                  placeholder = 'Retype new password'
+                  value={newPasswordVerify}
+                  secureTextEntry={true}
+                  onChangeText={nextValue => setNewPasswordVerify(nextValue)}
+                  caption={
+                    newPassword !== newPasswordVerify &&
+                    <Text style={{color: '#FF3D71'}}>
+                        {'Passwords do not match'}
+                    </Text>
+                  }
+                />
+
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                   <Button
                     status={'danger'}
@@ -240,6 +285,7 @@ export function UserSettings(props) {
                     CANCEL
                   </Button>
                   <Button
+                    disabled={newPassword && passwordProblems.length > 0 || newPassword !== newPasswordVerify}
                     status={'success'}
                     style={{margin:5}}
                     onPress={() => confirmEditProfile()}
@@ -331,10 +377,6 @@ export function UserSettings(props) {
 
           <Button style={{margin:5}} onPress={themeContext.toggleTheme} accessoryRight = {themeIcon}>
             TOGGLE THEME
-          </Button>
-
-          <Button style={{margin:5}}>
-            CHANGE PASSWORD
           </Button>
 
           {
