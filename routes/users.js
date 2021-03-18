@@ -68,7 +68,8 @@ router.put('/', passport.authenticate('jwt',{session:false}), async (req, res, n
     let newUser = new User({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
-        instituion: req.body.instituion
+        instituion: req.body.instituion,
+        email: req.body.email
     })
 
     if (req.body.password) {
