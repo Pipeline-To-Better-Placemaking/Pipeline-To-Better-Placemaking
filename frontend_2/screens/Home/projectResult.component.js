@@ -221,7 +221,23 @@ export function ProjectResultPage(props) {
   }
 
   const emailResults = async () => {
+    let success = false
+    let result = null
 
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + '/export', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            }
+        })
+        result = await response.json();
+        success = true
+    } catch (error) {
+        console.log("error", error)
+    }
   }
 
   const activityItem = ({ item, index }) => (
