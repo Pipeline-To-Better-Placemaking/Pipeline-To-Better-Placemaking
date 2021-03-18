@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View,  ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { Text, Button, Divider, List, ListItem, BottomNavigation, CheckBox, BottomNavigationTab, Icon } from '@ui-kitten/components';
+import { getDayStr, getTimeStr } from '../timeStrings.component';
 
 export function CompareListChecks(props) {
 
@@ -34,30 +35,29 @@ export function CompareListChecks(props) {
             return null
         }
         else {
-            return (
-                <Text style={{fontSize:20}}>
-                    {props.result.title}
-                </Text>
-            )
+          return (
+            <View>
+              <Text style={{fontSize:20}}>
+                  {props.result.title}
+              </Text>
+              <Text appearance='hint'>
+                  {getTimeStr(props.result.date) + ' - ' + getDayStr(props.result.sharedData.date) + ' - ' + props.result.sharedData.projectName}
+              </Text>
+            </View>
+          )
         }
     }
 
     return (
-        
-        <View style={{flexDirection: 'row'}}>
+      <View style={{flex: 1, flexDirection: 'row', justifyContent:'space-between', marginHorizontal:15}}>
 
-            <TitleText/>
+        <TitleText />
 
-            <CheckBox 
-                checked={checked} 
-                onChange={onCheckBoxPress} 
-                status={'control'} 
-                style={{    marginLeft: 300,
-                            marginTop: 3,
-                            borderWidth: 0.5,
-                            position:'absolute'
-                        }}
-            />
-        </View>
+        <CheckBox
+          checked={checked}
+          onChange={onCheckBoxPress}
+          style={{marginRight:10}}
+        />
+      </View>
     )
 }

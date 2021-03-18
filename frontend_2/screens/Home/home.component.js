@@ -74,28 +74,32 @@ export const HomeScreen = ( props ) => {
                         'Authorization': 'Bearer ' + props.token
                 }
             })
-  
+
             result = await response.json();
 
-  
+
           } catch (error) {
             console.log("error", error)
           }
-        
+
             if (result != null) {
+              result.test_type = 'stationary';
+              result.date = new Date(result.date);
+              result.sharedData.date = new Date(timeCards[i].stationaryCollections[j].date);
+              result.sharedData.projectName = timeCards[i].stationaryCollections[j].title;
 
               let res = {
                 result: result,
                 testType: "Stationary Activity Map"
               }
 
-              results.push(res)  
+              results.push(res)
             }
         }
       }
 
       if (timeCards[i].movingCollections.length > 0) {
-        
+
         for (let j = 0; j < timeCards[i].movingCollections.length; j++) {
 
           try {
@@ -110,14 +114,14 @@ export const HomeScreen = ( props ) => {
                         'Authorization': 'Bearer ' + props.token
                 }
             })
-  
+
             result = await response.json();
 
-  
+
           } catch (error) {
             console.log("error", error)
           }
-        
+
             if (result != null) {
 
               let res = {
@@ -125,7 +129,7 @@ export const HomeScreen = ( props ) => {
                 testType: "People Moving"
               }
 
-              results.push(res)  
+              results.push(res)
             }
         }
       }

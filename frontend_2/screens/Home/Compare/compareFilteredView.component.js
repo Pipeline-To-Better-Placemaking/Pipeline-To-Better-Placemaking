@@ -13,7 +13,7 @@ export function CompareFilteredView(props) {
     const [selectedCompare, setSelectedCompare] = useState([])
     const [stationaryResults, setStationaryResults] = useState([])
     const [peopleMovingResults, setPeopleMovingResults] = useState([])
-    const [surveyResults, setSurveyResults] = useState([]) 
+    const [surveyResults, setSurveyResults] = useState([])
     const [compareCount, setCompareCount] = useState(0)
     const [titleIndex, setTitleIndex] = useState(1)
     const activities = ['Stationary Activity Map', 'People Moving', 'Survey']
@@ -69,7 +69,7 @@ export function CompareFilteredView(props) {
     )
 
     const addSelected = (item) => {
-        
+
         let tmp = selectedCompare
         tmp.push(item)
 
@@ -87,13 +87,18 @@ export function CompareFilteredView(props) {
     }
 
     const onConfirmCompare = async () => {
+      if (compareCount !== 2) {
+        return;
+      }
 
-        let success = false
-        let result = null
+      if (titleIndex === 1) { // staionary
+        props.navigation.navigate("StationaryCompare");
+      } else if (titleIndex === 2) { // moving
 
-        if (compareCount == 2) {
+      } else if (titleIndex === 3) { // survey
 
-        }
+      }
+
     }
 
     const setTitle = (index) => {

@@ -137,10 +137,10 @@ export function CompareBarChart({children, ...props}) {
     )*/
 
   const Labels = ({ x, y, bandwidth, data }) => (
-    data.map((item, resultIndex) => (
+    props.dataValues.map((item, resultIndex) => (
       item.data.map((value, index) => {
         let xVal = x(index);
-        let segWidth = (bandwidth / (data.length*2));
+        let segWidth = (bandwidth / (props.dataValues.length*2));
         xVal += segWidth*(resultIndex*2+1)
         return (
           <TextSVG
@@ -177,30 +177,12 @@ export function CompareBarChart({children, ...props}) {
     )
   }
 
-  let data = [
-    {
-      data: [2,3,4,5,6],
-      svg: {fill: randomColor(), opacity:.5},
-      title: "dataaaaaaSet1",
-    },
-    {
-      data: [6,7,8,9,10],
-      svg: {fill: randomColor(), opacity:.5},
-      title: "dataSet2",
-    },
-    {
-      data: [5,4,3,6,7],
-      svg: {fill: randomColor(), opacity:.5},
-      title: "dataSet3",
-    },
-  ]
-
-  let maxValue = data.map(item => {return Math.max.apply(null, item.data)})
+  let maxValue = props.dataValues.map(item => {return Math.max.apply(null, item.data)})
   maxValue = Math.max.apply(null, maxValue)
-  let yData = [...data[0].data]
+  let yData = [...props.dataValues[0].data]
   yData[0] = maxValue
 
-  let titles = data.map(value => {return value.title});
+  let titles = props.dataValues.map(value => {return value.title});
 
   return (
     <View style={{marginBottom:15}}>
@@ -216,7 +198,7 @@ export function CompareBarChart({children, ...props}) {
         <View style={{ flex: 1, marginLeft: 5 }}>
           <BarChart
             style={{flex:1}}
-            data={data}
+            data={props.dataValues}
             gridMin={0}
             spacing={0.2}
             contentInset={{top: 20, bottom: 20, right:20}}
