@@ -96,32 +96,24 @@ curl -H 'Content-Type: application/json' \
            \"area\": \"${AREA}\" , 
            \"date\": \"2012-04-23T18:25:43.511Z\" 
            }"  \
-     http://localhost:8080/api/projects/${PROJECT}/stationary_collections
+     http://localhost:8080/api/projects/${PROJECT}/moving_collections
 
 COLLECTION=$(curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
      http://localhost:8080/api/projects/${PROJECT} \
-     | jq -r '.stationaryCollections[0]._id' )
+     | jq -r '.movingCollections[0]._id' )
 
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request POST \
       -d "{\"researchers\": [],   
-           \"title\": \"stationary+ap\",
+           \"title\": \"movienary+ap\",
            \"collection\": \"${COLLECTION}\",
            \"project\": \"${PROJECT}\" , 
            \"date\": \"2012-04-23T18:25:43.511Z\" }"  \
-     http://localhost:8080/api/stationary_maps/
+     http://localhost:8080/api/moving_maps/
 
-
-echo
-echo
-
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-     http://localhost:8080/api/collections/stationary/${COLLECTION} 
 
 echo
 echo
@@ -131,36 +123,27 @@ MAP=$(curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
      http://localhost:8080/api/projects/${PROJECT} \
-      | jq -r '.stationaryCollections[0].maps[0]' )
+      | jq -r '.movingCollections[0].maps[0]' )
 
 echo MAP ${MAP}
 echo
 
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-     http://localhost:8080/api/collections/stationary/${COLLECTION} 
-
-echo
 
 
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
         --request POST \
          -d "{
-           \"location\": {\"latitude\": 8.602413253152307, \"longitude\": -7.20019937739713},   
-           \"age\": \"0-14\",
-           \"posture\": \"sitting(formal)\" ,
-           \"gender\": \"male\", 
-           \"activity\": \"talking\" , 
+           \"path\": [{\"latitude\": 8.602413253152307, \"longitude\": -7.20019937739713}],   
+           \"mode\": \"walking\",
            \"time\": \"2012-04-23T12:25:43.511Z\" 
           }"  \
-     http://localhost:8080/api/stationary_maps/${MAP}/data
+     http://localhost:8080/api/moving_maps/${MAP}/data
 
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
-     http://localhost:8080/api/projects/${PROJECT}/stationary_data 
+    http://localhost:8080/api/projects/${PROJECT}/export
 
 
 #MAP=$(curl -H 'Content-Type: application/json' \
