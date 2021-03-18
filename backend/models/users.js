@@ -59,11 +59,15 @@ module.exports.findUserByEmail = async function(email) {
     return await Users.findOne(query)
 }
 
+module.exports.createPasswordHash = async function(password) {
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(password, salt)
+    return hash
+}
+
 module.exports.addUser = async function(newUser) {
     // Replace password with hashed version
-    const salt  = await bcrypt.genSalt(10)
-    const hash = await bcrypt.hash(newUser.password, salt)
-    newUser.password = hash
+    newUser.password = await this.createPasswordHash(newUser.password)
     const savedUser = await newUser.save()
     // Generate an email verification code
     await Users.createVerification(savedUser._id)
@@ -71,14 +75,18 @@ module.exports.addUser = async function(newUser) {
 }
 
 module.exports.updateUser = async function(userId, newUser) {
-    return await Users.updateOne(
+    const updatedValues = {}
+    if (newUser.firstname) updatedValues.firstname = newUser.firstname
+    if (newUser.lastname) updatedValues.lastname = newUser.lastname
+    if (newUser.institution) updatedValues.institution = newUser.institution
+    if (newUser.password) updatedValues.password = newUser.password
+
+    return await Users.findOneAndUpdate(
         { _id: userId },
-        { $set: {
-            firstname: newUser.firstname,
-            lastname: newUser.lastname,
-            institution: newUser.institution
-        }}
+        { $set: updatedValues},
+        { new: true }
     )
+    .select('-password -verification_code -verification_timeout')
 }
 
 module.exports.comparePassword = async function(candidatePassword, hash) {
