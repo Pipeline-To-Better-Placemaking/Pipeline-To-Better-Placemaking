@@ -12,7 +12,7 @@ require('express-async-errors')
 log.info('Connecting to ', config.DB_URI)
 const connect = async () => {
     try {
-        await mongoose.connect(config.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+        await mongoose.connect(config.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
         log.info('Connected to database')
     } catch (err) {
         log.info('Error connecting to database: ', error.message)
