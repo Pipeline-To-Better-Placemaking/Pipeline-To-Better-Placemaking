@@ -96,6 +96,38 @@ export const HomeScreen = ( props ) => {
 
       if (timeCards[i].movingCollections.length > 0) {
         
+        for (let j = 0; j < timeCards[i].movingCollections.length; j++) {
+
+          try {
+
+            let id = timeCards[i].movingCollections[j].maps[0]
+
+            const response = await fetch('https://measuringplacesd.herokuapp.com/api/moving_maps/' + id, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + props.token
+                }
+            })
+  
+            result = await response.json();
+
+  
+          } catch (error) {
+            console.log("error", error)
+          }
+        
+            if (result != null) {
+
+              let res = {
+                result: result,
+                testType: "People Moving"
+              }
+
+              results.push(res)  
+            }
+        }
       }
     }
 

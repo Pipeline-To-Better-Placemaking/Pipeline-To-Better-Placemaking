@@ -32,7 +32,7 @@ export function CompareFilteredView(props) {
                     sm.push(props.filterCriteria[i].result)
                 }
                 else if (props.filterCriteria[i].testType == "People Moving"){
-
+                    pm.push(props.filterCriteria[i].result)
                 }
             }
 
@@ -92,38 +92,7 @@ export function CompareFilteredView(props) {
 
         if (compareCount == 2) {
 
-            let results = []
-
-            for (let i = 0; i < selectedCompare.length; i++) {
-
-                let id = selectedCompare[i].maps[0]
-
-                try {
-                    const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + id, {
-                        method: 'GET',
-                        headers: {
-                            Accept: 'application/json',
-                                'Content-Type': 'application/json',
-                                'Authorization': 'Bearer ' + props.token
-                        }
-                    })
-                    result = await response.json();
-
-                } catch (error) {
-                    console.log("error", error)
-                }
-
-                if (result === null) {
-                    success = false;
-                }
-                else {
-                    results.push(result)
-                }
-            }
-
-            await props.setCompareResults(results)
-
-            props.navigation.navigate('CompareResults')
+        
         }
     }
 
