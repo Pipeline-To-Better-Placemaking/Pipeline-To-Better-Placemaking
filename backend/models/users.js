@@ -80,6 +80,10 @@ module.exports.updateUser = async function(userId, newUser) {
     if (newUser.lastname) updatedValues.lastname = newUser.lastname
     if (newUser.institution) updatedValues.institution = newUser.institution
     if (newUser.password) updatedValues.password = newUser.password
+    if (newUser.email){
+        updatedValues.email = newUser.email
+        updatedValues.is_verified = false
+    }
 
     return await Users.findOneAndUpdate(
         { _id: userId },
