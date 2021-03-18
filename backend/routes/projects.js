@@ -17,7 +17,7 @@ const OAuth2 = google.auth.OAuth2
 
 
 const { models } = require('mongoose')
-const { stationaryToCSV } = require('../utils/csv_conversions')
+const { stationaryToCSV, movingToCSV } = require('../utils/csv_conversions')
 const { BadRequestError, UnauthorizedError } = require('../utils/errors')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
@@ -326,8 +326,8 @@ router.delete('/:id/moving_collections/:collectionId', passport.authenticate('jw
     }
 })
 
-router.get('/:id/stationary_data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    data = await Project.findById(req.params.id)
+router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    stationaryData = await Project.findById(req.params.id)
                           .populate('area')
                           .populate([
                             {
@@ -345,7 +345,25 @@ router.get('/:id/stationary_data', passport.authenticate('jwt',{session:false}),
                                     path: 'area',
                                    }]
                              }])
-   
+    movingData = await Project.findById(req.params.id)
+                            .populate('area')
+                            .populate([
+                            {
+                                path:'movingCollections',
+                                model:'Moving_Collections',
+                                populate: [{
+                                    path: 'maps',
+                                    model: 'Moving_Maps',
+                                    select: 'date data',
+                                    populate: {
+                                        path: 'standingPoints',
+                                        model: 'Standing_Points'
+                                    }
+                                    },{
+                                    path: 'area',
+                                    }]
+                                }])
+
     const transporter = await createTransporter()
 
     const emailHTML = `
@@ -362,8 +380,13 @@ router.get('/:id/stationary_data', passport.authenticate('jwt',{session:false}),
         html: emailHTML,
         attachments: [
             {
-                filename: data.title + '_stationary.csv',
-                content: stationaryToCSV(data)
+                filename: stationaryData.title + '_stationary.csv',
+                content: stationaryToCSV(stationaryData)
+            },
+            {
+                filename: stationaryData.title + '_moving.csv',
+                content:movingToCSV(movingData)
+
             }
         ]
     }
@@ -379,32 +402,6 @@ router.get('/:id/stationary_data', passport.authenticate('jwt',{session:false}),
             message: 'Data export sent; please check your email'
         })
     })
-
-    res.json(data)
-})
-
-router.get('/:id/moving_data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    res.json(await Project.findById(req.params.id)
-                          .populate('area')
-                          .populate([
-                            {
-                                path:'movingCollections',
-                                model:'Moving_Collections',
-                                populate: {
-                                 path: 'area',
-                                 model: 'Areas'
-                                },
-                                populate: {
-                                    path: 'maps',
-                                    model: 'Moving_Maps',
-                                    select: 'date data',
-                                    populate: {
-                                        path: 'standingPoints',
-                                        model: 'Standing_Points'
-                                    }
-                                   }
-                             }])
-            )
 })
 
 module.exports = router

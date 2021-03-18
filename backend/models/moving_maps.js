@@ -5,11 +5,11 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const entrySchema = mongoose.Schema({
     path: [{
-        lat: {
+        lattitude: {
             type: Number,
             required: true
         },
-        long: {
+        longitude: {
             type: Number,
             required: true
         }
@@ -122,12 +122,16 @@ module.exports.removeResearcher = async function(mapId, userId){
 }
 
 module.exports.isResearcher = async function(mapId, userId){
-    const doc = await Maps.find(
-        {
-            _id: mapId, 
-            researchers: { $elemMatch:  userId }
-        }
-    )
+    try{
+        const doc = await Maps.find(
+            {
+                _id: mapId, 
+                researchers: { $elemMatch:  userId }
+            }
+        )
+    }catch(error){
+        return false
+    }
     if (doc.length === 0) {
         return false
     }
