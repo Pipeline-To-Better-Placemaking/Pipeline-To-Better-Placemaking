@@ -360,7 +360,7 @@ router.get('/:id/stationary_data', passport.authenticate('jwt',{session:false}),
         subject: 'Stationary Data Export',
         text: `Attatched is your data`,
         html: emailHTML,
-        attatchments: [
+        attachments: [
             {
                 filename: data.title + '_stationary.csv',
                 content: stationaryToCSV(data)
