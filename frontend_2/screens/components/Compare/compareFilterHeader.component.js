@@ -14,7 +14,7 @@ export function CompareFilterHeader(props) {
                 status={'primary'}
                 style={{marginTop: 10, marginBottom: 10, marginLeft: 10,  width: 350}}
                 value={activities[props.titleIndex-1]}
-                onSelect={index => props.setTitleIndex(index)}
+                onSelect={index => props.setTitle(index)}
             >
                 <SelectItem title='Stationary Activity Map'/>
                 <SelectItem title='People Moving'/>

@@ -63,6 +63,7 @@ export function CompareFilteredView(props) {
                 compareCount={compareCount}
                 addSelected={addSelected}
                 removeSelected={removeSelected}
+                selectedCompare={selectedCompare}
             />
         </ListItem>
     )
@@ -92,8 +93,15 @@ export function CompareFilteredView(props) {
 
         if (compareCount == 2) {
 
-        
         }
+    }
+
+    const setTitle = (index) => {
+        setTitleIndex(index)
+
+        let empty = []
+        setSelectedCompare(empty)
+        setCompareCount(0)
     }
 
     return(
@@ -101,7 +109,10 @@ export function CompareFilteredView(props) {
             <Header text={'Select 2 to Compare'}/>
             <ContentContainer>
 
-                <CompareFilterHeader titleIndex={titleIndex} setTitleIndex={setTitleIndex}/>
+                <CompareFilterHeader
+                    titleIndex={titleIndex}
+                    setTitle={setTitle}
+                />
 
                 <List
                     data={selectedActivity()}

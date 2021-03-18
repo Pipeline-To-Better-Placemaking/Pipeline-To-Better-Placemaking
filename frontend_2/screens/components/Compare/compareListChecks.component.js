@@ -6,6 +6,13 @@ export function CompareListChecks(props) {
 
     const [checked, setChecked] = useState(0)
 
+    useEffect(() => {
+
+        if (props.selectedCompare.length == 0) {
+            setChecked(false)
+        }
+    })
+
     onCheckBoxPress = async () => {
 
         let check = !checked
