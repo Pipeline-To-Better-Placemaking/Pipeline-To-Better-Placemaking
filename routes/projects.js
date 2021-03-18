@@ -1,16 +1,23 @@
 const express = require('express')
+const config = require('../utils/config')
 const router = express.Router()
+
 const Project = require('../models/projects.js')
 const Team = require('../models/teams.js')
 const Area = require('../models/areas.js')
 const Standing_Point = require('../models/standing_points.js')
 const Stationary_Collection = require('../models/stationary_collections.js')
 const Moving_Collection = require('../models/moving_collections.js')
+
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
-const config = require('../utils/config')
-const { models } = require('mongoose')
+const nodemailer = require('nodemailer')
+const { google } = require('googleapis')
+const OAuth2 = google.auth.OAuth2
 
+
+const { models } = require('mongoose')
+const { stationaryToCSV } = require('../utils/csv_conversions')
 const { BadRequestError, UnauthorizedError } = require('../utils/errors')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
@@ -320,27 +327,60 @@ router.delete('/:id/moving_collections/:collectionId', passport.authenticate('jw
 })
 
 router.get('/:id/stationary_data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    res.json(await Project.findById(req.params.id)
+    data = await Project.findById(req.params.id)
                           .populate('area')
                           .populate([
                             {
                                 path:'stationaryCollections',
                                 model:'Stationary_Collections',
-                                populate: {
-                                 path: 'area',
-                                 model: 'Areas'
-                                },
-                                populate: {
+                                populate: [{
                                     path: 'maps',
                                     model: 'Stationary_Maps',
-                                    select: 'data date',
+                                    select: 'date data',
                                     populate: {
                                         path: 'standingPoints',
                                         model: 'Standing_Points'
                                     }
-                                   }
+                                   },{
+                                    path: 'area',
+                                   }]
                              }])
-            )
+   
+    const transporter = await createTransporter()
+
+    const emailHTML = `
+        <h3>Hello from 2+ Community!</h3>
+        <p>You have requested a copy of your stationary data. Attatched is a csv formated file representing your data.</p>
+
+    `
+    
+    const mailOptions = {
+        from: `"2+ Community" <${config.PROJECT_EMAIL}>`,
+        to: req.user.email,
+        subject: 'Stationary Data Export',
+        text: `Attatched is your data`,
+        html: emailHTML,
+        attatchments: [
+            {
+                filename: data.title + '_stationary.csv',
+                content: stationaryToCSV(data)
+            }
+        ]
+    }
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error)
+            throw new InternalServerError('The server encountered a problem')
+        }
+        console.log(`Sent email to ${req.user.email}`)
+        res.status(200).json({
+            success: true,
+            message: 'Data export sent; please check your email'
+        })
+    })
+
+    res.json(data)
 })
 
 router.get('/:id/moving_data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
@@ -357,7 +397,7 @@ router.get('/:id/moving_data', passport.authenticate('jwt',{session:false}), asy
                                 populate: {
                                     path: 'maps',
                                     model: 'Moving_Maps',
-                                    select: 'data date',
+                                    select: 'date data',
                                     populate: {
                                         path: 'standingPoints',
                                         model: 'Standing_Points'
@@ -368,3 +408,47 @@ router.get('/:id/moving_data', passport.authenticate('jwt',{session:false}), asy
 })
 
 module.exports = router
+
+const createTransporter = async () => {
+    // Create an OAuth client
+    const oauth2Client = new OAuth2(
+        config.CLIENT_ID,
+        config.CLIENT_SECRET,
+        'https://developers.google.com/oauthplayground' // Redirect URI
+    )
+
+    // Provide the refresh token
+    oauth2Client.setCredentials({
+        refresh_token: config.REFRESH_TOKEN
+    })
+
+    // Get an access token
+    const accessToken = await new Promise((resolve, reject) => {
+        oauth2Client.getAccessToken((error, token) => {
+            if (error) {
+                console.error(error)
+                reject({ message: 'Could not create access token' })
+            }
+            else resolve(token)
+        })
+    })
+
+    // Create the transporter object
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            type: 'OAuth2',
+            user: config.PROJECT_EMAIL,
+            accessToken,
+            clientId: config.CLIENT_ID,
+            clientSecret: config.clientSecret,
+            refreshToken: config.REFRESH_TOKEN
+        },
+        tls: {
+            // Don't require cert if being run from localhost
+            rejectUnauthorized: (process.env.NODE_ENV === 'dev') ? false : true
+        }
+    })
+
+    return transporter
+}
