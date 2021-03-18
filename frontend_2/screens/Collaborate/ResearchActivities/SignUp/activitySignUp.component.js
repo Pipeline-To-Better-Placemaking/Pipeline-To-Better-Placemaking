@@ -199,6 +199,15 @@ export function ActivitySignUpPage(props) {
     return str;
   }
 
+  const isSignedUp = (timeSlot, userId) => {
+    for (let i = 0; i < timeSlot.maxResearchers; i++) {
+      if(timeSlot.researchers[0] != null && timeSlot.researchers[i]._id == userId)
+          return true;
+    }
+
+    return false;
+  }
+
   const timeSlotCard = ({item, index}) => (
     <Card disabled={true}>
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
@@ -211,10 +220,12 @@ export function ActivitySignUpPage(props) {
         <View style={{flexDirection:'column', justifyContent:'space-around'}}>
           <Button status='info' style={{margin:5}} onPress={() => onSignUp(item, index)}>
             Sign Up
-          </Button>
-          <Button status='success' style={{margin:5}} onPress={() => onBeginPress(item, index)}>
-            Begin
-          </Button>
+          </Button> 
+          {isSignedUp(item, props.userId) &&
+            <Button status='success' style={{margin:5}} onPress={() => onBeginPress(item, index)}>
+              Begin
+            </Button>
+          }
         </View>
       </View>
     </Card>
