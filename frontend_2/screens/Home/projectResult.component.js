@@ -225,7 +225,7 @@ export function ProjectResultPage(props) {
     let result = null
 
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + '/stationary_data', {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + '/export', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',

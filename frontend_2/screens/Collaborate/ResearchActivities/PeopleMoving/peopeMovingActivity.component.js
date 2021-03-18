@@ -32,7 +32,7 @@ export function PeopleMovingActivity(props) {
 
     // Temp marker, inputted data points, and all of their locations
     const [tempMarker, setTempMarker] = useState([])
-    const [data, setData] = useState([{}])
+    const [data, setData] = useState([])
 
     // Current path being drawn
     const [currentPath, setCurrentPath] = useState([])
@@ -57,8 +57,33 @@ export function PeopleMovingActivity(props) {
     }
 
     // End Button press
-    const endActivity = () => {
+    const endActivity = async () => {
         setStart(false)
+
+        // Saves the PM data
+        try {
+            console.log("TimeSlot: " + props.timeSlot._id)
+            console.log("Data: " + JSON.stringify(data))
+
+            const response = await fetch('https://measuringplacesd.herokuapp.com/api/moving_maps/' + props.timeSlot._id + '/data', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + props.token
+                },
+                body: JSON.stringify({
+                    entries: data
+                })
+            })
+
+            let info = await response.json()
+            console.log("Response: " + JSON.stringify(info))
+
+        } catch (error) {
+            console.log("ERROR: ", error)
+        }
+
         props.navigation.navigate("ActivitySignUpPage");
     }
   
@@ -151,8 +176,9 @@ export function PeopleMovingActivity(props) {
         if (inf.movementIndex > -1) {
 
             let dat = {
-                movement: inf.movement,
-                path: currentPath
+                path: currentPath,
+                mode: inf.movement,
+                time: new Date()
             }
 
             let totalLines = {

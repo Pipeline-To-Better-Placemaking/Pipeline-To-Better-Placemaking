@@ -6,13 +6,55 @@ import { styles } from './compare.styles'
 
 import { Header } from '../../components/headers.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { CompareFilterHeader } from '../../components/Compare/compareFilterHeader.component.js'
 
 export function CompareFilteredView(props) {
 
     const [selectedCompare, setSelectedCompare] = useState([])
+    const [stationaryResults, setStationaryResults] = useState([])
+    const [peopleMovingResults, setPeopleMovingResults] = useState([])
+    const [surveyResults, setSurveyResults] = useState([])
     const [compareCount, setCompareCount] = useState(0)
+    const [titleIndex, setTitleIndex] = useState(1)
+    const activities = ['Stationary Activity Map', 'People Moving', 'Survey']
 
-    console.log("FE: " + JSON.stringify(props.filterCriteria))
+    useEffect(() => {
+
+        if (stationaryResults.length == 0 && peopleMovingResults.length == 0 && surveyResults == 0) {
+
+            let sm = []
+            let pm = []
+            let survey = []
+
+            for (let i = 0; i < props.filterCriteria.length; i++){
+
+                if (props.filterCriteria[i].testType == "Stationary Activity Map"){
+                    sm.push(props.filterCriteria[i].result)
+                }
+                else if (props.filterCriteria[i].testType == "People Moving"){
+                    pm.push(props.filterCriteria[i].result)
+                }
+            }
+
+            setStationaryResults(sm)
+            setPeopleMovingResults(pm)
+            setSurveyResults(survey)
+        }
+
+    })
+
+    const selectedActivity = () => {
+
+        if (titleIndex == 1) {
+            return stationaryResults
+        }
+        else if (titleIndex == 2) {
+            return peopleMovingResults
+        }
+        else {
+            return surveyResults
+        }
+    }
 
     const activityItem = (item, index) => (
         <ListItem>
@@ -21,17 +63,15 @@ export function CompareFilteredView(props) {
                 compareCount={compareCount}
                 addSelected={addSelected}
                 removeSelected={removeSelected}
+                selectedCompare={selectedCompare}
             />
-
         </ListItem>
     )
 
     const addSelected = (item) => {
-        
+
         let tmp = selectedCompare
         tmp.push(item)
-
-        console.log("Item: " + JSON.stringify(item))
 
         setSelectedCompare(tmp)
         setCompareCount(compareCount+1)
@@ -47,49 +87,26 @@ export function CompareFilteredView(props) {
     }
 
     const onConfirmCompare = async () => {
+      if (compareCount !== 2) {
+        return;
+      }
 
-        let success = false
-        let result = null
+      if (titleIndex === 1) { // staionary
+        props.navigation.navigate("StationaryCompare");
+      } else if (titleIndex === 2) { // moving
 
-        if (compareCount == 2) {
+      } else if (titleIndex === 3) { // survey
 
-            let results = []
+      }
 
-            for (let i = 0; i < selectedCompare.length; i++) {
+    }
 
-                let id = selectedCompare[i].maps[0]
+    const setTitle = (index) => {
+        setTitleIndex(index)
 
-                try {
-                    const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + id, {
-                        method: 'GET',
-                        headers: {
-                            Accept: 'application/json',
-                                'Content-Type': 'application/json',
-                                'Authorization': 'Bearer ' + props.token
-                        }
-                    })
-                    result = await response.json();
-
-                    console.log("Result: " + JSON.stringify(result))
-
-                } catch (error) {
-                    console.log("error", error)
-                }
-
-                if (result === null) {
-                    success = false;
-                }
-                else {
-                    results.push(result)
-                }
-            }
-
-            await props.setCompareResults(results)
-
-            console.log("Results: " + JSON.stringify(results))
-
-            // props.navigation.navigate('CompareResults')
-        }
+        let empty = []
+        setSelectedCompare(empty)
+        setCompareCount(0)
     }
 
     return(
@@ -97,8 +114,13 @@ export function CompareFilteredView(props) {
             <Header text={'Select 2 to Compare'}/>
             <ContentContainer>
 
+                <CompareFilterHeader
+                    titleIndex={titleIndex}
+                    setTitle={setTitle}
+                />
+
                 <List
-                    data={props.filterCriteria}
+                    data={selectedActivity()}
                     ItemSeparatorComponent={Divider}
                     renderItem={activityItem}
                 />
