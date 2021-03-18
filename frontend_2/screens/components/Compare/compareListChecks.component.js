@@ -21,13 +21,25 @@ export function CompareListChecks(props) {
         }
     }
 
+    const TitleText = () => {
+
+        if (props.result == null){
+            return null
+        }
+        else {
+            return (
+                <Text style={{fontSize:20}}>
+                    {props.result.title}
+                </Text>
+            )
+        }
+    }
+
     return (
         
         <View style={{flexDirection: 'row'}}>
 
-            <Text style={{fontSize:20}}>
-                {props.result.title}
-            </Text>
+            <TitleText/>
 
             <CheckBox 
                 checked={checked} 

@@ -89,6 +89,7 @@ export function HomeScreenStack(props){
           setSelectedTeam={setSelectedTeam}
           results={results}
           setResults={setResults}
+          setFilterCriteria={setFilterCriteria}
          />
        }
       </Screen>

@@ -23,7 +23,7 @@ export function DataEntryModal(props) {
 
         let data = {
             movementIndex: movementIndex,
-            movement: movementMatrix[movementIndex], 
+            movement: movement[movementIndex], 
         }
 
         await props.closeData(data)

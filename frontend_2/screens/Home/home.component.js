@@ -19,9 +19,89 @@ export const HomeScreen = ( props ) => {
     setCompare(!compare)
   }
 
-  const onCompareConfirm = () => {
-      //console.log("Props: " + JSON.stringify(props));
-      props.navigation.navigate("CompareScreen");
+  const onCompareConfirm = async () => {
+
+    let timeCards = []
+    let results = []
+    let result = null
+    // let success = false
+
+    for (let i = 0; i < props.selectedProjects.length; i++) {
+
+      let id = props.selectedProjects[i]._id
+      let timeCard = null
+
+      try {
+
+          const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + id, {
+              method: 'GET',
+              headers: {
+                  Accept: 'application/json',
+                      'Content-Type': 'application/json',
+                      'Authorization': 'Bearer ' + props.token
+              }
+          })
+
+          timeCard = await response.json();
+
+      } catch (error) {
+          console.log("error", error)
+      }
+
+      if (timeCard === null) {
+        // success = false;
+      }
+      else{
+        timeCards.push(timeCard)
+      }
+    }
+
+    for (let i = 0; i < timeCards.length; i++) {
+
+      if (timeCards[i].stationaryCollections != null) {
+
+        for (let j = 0; j < timeCards[i].stationaryCollections.length; j++) {
+
+          try {
+
+            let id = timeCards[i].stationaryCollections[j].maps[0]
+
+            const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + id, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + props.token
+                }
+            })
+  
+            result = await response.json();
+
+  
+          } catch (error) {
+            console.log("error", error)
+          }
+        
+            if (result != null) {
+
+              let res = {
+                result: result,
+                testType: "Stationary Activity Map"
+              }
+
+              results.push(res)  
+            }
+        }
+      }
+
+      if (timeCards[i].movingCollections.length > 0) {
+        
+      }
+    }
+
+    await props.setFilterCriteria(results)
+
+    props.navigation.navigate("CompareFilteredView");
   }
 
   const inSelectedProject = (project) => {

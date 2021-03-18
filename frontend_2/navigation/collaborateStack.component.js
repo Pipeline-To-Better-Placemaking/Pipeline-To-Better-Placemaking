@@ -228,6 +228,7 @@ export function CollaborateStack(props) {
                     timeSlot={timeSlot}
                     initialTimeSlot={initialTimeSlot}
                     setTimeSlot={setTimeSlot}
+                    token={token}
                   >
                   </PeopleMovingActivity>
         }
