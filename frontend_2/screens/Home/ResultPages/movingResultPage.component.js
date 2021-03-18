@@ -90,7 +90,7 @@ export function MovingResultPage(props) {
           <MyBarChart
             {...props}
             title={"Movement"}
-            rotation={0}
+            rotation={'0deg'}
             dataValues={props.selectedResult.graph.data}
             dataLabels={props.selectedResult.graph.labels}
             barColor={fillColor}
