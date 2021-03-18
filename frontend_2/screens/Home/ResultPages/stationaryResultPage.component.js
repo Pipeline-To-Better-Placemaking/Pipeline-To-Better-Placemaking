@@ -40,7 +40,7 @@ export function StationaryResultPage(props) {
   const chartWidth = Dimensions.get('window').width*0.95;
   const chartHeight = 210;
 
-  const color = '#006FD6';//'rgb(134, 65, 244)'; // '#006FD6'
+  const color = '#006FD6';
 
   const ageFill = color;
   const genderFill = color;
@@ -95,7 +95,7 @@ export function StationaryResultPage(props) {
           <MyBarChart
             {...props}
             title={"Age"}
-            rotation={0}
+            rotation={'0deg'}
             dataValues={props.selectedResult.graph.ageData}
             dataLabels={props.selectedResult.graph.ageLabels}
             barColor={ageFill}
@@ -106,7 +106,7 @@ export function StationaryResultPage(props) {
           <MyBarChart
             {...props}
             title={"Gender"}
-            rotation={0}
+            rotation={'0deg'}
             dataValues={props.selectedResult.graph.genderData}
             dataLabels={props.selectedResult.graph.genderLabels}
             barColor={genderFill}
@@ -117,7 +117,7 @@ export function StationaryResultPage(props) {
           <MyBarChart
             {...props}
             title={"Posture"}
-            rotation={0}
+            rotation={'0deg'}
             dataValues={props.selectedResult.graph.postureData}
             dataLabels={props.selectedResult.graph.postureLabels}
             barColor={postureFill}
@@ -128,7 +128,7 @@ export function StationaryResultPage(props) {
           <MyBarChart
             {...props}
             title={"Activity"}
-            rotation={-90}
+            rotation={'-90deg'}
             dataValues={props.selectedResult.graph.activityData}
             dataLabels={props.selectedResult.graph.activityLabels}
             barColor={activityFill}
