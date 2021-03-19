@@ -18,7 +18,7 @@ const area_schema = mongoose.Schema({
 const Areas = module.exports = mongoose.model('Areas', area_schema)
 
 module.exports.updateArea = async function (areaId, newArea) {
-    return await Maps.updateOne(
+    return await Areas.updateOne(
         { _id: projectId },
         { $set: {
             title: newArea.title,

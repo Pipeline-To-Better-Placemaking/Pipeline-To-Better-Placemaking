@@ -10,7 +10,7 @@ export function CompareFilterHeader(props) {
 
         <View style={{flexDirection: 'row'}}>
 
-            <Select 
+            <Select
                 status={'primary'}
                 style={{marginTop: 10, marginBottom: 10, marginLeft: 10,  width: 350}}
                 value={activities[props.titleIndex-1]}
@@ -18,7 +18,6 @@ export function CompareFilterHeader(props) {
             >
                 <SelectItem title='Stationary Activity Map'/>
                 <SelectItem title='People Moving'/>
-                <SelectItem title='Survey'/>
             </Select>
 
         </View>

@@ -18,7 +18,7 @@ export function StationaryCompare(props) {
         <ContentContainer>
           <ScrollView style={styles.margins}>
 
-            <Text category={'h5'}>No result information to comapre</Text>
+            <Text category={'h5'}>No result information to compare</Text>
 
           </ScrollView>
         </ContentContainer>
@@ -28,11 +28,6 @@ export function StationaryCompare(props) {
 
   let results = props.results;
 
-  let areaTitle = '...area'
-  let startTime = new Date();
-  let day = new Date();
-
-  let researchers = '...researchers';
   const color = '#006FD6';
   results.map((result, index) => {
     result.graph = {}
@@ -255,7 +250,7 @@ export function StationaryCompare(props) {
           <CompareBarChart
             {...props}
             title={"Activity"}
-            rotation={'-90deg'}
+            rotation={'0deg'}
             dataValues={activityValues}
             dataLabels={labels.activityLabels}
             barColor={color}
