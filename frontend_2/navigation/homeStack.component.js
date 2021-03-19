@@ -5,7 +5,6 @@ import { HomeScreen } from '../screens/Home/home.component';
 import { ProjectResultPage } from '../screens/Home/projectResult.component';
 import { StationaryResultPage } from '../screens/Home/ResultPages/stationaryResultPage.component';
 import { MovingResultPage } from '../screens/Home/ResultPages/movingResultPage.component';
-import { CompareScreen } from '../screens/Home/Compare/compare.component.js';
 import { CompareFilteredView } from '../screens/Home/Compare/compareFilteredView.component.js'
 import { StationaryCompare } from '../screens/Home/Compare/stationaryCompare.component.js'
 import { StationaryActivityResultView } from '../screens/Home/ResultPages/stationaryMapResults.component.js'
@@ -92,23 +91,6 @@ export function HomeScreenStack(props){
           setFilterCriteria={setFilterCriteria}
          />
        }
-      </Screen>
-
-      <Screen
-        name="CompareScreen"
-      >
-      {props =>
-        <CompareScreen
-          {...props}
-          removeFromSelectedProjects={removeFromSelectedProjects}
-          results={results}
-          selectedProjects={selectedProjects}
-          setFilterCriteria={setFilterCriteria}
-          compareCount={selectedProjects.length}
-          token={token}
-        >
-        </CompareScreen>
-      }
       </Screen>
       <Screen
         name="CompareFilteredView"

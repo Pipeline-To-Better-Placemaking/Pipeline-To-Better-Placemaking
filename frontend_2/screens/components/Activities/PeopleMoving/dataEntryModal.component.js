@@ -6,7 +6,7 @@ import * as Location from 'expo-location';
 import styles from './dataEntryModal.styles.js';
 import { DataGroupMovement } from './dataGroupMovement.component.js';
 
-const movement = ["Walking", "Running", "Biking", "Skateboarding", "Roller Blading", "Swimming"]
+const movement = ["Walking", "Running", "Swiming", "Activity on Wheels", "Handicap Assisted Wheels"]
 
 export function DataEntryModal(props) {
 

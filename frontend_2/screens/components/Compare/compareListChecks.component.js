@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Text } from '@ui-kitten/components';
+import { Text, CheckBox } from '@ui-kitten/components';
 import { getDayStr, getTimeStr } from '../timeStrings.component';
 
 export function CompareListChecks(props) {

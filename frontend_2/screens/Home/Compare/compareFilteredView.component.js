@@ -101,11 +101,11 @@ export function CompareFilteredView(props) {
 
       await props.setCompareResults(selectedCompare);
 
-      if (titleIndex === 1) { // staionary
+      if (titleIndex == 1) { // staionary
         props.navigation.navigate("StationaryCompare");
-      } else if (titleIndex === 2) { // moving
+      } else if (titleIndex == 2) { // moving
 
-      } else if (titleIndex === 3) { // survey
+      } else if (titleIndex == 3) { // survey
 
       }
 
