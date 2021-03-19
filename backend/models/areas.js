@@ -19,7 +19,7 @@ const Areas = module.exports = mongoose.model('Areas', area_schema)
 
 module.exports.updateArea = async function (areaId, newArea) {
     return await Areas.updateOne(
-        { _id: projectId },
+        { _id: areaId },
         { $set: {
             title: newArea.title,
             points: newArea.points
