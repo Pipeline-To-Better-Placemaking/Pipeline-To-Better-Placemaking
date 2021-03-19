@@ -104,7 +104,7 @@ export function CompareFilteredView(props) {
       if (titleIndex == 1) { // staionary
         props.navigation.navigate("StationaryCompare");
       } else if (titleIndex == 2) { // moving
-
+        props.navigation.navigate("MovingCompare");
       } else if (titleIndex == 3) { // survey
 
       }
