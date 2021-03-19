@@ -1,9 +1,7 @@
 const config = require('../utils/config')
-const nodemailer = require('nodemailer')
 const passport = require('passport')
 const User = require('../models/users.js')
-const { google } = require('googleapis')
-const OAuth2 = google.auth.OAuth2
+const emailer = require('../utils/emailer')
 
 const express = require('express')
 const router = express.Router()
@@ -48,8 +46,6 @@ router.post('/newcode',passport.authenticate('jwt',{session:false}), async (req,
             message: 'Verification code reset; sending emails is disabled in testing mode'
         })
     }
-    
-    const transporter = await createTransporter()
 
     const emailHTML = `
         <h3>Hello from 2+ Community!</h3>
@@ -67,61 +63,14 @@ router.post('/newcode',passport.authenticate('jwt',{session:false}), async (req,
         html: emailHTML
     }
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error)
-            throw new InternalServerError('The server encountered a problem')
-        }
-        console.log(`Sent email to ${req.user.email}`)
-        res.status(200).json({
-            success: true,
-            message: 'Verification code reset; please check your email'
-        })
+    if (!await emailer.sendEmail(mailOptions)) {
+        throw new InternalServerError('The server encountered a problem')
+    }
+
+    res.status(200).json({
+        success: true,
+        message: 'Verification code reset; please check your email'
     })
 })
-
-const createTransporter = async () => {
-    // Create an OAuth client
-    const oauth2Client = new OAuth2(
-        config.CLIENT_ID,
-        config.CLIENT_SECRET,
-        'https://developers.google.com/oauthplayground' // Redirect URI
-    )
-
-    // Provide the refresh token
-    oauth2Client.setCredentials({
-        refresh_token: config.REFRESH_TOKEN
-    })
-
-    // Get an access token
-    const accessToken = await new Promise((resolve, reject) => {
-        oauth2Client.getAccessToken((error, token) => {
-            if (error) {
-                console.error(error)
-                reject({ message: 'Could not create access token' })
-            }
-            else resolve(token)
-        })
-    })
-
-    // Create the transporter object
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            type: 'OAuth2',
-            user: config.PROJECT_EMAIL,
-            accessToken,
-            clientId: config.CLIENT_ID,
-            clientSecret: config.clientSecret,
-            refreshToken: config.REFRESH_TOKEN
-        },
-        tls: {
-            // Don't require cert if being run from localhost
-            rejectUnauthorized: (process.env.NODE_ENV === 'dev') ? false : true
-        }
-    })
-
-    return transporter
-}
 
 module.exports = router

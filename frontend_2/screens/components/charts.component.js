@@ -125,8 +125,6 @@ export function CompareBarChart({children, ...props}) {
   let textColor = (themeContext.theme === "light" ? 'black' : 'white');
   let fontSize = 10;
 
-  let ticks = Math.max.apply(Math, props.dataValues)%5 + 1;
-
   /*const Gradient = () => (
       <Defs key={'gradient'}>
         <LinearGradient id={'gradient'} x1={'0%'} y={'0%'} x2={'0%'} y2={'100%'}>
@@ -137,10 +135,10 @@ export function CompareBarChart({children, ...props}) {
     )*/
 
   const Labels = ({ x, y, bandwidth, data }) => (
-    data.map((item, resultIndex) => (
+    props.dataValues.map((item, resultIndex) => (
       item.data.map((value, index) => {
         let xVal = x(index);
-        let segWidth = (bandwidth / (data.length*2));
+        let segWidth = (bandwidth / (props.dataValues.length*2));
         xVal += segWidth*(resultIndex*2+1)
         return (
           <TextSVG
@@ -177,30 +175,14 @@ export function CompareBarChart({children, ...props}) {
     )
   }
 
-  let data = [
-    {
-      data: [2,3,4,5,6],
-      svg: {fill: randomColor(), opacity:.5},
-      title: "dataaaaaaSet1",
-    },
-    {
-      data: [6,7,8,9,10],
-      svg: {fill: randomColor(), opacity:.5},
-      title: "dataSet2",
-    },
-    {
-      data: [5,4,3,6,7],
-      svg: {fill: randomColor(), opacity:.5},
-      title: "dataSet3",
-    },
-  ]
-
-  let maxValue = data.map(item => {return Math.max.apply(null, item.data)})
+  let maxValue = props.dataValues.map(item => {return Math.max.apply(null, item.data)})
   maxValue = Math.max.apply(null, maxValue)
-  let yData = [...data[0].data]
+  let yData = [...props.dataValues[0].data]
   yData[0] = maxValue
 
-  let titles = data.map(value => {return value.title});
+  let ticks = maxValue/2 + 1;
+
+  let titles = props.dataValues.map(value => {return value.title});
 
   return (
     <View style={{marginBottom:15}}>
@@ -216,7 +198,7 @@ export function CompareBarChart({children, ...props}) {
         <View style={{ flex: 1, marginLeft: 5 }}>
           <BarChart
             style={{flex:1}}
-            data={data}
+            data={props.dataValues}
             gridMin={0}
             spacing={0.2}
             contentInset={{top: 20, bottom: 20, right:20}}
@@ -237,7 +219,15 @@ export function CompareBarChart({children, ...props}) {
           </View>
         </View>
       </View>
-      <Text category={'s2'}>Order: {titles.join(', ')}</Text>
+      <View style={{marginTop:15, flex:1, flexDirection:'row'}}>
+        <Text category={'s2'}>Legend: </Text>
+        {titles.map((text, index) => {
+          //if(index !== props.dataValues.length-1) {text += ', '}
+          return(
+            <Text key={index} style={{flex:1,color:props.dataValues[index].svg.fill,width:props.width}} category={'s2'}>{text}</Text>
+          )
+        })}
+      </View>
     </View>
   );
 };

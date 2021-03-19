@@ -7,7 +7,7 @@ import { StationaryResultPage } from '../screens/Home/ResultPages/stationaryResu
 import { MovingResultPage } from '../screens/Home/ResultPages/movingResultPage.component';
 import { CompareScreen } from '../screens/Home/Compare/compare.component.js';
 import { CompareFilteredView } from '../screens/Home/Compare/compareFilteredView.component.js'
-import { CompareResults } from '../screens/Home/Compare/compareResults.component.js'
+import { StationaryCompare } from '../screens/Home/Compare/stationaryCompare.component.js'
 import { StationaryActivityResultView } from '../screens/Home/ResultPages/stationaryMapResults.component.js'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -24,6 +24,8 @@ export function HomeScreenStack(props){
   //** Compare **//
   // selected projects
   const [selectedProjects, setSelectedProjects] = useState([]);
+  const [compareResults, setCompareResults] = useState([]);
+  const [filterCriteria, setFilterCriteria] = useState([]);
 
   //** Results **//
   let allProjects = props.allProjects
@@ -36,8 +38,6 @@ export function HomeScreenStack(props){
   // selected activity result information
   const [selectedResult, setSelectedResult] = useState(null);
   const [results, setResults] =  useState([]);
-  const [compareResults, setCompareResults] = useState([]);
-  const [filterCriteria, setFilterCriteria] = useState([]);
 
   useEffect(() => {
     async function getInfo() {
@@ -117,6 +117,7 @@ export function HomeScreenStack(props){
         <CompareFilteredView
           {...props}
           filterCriteria={filterCriteria}
+          compareResults={compareResults}
           setCompareResults={setCompareResults}
           token={token}
         >
@@ -124,14 +125,13 @@ export function HomeScreenStack(props){
       }
       </Screen>
       <Screen
-        name="CompareResults"
+        name="StationaryCompare"
       >
       {props =>
-        <CompareResults
+        <StationaryCompare
           {...props}
           results={compareResults}
-        >
-        </CompareResults>
+        />
       }
       </Screen>
       <Screen
