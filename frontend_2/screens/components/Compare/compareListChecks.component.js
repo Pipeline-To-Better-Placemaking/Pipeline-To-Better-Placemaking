@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View,  ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
-import { Text, Button, Divider, List, ListItem, BottomNavigation, CheckBox, BottomNavigationTab, Icon } from '@ui-kitten/components';
+import { View } from 'react-native';
+import { Text, CheckBox } from '@ui-kitten/components';
 
 export function CompareListChecks(props) {
 
