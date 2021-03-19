@@ -184,13 +184,13 @@ router.post('/:id/standing_points', passport.authenticate('jwt',{session:false})
 router.put('/:id/standing_points/:pointId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.params.id)
-    point = await Standing_Point.findById(req.params.areaId)
+    point = await Standing_Point.findById(req.params.pointId)
 
     if(await Team.isAdmin(project.team,user._id)){
     
         let newPoint = new Standing_Point({
             title: (req.body.title ? req.body.title :  point.title),
-            latitude: (req.body.latitude ? req.body.latittude : point.latitude),
+            latitude: (req.body.latitude ? req.body.latitude : point.latitude),
             longitude: (req.body.longitude ? req.body.longitude : point.longitude)
         })
   

@@ -68,7 +68,7 @@ export function EditPoints(props) {
       success = res.success
       console.log("success: ", success);
     }
-    console.log("response ", res);
+    console.log("save new point response ", res);
     if(success) {
 
       // update list of standingPoints (This has to be done by just updating the project)
@@ -78,7 +78,7 @@ export function EditPoints(props) {
       let tempPoints = [...props.project.standingPoints, tempPoint];
       let tempProject = {...props.project};
       tempProject.standingPoints = tempPoints;
-      props.setProject(tempProject);
+      await props.setProject(tempProject);
     }
   }
 
@@ -86,7 +86,7 @@ export function EditPoints(props) {
     let token = props.token
     let success = false
     let res = null
-
+    console.log("editing point with id:", props.pointInfo._id);
     // Save the new area
     try {
       const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
@@ -114,14 +114,15 @@ export function EditPoints(props) {
       success = res.success
       console.log("success: ", success);
     }
-    console.log("response ", res);
+    console.log("save edit pt response ", res);
     if(success) {
       let tempPoint = {...props.pointInfo};
+      tempPoint.title = getName();
       let tempPoints = [...props.project.standingPoints];
       tempPoints[props.pointInfo.index] = tempPoint;
       let tempProject = {...props.project};
       tempProject.standingPoints = tempPoints;
-      props.setProject(tempProject);
+      await props.setProject(tempProject);
     }
   }
 
@@ -154,7 +155,7 @@ export function EditPoints(props) {
         success = res.success
         console.log("success: ", success);
       }
-      console.log("response ", res);
+      console.log("delete pt response ", res);
       if (success) {
         // update list of subAreas
         let tempPoints = [...props.project.standingPoints];
@@ -196,7 +197,7 @@ export function EditPoints(props) {
 
         <View style={{height:'90%'}}>
           <MapAddOne
-            areas={props.subareas}
+            areas={props.project.subareas}
             marker={props.pointInfo}
             setMarker={setMarker}
           >

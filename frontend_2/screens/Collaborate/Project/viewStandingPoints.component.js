@@ -10,13 +10,13 @@ import * as Location from 'expo-location';
 export function EditStandingPoints(props) {
 
   const [editPointVisible, setEditPointVisible] = useState(false);
-  let location = getRegionForCoordinates(props.subareas[0].points);
+  let location = getRegionForCoordinates(props.project.subareas[0].points);
   const nullableEntry = {
     newPoint: true,
     _id: '',
     latitude: location.latitude,
     longitude: location.longitude,
-    title:'Point ' + (props.standingPoints.length),
+    title:'Point ' + (props.project.standingPoints.length),
     index: 0
   };
 
@@ -77,11 +77,11 @@ export function EditStandingPoints(props) {
 
       <View style={{height:'50%'}}>
         <MapAreaWrapper
-          area={props.subareas[0].points}
+          area={props.project.subareas[0].points}
           mapHeight={'100%'}
         >
-          <ShowAreas areas={props.subareas}/>
-          <ShowMarkers markers={props.standingPoints}/>
+          <ShowAreas areas={props.project.subareas}/>
+          <ShowMarkers markers={props.project.standingPoints}/>
         </MapAreaWrapper>
       </View>
 
@@ -91,7 +91,7 @@ export function EditStandingPoints(props) {
         </View>
         <Button
           status='info'
-          onPress={() => editPoint(true, [], props.standingPoints.length)}
+          onPress={() => editPoint(true, [], props.project.standingPoints.length)}
           accessoryLeft={PlusIcon}
         >
           Create New Point
@@ -99,7 +99,7 @@ export function EditStandingPoints(props) {
       </View>
 
       <List
-        data={props.standingPoints}
+        data={props.project.standingPoints}
         ItemSeparatorComponent={Divider}
         renderItem={renderPointItem}
       />
