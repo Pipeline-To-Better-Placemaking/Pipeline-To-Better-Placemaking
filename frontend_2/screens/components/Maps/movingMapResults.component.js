@@ -3,7 +3,7 @@ import MapView from 'react-native-maps'
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 
-export function PeopleMovingMap(props) {
+export function MovingMapResults(props) {
 
     // Color constants for the data points
     const colors = ["blue", "red", "yellow", "green", "orange", "pink"]

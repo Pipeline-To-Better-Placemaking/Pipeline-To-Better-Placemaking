@@ -20,19 +20,15 @@ export const HomeScreen = ( props ) => {
   }
 
   const onCompareConfirm = async () => {
-
-    let timeCards = []
+    let projects = []
     let results = []
     let result = null
-    // let success = false
 
+    // Get Projects and put them in list called timeCards
     for (let i = 0; i < props.selectedProjects.length; i++) {
-
       let id = props.selectedProjects[i]._id
-      let timeCard = null
-
+      let project = null
       try {
-
           const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + id, {
               method: 'GET',
               headers: {
@@ -41,52 +37,48 @@ export const HomeScreen = ( props ) => {
                       'Authorization': 'Bearer ' + props.token
               }
           })
-
-          timeCard = await response.json();
-
+          project = await response.json();
       } catch (error) {
           console.log("error", error)
       }
-
-      if (timeCard === null) {
-        // success = false;
-      }
-      else{
-        timeCards.push(timeCard)
+      if (project !== null) {
+        projects.push(project)
       }
     }
 
-    for (let i = 0; i < timeCards.length; i++) {
-
-      if (timeCards[i].stationaryCollections != null) {
-
-        for (let j = 0; j < timeCards[i].stationaryCollections.length; j++) {
-
-          try {
-
-            let id = timeCards[i].stationaryCollections[j].maps[0]
-
-            const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + id, {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + props.token
-                }
-            })
-
-            result = await response.json();
-
-
-          } catch (error) {
-            console.log("error", error)
+    // For each project get the result data from the collections
+    for (let i = 0; i < projects.length; i++) {
+      let project = projects[i];
+      // Stationary Collections
+      if (project.stationaryCollections !== null) {
+        for (let j = 0; j < project.stationaryCollections.length; j++) {
+          let collection = project.stationaryCollections[j];
+          if (collection.maps === undefined || collection.maps.length <= 0) {
+            continue;
           }
+          // For each (map) result
+          for (let k = 0; k < collection.maps.length; k++) {
+            let id = collection.maps[k];
+            try {
+              const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + id, {
+                  method: 'GET',
+                  headers: {
+                      Accept: 'application/json',
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Bearer ' + props.token
+                  }
+              })
+              result = await response.json();
+            } catch (error) {
+              console.log("error", error)
+            }
 
             if (result != null) {
               result.test_type = 'stationary';
               result.date = new Date(result.date);
-              result.sharedData.date = new Date(timeCards[i].stationaryCollections[j].date);
-              result.sharedData.projectName = timeCards[i].stationaryCollections[j].title;
+              result.sharedData.date = new Date(collection.date);
+              result.sharedData.projectName = collection.title;
+              result.sharedData.location = project.description;
 
               let res = {
                 result: result,
@@ -95,34 +87,40 @@ export const HomeScreen = ( props ) => {
 
               results.push(res)
             }
-        }
-      }
+          } // end loop stationary results
+        } // end loop stationary collections
+      } // end if stationary collections !== null
 
-      if (timeCards[i].movingCollections.length > 0) {
-
-        for (let j = 0; j < timeCards[i].movingCollections.length; j++) {
-
-          try {
-
-            let id = timeCards[i].movingCollections[j].maps[0]
-
-            const response = await fetch('https://measuringplacesd.herokuapp.com/api/moving_maps/' + id, {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + props.token
-                }
-            })
-
-            result = await response.json();
-
-
-          } catch (error) {
-            console.log("error", error)
+      // Moving Collections
+      if (project.movingCollections !== null) {
+        for (let j = 0; j < project.movingCollections.length; j++) {
+          let collection = project.movingCollections[j];
+          if (collection.maps === undefined || collection.maps.length <= 0) {
+            continue;
           }
+          // For each (map) result
+          for (let k = 0; k < collection.maps.length; k++) {
+            let id = collection.maps[k];
+            try {
+              const response = await fetch('https://measuringplacesd.herokuapp.com/api/moving_maps/' + id, {
+                  method: 'GET',
+                  headers: {
+                      Accept: 'application/json',
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Bearer ' + props.token
+                  }
+              })
+              result = await response.json();
+            } catch (error) {
+              console.log("error", error)
+            }
 
             if (result != null) {
+              result.test_type = 'moving';
+              result.date = new Date(result.date);
+              result.sharedData.date = new Date(collection.date);
+              result.sharedData.projectName = collection.title;
+              result.sharedData.location = project.description;
 
               let res = {
                 result: result,
@@ -131,9 +129,11 @@ export const HomeScreen = ( props ) => {
 
               results.push(res)
             }
-        }
-      }
-    }
+          } // end loop moving results
+        } // end loop moving collections
+      } // end if moving collections !== null
+
+    } // end loop selected projects
 
     await props.setFilterCriteria(results)
 

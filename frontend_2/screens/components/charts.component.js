@@ -27,7 +27,6 @@ export function MyBarChart({children, ...props}) {
   let fontSize = 10;
 
   let ticks = Math.max.apply(Math, props.dataValues)%5 + 1;
-  let contentInset = {top: 20, bottom: 20};
 
   const Gradient = () => (
         <Defs key={'gradient'}>
@@ -62,7 +61,7 @@ export function MyBarChart({children, ...props}) {
         style={{
           fontSize: fontSize,
           textAlign: 'center',
-          width: (props.width / (props.dataLabels.length)),
+          width: ((props.width-10) / (props.dataLabels.length*2)),
           flex: 1,
           transform:[{rotate:props.rotation}],
         }}
@@ -78,7 +77,7 @@ export function MyBarChart({children, ...props}) {
       <View style={{height:props.height, width:props.width, flexDirection:'row'}}>
         <YAxis
           data={props.dataValues}
-          contentInset={contentInset}
+          contentInset={{top: 20, bottom: 10}}
           svg={{fontSize:fontSize, fill:textColor}}
           min={0}
           numberOfTicks={ticks}
@@ -90,25 +89,26 @@ export function MyBarChart({children, ...props}) {
             gridMin={0}
             spacing={0.2}
             svg={{fill:'url(#gradient)', opacity:.5}}
-            contentInset={contentInset}
+            contentInset={{top: 20, bottom: 10, right:20}}
             numberOfTicks={ticks}
             >
               <Grid />
               <Gradient />
               <Labels />
           </BarChart>
-          <View
-            style={{
-              flexDirection:'row',
-              maxWidth:props.width - 5,
-              justifyContent:'flex-start',
-            }}
-          >
-            {props.dataLabels.map((value, index) => {return xAxisLabels(value, index)})}
-          </View>
         </View>
       </View>
-
+      <View
+        style={{
+          flex: 1,
+          marginLeft: 10,
+          flexDirection:'row',
+          maxWidth:props.width - 10,
+          justifyContent:'flex-start',
+        }}
+      >
+        {props.dataLabels.map((value, index) => {return xAxisLabels(value, index)})}
+      </View>
     </View>
   );
 };
@@ -124,8 +124,6 @@ export function CompareBarChart({children, ...props}) {
   var randomColor = require('randomcolor');
   let textColor = (themeContext.theme === "light" ? 'black' : 'white');
   let fontSize = 10;
-
-  let ticks = Math.max.apply(Math, props.dataValues)%5 + 1;
 
   /*const Gradient = () => (
       <Defs key={'gradient'}>
@@ -167,7 +165,7 @@ export function CompareBarChart({children, ...props}) {
         style={{
           fontSize: fontSize,
           textAlign: 'center',
-          width: (props.width / (props.dataLabels.length)),
+          width: ((props.width-10) / (props.dataLabels.length*2)),
           flex: 1,
           transform:[{rotate:props.rotation}],
         }}
@@ -182,6 +180,8 @@ export function CompareBarChart({children, ...props}) {
   let yData = [...props.dataValues[0].data]
   yData[0] = maxValue
 
+  let ticks = maxValue/2 + 1;
+
   let titles = props.dataValues.map(value => {return value.title});
 
   return (
@@ -190,7 +190,7 @@ export function CompareBarChart({children, ...props}) {
       <View style={{height:props.height, width:props.width, flexDirection:'row'}}>
         <YAxis
           data={yData}
-          contentInset={{top: 20, bottom: 20}}
+          contentInset={{top: 20, bottom: 10}}
           svg={{fontSize:fontSize, fill:textColor}}
           min={0}
           numberOfTicks={ticks}
@@ -201,25 +201,35 @@ export function CompareBarChart({children, ...props}) {
             data={props.dataValues}
             gridMin={0}
             spacing={0.2}
-            contentInset={{top: 20, bottom: 20, right:20}}
+            contentInset={{top: 20, bottom: 10, right:20}}
             numberOfTicks={ticks}
             >
               <Grid />
               <Labels />
 
           </BarChart>
-          <View
-            style={{
-              flexDirection:'row',
-              maxWidth:props.width - 5,
-              justifyContent:'flex-start',
-            }}
-          >
-            {props.dataLabels.map((value, index) => {return xAxisLabels(value, index)})}
-          </View>
         </View>
       </View>
-      <Text category={'s2'}>Order: {titles.join(', ')}</Text>
+      <View
+        style={{
+          flex: 1,
+          marginLeft: 10,
+          flexDirection:'row',
+          maxWidth:props.width - 10,
+          justifyContent:'flex-start',
+        }}
+      >
+        {props.dataLabels.map((value, index) => {return xAxisLabels(value, index)})}
+      </View>
+      <View style={{marginTop:15, flex:1, flexDirection:'row'}}>
+        <Text category={'s2'}>Legend: </Text>
+        {titles.map((text, index) => {
+          //if(index !== props.dataValues.length-1) {text += ', '}
+          return(
+            <Text key={index} style={{flex:1,color:props.dataValues[index].svg.fill,width:props.width}} category={'s2'}>{text}</Text>
+          )
+        })}
+      </View>
     </View>
   );
 };

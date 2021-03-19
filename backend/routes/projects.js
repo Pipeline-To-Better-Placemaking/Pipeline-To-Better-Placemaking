@@ -11,14 +11,11 @@ const Moving_Collection = require('../models/moving_collections.js')
 
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
-const nodemailer = require('nodemailer')
-const { google } = require('googleapis')
-const OAuth2 = google.auth.OAuth2
-
+const emailer = require('../utils/emailer')
 
 const { models } = require('mongoose')
 const { stationaryToCSV, movingToCSV } = require('../utils/csv_conversions')
-const { BadRequestError, UnauthorizedError } = require('../utils/errors')
+const { BadRequestError, InternalServerError, UnauthorizedError } = require('../utils/errors')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
@@ -364,8 +361,6 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     }]
                                 }])
 
-    const transporter = await createTransporter()
-
     const emailHTML = `
         <h3>Hello from 2+ Community!</h3>
         <p>You have requested a copy of your stationary data. Attatched is a csv formated file representing your data.</p>
@@ -391,61 +386,14 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
         ]
     }
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error)
-            throw new InternalServerError('The server encountered a problem')
-        }
-        console.log(`Sent email to ${req.user.email}`)
-        res.status(200).json({
-            success: true,
-            message: 'Data export sent; please check your email'
-        })
+    if (!await emailer.sendEmail(mailOptions)) {
+        throw new InternalServerError('The server encountered a problem')
+    }
+
+    res.status(200).json({
+        success: true,
+        message: 'Data export sent; please check your email'
     })
 })
 
 module.exports = router
-
-const createTransporter = async () => {
-    // Create an OAuth client
-    const oauth2Client = new OAuth2(
-        config.CLIENT_ID,
-        config.CLIENT_SECRET,
-        'https://developers.google.com/oauthplayground' // Redirect URI
-    )
-
-    // Provide the refresh token
-    oauth2Client.setCredentials({
-        refresh_token: config.REFRESH_TOKEN
-    })
-
-    // Get an access token
-    const accessToken = await new Promise((resolve, reject) => {
-        oauth2Client.getAccessToken((error, token) => {
-            if (error) {
-                console.error(error)
-                reject({ message: 'Could not create access token' })
-            }
-            else resolve(token)
-        })
-    })
-
-    // Create the transporter object
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            type: 'OAuth2',
-            user: config.PROJECT_EMAIL,
-            accessToken,
-            clientId: config.CLIENT_ID,
-            clientSecret: config.clientSecret,
-            refreshToken: config.REFRESH_TOKEN
-        },
-        tls: {
-            // Don't require cert if being run from localhost
-            rejectUnauthorized: (process.env.NODE_ENV === 'dev') ? false : true
-        }
-    })
-
-    return transporter
-}

@@ -86,27 +86,29 @@ export function CompareFilteredView(props) {
         setCompareCount(compareCount-1)
     }
 
-    const onConfirmCompare = async () => {
-      if (compareCount !== 2) {
-        return;
-      }
-
-      if (titleIndex === 1) { // staionary
-        props.navigation.navigate("StationaryCompare");
-      } else if (titleIndex === 2) { // moving
-
-      } else if (titleIndex === 3) { // survey
-
-      }
-
-    }
-
     const setTitle = (index) => {
         setTitleIndex(index)
 
         let empty = []
         setSelectedCompare(empty)
         setCompareCount(0)
+    }
+
+    const onConfirmCompare = async () => {
+      if (compareCount !== 2) {
+        return;
+      }
+
+      await props.setCompareResults(selectedCompare);
+
+      if (titleIndex == 1) { // staionary
+        props.navigation.navigate("StationaryCompare");
+      } else if (titleIndex == 2) { // moving
+        props.navigation.navigate("MovingCompare");
+      } else if (titleIndex == 3) { // survey
+
+      }
+
     }
 
     return(
