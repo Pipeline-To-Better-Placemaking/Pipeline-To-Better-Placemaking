@@ -193,8 +193,8 @@ router.put('/:id/standing_points/:pointId', passport.authenticate('jwt',{session
     
         let newPoint = new Standing_Point({
             title: (req.body.title ? req.body.title :  point.title),
-            latitude: (req.body.latitude ? req.body.latitude : point.latitude),
-            latitude: (req.body.longitude ? req.body.longitude : point.longitude)
+            latitude: (req.body.latitude ? req.body.latittude : point.latitude),
+            longitude: (req.body.longitude ? req.body.longitude : point.longitude)
         })
   
         res.status(201).json(await Standing_Point.updateArea(req.params.pointId, newPoint))
