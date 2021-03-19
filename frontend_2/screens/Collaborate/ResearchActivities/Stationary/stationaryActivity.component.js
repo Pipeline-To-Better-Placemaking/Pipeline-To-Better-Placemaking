@@ -32,7 +32,6 @@ export function StationaryActivity(props) {
     const [data, setData] = useState([])
     const [markers, setMarkers] = useState([])
 
-
     // Opens the data model and stores a temporary points
     const onPointCreate = async (marker) => {
 
@@ -157,9 +156,16 @@ export function StationaryActivity(props) {
 
         // If we hit 0, restart the timer
         if (value-1 == 0){
-            let resetSlot = props.timeSlot;
-            resetSlot.timeLeft = props.initialTimeSlot.timeLeft;
-            props.setTimeSlot(resetSlot);
+
+            let orgTime = props.initialTimeSlot.timeLeft
+
+            console.log("OrgTime: " + orgTime)
+            console.log("Temp: " + JSON.stringify(temp))
+
+            temp.timeLeft = orgTime
+            console.log("Temp after update: " + JSON.stringify(temp))
+
+            props.setTimeSlot(temp);
 
             restart()
         }
