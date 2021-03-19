@@ -14,7 +14,8 @@ export function UserSettings(props) {
   const [verifyModalVisible, setVerifyModalVisible] = useState(false);
   const [firstNameText, setFirstNameText] = useState(props.firstName);
   const [lastNameText, setLastNameText] = useState(props.lastName);
-  const [emailText, setEmailText] = useState(props.lastName);
+  const [emailText, setEmailText] = useState(props.email);
+  const [emailTouched, setEmailTouched] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordVerify, setNewPasswordVerify] = useState('');
   const [passwordTouched, setPasswordTouched] = useState(false);
@@ -68,6 +69,7 @@ export function UserSettings(props) {
     setFirstNameText(props.firstName)
     setLastNameText(props.lastName)
     setEmailText(props.email)
+    setEmailTouched(false)
     setNewPassword('')
     setNewPasswordVerify('')
     setPasswordTouched(false)
@@ -79,6 +81,7 @@ export function UserSettings(props) {
     // if any profile data input is empty do not update that data
     if (firstNameText) editedInfo.firstname = firstNameText
     if (lastNameText) editedInfo.lastname = lastNameText
+    if (emailText) editedInfo.email = emailText
     if (newPassword) editedInfo.password = newPassword
 
     updateUser(editedInfo)
@@ -112,17 +115,18 @@ export function UserSettings(props) {
 
     // if user details were properly updated in the backend change them locally
     if(success) {
-        if (editedInfo.firstname) {
-            props.setFirstName(editedInfo.firstname)
-            await AsyncStorage.setItem('@firstName', props.firstName)
-        }
-        if (editedInfo.lastname) {
-            props.setLastName(editedInfo.lastname)
-            await AsyncStorage.setItem('@lastName', props.lastName)
-        }
-
-      //props.setEmail(emailText)
-      //await AsyncStorage.setItem('@email', props.email)
+      if (editedInfo.firstname) {
+          props.setFirstName(editedInfo.firstname)
+          await AsyncStorage.setItem('@firstName', props.firstName)
+      }
+      if (editedInfo.lastname) {
+          props.setLastName(editedInfo.lastname)
+          await AsyncStorage.setItem('@lastName', props.lastName)
+      }
+      if (editedInfo.email) {
+          props.setEmail(editedInfo.email)
+          await AsyncStorage.setItem('@email', props.email)
+      }
 
       setNewPassword('')
       setNewPasswordVerify('')
@@ -210,8 +214,15 @@ export function UserSettings(props) {
     if (!/[A-Z]/g.test(newPassword)) rules.push('Must have at least one uppercase letter');
 
     return rules;
-}
+  }
 
+  const checkEmail = () => {
+    if (!/.+\@.+\..+/g.test(emailText)) return false;
+    if (/\s/g.test(emailText)) return false;
+    return true;
+  }
+
+  const isValidEmail = checkEmail();
   const passwordProblems = checkPassword();
 
   return (
@@ -239,14 +250,20 @@ export function UserSettings(props) {
                   onChangeText={nextValue => setLastNameText(nextValue)}
                 />
 
-                {/* Email can't be changed with API yet
                 <Input
                   label = 'Email'
                   placeholder = 'Email'
                   value={emailText}
                   onChangeText={nextValue => setEmailText(nextValue)}
+                  autoCapitalize='none'
+                  onFocus={() => setEmailTouched(true)}
+                  caption={
+                    emailTouched && !isValidEmail &&
+                    <Text style={{color: '#FF3D71'}}>
+                        Email address is not valid
+                    </Text>
+                  }
                 />
-                */}
 
                 <Text category='s1'>Change password:</Text>
                 <Input
