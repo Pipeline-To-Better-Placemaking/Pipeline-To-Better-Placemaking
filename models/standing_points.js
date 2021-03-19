@@ -17,9 +17,9 @@ const points_schema = mongoose.Schema({
 
 const Standing_Points = module.exports = mongoose.model('Standing_Points', points_schema)
 
-module.exports.updatePoints = async function (pointId, newPoint) {
-    return await Maps.updateOne(
-        { _id: projectId },
+module.exports.updatePoint = async function (pointId, newPoint) {
+    return await Standing_Points.updateOne(
+        { _id: pointId },
         { $set: {
             title: newPoint.title,
             longitude: newPoint.longitude,
