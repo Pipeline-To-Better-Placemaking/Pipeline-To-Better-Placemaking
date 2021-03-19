@@ -72,8 +72,14 @@ export function StationaryCompare(props) {
     // zero out previously made categories
     labels.ageLabels.map(label => {
       dataset[i].ageData.push(Number(0))
+    });
+    labels.genderLabels.map(label => {
       dataset[i].genderData.push(Number(0))
+    });
+    labels.postureLabels.map(label => {
       dataset[i].postureData.push(Number(0))
+    });
+    labels.activityLabels.map(label => {
       dataset[i].activityData.push(Number(0))
     });
 
