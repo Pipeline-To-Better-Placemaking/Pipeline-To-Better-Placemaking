@@ -34,8 +34,17 @@ export function ActivitySignUpPage(props) {
         timeLeft: timeSlot.sharedData.duration*60
       }
 
+      let originalDetails = {
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
+        position: timeSlot.standingPoints,
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
+      }
+
       props.setTimeSlot(activityDetails);
-      props.setInitialTimeSlot(activityDetails);
+      props.setInitialTimeSlot(originalDetails);
 
       props.navigation.navigate("StationaryActivity")
     }
@@ -49,8 +58,17 @@ export function ActivitySignUpPage(props) {
         timeLeft: timeSlot.sharedData.duration*60
       }
 
+      let originalDetails = {
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
+        position: timeSlot.standingPoints,
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
+      }
+
       props.setTimeSlot(activityDetails);
-      props.setInitialTimeSlot(activityDetails);
+      props.setInitialTimeSlot(originalDetails);
 
       props.navigation.navigate("PeopleMovingActivity")
     }
@@ -61,8 +79,13 @@ export function ActivitySignUpPage(props) {
       activityDetails.time = props.activity.duration*60;
       activityDetails.timeLeft = props.activity.duration*60;
 
+      let originalDetails = {...props.activity};
+      activityDetails.location = props.activity.area[0];
+      activityDetails.time = props.activity.duration*60;
+      activityDetails.timeLeft = props.activity.duration*60;
+
       props.setTimeSlot(activityDetails);
-      props.setInitialTimeSlot(activityDetails);
+      props.setInitialTimeSlot(originalDetails);
 
       props.navigation.navigate("SurveyActivity")
     }

@@ -8,6 +8,7 @@ import { MovingResultPage } from '../screens/Home/ResultPages/movingResultPage.c
 import { CompareFilteredView } from '../screens/Home/Compare/compareFilteredView.component.js'
 import { StationaryCompare } from '../screens/Home/Compare/stationaryCompare.component.js'
 import { StationaryActivityResultView } from '../screens/Home/ResultPages/stationaryMapResults.component.js'
+import { MovingMapResultsView } from '../screens/Home/ResultPages/movingMapResultsView.component.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { Navigator, Screen } = createStackNavigator();
@@ -173,6 +174,18 @@ export function HomeScreenStack(props){
           >
           </StationaryActivityResultView>
         }
+      </Screen>
+      <Screen
+        name='MovingMapResultsView'
+      >
+        {props =>
+        <MovingMapResultsView
+          {...props}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+         />
+       }
+        
       </Screen>
     </Navigator>
   )

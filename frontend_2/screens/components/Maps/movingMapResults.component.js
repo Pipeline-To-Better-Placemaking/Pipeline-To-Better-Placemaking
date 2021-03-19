@@ -5,6 +5,8 @@ import { PressMapAreaWrapper } from './mapPoints.component';
 
 export function MovingMapResults(props) {
 
+    console.log("Props: " + JSON.stringify(props))
+
     // Color constants for the data points
     const colors = ["blue", "red", "yellow", "green", "orange", "pink"]
 
@@ -16,43 +18,12 @@ export function MovingMapResults(props) {
         )
     }
 
-    const CreatePolyline = () => {
-
-        if(props.markers === null || props.markers.length == 0) {
-            return (null);
-        }
-
-        else if (props.markers.length == 1) {
-
-            return (props.markers.map((coord, index) => (
-                <MapView.Marker
-                    key={index}
-                    coordinate = {props.markers[0]}
-                >
-                    <DataPin/>
-                </MapView.Marker>
-        )));
-
-        }
-        else if (props.markers.length > 1) {
-
-            return (
-                <MapView.Polyline
-                    coordinates={props.markers}
-                    strokeWidth={3}
-                    strokeColor={'rgba(255,0,0,0.5)'}
-                />
-            );
-        }
-    }
-
     const AllLines = () => {
 
         if (props.viewAllLines) {
 
-            console.log("Drawing lines")
-
             return (props.totalPaths.map((obj, index) => (
+                console.log("Obj path: " + JSON.stringify(obj.path)),
                 <MapView.Polyline
                     coordinates={obj.path}
                     strokeWidth={3}
@@ -66,35 +37,34 @@ export function MovingMapResults(props) {
         }
     }
 
-    // Shows the project area, along with the plotted points
-    const ShowPolygon = () => {
-        if(props.markers === null) {
-            return (null);
-        }
-        else {
-            return (
-                props.markers.map((coord, index) => (
-                <MapView.Marker
-                    key={index}
-                    coordinate = {{
-                        latitude: coord.latitude,
-                        longitude: coord.longitude
-                    }}
-                >
-                    <DataPin index={index}/>
-                </MapView.Marker>
-             )))
-         }
-    }
+    // // Shows the project area, along with the plotted points
+    // const ShowPolygon = () => {
+    //     if(props.markers === null) {
+    //         return (null);
+    //     }
+    //     else {
+    //         return (
+    //             props.markers.map((coord, index) => (
+    //             <MapView.Marker
+    //                 key={index}
+    //                 coordinate = {{
+    //                     latitude: coord.latitude,
+    //                     longitude: coord.longitude
+    //                 }}
+    //             >
+    //                 <DataPin index={index}/>
+    //             </MapView.Marker>
+    //          )))
+    //      }
+    // }
 
     return(
 
         <View>
             <PressMapAreaWrapper
                 area={props.area}
-                mapHeight={props.lineTools ? '93%' : '100%'}
-                onPress={props.addMarker}
-                recenter={props.recenter}
+                mapHeight={'100%'}
+                onPress={() => null}
             >
                 <MapView.Marker
                     coordinate = {props.position}
@@ -107,9 +77,7 @@ export function MovingMapResults(props) {
                     fillColor={'rgba(0,0,0,0.5)'}
                 />
 
-                <ShowPolygon/>
-                
-                <CreatePolyline/>
+                {/* <ShowPolygon/> */}
 
                 <AllLines/>
 
