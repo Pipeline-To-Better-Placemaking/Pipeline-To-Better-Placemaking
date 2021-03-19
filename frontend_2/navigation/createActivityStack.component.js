@@ -295,7 +295,7 @@ export function CreateActivityStack(props) {
         await postTimeSlot(timesToAdd[i], name, props.activity._id, timeSlotName);
       }
       for (let i=0; i< timesToModify.length; i++) {
-        await postTimeSlot(timesToModify[i], name, props.activity._id, timeSlotName);
+        await putTimeSlot(timesToModify[i], name, props.activity._id, timeSlotName);
       }
       for (let i=0; i< timesToDelete.length; i++) {
         await deleteTimeSlot(timesToDelete[i], timeSlotName);
