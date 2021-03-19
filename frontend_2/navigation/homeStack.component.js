@@ -24,6 +24,8 @@ export function HomeScreenStack(props){
   //** Compare **//
   // selected projects
   const [selectedProjects, setSelectedProjects] = useState([]);
+  const [compareResults, setCompareResults] = useState([]);
+  const [filterCriteria, setFilterCriteria] = useState([]);
 
   //** Results **//
   let allProjects = props.allProjects
@@ -36,8 +38,6 @@ export function HomeScreenStack(props){
   // selected activity result information
   const [selectedResult, setSelectedResult] = useState(null);
   const [results, setResults] =  useState([]);
-  const [compareResults, setCompareResults] = useState([]);
-  const [filterCriteria, setFilterCriteria] = useState([]);
 
   useEffect(() => {
     async function getInfo() {
@@ -117,6 +117,7 @@ export function HomeScreenStack(props){
         <CompareFilteredView
           {...props}
           filterCriteria={filterCriteria}
+          compareResults={compareResults}
           setCompareResults={setCompareResults}
           token={token}
         >

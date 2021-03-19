@@ -86,10 +86,20 @@ export function CompareFilteredView(props) {
         setCompareCount(compareCount-1)
     }
 
+    const setTitle = (index) => {
+        setTitleIndex(index)
+
+        let empty = []
+        setSelectedCompare(empty)
+        setCompareCount(0)
+    }
+
     const onConfirmCompare = async () => {
       if (compareCount !== 2) {
         return;
       }
+
+      await props.setCompareResults(selectedCompare);
 
       if (titleIndex === 1) { // staionary
         props.navigation.navigate("StationaryCompare");
@@ -99,14 +109,6 @@ export function CompareFilteredView(props) {
 
       }
 
-    }
-
-    const setTitle = (index) => {
-        setTitleIndex(index)
-
-        let empty = []
-        setSelectedCompare(empty)
-        setCompareCount(0)
     }
 
     return(

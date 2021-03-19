@@ -125,8 +125,6 @@ export function CompareBarChart({children, ...props}) {
   let textColor = (themeContext.theme === "light" ? 'black' : 'white');
   let fontSize = 10;
 
-  let ticks = Math.max.apply(Math, props.dataValues)%5 + 1;
-
   /*const Gradient = () => (
       <Defs key={'gradient'}>
         <LinearGradient id={'gradient'} x1={'0%'} y={'0%'} x2={'0%'} y2={'100%'}>
@@ -182,6 +180,8 @@ export function CompareBarChart({children, ...props}) {
   let yData = [...props.dataValues[0].data]
   yData[0] = maxValue
 
+  let ticks = maxValue/2 + 1;
+
   let titles = props.dataValues.map(value => {return value.title});
 
   return (
@@ -219,7 +219,15 @@ export function CompareBarChart({children, ...props}) {
           </View>
         </View>
       </View>
-      <Text category={'s2'}>Order: {titles.join(', ')}</Text>
+      <View style={{marginTop:15, flex:1, flexDirection:'row'}}>
+        <Text category={'s2'}>Legend: </Text>
+        {titles.map((text, index) => {
+          //if(index !== props.dataValues.length-1) {text += ', '}
+          return(
+            <Text key={index} style={{flex:1,color:props.dataValues[index].svg.fill,width:props.width}} category={'s2'}>{text}</Text>
+          )
+        })}
+      </View>
     </View>
   );
 };

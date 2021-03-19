@@ -26,36 +26,161 @@ export function StationaryCompare(props) {
     );
   }
 
-  let areaTitle = 'area Title'
+  let results = props.results;
+
+  let areaTitle = '...area'
   let startTime = new Date();
   let day = new Date();
 
-  let researchers = 'researchers...';
+  let researchers = '...researchers';
+  const color = '#006FD6';
+  results.map((result, index) => {
+    result.graph = {}
+    result.resultName = getTimeStr(result.date) + ' - ' + getDayStr(result.sharedData.date) + ' - ' + result.sharedData.projectName;
+    if (index%2 === 0) {
+      result.color = 'rgb(0, 111, 214)';
+    } else {
+      result.color = 'rgb(0, 214, 111)';
+    }
+    result.information = result.resultName + '\nLocation: ' + result.sharedData.location;
+  });
 
   const chartWidth = Dimensions.get('window').width*0.95;
   const chartHeight = 210;
 
-  const color = '#006FD6';
   var randomColor = require('randomcolor');
 
-  let data = [
-    {
-      data: [2,3,4,5,6],
-      svg: {fill: randomColor(), opacity:.5},
-      title: "dataaaaaaSet1",
-    },
-    {
-      data: [6,7,8,9,10],
-      svg: {fill: randomColor(), opacity:.5},
-      title: "dataSet2",
-    },
-    {
-      data: [5,4,3,6,7],
-      svg: {fill: randomColor(), opacity:.5},
-      title: "dataSet3",
-    },
-  ]
-  let dataLabels = ['a', 'b', 'c', 'd', 'e'];
+  // format Stationary data
+  let labels = {
+    ageLabels: [],
+    genderLabels: [],
+    postureLabels: [],
+    activityLabels: [],
+  };
+  let dataset = [];
+
+  for (let i = 0; i < results.length; i++) {
+    if (results[i].data === undefined || results[i].data === null) { continue; }
+    let result = [...results[i].data];
+    // null entry
+    dataset.push({
+      ageData: [],
+      genderData: [],
+      postureData: [],
+      activityData: [],
+    });
+    // zero out previously made categories
+    labels.ageLabels.map(label => {
+      dataset[i].ageData.push(Number(0))
+      dataset[i].genderData.push(Number(0))
+      dataset[i].postureData.push(Number(0))
+      dataset[i].activityData.push(Number(0))
+    });
+
+    // for each data point, increase count
+    for (let j = 0; j < result.length; j++) {
+      let dataPoint = result[j];
+      let label = undefined;
+      let labelIndex = -1;
+
+      // Age
+      label = dataPoint.age;
+      if (label !== undefined) {
+        labelIndex = labels.ageLabels.findIndex(element => element === label);
+        // add category if it's not currently in the list
+        if (labelIndex < 0) {
+          labelIndex = labels.ageLabels.length;
+          labels.ageLabels = [...labels.ageLabels, label];
+          dataset.map(entry => entry.ageData.push(Number(0)));
+        }
+        // increase count
+        dataset[i].ageData[labelIndex] += 1;
+      } // end age
+
+      // gender
+      label = dataPoint.gender;
+      if (label !== undefined) {
+        labelIndex = labels.genderLabels.findIndex(element => element === label);
+        // add category if it's not currently in the list
+        if (labelIndex < 0) {
+          labelIndex = labels.genderLabels.length;
+          labels.genderLabels = [...labels.genderLabels, label];
+          dataset.map(entry => entry.genderData.push(Number(0)));
+        }
+        // increase count
+        dataset[i].genderData[labelIndex] += 1;
+      } // end gender
+
+      // posture
+      label = dataPoint.posture;
+      if (label !== undefined) {
+        labelIndex = labels.postureLabels.findIndex(element => element === label);
+        // add category if it's not currently in the list
+        if (labelIndex < 0) {
+          labelIndex = labels.postureLabels.length;
+          labels.postureLabels = [...labels.postureLabels, label];
+          dataset.map(entry => entry.postureData.push(Number(0)));
+        }
+        // increase count
+        dataset[i].postureData[labelIndex] += 1;
+      } // end posture
+
+      // activity
+      label = dataPoint.activity;
+      if (label !== undefined) {
+        labelIndex = labels.activityLabels.findIndex(element => element === label);
+        // add category if it's not currently in the list
+        if (labelIndex < 0) {
+          labelIndex = labels.activityLabels.length;
+          labels.activityLabels = [...labels.activityLabels, label];
+          dataset.map(entry => entry.activityData.push(Number(0)));
+        }
+        // increase count
+        dataset[i].activityData[labelIndex] += 1;
+      } // end activity
+
+    } // end for j loop
+  } // end for i loop
+
+  // add the graph information here
+  //console.log('graph results...');
+  for (let i = 0; i < results.length; i++) {
+    results[i].graph = dataset[i];
+    //results[i].labels = labels;
+    //console.log('i:', i, '\n', results[i].graph);
+  }
+
+  let ageValues = results.map(result => {
+    return {
+      data: result.graph.ageData,
+      svg: {fill: result.color, opacity:.5},
+      title: result.resultName,
+    }
+  });
+
+  let genderValues = props.results.map(result => {
+    return {
+      data: result.graph.genderData,
+      svg: {fill: result.color, opacity:.5},
+      title: result.resultName,
+    }
+  });
+
+  let postureValues = results.map(result => {
+    return {
+      data: result.graph.postureData,
+      svg: {fill: result.color, opacity:.5},
+      title: result.resultName,
+    }
+  });
+
+  let activityValues = results.map(result => {
+    return {
+      data: result.graph.activityData,
+      svg: {fill: result.color, opacity:.5},
+      title: result.resultName,
+    }
+  });
 
   return (
     <ViewableArea>
@@ -66,23 +191,25 @@ export function StationaryCompare(props) {
           <Text category={'h5'}>Stationary Result Information</Text>
           <Divider style={{marginTop:5, marginBottom:10, borderWidth:0.5}} />
 
-          <Text>Team: </Text>
-          <Text>Admin: </Text>
-
-          <Divider style={{marginTop:10, marginBottom:10}} />
-
-          <Text>Location: </Text>
-          <Text>Area: {areaTitle}</Text>
-
-          <Divider style={{marginTop:10, marginBottom:10}} />
-
-          <Text>Day: {getDayStr(day)}</Text>
-          <Text>Start Time: {getTimeStr(startTime)} </Text>
-          <Text>End Time: </Text>
-
-          <Divider style={{marginTop:10, marginBottom:10}} />
-
-          <Text>Researcher(s): {researchers} </Text>
+          {
+            results.map((result, index) => {
+              if (index === results.length - 1) {
+                return (
+                  <Text key={index}>
+                    {result.information}
+                  </Text>
+                )
+              }
+              return (
+                <View key={index}>
+                  <Text>
+                    {result.information}
+                  </Text>
+                  <Divider style={{marginTop:10, marginBottom:10}} />
+                </View>
+              )
+            })
+          }
 
           <Divider style={{marginTop:10, marginBottom:10, borderWidth:0.5}} />
 
@@ -90,8 +217,41 @@ export function StationaryCompare(props) {
             {...props}
             title={"Age"}
             rotation={'0deg'}
-            dataValues={data}
-            dataLabels={dataLabels}
+            dataValues={ageValues}
+            dataLabels={labels.ageLabels}
+            barColor={color}
+            width={chartWidth}
+            height={chartHeight}
+          />
+
+          <CompareBarChart
+            {...props}
+            title={"Gender"}
+            rotation={'0deg'}
+            dataValues={genderValues}
+            dataLabels={labels.genderLabels}
+            barColor={color}
+            width={chartWidth}
+            height={chartHeight}
+          />
+
+          <CompareBarChart
+            {...props}
+            title={"Posture"}
+            rotation={'0deg'}
+            dataValues={postureValues}
+            dataLabels={labels.postureLabels}
+            barColor={color}
+            width={chartWidth}
+            height={chartHeight}
+          />
+
+          <CompareBarChart
+            {...props}
+            title={"Activity"}
+            rotation={'-90deg'}
+            dataValues={activityValues}
+            dataLabels={labels.activityLabels}
             barColor={color}
             width={chartWidth}
             height={chartHeight}
