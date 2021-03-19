@@ -194,7 +194,7 @@ router.put('/:id/standing_points/:pointId', passport.authenticate('jwt',{session
             longitude: (req.body.longitude ? req.body.longitude : point.longitude)
         })
   
-        res.status(201).json(await Standing_Point.updateArea(req.params.pointId, newPoint))
+        res.status(201).json(await Standing_Point.updatePoint(req.params.pointId, newPoint))
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
