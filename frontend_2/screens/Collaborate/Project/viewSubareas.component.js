@@ -9,15 +9,15 @@ import * as Location from 'expo-location';
 
 export function EditSubAreas(props) {
 
-  const location = props.subareas[0].points[0];
+  const location = props.project.subareas[0].points[0];
   const [editAreaVisible, setEditAreaVisible] = useState(false);
   const nullableEntry = {
-    points: props.subareas[0].points[0],
+    points: props.project.subareas[0].points[0],
     newArea: true,
     index: 1,
     _id: '',
     location: location,
-    title:'Area ' + (props.subareas.length),
+    title:'Area ' + (props.project.subareas.length),
 };
   const [areaInfo, setAreaInfo] = useState(nullableEntry);
   const [tempArea, setTempArea] = useState([]);
@@ -79,10 +79,10 @@ export function EditSubAreas(props) {
 
       <View style={{height:'50%'}}>
         <MapAreaWrapper
-          area={props.subareas[0].points}
+          area={props.project.subareas[0].points}
           mapHeight={'100%'}
         >
-          <ShowAreas areas={props.subareas}/>
+          <ShowAreas areas={props.project.subareas}/>
         </MapAreaWrapper>
       </View>
 
@@ -92,7 +92,7 @@ export function EditSubAreas(props) {
         </View>
         <Button
           status='info'
-          onPress={() => editArea(true, [], props.subareas.length)}
+          onPress={() => editArea(true, [], props.project.subareas.length)}
           accessoryLeft={PlusIcon}
         >
           Create New Subarea
@@ -100,7 +100,7 @@ export function EditSubAreas(props) {
       </View>
 
       <List
-        data={props.subareas}
+        data={props.project.subareas}
         ItemSeparatorComponent={Divider}
         renderItem={renderAreaItem}
       />

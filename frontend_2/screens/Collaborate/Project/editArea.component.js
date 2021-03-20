@@ -67,7 +67,7 @@ export function EditPoints(props) {
       success = res.success
       console.log("success: ", success);
     }
-    console.log("response ", res);
+    console.log("save new area response ", res);
     if(success) {
       // update list of sub Areas (This has to be done by just updating the project)
       let tempArea = {...res};
@@ -75,7 +75,7 @@ export function EditPoints(props) {
       tempSubareas[props.areaInfo.index] = tempArea;
       let tempProject = {...props.project};
       tempProject.subareas = tempSubareas;
-      props.setProject(tempProject);
+      await props.setProject(tempProject);
     }
   }
 
@@ -87,7 +87,7 @@ export function EditPoints(props) {
         if(props.areaInfo.index === 0){
           updateProjectPerimeter();
         }
-
+        console.log("save area with id:", props.areaInfo._id);
         // Save the area
         try {
           const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
@@ -114,15 +114,18 @@ export function EditPoints(props) {
           success = res.success
           console.log("success: ", success);
         }
-        console.log("response ", res);
+
         if(success) {
+          console.log("save edit area response ", res);
           // update list of sub Areas (This has to be done by just updating the project)
           let tempArea = {...props.areaInfo};
+          tempArea.points = props.tempArea;
+          tempArea.title = getName();
           let tempSubareas = [...props.project.subareas];
           tempSubareas[props.areaInfo.index] = tempArea;
           let tempProject = {...props.project};
           tempProject.subareas = tempSubareas;
-          props.setProject(tempProject);
+          await props.setProject(val => tempProject);
         }
     }
 
@@ -155,14 +158,14 @@ export function EditPoints(props) {
             success = res.success
             console.log("success: ", success);
           }
-          console.log("response ", res);
+          console.log("delete area response ", res);
           if (success) {
             // update list of subAreas
             let tempSubareas = [...props.project.subareas];
             tempSubareas.splice(props.areaInfo.index, 1);
             let tempProject = {...props.project};
             tempProject.subareas = tempSubareas;
-            props.setProject(tempProject);
+            await props.setProject(tempProject);
           }
       }
 
@@ -196,7 +199,7 @@ export function EditPoints(props) {
         success = res.success
         console.log("success: ", success);
       }
-      console.log("response ", res);
+      console.log("update location name response ", res);
       if(success) {
         // update project
         let tempProject = {...props.project};

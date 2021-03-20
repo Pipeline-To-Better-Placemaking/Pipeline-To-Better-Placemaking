@@ -5,7 +5,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const entrySchema = mongoose.Schema({
     path: [{
-        lattitude: {
+        latitude: {
             type: Number,
             required: true
         },
