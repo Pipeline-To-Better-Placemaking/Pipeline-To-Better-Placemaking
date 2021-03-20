@@ -43,7 +43,6 @@ export function MovingResultPage(props) {
   const fillColor = '#006FD6';
 
   const viewMapResults = () => {
-    console.log("Selected Results: " + JSON.stringify(props.selectedResult, null, 1))
     props.navigation.navigate("MovingMapResultsView");
   }
 

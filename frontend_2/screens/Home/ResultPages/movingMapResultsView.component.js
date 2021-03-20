@@ -8,8 +8,6 @@ import { Select, Button, SelectItem, Icon } from '@ui-kitten/components';
 
 export function MovingMapResultsView(props) {
 
-    // console.log("Project: " + JSON.stringify(props.project))
-
     /// Location, area, and standing points for SM
     /// Bool indicating to the map to recenter
     // const [location] = useState(props.timeSlot.location)
@@ -23,6 +21,11 @@ export function MovingMapResultsView(props) {
 
     // Temp marker, inputted data points, and all of their locations
     const [data, setData] = useState(props.selectedResult.data)
+    const [walkingPaths, setWalkingPaths] = useState([])
+    const [runningPaths, setRunningPaths] = useState([])
+    const [swimmingPaths, setSwimmingPaths] = useState([])
+    const [wheelPaths,setWheelPaths] = useState([])
+    const [handAssistPaths, setHandAssistPaths]  = useState([])
     const [totalPaths, setTotalPaths] = useState([])
 
     const [markers, setMarkers] = useState([])
@@ -37,9 +40,43 @@ export function MovingMapResultsView(props) {
 
         if (totalPaths.length == 0) {
 
-            let tp = []
+            setTotal()
+            setWalking()
+            setRunning()
+            setSwimming()
+            setWheels()
+            setHandAssist()
+        }
+    }, [])
 
-            for (let i = 0; i < props.selectedResult.data.length; i++){
+    const setTotal = () => {
+
+        let tp = []
+
+        for (let i = 0; i < props.selectedResult.data.length; i++){
+
+            let colorIndex = getColorIndex(props.selectedResult.data[i].mode)
+
+            let obj = {
+                path: props.selectedResult.data[i].path,
+                colorIndex: colorIndex
+            }
+
+            tp.push(obj)
+        }
+
+        setTotalPaths(tp)
+    }
+
+    const setWalking = () => {
+
+        let wp = []
+
+        for (let i = 0; i < props.selectedResult.data.length; i++){
+
+            if (props.selectedResult.data[i].mode == movement[0]){
+
+                console.log("Setting walking")
 
                 let colorIndex = getColorIndex(props.selectedResult.data[i].mode)
 
@@ -48,12 +85,108 @@ export function MovingMapResultsView(props) {
                     colorIndex: colorIndex
                 }
 
-                tp.push(obj)
+                wp.push(obj)
             }
-
-            setTotalPaths(tp)
         }
-    }, [])
+
+        console.log("WP: " + JSON.stringify(wp , null, 1))
+
+        setWalkingPaths(wp)
+    }
+
+    const setRunning = () => {
+
+        let rp = []
+
+        for (let i = 0; i < props.selectedResult.data.length; i++){
+
+            if (props.selectedResult.data[i].mode === movement[1]){
+
+                
+                // console.log("Setting Running")
+                // console.log("Data[i]: " + JSON.stringify(props.selectedResult.data[i], null, 1))
+                // console.log("Mode: " + JSON.stringify(props.selectedResult.data[i].mode))
+                // console.log("Movement: " + movement[1])
+                
+                
+                let colorIndex = getColorIndex(props.selectedResult.data[i].mode)
+
+                let obj = {
+                    path: props.selectedResult.data[i].path,
+                    colorIndex: colorIndex
+                }
+
+                rp.push(obj)
+            }
+        }
+
+        console.log("RP: " + JSON.stringify(rp , null, 1))
+
+        setRunningPaths(rp)
+    }
+
+    const setSwimming = () => {
+        let rp = []
+
+        for (let i = 0; i < props.selectedResult.data.length; i++){
+
+            if (props.selectedResult.data[i].mode == movement[2]){
+                
+                let colorIndex = getColorIndex(props.selectedResult.data[i].mode)
+
+                let obj = {
+                    path: props.selectedResult.data[i].path,
+                    colorIndex: colorIndex
+                }
+
+                rp.push(obj)
+            }
+        }
+
+        setSwimmingPaths(rp)
+    }
+
+    const setWheels = () => {
+        let whp = []
+
+        for (let i = 0; i < props.selectedResult.data.length; i++){
+
+            if (props.selectedResult.data[i].mode == movement[3]){
+                
+                let colorIndex = getColorIndex(props.selectedResult.data[i].mode)
+
+                let obj = {
+                    path: props.selectedResult.data[i].path,
+                    colorIndex: colorIndex
+                }
+
+                whp.push(obj)
+            }
+        }
+
+        setWheelPaths(whp)
+    }
+
+    const setHandAssist = () => {
+        let hap = []
+
+        for (let i = 0; i < props.selectedResult.data.length; i++){
+
+            if (props.selectedResult.data[i].mode == movement[4]){
+                
+                let colorIndex = getColorIndex(props.selectedResult.data[i].mode)
+
+                let obj = {
+                    path: props.selectedResult.data[i].path,
+                    colorIndex: colorIndex
+                }
+
+                hap.push(obj)
+            }
+        }
+
+        setHandAssistPaths(hap)
+    }
 
     const getColorIndex = (mode) => {
         if (mode == movement[0]){
@@ -70,6 +203,30 @@ export function MovingMapResultsView(props) {
         }
         else if (mode == movement[4]) {
             return 4
+        }
+    }
+
+    const getFilteredPath = () => {
+
+        console.log("TitleIndex: " + titleIndex)
+
+        if (titleIndex == -1){
+            return totalPaths
+        }
+        else if (titleIndex-1 == 0) {
+            return walkingPaths
+        }
+        else if (titleIndex-1 == 1) {
+            return runningPaths
+        }
+        else if (titleIndex-1 == 2) {
+            return swimmingPaths
+        }
+        else if (titleIndex-1 == 3) {
+            return wheelPaths
+        }
+        else {
+            return handAssistPaths
         }
     }
 
@@ -126,7 +283,7 @@ export function MovingMapResultsView(props) {
                 position={position[standingIndex]}
                 recenter={recenter}
                 viewAllLines={viewAllLines}
-                totalPaths={totalPaths}
+                totalPaths={getFilteredPath()}
             />
 
             </ContentContainer>

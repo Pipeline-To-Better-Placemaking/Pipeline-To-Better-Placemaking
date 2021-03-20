@@ -5,7 +5,7 @@ import { PressMapAreaWrapper } from './mapPoints.component';
 
 export function MovingMapResults(props) {
 
-    console.log("Props: " + JSON.stringify(props))
+    console.log("TotalPaths: " + JSON.stringify(props.totalPaths))
 
     // Color constants for the data points
     const colors = ["blue", "red", "yellow", "green", "orange", "pink"]
@@ -23,7 +23,7 @@ export function MovingMapResults(props) {
         if (props.viewAllLines) {
 
             return (props.totalPaths.map((obj, index) => (
-                console.log("Obj path: " + JSON.stringify(obj.path)),
+
                 <MapView.Polyline
                     coordinates={obj.path}
                     strokeWidth={3}
