@@ -137,7 +137,7 @@ module.exports.addSurveyCollection = async function (projectId, collectionId) {
    )
 }
 
-module.exports.deleteMovingCollection = async function(projectId, collectionId) {
+module.exports.deleteSurveyCollection = async function(projectId, collectionId) {
    
    await Projects.updateOne(
        { _id: projectId },

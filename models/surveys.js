@@ -44,7 +44,17 @@ const survey_schema = mongoose.Schema({
 const Surveys = module.exports = mongoose.model('Surveys', survey_schema)
 
 module.exports.addSurvey = async function(newSurvey) {
-    newSurvey.key = "Placeholder Key"
+    var builderString = "3UROGSWIVE01A9LMKQB7FZ6DJ4NC28Y5HTXP"
+    var count = await Surveys.countDocuments()
+    var keyInt = (count * 823543 + 23462) % 2176782336
+    var keyString = ""
+    
+    for(var i = 0; i < 6; i++){
+        keyString += builderString[ keyInt % 36 ]
+        keyInt = Math.floor(keyInt/36)
+    }
+    newSurvey.key = keyString
+    
     return await newSurvey.save()
 }
 
