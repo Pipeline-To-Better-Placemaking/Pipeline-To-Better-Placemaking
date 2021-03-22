@@ -89,76 +89,55 @@ USER=$(curl -H "Authorization: Bearer ${TOKEN}" \
         http://localhost:8080/api/users/ \
         | jq -r '._id')
 
+echo
+echo asdfasdfasdf
+echo
+
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request POST \
       -d "{\"title\": \"collection\",   
-           \"area\": \"${AREA}\" , 
            \"date\": \"2012-04-23T18:25:43.511Z\" 
            }"  \
-     http://localhost:8080/api/projects/${PROJECT}/stationary_collections
+     http://localhost:8080/api/projects/${PROJECT}/survey_collections
+
+echo
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/projects/${PROJECT} 
+echo
 
 COLLECTION=$(curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
      http://localhost:8080/api/projects/${PROJECT} \
-     | jq -r '.stationaryCollections[0]._id' )
+     | jq -r '.surveyCollections[0]._id' )
+
+echo
+echo ${COLLECTION}
+
 
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request POST \
       -d "{\"researchers\": [],   
-           \"title\": \"sovienary+ap\",
+           \"title\": \"surveys\",
            \"collection\": \"${COLLECTION}\",
            \"project\": \"${PROJECT}\" , 
            \"date\": \"2012-04-23T18:25:43.511Z\" }"  \
-     http://localhost:8080/api/stationary_maps/
+     http://localhost:8080/api/surveys/
 
 
 echo
 echo
 
-
-MAP=$(curl -H 'Content-Type: application/json' \
+curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
      http://localhost:8080/api/projects/${PROJECT} \
-      | jq -r '.stationaryCollections[0].maps[0]' )
-
-echo MAP ${MAP}
-echo
 
 
-
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-        --request POST \
-         -d "{
-           \"path\": [{\"latitude\": 8.602413253152307, \"longitude\": -7.20019937739713}],   
-           \"mode\": \"walking\",
-           \"time\": \"2012-04-23T12:25:43.511Z\" 
-          }"  \
-     http://localhost:8080/api/stationary_maps/${MAP}/data
-
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-     http://localhost:8080/api/projects/${PROJECT}
-
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-        --request DELETE \
-     http://localhost:8080/api/stationary_maps/${MAP}
-
-echo
-echo
-
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-     http://localhost:8080/api/projects/${PROJECT}
-
-echo
 
 #curl -H 'Content-Type: application/json' \
 #     -H "Authorization: Bearer ${TOKEN}" \

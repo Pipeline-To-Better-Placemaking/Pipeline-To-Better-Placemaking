@@ -8,6 +8,7 @@ const Area = require('../models/areas.js')
 const Standing_Point = require('../models/standing_points.js')
 const Stationary_Collection = require('../models/stationary_collections.js')
 const Moving_Collection = require('../models/moving_collections.js')
+const Survey_Collection = require('../models/survey_collections.js')
 
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
@@ -67,6 +68,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                           .populate('standingPoints')
                           .populate('stationaryCollections')
                           .populate('movingCollections')
+                          .populate('surveyCollections')
             )
 })
 
@@ -317,6 +319,59 @@ router.delete('/:id/moving_collections/:collectionId', passport.authenticate('jw
     project = await Project.findById(req.params.id)
     if(await Team.isAdmin(project.team,user._id)){
         res.status(201).json(await Project.deleteMovingCollection(project._id,req.params.collectionId))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.post('/:id/survey_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+
+    if(await Team.isUser(project.team,user._id)){   
+
+        let newCollection = new Survey_Collection({
+            title: req.body.title,
+            date: req.body.date,
+            duration: req.body.duration
+        })
+
+        await newCollection.save()
+       
+        await Project.addSurveyCollection(project._id,newCollection._id)
+        res.json(newCollection)
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.put('/:id/survey_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Survey_Collection.findById(req.params.areaId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+    
+        let newCollection = new Survey_Collection({
+                title: (req.body.title ? req.body.title : collection.title),
+                date: (req.body.date ? req.body.date : collection.date),
+                duration: (req.body.duration ? req.body.duration : collection.duration)
+        })
+  
+        res.status(201).json(await Survey_Collection.updateCollection(req.params.collectionId, newCollection))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.delete('/:id/survey_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    if(await Team.isAdmin(project.team,user._id)){
+        res.status(201).json(await Project.deleteSurveyCollection(project._id,req.params.collectionId))
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
