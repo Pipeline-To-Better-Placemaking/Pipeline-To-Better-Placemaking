@@ -25,7 +25,7 @@ const survey_schema = mongoose.Schema({
 
     sharedData:{
         type: ObjectId,
-        ref: 'Stationary_Collections',
+        ref: 'Survey_Collections',
         required: true
     },
 
