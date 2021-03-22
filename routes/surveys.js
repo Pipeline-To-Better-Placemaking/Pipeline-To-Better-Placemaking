@@ -105,7 +105,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     project = await Project.findById(survey.project)
 
     if (await Team.isAdmin(project.team,user._id)){
-        res.status(201).json(await Survey.updateMap(req.params.id,newSurvey))
+        res.status(201).json(await Survey.updateSurvey(req.params.id,newSurvey))
     }
 
     else{

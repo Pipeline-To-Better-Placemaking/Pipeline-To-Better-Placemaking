@@ -17,6 +17,7 @@ const emailer = require('../utils/emailer')
 const { models } = require('mongoose')
 const { stationaryToCSV, movingToCSV } = require('../utils/csv_conversions')
 const { BadRequestError, InternalServerError, UnauthorizedError } = require('../utils/errors')
+const { collection } = require('../models/areas.js')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
@@ -334,6 +335,7 @@ router.post('/:id/survey_collections', passport.authenticate('jwt',{session:fals
         let newCollection = new Survey_Collection({
             title: req.body.title,
             date: req.body.date,
+            area: req.body.area,
             duration: req.body.duration
         })
 
@@ -357,6 +359,7 @@ router.put('/:id/survey_collections/:collectionId', passport.authenticate('jwt',
         let newCollection = new Survey_Collection({
                 title: (req.body.title ? req.body.title : collection.title),
                 date: (req.body.date ? req.body.date : collection.date),
+                area: (req.body.area ? req.body.area : collection.area),
                 duration: (req.body.duration ? req.body.duration : collection.duration)
         })
   
