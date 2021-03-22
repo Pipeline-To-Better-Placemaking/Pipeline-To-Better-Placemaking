@@ -3,7 +3,7 @@ const router = express.Router()
 const Project = require('../models/projects.js')
 const Stationary_Collection = require('../models/stationary_collections.js')
 const Moving_Collection = require('../models/moving_collections.js')
-const Survey_Colelction = require('../models/survey_collections.js')
+const Survey_Collection = require('../models/survey_collections.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
@@ -26,7 +26,7 @@ router.get('/stationary/:id', passport.authenticate('jwt',{session:false}), asyn
 
 })
 router.get('/survey/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    res.status(200).json(await Stationary_Collection.findById(req.params.id)
+    res.status(200).json(await Survey_Collection.findById(req.params.id)
                                                 .populate('area'))
 
 })
