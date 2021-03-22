@@ -73,7 +73,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 
 router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     survey = await Survey.findById(req.params.id)
-    project = await Project.findById(map.project)
+    project = await Project.findById(survey.project)
     user = await req.user
     if(survey.researchers.length < survey.maxResearchers)
         if(Team.isUser(project.team,user._id)){
@@ -87,7 +87,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
 
 router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     survey  = await Survey.findById(req.params.id)
-    project = await Project.findById(map.project)
+    project = await Project.findById(survey.project)
     return res.status(200).json(await Survey.removeResearcher(survey._id,user._id))
 
 })
