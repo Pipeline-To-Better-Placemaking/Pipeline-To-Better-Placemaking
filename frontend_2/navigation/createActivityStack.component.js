@@ -67,7 +67,7 @@ export function CreateActivityStack(props) {
     await setSelectedAreaIndex(areaIndex);
 
     let tempTimeSlots = [];
-    if (props.activity.maps !== null && props.activity.maps.length >= 1) {
+    if (activityIndex <= 1 && props.activity.maps !== null && props.activity.maps.length >= 1) {
       props.activity.maps.map(timeSlot => {
         // date to value
         timeSlot.date = new Date(timeSlot.date);
@@ -85,6 +85,16 @@ export function CreateActivityStack(props) {
             }
           }
         }
+        tempTimeSlots.push(timeSlot);
+      })
+    } else if (activityIndex === 2 && props.activity.surveys !== null && props.activity.surveys.length >= 1) {
+      props.activity.surveys.map(timeSlot => {
+        // date to value
+        timeSlot.date = new Date(timeSlot.date);
+        // displayable timeString
+        timeSlot.timeString = getTimeStr(new Date(timeSlot.date));
+        // num researchers to string
+        timeSlot.maxResearchers = '' + timeSlot.maxResearchers;
         tempTimeSlots.push(timeSlot);
       })
     }
@@ -110,7 +120,7 @@ export function CreateActivityStack(props) {
         putCollection(name, 'moving', '/moving_collections', 'moving_maps/');
       }
       else if (row === 2) { // Survey
-        //putCollection(name, 'survey', '/survey_collections', 'survey_codes/');
+        putCollection(name, 'survey', '/survey_collections', 'surveys/');
       }
       props.setUpdateActivity(false);
       props.navigation.navigate('ProjectPage')
@@ -124,18 +134,7 @@ export function CreateActivityStack(props) {
         postCollection(name, 'moving', '/moving_collections', 'moving_maps/');
       }
       else if (row === 2) { // Survey
-        //postCollection(name, 'survey', '/survey_collections', 'survey_codes/'); // not sure what the routes will be for this one
-        // some fake activity info until we set up the api calls
-        let activityDetails = {
-          title: name,
-          date: date,
-          duration: parseInt(duration),
-          activity: activityTypes[row],
-          test_type: "survey",
-          timeSlots: timeSlots,
-          area: area,
-        };
-        props.setActivities(values => [...values,activityDetails]);
+        postCollection(name, 'survey', '/survey_collections', 'surveys/');
       }
 
       // Navigate back to Project page
@@ -146,6 +145,7 @@ export function CreateActivityStack(props) {
   const postCollection = async (name, test_type, collectionName, timeSlotName) => {
     let success = false
     let collectionDetails = null
+    console.log("saving with area id", area._id);
     // Save the activity
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + collectionName, {

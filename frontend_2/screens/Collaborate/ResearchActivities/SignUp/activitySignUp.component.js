@@ -73,16 +73,25 @@ export function ActivitySignUpPage(props) {
       props.navigation.navigate("PeopleMovingActivity")
     }
     else if (props.activity.test_type == activityList[2]){
+      let activityDetails = {
+        _id: timeSlot._id,
+        key: timeSlot.key,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
+        position: [],
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
+      }
 
-      let activityDetails = {...props.activity};
-      activityDetails.location = props.activity.area[0];
-      activityDetails.time = props.activity.duration*60;
-      activityDetails.timeLeft = props.activity.duration*60;
-
-      let originalDetails = {...props.activity};
-      activityDetails.location = props.activity.area[0];
-      activityDetails.time = props.activity.duration*60;
-      activityDetails.timeLeft = props.activity.duration*60;
+      let originalDetails = {
+        _id: timeSlot._id,
+        key: timeSlot.key,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
+        position: [],
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
+      }
 
       props.setTimeSlot(activityDetails);
       props.setInitialTimeSlot(originalDetails);
@@ -105,7 +114,7 @@ export function ActivitySignUpPage(props) {
     } else if (props.activity.test_type === activityList[1]) {
       route = 'moving_maps/';
     } else if (props.activity.test_type === activityList[2]) {
-      route = ''; // survey_codes
+      route = 'surveys/';
     }
 
     // if the researcher is already signed up and they press the button again, unsign them up
@@ -152,7 +161,7 @@ export function ActivitySignUpPage(props) {
             }
         })
         res = await response.json()
-        //console.log("sign up user response:", res)
+        console.log("sign up user response:", res)
         success = true
     } catch (error) {
         console.log("ERROR: ", error)
@@ -175,7 +184,7 @@ export function ActivitySignUpPage(props) {
             }
         })
         res = await response.json()
-        //console.log("remove user response:", res)
+        console.log("remove user response:", res)
         success = true
     } catch (error) {
         console.log("ERROR: ", error)
@@ -243,7 +252,7 @@ export function ActivitySignUpPage(props) {
         <View style={{flexDirection:'column', justifyContent:'space-around'}}>
           <Button status='info' style={{margin:5}} onPress={() => onSignUp(item, index)}>
             Sign Up
-          </Button> 
+          </Button>
           {isSignedUp(item, props.userId) &&
             <Button status='success' style={{margin:5}} onPress={() => onBeginPress(item, index)}>
               Begin

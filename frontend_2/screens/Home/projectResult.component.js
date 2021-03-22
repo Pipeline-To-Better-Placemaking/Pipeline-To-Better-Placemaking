@@ -21,7 +21,7 @@ export function ProjectResultPage(props) {
     } else if (item.test_type === 'moving') {
       await getMovingResults(item);
     } else if (item.test_type === 'survey') {
-
+      await getSurveyResults(item);
     }
   };
 
@@ -87,6 +87,36 @@ export function ProjectResultPage(props) {
       await formatMovingGraphData(result);
       // open results page
       props.navigation.navigate("MovingResultPage");
+    }
+  };
+
+  const getSurveyResults = async (item) => {
+    let success = false
+    let result = null
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/surveys/' + item._id, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + props.token
+            }
+        })
+        result = await response.json();
+        success = true
+    } catch (error) {
+        console.log("error", error)
+    }
+    if (result === null) {
+      success = false;
+    }
+
+    if(success) {
+      console.log("Selected result: ", result);
+      result.sharedData.date = item.day;
+      await props.setSelectedResult(result);
+      // open results page
+      props.navigation.navigate("SurveyResultPage");
     }
   };
 
