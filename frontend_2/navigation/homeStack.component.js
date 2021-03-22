@@ -5,6 +5,7 @@ import { HomeScreen } from '../screens/Home/home.component';
 import { ProjectResultPage } from '../screens/Home/projectResult.component';
 import { StationaryResultPage } from '../screens/Home/ResultPages/stationaryResultPage.component';
 import { MovingResultPage } from '../screens/Home/ResultPages/movingResultPage.component';
+import { SurveyResultPage } from '../screens/Home/ResultPages/surveyResultPage.component';
 import { CompareFilteredView } from '../screens/Home/Compare/compareFilteredView.component.js'
 import { StationaryCompare } from '../screens/Home/Compare/stationaryCompare.component.js'
 import { MovingCompare } from '../screens/Home/Compare/movingCompare.component.js'
@@ -175,6 +176,21 @@ export function HomeScreenStack(props){
        }
       </Screen>
       <Screen
+        name='SurveyResultPage'
+      >
+      {props =>
+        <SurveyResultPage
+          {...props}
+          token={token}
+          userId={userId}
+          project={selectedProject}
+          team={selectedTeam}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+         />
+       }
+      </Screen>
+      <Screen
         name='StationaryActivityResultView'
       >
         {props =>
@@ -196,7 +212,7 @@ export function HomeScreenStack(props){
           setSelectedResult={setSelectedResult}
          />
        }
-        
+
       </Screen>
     </Navigator>
   )

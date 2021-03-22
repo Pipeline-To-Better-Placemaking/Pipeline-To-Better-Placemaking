@@ -13,7 +13,7 @@ export function SurveyActivity(props) {
   let surveyLink = 'http://ucf.qualtrics.com/jfe/form/SV_9vozKCHxjfyAHJ3';
 
   const [location] = useState(props.timeSlot.location)
-  const [area] = useState(props.timeSlot.area.points)
+  const [area] = useState(props.timeSlot.area)
   const [start, setStart] = useState(false)
 
   const endActivity = () => {
@@ -55,11 +55,16 @@ export function SurveyActivity(props) {
   const TimeBar = () => {
     return(
       <View>
-        <View style={{height: 60, flexDirection: 'row'}}>
+        <View style={{height: 60, flexDirection: 'row', justifyContent:'space-between'}}>
 
           <StartStopButton/>
 
-          <View style={{marginLeft: 175, marginTop: 5}}>
+          <View style={{justifyContent:'center'}}>
+            <Text status='danger' category='h4'>
+              Code: {props.timeSlot.key}
+            </Text>
+          </View>
+          <View style={{justifyContent:'center'}}>
               <CountDown
                   running={start}
                   until={props.timeSlot.timeLeft}

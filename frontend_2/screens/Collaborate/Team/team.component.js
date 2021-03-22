@@ -99,10 +99,32 @@ export function TeamPage(props) {
         projectDetails.movingCollections.splice(removeIndex, 1);
       }
 
+      let pastSurveyCollections = [];
+      if(projectDetails.surveyCollections !== null) {
+        for(let i = 0; i < projectDetails.surveyCollections.length; i++) {
+          let collection = projectDetails.surveyCollections[i];
+          collection.test_type = 'survey';
+          // set area
+          let areaIndex = projectDetails.subareas.findIndex(element => element._id === collection.area);
+          collection.area = projectDetails.subareas[areaIndex];
+          // handle date
+          collection.date = new Date(collection.date);
+          if (moment(today).isAfter(collection.date, 'day')) {
+            pastSurveyCollections.push(collection);
+          }
+          projectDetails.surveyCollections[i] = collection;
+        }
+      }
+      // remove collections from the list that are in the past
+      for(let i = 0; i < pastSurveyCollections.length; i++) {
+        let removeIndex = projectDetails.surveyCollections.findIndex(element => element._id === pastSurveyCollections[i]._id);
+        projectDetails.surveyCollections.splice(removeIndex, 1);
+      }
+
       // set selected project page information
-      props.setProject(projectDetails);
-      props.setActivities([...projectDetails.stationaryCollections, ...projectDetails.movingCollections]);
-      props.setPastActivities([...pastStationaryCollections, ...pastMovingCollections]);
+      await props.setProject(projectDetails);
+      await props.setActivities([...projectDetails.stationaryCollections, ...projectDetails.movingCollections, ...projectDetails.surveyCollections]);
+      await props.setPastActivities([...pastStationaryCollections, ...pastMovingCollections, ...pastSurveyCollections]);
       console.log("Selected Project: ", projectDetails);
 
       // open project page

@@ -133,6 +133,48 @@ export const HomeScreen = ( props ) => {
         } // end loop moving collections
       } // end if moving collections !== null
 
+      // Survey Collections
+      if (project.surveyCollections !== null) {
+        for (let j = 0; j < project.surveyCollections.length; j++) {
+          let collection = project.surveyCollections[j];
+          if (collection.surveys === undefined || collection.surveys.length <= 0) {
+            continue;
+          }
+          // For each (survey) result
+          for (let k = 0; k < collection.surveys.length; k++) {
+            let id = collection.surveys[k];
+            try {
+              const response = await fetch('https://measuringplacesd.herokuapp.com/api/surveys/' + id, {
+                  method: 'GET',
+                  headers: {
+                      Accept: 'application/json',
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Bearer ' + props.token
+                  }
+              })
+              result = await response.json();
+            } catch (error) {
+              console.log("error", error)
+            }
+
+            if (result != null) {
+              result.test_type = 'survey';
+              result.date = new Date(result.date);
+              result.sharedData.date = new Date(collection.date);
+              result.sharedData.projectName = collection.title;
+              result.sharedData.location = project.description;
+
+              let res = {
+                result: result,
+                testType: "Survey"
+              }
+
+              results.push(res)
+            }
+          } // end loop survey results
+        } // end loop survey collections
+      } // end if survey collections !== null
+
     } // end loop selected projects
 
     await props.setFilterCriteria(results)
@@ -174,7 +216,7 @@ export const HomeScreen = ( props ) => {
       let results = []
       results = await getStationaryResults(projectDetails, results);
       results = await getMovingResults(projectDetails, results);
-      //results = await getSurveyResults(projectDetails, results);
+      results = await getSurveyResults(projectDetails, results);
       await props.setResults(results);
       // open results page
       props.navigation.navigate('ProjectResultPage');
@@ -262,14 +304,14 @@ export const HomeScreen = ( props ) => {
   }
 
   const getSurveyResults = async(projectDetails, results) => {
-    // loop through all survey collections and get all of the maps
+    // loop through all survey collections and get all of the surveys
     for (let i = 0; i < projectDetails.surveyCollections.length; i++) {
       let collection = projectDetails.surveyCollections[i];
-      for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
-        let mapId = collection.maps[j];
+      for (let j=0; collection.surveys !== null && j < collection.surveys.length; j++) {
+        let surveyId = collection.surveys[j];
         let day = new Date(collection.date);
         let time = day;
-        let resultInfo = await getResultInfo(mapId, 'survey_codes/'); //TODO: not sure what this should be called
+        let resultInfo = await getResultInfo(surveyId, 'surveys/');
         if (resultInfo !== null) {
           time = new Date(resultInfo.date); // start time
         }
@@ -278,7 +320,7 @@ export const HomeScreen = ( props ) => {
           day: day,
           date: time,
           test_type: "survey",
-          _id: mapId
+          _id: surveyId,
         }
         results.push(tempObj);
       }

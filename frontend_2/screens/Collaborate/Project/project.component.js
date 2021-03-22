@@ -53,10 +53,17 @@ export function ProjectPage(props) {
       }
 
     } else if(collectionDetails.test_type === 'survey') {
-      success = true;
-      props.setTimeSlots([...collectionDetails.timeSlots]);
+      // get the collection info
+      collectionDetails = await getCollection(collectionDetails, 'survey/');
+      success = (collectionDetails !== null)
+      // get the timeSlot info
+      if (success && collectionDetails.surveys !== undefined && collectionDetails.surveys.length >= 1) {
+        collectionDetails.surveys.map(item => {
+          getTimeSlots(item._id, 'surveys/');
+        })
+        success = true
+      }
     }
-
     // if successfully retrieved activity info, Update
     if(success) {
 
@@ -85,7 +92,7 @@ export function ProjectPage(props) {
           }
       })
       collectionDetails = await response.json();
-      //console.log("response collection: ", collectionDetails);
+      console.log("response collection: ", collectionDetails);
       success = true
     } catch (error) {
         console.log("error", error)
@@ -99,9 +106,6 @@ export function ProjectPage(props) {
     if (success) {
       collectionDetails.test_type = item.test_type;
       collectionDetails.date = new Date(collectionDetails.date)
-      //let areaIndex = props.project.subareas.findIndex(element => element._id === collectionDetails.area);
-      //collectionDetails.area = props.project.subareas[areaIndex];
-      //console.log("returning collection: ", collectionDetails);
       return collectionDetails;
     } else {
       return null;
