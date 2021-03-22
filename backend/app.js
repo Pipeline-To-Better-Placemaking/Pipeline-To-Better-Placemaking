@@ -37,7 +37,8 @@ const userApi       = require('./routes/users.js')
 const verifyApi     = require('./routes/verify.js')
 const stationApi    = require('./routes/stationary_maps.js')
 const movingApi     = require('./routes/moving_maps.js')
-const collectionAPI = require('./routes/collections.js')
+const surveyApi     = require('./routes/surveys.js')
+const collectionApi = require('./routes/collections.js')
 
 app.use('/api/login',           loginApi)
 app.use('/api/teams',           teamApi)
@@ -46,7 +47,8 @@ app.use('/api/users',           userApi)
 app.use('/api/verify',          verifyApi)
 app.use('/api/stationary_maps', stationApi)
 app.use('/api/moving_maps',     movingApi)
-app.use('/api/collections',     collectionAPI)
+app.use('/api/surveys',         surveyApi)
+app.use('/api/collections',     collectionApi)
 
 app.use(passport.initialize());
 app.use(passport.session());

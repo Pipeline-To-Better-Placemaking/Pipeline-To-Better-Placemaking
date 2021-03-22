@@ -7,6 +7,8 @@ const Stationary_Map = require('../models/stationary_maps.js')
 const Moving_Map = require('../models/moving_maps.js')
 const Stationary_Collection = require('../models/stationary_collections.js')
 const Moving_Collection = require('../models/moving_collections.js')
+const Survey_Collection = require('../models/survey_collections.js')
+
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
@@ -42,6 +44,10 @@ const project_schema = mongoose.Schema({
     movingCollections:[{
         type: ObjectId,
         ref: 'Moving_Collections'
+    }],
+    surveyCollections:[{
+        type: ObjectId,
+        ref: 'Survey_Collections'
     }],
 
 })
@@ -123,6 +129,22 @@ module.exports.deleteMovingCollection = async function(projectId, collectionId) 
    )
    return await Moving_Collection.deleteCollection(collectionId)
 }
+
+module.exports.addSurveyCollection = async function (projectId, collectionId) {
+    return await Projects.updateOne(
+       { _id: projectId },
+       { $push: { surveyCollections:  collectionId}}
+   )
+}
+
+module.exports.deleteMovingCollection = async function(projectId, collectionId) {
+   
+   await Projects.updateOne(
+       { _id: projectId },
+       { $pull: { surveyCollections: collectionId}}
+   )
+   return await Survey_Collection.deleteCollection(collectionId)
+}    
 
 module.exports.addArea = async function(projectId, areaId) {
     return await Projects.updateOne(
