@@ -296,7 +296,7 @@ router.post('/:id/moving_collections', passport.authenticate('jwt',{session:fals
 router.put('/:id/moving_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.params.id)
-    collection = await Moving_Collection.findById(req.params.areaId)
+    collection = await Moving_Collection.findById(req.params.collectionId)
 
     if(await Team.isAdmin(project.team,user._id)){
     
@@ -352,7 +352,7 @@ router.post('/:id/survey_collections', passport.authenticate('jwt',{session:fals
 router.put('/:id/survey_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.params.id)
-    collection = await Survey_Collection.findById(req.params.areaId)
+    collection = await Survey_Collection.findById(req.params.collectionId)
 
     if(await Team.isAdmin(project.team,user._id)){
     
