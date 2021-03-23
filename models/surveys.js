@@ -58,9 +58,9 @@ module.exports.addSurvey = async function(newSurvey) {
     return await newSurvey.save()
 }
 
-module.exports.updateSurvey = async function (projectId, newSurvey) {
+module.exports.updateSurvey = async function (surveyId, newSurvey) {
     return await Surveys.updateOne(
-        { _id: projectId },
+        { _id: surveyId },
         { $set: {
             title: newSurvey.title,
             date: newSurvey.date,

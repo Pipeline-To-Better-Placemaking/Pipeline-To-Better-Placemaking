@@ -94,7 +94,7 @@ router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async 
 
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
-    survey  = await survey.findById(req.params.id)
+    survey  = await Survey.findById(req.params.id)
     
     let newSurvey = new Survey({
         title: (req.body.title ? req.body.title : survey.title),
@@ -119,7 +119,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
     survey  = await Survey.findById(req.params.id)
     project = await Project.findById(survey.project)
     if(await Team.isAdmin(project.team,user._id)){
-        res.json(await Survey_Collection.deleteMap(survey.sharedData,survey._id))
+        res.json(await Survey_Collection.deleteSurvey(survey.sharedData,survey._id))
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
