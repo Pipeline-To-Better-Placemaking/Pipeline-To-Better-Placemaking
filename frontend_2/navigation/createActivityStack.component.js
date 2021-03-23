@@ -176,7 +176,7 @@ export function CreateActivityStack(props) {
     if(success) {
       // create the time timeSlots
       for (let i = 0; i < timeSlots.length; i++) {
-        await postTimeSlot(timeSlots[i], name, collectionDetails._id, timeSlotName)
+        await postTimeSlot(timeSlots[i], name, collectionDetails._id, timeSlotName, test_type)
       }
 
       // set the type
@@ -193,14 +193,16 @@ export function CreateActivityStack(props) {
     }
   }
 
-  const postTimeSlot = async (timeSlot, name, id, timeSlotName) => {
+  const postTimeSlot = async (timeSlot, name, id, timeSlotName, test_type) => {
     let success = false
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
-    if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
-      selectedPoints = timeSlot.assignedPointIndicies.map(index => {
-        return standingPoints[index.row];
-      });
+    if (test_type !== "survey") {
+      if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
+        selectedPoints = timeSlot.assignedPointIndicies.map(index => {
+          return standingPoints[index.row];
+        });
+      }
     }
     // Save the activity
     try {
@@ -272,15 +274,29 @@ export function CreateActivityStack(props) {
       let timesToModify = [];
       let timesToAdd = [];
 
-      for (let i=0; i < props.activity.maps.length; i++) {
-        let currId = props.activity.maps[i]._id
-        let findId = timeSlots.findIndex(element => (element._id !== undefined && element._id === currId));
-        // if time slot still exists, modify it
-        if (findId >= 0) {
-          timesToModify.push(timeSlots[findId]);
-        } // if the timeslot doesn't exist anymore, delete it
-        else {
-          timesToDelete.push(props.activity.maps[i]);
+      if (props.activity.test_type === "survey") {
+        for (let i=0; i < props.activity.surveys.length; i++) {
+          let currId = props.activity.surveys[i]._id
+          let findId = timeSlots.findIndex(element => (element._id !== undefined && element._id === currId));
+          // if time slot still exists, modify it
+          if (findId >= 0) {
+            timesToModify.push(timeSlots[findId]);
+          } // if the timeslot doesn't exist anymore, delete it
+          else {
+            timesToDelete.push(props.activity.surveys[i]);
+          }
+        }
+      } else {
+        for (let i=0; i < props.activity.maps.length; i++) {
+          let currId = props.activity.maps[i]._id
+          let findId = timeSlots.findIndex(element => (element._id !== undefined && element._id === currId));
+          // if time slot still exists, modify it
+          if (findId >= 0) {
+            timesToModify.push(timeSlots[findId]);
+          } // if the timeslot doesn't exist anymore, delete it
+          else {
+            timesToDelete.push(props.activity.maps[i]);
+          }
         }
       }
 
@@ -292,10 +308,10 @@ export function CreateActivityStack(props) {
       }
 
       for (let i=0; i< timesToAdd.length; i++) {
-        await postTimeSlot(timesToAdd[i], name, props.activity._id, timeSlotName);
+        await postTimeSlot(timesToAdd[i], name, props.activity._id, timeSlotName, test_type);
       }
       for (let i=0; i< timesToModify.length; i++) {
-        await putTimeSlot(timesToModify[i], name, props.activity._id, timeSlotName);
+        await putTimeSlot(timesToModify[i], name, props.activity._id, timeSlotName, test_type);
       }
       for (let i=0; i< timesToDelete.length; i++) {
         await deleteTimeSlot(timesToDelete[i], timeSlotName);
@@ -310,14 +326,16 @@ export function CreateActivityStack(props) {
 
   }
 
-  const putTimeSlot = async (timeSlot, name, id, timeSlotName) => {
+  const putTimeSlot = async (timeSlot, name, id, timeSlotName, test_type) => {
     let success = false
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
-    if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
-      selectedPoints = timeSlot.assignedPointIndicies.map(index => {
-        return standingPoints[index.row];
-      });
+    if (test_type !== "survey") {
+      if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
+        selectedPoints = timeSlot.assignedPointIndicies.map(index => {
+          return standingPoints[index.row];
+        });
+      }
     }
     // Save the activity
     try {

@@ -27,7 +27,7 @@ export function SurveyResultPage(props) {
     );
   }
 
-  let areaTitle = "test";//(props.selectedResult.sharedData.area.title === undefined ? 'Project Perimeter' : props.selectedResult.sharedData.area.title)
+  let areaTitle = (props.selectedResult.sharedData.area.title === undefined ? 'Project Perimeter' : props.selectedResult.sharedData.area.title)
   let startTime = new Date(props.selectedResult.date);
   let day = new Date(props.selectedResult.sharedData.date);
 
@@ -56,7 +56,7 @@ export function SurveyResultPage(props) {
 
           <Text>Day: {getDayStr(day)}</Text>
           <Text>Start Time: {getTimeStr(startTime)} </Text>
-          <Text>End Time: </Text>
+          <Text>Duration: {props.selectedResult.sharedData.duration} min</Text>
 
           <Divider style={{marginTop:10, marginBottom:10}} />
 
