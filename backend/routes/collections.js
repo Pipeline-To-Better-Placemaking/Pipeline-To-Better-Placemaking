@@ -27,7 +27,8 @@ router.get('/stationary/:id', passport.authenticate('jwt',{session:false}), asyn
 })
 router.get('/survey/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     res.status(200).json(await Survey_Collection.findById(req.params.id)
-                                                .populate('area'))
+                                                .populate('area')
+                                                .populate('surveys'))
 
 })
 

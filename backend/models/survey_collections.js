@@ -20,6 +20,12 @@ const collection_schema = mongoose.Schema({
         default: 15
     },
 
+    area: {
+        type: ObjectId,
+        required: true,
+        ref: 'Areas'
+    },
+
     surveys: [{
         type: ObjectId,
         ref: 'Surveys'
@@ -60,6 +66,7 @@ module.exports.updateCollection = async function(collectionId, newCollection){
         { $set: {
             title: newCollection.title,
             time: newCollection.date,
+            area: newCollection.area,
             duration: newCollection.duration
         }}
     )

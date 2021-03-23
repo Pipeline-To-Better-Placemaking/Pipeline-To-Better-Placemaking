@@ -61,7 +61,11 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                                    {
                                    path:'sharedData',
                                    model:'Survey_Collections',
-                                   select:'title duration',
+                                   select:'title duration ',
+                                   populate: {
+                                    path: 'area',
+                                    model: 'Areas'
+                                   }
                                 }])
                            
     res.status(200).json(survey)
