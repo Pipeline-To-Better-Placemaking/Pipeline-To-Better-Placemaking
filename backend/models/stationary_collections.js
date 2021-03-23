@@ -36,7 +36,7 @@ const area_schema = mongoose.Schema({
 const Collection = module.exports = mongoose.model('Stationary_Collections', area_schema)
 
 module.exports.deleteMap = async function(collectionId, mapId){
-    await Collection.findByIdAndDelete(mapId)
+    await Stationary_Map.findByIdAndDelete(mapId)
     return await Collection.updateOne(
         { _id: collectionId },
         { $pull: { maps: mapId}}
