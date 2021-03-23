@@ -17,7 +17,6 @@ const emailer = require('../utils/emailer')
 const { models } = require('mongoose')
 const { stationaryToCSV, movingToCSV } = require('../utils/csv_conversions')
 const { BadRequestError, InternalServerError, UnauthorizedError } = require('../utils/errors')
-const { collection } = require('../models/areas.js')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
