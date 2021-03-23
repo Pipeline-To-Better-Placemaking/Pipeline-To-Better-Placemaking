@@ -6,20 +6,17 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Surveys = require('../models/surveys.js')
 
-
 const collection_schema = mongoose.Schema({
     title: String,
     date: {
         type: Date,
         required: true
     },
-
     duration: {
         type: Number,
         required: true,
         default: 15
     },
-
     area: {
         type: ObjectId,
         required: true,
@@ -36,7 +33,7 @@ const collection_schema = mongoose.Schema({
 const Collection = module.exports = mongoose.model('Survey_Collections', collection_schema)
 
 module.exports.deleteSurvey = async function(collectionId, surveyId){
-    await Survey.findByIdAndDelete(surveyId)
+    await Surveys.findByIdAndDelete(surveyId)
     return await Collection.updateOne(
         { _id: collectionId },
         { $pull: { surveys: surveyId}}

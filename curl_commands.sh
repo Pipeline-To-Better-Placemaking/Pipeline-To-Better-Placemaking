@@ -97,7 +97,8 @@ curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request POST \
       -d "{\"title\": \"collection\",   
-           \"date\": \"2012-04-23T18:25:43.511Z\" 
+           \"date\": \"2012-04-23T18:25:43.511Z\" ,
+           \"area\": \"${AREA}\"
            }"  \
      http://localhost:8080/api/projects/${PROJECT}/survey_collections
 
@@ -129,13 +130,32 @@ curl -H 'Content-Type: application/json' \
      http://localhost:8080/api/surveys/
 
 
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/projects/${PROJECT} \
+
+SURVEY=$(curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+     http://localhost:8080/api/projects/${PROJECT} \
+     | jq -r '.surveyCollections[0].surveys[0]' )
+
+
 echo
 echo
 
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
+     --request DELETE \
+     http://localhost:8080/api/surveys/${SURVEY} \
+
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
      --request GET \
      http://localhost:8080/api/projects/${PROJECT} \
+
+
 
 
 
