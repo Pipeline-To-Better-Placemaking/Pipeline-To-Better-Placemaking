@@ -68,7 +68,7 @@ export function ProjectPage(props) {
     if(success) {
 
       // set selected activity
-      props.setActivity(collectionDetails);
+      await props.setActivity(collectionDetails);
 
       // open activity page
       props.navigation.navigate('ActivitySignUpPage')
@@ -139,7 +139,7 @@ export function ProjectPage(props) {
       // set selected timeSlots
       timeSlotDetails.date = new Date(timeSlotDetails.date)
       //console.log("time slot: ", timeSlotDetails);
-      props.setTimeSlots(slots => [...slots,timeSlotDetails]);
+      await props.setTimeSlots(slots => [...slots,timeSlotDetails]);
     }
   };
 

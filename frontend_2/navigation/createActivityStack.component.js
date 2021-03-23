@@ -114,27 +114,27 @@ export function CreateActivityStack(props) {
 
     if (props.updateActivity) {
       if (row === 0) { // Stationary Map
-        putCollection(name, 'stationary', '/stationary_collections', 'stationary_maps/');
+        await putCollection(name, 'stationary', '/stationary_collections', 'stationary_maps/');
       }
       else if (row === 1) { // People Moving
-        putCollection(name, 'moving', '/moving_collections', 'moving_maps/');
+        await putCollection(name, 'moving', '/moving_collections', 'moving_maps/');
       }
       else if (row === 2) { // Survey
-        putCollection(name, 'survey', '/survey_collections', 'surveys/');
+        await putCollection(name, 'survey', '/survey_collections', 'surveys/');
       }
-      props.setUpdateActivity(false);
+      await props.setUpdateActivity(false);
       props.navigation.navigate('ProjectPage')
     }
     // create new activity(collection)
     else {
       if (row === 0) { // Stationary Map
-        postCollection(name, 'stationary', '/stationary_collections', 'stationary_maps/');
+        await postCollection(name, 'stationary', '/stationary_collections', 'stationary_maps/');
       }
       else if (row === 1) { // People Moving
-        postCollection(name, 'moving', '/moving_collections', 'moving_maps/');
+        await postCollection(name, 'moving', '/moving_collections', 'moving_maps/');
       }
       else if (row === 2) { // Survey
-        postCollection(name, 'survey', '/survey_collections', 'surveys/');
+        await postCollection(name, 'survey', '/survey_collections', 'surveys/');
       }
 
       // Navigate back to Project page
@@ -175,9 +175,9 @@ export function CreateActivityStack(props) {
 
     if(success) {
       // create the time timeSlots
-      await timeSlots.map(timeSlot => {
-        postTimeSlot(timeSlot, name, collectionDetails._id, timeSlotName)
-      });
+      for (let i = 0; i < timeSlots.length; i++) {
+        await postTimeSlot(timeSlots[i], name, collectionDetails._id, timeSlotName)
+      }
 
       // set the type
       collectionDetails.test_type = test_type;
