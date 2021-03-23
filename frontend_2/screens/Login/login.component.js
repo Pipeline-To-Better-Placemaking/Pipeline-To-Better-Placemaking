@@ -13,6 +13,7 @@ export const LoginScreen = ( props ) => {
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [accessDenied, setAccessDenied] = useState(false);
 
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
@@ -54,6 +55,7 @@ export const LoginScreen = ( props ) => {
     }
 
     if (success) {
+      setAccessDenied(false);
       console.log("token: ", res.token);
       console.log("userInfo: ", res.user);
 
@@ -81,6 +83,7 @@ export const LoginScreen = ( props ) => {
       props.navigation.navigate("TabNavigation")
     } else {
       console.log("login failed: ", res.message);
+      setAccessDenied(true);
     }
 
     setLoading(false);
@@ -143,6 +146,14 @@ export const LoginScreen = ( props ) => {
             secureTextEntry={secureTextEntry}
             onChangeText={nextValue => setPassword(nextValue)}
           />
+        </View>
+        <View>
+            {
+                accessDenied &&
+                <Text style={{color: '#FF3D71'}}>
+                    Could not login. Email or password may be incorrect.
+                </Text>
+            }
         </View>
         <LoginButton />
         <BackButton />
