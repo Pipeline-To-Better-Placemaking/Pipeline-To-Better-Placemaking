@@ -35,8 +35,8 @@ const collection_schema = mongoose.Schema({
 
 const Collection = module.exports = mongoose.model('Survey_Collections', collection_schema)
 
-module.exports.deleteMap = async function(collectionId, surveyId){
-    await Collection.findByIdAndDelete(surveyId)
+module.exports.deleteSurvey = async function(collectionId, surveyId){
+    await Survey.findByIdAndDelete(surveyId)
     return await Collection.updateOne(
         { _id: collectionId },
         { $pull: { surveys: surveyId}}
