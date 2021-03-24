@@ -3,18 +3,17 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
 
     buttonStyle: {
-        backgroundColor: 'white', 
-        borderWidth: 0, 
-        borderRightWidth: 1, 
-        borderTopRightRadius: 0, 
-        borderBottomRightRadius: 0, 
+        borderWidth: 0,
+        borderRightWidth: 1,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
         borderColor: 'black',
-        height: 80, 
+        height: 80,
         width: 125
     },
 
     iconSize: {
-        width: 50, 
+        width: 50,
         height: 50
     }
 })

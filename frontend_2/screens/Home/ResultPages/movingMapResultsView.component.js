@@ -4,9 +4,11 @@ import { HeaderBack } from '../../components/headers.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { MovingMapResults } from '../../components/Maps/movingMapResults.component.js';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
-import { Select, Button, SelectItem, Icon } from '@ui-kitten/components';
+import { useTheme, Select, Button, SelectItem, Icon } from '@ui-kitten/components';
 
 export function MovingMapResultsView(props) {
+
+    const theme = useTheme();
 
     /// Location, area, and standing points for SM
     /// Bool indicating to the map to recenter
@@ -102,13 +104,13 @@ export function MovingMapResultsView(props) {
 
             if (props.selectedResult.data[i].mode === movement[1]){
 
-                
+
                 // console.log("Setting Running")
                 // console.log("Data[i]: " + JSON.stringify(props.selectedResult.data[i], null, 1))
                 // console.log("Mode: " + JSON.stringify(props.selectedResult.data[i].mode))
                 // console.log("Movement: " + movement[1])
-                
-                
+
+
                 let colorIndex = getColorIndex(props.selectedResult.data[i].mode)
 
                 let obj = {
@@ -131,7 +133,7 @@ export function MovingMapResultsView(props) {
         for (let i = 0; i < props.selectedResult.data.length; i++){
 
             if (props.selectedResult.data[i].mode == movement[2]){
-                
+
                 let colorIndex = getColorIndex(props.selectedResult.data[i].mode)
 
                 let obj = {
@@ -152,7 +154,7 @@ export function MovingMapResultsView(props) {
         for (let i = 0; i < props.selectedResult.data.length; i++){
 
             if (props.selectedResult.data[i].mode == movement[3]){
-                
+
                 let colorIndex = getColorIndex(props.selectedResult.data[i].mode)
 
                 let obj = {
@@ -173,7 +175,7 @@ export function MovingMapResultsView(props) {
         for (let i = 0; i < props.selectedResult.data.length; i++){
 
             if (props.selectedResult.data[i].mode == movement[4]){
-                
+
                 let colorIndex = getColorIndex(props.selectedResult.data[i].mode)
 
                 let obj = {
@@ -230,11 +232,9 @@ export function MovingMapResultsView(props) {
         }
     }
 
-    const VisibleIcon = () => {
-        return(
-            <Icon {...props}  style={{width: 25, height: 25}} fill='black' name='eye-outline'/>
-        )
-    }
+    const VisibleIcon = (props) => (
+      <Icon {...props} fill='#8F9BB3' name={viewAllLines ? 'eye' : 'eye-off'}/>
+    )
 
     const viewAllDrawnLines = () => {
         setTitleIndex(-1)
@@ -245,10 +245,10 @@ export function MovingMapResultsView(props) {
 
         return (
 
-            <View style={{height: 60, flexDirection: 'row'}}>
-                <Select 
+            <View style={{margin:5, flexDirection: 'row', justifyContent:'space-between', alignItems:'center'}}>
+                <Select
                     status={'primary'}
-                    style={{marginTop: 10, marginBottom: 10, marginLeft: 10,  width: 275}}
+                    style={{flex:1}}
                     value={movement[titleIndex-1]}
                     onSelect={index => setTitleIndex(index)}
                     placeholder="Filter movement"
@@ -260,8 +260,9 @@ export function MovingMapResultsView(props) {
                     <SelectItem title={movement[4]}/>
                 </Select>
 
-                <Button 
-                    style={{ marginTop: 5, marginLeft: 25, width: 50, height: 50, backgroundColor: 'white'}}
+                <Button
+                    style={{ margin: 5, backgroundColor:theme['background-basic-color-3']}}
+                    appearance='ghost'
                     accessoryLeft={VisibleIcon}
                     onPress={viewAllDrawnLines}
                 />

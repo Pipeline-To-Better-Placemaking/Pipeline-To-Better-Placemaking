@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
     },
 
     scorllViewContainer: {
-        backgroundColor:'white',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
         borderWidth: 1

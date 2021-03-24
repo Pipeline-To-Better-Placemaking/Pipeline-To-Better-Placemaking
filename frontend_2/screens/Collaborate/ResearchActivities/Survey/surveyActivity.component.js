@@ -3,13 +3,14 @@ import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, Ke
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import { useTheme, Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { MapAreaWrapper, ShowArea } from '../../../components/Maps/mapPoints.component.js';
 import CountDown from 'react-native-countdown-component';
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
 
 export function SurveyActivity(props) {
 
+  const theme = useTheme();
   let surveyLink = 'http://ucf.qualtrics.com/jfe/form/SV_9vozKCHxjfyAHJ3';
 
   const [location] = useState(props.timeSlot.location)
@@ -32,7 +33,7 @@ export function SurveyActivity(props) {
       return(
         <Button
           status={'danger'}
-          style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}
+          style={{height: 50, marginLeft: 5, width: 90}}
           onPress={() => endActivity()}
         >
           End
@@ -43,7 +44,7 @@ export function SurveyActivity(props) {
       return(
         <Button
           style={{backgroundColor: '#006FD6'}}
-          style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}
+          style={{height: 50, marginLeft: 5, width: 90}}
           onPress={() => setStart(true)}
         >
           Start
@@ -55,23 +56,25 @@ export function SurveyActivity(props) {
   const TimeBar = () => {
     return(
       <View>
-        <View style={{height: 60, flexDirection: 'row', justifyContent:'space-between'}}>
+        <View style={{margin:5, flexDirection: 'row', justifyContent:'space-between', alignItems:'center'}}>
 
           <StartStopButton/>
 
-          <View style={{justifyContent:'center'}}>
+          <View>
             <Text status='danger' category='h4'>
               Code: {props.timeSlot.key}
             </Text>
           </View>
-          <View style={{justifyContent:'center'}}>
+
+          <View>
               <CountDown
                   running={start}
                   until={props.timeSlot.timeLeft}
                   onChange={(value) => updateTime(value)}
                   size={20}
-                  digitStyle={{backgroundColor: 'white'}}
-                  digitTxtStyle={{color: 'black'}}
+                  digitStyle={{backgroundColor:theme['background-basic-color-1']}}
+                  digitTxtStyle={{color:theme['text-basic-color']}}
+                  separatorStyle={{color:theme['text-basic-color']}}
                   timeToShow={['M', 'S']}
                   timeLabels={{m: '', s: ''}}
                   showSeparator
@@ -100,7 +103,7 @@ export function SurveyActivity(props) {
             </Text>
             <Text> </Text>
             <Text
-              style={{color: 'blue', width:'90%'}}
+              style={{color:'#006FD6', width:'90%'}}
               onPress={() => Linking.openURL(surveyLink)}
             >
               {surveyLink}

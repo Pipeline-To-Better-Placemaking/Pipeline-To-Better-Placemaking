@@ -25,35 +25,35 @@ export function LineTools(props) {
     const RemoveIcon = (props) => {
         return(
             <View style={{alignSelf: 'center'}}>
-                <Icon {...props} style={styles.iconSize} fill='black' name='trash'/>
+                <Icon {...props} style={styles.iconSize} fill='red' name='trash-2-outline'/>
             </View>
         )
     }
 
     return (
-        <View style={{flex: 1, flexDirection: 'row', marginTop: -90}}>
+        <View style={{flex: 1, flexDirection: 'row', marginTop: -90, justifyContent:'space-between'}}>
 
-            <Button style={styles.buttonStyle} onPress={props.confirm}>
+            <Button style={{flex:1}} appearance='ghost' onPress={props.confirm}>
                 <View style={{flexDirection:'column'}}>
-                    <Text category='s1' style={{alignSelf: 'center'}}> Confirm</Text>                
+                    <Text category='s1' style={{alignSelf: 'center'}}> Confirm</Text>
                     <ConfirmIcon/>
                 </View>
             </Button>
 
-            <Button style={styles.buttonStyle} onPress={props.cancel}>
+            <Button style={{flex:1}} appearance='ghost' onPress={props.cancel}>
                 <View style={{flexDirection:'column'}}>
-                    <Text category='s1' style={{alignSelf: 'center'}}> Cancel </Text>                
+                    <Text category='s1' style={{alignSelf: 'center'}}> Cancel </Text>
                     <CancelIcon/>
                 </View>
             </Button>
 
-            <Button style={styles.buttonStyle} onPress={props.removeLastPoint}>
+            <Button style={{flex:1}} appearance='ghost' onPress={props.removeLastPoint}>
                 <View style={{flexDirection:'column'}}>
-                    <Text category='s1' style={{alignSelf: 'center'}}> Delete </Text>                
+                    <Text category='s1' style={{alignSelf: 'center'}}> Delete </Text>
                     <RemoveIcon/>
                 </View>
             </Button>
-            
+
         </View>
     )
 }

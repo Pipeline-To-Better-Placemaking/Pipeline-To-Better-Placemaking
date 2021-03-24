@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { Button } from '@ui-kitten/components';
+import { useTheme, Button } from '@ui-kitten/components';
 import { StationaryActivityMap } from '../../../components/Maps/stationaryActivityMap.component.js';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
 import CountDown from 'react-native-countdown-component';
 
 export function StationaryActivity(props) {
+
+    const theme = useTheme();
 
     /// Location, area, and standing points for SM
     /// Bool indicating to the map to recenter
@@ -127,7 +129,7 @@ export function StationaryActivity(props) {
             return(
                 <Button
                     status={'danger'}
-                    style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}
+                    style={{height: 50, marginLeft: 5, width: 90}}
                     onPress={() => endActivity()}
                     >
                         End
@@ -138,7 +140,7 @@ export function StationaryActivity(props) {
             return(
                 <Button
                     style={{backgroundColor: '#006FD6'}}
-                    style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}
+                    style={{height: 50, marginLeft: 5, width: 90}}
                     onPress={() => setStart(true)}
                 >
                     Start
@@ -176,18 +178,19 @@ export function StationaryActivity(props) {
 
         return(
             <View>
-                <View style={{height: 60, flexDirection: 'row'}}>
+                <View style={{margin:5, flexDirection: 'row', justifyContent:'space-between', alignItems:'center'}}>
 
                     <StartStopButton/>
 
-                    <View style={{marginLeft: 175, marginTop: 5}}>
+                    <View>
                         <CountDown
                             running={start}
                             until={props.timeSlot.timeLeft}
                             onChange={(value) => updateTime(value)}
                             size={20}
-                            digitStyle={{backgroundColor: 'white'}}
-                            digitTxtStyle={{color: 'black'}}
+                            digitStyle={{backgroundColor:theme['background-basic-color-1']}}
+                            digitTxtStyle={{color:theme['text-basic-color']}}
+                            separatorStyle={{color:theme['text-basic-color']}}
                             timeToShow={['M', 'S']}
                             timeLabels={{m: '', s: ''}}
                             showSeparator

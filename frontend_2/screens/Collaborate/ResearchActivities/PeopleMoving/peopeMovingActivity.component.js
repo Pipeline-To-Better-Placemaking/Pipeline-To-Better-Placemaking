@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component.js';
 import { PeopleMovingMap } from '../../../components/Maps/peopleMovingMap.component.js';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import { useTheme, Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
@@ -10,6 +10,8 @@ import CountDown from 'react-native-countdown-component';
 import { DataEntryModal } from '../../../components/Activities/PeopleMoving/dataEntryModal.component.js';
 
 export function PeopleMovingActivity(props) {
+
+    const theme = useTheme();
 
     /// Location, area, and standing points for SM
     /// Bool indicating to the map to recenter
@@ -20,7 +22,7 @@ export function PeopleMovingActivity(props) {
 
     // Begins the test
     const [start, setStart] = useState(false)
-    
+
     // Shows the moving and data input modal
     const [moving, setMoving] = useState(false)
     const [dataModal, setDataModal] = useState(false)
@@ -86,7 +88,7 @@ export function PeopleMovingActivity(props) {
 
         props.navigation.navigate("ActivitySignUpPage");
     }
-  
+
     // Called when there is ore than one standing point
     // This function ensures everything resets
     const restart = () => {
@@ -119,7 +121,7 @@ export function PeopleMovingActivity(props) {
             return(
                 <Button
                     status={'danger'}
-                    style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}
+                    style={{height: 50, marginLeft: 5, width: 90}}
                     onPress={() => endActivity()}
                     >
                         End
@@ -130,7 +132,7 @@ export function PeopleMovingActivity(props) {
             return(
                 <Button
                     style={{backgroundColor: '#006FD6'}}
-                    style={{height: 50, marginTop: 5, marginLeft: 5, width: 90}}
+                    style={{height: 50, marginLeft: 5, width: 90}}
                     onPress={() => setStart(true)}
                 >
                     Start
@@ -147,7 +149,7 @@ export function PeopleMovingActivity(props) {
             if (currentPathSize == 0){
                 setLineTools(true)
             }
-    
+
             setCurrentPath(currentPath.concat(marker))
             setCurrentPathSize(currentPathSize+1)
         }
@@ -164,7 +166,7 @@ export function PeopleMovingActivity(props) {
             setCurrentPathSize(currentPathSize-1)
         }
     }
-  
+
     const confirmLine = () => {
 
         setLineTools(false)
@@ -172,7 +174,7 @@ export function PeopleMovingActivity(props) {
     }
 
     const confirmData = (inf) => {
-        
+
         if (inf.movementIndex > -1) {
 
             let dat = {
@@ -209,35 +211,35 @@ export function PeopleMovingActivity(props) {
         setViewAllLines(!viewAllLines)
     }
 
-    const VisibleIcon = () => {
-        return(
-            <Icon {...props}  style={{width: 25, height: 25}} fill='black' name='eye-outline'/>
-        )
-    }
+    const VisibleIcon = (props) => (
+      <Icon {...props} fill='#8F9BB3' name={viewAllLines ? 'eye' : 'eye-off'}/>
+    )
 
     // Count Down Timer and the Start/Exit button
     const TimeBar = () => {
 
         return(
             <View>
-                <View style={{height: 60, flexDirection: 'row'}}>
+                <View style={{margin:5, flexDirection: 'row', justifyContent:'space-between', alignItems:'center'}}>
 
                     <StartStopButton/>
 
-                    <Button 
-                        style={{ marginTop: 5, marginLeft: 25, width: 50, height: 50, backgroundColor: 'white'}}
+                    <Button
+                        style={{backgroundColor:theme['background-basic-color-3']}}
+                        appearance='ghost'
                         accessoryLeft={VisibleIcon}
                         onPress={viewAllDrawnLines}
                     />
 
-                    <View style={{marginLeft: 100, marginTop: 5}}>
+                    <View>
                         <CountDown
                             running={start}
                             until={props.timeSlot.timeLeft}
                             onChange={(value) => updateTime(value)}
                             size={20}
-                            digitStyle={{backgroundColor: 'white'}}
-                            digitTxtStyle={{color: 'black'}}
+                            digitStyle={{backgroundColor:theme['background-basic-color-1']}}
+                            digitTxtStyle={{color:theme['text-basic-color']}}
+                            separatorStyle={{color:theme['text-basic-color']}}
                             timeToShow={['M', 'S']}
                             timeLabels={{m: '', s: ''}}
                             showSeparator

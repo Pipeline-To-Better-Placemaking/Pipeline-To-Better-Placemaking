@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, KeyboardAvoidingView } from 'react-native';
 
-import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, SelectItem } from '@ui-kitten/components';
+import { useTheme, Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, SelectItem } from '@ui-kitten/components';
 import * as Location from 'expo-location';
 import styles from './dataEntryModal.styles.js';
 import { DataGroupMovement } from './dataGroupMovement.component.js';
@@ -9,6 +9,8 @@ import { DataGroupMovement } from './dataGroupMovement.component.js';
 const movement = ["Walking", "Running", "Swiming", "Activity on Wheels", "Handicap Assisted Wheels"]
 
 export function DataEntryModal(props) {
+
+    const theme = useTheme();
 
     const [movementIndex, setMovementIndex] = useState(-1)
     const [movementMatrix, setmMovementMatrix] = useState([])
@@ -23,16 +25,25 @@ export function DataEntryModal(props) {
 
         let data = {
             movementIndex: movementIndex,
-            movement: movement[movementIndex], 
+            movement: movement[movementIndex],
         }
 
         await props.closeData(data)
     }
 
     return(
-        <Modal transparent={true} animationType='slide'visible={props.visible}>
-            <View style={styles.modalContainer}>
-                <ScrollView style={styles.scorllViewContainer}>
+        <Modal transparent={true} animationType='slide' visible={props.visible}>
+            <View
+              style={{
+                height: '50%',
+                marginTop: 'auto',
+                backgroundColor:theme['background-basic-color-1'],
+                borderTopLeftRadius: 35,
+                borderTopRightRadius: 35,
+                borderWidth: 1
+              }}
+            >
+                <ScrollView>
                     <Text category={'h1'} style={{alignSelf: 'center'}}>Data</Text>
                     <Text category={'s1'} style={{alignSelf: 'center', marginTop: -20}}>___________</Text>
                     <View style={{flexDirection: 'column', marginLeft: 15}}>

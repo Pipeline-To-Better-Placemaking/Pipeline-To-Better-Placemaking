@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Modal } from 'react-native';
 
-import { Text, Button } from '@ui-kitten/components';
+import { useTheme, Text, Button } from '@ui-kitten/components';
 import styles from './dataEntryModal.styles.js';
+
 import { DataGroupAge } from './dataGroupAge.component.js';
 import { DataGroupGender } from './dataGroupGender.component.js';
 import { DataGroupActivity } from './dataGroupActivity.component.js';
@@ -29,6 +30,8 @@ export function DataEntryModal(props) {
     const [postureMatrix, setPostureMatrix] = useState([])
 
     const [activityList, setActivityList] = useState('')
+
+    const theme = useTheme();
 
     const setAgeData = async(index, matrix) => {
 
@@ -94,9 +97,18 @@ export function DataEntryModal(props) {
     }
 
     return(
-        <Modal transparent={true} animationType='slide'visible={props.visible}>
-            <View style={styles.modalContainer}>
-                <ScrollView style={styles.scorllViewContainer}>
+        <Modal transparent={true} animationType='slide' visible={props.visible}>
+            <View
+              style={{
+                height: '50%',
+                marginTop: 'auto',
+                backgroundColor:theme['background-basic-color-1'],
+                borderTopLeftRadius: 35,
+                borderTopRightRadius: 35,
+                borderWidth: 1
+              }}
+            >
+                <ScrollView>
                     <Text category={'h1'} style={{alignSelf: 'center'}}>Data</Text>
                     <Text category={'s1'} style={{alignSelf: 'center', marginTop: -20}}>___________</Text>
                     <View style={{flexDirection: 'column', marginLeft: 15}}>
