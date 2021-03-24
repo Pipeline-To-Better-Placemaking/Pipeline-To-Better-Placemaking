@@ -15,12 +15,30 @@ export function CreateProject(props) {
   const [projectName, setProjectName] = useState('');
   const [searchText, setSearchText] = useState('');
   const [region, setRegion] = useState(null);
+  const [markerError, setMarkerError] = useState(true);
+  const [attemptedCreation, setAttemptedCreation] = useState(false);
+
+  useEffect(() => {
+    if (markers.length >= 3)
+      setMarkerError(false);
+    else 
+      setMarkerError(true);
+  }, [markers])
 
   const confirmCreateProject = async () => {
+    setAttemptedCreation(true);
+    if(markerError)
+      return;
+    
     let success = false
     let projectDetails = null
     let centerPoint = getRegionForCoordinates(markers);
     let description = await getAreaName(markers);
+    let name = projectName;
+
+    if (name == '')
+      name = 'Project'
+
     // Save the new project
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/', {
@@ -31,7 +49,7 @@ export function CreateProject(props) {
                     'Authorization': 'Bearer ' + props.token
             },
             body: JSON.stringify({
-                title: projectName,
+                title: name,
                 description: description,
                 points: markers,
                 team: props.team,
@@ -69,6 +87,10 @@ export function CreateProject(props) {
   const close = () => {
     setMarkers(markers => []);
     setProjectName('');
+    setAttemptedCreation(false);
+    setMarkerError(true);
+    setSearchText('');
+    setRegion(null);
     props.setVisible(false);
   }
 
@@ -113,6 +135,11 @@ export function CreateProject(props) {
             style={{marginLeft:10}}
             />
       </View>
+
+      {markerError && attemptedCreation &&
+      <Text style={{color: '#FF3D71'}}>
+        Invalid area: an area needs at least 3 points
+      </Text>}
 
       <View style={styles.mapHeight}>
         <MapAddArea
