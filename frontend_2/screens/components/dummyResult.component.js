@@ -8,18 +8,19 @@ export const DummyResult = ( props ) => {
     const [checked, setChecked] = useState(false)
     const [added, setAdded] = useState(false)
 
-    onCheckBoxPress = async () => {
+    const onCheckBoxPress = async () => {
 
         let check = !checked
 
         await setChecked(check)
-        await setAdded(!added)
 
         if (check){
             await props.addToSelectedProjects(props.project)
+            await setAdded(true)
         }
         else {
             await props.removeFromSelectedProjects(props.project)
+            await setAdded(false)
         }
     }
 
