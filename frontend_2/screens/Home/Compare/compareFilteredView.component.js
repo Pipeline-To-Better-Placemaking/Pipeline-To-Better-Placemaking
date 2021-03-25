@@ -81,8 +81,6 @@ export function CompareFilteredView(props) {
 
         setSelectedCompare(tmp)
         setCompareCount(compareCount+1)
-
-        console.log("Selected Compare: " + JSON.stringify(selectedCompare, null, 1))
     }
 
     const removeSelected = (item) => {
@@ -94,8 +92,6 @@ export function CompareFilteredView(props) {
 
         setSelectedCompare(tmp)
         setCompareCount(compareCount-1)
-
-        console.log("Selected Compare: " + JSON.stringify(selectedCompare, null, 1))
     }
 
     const setTitle = (index) => {
