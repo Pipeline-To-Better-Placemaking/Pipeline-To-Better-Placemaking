@@ -72,6 +72,7 @@ module.exports.addUser = async function(newUser) {
     // Generate an email verification code
     await Users.createVerification(savedUser._id)
     return Users.findById(savedUser._id)
+        .select('-password -verification_code -verification_timeout')
 }
 
 module.exports.updateUser = async function(userId, newUser) {
