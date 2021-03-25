@@ -35,6 +35,7 @@ export const LoginScreen = ( props ) => {
     let res = null;
 
     try {
+
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/login', {
             method: 'POST',
             headers: {
@@ -47,7 +48,6 @@ export const LoginScreen = ( props ) => {
             })
         });
         res = await response.json();
-        console.log("Login res: ", res.success);
         success = res.success;
     } catch (error) {
         console.log("ERROR: ", error);
@@ -56,8 +56,6 @@ export const LoginScreen = ( props ) => {
 
     if (success) {
       setAccessDenied(false);
-      console.log("token: ", res.token);
-      console.log("userInfo: ", res.user);
 
       await AsyncStorage.setItem("@token", res.token)
       await AsyncStorage.setItem("@id", res.user._id)
@@ -79,6 +77,7 @@ export const LoginScreen = ( props ) => {
 
       await props.setLocation(defaultLocation);
       await props.setSignedIn(true);
+      await setLoading(false);
 
       props.navigation.navigate("TabNavigation")
     } else {

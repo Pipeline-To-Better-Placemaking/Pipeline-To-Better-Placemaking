@@ -57,8 +57,6 @@ export function StationaryActivity(props) {
                 time: new Date(),
             }
 
-            console.log("Point data: " + JSON.stringify(pointData))
-
             setData(() => data.concat(pointData))
             setMarkers(() => markers.concat(tempMarker))
 
@@ -70,8 +68,6 @@ export function StationaryActivity(props) {
     const endActivity = async () => {
 
         setStart(false)
-
-        console.log("Data being saved: " + JSON.stringify(data))
 
         // Saves the SM data
         try {
@@ -88,7 +84,6 @@ export function StationaryActivity(props) {
             })
 
             let info = await response.json()
-            console.log("Response: " + JSON.stringify(info))
 
         } catch (error) {
             console.log("ERROR: ", error)
@@ -161,11 +156,7 @@ export function StationaryActivity(props) {
 
             let orgTime = props.initialTimeSlot.timeLeft
 
-            console.log("OrgTime: " + orgTime)
-            console.log("Temp: " + JSON.stringify(temp))
-
             temp.timeLeft = orgTime
-            console.log("Temp after update: " + JSON.stringify(temp))
 
             props.setTimeSlot(temp);
 
