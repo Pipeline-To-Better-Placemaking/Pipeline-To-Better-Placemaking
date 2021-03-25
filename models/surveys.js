@@ -3,6 +3,10 @@ const mongoose = require('mongoose')
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
+const survey_key_schema = mongoose.Schema({
+    counter: Number
+})
+
 const survey_schema = mongoose.Schema({
     
     title:String,
@@ -40,12 +44,23 @@ const survey_schema = mongoose.Schema({
     }   
 })
 
-
+const Counter = mongoose.model('Survey_Key_Tracker', survey_key_schema)
 const Surveys = module.exports = mongoose.model('Surveys', survey_schema)
 
 module.exports.addSurvey = async function(newSurvey) {
     var builderString = "3UROGSWIVE01A9LMKQB7FZ6DJ4NC28Y5HTXP"
-    var count = await Surveys.countDocuments()
+
+    var counter = await Counter.findOne()
+    if(counter == null){
+        counter = new Counter({
+            counter: 0
+        })
+    }
+
+    var count = counter.counter
+    counter.counter = count + 1
+    await counter.save()
+
     var keyInt = (count * 823543 + 23462) % 2176782336
     var keyString = ""
     
