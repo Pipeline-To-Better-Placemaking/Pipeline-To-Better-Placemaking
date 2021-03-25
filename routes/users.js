@@ -3,6 +3,7 @@ const passport = require('passport')
 const Team = require('../models/teams.js')
 const router = express.Router()
 const User = require('../models/users.js')
+const emailer = require('../utils/emailer')
 
 const { BadRequestError, NotFoundError } = require('../utils/errors.js')
 
@@ -34,6 +35,11 @@ router.post('/', async (req, res, next) => {
     })
 
     const user = await User.addUser(newUser)
+
+    if (!await emailer.sendVerificationCode(user.email, null)) {
+        console.error(`Could not send email to ${user.email}`)
+    }
+
     res.status(201).json(user)
 })
 
