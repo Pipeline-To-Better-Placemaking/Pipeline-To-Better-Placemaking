@@ -47,23 +47,7 @@ router.post('/newcode',passport.authenticate('jwt',{session:false}), async (req,
         })
     }
 
-    const emailHTML = `
-        <h3>Hello from 2+ Community!</h3>
-        <p>Thank you for creating a Measuring Place account. Please enter the code below in the app to verify your email address.</p>
-
-        <p><b>Your code is:</b> ${code}</p>
-    `
-    
-    const mailOptions = {
-        from: `"2+ Community" <${config.PROJECT_EMAIL}>`,
-        to: req.user.email,
-        subject: 'Email Verification',
-        text: `Thank you for creating a Measuring Place account. 
-            Please enter the following code in the app to verify your email address: ${code}`,
-        html: emailHTML
-    }
-
-    if (!await emailer.sendEmail(mailOptions)) {
+    if (!await emailer.sendVerificationCode(req.user.email, code)) {
         throw new InternalServerError('The server encountered a problem')
     }
 

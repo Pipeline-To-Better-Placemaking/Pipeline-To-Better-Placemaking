@@ -2,6 +2,7 @@ const config = require('../utils/config')
 const nodemailer = require('nodemailer')
 const { google } = require('googleapis')
 const OAuth2 = google.auth.OAuth2
+const User = require('../models/users.js')
 
 const createTransporter = async () => {
     // Create an OAuth client
@@ -47,7 +48,7 @@ const createTransporter = async () => {
     return transporter
 }
 
-module.exports.sendEmail = async (mailOptions) => {
+const sendEmail = async (mailOptions) => {
     try {
         const transporter = await createTransporter()
         await transporter.sendMail(mailOptions)
@@ -58,4 +59,34 @@ module.exports.sendEmail = async (mailOptions) => {
     }
 
     return true
+}
+
+const sendVerificationCode = async (email, code) => {
+    if (!code) {
+        const user = await User.findUserByEmail(email)
+        code = user.verification_code
+    }
+
+    const emailHTML = `
+        <h3>Hello from 2+ Community!</h3>
+        <p>Thank you for creating a Measuring Place account. Please enter the code below in the app to verify your email address.</p>
+
+        <p><b>Your code is:</b> ${code}</p>
+    `
+    
+    const mailOptions = {
+        from: `"2+ Community" <${config.PROJECT_EMAIL}>`,
+        to: email,
+        subject: 'Email Verification',
+        text: `Thank you for creating a Measuring Place account. 
+            Please enter the following code in the app to verify your email address: ${code}`,
+        html: emailHTML
+    }
+
+    return (await sendEmail(mailOptions))
+}
+
+module.exports = {
+    sendEmail,
+    sendVerificationCode
 }
