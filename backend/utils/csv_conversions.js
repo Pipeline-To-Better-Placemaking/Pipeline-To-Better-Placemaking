@@ -135,7 +135,56 @@ movingToCSV = function(data) {
     return csv
 }
 
+surveyToCSV = function(data) {
+
+    var headers = "Collection_Title," +
+                  "Collection_Date,"  +
+                  "Area,Duration,Activity_Time," +
+                  "Researchers,Key" 
+
+    var csv = headers
+
+    for(var i = 0; i < data.surveyCollections.length; i++){
+        var collection = data.surveyCollections[i]
+        
+        var area = "\"POLYGON (("
+        for(var j = 0; j < collection.area.points.length; j++){
+            if (j != 0) area += ','
+            area += collection.area.points[j].latitude + " "
+            area += collection.area.points[j].longitude
+        }
+        area += "))\""
+        
+        if(collection.surveys){
+            for (var j = 0; j < collection.surveys.length; j++){
+                var survey = collection.surveys[j]
+
+                var researchers = "\""
+                if(survey.researchers){
+                    for(var k = 0; k < survey.researchers.length; k++){
+                        if(k != 0) researchers += ','
+                        researchers += survey.researchers[k]
+                    }
+                }
+                researchers += "\""
+
+                csv += '\n'
+                csv += collection.title + ','
+                csv += collection.date + ','
+                csv += area + ','
+                csv += collection.duration + ','
+                csv += survey.date + ','
+                csv += survey.researchers + ','
+                csv += survey.key                    
+            }
+        }
+    }
+
+    return csv
+}
+
 module.exports = {
     stationaryToCSV,
-    movingToCSV
+    movingToCSV,
+    surveyToCSV
 }
