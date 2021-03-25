@@ -145,10 +145,14 @@ SURVEY=$(curl -H 'Content-Type: application/json' \
 echo
 echo
 
+echo
+
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
      --request DELETE \
      http://localhost:8080/api/surveys/${SURVEY} \
+
+echo
 
 curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
