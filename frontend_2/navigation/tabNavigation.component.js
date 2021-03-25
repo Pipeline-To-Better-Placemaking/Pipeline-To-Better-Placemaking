@@ -55,20 +55,21 @@ export function TabNavigation(props) {
 
       // get list of projects for all teams the user is a member of
       await setAllProjects([]);
+      let projectList = [];
       let teamsList = await AsyncStorage.getItem('@teams');
       teamsList = JSON.parse(teamsList);
       if (teamsList !== null) {
-        teamsList.map((team, index) => {
-          setTeamDetails(team);
-        });
+        for (let i = 0; i < teamsList.length; i++) {
+          projectList = await setTeamDetails(teamsList[i], projectList);
+        }
       }
-
+      await setAllProjects(projectList);
     }
 
     getInfo()
   }, []);
 
-  const setTeamDetails = async (team) => {
+  const setTeamDetails = async (team, projectList) => {
     let token = await AsyncStorage.getItem("@token");
     let success = false
     let teamDetails = null
@@ -96,23 +97,21 @@ export function TabNavigation(props) {
     // return team info
     if(success && teamDetails.projects !== null) {
       //console.log("teamDetails.projects: ", teamDetails.projects);
-      teamDetails.projects.map((project, index) => {
-
-        //console.log("Project: " + JSON.stringify(project, 1))
-
-        project.description = "Team: " + teamDetails.title + "\nLocation: " + project.description;
+      for (let i = 0; i < teamDetails.projects.length; i++){
+        let project = teamDetails.projects[i];
+        project.info = "Team: " + teamDetails.title + "\nLocation: " + project.description;
+        project.teamName = teamDetails.title;
         project.teamId = teamDetails._id;
-        allProjects.push(project);
-      });
-      await setAllProjects(allProjects);
-      return true;
-    } else {
-      return false;
+        projectList.push(project);
+      }
+      //await setAllProjects(allProjects);
     }
+    return projectList;
   }
 
   const addProject = async (projectDetails, teamDetails) => {
-    projectDetails.description = "Team: " + teamDetails.title + "\nLocation: " + projectDetails.description;
+    projectDetails.info = "Team: " + teamDetails.title + "\nLocation: " + projectDetails.description;
+    projectDetails.teamName = teamDetails.title;
     projectDetails.teamId = teamDetails._id;
     allProjects.push(projectDetails);
     await setAllProjects(allProjects);

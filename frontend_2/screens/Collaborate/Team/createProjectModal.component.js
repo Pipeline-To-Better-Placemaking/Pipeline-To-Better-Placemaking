@@ -21,7 +21,7 @@ export function CreateProject(props) {
   useEffect(() => {
     if (markers.length >= 3)
       setMarkerError(false);
-    else 
+    else
       setMarkerError(true);
   }, [markers])
 
@@ -29,7 +29,7 @@ export function CreateProject(props) {
     setAttemptedCreation(true);
     if(markerError)
       return;
-    
+
     let success = false
     let projectDetails = null
     let centerPoint = getRegionForCoordinates(markers);
@@ -73,9 +73,9 @@ export function CreateProject(props) {
       let tempProjects = [...props.team.projects];
       tempProjects.push(projectDetails);
       selectedTeam.projects = tempProjects;
-      props.setProjects(tempProjects);
-      props.addProject(projectDetails, props.team);
-      props.setTeam(team => selectedTeam);
+      await props.setProjects(tempProjects);
+      await props.addProject(projectDetails, props.team); // for home results page
+      await props.setTeam(team => selectedTeam);
       await AsyncStorage.setItem("@projects", JSON.stringify(tempProjects));
 
       // open project page

@@ -19,29 +19,33 @@ export function CompareFilteredView(props) {
     const activities = ['Stationary Activity Map', 'People Moving', 'Survey']
 
     useEffect(() => {
+        setResults();
+    });
 
-        if (stationaryResults.length == 0 && peopleMovingResults.length == 0 && surveyResults == 0) {
+    const setResults = async () => {
+      if (stationaryResults.length == 0 && peopleMovingResults.length == 0 && surveyResults == 0) {
+          let sm = []
+          let pm = []
+          let survey = []
 
-            let sm = []
-            let pm = []
-            let survey = []
+          for (let i = 0; i < props.filterCriteria.length; i++){
 
-            for (let i = 0; i < props.filterCriteria.length; i++){
+              if (props.filterCriteria[i].test_type === "stationary"){
+                  sm.push(props.filterCriteria[i])
+              }
+              else if (props.filterCriteria[i].test_type === "moving"){
+                  pm.push(props.filterCriteria[i])
+              }
+              else if (props.filterCriteria[i].test_type === "survey"){
+                  survey.push(props.filterCriteria[i])
+              }
+          }
 
-                if (props.filterCriteria[i].testType == "Stationary Activity Map"){
-                    sm.push(props.filterCriteria[i].result)
-                }
-                else if (props.filterCriteria[i].testType == "People Moving"){
-                    pm.push(props.filterCriteria[i].result)
-                }
-            }
-
-            setStationaryResults(sm)
-            setPeopleMovingResults(pm)
-            setSurveyResults(survey)
-        }
-
-    })
+          await setStationaryResults(sm)
+          await setPeopleMovingResults(pm)
+          await setSurveyResults(survey)
+      }
+    }
 
     const selectedActivity = () => {
 
@@ -59,6 +63,8 @@ export function CompareFilteredView(props) {
     const activityItem = (item, index) => (
         <ListItem>
             <CompareListChecks
+                {...props}
+                key={index}
                 result={item.item}
                 compareCount={compareCount}
                 addSelected={addSelected}

@@ -13,14 +13,13 @@ export const DummyResult = ( props ) => {
         let check = !checked
 
         await setChecked(check)
+        await setAdded(!added)
 
         if (check){
             await props.addToSelectedProjects(props.project)
-            await setAdded(!added)
         }
         else {
             await props.removeFromSelectedProjects(props.project)
-            await setAdded(!added)
         }
     }
 
@@ -58,7 +57,7 @@ export const DummyResult = ( props ) => {
                     {props.project.title}
                 </Text>
                 <Text category={'s2'} style={styles.resultBoxComment}>
-                    {props.project.description}
+                    {props.project.info}
                 </Text>
             </View>
 

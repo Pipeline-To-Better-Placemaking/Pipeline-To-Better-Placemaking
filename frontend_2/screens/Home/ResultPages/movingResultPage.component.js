@@ -13,6 +13,7 @@ import { styles } from '../projectResult.styles';
 export function MovingResultPage(props) {
 
   if (props.selectedResult === null ||
+      !props.selectedResult.success ||
       props.selectedResult.graph === undefined
     ) {
     return (

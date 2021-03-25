@@ -21,18 +21,24 @@ export function EditTeamPage(props) {
 	// Removes the team matching the ID from the local list of teams
 	const removeTeamFromList = async (teamID, teams) => {
 
-		// remove team from local list
-		for(let i = 0; i < teams.length; i++) {
-			if(teams[i]._id == teamID){
-				teams.splice(i, 1)
-			}
-		}
+    // Find index
+    let teamIndex = teams.findIndex(element => element._id === teamID)
 
-		// Update async storage and props		
-		props.setVisible(false)
-    props.navigation.navigate('Collaborate')
-		props.setTeams(teams)
+    // update the home results page and remove any projects from this team
+    if (teamIndex >= 0 && teams[teamIndex].projects !== undefined && teams[teamIndex].projects !== null) {
+      for(let i = 0; i < teams[teamIndex].projects.length; i++) {
+  			await props.removeProject(teams[teamIndex].projects[i]._id);
+  		}
+    }
+
+    // remove team from local list
+    teams.splice(teamIndex, 1);
+
+		// Update async storage and props
+		await props.setVisible(false)
+		await props.setTeams(teams)
 		await AsyncStorage.setItem('@teams', JSON.stringify(teams))
+    props.navigation.navigate('Collaborate')
 	}
 
   const deleteTeam = async () => {
@@ -61,7 +67,7 @@ export function EditTeamPage(props) {
 
 		// Local Updates
 		if (success) {
-			removeTeamFromList(deleteTeamID, props.teams)        
+			removeTeamFromList(deleteTeamID, props.teams)
 		}
   }
 
@@ -74,7 +80,7 @@ export function EditTeamPage(props) {
 			}
 		}
 
-		// Update async storage and props		
+		// Update async storage and props
 		props.setTeams(teams)
 		await AsyncStorage.setItem('@teams', JSON.stringify(teams))
 	}

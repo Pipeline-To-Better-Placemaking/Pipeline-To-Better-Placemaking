@@ -33,7 +33,7 @@ export function EditProjectPage(props) {
     props.setTeam(selectedTeam)
     props.setTeams([...tempTeams])
     props.setProjects([...tempProjects])
-    props.removeProject(deletedProjectID);
+    props.removeProject(deletedProjectID); // for home results page
 
     // Dummy data for the project state
     await props.setProject({

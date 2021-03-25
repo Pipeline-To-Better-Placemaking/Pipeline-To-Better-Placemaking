@@ -12,7 +12,7 @@ import { styles } from '../projectResult.styles';
 
 export function SurveyResultPage(props) {
 
-  if (props.selectedResult === null) {
+  if (props.selectedResult === null || !props.selectedResult.success) {
     return (
       <ViewableArea>
         <HeaderBack {...props} text={"No results"}/>

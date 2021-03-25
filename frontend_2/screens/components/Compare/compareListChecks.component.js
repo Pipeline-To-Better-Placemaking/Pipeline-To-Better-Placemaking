@@ -9,7 +9,7 @@ export function CompareListChecks(props) {
 
     useEffect(() => {
 
-        if (props.selectedCompare.length == 0) {
+        if (props.selectedCompare.length === 0) {
             setChecked(false)
         }
     })
@@ -41,7 +41,12 @@ export function CompareListChecks(props) {
                   {props.result.title}
               </Text>
               <Text appearance='hint'>
-                  {getTimeStr(props.result.date) + ' - ' + getDayStr(props.result.sharedData.date) + ' - ' + props.result.sharedData.projectName}
+                {
+                  getTimeStr(props.result.date) + ' - ' +
+                  getDayStr(props.result.sharedData.date) + ' - ' +
+                  props.result.sharedData.projectName + ' - ' +
+                  props.result.sharedData.teamName
+                }
               </Text>
             </View>
           )

@@ -16,106 +16,17 @@ const ForwardIcon = (props) => (
 export function ProjectResultPage(props) {
 
   const openActivityPage = async (item) => {
+    await props.setSelectedResult(item);
+    // open results page
     if (item.test_type === 'stationary') {
-      await getStationaryResults(item);
-    } else if (item.test_type === 'moving') {
-      await getMovingResults(item);
-    } else if (item.test_type === 'survey') {
-      await getSurveyResults(item);
-    }
-  };
-
-  const getStationaryResults = async (item) => {
-    let success = false
-    let result = null
-
-    console.log("Getting stationary results")
-
-    try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/stationary_maps/' + item._id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + props.token
-            }
-        })
-        result = await response.json();
-        success = true
-    } catch (error) {
-        console.log("error", error)
-    }
-    if (result === null) {
-      success = false;
-    }
-
-    if(success) {
-      console.log("Selected result: ", result);
-      result.sharedData.date = item.day;
-      await props.setSelectedResult(result);
-      await formatStationaryGraphData(result);
-      // open results page
+      await formatStationaryGraphData(item);
       props.navigation.navigate("StationaryResultPage");
     }
-  };
-
-  const getMovingResults = async (item) => {
-    let success = false
-    let result = null
-    try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/moving_maps/' + item._id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + props.token
-            }
-        })
-        result = await response.json();
-        success = true
-    } catch (error) {
-        console.log("error", error)
-    }
-    if (result === null) {
-      success = false;
-    }
-
-    if(success) {
-      console.log("Selected result: ", result);
-      result.sharedData.date = item.day;
-      await props.setSelectedResult(result);
-      await formatMovingGraphData(result);
-      // open results page
+    else if (item.test_type === 'moving') {
+      await formatMovingGraphData(item);
       props.navigation.navigate("MovingResultPage");
     }
-  };
-
-  const getSurveyResults = async (item) => {
-    let success = false
-    let result = null
-    try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/surveys/' + item._id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + props.token
-            }
-        })
-        result = await response.json();
-        success = true
-    } catch (error) {
-        console.log("error", error)
-    }
-    if (result === null) {
-      success = false;
-    }
-
-    if(success) {
-      console.log("Selected result: ", result);
-      result.sharedData.date = item.day;
-      await props.setSelectedResult(result);
-      // open results page
+    else if (item.test_type === 'survey') {
       props.navigation.navigate("SurveyResultPage");
     }
   };
@@ -277,7 +188,7 @@ export function ProjectResultPage(props) {
               {`${item.title}`}
           </Text>
         }
-        description={getTimeStr(item.date) + ' - ' + getDayStr(item.day) + ' - ' + item.test_type}
+        description={getTimeStr(item.date) + ' - ' + getDayStr(item.sharedData.date) + ' - ' + item.test_type}
         accessoryRight={ForwardIcon}
         onPress={() => openActivityPage(item)}
       />
@@ -294,11 +205,19 @@ export function ProjectResultPage(props) {
           </MapAreaWrapper>
         </View>
 
-        <View style={styles.teamTextView}>
-            <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
-                <Text>Location: {props.project.description}</Text>
-                <Text>Admin: {props.team.users[0].firstname} {props.team.users[0].lastname}</Text>
-            </View>
+        <View style={{marginTop: 10, marginLeft:20, flexDirection: 'column',justifyContent: 'flex-start'}}>
+          <View style={{flexDirection:'row'}}>
+            <Text style={{fontWeight: "bold"}}>Location: </Text>
+            <Text>{props.project.description}</Text>
+          </View>
+          <View style={{flexDirection:'row'}}>
+            <Text style={{fontWeight: "bold"}}>Team: </Text>
+            <Text>{props.team.title}</Text>
+          </View>
+          <View style={{flexDirection:'row'}}>
+            <Text style={{fontWeight: "bold"}}>Admin: </Text>
+            <Text>{props.team.users[0].firstname} {props.team.users[0].lastname}</Text>
+          </View>
         </View>
 
         <View style={styles.teamTextView}>
@@ -318,7 +237,7 @@ export function ProjectResultPage(props) {
         </View>
         <Divider style={{marginTop: 5}} />
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
+        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%'}}>
           <List
             style={{maxHeight:'100%', maxWidth:'90%'}}
             data={props.results}
