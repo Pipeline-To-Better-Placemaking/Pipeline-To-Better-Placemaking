@@ -15,7 +15,7 @@ const jwt = require('jsonwebtoken')
 const emailer = require('../utils/emailer')
 
 const { models } = require('mongoose')
-const { stationaryToCSV, movingToCSV } = require('../utils/csv_conversions')
+const { stationaryToCSV, movingToCSV, surveyToCSV } = require('../utils/csv_conversions')
 const { BadRequestError, InternalServerError, UnauthorizedError } = require('../utils/errors')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
@@ -417,6 +417,19 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     path: 'area',
                                     }]
                                 }])
+    surveyData = await Project.findById(req.params.id)
+                            .populate('area')
+                            .populate([
+                            {
+                                path:'surveyCollections',
+                                model:'Survey_Collections',
+                                populate: [{
+                                    path: 'surveys',
+                                    model: 'Surveys',
+                                    },{
+                                    path: 'area',
+                                    }]
+                                }])
 
     const emailHTML = `
         <h3>Hello from 2+ Community!</h3>
@@ -438,7 +451,10 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
             {
                 filename: stationaryData.title + '_moving.csv',
                 content:movingToCSV(movingData)
-
+            },
+            {
+                filename: stationaryData.title + '_survey.csv',
+                content:surveyToCSV(surveyData)
             }
         ]
     }
