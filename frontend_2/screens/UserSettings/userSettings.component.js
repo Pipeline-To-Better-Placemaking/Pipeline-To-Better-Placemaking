@@ -325,13 +325,14 @@ export function UserSettings(props) {
                         <Input
                             placeholder = 'Code'
                             value={verificationCode}
-                            onChangeText={nextValue => setVerificationCode(nextValue)}
+                            onChangeText={nextValue => setVerificationCode(nextValue.replace(/[^0-9]/g, ''))}
                             caption={
                                 verificationError &&
                                 <Text style={{color: '#FF3D71'}}>
                                     Failed to verify email. Code may be incorrect or expired.
                                 </Text>
                             }
+                            keyboardType='number-pad'
                         />
 
                         <Button
