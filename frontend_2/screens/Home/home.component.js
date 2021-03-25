@@ -77,7 +77,7 @@ export const HomeScreen = ( props ) => {
               result.test_type = 'stationary';
               result.date = new Date(result.date);
               result.sharedData.date = new Date(collection.date);
-              result.sharedData.projectName = collection.title;
+              result.sharedData.projectName = project.title;
               result.sharedData.location = project.description;
 
               let res = {
@@ -119,7 +119,7 @@ export const HomeScreen = ( props ) => {
               result.test_type = 'moving';
               result.date = new Date(result.date);
               result.sharedData.date = new Date(collection.date);
-              result.sharedData.projectName = collection.title;
+              result.sharedData.projectName = project.title;
               result.sharedData.location = project.description;
 
               let res = {
@@ -161,7 +161,7 @@ export const HomeScreen = ( props ) => {
               result.test_type = 'survey';
               result.date = new Date(result.date);
               result.sharedData.date = new Date(collection.date);
-              result.sharedData.projectName = collection.title;
+              result.sharedData.projectName = project.title;
               result.sharedData.location = project.description;
 
               let res = {

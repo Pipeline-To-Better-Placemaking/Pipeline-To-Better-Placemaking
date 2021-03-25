@@ -37,7 +37,7 @@ export function StationaryCompare(props) {
     } else {
       result.color = 'rgb(0, 214, 111)';
     }
-    result.information = result.resultName + '\nLocation: ' + result.sharedData.location;
+    result.information = result.title + '\n' + result.resultName + '\nLocation: ' + result.sharedData.location;
   });
 
   const chartWidth = Dimensions.get('window').width*0.95;

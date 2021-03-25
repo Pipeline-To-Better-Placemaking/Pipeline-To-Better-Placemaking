@@ -4,7 +4,7 @@ import { Text, Button, Divider, List, ListItem, BottomNavigation, Icon } from '@
 import { CompareListChecks } from '../../components/Compare/compareListChecks.component.js'
 import { styles } from './compare.styles'
 
-import { Header } from '../../components/headers.component';
+import { HeaderBack } from '../../components/headers.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import { CompareFilterHeader } from '../../components/Compare/compareFilterHeader.component.js'
 
@@ -113,7 +113,7 @@ export function CompareFilteredView(props) {
 
     return(
         <ViewableArea>
-            <Header text={'Select 2 to Compare'}/>
+            <HeaderBack {...props} text={'Select 2 to Compare'}/>
             <ContentContainer>
 
                 <CompareFilterHeader
