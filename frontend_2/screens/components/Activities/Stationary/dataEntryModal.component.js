@@ -98,6 +98,7 @@ export function DataEntryModal(props) {
 
     return(
         <Modal transparent={true} animationType='slide' visible={props.visible}>
+          <View style={{height: '100%',backgroundColor:'rgba(0,0,0, 0.5)'}}>
             <View
               style={{
                 height: '50%',
@@ -124,6 +125,7 @@ export function DataEntryModal(props) {
 
                 </ScrollView>
             </View>
+          </View>
         </Modal>
     )
 }
