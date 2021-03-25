@@ -136,29 +136,8 @@ export const HomeScreen = ( props ) => {
     for (let i = 0; i < projectDetails.stationaryCollections.length; i++) {
       let collection = projectDetails.stationaryCollections[i];
       for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
-        // help info
-        let mapId = collection.maps[j];
-        let day = new Date(collection.date);
-        // temp obj if resultInfo is null
-        let tempObj = {
-          title: collection.title,
-          sharedData: {},
-          date: day,
-          _id: mapId,
-          success: false,
-        }
-        let resultInfo = await getResultInfo(mapId, 'stationary_maps/');
-        if (resultInfo !== null) {
-          resultInfo.date = new Date(resultInfo.date);
-          resultInfo.success = true;
-          tempObj = resultInfo;
-        }
-        // add some helpful information
-        tempObj.test_type = "stationary";
-        tempObj.sharedData.date = day;
-        tempObj.sharedData.projectName = projectDetails.title;
-        tempObj.sharedData.location = projectDetails.description;
-        tempObj.sharedData.teamName = projectDetails.teamName;
+        let id = collection.maps[j];
+        let tempObj = await getResult(id, 'stationary_maps/', "stationary", collection, projectDetails);
         results.push(tempObj);
       }
     }
@@ -170,29 +149,8 @@ export const HomeScreen = ( props ) => {
     for (let i = 0; i < projectDetails.movingCollections.length; i++) {
       let collection = projectDetails.movingCollections[i];
       for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
-        // help info
-        let mapId = collection.maps[j];
-        let day = new Date(collection.date);
-        // temp obj if resultInfo is null
-        let tempObj = {
-          title: collection.title,
-          sharedData: {},
-          date: day,
-          _id: mapId,
-          success: false,
-        }
-        let resultInfo = await getResultInfo(mapId, 'moving_maps/');
-        if (resultInfo !== null) {
-          resultInfo.date = new Date(resultInfo.date);
-          resultInfo.success = true;
-          tempObj = resultInfo;
-        }
-        // add some helpful information
-        tempObj.test_type = "moving";
-        tempObj.sharedData.date = day;
-        tempObj.sharedData.projectName = projectDetails.title;
-        tempObj.sharedData.location = projectDetails.description;
-        tempObj.sharedData.teamName = projectDetails.teamName;
+        let id = collection.maps[j];
+        let tempObj = await getResult(id, 'moving_maps/', "moving", collection, projectDetails);
         results.push(tempObj);
       }
     }
@@ -204,33 +162,37 @@ export const HomeScreen = ( props ) => {
     for (let i = 0; i < projectDetails.surveyCollections.length; i++) {
       let collection = projectDetails.surveyCollections[i];
       for (let j=0; collection.surveys !== null && j < collection.surveys.length; j++) {
-        // help info
-        let surveyId = collection.surveys[j];
-        let day = new Date(collection.date);
-        // temp obj if resultInfo is null
-        let tempObj = {
-          title: collection.title,
-          sharedData: {},
-          date: day,
-          _id: surveyId,
-          success: false,
-        }
-        let resultInfo = await getResultInfo(surveyId, 'surveys/');
-        if (resultInfo !== null) {
-          resultInfo.date = new Date(resultInfo.date);
-          resultInfo.success = true;
-          tempObj = resultInfo;
-        }
-        // add some helpful information
-        tempObj.test_type = "survey";
-        tempObj.sharedData.date = day;
-        tempObj.sharedData.projectName = projectDetails.title;
-        tempObj.sharedData.location = projectDetails.description;
-        tempObj.sharedData.teamName = projectDetails.teamName;
+        let id = collection.surveys[j];
+        let tempObj = await getResult(id, 'surveys/', "survey", collection, projectDetails);
         results.push(tempObj);
       }
     }
     return results;
+  }
+
+  const getResult = async (resultId, routePath, type, collection, projectDetails) => {
+    let day = new Date(collection.date);
+    // temp obj if resultInfo is null
+    let tempObj = {
+      title: collection.title,
+      sharedData: {},
+      date: day,
+      _id: resultId,
+      success: false,
+    }
+    let resultInfo = await getResultInfo(resultId, routePath);
+    if (resultInfo !== null) {
+      resultInfo.date = new Date(resultInfo.date);
+      resultInfo.success = true;
+      tempObj = resultInfo;
+    }
+    // add some helpful information
+    tempObj.test_type = type;
+    tempObj.sharedData.date = day;
+    tempObj.sharedData.projectName = projectDetails.title;
+    tempObj.sharedData.location = projectDetails.description;
+    tempObj.sharedData.teamName = projectDetails.teamName;
+    return tempObj;
   }
 
   const getResultInfo = async (resultId, routePath) => {
