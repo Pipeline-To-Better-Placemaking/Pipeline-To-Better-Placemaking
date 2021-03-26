@@ -4,6 +4,8 @@ const Team = require('../models/teams.js')
 const router = express.Router()
 const User = require('../models/users.js')
 const emailer = require('../utils/emailer')
+const jwt = require('jsonwebtoken')
+const config = require('../utils/config')
 
 const { BadRequestError, NotFoundError } = require('../utils/errors.js')
 
@@ -40,7 +42,16 @@ router.post('/', async (req, res, next) => {
         console.error(`Could not send email to ${user.email}`)
     }
 
-    res.status(201).json(user)
+    // Automatically log the user in
+    const token = jwt.sign({ _id: user._id, email: user.email }, config.PRIVATE_KEY, {
+        expiresIn: 86400 //1 day
+    })
+
+    res.status(201).json({
+        success: true,
+        token: token,
+        user: user
+    })
 })
 
 // Get another user's info
