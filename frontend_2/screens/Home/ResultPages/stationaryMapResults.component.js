@@ -11,8 +11,8 @@ export function StationaryActivityResultView(props) {
     /// Location, area, and standing points for SM
     /// Bool indicating to the map to recenter
     // const [location] = useState(props.timeSlot.location)
-    const [area] = useState(props.project.subareas[0].points)
-    const [position] = useState(props.project.standingPoints)
+    const [area] = useState(props.selectedResult.sharedData.area.points)
+    const [position] = useState(props.selectedResult.standingPoints)
 
     // The index of the standing points
     const [standingIndex, setStandingIndex] = useState(0)
