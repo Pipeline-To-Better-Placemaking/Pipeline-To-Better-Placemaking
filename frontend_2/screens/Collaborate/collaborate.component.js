@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, RefreshControl } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../components/headers.component';
@@ -11,6 +11,42 @@ export function Collaborate(props) {
 
   const [teamName, setTeamName] = useState('');
   const [visible, setVisible] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    refreshInviteList();
+    setRefreshing(false);
+  }, []);
+
+  const refreshInviteList = async () => {
+    let token = await AsyncStorage.getItem("@token");
+    let success = false;
+    let res = null;
+    // GET Invite
+    try {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/users/', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+            }
+        })
+        res = await response.json();
+        //console.log("response...", res);
+        success = true
+    } catch (error) {
+        console.log("error getting invite list: ", error)
+    }
+
+    if(success && res.invites !== undefined && res.invites !== null) {
+      //console.log("success");
+      const newInvites = [...res.invites];
+      await AsyncStorage.setItem("@invites", JSON.stringify(newInvites));
+      await props.setInvites(newInvites);
+    }
+  }
 
   const createTeam = async () => {
     let success = false;
@@ -265,8 +301,14 @@ export function Collaborate(props) {
         <Divider style={{marginTop: 5}} />
         <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'40%', marginTop:15}}>
           <List
-            style={{maxHeight:'100%', maxWidth:'90%'}}
+            style={{maxHeight:'100%', maxWidth:'90%', minHeight:150, backgroundColor: 'rgba(0, 0, 0, 0)'}}
             data={props.invites}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            }
             ItemSeparatorComponent={Divider}
             renderItem={inviteItem}
           />
