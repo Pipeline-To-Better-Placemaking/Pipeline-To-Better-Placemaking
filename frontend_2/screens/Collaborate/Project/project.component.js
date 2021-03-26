@@ -35,9 +35,11 @@ export function ProjectPage(props) {
       success = (collectionDetails !== null)
       // get the timeSlot info
       if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
-        collectionDetails.maps.map(item => {
-          getTimeSlots(item._id, 'stationary_maps/');
-        })
+        for (let i = 0; i < collectionDetails.maps.length; i++) {
+          let item = collectionDetails.maps[i];
+          await getTimeSlots(item._id, 'stationary_maps/');
+        }
+        success = true
       }
 
     } else if(collectionDetails.test_type === 'moving') {
@@ -46,9 +48,10 @@ export function ProjectPage(props) {
       success = (collectionDetails !== null)
       // get the timeSlot info
       if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
-        collectionDetails.maps.map(item => {
-          getTimeSlots(item._id, 'moving_maps/');
-        })
+        for (let i = 0; i < collectionDetails.maps.length; i++) {
+          let item = collectionDetails.maps[i];
+          await getTimeSlots(item._id, 'moving_maps/');
+        }
         success = true
       }
 
@@ -58,9 +61,10 @@ export function ProjectPage(props) {
       success = (collectionDetails !== null)
       // get the timeSlot info
       if (success && collectionDetails.surveys !== undefined && collectionDetails.surveys.length >= 1) {
-        collectionDetails.surveys.map(item => {
-          getTimeSlots(item._id, 'surveys/');
-        })
+        for (let i = 0; i < collectionDetails.surveys.length; i++) {
+          let item = collectionDetails.surveys[i];
+          await getTimeSlots(item._id, 'surveys/');
+        }
         success = true
       }
     }
