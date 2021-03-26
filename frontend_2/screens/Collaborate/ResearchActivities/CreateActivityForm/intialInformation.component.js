@@ -32,10 +32,10 @@ export function IntialForm(props) {
         closePopUp={() => setEditDurationVisible(false)}
       />
       <ContentContainer>
-        <ConfirmDelete 
-          visible={confirmDeleteVisible} 
-          setVisible={setConfirmDeleteVisible} 
-          dataType={"research activity"} 
+        <ConfirmDelete
+          visible={confirmDeleteVisible}
+          setVisible={setConfirmDeleteVisible}
+          dataType={"research activity"}
           deleteFunction={props.deleteActivity}
         />
         <View style={styles.container}>
@@ -97,6 +97,17 @@ export function IntialForm(props) {
                 </Text>
               </Button>
             </View>
+
+            {(props.errorMessages !== null && props.errorMessages.length > 35 )
+              ?
+                <View style={{margin:15, borderWidth:4, borderColor:'red'}}>
+                  <Text status='danger' category='s1' style={{padding:5}}>
+                    {props.errorMessages}
+                  </Text>
+                </View>
+              :
+                null
+            }
 
           </View>
 

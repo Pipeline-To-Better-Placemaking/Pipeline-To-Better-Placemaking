@@ -18,6 +18,80 @@ export function ActivitySignUpPage(props) {
     props.navigation.navigate('CreateActivityStack')
   }
 
+  // area error checking
+  if (props.activity.area === undefined ||
+      props.activity.area === null ||
+      props.activity.area.points === undefined ||
+      props.activity.area.points === null
+    ) {
+      return (
+        <ViewableArea>
+          {props.teamOwner() ?
+            <HeaderBackEdit {...props} text={props.activity.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
+              <MenuItem title='Edit Info' onPress={() => {setEditMenuVisible(false); editActivityInfo()}}/>
+            </HeaderBackEdit>
+          :
+            <HeaderBack {...props} text={props.activity.title}/>
+          }
+          <ContentContainer>
+            <View style={{margin:15, borderWidth:4, borderColor:'red'}}>
+              <Text status='danger' category='h5' style={{padding:5}}>
+                Error getting Research activity information. {'\n'}
+                Team Admin needs to reset the activity area.
+              </Text>
+            </View>
+            <View style={{margin:15}}>
+              <Text category='s1'>Activity: {props.activity.test_type}</Text>
+              <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
+              <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
+            </View>
+          </ContentContainer>
+        </ViewableArea>
+      );
+    }
+
+  // standing point error checking
+  if (props.activity.test_type !== activityList[2]) {
+      let allGood = true;
+      for (let i = 0; i < props.timeSlots.length; i++) {
+        let points = props.timeSlots[i].standingPoints;
+        if (points === undefined || points === null || points.length <= 0) {
+          allGood = false;
+        }
+      }
+      if (!allGood) {
+        return (
+          <ViewableArea>
+            {props.teamOwner() ?
+              <HeaderBackEdit {...props} text={props.activity.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
+                <MenuItem title='Edit Info' onPress={() => {setEditMenuVisible(false); editActivityInfo()}}/>
+              </HeaderBackEdit>
+            :
+              <HeaderBack {...props} text={props.activity.title}/>
+            }
+            <ContentContainer>
+              <View style={{height:'40%'}}>
+                <MapAreaWrapper area={props.activity.area.points} mapHeight={'100%'}>
+                  <ShowArea area={props.activity.area.points} />
+                </MapAreaWrapper>
+              </View>
+              <View style={{margin:15}}>
+                <Text category='s1'>Activity: {props.activity.test_type}</Text>
+                <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
+                <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
+              </View>
+              <View style={{margin:15, borderWidth:4, borderColor:'red'}}>
+                <Text status='danger' category='h5' style={{padding:5}}>
+                  Error getting some standing point information. {'\n'}
+                  Team Admin needs to fix the activity.
+                </Text>
+              </View>
+            </ContentContainer>
+          </ViewableArea>
+        );
+      }
+  }
+
   const onBeginPress = async (timeSlot, index) => {
 
     if (props.activity.test_type == activityList[0]) {

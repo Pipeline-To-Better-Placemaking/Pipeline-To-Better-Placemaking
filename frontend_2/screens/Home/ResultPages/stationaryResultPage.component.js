@@ -30,7 +30,32 @@ export function StationaryResultPage(props) {
     );
   }
 
-  let areaTitle = (props.selectedResult.sharedData.area.title === undefined ? 'Project Perimeter' : props.selectedResult.sharedData.area.title)
+  let areaTitle = '';
+  let viewMap = true;
+  let errorMessage = 'Error: \n';
+
+  // error checking for area
+  if (props.selectedResult.sharedData.area === undefined ||
+      props.selectedResult.sharedData.area === null ||
+      props.selectedResult.sharedData.area.length <= 0
+    ) {
+      areaTitle = 'unknown';
+      viewMap = false;
+      errorMessage += '- Area information has been deleted\n';
+  } else {
+    areaTitle = (props.selectedResult.sharedData.area.title === undefined ? 'Project Perimeter' : props.selectedResult.sharedData.area.title)
+  }
+
+  // error checking for standing points
+  if (props.selectedResult.standingPoints === undefined ||
+      props.selectedResult.standingPoints === null ||
+      props.selectedResult.standingPoints.length <= 0
+    ) {
+      viewMap = false;
+      errorMessage += '- Standing point information has been deleted\n';
+  }
+  errorMessage += '\n\t Unable to Load Map View';
+
   let startTime = new Date(props.selectedResult.date);
   let day = new Date(props.selectedResult.sharedData.date);
 
@@ -81,17 +106,26 @@ export function StationaryResultPage(props) {
 
           <Divider style={{marginTop:10, marginBottom:10, borderWidth:0.5}} />
 
-          <View style={{ marginBottom:10, flexDirection:'row', justifyContent:'center'}}>
-            <Button
-              style={{flex:1}}
-              status={'info'}
-              appearance={'outline'}
-              accessoryRight={MapIcon}
-              onPress={viewMapResults}
-            >
-              View Map
-            </Button>
-          </View>
+          {viewMap
+            ?
+              <View style={{ marginBottom:10, flexDirection:'row', justifyContent:'center'}}>
+                <Button
+                  style={{flex:1}}
+                  status={'info'}
+                  appearance={'outline'}
+                  accessoryRight={MapIcon}
+                  onPress={viewMapResults}
+                >
+                  View Map
+                </Button>
+              </View>
+            :
+              <View style={{margin:15, borderWidth:4, borderColor:'red'}}>
+                <Text status='danger' category='s1' style={{padding:5}}>
+                  {errorMessage}
+                </Text>
+              </View>
+          }
 
           <MyBarChart
             {...props}

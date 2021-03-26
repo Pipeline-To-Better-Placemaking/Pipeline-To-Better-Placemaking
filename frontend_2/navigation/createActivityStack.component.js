@@ -14,6 +14,7 @@ export function CreateActivityStack(props) {
 
   let updateActivity = props.updateActivity;
   let headerText = props.updateActivity ? "Update Research Activity" : "Create Research Activity";
+  const [errorMessages, setErrorMessages] = useState("ERROR: \n");
 
   // List of activity types
   const activityTypes = [...props.activityTypes];
@@ -62,13 +63,20 @@ export function CreateActivityStack(props) {
     let activityIndex = types.findIndex(element => element === props.activity.test_type);
     setSelectedActivity(new IndexPath(activityIndex));
 
-    await setArea(props.activity.area);
-    let areaIndex = props.project.subareas.findIndex(element => element._id === props.activity.area._id);
-    await setSelectedAreaIndex(areaIndex);
+    if (props.activity.area === null) {
+      await setArea(props.project.subareas[0]);
+      await setSelectedAreaIndex(0);
+      await setErrorMessages(msg => msg + "- Activity Area is null, setting it to project perimeter.\n");
+    } else {
+      await setArea(props.activity.area);
+      let areaIndex = props.project.subareas.findIndex(element => element._id === props.activity.area._id);
+      await setSelectedAreaIndex(areaIndex);
+    }
 
     let tempTimeSlots = [];
     if (activityIndex <= 1 && props.activity.maps !== null && props.activity.maps.length >= 1) {
-      props.activity.maps.map(timeSlot => {
+      for (let j = 0; j < props.activity.maps.length ; j++) {
+        let timeSlot = props.activity.maps[j];
         // date to value
         timeSlot.date = new Date(timeSlot.date);
         // displayable timeString
@@ -82,11 +90,15 @@ export function CreateActivityStack(props) {
             let index = standingPoints.findIndex(element => element._id === timeSlot.standingPoints[i]);
             if (index >= 0) {
               timeSlot.assignedPointIndicies.push(new IndexPath(index));
+            } else {
+              await setErrorMessages(msg => msg + "- Some Standing points could not be found.\n");
             }
           }
+        } else {
+          await setErrorMessages(msg => msg + "- Some Standing points could not be found.\n");
         }
         tempTimeSlots.push(timeSlot);
-      })
+      }
     } else if (activityIndex === 2 && props.activity.surveys !== null && props.activity.surveys.length >= 1) {
       props.activity.surveys.map(timeSlot => {
         // date to value
@@ -98,6 +110,7 @@ export function CreateActivityStack(props) {
         tempTimeSlots.push(timeSlot);
       })
     }
+    await setErrorMessages(msg => msg + "\n\tPlease save the Activity.");
     await setTimeSlots(tempTimeSlots);
   }
 
@@ -460,6 +473,7 @@ export function CreateActivityStack(props) {
             duration={duration}
             updateActivity={updateActivity}
             deleteActivity={deleteActivity}
+            errorMessages={errorMessages}
           />
         }
       </Screen>

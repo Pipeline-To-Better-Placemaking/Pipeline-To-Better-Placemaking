@@ -27,7 +27,18 @@ export function SurveyResultPage(props) {
     );
   }
 
-  let areaTitle = (props.selectedResult.sharedData.area.title === undefined ? 'Project Perimeter' : props.selectedResult.sharedData.area.title)
+  let areaTitle = '';
+
+  // error checking for area
+  if (props.selectedResult.sharedData.area === undefined ||
+      props.selectedResult.sharedData.area === null ||
+      props.selectedResult.sharedData.area.length <= 0
+    ) {
+      areaTitle = 'unknown';
+  } else {
+    areaTitle = (props.selectedResult.sharedData.area.title === undefined ? 'Project Perimeter' : props.selectedResult.sharedData.area.title)
+  }
+
   let startTime = new Date(props.selectedResult.date);
   let day = new Date(props.selectedResult.sharedData.date);
 
