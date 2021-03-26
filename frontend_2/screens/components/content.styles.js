@@ -15,4 +15,21 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  circle: {
+    width: 60,
+    height: 60,
+    borderRadius: 60/2,
+    backgroundColor: '#FF0000',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: '5%'
+  },
+
+  confirmDelete: {
+    width:'80%',
+    borderWidth: 3,
+    borderColor: '#FF0000'
+  },
+
 });

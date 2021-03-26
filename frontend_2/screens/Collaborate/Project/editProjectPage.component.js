@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { ModalContainer } from '../../components/content.component';
+import { ModalContainer, PopUpContainer, ConfirmDelete } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 
 export function EditProjectPage(props) {
 
   const [projectTitleText, setProjectTitleText] = useState("");
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
 
   useEffect(()=>{
     setProjectTitleText(props.project.title)
@@ -110,7 +111,6 @@ export function EditProjectPage(props) {
   }
 
   const updateProject = async () => {
-    // should probably have something for confirm Delete first
     let success = false
     let result = null
     let updatedProjectTitle = projectTitleText
@@ -147,6 +147,12 @@ export function EditProjectPage(props) {
 
   return (
     <ModalContainer {...props} visible={props.visible}>
+      <ConfirmDelete 
+        visible={confirmDeleteVisible} 
+        setVisible={setConfirmDeleteVisible} 
+        dataType={"project"} 
+        deleteFunction={deleteProject}
+      />
       <View>
         <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
           <Text category='h5' style={{fontSize:25}}>Project Information</Text>
@@ -170,7 +176,7 @@ export function EditProjectPage(props) {
         </View>
 
         <View style={{marginBottom:30, flexDirection:'row', justifyContent:'space-between'}}>
-          <Button status={'danger'} onPress={deleteProject}>Delete</Button>
+          <Button status={'danger'} onPress={()=>{setConfirmDeleteVisible(true)}}>Delete</Button>
           <Button status={'success'} onPress={updateProject}>Update!</Button>
         </View>
       </View>
@@ -195,9 +201,9 @@ const EditIcon = (props) => (
 );
 
 const PlusIcon = (props) => (
-  <Icon {...props} name='plus-outline'/>
+  <Icon {...props} style={{width:10, height:10}} name='plus-outline'/>
 );
 
 const DeleteIcon = (props) => (
-  <Icon {...props} name='trash-2-outline'/>
+  <Icon {...props} style={{width:100, height:100, fill:'#FF0000'}} name='trash-2'/>
 );

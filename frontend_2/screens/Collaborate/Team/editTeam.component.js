@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { ModalContainer } from '../../components/content.component';
+import { ModalContainer, ConfirmDelete } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 
 export function EditTeamPage(props) {
 
 	const [teamTitleText, setTeamTitleText] = useState("");
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
 
 	useEffect(()=>{
 		setTeamTitleText(props.team.title)
@@ -130,6 +131,12 @@ export function EditTeamPage(props) {
   return (
     <ModalContainer {...props} visible={props.visible}>
       <View>
+        <ConfirmDelete 
+          visible={confirmDeleteVisible} 
+          setVisible={setConfirmDeleteVisible} 
+          dataType={"team"} 
+          deleteFunction={deleteTeam}
+        />
         <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
           <Text category='h5' style={{fontSize:25}}>Team Information</Text>
           <Button
@@ -152,7 +159,7 @@ export function EditTeamPage(props) {
         </View>
 
         <View style={{marginBottom:30, flexDirection:'row', justifyContent:'space-between'}}>
-          <Button status={'danger'} onPress={deleteTeam}>Delete</Button>
+          <Button status={'danger'} onPress={()=>{setConfirmDeleteVisible(true)}}>Delete</Button>
           <Button status={'success'} onPress={updateTeam}>Update!</Button>
         </View>
       </View>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { SafeAreaView, View, TouchableOpacity, Modal } from 'react-native';
-import { useTheme, Card, Text, Button, Input } from '@ui-kitten/components';
+import { useTheme, Card, Text, Button, Input, Icon } from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
 import { styles } from './content.styles';
 
@@ -121,3 +121,33 @@ export const EnterNumber = ({ children, ...props }) => {
     </PopUpContainer>
  );
 };
+
+export const ConfirmDelete = ({ visible, setVisible, dataType, deleteFunction }) => {
+  return(
+    <Modal
+      style={{width:'80%'}}
+      animationType="fade"
+      transparent={true}
+      visible={visible}
+      backdropStyle={styles.backdrop}
+    >
+      <View style={styles.modalBackgroundStyle}>
+        <Card disabled={true} style={styles.confirmDelete}>
+          <View style={{flexDirection:'row', marginBottom: 20}}>
+            <View style = {styles.circle}>
+              <Icon style ={{width:30, height:30}} fill='white' name='trash-2'/>
+            </View>
+            <View style={{width:'75%'}}>
+              <Text category='h5' style={{fontSize:25}}>Delete {dataType}</Text>
+              <Text>Are you sure you want to delete this {dataType}?</Text>
+            </View>
+          </View>
+          <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+            <Button status='info' appearance={'outline'} onPress={()=>{setVisible(false)}}>Cancel</Button>
+            <Button status={'danger'} onPress={deleteFunction}>Delete</Button>
+          </View>
+        </Card>
+      </View>
+    </Modal>
+  );
+}

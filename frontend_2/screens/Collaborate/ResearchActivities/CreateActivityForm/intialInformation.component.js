@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction, IndexPath, Select, SelectItem } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Datepicker } from '@ui-kitten/components';
-import { ViewableArea, ContentContainer, EnterNumber } from '../../../components/content.component';
+import { ViewableArea, ContentContainer, EnterNumber, ConfirmDelete } from '../../../components/content.component';
 import { HeaderExit } from '../../../components/headers.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './form.styles';
@@ -11,7 +11,7 @@ export function IntialForm(props) {
 
   const today = new Date();
   const [editDurationVisible, setEditDurationVisible] = useState(false);
-
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
 
   const next = () => {
     if(props.selectArea) {
@@ -32,6 +32,12 @@ export function IntialForm(props) {
         closePopUp={() => setEditDurationVisible(false)}
       />
       <ContentContainer>
+        <ConfirmDelete 
+          visible={confirmDeleteVisible} 
+          setVisible={setConfirmDeleteVisible} 
+          dataType={"research activity"} 
+          deleteFunction={props.deleteActivity}
+        />
         <View style={styles.container}>
           <View style={styles.container, {justifyContent: 'space-between'}}>
 
@@ -97,7 +103,7 @@ export function IntialForm(props) {
           <View style={styles.activityView}>
             {props.updateActivity ?
               <Button
-                onPress={props.deleteActivity}
+                onPress={()=>{setConfirmDeleteVisible(true)}}
                 status='danger'
                 accessoryLeft={DeleteIcon}
               >
