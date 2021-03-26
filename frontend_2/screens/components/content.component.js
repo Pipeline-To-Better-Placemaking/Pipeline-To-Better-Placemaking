@@ -122,32 +122,35 @@ export const EnterNumber = ({ children, ...props }) => {
  );
 };
 
-export const ConfirmDelete = ({ visible, setVisible, dataType, deleteFunction }) => {
+export const ConfirmDelete = ({ children, ...props }) => {
   return(
     <Modal
       style={{width:'80%'}}
       animationType="fade"
       transparent={true}
-      visible={visible}
+      visible={props.visible}
       backdropStyle={styles.backdrop}
     >
-      <View style={styles.modalBackgroundStyle}>
-        <Card disabled={true} style={styles.confirmDelete}>
-          <View style={{flexDirection:'row', marginBottom: 20}}>
-            <View style = {styles.circle}>
-              <Icon style ={{width:30, height:30}} fill='white' name='trash-2'/>
+      <TouchableOpacity
+          style={styles.modalBackgroundStyle}
+          onPressOut={()=>{props.setVisible(false)}}
+        >
+          <Card disabled={true} style={styles.confirmDelete}>
+            <View style={{flexDirection:'row', marginBottom: 20}}>
+              <View style = {styles.circle}>
+                <Icon style ={{width:30, height:30}} fill='white' name='trash-2'/>
+              </View>
+              <View style={{width:'75%'}}>
+                <Text category='h5' style={{fontSize:25}}>Delete {props.dataType}</Text>
+                <Text>Are you sure you want to delete this {props.dataType}?</Text>
+              </View>
             </View>
-            <View style={{width:'75%'}}>
-              <Text category='h5' style={{fontSize:25}}>Delete {dataType}</Text>
-              <Text>Are you sure you want to delete this {dataType}?</Text>
+            <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+              <Button status='info' appearance={'outline'} onPress={()=>{props.setVisible(false)}}>Cancel</Button>
+              <Button status={'danger'} onPress={props.deleteFunction}>Delete</Button>
             </View>
-          </View>
-          <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-            <Button status='info' appearance={'outline'} onPress={()=>{setVisible(false)}}>Cancel</Button>
-            <Button status={'danger'} onPress={deleteFunction}>Delete</Button>
-          </View>
-        </Card>
-      </View>
+          </Card>
+      </TouchableOpacity>
     </Modal>
   );
 }
