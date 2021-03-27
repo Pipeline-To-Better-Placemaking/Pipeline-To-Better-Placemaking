@@ -158,6 +158,7 @@ export function CollaborateStack(props) {
             activities={activities}
             setActivities={setActivities}
             pastActivities={pastActivities}
+            setPastActivities={setPastActivities}
             activityTypes={activityTypes}
             setTimeSlots={setTimeSlots}
           />
