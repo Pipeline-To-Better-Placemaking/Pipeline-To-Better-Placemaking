@@ -16,11 +16,11 @@ export function EditStandingPoints(props) {
     _id: '',
     latitude: location.latitude,
     longitude: location.longitude,
-    title:'Point ' + (props.project.standingPoints.length),
+    title:'Point ',
     index: 0
   };
 
-  const [pointInfo, setPointInfo] = useState(nullableEntry);
+  const [pointInfo, setPointInfo] = useState({...nullableEntry});
 
   const close = () => {
     props.setVisible(false);
@@ -32,7 +32,7 @@ export function EditStandingPoints(props) {
     temp._id = nullableEntry._id;
     temp.latitude = nullableEntry.latitude;
     temp.longitude = nullableEntry.longitude;
-    temp.title = nullableEntry.title;
+    temp.title = 'Point ';
     temp.index = index;
 
     if(!newPoint) {

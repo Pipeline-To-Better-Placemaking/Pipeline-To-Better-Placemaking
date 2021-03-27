@@ -17,9 +17,9 @@ export function EditSubAreas(props) {
     index: 1,
     _id: '',
     location: location,
-    title:'Area ' + (props.project.subareas.length),
+    title:'Area ',
 };
-  const [areaInfo, setAreaInfo] = useState(nullableEntry);
+  const [areaInfo, setAreaInfo] = useState({...nullableEntry});
   const [tempArea, setTempArea] = useState([]);
 
   const close = () => {
@@ -27,29 +27,33 @@ export function EditSubAreas(props) {
   }
 
   const editArea = async (newArea, area, index) => {
-    let temp = { ...areaInfo};
+    let temp = {...areaInfo};
     temp.points = area;
     temp.newArea = newArea;
     temp.index = index;
-    temp._id = nullableEntry._id;
-    temp.location = nullableEntry.location;
-    temp.title = nullableEntry.title;
+    temp._id = '';
+    temp.location = {...props.project.subareas[0].points[0]};
+    temp.title = 'Area ';
 
     if(!newArea) {
       temp.location = getRegionForCoordinates(area.points);
       temp._id = area._id;
       temp.points = area.points;
-      temp.title = area.title;
+      if (props.project.subareas[0]._id === area._id && area.title === undefined) {
+        temp.title = "Project Perimeter";
+      } else {
+        temp.title = area.title;
+      }
     }
 
     await setAreaInfo(temp);
     await setTempArea([...temp.points]);
-    setEditAreaVisible(true);
+    await setEditAreaVisible(true);
   }
 
   const renderAreaItem = ({ item, index }) => (
     <ListItem
-      title={(index === 0 ? 'Project Perimeter' : item.title)}
+      title={((index === 0 && item.title === undefined) ? 'Project Perimeter' : item.title)}
       accessoryRight={EditIcon}
       onPress={() => editArea(false, item, index)}
     />

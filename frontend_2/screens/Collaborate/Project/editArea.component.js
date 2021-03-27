@@ -15,19 +15,19 @@ export function EditPoints(props) {
   const [areaName, setAreaName] = useState(props.areaInfo.title);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
 
-  const cancel = () => {
-    setAreaName('');
-    props.setVisible(false);
+  const cancel = async () => {
+    await setAreaName('');
+    await props.setVisible(false);
   }
 
-  const done = () => {
+  const done = async () => {
     if(props.areaInfo.newArea) {
-      saveNewArea();
+      await saveNewArea();
     } else {
-      saveEditArea();
+      await saveEditArea();
     }
-    setAreaName('');
-    props.setVisible(false);
+    await setAreaName('');
+    await props.setVisible(false);
   }
 
   const getName = () => {
@@ -86,7 +86,7 @@ export function EditPoints(props) {
         let res = null
         // if we're editing the project perimeter then update the location name
         if(props.areaInfo.index === 0){
-          updateProjectPerimeter();
+          await updateProjectPerimeter();
         }
         console.log("save area with id:", props.areaInfo._id);
         // Save the area
@@ -118,12 +118,13 @@ export function EditPoints(props) {
 
         if(success) {
           console.log("save edit area response ", res);
+          let index = props.project.subareas.findIndex(element => element._id === props.areaInfo._id);
           // update list of sub Areas (This has to be done by just updating the project)
           let tempArea = {...props.areaInfo};
           tempArea.points = props.tempArea;
           tempArea.title = getName();
           let tempSubareas = [...props.project.subareas];
-          tempSubareas[props.areaInfo.index] = tempArea;
+          tempSubareas[index] = tempArea;
           let tempProject = {...props.project};
           tempProject.subareas = tempSubareas;
           await props.setProject(val => tempProject);
@@ -131,8 +132,10 @@ export function EditPoints(props) {
     }
 
     const deleteArea = async() => {
+      let index = props.project.subareas.findIndex(element => element._id === props.areaInfo._id);
+      console.log("delete area with id:", props.areaInfo);
       // do not delete the project perimeter, or a newArea
-      if(props.areaInfo.index !== 0 && props.project.subareas.length > props.areaInfo.index && !props.areaInfo.newArea) {
+      if(index >=1 && !props.areaInfo.newArea) {
           let token = await AsyncStorage.getItem("@token")
           let success = false
           let res = null
@@ -163,15 +166,15 @@ export function EditPoints(props) {
           if (success) {
             // update list of subAreas
             let tempSubareas = [...props.project.subareas];
-            tempSubareas.splice(props.areaInfo.index, 1);
+            tempSubareas.splice(index, 1);
             let tempProject = {...props.project};
             tempProject.subareas = tempSubareas;
-            await props.setProject(tempProject);
+            await props.setProject(val => tempProject);
           }
       }
 
-      setConfirmDeleteVisible(false);
-      props.setVisible(false);
+      await setConfirmDeleteVisible(false);
+      await props.setVisible(false);
     }
 
     const updateProjectPerimeter = async () => {
@@ -206,17 +209,17 @@ export function EditPoints(props) {
         // update project
         let tempProject = {...props.project};
         tempProject.description = description;
-        props.setProject(tempProject);
+        await props.setProject(tempProject);
       }
     }
 
   return (
     <ModalContainer {...props} visible={props.visible}>
-      <ConfirmDelete 
-        visible={confirmDeleteVisible} 
-        setVisible={setConfirmDeleteVisible} 
+      <ConfirmDelete
+        visible={confirmDeleteVisible}
+        setVisible={setConfirmDeleteVisible}
         dataType={"sub-area"}
-        extraInfo={"Be aware, deleting a sub-area that is currently being used by a research activity will cause that activty to stop working"} 
+        extraInfo={"Be aware, deleting a sub-area that is currently being used by a research activity will cause that activty to stop working."}
         deleteFunction={deleteArea}
       />
       <View style={{justifyContent:'flex-start'}}>

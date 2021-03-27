@@ -15,19 +15,19 @@ export function EditPoints(props) {
   const [pointName, setPointName] = useState(props.pointInfo.title);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
 
-  const cancel = () => {
-    setPointName('');
-    props.setVisible(false);
+  const cancel = async () => {
+    await setPointName('');
+    await props.setVisible(false);
   }
 
-  const done = () => {
+  const done = async () => {
     if(props.pointInfo.newPoint) {
-      saveNewPoint();
+      await saveNewPoint();
     } else {
-      saveEditPoint();
+      await saveEditPoint();
     }
-    setPointName('');
-    props.setVisible(false);
+    await setPointName('');
+    await props.setVisible(false);
   }
 
   const getName = () => {
@@ -158,33 +158,34 @@ export function EditPoints(props) {
       }
       console.log("delete pt response ", res);
       if (success) {
-        // update list of subAreas
+        // update list of standing points
+        let index = props.project.standingPoints.findIndex(element => element._id === props.pointInfo._id);
         let tempPoints = [...props.project.standingPoints];
-        tempPoints.splice(props.pointInfo.index, 1);
+        tempPoints.splice(index, 1);
         let tempProject = {...props.project};
         tempProject.standingPoints = tempPoints;
-        props.setProject(tempProject);
+        await props.setProject(tempProject);
       }
     }
 
-    setConfirmDeleteVisible(false);
-    props.setVisible(false);
+    await setConfirmDeleteVisible(false);
+    await props.setVisible(false);
   }
 
-  const setMarker = (coords) => {
+  const setMarker = async (coords) => {
     let temp = {...props.pointInfo};
     temp.latitude = coords.latitude;
     temp.longitude = coords.longitude;
-    props.setPointInfo(point => temp);
+    await props.setPointInfo(point => temp);
   }
 
   return (
     <ModalContainer {...props} visible={props.visible}>
-      <ConfirmDelete 
-        visible={confirmDeleteVisible} 
-        setVisible={setConfirmDeleteVisible} 
+      <ConfirmDelete
+        visible={confirmDeleteVisible}
+        setVisible={setConfirmDeleteVisible}
         dataType={"standing point"}
-        extraInfo={"Be aware, deleting a standing point that is currently being used by a research activity will cause that activty to stop working"} 
+        extraInfo={"Be aware, deleting a standing point that is currently being used by a research activity will cause that activty to stop working."}
         deleteFunction={deletePoint}
       />
       <View style={{justifyContent:'flex-start'}}>
