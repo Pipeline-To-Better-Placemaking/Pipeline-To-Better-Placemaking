@@ -234,25 +234,25 @@ export function UserSettings(props) {
           <ViewableArea>
             <Header text={'Edit Profile'}/>
             <ContentContainer>
-              <View style={{margin:20}}>
+              <ScrollView style={{margin:20}}>
 
                 <Text category='s1'>First Name:</Text>
                 <Input
-                  placeholder = 'First Name'
+                  placeholder={props.firstName}
                   value={firstNameText}
                   onChangeText={nextValue => setFirstNameText(nextValue)}
                 />
 
                 <Text category='s1'>Last Name:</Text>
                 <Input
-                  placeholder = 'Last Name'
+                  placeholder={props.lastName}
                   value={lastNameText}
                   onChangeText={nextValue => setLastNameText(nextValue)}
                 />
 
+                <Text category='s1'>Email:</Text>
                 <Input
-                  label = 'Email'
-                  placeholder = 'Email'
+                  placeholder={props.email}
                   value={emailText}
                   onChangeText={nextValue => setEmailText(nextValue)}
                   autoCapitalize='none'
@@ -292,7 +292,7 @@ export function UserSettings(props) {
                   }
                 />
 
-                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:30}}>
                   <Button
                     status={'danger'}
                     style={{margin:5}}
@@ -311,7 +311,7 @@ export function UserSettings(props) {
                     CONFIRM
                   </Button>
                 </View>
-              </View>
+              </ScrollView>
             </ContentContainer>
           </ViewableArea>
         </Modal>
@@ -337,17 +337,16 @@ export function UserSettings(props) {
 
                         <Button
                             status={'success'}
-                            style={{margin:5}}
+                            style={{marginTop:20}}
                             onPress={() => verifyEmail()}
                             accessoryRight = {confirmIcon}
                         >
                             SUBMIT
                         </Button>
 
-                        <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                        <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:20}}>
                             <Button
                                 status={'danger'}
-                                style={{margin:5}}
                                 onPress={() => {
                                     setVerificationCode('')
                                     setVerificationError(false)
@@ -358,7 +357,6 @@ export function UserSettings(props) {
                                 CANCEL
                             </Button>
                             <Button
-                                style={{margin:5}}
                                 onPress={() => resendCode()}
                             >
                                 RESEND CODE
