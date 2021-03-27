@@ -97,6 +97,10 @@ export function StationaryActivity(props) {
     const restart = () => {
         let standingPointLength = Object.keys(props.timeSlot.position).length
 
+        if (dataModal) {
+            setDataModal(false)
+        }
+
         if (standingIndex < standingPointLength-1){
 
             setStandingIndex(standingIndex+1)
