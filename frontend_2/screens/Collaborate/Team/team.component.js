@@ -48,7 +48,7 @@ export function TeamPage(props) {
 
   const refreshDetails = async () => {
     let success = false
-    let teamDetails = await getTeam(props.token, props.team);
+    let teamDetails = await getTeam(props.team);
     if(teamDetails != null) {
       await props.setTeam(teamDetails);
       await props.setProjects(teamDetails.projects);
@@ -57,7 +57,7 @@ export function TeamPage(props) {
   };
 
   const openProjectPage = async (item) => {
-    let projectDetails = await getFilteredProjectDetails(props.token, item);
+    let projectDetails = await getFilteredProjectDetails(item);
     // if successfully retrieved project info, Update
     if(projectDetails !== null) {
       // set selected project page information

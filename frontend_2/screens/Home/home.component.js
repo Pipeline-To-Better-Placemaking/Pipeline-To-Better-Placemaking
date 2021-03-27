@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Pressable, Image } from 'react-native';
+import { View, ScrollView, Pressable, RefreshControl } from 'react-native';
 import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction, Button, List, ListItem } from '@ui-kitten/components';
 import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
 import { DummyResult } from '../components/dummyResult.component.js';
 import { HomeMapView } from '../components/Maps/home.map.component.js';
 import { getDayStr, getTimeStr } from '../components/timeStrings.component.js';
+import { getProject, getAllUserProjects, getAllResults, getTeam } from '../components/apiCalls';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './home.styles';
 
 export const HomeScreen = ( props ) => {
 
-  const [compare, setCompare] = useState(false)
-
   var location = props.location
+  const [compare, setCompare] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    refreshDetails();
+    setRefreshing(false);
+  }, []);
+
+  const refreshDetails = async () => {
+    let projectList = await getAllUserProjects();
+    await props.setAllProjects(projectList);
+  };
 
   const onComparePress = () => {
     setCompare(!compare)
@@ -21,27 +33,15 @@ export const HomeScreen = ( props ) => {
 
   const onCompareConfirm = async () => {
     let projects = []
-    let results = []
+    let allResults = []
+    let stationaryResults = []
+    let movingResults = []
+    let surveyResults = []
 
     // Get selected Projects
     for (let i = 0; i < props.selectedProjects.length; i++) {
-      let id = props.selectedProjects[i]._id
-      let project = null
-      try {
-          const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + id, {
-              method: 'GET',
-              headers: {
-                  Accept: 'application/json',
-                      'Content-Type': 'application/json',
-                      'Authorization': 'Bearer ' + props.token
-              }
-          })
-          project = await response.json();
-      } catch (error) {
-          console.log("error", error)
-      }
+      let project = await getProject(props.selectedProjects[i]);
       if (project !== null) {
-        project.teamName = props.selectedProjects[i].teamName;
         projects.push(project)
       }
     }
@@ -49,12 +49,28 @@ export const HomeScreen = ( props ) => {
     // get the results for each project
     for (let i = 0; i < projects.length; i++) {
       let project = projects[i];
-      results = await getStationaryResults(project, results);
-      results = await getMovingResults(project, results);
-      results = await getSurveyResults(project, results);
+      let tempList = await getAllResults(project);
+      for (let j = 0; tempList !== null && j < tempList.length; j++) {
+        let result = tempList[j];
+        allResults.push(result);
+        if (result.test_type === "stationary") {
+          stationaryResults.push(result);
+        } else if (result.test_type === "moving") {
+          movingResults.push(result);
+        } else if (result.test_type === "survey") {
+          surveyResults.push(result);
+        }
+      }
     }
 
-    await props.setFilterCriteria(results)
+    let filteredResults = {
+      all: [...allResults],
+      stationary: [...stationaryResults],
+      moving: [...movingResults],
+      survey: [...surveyResults]
+    };
+
+    await props.setFilterCriteria(filteredResults);
 
     props.navigation.navigate("CompareFilteredView");
   }
@@ -64,158 +80,14 @@ export const HomeScreen = ( props ) => {
   }
 
   const openResultPage = async(item) => {
-    let success = false
-    let projectDetails = null
-    // Get the Project information
-    try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + item._id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + props.token
-            }
-        })
-        projectDetails = await response.json();
-        success = true
-    } catch (error) {
-        console.log("error", error)
-    }
-
-    // if successfully retrieved project info, Update
-    if(success) {
-      console.log("Selected Project: ", projectDetails);
-      // set selected project page information
-      await props.setSelectedProject(projectDetails);
-      await getTeam(item.teamId);
-      projectDetails.teamName = item.teamName;
-
-      // get the results for the project
-      let results = []
-      results = await getStationaryResults(projectDetails, results);
-      results = await getMovingResults(projectDetails, results);
-      results = await getSurveyResults(projectDetails, results);
+    let project = await getProject(item);
+    if (project !== null) {
+      await props.setSelectedProject(project);
+      await props.setSelectedTeam(project.team);
+      let results = await getAllResults(project); // sets to empty list if no results
       await props.setResults(results);
       // open results page
       props.navigation.navigate('ProjectResultPage');
-    }
-  }
-
-  const getTeam = async(id) => {
-    let success = false
-    let teamDetails = null
-    // Get the team information
-    try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + props.token
-            }
-        })
-        teamDetails = await response.json();
-        success = true
-    } catch (error) {
-        console.log("error getting team\n", error)
-    }
-
-    if(teamDetails.success !== undefined){
-      success = teamDetails.success
-      console.log("success: ", success);
-    }
-
-    // return team info
-    if(success) {
-      await props.setSelectedTeam(teamDetails);
-    }
-  }
-
-  const getStationaryResults = async(projectDetails, results) => {
-    // loop through all Stationary collections and get all of the maps
-    for (let i = 0; i < projectDetails.stationaryCollections.length; i++) {
-      let collection = projectDetails.stationaryCollections[i];
-      for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
-        let id = collection.maps[j];
-        let tempObj = await getResult(id, 'stationary_maps/', "stationary", collection, projectDetails);
-        results.push(tempObj);
-      }
-    }
-    return results;
-  }
-
-  const getMovingResults = async(projectDetails, results) => {
-    // loop through all People Moving collections and get all of the maps
-    for (let i = 0; i < projectDetails.movingCollections.length; i++) {
-      let collection = projectDetails.movingCollections[i];
-      for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
-        let id = collection.maps[j];
-        let tempObj = await getResult(id, 'moving_maps/', "moving", collection, projectDetails);
-        results.push(tempObj);
-      }
-    }
-    return results;
-  }
-
-  const getSurveyResults = async(projectDetails, results) => {
-    // loop through all survey collections and get all of the surveys
-    for (let i = 0; i < projectDetails.surveyCollections.length; i++) {
-      let collection = projectDetails.surveyCollections[i];
-      for (let j=0; collection.surveys !== null && j < collection.surveys.length; j++) {
-        let id = collection.surveys[j];
-        let tempObj = await getResult(id, 'surveys/', "survey", collection, projectDetails);
-        results.push(tempObj);
-      }
-    }
-    return results;
-  }
-
-  const getResult = async (resultId, routePath, type, collection, projectDetails) => {
-    let day = new Date(collection.date);
-    // temp obj if resultInfo is null
-    let tempObj = {
-      title: collection.title,
-      sharedData: {},
-      date: day,
-      _id: resultId,
-      success: false,
-    }
-    let resultInfo = await getResultInfo(resultId, routePath);
-    if (resultInfo !== null) {
-      resultInfo.date = new Date(resultInfo.date);
-      resultInfo.success = true;
-      tempObj = resultInfo;
-    }
-    // add some helpful information
-    tempObj.test_type = type;
-    tempObj.sharedData.date = day;
-    tempObj.sharedData.projectName = projectDetails.title;
-    tempObj.sharedData.location = projectDetails.description;
-    tempObj.sharedData.teamName = projectDetails.teamName;
-    return tempObj;
-  }
-
-  const getResultInfo = async (resultId, routePath) => {
-    let success = false
-    let res = null
-    try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + routePath + resultId, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + props.token
-            }
-        })
-        res = await response.json();
-        success = true
-    } catch (error) {
-        console.log("error getting result information\n", error)
-    }
-    if(success) {
-      return res;
-    } else {
-      return null;
     }
   }
 
@@ -287,6 +159,13 @@ export const HomeScreen = ( props ) => {
             data={props.allProjects}
             ItemSeparatorComponent={Divider}
             renderItem={resultItem}
+            style={{maxHeight:'100%', minHeight:150, backgroundColor: 'rgba(0, 0, 0, 0)'}}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            }
           />
         </View>
 

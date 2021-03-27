@@ -34,7 +34,7 @@ export function ProjectPage(props) {
   }, []);
 
   const refreshDetails = async () => {
-    let projectDetails = await getFilteredProjectDetails(props.token, props.project);
+    let projectDetails = await getFilteredProjectDetails(props.project);
     // if successfully retrieved project info, Update
     if(projectDetails !== null) {
       // set selected project page information
@@ -51,7 +51,7 @@ export function ProjectPage(props) {
     await props.setTimeSlots([]);
 
     // get Info
-    collectionDetails = await getAllCollectionInfo(props.token, collectionDetails);
+    collectionDetails = await getAllCollectionInfo(collectionDetails);
 
     // if successfully retrieved activity info, Update
     if(collectionDetails !== null) {
