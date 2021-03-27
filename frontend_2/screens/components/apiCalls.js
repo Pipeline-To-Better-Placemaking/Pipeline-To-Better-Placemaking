@@ -432,7 +432,7 @@ export async function getSurveyResults(projectDetails, results) {
   return results;
 }
 
-async function helperGetResult(resultId, routePath, type, collection, projectDetails) {
+export async function helperGetResult(resultId, routePath, type, collection, projectDetails) {
   let day = new Date(collection.date);
   // temp obj if resultInfo is null
   let tempObj = {

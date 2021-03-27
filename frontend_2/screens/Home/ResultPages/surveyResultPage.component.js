@@ -1,23 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Dimensions } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem, OverflowMenu } from '@ui-kitten/components';
+import { View, ScrollView, RefreshControl } from 'react-native';
+import { Text, Button, Input, Icon, Popover, Divider} from '@ui-kitten/components';
 import { HeaderBack } from '../../components/headers.component';
-import { MapAreaWrapper, ShowArea } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
-import { MyBarChart } from '../../components/charts.component';
+import { helperGetResult } from '../../components/apiCalls';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from '../projectResult.styles';
 
 export function SurveyResultPage(props) {
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    refreshDetails();
+    setRefreshing(false);
+  }, []);
+
+  const refreshDetails = async () => {
+    if (props.selectedResult !== null && props.selectedResult.sharedData !== undefined) {
+      let result = await helperGetResult(
+                           props.selectedResult._id,
+                           "surveys/",
+                           "survey",
+                           props.selectedResult.sharedData,
+                           props.project
+                         );
+      await props.setSelectedResult(result);
+    }
+  };
 
   if (props.selectedResult === null || !props.selectedResult.success) {
     return (
       <ViewableArea>
         <HeaderBack {...props} text={"No results"}/>
         <ContentContainer>
-          <ScrollView style={styles.margins}>
+          <ScrollView
+            style={styles.margins}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            }
+          >
 
             <Text category={'h5'}>No result information for this activity</Text>
 
@@ -50,7 +77,15 @@ export function SurveyResultPage(props) {
     <ViewableArea>
       <HeaderBack {...props} text={props.project.title + ": " + props.selectedResult.sharedData.title}/>
       <ContentContainer>
-        <ScrollView style={styles.margins}>
+        <ScrollView
+          style={styles.margins}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
 
           <Text category={'h5'}>Moving Result Information</Text>
           <Divider style={{marginTop:5, marginBottom:10, borderWidth:0.5}} />

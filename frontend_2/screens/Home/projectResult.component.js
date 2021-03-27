@@ -6,7 +6,7 @@ import { HeaderBack } from '../components/headers.component';
 import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
 import { getDayStr, getTimeStr } from '../components/timeStrings.component';
-import { getAllResults } from '../components/apiCalls';
+import { getAllResults, getProject } from '../components/apiCalls';
 import { formatStationaryGraphData, formatMovingGraphData } from '../components/helperFunctions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './projectResult.styles';
@@ -26,8 +26,11 @@ export function ProjectResultPage(props) {
   }, []);
 
   const refreshDetails = async () => {
-    let results = await getAllResults(props.project); // sets to empty list if no results
-    await props.setResults(results);
+    let proj = await getProject(props.project);
+    if (proj !== null) {
+      let results = await getAllResults(proj); // sets to empty list if no results
+      await props.setResults(results);
+    }
   };
 
   const openActivityPage = async (item) => {
