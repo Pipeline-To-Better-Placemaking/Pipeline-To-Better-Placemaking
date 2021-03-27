@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, RefreshControl } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem, OverflowMenu } from '@ui-kitten/components';
 import { HeaderBackEdit, HeaderBack } from '../../components/headers.component';
@@ -9,7 +9,9 @@ import { getDayStr, getTimeStr } from '../../components/timeStrings.component';
 import { EditSubAreas } from './viewSubareas.component';
 import { EditStandingPoints } from './viewStandingPoints.component';
 import { EditProjectPage } from './editProjectPage.component';
+import { getFilteredProjectDetails, getAllCollectionInfo } from '../../components/apiCalls';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
 import { styles } from './project.styles';
 
 const ForwardIcon = (props) => (
@@ -23,123 +25,41 @@ export function ProjectPage(props) {
   const [editProjectVisible, setEditProjectVisible] = useState(false);
   const [editAreasVisible, setEditAreasVisible] = useState(false);
   const [editStandingPointsVisible, setEditStandingPointsVisible] = useState(false);
+  const [refreshingActivities, setRefreshingActivities] = useState(false);
+
+  const onRefreshActivities = React.useCallback(() => {
+    setRefreshingActivities(true);
+    refreshDetails();
+    setRefreshingActivities(false);
+  }, []);
+
+  const refreshDetails = async () => {
+    let projectDetails = await getFilteredProjectDetails(props.token, props.project);
+    // if successfully retrieved project info, Update
+    if(projectDetails !== null) {
+      // set selected project page information
+      await props.setActivities([...projectDetails.activities]);
+      await props.setPastActivities([...projectDetails.pastActivities]);
+      projectDetails.activities = [];
+      projectDetails.pastActivities = [];
+      await props.setProject(projectDetails);
+    }
+  };
 
   const openActivityPage = async (collectionDetails) => {
-    let success = false
-
+    // clear time slots
     await props.setTimeSlots([]);
 
-    if(collectionDetails.test_type === 'stationary') {
-      // get the collection info
-      collectionDetails = await getCollection(collectionDetails, 'stationary/');
-      success = (collectionDetails !== null)
-      // get the timeSlot info
-      if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
-        collectionDetails.maps.map(item => {
-          getTimeSlots(item._id, 'stationary_maps/');
-        })
-      }
+    // get Info
+    collectionDetails = await getAllCollectionInfo(props.token, collectionDetails);
 
-    } else if(collectionDetails.test_type === 'moving') {
-      // get the collection info
-      collectionDetails = await getCollection(collectionDetails, 'moving/');
-      success = (collectionDetails !== null)
-      // get the timeSlot info
-      if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
-        collectionDetails.maps.map(item => {
-          getTimeSlots(item._id, 'moving_maps/');
-        })
-        success = true
-      }
-
-    } else if(collectionDetails.test_type === 'survey') {
-      // get the collection info
-      collectionDetails = await getCollection(collectionDetails, 'survey/');
-      success = (collectionDetails !== null)
-      // get the timeSlot info
-      if (success && collectionDetails.surveys !== undefined && collectionDetails.surveys.length >= 1) {
-        collectionDetails.surveys.map(item => {
-          getTimeSlots(item._id, 'surveys/');
-        })
-        success = true
-      }
-    }
     // if successfully retrieved activity info, Update
-    if(success) {
-
-      // set selected activity
+    if(collectionDetails !== null) {
+      await props.setTimeSlots([...collectionDetails.timeSlots]);
+      collectionDetails.timeSlots = [];
       await props.setActivity(collectionDetails);
-
       // open activity page
       props.navigation.navigate('ActivitySignUpPage')
-    }
-
-  };
-
-  const getCollection = async (item, collectionName) => {
-    let success = false
-    let collectionDetails = null
-
-    // Get the activity information
-    try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/collections/' +
-                                                    collectionName + item._id, {
-          method: 'GET',
-          headers: {
-              Accept: 'application/json',
-                  'Content-Type': 'application/json',
-                  'Authorization': 'Bearer ' + props.token
-          }
-      })
-      collectionDetails = await response.json();
-      console.log("response collection: ", collectionDetails);
-      success = true
-    } catch (error) {
-        console.log("error", error)
-    }
-
-    if (collectionDetails.success !== undefined) {
-      success = collectionDetails.success
-      console.log("success: ", success);
-    }
-    // if successfully retrieved collection info, get maps
-    if (success) {
-      collectionDetails.test_type = item.test_type;
-      collectionDetails.date = new Date(collectionDetails.date)
-      return collectionDetails;
-    } else {
-      return null;
-    }
-  };
-
-  const getTimeSlots = async (timeId, routeName) => {
-    let success = false
-    let timeSlotDetails = null
-
-    // Get the activity information
-    try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + routeName + timeId, {
-          method: 'GET',
-          headers: {
-              Accept: 'application/json',
-                  'Content-Type': 'application/json',
-                  'Authorization': 'Bearer ' + props.token
-          }
-      })
-      timeSlotDetails = await response.json();
-      success = true
-    } catch (error) {
-        console.log("error", error)
-    }
-    if (timeSlotDetails.success !== undefined) {
-      success = timeSlotDetails.success
-      console.log("success: ", success);
-    }
-    if (success) {
-      // set selected timeSlots
-      timeSlotDetails.date = new Date(timeSlotDetails.date)
-      //console.log("time slot: ", timeSlotDetails);
-      await props.setTimeSlots(slots => [...slots,timeSlotDetails]);
     }
   };
 
@@ -212,10 +132,16 @@ export function ProjectPage(props) {
 
         <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'42%'}}>
           <List
-            style={{maxHeight:'100%', maxWidth:'90%'}}
+            style={{maxHeight:'100%', maxWidth:'90%', minHeight:150, backgroundColor: 'rgba(0, 0, 0, 0)'}}
             data={props.activities}
             ItemSeparatorComponent={Divider}
             renderItem={activityItem}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshingActivities}
+                onRefresh={onRefreshActivities}
+              />
+            }
           />
         </View>
 

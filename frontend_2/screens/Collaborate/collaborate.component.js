@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, RefreshControl } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
+import { getTeam, postInvite, getUserInfo } from '../components/apiCalls';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './collaborate.styles';
 
@@ -11,6 +12,39 @@ export function Collaborate(props) {
 
   const [teamName, setTeamName] = useState('');
   const [visible, setVisible] = useState(false);
+  const [refreshingInvites, setRefreshingInvites] = useState(false);
+  const [refreshingTeams, setRefreshingTeams] = useState(false);
+
+  const onRefreshInvites = React.useCallback(() => {
+    setRefreshingInvites(true);
+    refreshDetails();
+    setRefreshingInvites(false);
+  }, []);
+
+  const onRefreshTeams = React.useCallback(() => {
+    setRefreshingTeams(true);
+    refreshDetails();
+    setRefreshingTeams(false);
+  }, []);
+
+  const refreshDetails = async () => {
+    let token = await AsyncStorage.getItem("@token");
+    let userInfo = await getUserInfo(token);
+
+    if(userInfo !== null && userInfo.invites !== undefined && userInfo.invites !== null) {
+      //console.log("success");
+      const newInvites = [...userInfo.invites];
+      await AsyncStorage.setItem("@invites", JSON.stringify(newInvites));
+      await props.setInvites(newInvites);
+    }
+
+    if(userInfo !== null && userInfo.teams !== undefined && userInfo.teams !== null) {
+      //console.log("success");
+      const newTeams = [...userInfo.teams];
+      await AsyncStorage.setItem("@teams", JSON.stringify(newTeams));
+      await props.setTeams(newTeams);
+    }
+  }
 
   const createTeam = async () => {
     let success = false;
@@ -54,29 +88,8 @@ export function Collaborate(props) {
 
   const openTeamPage = async (item) => {
     let success = false
-    let teamDetails = null
-    // Get the team information
-    try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + item._id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + props.token
-            }
-        })
-        teamDetails = await response.json();
-        success = true
-    } catch (error) {
-        console.log("error getting team\n", error)
-    }
-    if(teamDetails.success !== undefined){
-      success = teamDetails.success
-      console.log("success: ", success);
-    }
-
-    // if successfully retrieved team info, Update
-    if(success) {
+    let teamDetails = await getTeam(props.token, item);
+    if(teamDetails != null) {
       console.log("Selected Team: ", teamDetails);
       // set selected team
       await props.setTeam(teamDetails)
@@ -91,33 +104,9 @@ export function Collaborate(props) {
   };
 
   const acceptInvite = async (invite) => {
-    let success = false;
-    let res = null;
-    // Accept Invite
-    try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/users/invites/', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + props.token
-            },
-            body: JSON.stringify({
-                responses:
-                [{
-                  team: invite._id,
-                  accept: true
-                  }]
-            })
-        })
-        res = await response.json();
-        success = true
-    } catch (error) {
-        console.log("error accepting invite: ", error)
-    }
-    //console.log("response", res);
+    let success = await postInvite(props.token, invite._id, true);
     if(success) {
-      console.log("success, accepted invite");
+      //console.log("success, accepted invite");
       // Add the new team to the list of teams
       props.teams.push({
          _id: invite._id,
@@ -138,32 +127,10 @@ export function Collaborate(props) {
   }
 
   const declineInvite = async (invite) => {
-    let success = false;
-
-    // Decline Invite
-    try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/users/invites/', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + props.token
-            },
-            body: JSON.stringify({
-              responses:
-              [{
-                team: invite._id,
-                accept: false
-                }]
-            })
-        })
-        success = true
-    } catch (error) {
-        console.log("error declining invite: ", error)
-    }
+    let success = await postInvite(props.token, invite._id, false);
 
     if(success) {
-      console.log("success, declined invite");
+      //console.log("success, declined invite");
       // Remove the invite from the local list of invites
       let changeIndex = props.invites.findIndex(element => element._id === invite._id);
       const newInvites = [...props.invites];
@@ -253,6 +220,12 @@ export function Collaborate(props) {
             data={props.teams}
             ItemSeparatorComponent={Divider}
             renderItem={teamItem}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshingTeams}
+                onRefresh={onRefreshTeams}
+              />
+            }
           />
         </View>
 
@@ -265,10 +238,16 @@ export function Collaborate(props) {
         <Divider style={{marginTop: 5}} />
         <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'40%', marginTop:15}}>
           <List
-            style={{maxHeight:'100%', maxWidth:'90%'}}
+            style={{maxHeight:'100%', maxWidth:'90%', minHeight:150, backgroundColor: 'rgba(0, 0, 0, 0)'}}
             data={props.invites}
             ItemSeparatorComponent={Divider}
             renderItem={inviteItem}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshingInvites}
+                onRefresh={onRefreshInvites}
+              />
+            }
           />
         </View>
 

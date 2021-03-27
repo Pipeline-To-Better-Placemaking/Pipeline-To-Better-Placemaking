@@ -73,6 +73,8 @@ module.exports.addUser = async function(newUser) {
     await Users.createVerification(savedUser._id)
     return Users.findById(savedUser._id)
         .select('-password -verification_code -verification_timeout')
+        .populate('teams', 'title')
+        .populate('invites','title')
 }
 
 module.exports.updateUser = async function(userId, newUser) {

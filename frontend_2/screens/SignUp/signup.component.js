@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { ScrollView, KeyboardAvoidingView, View, Platform, TouchableWithoutFeedback, Modal } from 'react-native';
 import { Icon, Text, Button, Input, Spinner } from '@ui-kitten/components';
 import { BlueViewableArea } from '../components/content.component';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Location from 'expo-location';
 
 import { styles } from './signup.styles';
 
@@ -48,6 +50,11 @@ export const SignUpScreen = ( props ) => {
 
         setLoading(true);
 
+        let defaultLocation = {
+            "latitude": 28.602413253152307,
+            "longitude": -81.20019937739713,
+        };
+
         // Assemble the request body
         const userBody = {
             email: email,
@@ -71,9 +78,34 @@ export const SignUpScreen = ( props ) => {
             console.log('OK: ' + response.ok, 'Signup response: ' + JSON.stringify(res));
 
             if (response.ok) {
-                // Redirect to the login page
-                props.navigation.navigate('Login');
+                // Store user information
+                await AsyncStorage.setItem("@token", res.token)
+                await AsyncStorage.setItem("@id", res.user._id)
+                await AsyncStorage.setItem("@isVerified", JSON.stringify(res.user.is_verified))
+                await AsyncStorage.setItem("@email", res.user.email)
+                await AsyncStorage.setItem("@firstName", res.user.firstname)
+                await AsyncStorage.setItem("@lastName", res.user.lastname)
+                await AsyncStorage.setItem("@teams", JSON.stringify(res.user.teams))
+                await AsyncStorage.setItem("@invites", JSON.stringify(res.user.invites))
+
+                // Request permission to use location
+                let { status } = await Location.requestPermissionsAsync();
+
+                if (status === 'granted') {
+                    defaultLocation = await Location.getCurrentPositionAsync({});
+                    defaultLocation = defaultLocation.coords
+                } else {
+                    console.log('Permission to access location was denied');
+                }
+
+                await props.setLocation(defaultLocation);
+                await props.setSignedIn(true);
+                await setLoading(false);
+
+                // Navigate to home page
+                props.navigation.navigate("TabNavigation")
             }
+            // else display error message
         } catch (error) {
             console.log(error);
         }

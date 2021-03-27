@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, RefreshControl } from 'react-native';
 import { Text, Button, Divider, List, Card, MenuItem } from '@ui-kitten/components';
 import { HeaderBack, HeaderBackEdit } from '../../../components/headers.component';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { MapAreaWrapper, ShowArea, ShowMarkers } from '../../../components/Maps/mapPoints.component';
 import { getDayStr, getTimeStr } from '../../../components/timeStrings.component';
+import { getAllCollectionInfo } from '../../../components/apiCalls';
 
 export function ActivitySignUpPage(props) {
 
@@ -12,6 +13,25 @@ export function ActivitySignUpPage(props) {
   const activityList = ["stationary", "moving", "survey"]
 
   const [editMenuVisible, setEditMenuVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    refreshDetails();
+    setRefreshing(false);
+  }, []);
+
+  const refreshDetails = async () => {
+    let collectionDetails = {...props.activity};
+    collectionDetails = await getAllCollectionInfo(props.token, collectionDetails);
+
+    // if successfully retrieved activity info, Update
+    if(collectionDetails !== null) {
+      await props.setTimeSlots([...collectionDetails.timeSlots]);
+      collectionDetails.timeSlots = [];
+      await props.setActivity(collectionDetails);
+    }
+  };
 
   const editActivityInfo = async () => {
     await props.setUpdateActivity(true);
@@ -364,6 +384,12 @@ export function ActivitySignUpPage(props) {
             data={props.timeSlots}
             ItemSeparatorComponent={Divider}
             renderItem={timeSlotCard}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            }
           />
         </View>
       </ContentContainer>

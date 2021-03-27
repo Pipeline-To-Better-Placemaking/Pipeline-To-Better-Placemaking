@@ -136,14 +136,16 @@ export const ConfirmDelete = ({ children, ...props }) => {
           onPressOut={()=>{props.setVisible(false)}}
         >
           <Card disabled={true} style={styles.confirmDelete}>
-            <View style={{flexDirection:'row', marginBottom: 20}}>
+            <View style={{flexDirection:'row', marginBottom: 5}}>
               <View style = {styles.circle}>
                 <Icon style ={{width:30, height:30}} fill='white' name='trash-2'/>
               </View>
               <View style={{width:'75%'}}>
                 <Text category='h5' style={{fontSize:25}}>Delete {props.dataType}</Text>
-                <Text>Are you sure you want to delete this {props.dataType}?</Text>
               </View>
+            </View>
+            <View style={{marginBottom: 10}}>
+              <Text>Are you sure you want to delete this {props.dataType}? {props.extraInfo}</Text>
             </View>
             <View style={{flexDirection:'row', justifyContent:'space-between'}}>
               <Button status='info' appearance={'outline'} onPress={()=>{props.setVisible(false)}}>Cancel</Button>

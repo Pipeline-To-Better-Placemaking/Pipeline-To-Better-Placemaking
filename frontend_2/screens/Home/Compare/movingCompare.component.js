@@ -31,7 +31,7 @@ export function MovingCompare(props) {
   const color = '#006FD6';
   results.map((result, index) => {
     result.graph = {}
-    result.resultName = getTimeStr(result.date) + ' - ' + getDayStr(result.sharedData.date) + ' - ' + result.sharedData.projectName;
+    result.resultName = getTimeStr(result.date) + ' - ' + getDayStr(result.sharedData.date) + ' - ' + result.sharedData.projectName + ' - ' + result.sharedData.teamName;
     if (index%2 === 0) {
       result.color = 'rgb(0, 111, 214)';
     } else {

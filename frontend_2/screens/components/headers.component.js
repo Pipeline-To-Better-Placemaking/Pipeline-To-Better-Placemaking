@@ -7,9 +7,11 @@ export function Header(props) {
   return (
     <View style={styles.header}>
       <View style={styles.leftContent} />
-      <Text category='h5' status='control'>
-        {props.text}
-      </Text>
+      <View style={{maxWidth:'80%'}}>
+        <Text category='h5' status='control'>
+          {props.text}
+        </Text>
+      </View>
       <View style={styles.rightContent} />
     </View>
   );
@@ -28,9 +30,11 @@ export function HeaderBack(props) {
           size='small'
         />
       </View>
-      <Text category='h5' status='control'>
-        {props.text}
-      </Text>
+      <View style={{maxWidth:'80%', marginLeft:15}}>
+        <Text category='h5' status='control'>
+          {props.text}
+        </Text>
+      </View>
       <View style={styles.rightContent} />
     </View>
   );
@@ -39,9 +43,11 @@ export function HeaderBack(props) {
 export function HeaderExit(props) {
   return (
     <View style={styles.header}>
+    <View style={{maxWidth:'80%'}}>
       <Text style={{marginLeft:25}} category='h5' status='control'>
         {props.text}
       </Text>
+    </View>
       <View style={styles.rightContent}>
         <Button
           accessoryRight={CancelIcon}
@@ -90,9 +96,11 @@ export function HeaderBackEdit({children, ...props}) {
           size='small'
         />
       </View>
-      <Text category='h5' status='control'>
-        {props.text}
-      </Text>
+      <View style={{maxWidth:'80%', marginLeft:15}}>
+        <Text category='h5' status='control'>
+          {props.text}
+        </Text>
+      </View>
       <View style={styles.rightContent}>
         <EditMenu />
       </View>

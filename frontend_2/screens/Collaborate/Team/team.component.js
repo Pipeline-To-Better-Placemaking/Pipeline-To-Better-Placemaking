@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, Modal, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, Modal, TouchableOpacity, RefreshControl } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem } from '@ui-kitten/components';
 import { HeaderBackEdit, HeaderBack } from '../../components/headers.component';
@@ -7,6 +7,7 @@ import { getDayStr, getTimeStr } from '../../components/timeStrings.component';
 import { ViewableArea, ContentContainer, PopUpContainer } from '../../components/content.component';
 import { CreateProject } from './createProjectModal.component';
 import { EditTeamPage } from './editTeam.component';
+import { getTeam, getFilteredProjectDetails } from '../../components/apiCalls';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './team.styles';
@@ -15,9 +16,13 @@ export function TeamPage(props) {
 
   const [createProjectVisible, setCreateProjectVisible] = useState(false);
   const [inviteVisible, setInviteVisible] = useState(false);
+  const [sentMsgVisible, setSentMsgVisible] = useState(false);
+  const [msg, setMsg] = useState('');
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [editTeamVisible, setEditTeamVisible] = useState(false);
   const [email, setEmail] = useState('');
+  const [refreshingProjects, setRefreshingProjects] = useState(false);
+  const [refreshingUsers, setRefreshingUsers] = useState(false);
 
   useEffect(() => {
     async function getTokens() {
@@ -29,112 +34,44 @@ export function TeamPage(props) {
     getTokens()
   }, []);
 
-  const openProjectPage = async (item) => {
+  const onRefreshProjects = React.useCallback(() => {
+    setRefreshingProjects(true);
+    refreshDetails();
+    setRefreshingProjects(false);
+  }, []);
+
+  const onRefreshUsers = React.useCallback(() => {
+    setRefreshingUsers(true);
+    refreshDetails();
+    setRefreshingUsers(false);
+  }, []);
+
+  const refreshDetails = async () => {
     let success = false
-    let projectDetails = null
-    // Get the project information
-    try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + item._id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + props.token
-            }
-        })
-        projectDetails = await response.json();
-        success = true
-    } catch (error) {
-        console.log("error", error)
+    let teamDetails = await getTeam(props.token, props.team);
+    if(teamDetails != null) {
+      await props.setTeam(teamDetails);
+      await props.setProjects(teamDetails.projects);
+      await AsyncStorage.setItem("@projects", JSON.stringify(teamDetails.projects));
     }
-    if(projectDetails.success !== undefined){
-      success = projectDetails.success
-      console.log("success: ", success);
-    }
+  };
+
+  const openProjectPage = async (item) => {
+    let projectDetails = await getFilteredProjectDetails(props.token, item);
     // if successfully retrieved project info, Update
-    if(success) {
-      let today = new Date();
-
-      let pastStationaryCollections = [];
-      if(projectDetails.stationaryCollections !== null) {
-        for(let i = 0; i < projectDetails.stationaryCollections.length; i++) {
-          let collection = projectDetails.stationaryCollections[i];
-          collection.test_type = 'stationary';
-          // set area
-          let areaIndex = projectDetails.subareas.findIndex(element => element._id === collection.area);
-          collection.area = projectDetails.subareas[areaIndex];
-          // handle date
-          collection.date = new Date(collection.date);
-          if (moment(today).isAfter(collection.date, 'day')) {
-            pastStationaryCollections.push(collection);
-          }
-          projectDetails.stationaryCollections[i] = collection;
-        }
-      }
-      // remove collections from the list that are in the past
-      for(let i = 0; i < pastStationaryCollections.length; i++) {
-        let removeIndex = projectDetails.stationaryCollections.findIndex(element => element._id === pastStationaryCollections[i]._id);
-        projectDetails.stationaryCollections.splice(removeIndex, 1);
-      }
-
-      let pastMovingCollections = [];
-      if(projectDetails.movingCollections !== null) {
-        for(let i = 0; i < projectDetails.movingCollections.length; i++) {
-          let collection = projectDetails.movingCollections[i];
-          collection.test_type = 'moving';
-          // set area
-          let areaIndex = projectDetails.subareas.findIndex(element => element._id === collection.area);
-          collection.area = projectDetails.subareas[areaIndex];
-          // handle date
-          collection.date = new Date(collection.date);
-          if (moment(today).isAfter(collection.date, 'day')) {
-            pastMovingCollections.push(collection);
-          }
-          projectDetails.movingCollections[i] = collection;
-        }
-      }
-      // remove collections from the list that are in the past
-      for(let i = 0; i < pastMovingCollections.length; i++) {
-        let removeIndex = projectDetails.movingCollections.findIndex(element => element._id === pastMovingCollections[i]._id);
-        projectDetails.movingCollections.splice(removeIndex, 1);
-      }
-
-      let pastSurveyCollections = [];
-      if(projectDetails.surveyCollections !== null) {
-        for(let i = 0; i < projectDetails.surveyCollections.length; i++) {
-          let collection = projectDetails.surveyCollections[i];
-          collection.test_type = 'survey';
-          // set area
-          let areaIndex = projectDetails.subareas.findIndex(element => element._id === collection.area);
-          collection.area = projectDetails.subareas[areaIndex];
-          // handle date
-          collection.date = new Date(collection.date);
-          if (moment(today).isAfter(collection.date, 'day')) {
-            pastSurveyCollections.push(collection);
-          }
-          projectDetails.surveyCollections[i] = collection;
-        }
-      }
-      // remove collections from the list that are in the past
-      for(let i = 0; i < pastSurveyCollections.length; i++) {
-        let removeIndex = projectDetails.surveyCollections.findIndex(element => element._id === pastSurveyCollections[i]._id);
-        projectDetails.surveyCollections.splice(removeIndex, 1);
-      }
-
+    if(projectDetails !== null) {
       // set selected project page information
+      await props.setActivities([...projectDetails.activities]);
+      await props.setPastActivities([...projectDetails.pastActivities]);
+      projectDetails.activities = [];
+      projectDetails.pastActivities = [];
       await props.setProject(projectDetails);
-      await props.setActivities([...projectDetails.stationaryCollections, ...projectDetails.movingCollections, ...projectDetails.surveyCollections]);
-      await props.setPastActivities([...pastStationaryCollections, ...pastMovingCollections, ...pastSurveyCollections]);
       console.log("Selected Project: ", projectDetails);
 
       // open project page
       props.navigation.navigate('ProjectPage');
     }
   };
-
-  const navigateProjectPage = () => {
-    props.navigation.navigate('ProjectPage');
-  }
 
   const closePopUp = () => {
     setInviteVisible(false);
@@ -179,7 +116,6 @@ export function TeamPage(props) {
   const sendInvite = async () => {
     let success = false;
     let res = null;
-
     // Send invite by user email
     try {
       const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/'+ props.team._id +'/invites', {
@@ -198,20 +134,20 @@ export function TeamPage(props) {
     } catch (error) {
       console.log("error inviting user: ", error)
     }
-    //console.log("status: ", res.status);
-    console.log("ok: ", res.ok);
-    //console.log("response: ", JSON.stringify(res));
-    success = res.ok
+    if (res.ok !== undefined) {
+      success = res.ok
+    }
     // reset states
-    setInviteVisible(false)
-    setEmail('')
+    await setInviteVisible(false);
+    await setEmail('');
 
     if(success) {
-      console.log("success, sent user an invite");
+      await setMsg("Success, sent user an invite!");
     } else {
-      console.log("success false, didn't invite user");
+      await setMsg("Failure, didn't find user :(");
     }
-
+    await setSentMsgVisible(true);
+    wait(2000).then(() => setSentMsgVisible(false));
   };
 
   return (
@@ -245,6 +181,15 @@ export function TeamPage(props) {
           Invite!
         </Button>
       </PopUpContainer>
+      <PopUpContainer
+        {...props}
+        visible={sentMsgVisible}
+        closePopUp={() => setSentMsgVisible(false)}
+      >
+        <View style={{justifyContent:'center', alignItems:'center'}}>
+          <Text category={'s1'}>{msg}</Text>
+        </View>
+      </PopUpContainer>
       <CreateProject
         {...props}
         visible={createProjectVisible}
@@ -270,10 +215,16 @@ export function TeamPage(props) {
 
         <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
           <List
-            style={{maxHeight:'100%', maxWidth:'90%'}}
+            style={{maxHeight:'100%', maxWidth:'90%', minHeight:100, backgroundColor: 'rgba(0, 0, 0, 0)'}}
             data={props.projects}
             ItemSeparatorComponent={Divider}
             renderItem={projectItem}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshingProjects}
+                onRefresh={onRefreshProjects}
+              />
+            }
           />
         </View>
 
@@ -299,6 +250,12 @@ export function TeamPage(props) {
             data={props.team.users}
             ItemSeparatorComponent={Divider}
             renderItem={memberItem}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshingUsers}
+                onRefresh={onRefreshUsers}
+              />
+            }
           />
         </View>
 
@@ -306,6 +263,10 @@ export function TeamPage(props) {
     </ViewableArea>
   );
 };
+
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 const ForwardIcon = (props) => (
   <Icon {...props} name='arrow-ios-forward'/>
