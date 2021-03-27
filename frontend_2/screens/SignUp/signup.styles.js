@@ -42,8 +42,7 @@ export const styles = StyleSheet.create({
     },
 
     backButton: {
-        marginTop: 20,
-        marginBottom: 75
+        marginTop: 20
     },
 
     backText: {

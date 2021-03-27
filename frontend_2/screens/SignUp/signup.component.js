@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, View, TouchableWithoutFeedback, Modal } from 'react-native';
+import { ScrollView, KeyboardAvoidingView, View, Platform, TouchableWithoutFeedback, Modal } from 'react-native';
 import { Icon, Text, Button, Input, Spinner } from '@ui-kitten/components';
 import { BlueViewableArea } from '../components/content.component';
 
@@ -8,6 +8,7 @@ import { styles } from './signup.styles';
 export const SignUpScreen = ( props ) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
 
@@ -26,6 +27,25 @@ export const SignUpScreen = ( props ) => {
     };
 
     const handleSignup = async () => {
+
+        if (password != confirmPassword) {
+            return
+        }
+
+        if (passwordProblems === true && isValidEmail == false){
+            setPasswordTouched(true)
+            setEmailTouched(true)
+            return
+        }
+        else if (passwordProblems === true) {
+            setPasswordTouched(true)
+            return
+        }
+        else if (isValidEmail == false) {
+            setEmailTouched(true)
+            return
+        }
+
         setLoading(true);
 
         // Assemble the request body
@@ -68,19 +88,58 @@ export const SignUpScreen = ( props ) => {
     }
 
     const checkPassword = () => {
-        let rules = [];
-        if (password.length < 8) rules.push('Must be at least 8 characters long');
-        if (/\s/g.test(password)) rules.push('Must not have any spaces');
-        if (!/\d/g.test(password)) rules.push('Must have at least one digit');
-        if (!/[!@#$%^&*]/g.test(password)) rules.push('Must have one of the following: ! @ # $ % ^ & *');
-        if (!/[A-Z]/g.test(password)) rules.push('Must have at least one uppercase letter');
 
-        return rules;
+        if (password.length < 8 || 
+            /\s/g.test(password) ||
+            !/\d/g.test(password) ||
+            !/[!@#$%^&*]/g.test(password) ||
+            !/[A-Z]/g.test(password)) {
+
+            return true
+            
+        }
+        else {
+            return false
+        }
     }
 
-    const SignUpButton = ({ enabled }) => (
-        <Button style={[styles.signUpButton, !enabled && {backgroundColor: '#E6D88A'}]} onPress={handleSignup} disabled={!enabled}>
-            <Text style={[styles.signUpText, !enabled && {color: '#808080'}]}>
+    const nonMatchingPasswords = () => {
+
+        if (password == confirmPassword) {
+
+            return null
+        }
+        else {
+
+            return (
+                <Text style={{color: '#FF3D71'}}>
+                    Passwords do not match.
+                </Text>
+            )
+        }
+
+    }
+
+    const passwordRequirement = () => {
+
+        if (passwordProblems == false) {
+            return null
+        }
+        else if (passwordTouched && passwordProblems) {
+            return (
+                <Text style={{color: '#FF3D71'}}>
+                    Must contain at least 8 characters, one digit, one symbol, and one uppercase letter.
+                </Text>
+            )
+        }
+        else {
+            return null
+        }
+    }
+
+    const SignUpButton = () => (
+        <Button style={styles.signUpButton} onPress={handleSignup}>
+            <Text style={styles.signUpText}>
                 Sign Up
             </Text>
         </Button>
@@ -104,8 +163,8 @@ export const SignUpScreen = ( props ) => {
     const passwordProblems = checkPassword();
 
     return (
-        <BlueViewableArea>
-            <ScrollView contentContainerStyle={styles.container}>
+        <View style={{flex: 1, color:'#006FD6', backgroundColor:'#006FD6'}}>
+            <View style={styles.container}>
                 <Modal
                     animationType='fade'
                     transparent={true}
@@ -115,8 +174,10 @@ export const SignUpScreen = ( props ) => {
                         <Spinner />
                     </View>
                 </Modal>
-                <Text category='h1' status='control'>Sign Up</Text>
+                <KeyboardAvoidingView behavior={"position"}>
+                <Text style={{alignSelf: 'center'}} category='h1' status='control'>Sign Up</Text>
                 <View>
+                    
                     <Text category='label' style={styles.inputText}> Email Address: </Text>
                     <Input
                         value={email}
@@ -145,12 +206,20 @@ export const SignUpScreen = ( props ) => {
                         secureTextEntry={secureTextEntry}
                         onFocus={() => setPasswordTouched(true)}
                         onChangeText={nextValue => setPassword(nextValue)}
-                        caption={
-                            passwordTouched && passwordProblems.length > 0 &&
-                            <Text style={{color: '#FF3D71'}}>
-                                {passwordProblems.join('\n')}
-                            </Text>
-                        }
+                        caption={passwordRequirement()}
+                    />
+                </View>
+                <View>
+                    <Text category='label' style={styles.inputText}> Confirm Password:</Text>
+                    <Input
+                        value={confirmPassword}
+                        placeholder='Confirm Password...'
+                        style={styles.inputBox}
+                        autoCapitalize='none'
+                        accessoryRight={eyeIcon}
+                        secureTextEntry={secureTextEntry}
+                        onChangeText={nextValue => setConfirmPassword(nextValue)}
+                        caption={nonMatchingPasswords()}
                     />
                 </View>
                 <View>
@@ -159,23 +228,21 @@ export const SignUpScreen = ( props ) => {
                         value={firstname}
                         placeholder='First name...'
                         style={styles.inputBox}
-                        autoCapitalize='none'
                         onChangeText={(nextValue) => setFirstname(nextValue)}
                     />
                 </View>
-                <View>
                     <Text category='label' style={styles.inputText}> Last Name: </Text>
                     <Input
                         value={lastname}
                         placeholder='Last name...'
                         style={styles.inputBox}
-                        autoCapitalize='none'
                         onChangeText={(nextValue) => setLastname(nextValue)}
                     />
-                </View>
-                <SignUpButton enabled={isValidEmail && passwordProblems.length === 0}/>
+                </KeyboardAvoidingView>
+                
+                <SignUpButton/>
                 <BackButton />
-            </ScrollView>
-        </BlueViewableArea>
+            </View>
+            </View>
     );
 };
