@@ -47,6 +47,11 @@ export function Collaborate(props) {
   }
 
   const createTeam = async () => {
+
+    if (teamName == "") {
+      return
+    }
+
     let success = false;
     let newTeam = null;
     // Save the new team
