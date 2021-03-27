@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
 import { MapWrapper, ShowAreas, MapAddOne, ShowMarkers } from '../../components/Maps/mapPoints.component';
-import { ModalContainer } from '../../components/content.component';
+import { ModalContainer, ConfirmDelete } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 
@@ -13,6 +13,7 @@ export function EditPoints(props) {
   }
 
   const [pointName, setPointName] = useState(props.pointInfo.title);
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
 
   const cancel = () => {
     setPointName('');
@@ -166,6 +167,7 @@ export function EditPoints(props) {
       }
     }
 
+    setConfirmDeleteVisible(false);
     props.setVisible(false);
   }
 
@@ -178,6 +180,13 @@ export function EditPoints(props) {
 
   return (
     <ModalContainer {...props} visible={props.visible}>
+      <ConfirmDelete 
+        visible={confirmDeleteVisible} 
+        setVisible={setConfirmDeleteVisible} 
+        dataType={"standing point"}
+        extraInfo={"Be aware, deleting a standing point that is currently being used by a research activity will cause that activty to stop working"} 
+        deleteFunction={deletePoint}
+      />
       <View style={{justifyContent:'flex-start'}}>
         <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginBottom: 5}}>
           <Input
@@ -208,7 +217,7 @@ export function EditPoints(props) {
       <View style={{flexDirection:'row', justifyContent: 'space-between', margin:5}}>
         <Button
           status='danger'
-          onPress={() => deletePoint()}
+          onPress={() => setConfirmDeleteVisible(true)}
           accessoryLeft={DeleteIcon}
         >
           Delete
