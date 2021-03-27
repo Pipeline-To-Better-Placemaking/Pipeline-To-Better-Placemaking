@@ -4,7 +4,7 @@ import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/component
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem, OverflowMenu } from '@ui-kitten/components';
 import { HeaderBack } from '../components/headers.component';
 import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component';
-import { ViewableArea, ContentContainer } from '../components/content.component';
+import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getDayStr, getTimeStr } from '../components/timeStrings.component';
 import { getAllResults, getProject } from '../components/apiCalls';
 import { formatStationaryGraphData, formatMovingGraphData } from '../components/helperFunctions';
@@ -18,6 +18,8 @@ const ForwardIcon = (props) => (
 export function ProjectResultPage(props) {
 
   const [refreshing, setRefreshing] = useState(false);
+  const [sentMsgVisible, setSentMsgVisible] = useState(false);
+  const [msg, setMsg] = useState('');
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -54,7 +56,6 @@ export function ProjectResultPage(props) {
   const emailResults = async () => {
     let success = false
     let result = null
-
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + '/export', {
             method: 'GET',
@@ -65,10 +66,23 @@ export function ProjectResultPage(props) {
             }
         })
         result = await response.json();
+        console.log("email result...", result);
         success = true
     } catch (error) {
-        console.log("error", error)
+        console.log("error", error);
+        success = false;
     }
+    if (result.success !== undefined) {
+      success = result.success;
+    }
+
+    if(success) {
+      await setMsg("Success, sent Project Information!");
+    } else {
+      await setMsg("Failure, wasn't able to send Project Information :(");
+    }
+    await setSentMsgVisible(true);
+    wait(2000).then(() => setSentMsgVisible(false));
   }
 
   const activityItem = ({ item, index }) => (
@@ -87,6 +101,15 @@ export function ProjectResultPage(props) {
   return (
     <ViewableArea>
       <HeaderBack {...props} text={props.project.title}/>
+      <PopUpContainer
+        {...props}
+        visible={sentMsgVisible}
+        closePopUp={() => setSentMsgVisible(false)}
+      >
+        <View style={{justifyContent:'center', alignItems:'center'}}>
+          <Text category={'s1'}>{msg}</Text>
+        </View>
+      </PopUpContainer>
       <ContentContainer>
 
         <View style={{height:'35%'}}>
@@ -146,6 +169,10 @@ export function ProjectResultPage(props) {
     </ViewableArea>
   );
 };
+
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 const MailIcon = (props) => (
   <Icon {...props} name='email-outline'/>
