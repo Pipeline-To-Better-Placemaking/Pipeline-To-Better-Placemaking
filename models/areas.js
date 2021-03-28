@@ -45,7 +45,7 @@ module.exports.removeRefrence = async function(areaId) {
     return area;
 }
 module.exports.addRefrence = async function(areaId) {
-    area = await area.findById(areaId)
+    area = await Areas.findById(areaId)
     area.refCount = area.refCount + 1
     area.save()
     return area;
