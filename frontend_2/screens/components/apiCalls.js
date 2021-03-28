@@ -52,9 +52,6 @@ export async function getFilteredProjectDetails(project) {
       for(let i = 0; i < projectDetails.stationaryCollections.length; i++) {
         let collection = projectDetails.stationaryCollections[i];
         collection.test_type = 'stationary';
-        // set area
-        let areaIndex = projectDetails.subareas.findIndex(element => element._id === collection.area);
-        collection.area = projectDetails.subareas[areaIndex];
         // handle date
         collection.date = new Date(collection.date);
         if (moment(today).isAfter(collection.date, 'day')) {
@@ -74,9 +71,6 @@ export async function getFilteredProjectDetails(project) {
       for(let i = 0; i < projectDetails.movingCollections.length; i++) {
         let collection = projectDetails.movingCollections[i];
         collection.test_type = 'moving';
-        // set area
-        let areaIndex = projectDetails.subareas.findIndex(element => element._id === collection.area);
-        collection.area = projectDetails.subareas[areaIndex];
         // handle date
         collection.date = new Date(collection.date);
         if (moment(today).isAfter(collection.date, 'day')) {
@@ -96,9 +90,6 @@ export async function getFilteredProjectDetails(project) {
       for(let i = 0; i < projectDetails.surveyCollections.length; i++) {
         let collection = projectDetails.surveyCollections[i];
         collection.test_type = 'survey';
-        // set area
-        let areaIndex = projectDetails.subareas.findIndex(element => element._id === collection.area);
-        collection.area = projectDetails.subareas[areaIndex];
         // handle date
         collection.date = new Date(collection.date);
         if (moment(today).isAfter(collection.date, 'day')) {
