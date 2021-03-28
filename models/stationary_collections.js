@@ -5,6 +5,8 @@ const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Stationary_Map = require('../models/stationary_maps.js')
+const Area = require('../models/areas.js')
+
 
 
 const area_schema = mongoose.Schema({
@@ -46,6 +48,7 @@ module.exports.deleteMap = async function(collectionId, mapId){
 
 module.exports.deleteCollection = async function(collectionId){
     collection = await Collection.findById(collectionId)
+    await Area.removeRefrence(collection.area)
 
     for(var i = 0; i < collection.maps.length; i++)
         await Stationary_Map.findByIdAndDelete(collection.maps[i])
