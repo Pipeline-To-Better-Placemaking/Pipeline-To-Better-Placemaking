@@ -156,10 +156,10 @@ curl -H 'Content-Type: application/json' \
 
 
 
-#curl -H 'Content-Type: application/json' \
- #    -H "Authorization: Bearer ${TOKEN}" \
-  #   --request GET \
-  #  http://localhost:8080/api/projects/${PROJECT}/export
+curl -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer ${TOKEN}" \
+     --request GET \
+    http://localhost:8080/api/projects/${PROJECT}/export
 
 
 #MAP=$(curl -H 'Content-Type: application/json' \
