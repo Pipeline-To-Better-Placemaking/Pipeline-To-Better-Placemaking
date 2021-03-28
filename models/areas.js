@@ -34,7 +34,17 @@ module.exports.updateArea = async function (areaId, newArea) {
 }
 
 module.exports.removeRefrence = async function(areaId) {
-
+    area = await Areas.findById(areaId)
+    area.refCount = area.refCount - 1
+    if(refCount <= 0){
+        Areas.findByIdAndDelete(areaId)
+    }
+    else{
+        area.save()
+    }
+    return area;
+}
+module.exports.addRefrence = async function(areaId) {
     area = await area.findById(areaId)
     area.refCount = area.refCount + 1
     area.save()
