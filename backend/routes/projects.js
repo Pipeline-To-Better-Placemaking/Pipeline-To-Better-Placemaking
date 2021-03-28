@@ -295,7 +295,7 @@ router.post('/:id/moving_collections', passport.authenticate('jwt',{session:fals
         
 
         await newCollection.save()
-        await Area.addRefrence(newColletion.area)
+        await Area.addRefrence(newCollection.area)
 
        
         await Project.addMovingCollection(project._id,newCollection._id)
@@ -361,7 +361,7 @@ router.post('/:id/survey_collections', passport.authenticate('jwt',{session:fals
         })
 
         await newCollection.save()
-        await Area.addRefrence(newColletion.area)
+        await Area.addRefrence(newCollection.area)
        
         await Project.addSurveyCollection(project._id,newCollection._id)
         res.json(newCollection)
