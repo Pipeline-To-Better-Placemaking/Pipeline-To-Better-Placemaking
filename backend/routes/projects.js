@@ -229,7 +229,7 @@ router.post('/:id/stationary_collections', passport.authenticate('jwt',{session:
 
         await newCollection.save()
 
-        await Area.addRefrence(newColletion.area)
+        await Area.addRefrence(newCollection.area)
 
         await Project.addStationaryCollection(project._id,newCollection._id)
         res.json(newCollection)
