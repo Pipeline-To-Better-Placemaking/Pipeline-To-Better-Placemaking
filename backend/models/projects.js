@@ -155,7 +155,7 @@ module.exports.addArea = async function(projectId, areaId) {
 }
 
 module.exports.deleteArea = async function(projectId, areaId) {
-    await Area.findByIdAndDelete(areaId)
+    await Area.removeRefrence(areaId)
     return await Projects.updateOne(
       { _id: projectId },
       { $pull: { subareas: areaId}}

@@ -12,6 +12,11 @@ const points_schema = mongoose.Schema({
         type: Number,
         required: true
     },
+    refCount:{
+        type:Number,
+        required:true,
+        default:1
+    },
     title: String
 })
 
@@ -26,4 +31,23 @@ module.exports.updatePoint = async function (pointId, newPoint) {
             latitude: newPoint.latitude
         }}
     )
+}
+
+module.exports.removeRefrence = async function(pointId) {
+    point = await Standing_Points.findById(pointId)
+    point.refCount = area.refCount - 1
+    if(point.refCount <= 0){
+        return await Standing_Points.findByIdAndDelete(areaId)
+
+    }
+    else{
+        point.save()
+        return point
+    }
+}
+module.exports.addRefrence = async function(pointId) {
+    point = await Standing_Points.findById(pointId)
+    point.refCount = point.refCount + 1
+    point.save()
+    return point;
 }
