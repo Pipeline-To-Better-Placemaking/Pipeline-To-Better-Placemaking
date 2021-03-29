@@ -185,7 +185,6 @@ export function EditPoints(props) {
         visible={confirmDeleteVisible}
         setVisible={setConfirmDeleteVisible}
         dataType={"standing point"}
-        extraInfo={"Be aware, deleting a standing point that is currently being used by a research activity will cause that activty to stop working."}
         deleteFunction={deletePoint}
       />
       <View style={{justifyContent:'flex-start'}}>

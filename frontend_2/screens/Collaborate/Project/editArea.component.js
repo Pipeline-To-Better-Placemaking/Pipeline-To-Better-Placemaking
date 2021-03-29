@@ -219,7 +219,6 @@ export function EditPoints(props) {
         visible={confirmDeleteVisible}
         setVisible={setConfirmDeleteVisible}
         dataType={"sub-area"}
-        extraInfo={"Be aware, deleting a sub-area that is currently being used by a research activity will cause that activty to stop working."}
         deleteFunction={deleteArea}
       />
       <View style={{justifyContent:'flex-start'}}>
