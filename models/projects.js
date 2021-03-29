@@ -84,7 +84,7 @@ module.exports.deleteProject = async function(projectId) {
         await Area.findByIdAndDelete(project.subareas[i])
     
     for(var i = 0; i < project.standingPoints.length; i++)   
-        await Standing_Point.findByIdAndDelete(project.standingPoints[i])
+        await Standing_Point.removeRefrence(project.standingPoints[i])
 
     for(var i = 0; i < project.stationaryCollections.length; i++)   
         await Stationary_collections.deleteCollection(project.stationaryCollections[i])
@@ -170,7 +170,7 @@ module.exports.addPoint = async function(projectId, pointId) {
 }
 
 module.exports.deletePoint = async function(projectId, pointId) {
-    await Standing_Point.findByIdAndDelete(pointId)
+    await Standing_Point.removeRefrence(pointId)
     return await Projects.updateOne(
       { _id: projectId },
       { $pull: { standingPoints: pointId}}

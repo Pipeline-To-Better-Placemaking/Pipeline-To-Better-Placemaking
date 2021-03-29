@@ -108,6 +108,17 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 
     project = await Project.findById(map.project)
 
+    if(req.body.standingPoints){
+
+        for(var i = 0; i < req.body.standingPoints.length; i++)
+            Points.addRefrence(req.body.standingPoints[i])
+        
+        for(var i = 0; i < map.standingPoints.length; i++)
+            Points.removeRefrence(map.standingPoints[i])
+
+    }
+
+
     if (await Team.isAdmin(project.team,user._id)){
         res.status(201).json(await Map.updateMap(req.params.id,newMap))
     }

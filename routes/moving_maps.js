@@ -4,6 +4,7 @@ const Map = require('../models/moving_maps.js')
 const Project = require('../models/projects.js')
 const Moving_Collection = require('../models/moving_collections.js')
 const Team = require('../models/teams.js')
+const Points = require('../models/standing_points.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
@@ -106,6 +107,16 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         maxResearchers: (req.body.maxResearchers ? req.body.maxResearchers : map.maxResearchers),
         standingPoints: (req.body.standingPoints ? req.body.standingPoints : map.standingPoints)
     })
+
+    if(req.body.standingPoints){
+
+        for(var i = 0; i < req.body.standingPoints.length; i++)
+            Points.addRefrence(req.body.standingPoints[i])
+        
+        for(var i = 0; i < map.standingPoints.length; i++)
+            Points.removeRefrence(map.standingPoints[i])
+
+    }
 
     project = await Project.findById(map.project)
 
