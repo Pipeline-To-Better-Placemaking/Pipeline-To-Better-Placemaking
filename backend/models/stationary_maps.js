@@ -98,6 +98,13 @@ module.exports.updateMap = async function (projectId, newMap) {
 }
 
 module.exports.deleteMap = async function(mapId) {
+
+    const map = await Maps.findById(mapId)
+
+    for(var i = 0; i < map.standingPoints.length; i++)
+        Points.removeRefrence(map.standingPoints[i])
+        
+    
     return await Maps.findByIdAndDelete(mapId)
 }
 
