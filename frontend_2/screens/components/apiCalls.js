@@ -278,6 +278,32 @@ export async function getTimeSlot(route, id) {
   }
 };
 
+export async function deleteTimeSlot(route, id) {
+  let token = await AsyncStorage.getItem("@token");
+  let success = false
+  let result = null
+  try {
+    const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + route + '/' + id, {
+        method: 'DELETE',
+        headers: {
+            Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+        }
+    })
+    result = await response.json();
+    console.log("delete timeslot response:", result);
+    success = true
+  } catch (error) {
+    console.log("ERROR: ", error)
+    success = false;
+  }
+  if (result.success !== undefined) {
+    success = result.success
+  }
+  return success;
+}
+
 export async function getCollection(route, collection) {
   let token = await AsyncStorage.getItem("@token");
   let success = false
@@ -471,4 +497,14 @@ async function helperGetResultDetails(resultId, routePath) {
   } else {
     return null;
   }
+}
+
+export function isUserTeamOwner(team, userId) {
+  if (team === null || team.users === null) {
+    return false;
+  }
+  let members = team.users;
+  let ownerIndex = members.findIndex(element => element.role === "owner");
+  // if the owner id and given userId are the same, then this user is the owner
+  return (members[ownerIndex].user === userId);
 }

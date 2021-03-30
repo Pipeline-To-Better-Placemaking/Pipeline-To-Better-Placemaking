@@ -162,6 +162,7 @@ export function HomeScreenStack(props){
           team={selectedTeam}
           selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}
+          setResults={setResults}
          />
        }
       </Screen>
@@ -177,6 +178,7 @@ export function HomeScreenStack(props){
           team={selectedTeam}
           selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}
+          setResults={setResults}
          />
        }
       </Screen>
@@ -192,6 +194,7 @@ export function HomeScreenStack(props){
           team={selectedTeam}
           selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}
+          setResults={setResults}
          />
        }
       </Screen>
