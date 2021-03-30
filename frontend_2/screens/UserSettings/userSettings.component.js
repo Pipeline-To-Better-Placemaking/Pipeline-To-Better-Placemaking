@@ -3,7 +3,7 @@ import { View, Modal, ScrollView } from 'react-native';
 import { Icon, Input, Text, Button, Popover } from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
 import { Header } from '../components/headers.component';
-import { ViewableArea, ContentContainer } from '../components/content.component';
+import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { styles } from './userSettings.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MapConfigButtonGroup } from '../components/UserSettingsModals/mapConfigButtonGroup.component.js'
@@ -139,38 +139,6 @@ export function UserSettings(props) {
     } else {
       cancelEditProfile()
     }
-  }
-
-  const LogOutButton = () => {
-    return(
-      <Button style={{margin:5}} status='danger' onPress={() => setLogoutVisible(true)}>
-        LOG OUT
-      </Button>
-    )
-  }
-
-  const LogOutPopover = () => {
-
-    return (
-      <Popover
-        style={{height: 100, width: 300, marginTop: 20}}
-        visible={logoutVisible}
-        backdropStyle={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
-        onBackdropPress={() => setLogoutVisible(false)}
-        anchor={LogOutButton}>
-          <View>
-            <Text style={{alignSelf:'center', marginBottom: 15, marginTop: 5}}>
-              Are you sure you want to log out?
-            </Text>
-
-            <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-              <Button style={{width: 100, marginRight: 20}} onPress={() => logOut()}>Yes</Button>
-              <Button style={{width: 100}} onPress={() => setLogoutVisible(false)}>No</Button>
-            </View>
-
-          </View>
-      </Popover>
-    )
   }
 
   const logOut = async () => {
@@ -353,7 +321,7 @@ export function UserSettings(props) {
           </ViewableArea>
         </Modal>
 
-        
+
 
         <Modal animationType="slide" visible={verifyModalVisible}  onRequestClose={() => {setVerifyModalVisible(!verifyModalVisible)}}>
             <ViewableArea>
@@ -443,11 +411,34 @@ export function UserSettings(props) {
 
           <MapConfigButtonGroup/>
 
-          <LogOutPopover/>
-          
+          <Button style={{margin:5, marginTop:50}} status='danger' onPress={() => setLogoutVisible(true)}>
+            LOG OUT
+          </Button>
+
+          <PopUpContainer
+            visible={logoutVisible}
+            closePopUp={() => setLogoutVisible(false)}
+            >
+              <View>
+                <Text style={{alignSelf:'center', marginBottom: 15, marginTop: 5}}>
+                  Are you sure you want to log out?
+                </Text>
+
+                <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
+                  <Button style={{width: 100}} appearance={'outline'} onPress={() => logOut()}>Yes</Button>
+                  <Button style={{width: 100}} appearance={'outline'} onPress={() => setLogoutVisible(false)}>No</Button>
+                </View>
+
+              </View>
+          </PopUpContainer>
+
         </ScrollView>
 
       </ContentContainer>
     </ViewableArea>
     );
 };
+
+const logoutIcon = (props) => (
+  <Icon {...props} fill='white' name='log-out-outline'/>
+);
