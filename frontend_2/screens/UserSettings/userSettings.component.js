@@ -6,6 +6,7 @@ import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
 import { styles } from './userSettings.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MapConfigButtonGroup } from '../components/UserSettingsModals/mapConfigButtonGroup.component.js'
 import { PropsService } from '@ui-kitten/components/devsupport';
 
 export function UserSettings(props) {
@@ -23,10 +24,12 @@ export function UserSettings(props) {
   const [verificationCode, setVerificationCode] = useState('');
   const [verificationError, setVerificationError] = useState(false);
   const [codeChanged, setCodeChanged] = useState(false);
+  const [mapConfig, setMapConfig] = useState(true)
 
   useEffect(() => {
       async function fetchData() {
           setIsVerified(await AsyncStorage.getItem('@isVerified') === 'true')
+          setMapConfig(await AsyncStorage.getItem("@mapConfig"))
       }
       fetchData()
   })
@@ -403,6 +406,8 @@ export function UserSettings(props) {
                 VERIFY EMAIL
               </Button>
           }
+
+          <MapConfigButtonGroup/>
 
           <Button style={{margin:5}} status='danger' onPress={() => logOut()}>
             LOG OUT

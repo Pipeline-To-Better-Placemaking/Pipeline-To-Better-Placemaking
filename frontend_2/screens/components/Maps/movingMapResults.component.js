@@ -5,18 +5,8 @@ import { PressMapAreaWrapper } from './mapPoints.component';
 
 export function MovingMapResults(props) {
 
-    console.log("TotalPaths: " + JSON.stringify(props.totalPaths))
-
     // Color constants for the data points
     const colors = ["blue", "red", "yellow", "green", "orange", "pink"]
-
-    // Custom colored data pin
-    const DataPin = (props) => {
-
-        return(
-            <View style={{backgroundColor: colors[1], borderRadius: 150/2, borderWidth: 1, width: 15, height: 15}}/>
-        )
-    }
 
     const AllLines = () => {
 
@@ -36,27 +26,6 @@ export function MovingMapResults(props) {
             return null
         }
     }
-
-    // // Shows the project area, along with the plotted points
-    // const ShowPolygon = () => {
-    //     if(props.markers === null) {
-    //         return (null);
-    //     }
-    //     else {
-    //         return (
-    //             props.markers.map((coord, index) => (
-    //             <MapView.Marker
-    //                 key={index}
-    //                 coordinate = {{
-    //                     latitude: coord.latitude,
-    //                     longitude: coord.longitude
-    //                 }}
-    //             >
-    //                 <DataPin index={index}/>
-    //             </MapView.Marker>
-    //          )))
-    //      }
-    // }
 
     return(
 

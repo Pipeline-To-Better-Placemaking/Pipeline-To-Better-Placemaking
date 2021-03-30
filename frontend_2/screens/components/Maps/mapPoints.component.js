@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker, Polygon, Polyline, Callout } from 'react-native-maps'
 import { View, ScrollView } from 'react-native';
 import { Text, Button, Input, Icon, Divider, List, ListItem, Radio, RadioGroup } from '@ui-kitten/components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import { useEffect } from 'react';
 
@@ -86,6 +87,15 @@ listHeight={}
 */
 export function MapAdd({children, ...props}) {
 
+  const [mapConfig, setMapConfig] = useState("standard")
+
+  useEffect(() => {
+      async function fetchConfig() {
+          setMapConfig(await AsyncStorage.getItem("@mapConfig"))
+      }
+      fetchConfig()
+  })
+
   const removeMarker = (item, index) => {
     props.markers.splice(index, 1);
     props.setMarkers(markers => [...markers]);
@@ -134,6 +144,7 @@ export function MapAdd({children, ...props}) {
           longitudeDelta: location.longitudeDelta,
         }}
         onPress={event => addMarker(event.nativeEvent.coordinate)}
+        mapType={mapConfig}
       >
         {children}
       </MapView>
@@ -175,6 +186,16 @@ export const SelectArea = ({areas, selectedIndex, setSelectedIndex}) => {
 };
 
 export const MapAreaWrapper = ({children, area, mapHeight}) => {
+
+  const [mapConfig, setMapConfig] = useState("standard")
+
+  useEffect(() => {
+      async function fetchConfig() {
+          setMapConfig(await AsyncStorage.getItem("@mapConfig"))
+      }
+      fetchConfig()
+  })
+
   const location = getRegionForCoordinates(area);
   return (
     <View>
@@ -188,6 +209,7 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
           latitudeDelta: location.latitudeDelta,
           longitudeDelta: location.longitudeDelta,
         }}
+        mapType={mapConfig}
       >
         {children}
       </MapView>
@@ -198,6 +220,14 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
 
   const [region, setRegion] = useState(getRegionForCoordinates(area));
   const [defaultRegion] = useState(getRegionForCoordinates(area))
+  const [mapConfig, setMapConfig] = useState("standard")
+
+  useEffect(() => {
+      async function fetchConfig() {
+          setMapConfig(await AsyncStorage.getItem("@mapConfig"))
+      }
+      fetchConfig()
+  })
 
   const regionChange = (newRegion) => {
     setRegion(newRegion)
@@ -211,6 +241,7 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
           zoomEnabled
           initialRegion={region}
           region={recenter ? defaultRegion : region}
+          mapType={mapConfig}
           onRegionChangeComplete={(newRegion) => regionChange(newRegion)}
           onPress={event => onPress(event.nativeEvent.coordinate)}
         >
@@ -222,11 +253,22 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
   };
 
 export const MapWrapper = ({children, location, mapHeight}) => {
+
+  const [mapConfig, setMapConfig] = useState("standard")
+
+  useEffect(() => {
+      async function fetchConfig() {
+          setMapConfig(await AsyncStorage.getItem("@mapConfig"))
+      }
+      fetchConfig()
+  })
+
   return (
     <View>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={{height:mapHeight}}
+        mapType={mapConfig}
         initialCamera ={{
           center:{
               latitude: location.latitude,
@@ -323,10 +365,18 @@ export function MapAddArea({children, ...props}) {
     longitudeDelta: 0.01,
   });
 
+  const [mapConfig, setMapConfig] = useState("standard")
+
   useEffect(() => {
     if(props.region != null) {
       setRegion(props.region)
     }
+
+    async function fetchConfig() {
+      setMapConfig(await AsyncStorage.getItem("@mapConfig"))
+    }
+
+    fetchConfig()
   }, [props.region])
 
   // This is basically a default zoom level
@@ -406,6 +456,7 @@ export function MapAddArea({children, ...props}) {
         style={{height:props.mapHeight}}
         zoomEnabled
         region={region}
+        mapType={mapConfig}
         onRegionChangeComplete={newRegion => setRegion(newRegion)}
         onPress={event => addMarker(event.nativeEvent.coordinate)}
       >
@@ -432,6 +483,16 @@ setMarker={}
 */
 export function MapAddOne({children, ...props}) {
 
+  const [mapConfig, setMapConfig] = useState("standard")
+
+  useEffect(() => {
+      async function fetchConfig() {
+          setMapConfig(await AsyncStorage.getItem("@mapConfig"))
+      }
+      fetchConfig()
+  })
+
+
   // This is basically a default zoom level
   let location = getRegionForCoordinates(props.areas[0].points)
 
@@ -441,6 +502,7 @@ export function MapAddOne({children, ...props}) {
         provider={PROVIDER_GOOGLE}
         style={{height:'100%'}}
         zoomEnabled
+        mapType={mapConfig}
         initialRegion={{
           latitude: location.latitude,
           longitude: location.longitude,
