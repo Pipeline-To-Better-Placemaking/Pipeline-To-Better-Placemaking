@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Modal, ScrollView } from 'react-native';
-import { Icon, Input, Text, Button } from '@ui-kitten/components';
+import { Icon, Input, Text, Button, Popover } from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
 import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
@@ -25,6 +25,7 @@ export function UserSettings(props) {
   const [verificationError, setVerificationError] = useState(false);
   const [codeChanged, setCodeChanged] = useState(false);
   const [mapConfig, setMapConfig] = useState(true)
+  const [logoutVisible, setLogoutVisible] = useState(false)
 
   useEffect(() => {
       async function fetchData() {
@@ -140,10 +141,43 @@ export function UserSettings(props) {
     }
   }
 
+  const LogOutButton = () => {
+    return(
+      <Button style={{margin:5}} status='danger' onPress={() => setLogoutVisible(true)}>
+        LOG OUT
+      </Button>
+    )
+  }
+
+  const LogOutPopover = () => {
+
+    return (
+      <Popover
+        style={{height: 100, width: 300, marginTop: 20}}
+        visible={logoutVisible}
+        backdropStyle={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
+        onBackdropPress={() => setLogoutVisible(false)}
+        anchor={LogOutButton}>
+          <View>
+            <Text style={{alignSelf:'center', marginBottom: 15, marginTop: 5}}>
+              Are you sure you want to log out?
+            </Text>
+
+            <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+              <Button style={{width: 100, marginRight: 20}} onPress={() => logOut()}>Yes</Button>
+              <Button style={{width: 100}} onPress={() => setLogoutVisible(false)}>No</Button>
+            </View>
+
+          </View>
+      </Popover>
+    )
+  }
+
   const logOut = async () => {
     // Possible improvements
     // 1) Clean the async storaged
     // 2) Delete the user token (log out a user from a session)
+    await setLogoutVisible(false)
     await AsyncStorage.clear();
     await props.setSignedIn(false);
     await props.navigation.navigate('Title');
@@ -319,6 +353,8 @@ export function UserSettings(props) {
           </ViewableArea>
         </Modal>
 
+        
+
         <Modal animationType="slide" visible={verifyModalVisible}  onRequestClose={() => {setVerifyModalVisible(!verifyModalVisible)}}>
             <ViewableArea>
                 <Header text='Verify Email'/>
@@ -407,9 +443,9 @@ export function UserSettings(props) {
 
           <MapConfigButtonGroup/>
 
-          <Button style={{margin:5}} status='danger' onPress={() => logOut()}>
-            LOG OUT
-          </Button>
+          {/* <LogOutButton/> */}
+          <LogOutPopover/>
+
         </ScrollView>
 
       </ContentContainer>
