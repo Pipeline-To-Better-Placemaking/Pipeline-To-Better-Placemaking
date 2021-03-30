@@ -443,9 +443,8 @@ export function UserSettings(props) {
 
           <MapConfigButtonGroup/>
 
-          {/* <LogOutButton/> */}
           <LogOutPopover/>
-
+          
         </ScrollView>
 
       </ContentContainer>
