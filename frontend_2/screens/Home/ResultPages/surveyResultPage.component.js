@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, RefreshControl } from 'react-native';
-import { Text, Button, Input, Icon, Popover, Divider} from '@ui-kitten/components';
-import { HeaderBack } from '../../components/headers.component';
-import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { Text, Button, Input, Icon, Popover, Divider, MenuItem} from '@ui-kitten/components';
+import { HeaderBack, HeaderBackEdit } from '../../components/headers.component';
+import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
-import { helperGetResult } from '../../components/apiCalls';
+import { helperGetResult, isUserTeamOwner, deleteTimeSlot, getProject, getAllResults } from '../../components/apiCalls';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from '../projectResult.styles';
 
 export function SurveyResultPage(props) {
 
   const [refreshing, setRefreshing] = useState(false);
+  const [editMenuVisible, setEditMenuVisible] = useState(false);
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -28,13 +30,48 @@ export function SurveyResultPage(props) {
                            props.project
                          );
       await props.setSelectedResult(result);
+      await refreshProjectPageDetails();
     }
   };
+
+  // refreshes previous page
+  const refreshProjectPageDetails = async () => {
+    let proj = await getProject(props.project);
+    if (proj !== null) {
+      let results = await getAllResults(proj);
+      await props.setResults(results);
+    }
+  };
+
+  const deleteResult = async () => {
+    let success = false;
+    if (props.selectedResult !== null) {
+      success = await deleteTimeSlot("surveys/", props.selectedResult._id);
+    }
+    if (success) {
+      await refreshProjectPageDetails();
+      await setConfirmDeleteVisible(false);
+      props.navigation.goBack();
+    }
+  }
 
   if (props.selectedResult === null || !props.selectedResult.success) {
     return (
       <ViewableArea>
-        <HeaderBack {...props} text={"No results"}/>
+        {isUserTeamOwner(props.team, props.userId)
+          ?
+          <HeaderBackEdit {...props} text={"No results"} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
+            <MenuItem title='Delete Result' onPress={() => {setEditMenuVisible(false); setConfirmDeleteVisible(true)}}/>
+          </HeaderBackEdit>
+          :
+          <HeaderBack {...props} text={"No results"}/>
+        }
+        <ConfirmDelete
+          visible={confirmDeleteVisible}
+          setVisible={setConfirmDeleteVisible}
+          dataType={"result"}
+          deleteFunction={deleteResult}
+        />
         <ContentContainer>
           <ScrollView
             style={styles.margins}
@@ -75,7 +112,24 @@ export function SurveyResultPage(props) {
 
   return (
     <ViewableArea>
-      <HeaderBack {...props} text={props.project.title + ": " + props.selectedResult.sharedData.title}/>
+      {isUserTeamOwner(props.team, props.userId)
+        ?
+        <HeaderBackEdit {...props}
+          text={props.project.title + ": " + props.selectedResult.sharedData.title}
+          editMenuVisible={editMenuVisible}
+          setEditMenuVisible={setEditMenuVisible}
+        >
+          <MenuItem title='Delete Result' onPress={() => {setEditMenuVisible(false); setConfirmDeleteVisible(true)}}/>
+        </HeaderBackEdit>
+        :
+        <HeaderBack {...props} text={props.project.title + ": " + props.selectedResult.sharedData.title}/>
+      }
+      <ConfirmDelete
+        visible={confirmDeleteVisible}
+        setVisible={setConfirmDeleteVisible}
+        dataType={"result"}
+        deleteFunction={deleteResult}
+      />
       <ContentContainer>
         <ScrollView
           style={styles.margins}
