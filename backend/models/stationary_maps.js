@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
+const Points = require('../models/standing_points.js')
 
 const entrySchema = mongoose.Schema({
     location: {
@@ -98,6 +99,12 @@ module.exports.updateMap = async function (projectId, newMap) {
 }
 
 module.exports.deleteMap = async function(mapId) {
+
+    const map = await Maps.findById(mapId)
+
+    for(var i = 0; i < map.standingPoints.length; i++)
+        Points.removeRefrence(map.standingPoints[i])
+    
     return await Maps.findByIdAndDelete(mapId)
 }
 

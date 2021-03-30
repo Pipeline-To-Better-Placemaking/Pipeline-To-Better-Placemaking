@@ -1,16 +1,64 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Dimensions } from 'react-native';
+import { View, ScrollView, RefreshControl, Dimensions } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem, OverflowMenu } from '@ui-kitten/components';
-import { HeaderBack } from '../../components/headers.component';
+import { HeaderBack, HeaderBackEdit } from '../../components/headers.component';
 import { MapAreaWrapper, ShowArea } from '../../components/Maps/mapPoints.component';
-import { ViewableArea, ContentContainer } from '../../components/content.component';
+import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
+import { helperGetResult, isUserTeamOwner, deleteTimeSlot, getProject, getAllResults } from '../../components/apiCalls';
+import { formatMovingGraphData } from '../../components/helperFunctions';
 import { MyBarChart } from '../../components/charts.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from '../projectResult.styles';
 
 export function MovingResultPage(props) {
+
+  const [refreshing, setRefreshing] = useState(false);
+  const [editMenuVisible, setEditMenuVisible] = useState(false);
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    refreshDetails();
+    setRefreshing(false);
+  }, []);
+
+  const refreshDetails = async () => {
+    if (props.selectedResult !== null && props.selectedResult.sharedData !== undefined) {
+      let result = await helperGetResult(
+                           props.selectedResult._id,
+                           "moving_maps/",
+                           "moving",
+                           props.selectedResult.sharedData,
+                           props.project
+                         );
+      result = await formatMovingGraphData(result);
+      await props.setSelectedResult(result);
+      await refreshProjectPageDetails();
+    }
+  };
+
+  // refreshes previous page
+  const refreshProjectPageDetails = async () => {
+    let proj = await getProject(props.project);
+    if (proj !== null) {
+      let results = await getAllResults(proj);
+      await props.setResults(results);
+    }
+  };
+
+  const deleteResult = async () => {
+    let success = false;
+    if (props.selectedResult !== null) {
+      success = await deleteTimeSlot("moving_maps/", props.selectedResult._id);
+    }
+    if (success) {
+      await refreshProjectPageDetails();
+      await setConfirmDeleteVisible(false);
+      props.navigation.goBack();
+    }
+  }
 
   if (props.selectedResult === null ||
       !props.selectedResult.success ||
@@ -18,9 +66,30 @@ export function MovingResultPage(props) {
     ) {
     return (
       <ViewableArea>
-        <HeaderBack {...props} text={"No results"}/>
+        {isUserTeamOwner(props.team, props.userId)
+          ?
+          <HeaderBackEdit {...props} text={"No results"} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
+            <MenuItem title='Delete Result' onPress={() => {setEditMenuVisible(false); setConfirmDeleteVisible(true)}}/>
+          </HeaderBackEdit>
+          :
+          <HeaderBack {...props} text={"No results"}/>
+        }
+        <ConfirmDelete
+          visible={confirmDeleteVisible}
+          setVisible={setConfirmDeleteVisible}
+          dataType={"result"}
+          deleteFunction={deleteResult}
+        />
         <ContentContainer>
-          <ScrollView style={styles.margins}>
+          <ScrollView
+            style={styles.margins}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            }
+          >
 
             <Text category={'h5'}>No result information for this activity</Text>
 
@@ -74,9 +143,34 @@ export function MovingResultPage(props) {
 
   return (
     <ViewableArea>
-      <HeaderBack {...props} text={props.project.title + ": " + props.selectedResult.sharedData.title}/>
+      {isUserTeamOwner(props.team, props.userId)
+        ?
+        <HeaderBackEdit {...props}
+          text={props.project.title + ": " + props.selectedResult.sharedData.title}
+          editMenuVisible={editMenuVisible}
+          setEditMenuVisible={setEditMenuVisible}
+        >
+          <MenuItem title='Delete Result' onPress={() => {setEditMenuVisible(false); setConfirmDeleteVisible(true)}}/>
+        </HeaderBackEdit>
+        :
+        <HeaderBack {...props} text={props.project.title + ": " + props.selectedResult.sharedData.title}/>
+      }
+      <ConfirmDelete
+        visible={confirmDeleteVisible}
+        setVisible={setConfirmDeleteVisible}
+        dataType={"result"}
+        deleteFunction={deleteResult}
+      />
       <ContentContainer>
-        <ScrollView style={styles.margins}>
+        <ScrollView
+          style={styles.margins}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
 
           <Text category={'h5'}>Moving Result Information</Text>
           <Divider style={{marginTop:5, marginBottom:10, borderWidth:0.5}} />

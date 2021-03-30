@@ -164,6 +164,7 @@ export function TabNavigation(props) {
             {...props}
             location={location}
             allProjects={allProjects}
+            setAllProjects={setAllProjects}
           >
           </HomeScreenStack>
         }

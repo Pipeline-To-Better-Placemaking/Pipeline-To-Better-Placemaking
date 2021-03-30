@@ -31,6 +31,9 @@ export function HomeScreenStack(props){
 
   //** Results **//
   let allProjects = props.allProjects
+  const setAllProjects = async (projects) => {
+    await props.setAllProjects(projects);
+  }
 
   // selected project
   const [selectedProject, setSelectedProject] = useState(null);
@@ -86,6 +89,7 @@ export function HomeScreenStack(props){
           removeFromSelectedProjects={removeFromSelectedProjects}
           // results
           allProjects={allProjects}
+          setAllProjects={setAllProjects}
           selectedProject={selectedProject}
           setSelectedProject={setSelectedProject}
           setSelectedTeam={setSelectedTeam}
@@ -140,6 +144,7 @@ export function HomeScreenStack(props){
           project={selectedProject}
           team={selectedTeam}
           results={results}
+          setResults={setResults}
           selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}
          />
@@ -157,6 +162,7 @@ export function HomeScreenStack(props){
           team={selectedTeam}
           selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}
+          setResults={setResults}
          />
        }
       </Screen>
@@ -172,6 +178,7 @@ export function HomeScreenStack(props){
           team={selectedTeam}
           selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}
+          setResults={setResults}
          />
        }
       </Screen>
@@ -187,6 +194,7 @@ export function HomeScreenStack(props){
           team={selectedTeam}
           selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}
+          setResults={setResults}
          />
        }
       </Screen>

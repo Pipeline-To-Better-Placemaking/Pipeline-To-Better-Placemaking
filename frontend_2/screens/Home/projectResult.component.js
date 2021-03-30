@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, ScrollView, RefreshControl } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem, OverflowMenu } from '@ui-kitten/components';
 import { HeaderBack } from '../components/headers.component';
 import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component';
-import { ViewableArea, ContentContainer } from '../components/content.component';
+import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getDayStr, getTimeStr } from '../components/timeStrings.component';
+import { getAllResults, getProject } from '../components/apiCalls';
+import { formatStationaryGraphData, formatMovingGraphData } from '../components/helperFunctions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './projectResult.styles';
 
@@ -15,15 +17,35 @@ const ForwardIcon = (props) => (
 
 export function ProjectResultPage(props) {
 
+  const [refreshing, setRefreshing] = useState(false);
+  const [sentMsgVisible, setSentMsgVisible] = useState(false);
+  const [msg, setMsg] = useState('');
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    refreshDetails();
+    setRefreshing(false);
+  }, []);
+
+  const refreshDetails = async () => {
+    let proj = await getProject(props.project);
+    if (proj !== null) {
+      let results = await getAllResults(proj); // sets to empty list if no results
+      await props.setResults(results);
+    }
+  };
+
   const openActivityPage = async (item) => {
     await props.setSelectedResult(item);
     // open results page
     if (item.test_type === 'stationary') {
-      await formatStationaryGraphData(item);
+      let result = await formatStationaryGraphData(item);
+      await props.setSelectedResult(result);
       props.navigation.navigate("StationaryResultPage");
     }
     else if (item.test_type === 'moving') {
-      await formatMovingGraphData(item);
+      let result = await formatMovingGraphData(item);
+      await props.setSelectedResult(result);
       props.navigation.navigate("MovingResultPage");
     }
     else if (item.test_type === 'survey') {
@@ -31,140 +53,9 @@ export function ProjectResultPage(props) {
     }
   };
 
-  async function formatStationaryGraphData(result) {
-    if (result.data !== null && result.data.length >= 1 && result.graph === undefined) {
-      let tempResult = {...result};
-      let graph = {
-        ageData: [],
-        ageLabels: [],
-        genderData: [],
-        genderLabels: [],
-        postureData: [],
-        postureLabels: [],
-        activityData: [],
-        activityLabels: [],
-      };
-      let index = -1;
-      let label = '';
-      await result.data.map(dataPoint => {
-        label = dataPoint.age;
-        if (label !== undefined) {
-          if (graph.ageLabels !== null && graph.ageLabels.length > 0) {
-            index = graph.ageLabels.findIndex(element => element === label);
-            // add category if it's not currently in the list
-            if (index < 0) {
-              index = graph.ageLabels.length;
-              graph.ageLabels = [...graph.ageLabels, label];
-              graph.ageData = [...graph.ageData, Number(0)];
-            }
-          } else { // first entry
-            index = 0;
-            graph.ageLabels = [label];
-            graph.ageData = [Number(0)];
-          }
-          // increase count
-          graph.ageData[index] = graph.ageData[index] + 1;
-        }
-        label = dataPoint.gender;
-        if (label !== undefined) {
-          if (graph.genderLabels !== null && graph.genderLabels.length > 0) {
-            index = graph.genderLabels.findIndex(element => element === label);
-            // add category if it's not currently in the list
-            if (index < 0) {
-              index = graph.genderLabels.length;
-              graph.genderLabels = [...graph.genderLabels, label];
-              graph.genderData = [...graph.genderData, Number(0)];
-            }
-          } else { // first entry
-            index = 0;
-            graph.genderLabels = [label];
-            graph.genderData = [Number(0)];
-          }
-          // increase count
-          graph.genderData[index] = graph.genderData[index] + 1;
-        }
-        label = dataPoint.posture;
-        if (label !== undefined) {
-          if (graph.postureLabels !== null && graph.postureLabels.length > 0) {
-            index = graph.postureLabels.findIndex(element => element === label);
-            // add category if it's not currently in the list
-            if (index < 0) {
-              index = graph.postureLabels.length;
-              graph.postureLabels = [...graph.postureLabels, label];
-              graph.postureData = [...graph.postureData, Number(0)];
-            }
-          } else { // first entry
-            index = 0;
-            graph.postureLabels = [label];
-            graph.postureData = [Number(0)];
-          }
-          // increase count
-          graph.postureData[index] = graph.postureData[index] + 1;
-        }
-        label = dataPoint.activity;
-        if (label !== undefined) {
-          if (graph.activityLabels !== null && graph.activityLabels.length > 0) {
-            index = graph.activityLabels.findIndex(element => element === label);
-            // add category if it's not currently in the list
-            if (index < 0) {
-              index = graph.activityLabels.length;
-              graph.activityLabels = [...graph.activityLabels, label];
-              graph.activityData = [...graph.activityData, Number(0)];
-            }
-          } else { // first entry
-            index = 0;
-            graph.activityLabels = [label];
-            graph.activityData = [Number(0)];
-          }
-          // increase count
-          graph.activityData[index] = graph.activityData[index] + 1;
-        }
-      });
-      //console.log("resulting graph data: ", graph);
-      tempResult.graph = {...graph};
-      await props.setSelectedResult(tempResult);
-    }
-  }
-
-  async function formatMovingGraphData(result) {
-    if (result.data !== null && result.data.length >= 1 && result.graph === undefined) {
-      let tempResult = {...result};
-      let graph = {
-        data: [],
-        labels: [],
-      };
-      let index = -1;
-      let label = '';
-      await result.data.map(dataPoint => {
-        label = dataPoint.mode;
-        if (label !== undefined) {
-          if (graph.labels !== null && graph.labels.length > 0) {
-            index = graph.labels.findIndex(element => element === label);
-            // add category if it's not currently in the list
-            if (index < 0) {
-              index = graph.labels.length;
-              graph.labels = [...graph.labels, label];
-              graph.data = [...graph.data, Number(0)];
-            }
-          } else { // first entry
-            index = 0;
-            graph.labels = [label];
-            graph.data = [Number(0)];
-          }
-          // increase count
-          graph.data[index] = graph.data[index] + 1;
-        }
-      });
-      //console.log("resulting graph data: ", graph);
-      tempResult.graph = {...graph};
-      await props.setSelectedResult(tempResult);
-    }
-  }
-
   const emailResults = async () => {
     let success = false
     let result = null
-
     try {
         const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + '/export', {
             method: 'GET',
@@ -175,10 +66,23 @@ export function ProjectResultPage(props) {
             }
         })
         result = await response.json();
+        console.log("email result...", result);
         success = true
     } catch (error) {
-        console.log("error", error)
+        console.log("error", error);
+        success = false;
     }
+    if (result.success !== undefined) {
+      success = result.success;
+    }
+
+    if(success) {
+      await setMsg("Success, sent Project Information!");
+    } else {
+      await setMsg("Failure, wasn't able to send Project Information :(");
+    }
+    await setSentMsgVisible(true);
+    wait(2000).then(() => setSentMsgVisible(false));
   }
 
   const activityItem = ({ item, index }) => (
@@ -197,6 +101,15 @@ export function ProjectResultPage(props) {
   return (
     <ViewableArea>
       <HeaderBack {...props} text={props.project.title}/>
+      <PopUpContainer
+        {...props}
+        visible={sentMsgVisible}
+        closePopUp={() => setSentMsgVisible(false)}
+      >
+        <View style={{justifyContent:'center', alignItems:'center'}}>
+          <Text category={'s1'}>{msg}</Text>
+        </View>
+      </PopUpContainer>
       <ContentContainer>
 
         <View style={{height:'35%'}}>
@@ -243,6 +156,12 @@ export function ProjectResultPage(props) {
             data={props.results}
             ItemSeparatorComponent={Divider}
             renderItem={activityItem}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            }
           />
         </View>
 
@@ -250,6 +169,10 @@ export function ProjectResultPage(props) {
     </ViewableArea>
   );
 };
+
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 const MailIcon = (props) => (
   <Icon {...props} name='email-outline'/>

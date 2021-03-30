@@ -29,7 +29,7 @@ export function Collaborate(props) {
 
   const refreshDetails = async () => {
     let token = await AsyncStorage.getItem("@token");
-    let userInfo = await getUserInfo(token);
+    let userInfo = await getUserInfo();
 
     if(userInfo !== null && userInfo.invites !== undefined && userInfo.invites !== null) {
       //console.log("success");
@@ -93,7 +93,7 @@ export function Collaborate(props) {
 
   const openTeamPage = async (item) => {
     let success = false
-    let teamDetails = await getTeam(props.token, item);
+    let teamDetails = await getTeam(item);
     if(teamDetails != null) {
       console.log("Selected Team: ", teamDetails);
       // set selected team
@@ -109,7 +109,7 @@ export function Collaborate(props) {
   };
 
   const acceptInvite = async (invite) => {
-    let success = await postInvite(props.token, invite._id, true);
+    let success = await postInvite(invite._id, true);
     if(success) {
       //console.log("success, accepted invite");
       // Add the new team to the list of teams
@@ -132,7 +132,7 @@ export function Collaborate(props) {
   }
 
   const declineInvite = async (invite) => {
-    let success = await postInvite(props.token, invite._id, false);
+    let success = await postInvite(invite._id, false);
 
     if(success) {
       //console.log("success, declined invite");

@@ -53,7 +53,7 @@ export function CreateProject(props) {
                 description: description,
                 points: markers,
                 team: props.team,
-                standingPoints:[{latitude: centerPoint.latitude, longitude: centerPoint.longitude, title: "center"}]
+                standingPoints:[{latitude: centerPoint.latitude, longitude: centerPoint.longitude, title: "Center"}]
             })
         })
         projectDetails = await response.json()

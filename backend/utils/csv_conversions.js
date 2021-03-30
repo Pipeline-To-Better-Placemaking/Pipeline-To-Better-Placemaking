@@ -148,10 +148,12 @@ surveyToCSV = function(data) {
         var collection = data.surveyCollections[i]
         
         var area = "\"POLYGON (("
-        for(var j = 0; j < collection.area.points.length; j++){
-            if (j != 0) area += ','
-            area += collection.area.points[j].latitude + " "
-            area += collection.area.points[j].longitude
+        if(collection.area){
+            for(var j = 0; j < collection.area.points.length; j++){
+                if (j != 0) area += ','
+                area += collection.area.points[j].latitude + " "
+                area += collection.area.points[j].longitude
+            }
         }
         area += "))\""
         

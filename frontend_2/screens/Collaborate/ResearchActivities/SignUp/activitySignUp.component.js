@@ -23,7 +23,7 @@ export function ActivitySignUpPage(props) {
 
   const refreshDetails = async () => {
     let collectionDetails = {...props.activity};
-    collectionDetails = await getAllCollectionInfo(props.token, collectionDetails);
+    collectionDetails = await getAllCollectionInfo(collectionDetails);
 
     // if successfully retrieved activity info, Update
     if(collectionDetails !== null) {

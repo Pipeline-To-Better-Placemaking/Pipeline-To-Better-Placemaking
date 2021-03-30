@@ -299,7 +299,7 @@ export const MapWrapper = ({children, location, mapHeight}) => {
 export const ShowAreas = ({areas}) => {
   const center = areas.map((area, index) => getRegionForCoordinates(area.points));
   return (areas.map((area, index) => (
-    <View key={index}>
+    <View key={area._id}>
       <MapView.Polygon
         coordinates={area.points}
         strokeWidth={3}
@@ -335,7 +335,7 @@ export const ShowMarkers = ({markers}) => {
   else {
     return (markers.map((coord, index) => (
         <MapView.Marker
-          key={index}
+          key={coord._id}
           coordinate = {{
               latitude: coord.latitude,
               longitude: coord.longitude

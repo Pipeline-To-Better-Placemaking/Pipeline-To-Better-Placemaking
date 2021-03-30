@@ -228,7 +228,9 @@ router.post('/:id/stationary_collections', passport.authenticate('jwt',{session:
         })
 
         await newCollection.save()
-       
+
+        await Area.addRefrence(newCollection.area)
+
         await Project.addStationaryCollection(project._id,newCollection._id)
         res.json(newCollection)
     }
@@ -250,6 +252,11 @@ router.put('/:id/stationary_collections/:collectionId', passport.authenticate('j
                 area: (req.body.area ? req.body.area : collection.area),
                 duration: (req.body.duration ? req.body.duration : collection.duration)
         })
+
+        if(req.body.area){
+            await Area.addRefrence(req.body.area)
+            await Area.removeRefrence(collection.area)
+        }
   
         res.status(201).json(await Stationary_Collection.updateCollection(req.params.collectionId, newCollection))
     }
@@ -261,7 +268,10 @@ router.put('/:id/stationary_collections/:collectionId', passport.authenticate('j
 router.delete('/:id/stationary_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.params.id)
+    collection = await Stationary_Collection.findById(req.params.collectionId)
+
     if(await Team.isAdmin(project.team,user._id)){
+        Area.removeRefrence(collection.area)
         res.status(201).json(await Project.deleteStationaryCollection(project._id, req.params.collectionId))
     }
     else{
@@ -282,7 +292,11 @@ router.post('/:id/moving_collections', passport.authenticate('jwt',{session:fals
             duration: req.body.duration
         })
 
+        
+
         await newCollection.save()
+        await Area.addRefrence(newCollection.area)
+
        
         await Project.addMovingCollection(project._id,newCollection._id)
         res.json(newCollection)
@@ -306,6 +320,11 @@ router.put('/:id/moving_collections/:collectionId', passport.authenticate('jwt',
                 area: (req.body.area ? req.body.area : collection.area),
                 duration: (req.body.duration ? req.body.duration : collection.duration)
         })
+
+        if(req.body.area){
+            await Area.addRefrence(req.body.area)
+            await Area.removeRefrence(collection.area)
+        }
   
         res.status(201).json(await Moving_Collection.updateCollection(req.params.collectionId, newCollection))
     }
@@ -317,7 +336,10 @@ router.put('/:id/moving_collections/:collectionId', passport.authenticate('jwt',
 router.delete('/:id/moving_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.params.id)
+    collection = await Moving_Collection.findById(req.params.collectionId)
+
     if(await Team.isAdmin(project.team,user._id)){
+        Area.removeRefrence(collection.area)
         res.status(201).json(await Project.deleteMovingCollection(project._id,req.params.collectionId))
     }
     else{
@@ -339,6 +361,7 @@ router.post('/:id/survey_collections', passport.authenticate('jwt',{session:fals
         })
 
         await newCollection.save()
+        await Area.addRefrence(newCollection.area)
        
         await Project.addSurveyCollection(project._id,newCollection._id)
         res.json(newCollection)
@@ -361,6 +384,11 @@ router.put('/:id/survey_collections/:collectionId', passport.authenticate('jwt',
                 area: (req.body.area ? req.body.area : collection.area),
                 duration: (req.body.duration ? req.body.duration : collection.duration)
         })
+
+        if(req.body.area){
+            await Area.addRefrence(req.body.area)
+            await Area.removeRefrence(collection.area)
+        }
   
         res.status(201).json(await Survey_Collection.updateCollection(req.params.collectionId, newCollection))
     }
@@ -372,7 +400,9 @@ router.put('/:id/survey_collections/:collectionId', passport.authenticate('jwt',
 router.delete('/:id/survey_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.params.id)
+    collection = await Survey_Collection.findById(req.params.collectionId)
     if(await Team.isAdmin(project.team,user._id)){
+        Area.removeRefrence(collection.area)
         res.status(201).json(await Project.deleteSurveyCollection(project._id,req.params.collectionId))
     }
     else{
