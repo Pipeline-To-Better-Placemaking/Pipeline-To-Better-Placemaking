@@ -407,7 +407,7 @@ export function UserSettings(props) {
 
           <MapConfigButtonGroup/>
 
-          <Button style={{margin:5}} status='danger' onPress={() => logOut()}>
+          <Button style={{margin:5, marginTop:50}} status='danger' onPress={() => logOut()}>
             LOG OUT
           </Button>
         </ScrollView>

@@ -342,7 +342,7 @@ export const ShowMarkers = ({markers}) => {
           }}
         >
           <Callout>
-            <Text>{coord.title}</Text>
+            <Text style={{color:"black"}}>{coord.title}</Text>
           </Callout>
         </MapView.Marker>
         )))

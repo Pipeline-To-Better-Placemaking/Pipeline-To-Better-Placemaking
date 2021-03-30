@@ -22,42 +22,22 @@ export function StationaryMapResults(props) {
         //console.log("Age: " + JSON.stringify(props.point))
 
         return (
-            <View style={{flexDirection: 'column', width: 190}}>
-                <View style={{flexDirection: 'row'}}>
-                    <Text>
-                        Age:
-                    </Text>
-                    <Text>
-                        {'\t' + props.point.age}
-                    </Text>
-                </View>
+            <View style={{flexDirection: 'column', margin:10}}>
+              <Text style={{color:"black"}}>
+                  Age: {'\t' + props.point.age}
+              </Text>
 
-                <View style={{flexDirection: 'row'}}>
-                    <Text>
-                        Gender:
-                    </Text>
-                    <Text>
-                        {' ' + props.point.gender}
-                    </Text>
-                </View>
+              <Text style={{color:"black"}}>
+                  Gender: {' ' + props.point.gender}
+              </Text>
 
-                <View style={{flexDirection: 'row'}}>
-                    <Text>
-                        Activity:
-                    </Text>
-                    <Text>
-                        {' ' + props.point.activity}
-                    </Text>
-                </View>
+              <Text style={{color:"black"}}>
+                  Activity: {' ' + props.point.activity}
+              </Text>
 
-                <View style={{flexDirection: 'row'}}>
-                    <Text>
-                        Posture:
-                    </Text>
-                    <Text>
-                        {' ' + props.point.posture}
-                    </Text>
-                </View>
+              <Text style={{color:"black"}}>
+                  Posture: {' ' + props.point.posture}
+              </Text>
             </View>
         )
     }
@@ -78,7 +58,7 @@ export function StationaryMapResults(props) {
                     }}
                 >
                     <DataPin index={index}/>
-                    <Callout>
+                    <Callout style={{position: 'relative'}}>
                         <DataCallout point={data}/>
                     </Callout>
                 </MapView.Marker>
