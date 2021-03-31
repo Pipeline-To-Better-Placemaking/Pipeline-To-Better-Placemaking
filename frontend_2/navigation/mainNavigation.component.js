@@ -55,6 +55,7 @@ export function AppNavigator (props) {
             <SignUpScreen
               {...props}
               setSignedIn={setSignedIn}
+              setLocation={setLocation}
             >
             </SignUpScreen>
           }
