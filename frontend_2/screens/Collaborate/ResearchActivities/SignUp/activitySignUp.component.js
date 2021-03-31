@@ -327,7 +327,7 @@ export function ActivitySignUpPage(props) {
 
   const isSignedUp = (timeSlot, userId) => {
     for (let i = 0; i < timeSlot.maxResearchers; i++) {
-      if(timeSlot.researchers[0] != null && timeSlot.researchers[i]._id == userId)
+      if(timeSlot.researchers[i] != null && timeSlot.researchers[i]._id !== undefined && timeSlot.researchers[i]._id  == userId)
           return true;
     }
 

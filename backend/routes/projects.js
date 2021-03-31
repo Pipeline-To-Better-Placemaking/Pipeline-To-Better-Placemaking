@@ -470,7 +470,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
     const mailOptions = {
         from: `"2+ Community" <${config.PROJECT_EMAIL}>`,
         to: req.user.email,
-        subject: 'Stationary Data Export',
+        subject: stationaryData.title + ' Data Export',
         text: `Attatched is your data`,
         html: emailHTML,
         attachments: [
