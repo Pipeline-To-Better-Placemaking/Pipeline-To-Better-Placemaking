@@ -116,7 +116,7 @@ export const EnterNumber = ({ children, ...props }) => {
         keyboardType="number-pad"
       />
       <Button style={{marginTop:5}} onPress={props.closePopUp}>
-        Comfirm
+        Confirm
       </Button>
     </PopUpContainer>
  );

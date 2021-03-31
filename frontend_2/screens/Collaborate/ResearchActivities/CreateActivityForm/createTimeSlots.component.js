@@ -206,7 +206,7 @@ export function CreateTimeSlots(props) {
           keyboardType="number-pad"
         />
         <Button style={{marginTop:5}} onPress={confirmModal}>
-          Comfirm
+          Confirm
         </Button>
       </Card>
     </Modal>
@@ -231,7 +231,7 @@ export function CreateTimeSlots(props) {
          })}
        </Select>
         <Button style={{marginTop:10}} onPress={confirmPointsModal}>
-          Comfirm
+          Confirm
         </Button>
       </Card>
     </Modal>
