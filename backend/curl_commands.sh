@@ -5,13 +5,13 @@ curl --header "Content-Type: application/json" \
 
 TOKEN=$(curl --header "Content-Type: application/json" \
       --request POST \
-      -d '{"email": "atlas3141@gmail.com","password": "What@1234"}'\
+      -d '{"email": "dogg@gmail.com","password": "What@1234"}'\
       http://localhost:8080/api/login \
       | jq -r '.token')
 
 curl --header "Content-Type: application/json" \
       --request POST \
-      -d '{"email": "atlas3141@gmail.com","password": "What@1234"}'\
+      -d '{"email": "dogg@gmail.com","password": "What@1234"}'\
       http://localhost:8080/api/login
 
       echo 
@@ -52,6 +52,13 @@ curl -H 'Content-Type: application/json' \
      http://localhost:8080/api/projects/
 
 echo
+
+#curl -H 'Content-Type: application/json' \
+#     -H "Authorization: Bearer ${TOKEN}" \
+##     --request POST \
+ #    -d '{"userEmail": "dogg@gmail.com"}' \
+ #    http://localhost:8080/api/teams/${TEAM}/invites
+#echo
 
 PROJECT=$(curl -H 'Content-Type: application/json' \
      -H "Authorization: Bearer ${TOKEN}" \
@@ -275,10 +282,10 @@ curl -H 'Content-Type: application/json' \
 
 
 
-curl -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer ${TOKEN}" \
-     --request GET \
-   http://localhost:8080/api/projects/${PROJECT}/export
+#curl -H 'Content-Type: application/json' \
+#     -H "Authorization: Bearer ${TOKEN}" \
+#     --request GET \
+#   http://localhost:8080/api/projects/${PROJECT}/export
 
 #MAP=$(curl -H 'Content-Type: application/json' \
 #     -H "Authorization: Bearer ${TOKEN}" \r
