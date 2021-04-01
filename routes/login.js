@@ -43,6 +43,14 @@ router.post('/', async (req,res,next) => {
     .populate('teams', 'title')
     .populate('invites','title')
 
+    fullUser = fullUser.toJSON()
+    
+    for(var i = 0; i < fullUser.invites.length; i++){
+        const owner = await Team.getOwner(fullUser.invites[i]._id)
+        fullUser.invites[i].firstname = owner.firstname
+        fullUser.invites[i].lastname = owner.lastname
+    }
+
     res.status(200).json({
         success: true,
         token: token,
