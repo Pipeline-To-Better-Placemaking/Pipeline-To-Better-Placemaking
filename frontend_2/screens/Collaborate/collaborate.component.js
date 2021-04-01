@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, RefreshControl } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, useTheme } from '@ui-kitten/components';
 import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getTeam, postInvite, getUserInfo } from '../components/apiCalls';
@@ -14,6 +14,7 @@ export function Collaborate(props) {
   const [visible, setVisible] = useState(false);
   const [refreshingInvites, setRefreshingInvites] = useState(false);
   const [refreshingTeams, setRefreshingTeams] = useState(false);
+  const theme = useTheme();
 
   const onRefreshInvites = React.useCallback(() => {
     setRefreshingInvites(true);
@@ -168,11 +169,16 @@ export function Collaborate(props) {
   );
 
   const inviteItem = ({ item, index }) => (
-      <ListItem style={{justifyContent:'space-between'}}>
-        <Text style={{fontSize:20}}>
-            {`${item.title}`}
-        </Text>
-        <View style={{flexDirection:'row'}}>
+      <ListItem style={{flex:1, justifyContent:'space-between', flexDirection:'row'}}>
+        <View style={{flex:1, flexDirection:'column', justifyContent:'flex-start'}}>
+          <Text style={{fontSize:20}}>
+              {`${item.title}`}
+          </Text>
+          <Text style={{color:theme['text-hint-color']}}>
+              {"From: "+ item.firstname + " " + item.lastname}
+          </Text>
+        </View>
+        <View style={{flex:1, flexDirection:'row', justifyContent:'flex-end'}}>
           <Button
             status='success'
             accessoryRight={CreateIcon}
