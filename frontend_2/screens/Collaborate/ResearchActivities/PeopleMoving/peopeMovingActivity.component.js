@@ -102,6 +102,7 @@ export function PeopleMovingActivity(props) {
             setMoving(true)
         }
         else if (standingIndex == standingPointLength-1){
+            endActivity()
             props.navigation.navigate("ActivitySignUpPage");
         }
     }
