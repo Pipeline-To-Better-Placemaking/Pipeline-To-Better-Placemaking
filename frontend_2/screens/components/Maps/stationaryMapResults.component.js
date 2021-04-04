@@ -82,7 +82,7 @@ export function StationaryMapResults(props) {
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}
-                    fillColor={'rgba(0,0,0,0.5)'}
+                    fillColor={'rgba(0,0,0,0.2)'}
                 />
 
                 <ShowPolygon/>
