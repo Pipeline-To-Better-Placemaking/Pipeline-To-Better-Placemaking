@@ -463,7 +463,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
 
     const emailHTML = `
         <h3>Hello from 2+ Community!</h3>
-        <p>You have requested a copy of your stationary data. Attatched is a csv formated file representing your data.</p>
+        <p>You have requested a copy of project data. Attached is a csv formatted file representing the data.</p>
 
     `
     
@@ -471,7 +471,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
         from: `"2+ Community" <${config.PROJECT_EMAIL}>`,
         to: req.user.email,
         subject: stationaryData.title + ' Data Export',
-        text: `Attatched is your data`,
+        text: `Attached is your data`,
         html: emailHTML,
         attachments: [
             {
