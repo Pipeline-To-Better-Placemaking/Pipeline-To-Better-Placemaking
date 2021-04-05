@@ -38,7 +38,7 @@ const entrySchema = mongoose.Schema({
         type: Date,
         required: true
     },
-    standingPoints:{
+    standingPoint:{
         type:ObjectId,
         ref: 'Standing_Points',
         required: true
@@ -125,10 +125,10 @@ module.exports.addEntry = async function(mapId, newEntry) {
         age: newEntry.age,
         activity: newEntry.activity,
         location: newEntry.location,
-        standingPoints: newEntry.standingPoints
+        standingPoint: newEntry.standingPoint
     })
 
-    Points.addRefrence(standingPoints)
+    Points.addRefrence(newEntry.standingPoints)
 
     return await Maps.updateOne(
         { _id: mapId },
