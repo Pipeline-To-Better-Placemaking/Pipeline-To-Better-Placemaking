@@ -33,6 +33,7 @@ stationaryToCSV = function(data) {
                 if(map.data){
                     for(var k = 0; k < map.data.length; k++){
                         var entry = map.data[k]
+                        console.log(entry)
                         csv += '\n'
                         csv += collection.title + ','
                         csv += collection.date + ','
