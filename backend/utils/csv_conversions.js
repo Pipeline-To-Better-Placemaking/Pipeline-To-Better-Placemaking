@@ -22,7 +22,6 @@ stationaryToCSV = function(data) {
         if(collection.maps){
             for (var j = 0; j < collection.maps.length; j++){
                 var map = collection.maps[j]
-                console.log(map)
 
                 var researchers = "\""
                 if(map.researchers){

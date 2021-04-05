@@ -27,7 +27,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
             throw new BadRequestError('Areas require at least three points')
 
         let newArea = new Area({
-            title: req.body.areaTitle,
+            title: "Project Perimeter",
             points: req.body.points
         })
         newArea.save()
