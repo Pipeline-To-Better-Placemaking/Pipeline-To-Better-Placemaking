@@ -167,7 +167,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
     user = await req.user   
     map = await Map.findById(req.params.id)
 
-    if (map.owner.toString() == user._id.toString()){
+    if (Map.isResearcher(mapId, user._id)){
 
         oldData = await Map.findData(map._id, req.params.data_id)
 
@@ -175,8 +175,15 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             _id: oldData._id,
             path: (req.body.path ? req.body.path : oldData.path),
             mode: (req.body.mode ? req.body.mode : oldData.mode),
+            standingPoint: (req.body.standingPoint ? req.body.standingPoint : oldData.standingPoint),
             time: (req.body.time ? req.body.time : oldData.time)
         }
+
+        if(req.body.standingPoint){
+            Points.addRefrence(req.body.standingPoint)
+            Points.removeRefrence(oldDat.standingPoint)
+        }
+
         await Map.updateData(map._id,oldData._id,newData)
         res.status(201).json(await Map.findById(req.params.id))
     }  

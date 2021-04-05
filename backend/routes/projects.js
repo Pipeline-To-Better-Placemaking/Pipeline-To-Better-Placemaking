@@ -421,10 +421,12 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     path: 'maps',
                                     model: 'Stationary_Maps',
                                     select: 'date data',
-                                    populate: {
-                                        path: 'standingPoints',
+                                    populate: [{
+                                        path: 'data.standingPoints',
                                         model: 'Standing_Points'
-                                    }
+                                    },{
+                                    path: 'researchers'
+                                     }]
                                    },{
                                     path: 'area',
                                    }]
@@ -439,10 +441,12 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     path: 'maps',
                                     model: 'Moving_Maps',
                                     select: 'date data',
-                                    populate: {
-                                        path: 'standingPoints',
+                                    populate: [{
+                                        path: 'data.standingPoints',
                                         model: 'Standing_Points'
-                                    }
+                                    },{
+                                    path: 'researchers'
+                                     }]
                                     },{
                                     path: 'area',
                                     }]
