@@ -55,6 +55,7 @@ export function StationaryActivity(props) {
                 posture: inf.posture,
                 location: tempMarker,
                 time: new Date(),
+                standingPoint: position[standingIndex],
             }
 
             setData(() => data.concat(pointData))

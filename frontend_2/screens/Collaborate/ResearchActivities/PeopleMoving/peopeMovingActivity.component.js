@@ -181,7 +181,8 @@ export function PeopleMovingActivity(props) {
             let dat = {
                 path: currentPath,
                 mode: inf.movement,
-                time: new Date()
+                time: new Date(),
+                standingPoint: position[standingIndex],
             }
 
             let totalLines = {
