@@ -2,7 +2,7 @@ stationaryToCSV = function(data) {
 
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
-                  "Area,Duration,Activity_Time," +
+                  "Area_Title,Area,Duration,Activity_Time," +
                   "Researchers,Standing_Point_Title, Standing_Point" +
                   "Location,Age,Gender,Activity,Posture"
 
@@ -36,6 +36,7 @@ stationaryToCSV = function(data) {
                         csv += '\n'
                         csv += collection.title + ','
                         csv += collection.date + ','
+                        csv += collection.area.title + ','
                         csv += area + ','
                         csv += collection.duration + ','
                         csv += map.date + ','
@@ -60,7 +61,7 @@ movingToCSV = function(data) {
 
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
-                  "Area,Duration,Activity_Time," +
+                  "Area_Title,Area,Duration,Activity_Time," +
                   "Researchers,Standing_Point,Standing_Point_Title" +
                   "Mode,Path"
 
@@ -94,6 +95,7 @@ movingToCSV = function(data) {
                         csv += '\n'
                         csv += collection.title + ','
                         csv += collection.date + ','
+                        csv += collection.area.title + ','
                         csv += area + ','
                         csv += collection.duration + ','
                         csv += map.date + ','
@@ -121,7 +123,7 @@ surveyToCSV = function(data) {
 
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
-                  "Area,Duration,Activity_Time," +
+                  "Area_Title,Area,Duration,Activity_Time," +
                   "Researchers,Key" 
 
     var csv = headers
@@ -155,6 +157,7 @@ surveyToCSV = function(data) {
                 csv += '\n'
                 csv += collection.title + ','
                 csv += collection.date + ','
+                csv += collection.area.title + ','
                 csv += area + ','
                 csv += collection.duration + ','
                 csv += survey.date + ','
