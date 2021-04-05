@@ -3,7 +3,7 @@ stationaryToCSV = function(data) {
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
                   "Area_Title,Area,Duration,Activity_Time," +
-                  "Researchers,Standing_Point_Title, Standing_Point" +
+                  "Researchers,Standing_Point_Title, Standing_Point," +
                   "Location,Age,Gender,Activity,Posture"
 
     var csv = headers
@@ -22,18 +22,19 @@ stationaryToCSV = function(data) {
         if(collection.maps){
             for (var j = 0; j < collection.maps.length; j++){
                 var map = collection.maps[j]
+                console.log(map)
+
                 var researchers = "\""
                 if(map.researchers){
                     for(var k = 0; k < map.researchers.length; k++){
-                        if(k != 0) researchers += ','
-                        researchers += map.researchers[k].firstName + " " + map.researchers[k].lastName
+                        if(k != 0) researchers += ', '
+                        researchers += map.researchers[k].firstname + " " + map.researchers[k].lastname
                     }
                 }
                 researchers += "\""
                 if(map.data){
                     for(var k = 0; k < map.data.length; k++){
                         var entry = map.data[k]
-                        console.log(entry)
                         csv += '\n'
                         csv += collection.title + ','
                         csv += collection.date + ','
@@ -63,7 +64,7 @@ movingToCSV = function(data) {
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
                   "Area_Title,Area,Duration,Activity_Time," +
-                  "Researchers,Standing_Point,Standing_Point_Title" +
+                  "Researchers,Standing_Point,Standing_Point_Title," +
                   "Mode,Path"
 
     var csv = headers
@@ -85,8 +86,8 @@ movingToCSV = function(data) {
                 var researchers = "\""
                 if(map.researchers){
                     for(var k = 0; k < map.researchers.length; k++){
-                        if(k != 0) researchers += ','
-                        researchers += map.researchers[k].firstName + " " + map.researchers[k].lastName
+                        if(k != 0) researchers += ', '
+                        researchers += map.researchers[k].firstname + " " + map.researchers[k].lastname
                     }
                 }
                 researchers += "\""
@@ -149,8 +150,8 @@ surveyToCSV = function(data) {
                 var researchers = "\""
                 if(survey.researchers){
                     for(var k = 0; k < survey.researchers.length; k++){
-                        if(k != 0) researchers += ','
-                        researchers += map.researchers[k].firstName + " " + map.researchers[k].lastName
+                        if(k != 0) researchers += ', '
+                        researchers += map.researchers[k].firstname + " " + map.researchers[k].lastname
                     }
                 }
                 researchers += "\""
