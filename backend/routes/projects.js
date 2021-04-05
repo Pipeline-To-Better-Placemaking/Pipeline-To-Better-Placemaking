@@ -424,7 +424,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     populate: [{
                                         path: 'data',
                                         populate:{
-                                            path: 'standingPoints',
+                                            path: 'standingPoint',
                                             model: 'Standing_Points'
                                         }
                                         },{
@@ -447,7 +447,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     populate: [{
                                         path: 'data',
                                         populate:{
-                                            path: 'standingPoints',
+                                            path: 'standingPoint',
                                             model: 'Standing_Points'
                                         }
                                         },{
