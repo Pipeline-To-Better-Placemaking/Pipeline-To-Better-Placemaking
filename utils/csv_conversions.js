@@ -3,7 +3,7 @@ stationaryToCSV = function(data) {
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
                   "Area,Duration,Activity_Time," +
-                  "Researchers,Standing_Points," +
+                  "Researchers,Standing_Point_Title, Standing_Point" +
                   "Location,Age,Gender,Activity,Posture"
 
     var csv = headers
@@ -22,21 +22,11 @@ stationaryToCSV = function(data) {
         if(collection.maps){
             for (var j = 0; j < collection.maps.length; j++){
                 var map = collection.maps[j]
-
-                var standingPoints = "\"MULTIPOINT("
-                if(map.standingPoints){
-                    for(var k = 0; k < map.standingPoints.length; k++){
-                        if(k != 0) standingPoints += ','
-                        standingPoints += "(" + map.standingPoints[k].latitude + 
-                                                map.standingPoints[k].longitude + ")"
-                    }
-                }
-                standingPoints += ")\""
                 var researchers = "\""
                 if(map.researchers){
                     for(var k = 0; k < map.researchers.length; k++){
                         if(k != 0) researchers += ','
-                        researchers += map.researchers[k]
+                        researchers += map.researchers[k].firstName + " " + map.researchers[k].lastName
                     }
                 }
                 researchers += "\""
@@ -50,7 +40,8 @@ stationaryToCSV = function(data) {
                         csv += collection.duration + ','
                         csv += map.date + ','
                         csv += map.researchers + ','
-                        csv += standingPoints + ','
+                        csv += entry.standingPoint.title + ','
+                        csv += "\"POINT( " + entry.standingPoint.latitude + " " + entry.standingPoint.longitude + ")\","
                         csv += "\"POINT( " + entry.location.latitude + " " + entry.location.longitude + ")\"," 
                         csv += entry.age + ','
                         csv += entry.gender + ','
@@ -70,7 +61,7 @@ movingToCSV = function(data) {
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
                   "Area,Duration,Activity_Time," +
-                  "Researchers,Standing_Points," +
+                  "Researchers,Standing_Point,Standing_Point_Title" +
                   "Mode,Path"
 
     var csv = headers
@@ -89,21 +80,11 @@ movingToCSV = function(data) {
         if(collection.maps){
             for (var j = 0; j < collection.maps.length; j++){
                 var map = collection.maps[j]
-
-                var standingPoints = "\"MULTIPOINT("
-                if(map.standingPoints){
-                    for(var k = 0; k < map.standingPoints.length; k++){
-                        if(k != 0) standingPoints += ','
-                        standingPoints += "(" + map.standingPoints[k].latitude + 
-                                                map.standingPoints[k].longitude + ")"
-                    }
-                }
-                standingPoints += ")\""
                 var researchers = "\""
                 if(map.researchers){
                     for(var k = 0; k < map.researchers.length; k++){
                         if(k != 0) researchers += ','
-                        researchers += map.researchers[k]
+                        researchers += map.researchers[k].firstName + " " + map.researchers[k].lastName
                     }
                 }
                 researchers += "\""
@@ -117,7 +98,8 @@ movingToCSV = function(data) {
                         csv += collection.duration + ','
                         csv += map.date + ','
                         csv += map.researchers + ','
-                        csv += standingPoints + ','
+                        csv += entry.standingPoint.title + ','
+                        csv += "\"POINT( " + entry.standingPoint.latitude + " " + entry.standingPoint.longitude + ")\","
                         csv += entry.mode + ','
                         path = "\"LINESTRING ( "
                         for(var l = 0; l < entry.path.length; l++){
@@ -165,7 +147,7 @@ surveyToCSV = function(data) {
                 if(survey.researchers){
                     for(var k = 0; k < survey.researchers.length; k++){
                         if(k != 0) researchers += ','
-                        researchers += survey.researchers[k]
+                        researchers += map.researchers[k].firstName + " " + map.researchers[k].lastName
                     }
                 }
                 researchers += "\""
