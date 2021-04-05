@@ -41,7 +41,7 @@ stationaryToCSV = function(data) {
                         csv += area + ','
                         csv += collection.duration + ','
                         csv += map.date + ','
-                        csv += map.researchers + ','
+                        csv += researchers + ','
                         csv += entry.standingPoint.title + ','
                         csv += "\"POINT( " + entry.standingPoint.latitude + " " + entry.standingPoint.longitude + ")\","
                         csv += "\"POINT( " + entry.location.latitude + " " + entry.location.longitude + ")\"," 
@@ -100,7 +100,7 @@ movingToCSV = function(data) {
                         csv += area + ','
                         csv += collection.duration + ','
                         csv += map.date + ','
-                        csv += map.researchers + ','
+                        csv += researchers + ','
                         csv += entry.standingPoint.title + ','
                         csv += "\"POINT( " + entry.standingPoint.latitude + " " + entry.standingPoint.longitude + ")\","
                         csv += entry.mode + ','
@@ -162,7 +162,7 @@ surveyToCSV = function(data) {
                 csv += area + ','
                 csv += collection.duration + ','
                 csv += survey.date + ','
-                csv += survey.researchers + ','
+                csv += researchers + ','
                 csv += survey.key                    
             }
         }

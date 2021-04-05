@@ -420,13 +420,16 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                 populate: [{
                                     path: 'maps',
                                     model: 'Stationary_Maps',
-                                    select: 'date data',
+                                    select: 'date data',                                    
                                     populate: [{
-                                        path: 'data.standingPoints',
-                                        model: 'Standing_Points'
-                                    },{
-                                    path: 'researchers'
-                                     }]
+                                        path: 'data',
+                                        populate:{
+                                            path: 'standingPoints',
+                                            model: 'Standing_Points'
+                                        }
+                                        },{
+                                        path: 'researchers'
+                                        }]
                                    },{
                                     path: 'area',
                                    }]
@@ -440,13 +443,16 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                 populate: [{
                                     path: 'maps',
                                     model: 'Moving_Maps',
-                                    select: 'date data',
+                                    select: 'date',
                                     populate: [{
-                                        path: 'data.standingPoints',
-                                        model: 'Standing_Points'
-                                    },{
-                                    path: 'researchers'
-                                     }]
+                                        path: 'data',
+                                        populate:{
+                                            path: 'standingPoints',
+                                            model: 'Standing_Points'
+                                        }
+                                        },{
+                                        path: 'researchers'
+                                        }]
                                     },{
                                     path: 'area',
                                     }]
