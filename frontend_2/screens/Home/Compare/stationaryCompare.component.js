@@ -250,7 +250,7 @@ export function StationaryCompare(props) {
           <CompareBarChart
             {...props}
             title={"Activity"}
-            rotation={'0deg'}
+            rotation={'-90deg'}
             dataValues={activityValues}
             dataLabels={labels.activityLabels}
             barColor={color}
