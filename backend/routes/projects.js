@@ -464,8 +464,12 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                 path:'surveyCollections',
                                 model:'Survey_Collections',
                                 populate: [{
-                                    path: 'surveys',
-                                    model: 'Surveys',
+                                    select: 'date',
+                                    populate: [{
+                                        path: 'data',
+                                        },{
+                                        path: 'researchers'
+                                        }]
                                     },{
                                     path: 'area',
                                     }]
