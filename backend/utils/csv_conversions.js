@@ -150,7 +150,7 @@ surveyToCSV = function(data) {
                 if(survey.researchers){
                     for(var k = 0; k < survey.researchers.length; k++){
                         if(k != 0) researchers += ', '
-                        researchers += map.researchers[k].firstname + " " + map.researchers[k].lastname
+                        researchers += survey.researchers[k].firstname + " " + survey.researchers[k].lastname
                     }
                 }
                 researchers += "\""
