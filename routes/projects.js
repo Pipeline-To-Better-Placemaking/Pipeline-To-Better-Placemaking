@@ -466,10 +466,10 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                 populate: [{
                                     path: 'surveys',
                                     model: 'Surveys',
-                                    select: 'date',
+                                    select: 'date key',
                                     populate: {
-                                        path: 'data researchers',
-                                    }
+                                        path: 'researchers'
+                                        }
                                 },{
                                     path: 'area',
                                     }]
