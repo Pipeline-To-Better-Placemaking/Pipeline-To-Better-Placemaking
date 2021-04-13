@@ -241,6 +241,7 @@ export function EditPoints(props) {
         <View style={{height:'80%'}}>
           <MapAddArea
             location={props.areaInfo.location}
+            region={props.areaInfo.location}
             markers={props.tempArea}
             setMarkers={props.setTempArea}
             mapHeight={'60%'}

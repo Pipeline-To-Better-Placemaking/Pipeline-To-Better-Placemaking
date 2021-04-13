@@ -168,22 +168,29 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
     user = await req.user   
     mapId = req.params.id
 
-    oldData = await Map.findData(mapId, req.params.data_id)
-
-    const newData = {
-        _id: oldData._id,
-        location: (req.body.location ? req.body.location : oldData.location),
-        age: (req.body.age ? req.body.age : oldData.age),
-        gender: (req.body.gender ? req.body.gender : oldData.gender),
-        posture: (req.body.posture ? req.body.posture : oldData.posture),
-        activity: (req.body.activity ? req.body.activity : oldData.activity),
-        time: (req.body.time ? req.body.time : oldData.time)
-    }
-
-    if (req.body.activity.length > 2)
-        throw new BadRequestError('Datapoints can only have two activies')
-
     if (Map.isResearcher(mapId, user._id)){
+
+        oldData = await Map.findData(mapId, req.params.data_id)
+
+        const newData = {
+            _id: oldData._id,
+            location: (req.body.location ? req.body.location : oldData.location),
+            age: (req.body.age ? req.body.age : oldData.age),
+            gender: (req.body.gender ? req.body.gender : oldData.gender),
+            posture: (req.body.posture ? req.body.posture : oldData.posture),
+            activity: (req.body.activity ? req.body.activity : oldData.activity),
+            standingPoint: (req.body.standingPoint ? req.body.standingPoint : oldData.standingPoint),
+            time: (req.body.time ? req.body.time : oldData.time)
+        }
+
+        if (req.body.activity.length > 2)
+            throw new BadRequestError('Datapoints can only have two activies')
+
+        if(req.body.standingPoint){
+            Points.addRefrence(req.body.standingPoint)
+            Points.removeRefrence(oldDat.standingPoint)
+        }
+    
         await Map.updateData(mapId,oldData._id,newData)
         res.status(201).json(await Map.findById(req.params.id))
     }  

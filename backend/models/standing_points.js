@@ -17,6 +17,7 @@ const points_schema = mongoose.Schema({
         required:true,
         default:1
     },
+    
     title: String
 })
 

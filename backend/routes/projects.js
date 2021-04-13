@@ -27,7 +27,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
             throw new BadRequestError('Areas require at least three points')
 
         let newArea = new Area({
-            title: req.body.areaTitle,
+            title: "Project Perimeter",
             points: req.body.points
         })
         newArea.save()
@@ -420,11 +420,16 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                 populate: [{
                                     path: 'maps',
                                     model: 'Stationary_Maps',
-                                    select: 'date data',
-                                    populate: {
-                                        path: 'standingPoints',
-                                        model: 'Standing_Points'
-                                    }
+                                    select: 'date data',                                    
+                                    populate: [{
+                                        path: 'data',
+                                        populate:{
+                                            path: 'standingPoint',
+                                            model: 'Standing_Points'
+                                        }
+                                        },{
+                                        path: 'researchers'
+                                        }]
                                    },{
                                     path: 'area',
                                    }]
@@ -438,11 +443,16 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                 populate: [{
                                     path: 'maps',
                                     model: 'Moving_Maps',
-                                    select: 'date data',
-                                    populate: {
-                                        path: 'standingPoints',
-                                        model: 'Standing_Points'
-                                    }
+                                    select: 'date',
+                                    populate: [{
+                                        path: 'data',
+                                        populate:{
+                                            path: 'standingPoint',
+                                            model: 'Standing_Points'
+                                        }
+                                        },{
+                                        path: 'researchers'
+                                        }]
                                     },{
                                     path: 'area',
                                     }]
@@ -456,14 +466,18 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                 populate: [{
                                     path: 'surveys',
                                     model: 'Surveys',
-                                    },{
+                                    select: 'date key',
+                                    populate: {
+                                        path: 'researchers'
+                                        }
+                                },{
                                     path: 'area',
                                     }]
                                 }])
 
     const emailHTML = `
         <h3>Hello from 2+ Community!</h3>
-        <p>You have requested a copy of your stationary data. Attatched is a csv formated file representing your data.</p>
+        <p>You have requested a copy of project data. Attached is a csv formatted file representing the data.</p>
 
     `
     
@@ -471,7 +485,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
         from: `"2+ Community" <${config.PROJECT_EMAIL}>`,
         to: req.user.email,
         subject: stationaryData.title + ' Data Export',
-        text: `Attatched is your data`,
+        text: `Attached is your data`,
         html: emailHTML,
         attachments: [
             {

@@ -38,6 +38,11 @@ const entrySchema = mongoose.Schema({
         type: Date,
         required: true
     },
+    standingPoint:{
+        type:ObjectId,
+        ref: 'Standing_Points',
+        required: true
+    }
 })
 const stationary_schema = mongoose.Schema({
     
@@ -119,8 +124,11 @@ module.exports.addEntry = async function(mapId, newEntry) {
         posture: newEntry.posture,
         age: newEntry.age,
         activity: newEntry.activity,
-        location: newEntry.location
+        location: newEntry.location,
+        standingPoint: newEntry.standingPoint
     })
+
+    Points.addRefrence(newEntry.standingPoints)
 
     return await Maps.updateOne(
         { _id: mapId },
@@ -179,8 +187,19 @@ module.exports.updateData = async function(mapId, dataId, newEntry){
     )}
 
 module.exports.deleteEntry = async function(mapId, entryId) {
-    return await Maps.updateOne(
-        { _id: mapId },
-        { $pull: { data: {_id:entryId }}
-        })
-}
+    
+        const doc = await Maps.find(
+            {   
+                _id: mapId, 
+                data: { $elemMatch:  {_id:entryId }}
+            }
+        )
+    
+        await Points.removeRefrence(doc.data[0].standingPoint)
+    
+        return await Maps.updateOne(
+            { _id: mapId },
+            { $pull: { data: {_id:entryId }}
+            })
+    }
+    

@@ -2,8 +2,8 @@ stationaryToCSV = function(data) {
 
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
-                  "Area,Duration,Activity_Time," +
-                  "Researchers,Standing_Points," +
+                  "Area_Title,Area,Duration,Activity_Time," +
+                  "Researchers,Standing_Point_Title, Standing_Point," +
                   "Location,Age,Gender,Activity,Posture"
 
     var csv = headers
@@ -23,20 +23,11 @@ stationaryToCSV = function(data) {
             for (var j = 0; j < collection.maps.length; j++){
                 var map = collection.maps[j]
 
-                var standingPoints = "\"MULTIPOINT("
-                if(map.standingPoints){
-                    for(var k = 0; k < map.standingPoints.length; k++){
-                        if(k != 0) standingPoints += ','
-                        standingPoints += "(" + map.standingPoints[k].latitude + 
-                                                map.standingPoints[k].longitude + ")"
-                    }
-                }
-                standingPoints += ")\""
                 var researchers = "\""
                 if(map.researchers){
                     for(var k = 0; k < map.researchers.length; k++){
-                        if(k != 0) researchers += ','
-                        researchers += map.researchers[k]
+                        if(k != 0) researchers += ', '
+                        researchers += map.researchers[k].firstname + " " + map.researchers[k].lastname
                     }
                 }
                 researchers += "\""
@@ -46,11 +37,13 @@ stationaryToCSV = function(data) {
                         csv += '\n'
                         csv += collection.title + ','
                         csv += collection.date + ','
+                        csv += collection.area.title + ','
                         csv += area + ','
                         csv += collection.duration + ','
                         csv += map.date + ','
-                        csv += map.researchers + ','
-                        csv += standingPoints + ','
+                        csv += researchers + ','
+                        csv += entry.standingPoint.title + ','
+                        csv += "\"POINT( " + entry.standingPoint.latitude + " " + entry.standingPoint.longitude + ")\","
                         csv += "\"POINT( " + entry.location.latitude + " " + entry.location.longitude + ")\"," 
                         csv += entry.age + ','
                         csv += entry.gender + ','
@@ -69,8 +62,8 @@ movingToCSV = function(data) {
 
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
-                  "Area,Duration,Activity_Time," +
-                  "Researchers,Standing_Points," +
+                  "Area_Title,Area,Duration,Activity_Time," +
+                  "Researchers,Standing_Point,Standing_Point_Title," +
                   "Mode,Path"
 
     var csv = headers
@@ -89,21 +82,11 @@ movingToCSV = function(data) {
         if(collection.maps){
             for (var j = 0; j < collection.maps.length; j++){
                 var map = collection.maps[j]
-
-                var standingPoints = "\"MULTIPOINT("
-                if(map.standingPoints){
-                    for(var k = 0; k < map.standingPoints.length; k++){
-                        if(k != 0) standingPoints += ','
-                        standingPoints += "(" + map.standingPoints[k].latitude + 
-                                                map.standingPoints[k].longitude + ")"
-                    }
-                }
-                standingPoints += ")\""
                 var researchers = "\""
                 if(map.researchers){
                     for(var k = 0; k < map.researchers.length; k++){
-                        if(k != 0) researchers += ','
-                        researchers += map.researchers[k]
+                        if(k != 0) researchers += ', '
+                        researchers += map.researchers[k].firstname + " " + map.researchers[k].lastname
                     }
                 }
                 researchers += "\""
@@ -113,11 +96,13 @@ movingToCSV = function(data) {
                         csv += '\n'
                         csv += collection.title + ','
                         csv += collection.date + ','
+                        csv += collection.area.title + ','
                         csv += area + ','
                         csv += collection.duration + ','
                         csv += map.date + ','
-                        csv += map.researchers + ','
-                        csv += standingPoints + ','
+                        csv += researchers + ','
+                        csv += entry.standingPoint.title + ','
+                        csv += "\"POINT( " + entry.standingPoint.latitude + " " + entry.standingPoint.longitude + ")\","
                         csv += entry.mode + ','
                         path = "\"LINESTRING ( "
                         for(var l = 0; l < entry.path.length; l++){
@@ -139,7 +124,7 @@ surveyToCSV = function(data) {
 
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
-                  "Area,Duration,Activity_Time," +
+                  "Area_Title,Area,Duration,Activity_Time," +
                   "Researchers,Key" 
 
     var csv = headers
@@ -164,8 +149,8 @@ surveyToCSV = function(data) {
                 var researchers = "\""
                 if(survey.researchers){
                     for(var k = 0; k < survey.researchers.length; k++){
-                        if(k != 0) researchers += ','
-                        researchers += survey.researchers[k]
+                        if(k != 0) researchers += ', '
+                        researchers += survey.researchers[k].firstname + " " + survey.researchers[k].lastname
                     }
                 }
                 researchers += "\""
@@ -173,10 +158,11 @@ surveyToCSV = function(data) {
                 csv += '\n'
                 csv += collection.title + ','
                 csv += collection.date + ','
+                csv += collection.area.title + ','
                 csv += area + ','
                 csv += collection.duration + ','
                 csv += survey.date + ','
-                csv += survey.researchers + ','
+                csv += researchers + ','
                 csv += survey.key                    
             }
         }

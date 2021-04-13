@@ -56,6 +56,7 @@ export function StationaryActivity(props) {
                 location: tempMarker,
                 colorIndex: inf.colorIndex,
                 time: new Date(),
+                standingPoint: position[standingIndex]._id,
             }
 
             obj = {

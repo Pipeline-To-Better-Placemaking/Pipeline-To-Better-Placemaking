@@ -9,7 +9,7 @@ import * as Location from 'expo-location';
 
 export function EditSubAreas(props) {
 
-  const location = props.project.subareas[0].points[0];
+  const location = getRegionForCoordinates(props.project.subareas[0].points);
   const [editAreaVisible, setEditAreaVisible] = useState(false);
   const nullableEntry = {
     points: props.project.subareas[0].points[0],
@@ -32,7 +32,7 @@ export function EditSubAreas(props) {
     temp.newArea = newArea;
     temp.index = index;
     temp._id = '';
-    temp.location = {...props.project.subareas[0].points[0]};
+    temp.location = getRegionForCoordinates(props.project.subareas[0].points);
     temp.title = 'Area ';
 
     if(!newArea) {

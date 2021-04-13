@@ -55,19 +55,46 @@ export function MyBarChart({children, ...props}) {
   )
 
   const xAxisLabels = (label, index) => {
+    if (props.rotation === '0deg') {
+      return (
+        <Text
+          key={index}
+          style={{
+            flex: 1,
+            transform:[{rotate:props.rotation}],
+            fontSize: fontSize,
+            textAlign: 'center',
+            width: ((props.width-10) / (props.dataLabels.length*2)),
+          }}
+        >
+          {label}
+        </Text>
+      );
+    }
+
     return (
-      <Text
+      <View
         key={index}
         style={{
-          fontSize: fontSize,
-          textAlign: 'center',
-          width: ((props.width-10) / (props.dataLabels.length*2)),
           flex: 1,
-          transform:[{rotate:props.rotation}],
+          justifyContent:'flex-start',
+          flexDirection:'column',
+          height:100,
         }}
       >
-        {label}
-      </Text>
+        <Text
+          style={{
+            fontSize: fontSize,
+            transform:[{rotate:props.rotation}],
+            width:110,
+            textAlign: 'right',
+            marginLeft:-40,
+            marginTop:40,
+          }}
+        >
+          {label}
+        </Text>
+      </View>
     )
   }
 
@@ -101,9 +128,9 @@ export function MyBarChart({children, ...props}) {
       <View
         style={{
           flex: 1,
-          marginLeft: 10,
+          marginLeft: 20,
           flexDirection:'row',
-          maxWidth:props.width - 10,
+          maxWidth:props.width - 40,
           justifyContent:'flex-start',
         }}
       >
@@ -159,19 +186,46 @@ export function CompareBarChart({children, ...props}) {
   )
 
   const xAxisLabels = (label, index) => {
+    if (props.rotation === '0deg') {
+      return (
+        <Text
+          key={index}
+          style={{
+            flex: 1,
+            transform:[{rotate:props.rotation}],
+            fontSize: fontSize,
+            textAlign: 'center',
+            width: ((props.width-10) / (props.dataLabels.length*2)),
+          }}
+        >
+          {label}
+        </Text>
+      );
+    }
+
     return (
-      <Text
+      <View
         key={index}
         style={{
-          fontSize: fontSize,
-          textAlign: 'center',
-          width: ((props.width-10) / (props.dataLabels.length*2)),
           flex: 1,
-          transform:[{rotate:props.rotation}],
+          justifyContent:'flex-start',
+          flexDirection:'column',
+          height:100,
         }}
       >
-        {label}
-      </Text>
+        <Text
+          style={{
+            fontSize: fontSize,
+            transform:[{rotate:props.rotation}],
+            width:110,
+            textAlign: 'right',
+            marginLeft:-40,
+            marginTop:40,
+          }}
+        >
+          {label}
+        </Text>
+      </View>
     )
   }
 

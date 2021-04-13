@@ -291,7 +291,7 @@ export const MapWrapper = ({children, location, mapHeight}) => {
           coordinates={area}
           strokeWidth={3}
           strokeColor={'rgba(255,0,0,0.5)'}
-          fillColor={'rgba(0,0,0,0.5)'}
+          fillColor={'rgba(0,0,0,0.2)'}
         />
         )
     };
@@ -443,7 +443,7 @@ export function MapAddArea({children, ...props}) {
             coordinates={markers}
             strokeWidth={3}
             strokeColor={'rgba(255,0,0,0.5)'}
-            fillColor={'rgba(0,0,0,0.5)'}
+            fillColor={'rgba(0,0,0,0.2)'}
           />
         );
     }

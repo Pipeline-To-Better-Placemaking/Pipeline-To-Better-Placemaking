@@ -139,6 +139,17 @@ module.exports.isOwner = async function(teamId, uId) {
     return true
 }
 
+module.exports.getOwner = async function(teamId) {
+    const doc = await Teams.findOne(
+        {
+            _id : teamId,
+            users: { $elemMatch: {role: 'owner' }}
+        }
+    )
+
+    return await User.findById(doc.users[0].user);
+}
+
 module.exports.isUser = async function(teamId, uId) {
     const doc = await Teams.find(
         {

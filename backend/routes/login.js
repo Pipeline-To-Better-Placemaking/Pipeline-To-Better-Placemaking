@@ -38,10 +38,18 @@ router.post('/', async (req,res,next) => {
         expiresIn: 86400 //1 day
     })
 
-    const fullUser = await User.findById(shortUser._id)
+    var fullUser = await User.findById(shortUser._id)
     .select('-password -verification_code -verification_timeout')
     .populate('teams', 'title')
     .populate('invites','title')
+
+    fullUser = fullUser.toJSON()
+    
+    for(var i = 0; i < fullUser.invites.length; i++){
+        const owner = await Team.getOwner(fullUser.invites[i]._id)
+        fullUser.invites[i].firstname = owner.firstname
+        fullUser.invites[i].lastname = owner.lastname
+    }
 
     res.status(200).json({
         success: true,
