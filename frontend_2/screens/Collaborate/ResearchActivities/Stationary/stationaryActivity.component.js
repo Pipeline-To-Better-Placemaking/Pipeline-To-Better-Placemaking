@@ -54,11 +54,17 @@ export function StationaryActivity(props) {
                 activity: inf.activity,
                 posture: inf.posture,
                 location: tempMarker,
+                colorIndex: inf.colorIndex,
                 time: new Date(),
             }
 
+            obj = {
+                marker: tempMarker,
+                colorIndex: inf.postureIndex
+            }
+
             setData(() => data.concat(pointData))
-            setMarkers(() => markers.concat(tempMarker))
+            setMarkers(() => markers.concat(obj))
 
             setDataModal(false)
         }

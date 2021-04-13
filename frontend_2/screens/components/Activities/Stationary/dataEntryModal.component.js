@@ -90,7 +90,8 @@ export function DataEntryModal(props) {
             age: age[ageIndex],
             gender: gender[genderIndex],
             activity: activityList,
-            posture: posture[postureIndex]
+            posture: posture[postureIndex],
+            colorIndex: postureIndex
         }
 
         await props.closeData(data)
