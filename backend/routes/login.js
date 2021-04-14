@@ -1,6 +1,7 @@
 const config = require('../utils/config')
 const jwt = require('jsonwebtoken')
 const User = require('../models/users')
+const Team = require('../models/teams')
 
 const express = require('express')
 const router = express.Router()
