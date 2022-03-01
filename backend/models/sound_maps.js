@@ -35,6 +35,13 @@ const dataSchema = mongoose.Schema({
         type: double,
         required: true
     },
+
+    kind: {
+        type: double,
+        enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
+        required: true
+    },
+
 })
 
 const stationary_schema = mongoose.Schema({
