@@ -36,7 +36,7 @@ const dataSchema = mongoose.Schema({
         required: true
     },
 
-    kind: {
+    sound_type: {
         type: double,
         enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
         required: true
