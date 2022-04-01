@@ -7,21 +7,25 @@ const Points = require('../models/standing_points.js')
 const dataSchema = mongoose.Schema({
    
     animals: {
+        type: String,
         enum: ['domesticated','free roam','none'],
         required: true
     },
 
     landscape: {
+        type: String,
         enum: ['landscape plants','natural plants','designed plants','open field'],
         required: true
     },
 
     weather: {
+        type: String,
         enum: ['sunny','cloudy','rainy','foggy'],
         required: true
     },
 
     water: {
+        type: String,
         enum: ['pond','lake','fountain','river', 'ocean'],
         required: true
     },
@@ -58,6 +62,12 @@ const stationary_schema = mongoose.Schema({
         required: true
     },
 
+    time_of_day: {
+        type: String,
+        enum: ['morning','afternoon','night'],
+        required: true
+    },
+
     date:{
         type: Date,
         required: true
@@ -67,7 +77,7 @@ const stationary_schema = mongoose.Schema({
 })
 
 
-const Maps = module.exports = mongoose.model('Sound_Maps', stationary_schema)
+const Maps = module.exports = mongoose.model('Nature_Maps', stationary_schema)
 const Entry = mongoose.model('Data_Entry', dataSchema)
 
 module.exports.addMap = async function(newMap) {
