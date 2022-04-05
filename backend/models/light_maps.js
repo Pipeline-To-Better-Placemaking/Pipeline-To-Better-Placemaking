@@ -8,6 +8,7 @@ const dataSchema = mongoose.Schema({
 
     light_description: {
         type: String,
+        enum: ['task light', 'building', 'rythmatic'],
         required: true
     }
 

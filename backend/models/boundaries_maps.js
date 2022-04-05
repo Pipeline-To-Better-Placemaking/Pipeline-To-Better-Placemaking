@@ -5,41 +5,33 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 const Points = require('../models/standing_points.js')
 
 const dataSchema = mongoose.Schema({
-   
-    decibal_1: {
-        type: Number,
+
+    horizontal: {
+
+        height:{
+        type: String,
+        enum: ['ground level','above ground'],
         required: true
+        },
+        
+        description:{
+            type: String,
+            required:true
+        }
     },
 
-    decibal_2: {
-        type: Number,
-        required: true
-    },
+    vertical: {
 
-    decibal_3: {
-        type: Number,
+        kind:{
+        type: String,
+        enum: ['naturally occuring', 'human made'],
         required: true
-    },
+        },
 
-    decibal_4: {
-        type: Number,
-        required: true
-    },
-
-    decibal_5: {
-        type: Number,
-        required: true
-    },
-    
-    average: {
-        type: Number,
-        required: true
-    },
-
-    sound_type: {
-        type: Number,
-        enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
-        required: true
+        description:{
+            type: String,
+            required:true
+        }
     }
 
 })
@@ -70,7 +62,7 @@ const stationary_schema = mongoose.Schema({
 
     sharedData:{
         type: ObjectId,
-        ref: 'Sound_Collections',
+        ref: 'Boundaries_Collections',
         required: true
     },
 
@@ -89,7 +81,7 @@ const stationary_schema = mongoose.Schema({
 })
 
 
-const Maps = module.exports = mongoose.model('Sound_Maps', stationary_schema)
+const Maps = module.exports = mongoose.model('Boundaries_Maps', stationary_schema)
 const Entry = mongoose.model('Data_Entry', dataSchema)
 
 module.exports.addMap = async function(newMap) {

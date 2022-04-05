@@ -4,7 +4,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-const Sound_Maps = require('./sound_maps.js')
+const Boundaries_Maps = require('./boundaries_maps.js')
 const Area = require('./areas.js')
 const { collection } = require('./surveys.js')
 
@@ -26,15 +26,15 @@ const collection_schema = mongoose.Schema({
 
     maps: [{
         type: ObjectId,
-        ref: 'Sound_Maps'
+        ref: 'Boundaries_Maps'
     }]
 
 })
 
-const Collection = module.exports = mongoose.model('Sound_Collections', collection_schema)
+const Collection = module.exports = mongoose.model('Boundaries_Collections', collection_schema)
 
 module.exports.deleteMap = async function(collectionId, mapId){
-    await Sound_Maps.deleteMap(mapId)
+    await Boundaries_Maps.deleteMap(mapId)
     return await Collection.updateOne(
         { _id: collectionId },
         { $pull: { maps: mapId}}
@@ -46,7 +46,7 @@ module.exports.deleteCollection = async function(collectionId){
     collection = await Collection.findById(collectionId)
     await Area.removeRefrence(collection.area)
     for(var i = 0; i < collection.maps.length; i++)
-        await Sound_Maps.findByIdAndDelete(collection.maps[i])
+        await Boundaries_Maps.findByIdAndDelete(collection.maps[i])
 
     return await Collection.findByIdAndDelete(collectionId)
 }
