@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Map = require('../models/stationary_maps.js')
 const Project = require('../models/projects.js')
-const Sound_Collection = require('../models/sound_collections.js')
+const Boundaries_Collection = require('../models/boundaries_collections.js')
 const Team = require('../models/teams.js')
 const Points = require('../models/standing_points.js')
 const passport = require('passport')
@@ -33,9 +33,9 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                 })
 
                 const map = await Map.addMap(newMap)
-                await Sound_Collection.addActivity(req.body.collection, map._id)
+                await Boundaries_Collection.addActivity(req.body.collection, map._id)
 
-                res.status(201).json(await Sound_Collection.findById(req.body.collection))
+                res.status(201).json(await Boundaries_Collection.findById(req.body.collection))
             }
 
         let newMap = new Map({
@@ -48,7 +48,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
             maxResearchers: req.body.maxResearchers,
         })
         const map = await Map.addMap(newMap)
-        await Sound_Collection.addActivity(req.body.collection,map._id)
+        await Boundaries_Collection.addActivity(req.body.collection,map._id)
         res.status(201).json(map)
 
     }
@@ -64,7 +64,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                            .populate([
                                {
                                    path:'sharedData',
-                                   model:'Sound_Collections',
+                                   model:'Boundaries_Collections',
                                    select:'title duration',
                                    populate: {
                                     path: 'area',
@@ -135,7 +135,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
     if(await Team.isAdmin(project.team,user._id)){
-        res.json(await Sound_Collection.deleteMap(map.sharedData,map._id))
+        res.json(await Boundaries_Collection.deleteMap(map.sharedData,map._id))
 
         
     }

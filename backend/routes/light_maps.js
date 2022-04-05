@@ -64,7 +64,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                            .populate([
                                {
                                    path:'sharedData',
-                                   model:'Light_Collection',
+                                   model:'Light_Collections',
                                    select:'title duration',
                                    populate: {
                                     path: 'area',
