@@ -36,7 +36,7 @@ const createTransporter = async () => {
             user: config.PROJECT_EMAIL,
             accessToken,
             clientId: config.CLIENT_ID,
-            clientSecret: config.clientSecret,
+            clientSecret: config.CLIENT_SECRET,
             refreshToken: config.REFRESH_TOKEN
         },
         tls: {
