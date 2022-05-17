@@ -12,7 +12,7 @@ const { models } = require('mongoose')
 
 const { UnauthorizedError, BadRequestError } = require('../utils/errors')
 
-router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+router.post('/', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.body.project)
 
@@ -181,7 +181,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 
         if(req.body.standingPoint){
             Points.addRefrence(req.body.standingPoint)
-            Points.removeRefrence(oldDat.standingPoint)
+            Points.removeRefrence(oldData.standingPoint)
         }
 
         await Map.updateData(map._id,oldData._id,newData)

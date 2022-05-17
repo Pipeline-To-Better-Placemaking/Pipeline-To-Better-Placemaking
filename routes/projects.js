@@ -18,7 +18,7 @@ const { models } = require('mongoose')
 const { stationaryToCSV, movingToCSV, surveyToCSV } = require('../utils/csv_conversions')
 const { BadRequestError, InternalServerError, UnauthorizedError } = require('../utils/errors')
 
-router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+router.post('/', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
 
     if(await Team.isAdmin(req.body.team,user._id)){

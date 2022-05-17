@@ -188,7 +188,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 
         if(req.body.standingPoint){
             Points.addRefrence(req.body.standingPoint)
-            Points.removeRefrence(oldDat.standingPoint)
+            Points.removeRefrence(oldData.standingPoint)
         }
     
         await Map.updateData(mapId,oldData._id,newData)

@@ -10,7 +10,6 @@ const config = require('../utils/config')
 const { json } = require('express')
 
 const { UnauthorizedError, NotFoundError, BadRequestError } = require('../utils/errors')
-const teams = require('../models/teams.js')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
