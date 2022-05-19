@@ -12,6 +12,10 @@ export const styles = StyleSheet.create({
         backgroundColor: '#DEBD07',
     },
 
+    confirmCompareButton:{
+        marginRight:10
+    },
+
     resultTextView: {
         marginTop: 5,
         flexDirection: 'row',
@@ -33,6 +37,25 @@ export const styles = StyleSheet.create({
         marginRight: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+
+    mapSpace:{
+        height:'35%'
+    },
+
+    listView:{
+        flexDirection:'row', 
+        justifyContent:'center', 
+        maxHeight:'55%', 
+        marginTop:15
+    },
+
+    listElements:{
+        maxHeight:'100%', 
+        minHeight:150, 
+        backgroundColor: 'rgba(0, 0, 0, 0)'
     }
 
 });
+
+export default styles;

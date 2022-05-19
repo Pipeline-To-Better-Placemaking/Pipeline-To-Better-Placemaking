@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View, TouchableWithoutFeedback, Modal } from 'react-native';
-import { Divider, Icon, Layout, Text, Button, Input, Spinner } from '@ui-kitten/components';
+import { Icon, Text, Button, Input, Spinner } from '@ui-kitten/components';
 import { BlueViewableArea } from '../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
@@ -67,7 +67,7 @@ export const LoginScreen = ( props ) => {
       await AsyncStorage.setItem("@invites", JSON.stringify(res.user.invites))
       await AsyncStorage.setItem("@mapConfig", "standard")
 
-      let { status } = await Location.requestPermissionsAsync();
+      let { status } = await Location.requestForegroundPermissionsAsync();
 
       if (status === 'granted') {
         defaultLocation = await Location.getCurrentPositionAsync({});
@@ -98,7 +98,7 @@ export const LoginScreen = ( props ) => {
   );
 
   const BackButton = () => (
-    <Button appearance={'ghost'} onPress={navigateBack} style={{marginTop:15}}>
+    <Button appearance={'ghost'} onPress={navigateBack} style={styles.backButton}>
       <Text status={'control'} category='h5'>
            &larr; Back
       </Text>
@@ -123,7 +123,7 @@ export const LoginScreen = ( props ) => {
             <Spinner />
           </View>
         </Modal>
-        <Text category='h1' status='control'>Login</Text>
+        <Text style={styles.title} category='h1' status='control'>Login</Text>
         <View>
           <Text category='label' style={styles.inputText}> Email Address: </Text>
           <Input
@@ -150,7 +150,7 @@ export const LoginScreen = ( props ) => {
         <View>
             {
                 accessDenied &&
-                <Text style={{color: '#FF3D71'}}>
+                <Text style={styles.errorMsg}>
                     Could not login. Email or password may be incorrect.
                 </Text>
             }

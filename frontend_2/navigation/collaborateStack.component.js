@@ -247,4 +247,4 @@ export function CollaborateStack(props) {
       </Screen>
     </Navigator>
   );
-};
+}

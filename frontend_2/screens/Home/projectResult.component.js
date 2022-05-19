@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, RefreshControl } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem, OverflowMenu } from '@ui-kitten/components';
+import React, { useState } from 'react';
+import { View, RefreshControl } from 'react-native';
+import { Text, Button, Icon, Divider, List, ListItem } from '@ui-kitten/components';
 import { HeaderBack } from '../components/headers.component';
 import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getDayStr, getTimeStr } from '../components/timeStrings.component';
 import { getAllResults, getProject } from '../components/apiCalls';
 import { formatStationaryGraphData, formatMovingGraphData } from '../components/helperFunctions';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './projectResult.styles';
 
 const ForwardIcon = (props) => (
@@ -51,6 +49,8 @@ export function ProjectResultPage(props) {
     else if (item.test_type === 'survey') {
       props.navigation.navigate("SurveyResultPage");
     }
+    //add the new tests here
+
   };
 
   const emailResults = async () => {
@@ -88,7 +88,7 @@ export function ProjectResultPage(props) {
   const activityItem = ({ item, index }) => (
       <ListItem
         title={
-          <Text style={{fontSize:20}}>
+          <Text style={styles.textTitle}>
               {`${item.title}`}
           </Text>
         }
@@ -106,40 +106,40 @@ export function ProjectResultPage(props) {
         visible={sentMsgVisible}
         closePopUp={() => setSentMsgVisible(false)}
       >
-        <View style={{justifyContent:'center', alignItems:'center'}}>
+        <View style={styles.messageView}>
           <Text category={'s1'}>{msg}</Text>
         </View>
       </PopUpContainer>
       <ContentContainer>
 
-        <View style={{height:'35%'}}>
+        <View style={styles.mapSpace}>
           <MapAreaWrapper area={props.project.subareas[0].points} mapHeight={'100%'}>
             <ShowArea area={props.project.subareas[0].points} />
           </MapAreaWrapper>
         </View>
 
-        <View style={{marginTop: 10, marginLeft:20, flexDirection: 'column',justifyContent: 'flex-start'}}>
-          <View style={{flexDirection:'row'}}>
-            <Text style={{fontWeight: "bold"}}>Location: </Text>
+        <View style={styles.metaDataView}>
+          <View style={styles.metaDataRow}>
+            <Text style={styles.metaDataDesc}>Location: </Text>
             <Text>{props.project.description}</Text>
           </View>
-          <View style={{flexDirection:'row'}}>
-            <Text style={{fontWeight: "bold"}}>Team: </Text>
+          <View style={styles.metaDataRow}>
+            <Text style={styles.metaDataDesc}>Team: </Text>
             <Text>{props.team.title}</Text>
           </View>
-          <View style={{flexDirection:'row'}}>
-            <Text style={{fontWeight: "bold"}}>Admin: </Text>
+          <View style={styles.metaDataRow}>
+            <Text style={styles.metaDataDesc}>Admin: </Text>
             <Text>{props.team.users[0].firstname} {props.team.users[0].lastname}</Text>
           </View>
         </View>
 
         <View style={styles.teamTextView}>
-            <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
+            <View style={styles.teamtextTitle}>
                 <Text style={styles.teamText}>Research Results</Text>
             </View>
             <Button
               size={'small'}
-              style={{marginRight:10}}
+              style={styles.emailButton}
               status={'info'}
               appearance={'outline'}
               accessoryRight={MailIcon}
@@ -148,11 +148,11 @@ export function ProjectResultPage(props) {
               Email Me Results
             </Button>
         </View>
-        <Divider style={{marginTop: 5}} />
+        <Divider style={styles.dividerMargin} />
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%'}}>
+        <View style={styles.listView}>
           <List
-            style={{maxHeight:'100%', maxWidth:'90%'}}
+            style={styles.listElements}
             data={props.results}
             ItemSeparatorComponent={Divider}
             renderItem={activityItem}

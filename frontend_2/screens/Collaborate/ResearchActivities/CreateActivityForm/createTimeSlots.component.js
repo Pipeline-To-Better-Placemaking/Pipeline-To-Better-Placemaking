@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction, IndexPath, Select, SelectItem, Modal } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Datepicker } from '@ui-kitten/components';
-import { DateTimePickerModal, DateTimePicker } from "react-native-modal-datetime-picker";
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Select, SelectItem, Modal, Text, Button, Input, Icon, Divider, List, Card, StyleService } from '@ui-kitten/components';
+import { DateTimePickerModal } from "react-native-modal-datetime-picker";
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { HeaderExit } from '../../../components/headers.component';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { styles } from './form.styles';
+
+import { styles } from './createTimeSlots.styles';
 
 export function CreateTimeSlots(props) {
 
@@ -23,7 +22,7 @@ export function CreateTimeSlots(props) {
   const [tempNum, setTempNum] = useState(''); // used for Pop up
 
   // select multiple standing points
-  const [tempPoints, setTempPoints] = useState([]);
+  //const [tempPoints, setTempPoints] = useState([]);
   const [selectPointsVisible, setSelectPointsVisible] = useState(false);
   const [selectedPointsIndex, setSelectedPointsIndex] = useState([]);
   const groupDisplayValues = selectedPointsIndex.map(index => {
@@ -158,7 +157,7 @@ export function CreateTimeSlots(props) {
   }
 
   const TimePicker = ({item, index}) => (
-      <View style={{marginLeft:-20}}>
+      <View style={styles.leftShift}>
         <Button
           onPress={() => editTime(item, index)}
           accessoryRight={ClockIcon}
@@ -178,9 +177,9 @@ export function CreateTimeSlots(props) {
   );
 
   const NumResearchers = ({item, index}) => (
-      <View style={{flexDirection:'row'}}>
+      <View style={styles.rowView}>
         <Button
-          style={{marginLeft:-20}}
+          style={styles.leftShift}
           onPress={() => editResearchers(item, index)}
           accessoryRight={ResearchersIcon}
           appearance='ghost'
@@ -192,7 +191,7 @@ export function CreateTimeSlots(props) {
 
   const EnterNumberModal = () => (
     <Modal
-      style={{width:'80%'}}
+      style={styles.modal}
       visible={researchersVisible}
       backdropStyle={styles.backdrop}
       onBackdropPress={dimissModal}
@@ -205,7 +204,7 @@ export function CreateTimeSlots(props) {
           onChangeText={(nextValue) => setTempNum(nextValue)}
           keyboardType="number-pad"
         />
-        <Button style={{marginTop:5}} onPress={confirmModal}>
+        <Button style={styles.confirmButton} onPress={confirmModal}>
           Confirm
         </Button>
       </Card>
@@ -214,7 +213,7 @@ export function CreateTimeSlots(props) {
 
   const SelectPointsModal = () => (
     <Modal
-      style={{width:'80%'}}
+      style={styles.modal}
       visible={selectPointsVisible}
       backdropStyle={styles.backdrop}
       onBackdropPress={dimissModal}
@@ -230,7 +229,7 @@ export function CreateTimeSlots(props) {
            return (<SelectItem key={index} title={value.title}/>);
          })}
        </Select>
-        <Button style={{marginTop:10}} onPress={confirmPointsModal}>
+        <Button style={styles.confirmButton1} onPress={confirmPointsModal}>
           Confirm
         </Button>
       </Card>
@@ -238,10 +237,10 @@ export function CreateTimeSlots(props) {
   );
 
   const SelectPoints = ({item, index}) => (
-      <View style={{flexDirection:'row'}}>
+      <View style={styles.rowView}>
         <Button
           disabled={props.standingPoints.length <= 0}
-          style={{marginLeft:-20}}
+          style={styles.leftShift}
           onPress={() => editPoints(item, index)}
           accessoryRight={PinIcon}
           appearance='ghost'
@@ -252,7 +251,7 @@ export function CreateTimeSlots(props) {
   );
 
   const Delete = ({item, index}) => (
-      <View style={{marginRight:-20, marginTop:-10}}>
+      <View style={styles.deleteButtonView}>
           <Button
             onPress={() => deleteTime(item, index)}
             accessoryRight={DeleteIcon}
@@ -264,15 +263,15 @@ export function CreateTimeSlots(props) {
 
   const signUpCard = ({item, index}) => (
     <Card>
-      <View style={{flexDirection:'row', justifyContent:'flex-start'}}>
+      <View style={styles.cardView}>
 
-        <View style={{flex:1, flexDirection:'column', alignItems:'flex-start'}}>
+        <View style={styles.columnView}>
           <TimePicker {...{item, index}} />
           <NumResearchers {...{item, index}} />
           {(props.selectedActivity === 'Survey' ? null : <SelectPoints {...{item, index}} />)}
         </View>
 
-        <View style={{alignItems:'flex-end'}}>
+        <View style={styles.endView}>
           <Delete {...{item, index}}/>
         </View>
 
@@ -300,7 +299,7 @@ export function CreateTimeSlots(props) {
           </View>
 
           <List
-            style={{marginTop:15, marginBottom:15}}
+            style={styles.listView}
             data={props.timeSlots}
             ItemSeparatorComponent={Divider}
             renderItem={signUpCard}

@@ -1,44 +1,76 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
 
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        flexDirection:'column'
+    renderAnchor:{
+        marginTop: 5
     },
 
-    teamTextView: {
+    textTitle:{
+        fontSize:20
+    },
+
+    listItem:{
+        flex:1, 
+        flexDirection:'row',
+        justifyContent:'space-between'
+    },
+
+    container:{
+        flex:1, 
+        flexDirection:'column', 
+        justifyContent:'flex-start'
+    },
+
+    buttonRow:{
+        flex:1, 
+        flexDirection:'row', 
+        justifyContent:'flex-end'
+    },
+
+    buttonSpacer:{
+        marginLeft:15
+    },
+    
+    teamView: {
         marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginLeft: 30
     },
 
-    teamText: {
-        fontSize: 25,
+    teamTextView:{
+        flexDirection:'column', 
+        justifyContent:'flex-end'
     },
 
-    line: {
-        borderBottomWidth: 2,
-        marginTop: 5
+    teamText: {
+        fontSize: 25,
     },
 
     createTeamButtonView: {
         marginRight: 30,
     },
 
-    backdrop: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      flex: 1,
-      justifyContent: 'center',
+    listView:{
+        flexDirection:'row', 
+        justifyContent:'center', 
+        maxHeight:'40%', 
+        marginTop:15
     },
 
-    modalBackgroundStyle: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
+    list:{
+        maxHeight:'100%', 
+        maxWidth:'90%'
     },
+    
+    list1:{
+        maxHeight:'100%', 
+        maxWidth:'90%',
+        minHeight:150, 
+        backgroundColor: 'rgba(0, 0, 0, 0)'
+    }
 
 });
+
+export default styles;

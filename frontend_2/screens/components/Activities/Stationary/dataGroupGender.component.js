@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, KeyboardAvoidingView } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Text, Button } from '@ui-kitten/components';
 
-import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, SelectItem } from '@ui-kitten/components';
-import * as Location from 'expo-location';
-import styles from './dataEntryModal.styles.js';
+import { styles } from './dataGroup.styles';
 
 export function DataGroupGender(props) {
 
@@ -21,11 +20,11 @@ export function DataGroupGender(props) {
     }
 
     return(
-        <View style={{marginTop: 25}}>
-        <Text category={'h6'} style={{marginBottom: 10}}> Gender: </Text>
-            <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
-                <Button style={{width:150, marginRight: 45}} appearance={genderMatrix[0] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(0)}>Male</Button>
-                <Button style={{width:150, marginRight: 10}} appearance={genderMatrix[1] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(1)}>Female</Button>
+        <View style={styles.containerSpacer}>
+        <Text category={'h6'} style={styles.title}> Gender: </Text>
+            <View style={styles.topRow}>
+                <Button style={styles.buttonLeft} appearance={genderMatrix[0] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(0)}>Male</Button>
+                <Button style={styles.buttonRight} appearance={genderMatrix[1] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(1)}>Female</Button>
             </View>
         </View>
     )

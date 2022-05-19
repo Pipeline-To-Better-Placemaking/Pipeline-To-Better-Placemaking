@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, ScrollView, Pressable, Image } from 'react-native';
-import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction, Button } from '@ui-kitten/components';
+import { View, ScrollView, Image } from 'react-native';
+import { Text, Button } from '@ui-kitten/components';
 import { BlueViewableArea } from '../components/content.component';
 import { styles } from './title.styles';
 
@@ -46,8 +46,8 @@ export const TitleScreen = ({ navigation }) => {
         </View>
 
 
-        <Text style={{margin:5}} category='h1' status='control'>
-            2+ Community
+        <Text style={styles.titleText} category='h1' status='control'>
+            Pipeline to Better Placemaking
         </Text>
 
         <Button style={styles.logInButton} onPress={navigateLogin}>

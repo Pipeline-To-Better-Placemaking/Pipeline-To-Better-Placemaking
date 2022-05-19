@@ -3,6 +3,8 @@ import MapView from 'react-native-maps'
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 
+import { styles } from './sharedMap.styles';
+
 export function PeopleMovingMap(props) {
 
     // Color constants for the data points
@@ -12,7 +14,7 @@ export function PeopleMovingMap(props) {
     const DataPin = (props) => {
 
         return(
-            <View style={{backgroundColor: colors[1], borderRadius: 150/2, borderWidth: 1, width: 15, height: 15}}/>
+            <View style={[ styles.dataPin, {backgroundColor: colors[1]}]}/>
         )
     }
 

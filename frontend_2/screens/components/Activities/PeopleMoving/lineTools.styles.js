@@ -1,21 +1,31 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
 
-    buttonStyle: {
-        borderWidth: 0,
-        borderRightWidth: 1,
-        borderTopRightRadius: 0,
-        borderBottomRightRadius: 0,
-        borderColor: 'black',
-        height: 80,
-        width: 125
+    columnView:{
+        alignSelf: 'center'
     },
 
     iconSize: {
         width: 50,
         height: 50
-    }
-})
+    },
+    
+    container:{
+        flex: 1, 
+        flexDirection: 'row', 
+        marginTop: -90, 
+        justifyContent:'space-between'
+    },
 
-export default styles
+    button:{
+        flex: 1
+    },
+
+    buttonView:{
+        flexDirection:'column'
+    }
+
+});
+
+export default styles;

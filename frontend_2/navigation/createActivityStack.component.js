@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IndexPath } from '@ui-kitten/components';
-import { IntialForm } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/intialInformation.component';
+import { IntialForm } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/initialInformation.component';
 import { SelectLocation } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/setLocation.component';
 import { CreateTimeSlots } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/createTimeSlots.component';
-import { getDayStr, getTimeStr } from '../screens/components/timeStrings.component';
+import { getTimeStr } from '../screens/components/timeStrings.component';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -59,6 +57,7 @@ export function CreateActivityStack(props) {
     await setDate(props.activity.date);
     await setDuration('' + props.activity.duration);
 
+    //add new test here
     let types = ['stationary', 'moving', 'survey'];
     let activityIndex = types.findIndex(element => element === props.activity.test_type);
     setSelectedActivity(new IndexPath(activityIndex));
@@ -124,7 +123,8 @@ export function CreateActivityStack(props) {
     if(activityName.trim().length <= 0) {
       name = activityTypes[row];
     }
-
+    
+    //add new test here
     if (props.updateActivity) {
       if (row === 0) { // Stationary Map
         await putCollection(name, 'stationary', '/stationary_collections', 'stationary_maps/');
@@ -507,4 +507,4 @@ export function CreateActivityStack(props) {
       </Screen>
     </Navigator>
   );
-};
+}

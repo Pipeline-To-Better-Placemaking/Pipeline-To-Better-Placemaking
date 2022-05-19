@@ -1,9 +1,10 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import { View } from 'react-native';
-import styles from './home.map.styles.js';
 import { getRegionForCoordinates } from './mapPoints.component.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { styles } from './home.map.styles.js';
 
 export function HomeMapView(props) {
 

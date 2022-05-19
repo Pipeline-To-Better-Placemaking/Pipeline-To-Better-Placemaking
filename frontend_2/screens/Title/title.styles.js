@@ -9,6 +9,11 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
+    titleText:{
+        margin:5, 
+        textAlign: 'center'
+    },
+
     logInButton: {
         margin:20,
         backgroundColor: '#DEBD07',
@@ -50,3 +55,5 @@ export const styles = StyleSheet.create({
         borderRadius: 150/2
     }
 });
+
+export default styles;

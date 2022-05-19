@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { ModalContainer, PopUpContainer, ConfirmDelete } from '../../components/content.component';
+import { View } from 'react-native';
+import { Text, Button, Input, Icon } from '@ui-kitten/components';
+import { ModalContainer, ConfirmDelete } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Location from 'expo-location';
+
+import { styles } from './editProjectPage.styles';
 
 export function EditProjectPage(props) {
 
@@ -154,10 +155,10 @@ export function EditProjectPage(props) {
         deleteFunction={deleteProject}
       />
       <View>
-        <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-          <Text category='h5' style={{fontSize:25}}>Project Information</Text>
+        <View style={styles.projInfoView}>
+          <Text category='h5' style={styles.textTitle}>Project Information</Text>
           <Button
-            style={{marginBottom:5}}
+            style={styles.button}
             onPress={close}
             status='info'
             appearance={'outline'}
@@ -166,7 +167,7 @@ export function EditProjectPage(props) {
           </Button>
         </View>
 
-        <View style={{marginTop:10, marginBottom:30}}>
+        <View style={styles.teamTitleView}>
           <Text category='s1'>Team Title: </Text>
           <Input
             placeholder = 'Team Title'
@@ -175,7 +176,7 @@ export function EditProjectPage(props) {
           />
         </View>
 
-        <View style={{marginBottom:30, flexDirection:'row', justifyContent:'space-between'}}>
+        <View style={styles.buttonRow}>
           <Button status={'danger'} onPress={()=>{setConfirmDeleteVisible(true)}}>Delete</Button>
           <Button status={'success'} onPress={updateProject}>Update!</Button>
         </View>

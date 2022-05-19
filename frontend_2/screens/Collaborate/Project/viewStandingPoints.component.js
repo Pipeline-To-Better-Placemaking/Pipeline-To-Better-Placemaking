@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Text, Button, Icon, Divider, List, ListItem } from '@ui-kitten/components';
 import { MapAreaWrapper, ShowAreas, ShowMarkers, getRegionForCoordinates } from '../../components/Maps/mapPoints.component';
 import { ModalContainer } from '../../components/content.component';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EditPoints } from './editStandingPoints.component';
-import * as Location from 'expo-location';
+
+import { styles } from './sharedView.style';
 
 export function EditStandingPoints(props) {
 
@@ -63,10 +63,10 @@ export function EditStandingPoints(props) {
         visible={editPointVisible}
         setVisible={setEditPointVisible}
       />
-      <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-        <Text style={{fontSize:25}}>Edit Standing Points</Text>
+      <View style={styles.titleView}>
+        <Text style={styles.titleText}>Edit Standing Points</Text>
         <Button
-          style={{marginBottom:5}}
+          style={styles.button}
           onPress={close}
           status='info'
           appearance={'outline'}
@@ -75,7 +75,7 @@ export function EditStandingPoints(props) {
         </Button>
       </View>
 
-      <View style={{height:'50%'}}>
+      <View style={styles.mapWrapper}>
         <MapAreaWrapper
           area={props.project.subareas[0].points}
           mapHeight={'100%'}
@@ -85,9 +85,9 @@ export function EditStandingPoints(props) {
         </MapAreaWrapper>
       </View>
 
-      <View style={{flexDirection:'row', justifyContent: 'space-between', margin:5}}>
-        <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
-          <Text style={{fontSize:25}} >Standing Points </Text>
+      <View style={styles.container}>
+        <View style={styles.subTitleView}>
+          <Text style={styles.titleText} >Standing Points </Text>
         </View>
         <Button
           status='info'

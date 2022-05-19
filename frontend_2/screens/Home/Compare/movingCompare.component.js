@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Dimensions } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem, OverflowMenu } from '@ui-kitten/components';
+import React from 'react';
+import { View, ScrollView, Dimensions } from 'react-native';
+import { Text, Icon, Divider } from '@ui-kitten/components';
 import { HeaderBack } from '../../components/headers.component';
-import { MapAreaWrapper, ShowArea } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { CompareBarChart } from '../../components/charts.component';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { styles } from './compare.styles'
 
 export function MovingCompare(props) {
@@ -108,7 +106,7 @@ export function MovingCompare(props) {
         <ScrollView style={styles.margins}>
 
           <Text category={'h5'}>Moving Result Information</Text>
-          <Divider style={{marginTop:5, marginBottom:10, borderWidth:0.5}} />
+          <Divider style={styles.metaDataTitleSep} />
 
           {
             results.map((result, index) => {
@@ -124,13 +122,13 @@ export function MovingCompare(props) {
                   <Text>
                     {result.information}
                   </Text>
-                  <Divider style={{marginTop:10, marginBottom:10}} />
+                  <Divider style={styles.metaDataSep} />
                 </View>
               )
             })
           }
 
-          <Divider style={{marginTop:10, marginBottom:10, borderWidth:0.5}} />
+          <Divider style={styles.metaDataEndSep} />
 
           <CompareBarChart
             {...props}

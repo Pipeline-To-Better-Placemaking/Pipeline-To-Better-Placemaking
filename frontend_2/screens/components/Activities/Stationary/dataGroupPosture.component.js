@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, KeyboardAvoidingView } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Text, Button } from '@ui-kitten/components';
 
-import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, SelectItem } from '@ui-kitten/components';
-import * as Location from 'expo-location';
-import styles from './dataEntryModal.styles.js';
+import { styles } from './dataGroup.styles';
 
 export function DataGroupPosture(props) {
 
@@ -21,15 +20,15 @@ export function DataGroupPosture(props) {
     }
 
     return(
-        <View style={{marginTop: 20}}>
-        <Text category={'h6'} style={{marginBottom: 10}}> Posture: </Text>
-            <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
-                <Button style={{width:150, marginRight: 45}} appearance={postureMatrix[0] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(0)}>Standing</Button>
-                <Button style={{width:150, marginRight: 10}} appearance={postureMatrix[1] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(1)}>Sitting</Button>
+        <View style={styles.container}>
+        <Text category={'h6'} style={styles.title}> Posture: </Text>
+            <View style={styles.topRow}>
+                <Button style={styles.buttonLeft} appearance={postureMatrix[0] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(0)}>Standing</Button>
+                <Button style={styles.buttonRight} appearance={postureMatrix[1] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(1)}>Sitting</Button>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10, justifyContent:'space-around'}}>
-                <Button style={{width:150, marginRight: 45}} appearance={postureMatrix[2] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(2)}>Laying Down</Button>
-                <Button style={{width:150, marginRight: 10}} appearance={postureMatrix[3] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(3)}>Squating</Button>
+            <View style={styles.bottomRow}>
+                <Button style={styles.buttonLeft} appearance={postureMatrix[2] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(2)}>Laying Down</Button>
+                <Button style={styles.buttonRight} appearance={postureMatrix[3] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(3)}>Squating</Button>
             </View>
         </View>
     )

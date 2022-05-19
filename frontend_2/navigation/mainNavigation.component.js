@@ -64,4 +64,4 @@ export function AppNavigator (props) {
       )}
     </NavigationContainer>
   )
-};
+}

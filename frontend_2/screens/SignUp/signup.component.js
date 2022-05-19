@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { ScrollView, KeyboardAvoidingView, View, Platform, TouchableWithoutFeedback, Modal } from 'react-native';
+import { KeyboardAvoidingView, View, TouchableWithoutFeedback, Modal } from 'react-native';
 import { Icon, Text, Button, Input, Spinner } from '@ui-kitten/components';
-import { BlueViewableArea } from '../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 
@@ -89,7 +88,7 @@ export const SignUpScreen = ( props ) => {
                 await AsyncStorage.setItem("@invites", JSON.stringify(res.user.invites))
 
                 // Request permission to use location
-                let { status } = await Location.requestPermissionsAsync();
+                let { status } = await Location.requestForegroundPermissionsAsync();
 
                 if (status === 'granted') {
                     defaultLocation = await Location.getCurrentPositionAsync({});
@@ -120,19 +119,13 @@ export const SignUpScreen = ( props ) => {
     }
 
     const checkPassword = () => {
-
-        if (password.length < 8 || 
+        
+        return !!(password.length < 8 || 
             /\s/g.test(password) ||
             !/\d/g.test(password) ||
             !/[!@#$%^&*]/g.test(password) ||
-            !/[A-Z]/g.test(password)) {
+            !/[A-Z]/g.test(password));
 
-            return true
-            
-        }
-        else {
-            return false
-        }
     }
 
     const nonMatchingPasswords = () => {
@@ -144,7 +137,7 @@ export const SignUpScreen = ( props ) => {
         else {
 
             return (
-                <Text style={{color: '#FF3D71'}}>
+                <Text style={styles.errorMsg}>
                     Passwords do not match.
                 </Text>
             )
@@ -154,19 +147,15 @@ export const SignUpScreen = ( props ) => {
 
     const passwordRequirement = () => {
 
-        if (passwordProblems == false) {
-            return null
-        }
-        else if (passwordTouched && passwordProblems) {
+        if (passwordTouched && passwordProblems) {
             return (
-                <Text style={{color: '#FF3D71'}}>
+                <Text style={styles.errorMsg}>
                     Must contain at least 8 characters, one digit, one symbol, and one uppercase letter.
                 </Text>
             )
         }
-        else {
-            return null
-        }
+        //else
+        return null
     }
 
     const SignUpButton = () => (
@@ -178,8 +167,8 @@ export const SignUpScreen = ( props ) => {
     );
 
     const BackButton = () => (
-        <Button appearance={'ghost'} onPress={navigateBack} style={{marginTop:15}}>
-            <Text status={'control'} category='h5'>
+        <Button appearance={'ghost'} onPress={navigateBack} style={styles.backButton}>
+            <Text status={'control'} category='h5' style={styles.backText}>
                &larr; Back
             </Text>
         </Button>
@@ -195,7 +184,7 @@ export const SignUpScreen = ( props ) => {
     const passwordProblems = checkPassword();
 
     return (
-        <View style={{flex: 1, color:'#006FD6', backgroundColor:'#006FD6'}}>
+        <View style={styles.background}>
             <View style={styles.container}>
                 <Modal
                     animationType='fade'
@@ -207,7 +196,7 @@ export const SignUpScreen = ( props ) => {
                     </View>
                 </Modal>
                 <KeyboardAvoidingView behavior={"position"}>
-                <Text style={{alignSelf: 'center'}} category='h1' status='control'>Sign Up</Text>
+                <Text style={styles.title} category='h1' status='control'>Sign Up</Text>
                 <View>
                     
                     <Text category='label' style={styles.inputText}> Email Address: </Text>
@@ -221,7 +210,7 @@ export const SignUpScreen = ( props ) => {
                         onChangeText={nextValue => setEmail(nextValue)}
                         caption={
                             emailTouched && !isValidEmail &&
-                            <Text style={{color: '#FF3D71'}}>
+                            <Text style={styles.errorMsg}>
                                 Email address is not valid
                             </Text>
                         }

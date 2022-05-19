@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction, IndexPath, Select, SelectItem } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, Datepicker } from '@ui-kitten/components';
+import React from 'react';
+import { View } from 'react-native';
+import { Text, Button, Icon } from '@ui-kitten/components';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { SelectArea } from '../../../components/Maps/mapPoints.component';
 import { HeaderExit } from '../../../components/headers.component';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { styles } from './form.styles';
+
+import { styles } from './setLocation.styles';
 
 export function SelectLocation(props) {
 
@@ -26,19 +25,20 @@ export function SelectLocation(props) {
       <ContentContainer>
         <View style={styles.container}>
 
-          <View style={styles.activityView, {justifyContent:'center'}}>
-            <Text style={{textAlign:'center', marginBottom:5, fontSize:20}} category='s1'>Set sub location</Text>
+          <View style={styles.activityView}>
+            <Text style={styles.promptText} category='s1'>Set sub location</Text>
           </View>
 
-          <View style={{height:'90%'}}>
+          <View style={styles.selectAreaView}>
             <SelectArea areas={props.subareas} selectedIndex={props.selectedAreaIndex} setSelectedIndex={props.setSelectedAreaIndex}/>
           </View>
 
-          <View style={styles.activityView}>
+          <View style={styles.buttonView}>
             <Button
               onPress={back}
               status='info'
               accessoryLeft={BackIcon}
+              style={[styles.buttonBorder, {marginLeft: 5}]}
             >
               Back
             </Button>
@@ -46,6 +46,7 @@ export function SelectLocation(props) {
               onPress={next}
               status='info'
               accessoryRight={ForwardIcon}
+              style={[styles.buttonBorder, {marginRight: 5}]}
             >
               Next
             </Button>

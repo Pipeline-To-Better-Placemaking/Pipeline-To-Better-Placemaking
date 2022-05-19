@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, Image } from 'react-native';
-import { Text, Button, Input, Icon, MenuItem, OverflowMenu } from '@ui-kitten/components';
-import styles from './headers.styles';
+import { View } from 'react-native';
+import { Text, Button, Icon, OverflowMenu } from '@ui-kitten/components';
+
+import { styles } from './headers.styles';
 
 export function Header(props) {
   return (
     <View style={styles.header}>
       <View style={styles.leftContent} />
-      <View style={{maxWidth:'80%'}}>
+      <View style={styles.textHeader}>
         <Text category='h5' status='control'>
           {props.text}
         </Text>
@@ -30,7 +31,7 @@ export function HeaderBack(props) {
           size='small'
         />
       </View>
-      <View style={{maxWidth:'80%', marginLeft:15}}>
+      <View style={styles.textHeaderBack}>
         <Text category='h5' status='control'>
           {props.text}
         </Text>
@@ -43,8 +44,8 @@ export function HeaderBack(props) {
 export function HeaderExit(props) {
   return (
     <View style={styles.header}>
-    <View style={{maxWidth:'80%'}}>
-      <Text style={{marginLeft:25}} category='h5' status='control'>
+    <View style={styles.textHeader}>
+      <Text style={styles.text} category='h5' status='control'>
         {props.text}
       </Text>
     </View>
@@ -54,7 +55,7 @@ export function HeaderExit(props) {
           onPress={() => props.exit()}
           status={'danger'}
           size='small'
-          style={{width:1, height:1, marginRight:25}}
+          style={styles.buttonHeaderExit}
         />
       </View>
     </View>
@@ -96,7 +97,7 @@ export function HeaderBackEdit({children, ...props}) {
           size='small'
         />
       </View>
-      <View style={{maxWidth:'80%', marginLeft:15}}>
+      <View style={styles.textHeaderBack}>
         <Text category='h5' status='control'>
           {props.text}
         </Text>

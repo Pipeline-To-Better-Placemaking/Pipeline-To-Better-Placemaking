@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View,  Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
-import { Text, CheckBox, Button, BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
+import { View } from 'react-native';
+import { Text, CheckBox } from '@ui-kitten/components';
 import styles from './dummyResult.styles.js';
 
 export const DummyResult = ( props ) => {

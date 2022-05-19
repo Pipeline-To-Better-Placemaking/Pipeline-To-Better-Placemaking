@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { Text, Button, Input, Icon, Popover, Divider, Card, useTheme} from '@ui-kitten/components';
+import React from 'react';
+import { View } from 'react-native';
+import { Text, useTheme} from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
-import { BarChart, Grid, YAxis, XAxis } from 'react-native-svg-charts';
-import { LinearGradient, Stop, Defs, Text as TextSVG } from 'react-native-svg'
-import * as scale from 'd3-scale'
+import { BarChart, Grid, YAxis } from 'react-native-svg-charts';
+import { LinearGradient, Stop, Defs, Text as TextSVG } from 'react-native-svg';
+
+import { styles } from './charts.styles';
 
 /* This needs:
 title={}
@@ -190,13 +191,10 @@ export function CompareBarChart({children, ...props}) {
       return (
         <Text
           key={index}
-          style={{
-            flex: 1,
+          style={[ styles.xaxis0, {
             transform:[{rotate:props.rotation}],
-            fontSize: fontSize,
-            textAlign: 'center',
             width: ((props.width-10) / (props.dataLabels.length*2)),
-          }}
+          }]}
         >
           {label}
         </Text>
@@ -204,25 +202,8 @@ export function CompareBarChart({children, ...props}) {
     }
 
     return (
-      <View
-        key={index}
-        style={{
-          flex: 1,
-          justifyContent:'flex-start',
-          flexDirection:'column',
-          height:100,
-        }}
-      >
-        <Text
-          style={{
-            fontSize: fontSize,
-            transform:[{rotate:props.rotation}],
-            width:110,
-            textAlign: 'right',
-            marginLeft:-40,
-            marginTop:40,
-          }}
-        >
+      <View key={index} style={styles.xaxisView} >
+        <Text style={[styles.xaxis1, {transform:[{rotate:props.rotation}]}]} >
           {label}
         </Text>
       </View>
@@ -249,9 +230,9 @@ export function CompareBarChart({children, ...props}) {
           min={0}
           numberOfTicks={ticks}
         />
-        <View style={{ flex: 1, marginLeft: 5 }}>
+        <View style={styles.container}>
           <BarChart
-            style={{flex:1}}
+            style={styles.barchart}
             data={props.dataValues}
             gridMin={0}
             spacing={0.2}
@@ -264,23 +245,15 @@ export function CompareBarChart({children, ...props}) {
           </BarChart>
         </View>
       </View>
-      <View
-        style={{
-          flex: 1,
-          marginLeft: 10,
-          flexDirection:'row',
-          maxWidth:props.width - 10,
-          justifyContent:'flex-start',
-        }}
-      >
+      <View style={[ styles.labelView, {maxWidth:props.width - 10}]} >
         {props.dataLabels.map((value, index) => {return xAxisLabels(value, index)})}
       </View>
-      <View style={{marginTop:15, flex:1, flexDirection:'row'}}>
+      <View style={styles.legendView}>
         <Text category={'s2'}>Legend: </Text>
         {titles.map((text, index) => {
           //if(index !== props.dataValues.length-1) {text += ', '}
           return(
-            <Text key={index} style={{flex:1,color:props.dataValues[index].svg.fill,width:props.width}} category={'s2'}>{text}</Text>
+            <Text key={index} style={{flex:1, color:props.dataValues[index].svg.fill, width:props.width}} category={'s2'}>{text}</Text>
           )
         })}
       </View>

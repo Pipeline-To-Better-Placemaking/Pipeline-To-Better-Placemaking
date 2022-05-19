@@ -8,17 +8,20 @@ export const styles = StyleSheet.create({
         flexDirection:'column'
     },
 
+    textTitle:{
+      fontSize:20
+    },
+
+    teamTextTitle:{
+      flexDirection:'column', 
+      justifyContent:'flex-end'
+    },
+
     teamTextView: {
         marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginLeft: 30
-    },
-
-    margins: {
-      margin:5,
-      marginLeft:20,
-      marginRight:20
     },
 
     teamText: {
@@ -46,5 +49,50 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    
+    messageView:{
+      justifyContent:'center', 
+      alignItems:'center'
+    },
+
+    mapSpace:{
+      height:'35%'
+    },
+
+    metaDataView:{
+      marginTop: 10, 
+      marginLeft: 20, 
+      flexDirection: 'column',
+      justifyContent: 'flex-start'
+    },
+
+    metaDataRow:{
+      flexDirection:'row'
+    },
+
+    metaDataDesc:{
+      fontWeight: "bold"
+    },
+    
+    emailButton:{
+      marginRight: 10
+    },
+
+    dividerMargin:{
+      marginTop: 5
+    },
+    
+    listView:{
+      flexDirection:'row', 
+      justifyContent:'center', 
+      maxHeight:'50%'
+    },
+
+    listElements:{
+      maxHeight:'100%', 
+      maxWidth:'90%'
+    }
 
 });
+
+export default styles;

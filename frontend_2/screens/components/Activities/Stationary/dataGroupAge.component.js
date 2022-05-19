@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, KeyboardAvoidingView } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Text, Button } from '@ui-kitten/components';
 
-import { Text, Button, Select, Input, Icon, Popover, Divider, List, ListItem, SelectItem } from '@ui-kitten/components';
-import * as Location from 'expo-location';
-import styles from './dataEntryModal.styles.js';
+import { styles } from './dataGroup.styles';
 
 export function DataGroupAge(props) {
 
@@ -22,18 +21,18 @@ export function DataGroupAge(props) {
 
     return(
         <View>
-        <Text category={'h6'} style={{marginBottom: 10}}> Age: </Text>
-            <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
-                <Button style={{width:150, marginRight: 45}} appearance={ageMatrix[0] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(0)}>0 - 14</Button>
-                <Button style={{width:150, marginRight: 10}} appearance={ageMatrix[1] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(1)}>15 - 21</Button>
+        <Text category={'h6'} style={styles.title}> Age: </Text>
+            <View style={styles.topRow}>
+                <Button style={styles.buttonLeft} appearance={ageMatrix[0] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(0)}>0 - 14</Button>
+                <Button style={styles.buttonRight} appearance={ageMatrix[1] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(1)}>15 - 21</Button>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10, justifyContent:'space-around'}}>
-                <Button style={{width:150, marginRight: 45}} appearance={ageMatrix[2] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(2)}>22 - 30</Button>
-                <Button style={{width:150, marginRight: 10}} appearance={ageMatrix[3] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(3)}>30 - 50</Button>
+            <View style={styles.bottomRow}>
+                <Button style={styles.buttonLeft} appearance={ageMatrix[2] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(2)}>22 - 30</Button>
+                <Button style={styles.buttonRight} appearance={ageMatrix[3] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(3)}>30 - 50</Button>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10, justifyContent:'space-around'}}>
-                <Button style={{width:150, marginRight: 45}} appearance={ageMatrix[4] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(4)}>50 - 65</Button>
-                <Button style={{width:150, marginRight: 10}} appearance={ageMatrix[5] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(5)}>65+</Button>
+            <View style={styles.bottomRow}>
+                <Button style={styles.buttonLeft} appearance={ageMatrix[4] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(4)}>50 - 65</Button>
+                <Button style={styles.buttonRight} appearance={ageMatrix[5] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(5)}>65+</Button>
             </View>
         </View>
     )

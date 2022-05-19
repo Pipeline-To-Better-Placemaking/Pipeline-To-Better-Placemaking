@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, Modal, KeyboardAvoidingView, Linking } from 'react-native';
+import { View, Image, Linking } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme, Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import { useTheme, Text, Button } from '@ui-kitten/components';
 import { MapAreaWrapper, ShowArea } from '../../../components/Maps/mapPoints.component.js';
 import CountDown from 'react-native-countdown-component';
-import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
+
+import { styles } from './surveyActivity.styles';
 
 export function SurveyActivity(props) {
 
@@ -33,7 +33,7 @@ export function SurveyActivity(props) {
       return(
         <Button
           status={'danger'}
-          style={{height: 50, marginLeft: 5, width: 90}}
+          style={styles.stopButton}
           onPress={() => endActivity()}
         >
           End
@@ -42,11 +42,7 @@ export function SurveyActivity(props) {
     }
     else {
       return(
-        <Button
-          style={{backgroundColor: '#006FD6'}}
-          style={{height: 50, marginLeft: 5, width: 90}}
-          onPress={() => setStart(true)}
-        >
+        <Button style={styles.startButton} onPress={() => setStart(true)} >
           Start
         </Button>
       )
@@ -56,7 +52,7 @@ export function SurveyActivity(props) {
   const TimeBar = () => {
     return(
       <View>
-        <View style={{margin:5, flexDirection: 'row', justifyContent:'space-between', alignItems:'center'}}>
+        <View style={styles.container}>
 
           <StartStopButton/>
 
@@ -89,35 +85,35 @@ export function SurveyActivity(props) {
     <ViewableArea>
       <Header text={'Survey Activity'}/>
       <ContentContainer>
-      <TimeBar/>
-      <View style={{flex:1, flexDirection:'column'}}>
-          <View style={{height:'40%'}}>
-            <MapAreaWrapper area={area} mapHeight={'100%'}>
-              <ShowArea area={area} />
-            </MapAreaWrapper>
-          </View>
+        <TimeBar/>
+        <View style={styles.mainView}>
+            <View style={styles.mapWrapper}>
+              <MapAreaWrapper area={area} mapHeight={'100%'}>
+                <ShowArea area={area} />
+              </MapAreaWrapper>
+            </View>
 
-          <View style={{flexDirection:'row', margin:10, marginRight:10}}>
-            <Text>
-              Survey Link:
-            </Text>
-            <Text> </Text>
-            <Text
-              style={{color:'#006FD6', width:'90%'}}
-              onPress={() => Linking.openURL(surveyLink)}
-            >
-              {surveyLink}
-            </Text>
-          </View>
+            <View style={styles.surveyView}>
+              <Text>
+                Survey Link:
+              </Text>
+              <Text> </Text>
+              <Text
+                style={styles.surveyLink}
+                onPress={() => Linking.openURL(surveyLink)}
+              >
+                {surveyLink}
+              </Text>
+            </View>
 
-          <View style={{flex:1, alignItems:'center'}}>
-            <Image
-              style={{height:'100%', width:'100%'}}
-              source={require('./surveyQRCode.png')}
-            />
-          </View>
+            <View style={styles.qrView}>
+              <Image
+                style={styles.qr}
+                source={require('./surveyQRCode.png')}
+              />
+            </View>
         </View>
       </ContentContainer>
     </ViewableArea>
-  )
-};
+  );
+}

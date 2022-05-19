@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
 
@@ -72,6 +72,32 @@ export const styles = StyleSheet.create({
       margin:5,
       marginLeft:20,
       marginRight:20
+    },
+
+    selectView:{
+        margin:10, 
+        flexDirection: 'row'
+    },
+
+    selectElement:{
+        flex: 1
+    },
+
+    metaDataTitleSep:{
+        marginTop:5, 
+        marginBottom:10, 
+        borderWidth:0.5
+    },
+    
+    metaDataSep:{
+        marginTop:10, 
+        marginBottom:10
+    },
+
+    metaDataEndSep:{
+        marginTop: 10,
+        marginBottom: 10,
+        borderWidth: 0.5
     },
 
 });

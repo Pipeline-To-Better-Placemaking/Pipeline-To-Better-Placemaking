@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Pressable, RefreshControl } from 'react-native';
-import { Divider, Icon, Layout, Text, TopNavigation, TopNavigationAction, Button, List, ListItem } from '@ui-kitten/components';
+import { View, RefreshControl } from 'react-native';
+import { Divider, Text, Button, List, ListItem } from '@ui-kitten/components';
 import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer } from '../components/content.component';
 import { DummyResult } from '../components/dummyResult.component.js';
 import { HomeMapView } from '../components/Maps/home.map.component.js';
-import { getDayStr, getTimeStr } from '../components/timeStrings.component.js';
-import { getProject, getAllUserProjects, getAllResults, getTeam } from '../components/apiCalls';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getProject, getAllUserProjects, getAllResults } from '../components/apiCalls';
 import { styles } from './home.styles';
 
 export const HomeScreen = ( props ) => {
@@ -37,6 +35,7 @@ export const HomeScreen = ( props ) => {
     let stationaryResults = []
     let movingResults = []
     let surveyResults = []
+    //add the new test result arrays here
 
     // Get selected Projects
     for (let i = 0; i < props.selectedProjects.length; i++) {
@@ -60,6 +59,8 @@ export const HomeScreen = ( props ) => {
         } else if (result.test_type === "survey") {
           surveyResults.push(result);
         }
+        //add the new tests here
+
       }
     }
 
@@ -68,6 +69,7 @@ export const HomeScreen = ( props ) => {
       stationary: [...stationaryResults],
       moving: [...movingResults],
       survey: [...surveyResults]
+      //add the new tests here
     };
 
     await props.setFilterCriteria(filteredResults);
@@ -110,7 +112,7 @@ export const HomeScreen = ( props ) => {
       return (
         <View style={styles.resultCompareButtonView}>
           <Button
-            style={{marginRight:10}}
+            style={styles.confirmCompareButton}
             disabled={false}
             appearance={'outline'}
             onPress={onCompareConfirm}
@@ -139,13 +141,13 @@ export const HomeScreen = ( props ) => {
       <Header text={'Home Page'}/>
       <ContentContainer>
 
-        <View style={{height:'35%'}}>
+        <View style={styles.mapSpace}>
           <HomeMapView location={location}/>
         </View>
 
         <View style={styles.resultTextView}>
 
-          <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
+          <View>
             <Text style={styles.resultText}> Results </Text>
           </View>
 
@@ -154,12 +156,12 @@ export const HomeScreen = ( props ) => {
 
         <View style={styles.resultLine} />
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'55%', marginTop:15}}>
+        <View style={styles.listView}>
           <List
             data={props.allProjects}
             ItemSeparatorComponent={Divider}
             renderItem={resultItem}
-            style={{maxHeight:'100%', minHeight:150, backgroundColor: 'rgba(0, 0, 0, 0)'}}
+            style={styles.listElements}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}

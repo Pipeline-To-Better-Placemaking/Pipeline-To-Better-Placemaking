@@ -7,8 +7,11 @@ import { MapAreaWrapper, ShowArea, ShowMarkers } from '../../../components/Maps/
 import { getDayStr, getTimeStr } from '../../../components/timeStrings.component';
 import { getAllCollectionInfo } from '../../../components/apiCalls';
 
+import { styles } from './activitySignUp.styles';
+
 export function ActivitySignUpPage(props) {
 
+  //add the new tests here
   // Constant array of activities
   const activityList = ["stationary", "moving", "survey"]
 
@@ -47,20 +50,20 @@ export function ActivitySignUpPage(props) {
       return (
         <ViewableArea>
           {props.teamOwner() ?
-            <HeaderBackEdit {...props} text={props.activity.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
+            <HeaderBackEdit {...props} text={props.activity.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible} >
               <MenuItem title='Edit Info' onPress={() => {setEditMenuVisible(false); editActivityInfo()}}/>
             </HeaderBackEdit>
           :
             <HeaderBack {...props} text={props.activity.title}/>
           }
           <ContentContainer>
-            <View style={{margin:15, borderWidth:4, borderColor:'red'}}>
-              <Text status='danger' category='h5' style={{padding:5}}>
+            <View style={styles.errorView}>
+              <Text status='danger' category='h5' style={styles.errorText}>
                 Error getting Research activity information. {'\n'}
                 Team Admin needs to reset the activity area.
               </Text>
             </View>
-            <View style={{margin:15}}>
+            <View style={styles.viewSpacer}>
               <Text category='s1'>Activity: {props.activity.test_type}</Text>
               <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
               <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
@@ -90,18 +93,18 @@ export function ActivitySignUpPage(props) {
               <HeaderBack {...props} text={props.activity.title}/>
             }
             <ContentContainer>
-              <View style={{height:'40%'}}>
+              <View style={styles.mapWrapper}>
                 <MapAreaWrapper area={props.activity.area.points} mapHeight={'100%'}>
                   <ShowArea area={props.activity.area.points} />
                 </MapAreaWrapper>
               </View>
-              <View style={{margin:15}}>
+              <View style={styles.viewSpacer}>
                 <Text category='s1'>Activity: {props.activity.test_type}</Text>
                 <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
                 <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
               </View>
-              <View style={{margin:15, borderWidth:4, borderColor:'red'}}>
-                <Text status='danger' category='h5' style={{padding:5}}>
+              <View style={styles.errorView}>
+                <Text status='danger' category='h5' style={styles.errorText}>
                   Error getting some standing point information. {'\n'}
                   Team Admin needs to fix the activity.
                 </Text>
@@ -192,6 +195,7 @@ export function ActivitySignUpPage(props) {
 
       props.navigation.navigate("SurveyActivity")
     }
+    //add more else ifs here for the new tests
   }
 
   const onSignUp = async (timeSlot, index) => {
@@ -210,6 +214,7 @@ export function ActivitySignUpPage(props) {
     } else if (props.activity.test_type === activityList[2]) {
       route = 'surveys/';
     }
+    //add new tests here
 
     // if the researcher is already signed up and they press the button again, unsign them up
     let findIndex = tempResearchers.findIndex(element => element._id === props.userId)
@@ -321,8 +326,7 @@ export function ActivitySignUpPage(props) {
     for (let i = 0; i < timeSlot.maxResearchers; i++) {
       names.push("    " + (i+1) + ". " + getName(timeSlot, i));
     }
-    let str = names.join('\n');
-    return str;
+    return names.join('\n');
   }
 
   const isSignedUp = (timeSlot, userId) => {
@@ -336,19 +340,19 @@ export function ActivitySignUpPage(props) {
 
   const timeSlotCard = ({item, index}) => (
     <Card disabled={true}>
-      <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-        <View style={{flexDirection:'column'}}>
+      <View style={styles.rowView}>
+        <View style={styles.infoColumn}>
           <Text>Start Time: {getTimeStr(item.date)}</Text>
           {(props.activity.test_type === activityList[2] ? null : <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>)}
           <Text>Researchers:</Text>
           <Text>{getResearchers(item)}</Text>
         </View>
-        <View style={{flexDirection:'column', justifyContent:'space-around'}}>
-          <Button status='info' style={{margin:5}} onPress={() => onSignUp(item, index)}>
+        <View style={styles.buttonView}>
+          <Button status='info' style={styles.button} onPress={() => onSignUp(item, index)}>
             Sign Up
           </Button>
           {isSignedUp(item, props.userId) &&
-            <Button status='success' style={{margin:5}} onPress={() => onBeginPress(item, index)}>
+            <Button status='success' style={styles.button} onPress={() => onBeginPress(item, index)}>
               Begin
             </Button>
           }
@@ -367,20 +371,20 @@ export function ActivitySignUpPage(props) {
         <HeaderBack {...props} text={props.activity.title}/>
       }
       <ContentContainer>
-        <View style={{height:'40%'}}>
+        <View style={styles.mapWrapper}>
           <MapAreaWrapper area={props.activity.area.points} mapHeight={'100%'}>
             <ShowArea area={props.activity.area.points} />
             {(props.activity.test_type === activityList[2] ? null : <ShowMarkers markers={props.project.standingPoints} />)}
           </MapAreaWrapper>
         </View>
-        <View style={{margin:15}}>
+        <View style={styles.viewSpacer}>
           <Text category='s1'>Activity: {props.activity.test_type}</Text>
           <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
           <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
         </View>
-        <View style={{height:'50%'}}>
+        <View style={styles.listView}>
           <List
-            style={{maxHeight:'100%'}}
+            style={styles.list}
             data={props.timeSlots}
             ItemSeparatorComponent={Divider}
             renderItem={timeSlotCard}
@@ -395,4 +399,4 @@ export function ActivitySignUpPage(props) {
       </ContentContainer>
     </ViewableArea>
   );
-};
+}

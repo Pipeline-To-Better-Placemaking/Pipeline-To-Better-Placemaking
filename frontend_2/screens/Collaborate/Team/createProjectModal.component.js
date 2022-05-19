@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { Header } from '../../components/headers.component';
-import { MapAddArea, ShowMarkers , getAreaName, getRegionForCoordinates, getLocationAddress } from '../../components/Maps/mapPoints.component';
+import { View } from 'react-native';
+import { Text, Button, Input, Icon } from '@ui-kitten/components';
+import { MapAddArea, getAreaName, getRegionForCoordinates, getLocationAddress } from '../../components/Maps/mapPoints.component';
 import { ModalContainer} from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Location from 'expo-location';
+
 import { styles } from './createProjectModal.styles';
 
 export function CreateProject(props) {
@@ -113,17 +112,17 @@ export function CreateProject(props) {
           <Text>Enter a Project Name: </Text>
           <Input
             value={projectName}
-            style={{flex:1}}
+            style={styles.input}
             placeholder='Type Here...'
             onChangeText={setProjectName}
           />
       </View>
 
-      <Text style={{marginTop:20}}>Search: </Text>
+      <Text style={styles.searchText}>Search: </Text>
 
       <View style={styles.searchView}>
           <Input
-              style={{flex:1}}
+              style={styles.input}
               placeholder='Enter a Location...'
               value={searchText}
               onChangeText={nextValue => setSearchText(nextValue)}
@@ -132,12 +131,12 @@ export function CreateProject(props) {
             status='info'
             accessoryLeft={SearchIcon}
             onPress = {searchLocation}
-            style={{marginLeft:10}}
+            style={styles.button}
             />
       </View>
 
       {markerError && attemptedCreation &&
-      <Text style={{color: '#FF3D71'}}>
+      <Text style={styles.errorText}>
         Invalid area: an area needs at least 3 points
       </Text>}
 
@@ -154,7 +153,7 @@ export function CreateProject(props) {
         </MapAddArea>
       </View>
 
-      <View style={{flexDirection:'row', justifyContent:'space-around', marginTop:'30%'}}>
+      <View style={styles.buttonRow}>
           <Button onPress={() => close()}
                   status='danger'
                   accessoryLeft={CancelIcon}>

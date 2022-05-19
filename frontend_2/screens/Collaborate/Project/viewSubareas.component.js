@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { MapAreaWrapper, ShowAreas, MapAdd, getRegionForCoordinates } from '../../components/Maps/mapPoints.component';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Text, Button, Icon, Divider, List, ListItem } from '@ui-kitten/components';
+import { MapAreaWrapper, ShowAreas, getRegionForCoordinates } from '../../components/Maps/mapPoints.component';
 import { ModalContainer } from '../../components/content.component';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EditPoints } from './editArea.component';
-import * as Location from 'expo-location';
+
+import { styles } from './sharedView.style';
 
 export function EditSubAreas(props) {
 
@@ -69,10 +69,10 @@ export function EditSubAreas(props) {
         visible={editAreaVisible}
         setVisible={setEditAreaVisible}
       />
-      <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-        <Text style={{fontSize:25}}>Edit Area(s)</Text>
+      <View style={styles.titleView}>
+        <Text style={styles.titleText}>Edit Area(s)</Text>
         <Button
-          style={{marginBottom:5}}
+          style={styles.button}
           onPress={close}
           status='info'
           appearance={'outline'}
@@ -81,7 +81,7 @@ export function EditSubAreas(props) {
         </Button>
       </View>
 
-      <View style={{height:'50%'}}>
+      <View style={styles.mapWrapper}>
         <MapAreaWrapper
           area={props.project.subareas[0].points}
           mapHeight={'100%'}
@@ -90,9 +90,9 @@ export function EditSubAreas(props) {
         </MapAreaWrapper>
       </View>
 
-      <View style={{flexDirection:'row', justifyContent: 'space-between', margin:5}}>
-        <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
-          <Text style={{fontSize:25}} >Areas </Text>
+      <View style={styles.container}>
+        <View style={styles.subTitleView}>
+          <Text style={styles.titleText} >Areas </Text>
         </View>
         <Button
           status='info'
@@ -110,7 +110,7 @@ export function EditSubAreas(props) {
       />
     </ModalContainer>
   );
-};
+}
 
 const ForwardIcon = (props) => (
   <Icon {...props} name='arrow-ios-forward'/>

@@ -4,6 +4,8 @@ import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 import { Text } from '@ui-kitten/components';
 
+import { styles } from './sharedMap.styles';
+
 export function StationaryMapResults(props) {
 
     // Color constants for the data points
@@ -30,27 +32,27 @@ export function StationaryMapResults(props) {
         let colorIndex = get_colorIndex(props.index)
 
         return(
-            <View style={{backgroundColor: colors[colorIndex], borderRadius: 150/2, borderWidth: 1, width: 15, height: 15}}/>
+            <View style={[ styles.dataPin, {backgroundColor: colors[colorIndex]}]}/>
         )
     }
 
     const DataCallout = (props) => {
 
         return (
-            <View style={{flexDirection: 'column', margin:10}}>
-              <Text style={{color:"black"}}>
+            <View style={styles.dataCallOutView}>
+              <Text style={styles.dataText}>
                   Age: {'\t' + props.point.age}
               </Text>
 
-              <Text style={{color:"black"}}>
+              <Text style={styles.dataText}>
                   Gender: {' ' + props.point.gender}
               </Text>
 
-              <Text style={{color:"black"}}>
+              <Text style={styles.dataText}>
                   Activity: {' ' + props.point.activity}
               </Text>
 
-              <Text style={{color:"black"}}>
+              <Text style={styles.dataText}>
                   Posture: {' ' + props.point.posture}
               </Text>
             </View>
@@ -73,7 +75,7 @@ export function StationaryMapResults(props) {
                     }}
                 >
                     <DataPin index={data.posture}/>
-                    <Callout style={{position: 'relative'}}>
+                    <Callout style={styles.callout}>
                         <DataCallout point={data}/>
                     </Callout>
                 </MapView.Marker>

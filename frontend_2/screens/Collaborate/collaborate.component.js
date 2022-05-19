@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, RefreshControl } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, useTheme } from '@ui-kitten/components';
+import React, { useState } from 'react';
+import { View, RefreshControl } from 'react-native';
+import { Text, Button, Input, Icon, Divider, List, ListItem, useTheme } from '@ui-kitten/components';
 import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getTeam, postInvite, getUserInfo } from '../components/apiCalls';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { styles } from './collaborate.styles';
 
 export function Collaborate(props) {
@@ -93,7 +93,7 @@ export function Collaborate(props) {
   };
 
   const openTeamPage = async (item) => {
-    let success = false
+    //let success = false
     let teamDetails = await getTeam(item);
     if(teamDetails != null) {
       console.log("Selected Team: ", teamDetails);
@@ -154,13 +154,13 @@ export function Collaborate(props) {
   }
 
   const renderAnchor = () => (
-    <Divider style={{marginTop: 5}} />
+    <Divider style={styles.renderAnchor} />
   );
 
   const teamItem = ({ item, index }) => (
       <ListItem
         title={
-              <Text style={{fontSize:20}}>
+              <Text style={styles.textTitle}>
                   {`${item.title}`}
               </Text>}
         accessoryRight={ForwardIcon}
@@ -169,23 +169,23 @@ export function Collaborate(props) {
   );
 
   const inviteItem = ({ item, index }) => (
-      <ListItem style={{flex:1, justifyContent:'space-between', flexDirection:'row'}}>
-        <View style={{flex:1, flexDirection:'column', justifyContent:'flex-start'}}>
-          <Text style={{fontSize:20}}>
+      <ListItem style={styles.listItem}>
+        <View style={styles.container}>
+          <Text style={styles.textTitle}>
               {`${item.title}`}
           </Text>
           <Text style={{color:theme['text-hint-color']}}>
               {"From: "+ item.firstname + " " + item.lastname}
           </Text>
         </View>
-        <View style={{flex:1, flexDirection:'row', justifyContent:'flex-end'}}>
+        <View style={styles.buttonRow}>
           <Button
             status='success'
             accessoryRight={CreateIcon}
             onPress={() => acceptInvite(item)}
           />
           <Button
-            style={{marginLeft:15}}
+            style={styles.buttonSpacer}
             status='danger'
             accessoryRight={CancelIcon}
             onPress={() => declineInvite(item)}
@@ -213,8 +213,8 @@ export function Collaborate(props) {
         </Button>
       </PopUpContainer>
       <ContentContainer>
-        <View style={styles.teamTextView}>
-            <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
+        <View style={styles.teamView}>
+            <View style={styles.teamTextView}>
                 <Text style={styles.teamText}> Teams </Text>
             </View>
             <View style={styles.createTeamButtonView}>
@@ -223,11 +223,11 @@ export function Collaborate(props) {
                 </Button>
             </View>
         </View>
-        <Divider style={{marginTop: 5}} />
+        <Divider style={styles.renderAnchor} />
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'40%', marginTop:15}}>
+        <View style={styles.listView}>
           <List
-            style={{maxHeight:'100%', maxWidth:'90%'}}
+            style={styles.list}
             data={props.teams}
             ItemSeparatorComponent={Divider}
             renderItem={teamItem}
@@ -240,16 +240,16 @@ export function Collaborate(props) {
           />
         </View>
 
-        <View style={styles.teamTextView}>
-            <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
+        <View style={styles.teamView}>
+            <View style={styles.teamTextView}>
                 <Text style={styles.teamText}> Invites </Text>
             </View>
         </View>
 
-        <Divider style={{marginTop: 5}} />
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'40%', marginTop:15}}>
+        <Divider style={styles.renderAnchor} />
+        <View style={styles.listView}>
           <List
-            style={{maxHeight:'100%', maxWidth:'90%', minHeight:150, backgroundColor: 'rgba(0, 0, 0, 0)'}}
+            style={styles.list1}
             data={props.invites}
             ItemSeparatorComponent={Divider}
             renderItem={inviteItem}

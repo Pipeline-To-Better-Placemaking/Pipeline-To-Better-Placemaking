@@ -3,8 +3,10 @@ import { ViewableArea, ContentContainer } from '../../components/content.compone
 import { HeaderBack } from '../../components/headers.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { MovingMapResults } from '../../components/Maps/movingMapResults.component.js';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import { View } from 'react-native';
 import { useTheme, Select, Button, SelectItem, Icon } from '@ui-kitten/components';
+
+import { styles } from './movingMapResultsView.styles';
 
 export function MovingMapResultsView(props) {
 
@@ -245,10 +247,10 @@ export function MovingMapResultsView(props) {
 
         return (
 
-            <View style={{margin:5, flexDirection: 'row', justifyContent:'space-between', alignItems:'center'}}>
+            <View style={styles.filterView}>
                 <Select
                     status={'primary'}
-                    style={{flex:1}}
+                    style={styles.filterSelect}
                     value={movement[titleIndex-1]}
                     onSelect={index => setTitleIndex(index)}
                     placeholder="Filter movement"
@@ -261,7 +263,7 @@ export function MovingMapResultsView(props) {
                 </Select>
 
                 <Button
-                    style={{ margin: 5, backgroundColor:theme['background-basic-color-3']}}
+                    style={[styles.filterButton, {backgroundColor:theme['background-basic-color-3']}]}
                     appearance='ghost'
                     accessoryLeft={VisibleIcon}
                     onPress={viewAllDrawnLines}

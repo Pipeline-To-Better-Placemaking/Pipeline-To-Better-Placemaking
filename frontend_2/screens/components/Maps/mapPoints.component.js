@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker, Polygon, Polyline, Callout } from 'react-native-maps'
 import { View, ScrollView } from 'react-native';
-import { Text, Button, Input, Icon, Divider, List, ListItem, Radio, RadioGroup } from '@ui-kitten/components';
+import { Text, Icon, Divider, List, ListItem, Radio, RadioGroup } from '@ui-kitten/components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
-import { useEffect } from 'react';
+
+import { styles } from './mapPoints.styles';
 
 // get center point
 // https://github.com/react-native-maps/react-native-maps/issues/505
@@ -149,9 +150,9 @@ export function MapAdd({children, ...props}) {
         {children}
       </MapView>
 
-      <View style={{height:props.listHeight, marginTop:20}}>
+      <View style={[ styles.listView, {height:props.listHeight}]}>
         <List
-          style={{marginBottom: -100}}
+          style={styles.list}
           data={props.markers}
           ItemSeparatorComponent={Divider}
           renderItem={renderItem}
@@ -164,17 +165,17 @@ export function MapAdd({children, ...props}) {
 export const SelectArea = ({areas, selectedIndex, setSelectedIndex}) => {
 
   return (
-    <View style={{flex:1, flexDirection:'column'}}>
+    <View style={styles.selectAreaView}>
       <MapAreaWrapper area={areas[selectedIndex].points} mapHeight={'80%'}>
         <ShowArea area={areas[selectedIndex].points}/>
       </MapAreaWrapper>
-      <ScrollView style={{maxheight:'30%', marginTop:-100}}>
+      <ScrollView style={styles.scrollView}>
         <RadioGroup
           selectedIndex={selectedIndex}
           onChange={index => setSelectedIndex(index)}>
           {areas.map((area, index) => (
             <Radio key={index}>
-              <Text style={{fontSize:20}}>
+              <Text style={styles.textFont}>
                 {(index === 0 ? 'Project Perimeter' : area.title)}
               </Text>
             </Radio>
@@ -316,10 +317,7 @@ export const ShowAreas = ({areas}) => {
         }}
       >
         <View>
-          <Text
-            status={'control'}
-            style={{fontWeight: "bold", backgroundColor:'rgba(0,0,0,0.5)'}}
-          >
+          <Text status={'control'} style={styles.showAreasText} >
             {(index === 0 ? '' : area.title)}
           </Text>
         </View>
@@ -342,7 +340,7 @@ export const ShowMarkers = ({markers}) => {
           }}
         >
           <Callout>
-            <Text style={{color:"black"}}>{coord.title}</Text>
+            <Text style={styles.showMarkersText}>{coord.title}</Text>
           </Callout>
         </MapView.Marker>
         )))
@@ -466,7 +464,7 @@ export function MapAddArea({children, ...props}) {
 
       <View style={{height:props.listHeight, marginTop:20}}>
         <List
-          style={{marginBottom: -100}}
+          style={styles.list}
           data={props.markers}
           ItemSeparatorComponent={Divider}
           renderItem={renderItem}
@@ -500,7 +498,7 @@ export function MapAddOne({children, ...props}) {
     <View>
       <MapView
         provider={PROVIDER_GOOGLE}
-        style={{height:'100%'}}
+        style={styles.mapAddOneMapView}
         zoomEnabled
         mapType={mapConfig}
         initialRegion={{

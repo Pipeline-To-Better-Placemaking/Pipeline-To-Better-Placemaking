@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { UserSettings } from '../screens/UserSettings/userSettings.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { set } from 'react-native-reanimated';
 
 const { Navigator, Screen } = createStackNavigator();
 

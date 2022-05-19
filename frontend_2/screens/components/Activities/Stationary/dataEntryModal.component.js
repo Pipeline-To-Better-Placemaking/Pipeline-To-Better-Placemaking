@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Modal } from 'react-native';
-
 import { useTheme, Text, Button } from '@ui-kitten/components';
-import styles from './dataEntryModal.styles.js';
-
 import { DataGroupAge } from './dataGroupAge.component.js';
 import { DataGroupGender } from './dataGroupGender.component.js';
 import { DataGroupActivity } from './dataGroupActivity.component.js';
 import { DataGroupPosture } from './dataGroupPosture.component.js';
+
+import { styles } from './dataEntryModal.styles.js';
 
 const age = ["0 - 14", "15 - 21", "22 - 30", "30 - 50", "50 - 65", "65+"]
 const gender = ["Male", "Female"]
@@ -99,21 +98,14 @@ export function DataEntryModal(props) {
 
     return(
         <Modal transparent={true} animationType='slide' visible={props.visible}>
-          <View style={{height: '100%',backgroundColor:'rgba(0,0,0, 0.5)'}}>
+          <View style={styles.modalContainer}>
             <View
-              style={{
-                height: '50%',
-                marginTop: 'auto',
-                backgroundColor:theme['background-basic-color-1'],
-                borderTopLeftRadius: 35,
-                borderTopRightRadius: 35,
-                borderWidth: 1
-              }}
+              style={[ styles.scorllViewContainer, {backgroundColor:theme['background-basic-color-1']}]}
             >
                 <ScrollView>
-                    <Text category={'h1'} style={{alignSelf: 'center'}}>Data</Text>
-                    <Text category={'s1'} style={{alignSelf: 'center', marginTop: -20}}>___________</Text>
-                    <View style={{flexDirection: 'column', marginLeft: 15}}>
+                    <Text category={'h1'} style={styles.textTitle}>Data</Text>
+                    <Text category={'s1'} style={styles.lineTitle}>___________</Text>
+                    <View style={styles.dataGroupView}>
 
                         <DataGroupAge setAgeData={setAgeData}/>
                         <DataGroupGender setGenderData={setGenderData}/>
@@ -122,7 +114,7 @@ export function DataEntryModal(props) {
 
                     </View>
 
-                    <Button style={{marginTop: 15, marginBottom: 20, width: 100, alignSelf:'center'}} onPress={sendData}> Submit </Button>
+                    <Button style={styles.button} onPress={sendData}> Submit </Button>
 
                 </ScrollView>
             </View>

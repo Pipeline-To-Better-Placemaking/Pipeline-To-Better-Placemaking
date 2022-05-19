@@ -1,44 +1,71 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        flexDirection:'column'
+    
+    textTitle:{
+        fontSize:20
     },
 
-    teamTextView: {
+    listItemView:{
+        justifyContent:'space-between'
+    },
+
+    rowView:{
+        flexDirection:'row'
+    },
+
+    inviteButton:{
+        marginTop:10
+    },
+
+    msgView:{
+        justifyContent:'center', 
+        alignItems:'center'
+    },
+
+    teamView: {
         marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginLeft: 30
     },
 
-    teamText: {
-        fontSize: 25,
+    teamTextView:{
+        flexDirection:'column', 
+        justifyContent:'flex-end'
     },
 
-    line: {
-        borderBottomWidth: 2,
-        marginTop: 5
+    teamText: {
+        fontSize: 25,
     },
 
     createTeamButtonView: {
         marginRight: 30,
     },
 
-    backdrop: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      flex: 1,
-      justifyContent: 'center',
+    divider:{
+        marginTop: 5
     },
 
-    modalBackgroundStyle: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
+    listView:{
+        flexDirection:'row', 
+        justifyContent:'center', 
+        maxHeight: '50%', 
+        marginTop: 15
     },
+
+    list:{
+        maxHeight:'100%', 
+        maxWidth:'90%', 
+        minHeight:100, 
+        backgroundColor: 'rgba(0, 0, 0, 0)'
+    },
+
+    list1:{
+        maxHeight:'100%', 
+        maxWidth:'90%'
+    }
 
 });
+
+export default styles;

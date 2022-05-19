@@ -1,44 +1,52 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
 
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        flexDirection:'column'
-    },
-
-    teamTextView: {
+    teamView: {
         marginTop: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginLeft: 20
     },
 
-    teamText: {
-        fontSize: 25,
+    teamTextView:{
+        flexDirection:'column', 
+        justifyContent:'flex-end'
     },
 
-    line: {
-        borderBottomWidth: 2,
-        marginTop: 5
+    teamText: {
+        fontSize: 25,
     },
 
     createTeamButtonView: {
         marginRight: 20,
     },
 
-    backdrop: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      flex: 1,
-      justifyContent: 'center',
+    textTitle:{
+        fontSize:20
     },
 
-    modalBackgroundStyle: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
+    mapWrapper:{
+        height:'45%'
     },
+
+    divider:{
+        marginTop: 5
+    },
+
+    listView:{
+        flexDirection:'row', 
+        justifyContent:'center', 
+        maxHeight:'42%'
+    },
+
+    list:{
+        maxHeight:'100%', 
+        maxWidth:'90%', 
+        minHeight:150, 
+        backgroundColor: 'rgba(0, 0, 0, 0)'
+    }
 
 });
+
+export default styles;

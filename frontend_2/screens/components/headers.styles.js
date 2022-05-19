@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
 
@@ -6,13 +6,26 @@ export const styles = StyleSheet.create({
         justifyContent:'space-between',
         alignItems:'center',
         flexDirection:'row',
-        marginBottom:5,
+        marginBottom:5
     },
 
     leftContent: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-start'
+    },
+    
+    textHeader:{
+        maxWidth:'80%'
+    },
+
+    textHeaderBack:{
+        maxWidth:'80%', 
+        marginLeft:15        
+    },
+
+    text:{
+        marginLeft:25
     },
 
     rightContent: {
@@ -26,9 +39,15 @@ export const styles = StyleSheet.create({
         marginLeft: 25,
       },
 
-    menu: {
-        marginRight:15
+    buttonHeaderExit:{
+        width:1, 
+        height:1, 
+        marginRight:25
     },
+
+    menu:{
+        marginRight: 15 
+    }
 
 });
 

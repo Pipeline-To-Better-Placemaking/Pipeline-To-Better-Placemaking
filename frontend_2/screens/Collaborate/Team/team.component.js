@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, Modal, TouchableOpacity, RefreshControl } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem } from '@ui-kitten/components';
+import { View, RefreshControl } from 'react-native';
+import { Text, Button, Input, Icon, Divider, List, ListItem, MenuItem } from '@ui-kitten/components';
 import { HeaderBackEdit, HeaderBack } from '../../components/headers.component';
-import { getDayStr, getTimeStr } from '../../components/timeStrings.component';
 import { ViewableArea, ContentContainer, PopUpContainer } from '../../components/content.component';
 import { CreateProject } from './createProjectModal.component';
 import { EditTeamPage } from './editTeam.component';
 import { getTeam, getFilteredProjectDetails } from '../../components/apiCalls';
-import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { styles } from './team.styles';
 
 export function TeamPage(props) {
@@ -47,7 +45,7 @@ export function TeamPage(props) {
   }, []);
 
   const refreshDetails = async () => {
-    let success = false
+    //let success = false
     let teamDetails = await getTeam(props.team);
     if(teamDetails != null) {
       await props.setTeam(teamDetails);
@@ -81,7 +79,7 @@ export function TeamPage(props) {
   const projectItem = ({ item, index }) => (
       <ListItem
         title={
-              <Text style={{fontSize:20}}>
+              <Text style={styles.textTitle}>
                   {`${item.title}`}
               </Text>}
         accessoryRight={ForwardIcon}
@@ -94,11 +92,11 @@ export function TeamPage(props) {
     let ownerMe = item.user === props.userId;
 
     return (
-      <ListItem style={{justifyContent:'space-between'}}>
-        <Text style={{fontSize:20}}>
+      <ListItem style={styles.listItemView}>
+        <Text style={styles.textTitle}>
             {`${item.firstname}`} {`${item.lastname}`}
         </Text>
-        <View style={{flexDirection:'row'}}>
+        <View style={styles.rowView}>
         {(owner ?
           <Button
             appearance='ghost'
@@ -177,7 +175,7 @@ export function TeamPage(props) {
             autoCapitalize='none'
             keyboardType="email-address"
         />
-        <Button style={{marginTop:10}} onPress={() => sendInvite()}>
+        <Button style={styles.inviteButton} onPress={() => sendInvite()}>
           Invite!
         </Button>
       </PopUpContainer>
@@ -186,7 +184,7 @@ export function TeamPage(props) {
         visible={sentMsgVisible}
         closePopUp={() => setSentMsgVisible(false)}
       >
-        <View style={{justifyContent:'center', alignItems:'center'}}>
+        <View style={styles.msgView}>
           <Text category={'s1'}>{msg}</Text>
         </View>
       </PopUpContainer>
@@ -197,8 +195,8 @@ export function TeamPage(props) {
         openProjectPage={openProjectPage}
       />
       <ContentContainer>
-        <View style={styles.teamTextView}>
-            <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
+        <View style={styles.teamView}>
+            <View style={styles.teamTextView}>
                 <Text style={styles.teamText}>Projects </Text>
             </View>
             <View style={styles.createTeamButtonView}>
@@ -211,11 +209,11 @@ export function TeamPage(props) {
               }
             </View>
         </View>
-        <Divider style={{marginTop: 5}} />
+        <Divider style={styles.divider} />
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
+        <View style={styles.listView}>
           <List
-            style={{maxHeight:'100%', maxWidth:'90%', minHeight:100, backgroundColor: 'rgba(0, 0, 0, 0)'}}
+            style={styles.list}
             data={props.projects}
             ItemSeparatorComponent={Divider}
             renderItem={projectItem}
@@ -228,8 +226,8 @@ export function TeamPage(props) {
           />
         </View>
 
-        <View style={styles.teamTextView}>
-            <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
+        <View style={styles.teamView}>
+            <View style={styles.teamTextView}>
                 <Text style={styles.teamText}>Team Members </Text>
             </View>
             <View style={styles.createTeamButtonView}>
@@ -242,11 +240,11 @@ export function TeamPage(props) {
               }
             </View>
         </View>
-        <Divider style={{marginTop: 5}} />
+        <Divider style={styles.divider} />
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'50%', marginTop:15}}>
+        <View style={styles.listView}>
           <List
-            style={{maxHeight:'100%', maxWidth:'90%'}}
+            style={styles.list1}
             data={props.team.users}
             ItemSeparatorComponent={Divider}
             renderItem={memberItem}

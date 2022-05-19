@@ -10,8 +10,7 @@ export const styles = StyleSheet.create({
     },
 
     title: {
-        marginTop: -10,
-        marginBottom: 30,
+        alignSelf: 'center'
     },
 
     inputText: {
@@ -42,8 +41,7 @@ export const styles = StyleSheet.create({
     },
 
     backButton: {
-        marginTop: 20,
-        marginBottom: 75
+        marginTop: 15,
     },
 
     backText: {
@@ -79,6 +77,11 @@ export const styles = StyleSheet.create({
         color: '#FF3D71',
         fontSize: 20,
         marginBottom: 10
+    },
+    
+    errorMsg:{
+        color: '#FF3D71'
     }
-
 });
+
+export default styles;

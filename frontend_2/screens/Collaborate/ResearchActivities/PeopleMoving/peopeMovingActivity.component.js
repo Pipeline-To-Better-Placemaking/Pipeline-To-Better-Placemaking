@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import { View } from 'react-native';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component.js';
 import { PeopleMovingMap } from '../../../components/Maps/peopleMovingMap.component.js';
-import { useTheme, Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import { useTheme,  Button,  Icon } from '@ui-kitten/components';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import CountDown from 'react-native-countdown-component';
 import { DataEntryModal } from '../../../components/Activities/PeopleMoving/dataEntryModal.component.js';
+
+import { styles } from '../activity.style';
 
 export function PeopleMovingActivity(props) {
 
@@ -43,7 +45,6 @@ export function PeopleMovingActivity(props) {
 
     // Updates the time in TimeBar
     const updateTime = (value) => {
-
         let temp = props.timeSlot;
         temp.timeLeft = value-1;
         props.setTimeSlot(temp);
@@ -53,13 +54,14 @@ export function PeopleMovingActivity(props) {
             let resetSlot = props.timeSlot;
             resetSlot.timeLeft = props.initialTimeSlot.timeLeft;
             props.setTimeSlot(resetSlot);
-
+            console.log('restarting timer');
             restart()
         }
     }
 
     // End Button press
     const endActivity = async () => {
+        
         setStart(false)
 
         // Saves the PM data
@@ -102,6 +104,7 @@ export function PeopleMovingActivity(props) {
             setMoving(true)
         }
         else if (standingIndex == standingPointLength-1){
+            console.log('ending activity');
             endActivity()
             props.navigation.navigate("ActivitySignUpPage");
         }
@@ -122,7 +125,7 @@ export function PeopleMovingActivity(props) {
             return(
                 <Button
                     status={'danger'}
-                    style={{height: 50, marginLeft: 5, width: 90}}
+                    style={styles.stopButton}
                     onPress={() => endActivity()}
                     >
                         End
@@ -131,11 +134,7 @@ export function PeopleMovingActivity(props) {
         }
         else{
             return(
-                <Button
-                    style={{backgroundColor: '#006FD6'}}
-                    style={{height: 50, marginLeft: 5, width: 90}}
-                    onPress={() => setStart(true)}
-                >
+                <Button style={styles.startButton} onPress={() => setStart(true)} >
                     Start
                 </Button>
             )
@@ -222,7 +221,7 @@ export function PeopleMovingActivity(props) {
 
         return(
             <View>
-                <View style={{margin:5, flexDirection: 'row', justifyContent:'space-between', alignItems:'center'}}>
+                <View style={styles.container}>
 
                     <StartStopButton/>
 

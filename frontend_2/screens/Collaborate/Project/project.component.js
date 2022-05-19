@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, RefreshControl } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem, OverflowMenu } from '@ui-kitten/components';
+import React, { useState } from 'react';
+import { View, RefreshControl } from 'react-native';
+import { Text, Button, Icon, Divider, List, ListItem, MenuItem } from '@ui-kitten/components';
 import { HeaderBackEdit, HeaderBack } from '../../components/headers.component';
 import { MapAreaWrapper, ShowArea } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
-import { getDayStr, getTimeStr } from '../../components/timeStrings.component';
+import { getDayStr } from '../../components/timeStrings.component';
 import { EditSubAreas } from './viewSubareas.component';
 import { EditStandingPoints } from './viewStandingPoints.component';
 import { EditProjectPage } from './editProjectPage.component';
 import { getFilteredProjectDetails, getAllCollectionInfo } from '../../components/apiCalls';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import moment from 'moment';
+
 import { styles } from './project.styles';
 
 const ForwardIcon = (props) => (
@@ -20,7 +18,7 @@ const ForwardIcon = (props) => (
 
 export function ProjectPage(props) {
 
-  const [createNewActivityVisible, setCreateNewActivityVisible] = useState(false);
+  //const [createNewActivityVisible, setCreateNewActivityVisible] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [editProjectVisible, setEditProjectVisible] = useState(false);
   const [editAreasVisible, setEditAreasVisible] = useState(false);
@@ -66,7 +64,7 @@ export function ProjectPage(props) {
   const activityItem = ({ item, index }) => (
       <ListItem
         title={
-          <Text style={{fontSize:20}}>
+          <Text style={styles.textTitle}>
               {`${item.title}`}
           </Text>
         }
@@ -104,18 +102,18 @@ export function ProjectPage(props) {
       />
       <ContentContainer>
 
-        <View style={{height:'45%'}}>
+        <View style={styles.mapWrapper}>
           <MapAreaWrapper area={props.project.subareas[0].points} mapHeight={'100%'}>
             <ShowArea area={props.project.subareas[0].points} />
           </MapAreaWrapper>
         </View>
 
-        <View style={styles.teamTextView}>
+        <View style={styles.teamView}>
           <Text >Location: {props.project.description}</Text>
         </View>
 
-        <View style={styles.teamTextView}>
-            <View style={{flexDirection:'column', justifyContent:'flex-end'}}>
+        <View style={styles.teamView}>
+            <View style={styles.teamTextView}>
                 <Text style={styles.teamText}>Sign Up</Text>
             </View>
             <View style={styles.createTeamButtonView}>
@@ -128,11 +126,11 @@ export function ProjectPage(props) {
               }
             </View>
         </View>
-        <Divider style={{marginTop: 5}} />
+        <Divider style={styles.divider} />
 
-        <View style={{flexDirection:'row', justifyContent:'center', maxHeight:'42%'}}>
+        <View style={styles.listView}>
           <List
-            style={{maxHeight:'100%', maxWidth:'90%', minHeight:150, backgroundColor: 'rgba(0, 0, 0, 0)'}}
+            style={styles.list}
             data={props.activities}
             ItemSeparatorComponent={Divider}
             renderItem={activityItem}
@@ -148,4 +146,4 @@ export function ProjectPage(props) {
       </ContentContainer>
     </ViewableArea>
   );
-};
+}

@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Modal } from 'react-native';
-
 import { useTheme, Text, Button } from '@ui-kitten/components';
+
+import { styles } from './movingModal.styles';
 
 export function MovingModal(props) {
 
@@ -14,9 +15,9 @@ export function MovingModal(props) {
 
     return(
         <Modal transparent={true} animationType='slide' visible={props.moving}>
-            <View style={{height: '20%', marginTop: 'auto', backgroundColor:theme['background-basic-color-1'], borderTopLeftRadius: 35,borderTopRightRadius: 35,borderWidth: 1}}>
-                <Text category={'h4'} style={{alignSelf: 'center', marginTop: 20}}>Move to the next position.</Text>
-                <Button style={{marginTop: 30, width:200, alignSelf: 'center'}} onPress={confirm}> Confirm </Button>
+            <View style={[ styles.modalContainer, {backgroundColor:theme['background-basic-color-1']}]}>
+                <Text category={'h4'} style={styles.title}>Move to the next position.</Text>
+                <Button style={styles.button} onPress={confirm}> Confirm </Button>
             </View>
         </Modal>
     )

@@ -2,7 +2,7 @@ import React from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { SafeAreaView, View, TouchableOpacity, Modal } from 'react-native';
 import { useTheme, Card, Text, Button, Input, Icon } from '@ui-kitten/components';
-import { ThemeContext } from '../../theme-context';
+
 import { styles } from './content.styles';
 
 const blueColor = '#006FD6';
@@ -13,7 +13,7 @@ export const ViewableArea = ({ children }) => {
   const theme = useTheme();
 
   return (
-    <View style={{ flex: 1, backgroundColor: blueColor}}>
+    <View style={styles.container}>
       <SafeAreaView style={{flex: 1, marginTop:statusBarHeight}}>
         {children}
       </SafeAreaView>
@@ -27,8 +27,8 @@ export const BlueViewableArea = ({ children }) => {
   const statusBarHeight = getStatusBarHeight();
 
   return (
-    <View style={{flex: 1, backgroundColor:blueColor}}>
-      <SafeAreaView style={{flex: 1, backgroundColor:blueColor, marginTop:statusBarHeight}}>
+    <View style={styles.container}>
+      <SafeAreaView style={[ styles.container, {marginTop:statusBarHeight}]}>
         {children}
       </SafeAreaView>
     </View>
@@ -40,7 +40,7 @@ export const ContentContainer = ({ children }) => {
   const theme = useTheme();
 
   return (
-    <View style={{flex: 1,justifyContent:'flex-start',flexDirection:'column',backgroundColor:theme['background-basic-color-1']}}>
+    <View style={[ styles.contentContainer, {backgroundColor:theme['background-basic-color-1']}]}>
       {children}
     </View>
  );
@@ -58,13 +58,10 @@ export const ModalContainer = ({ children, ...props }) => {
     >
       <View style={{flex: 1, backgroundColor:theme['background-basic-color-1']}}>
         <SafeAreaView
-          style={{
-            flex: 1,
-            flexDirection:'column',
-            justifyContent:'space-between',
+          style={[ styles.modalSafeView, {
             backgroundColor:theme['background-basic-color-1'],
-            marginTop:statusBarHeight,margin:20
-          }}
+            marginTop:statusBarHeight
+          }]}
         >
           {children}
         </SafeAreaView>
@@ -75,12 +72,9 @@ export const ModalContainer = ({ children, ...props }) => {
 
 export const PopUpContainer = ({ children, ...props }) => {
 
-  const statusBarHeight = getStatusBarHeight();
-  const theme = useTheme();
-
   return (
     <Modal
-      style={{width:'80%'}}
+      style={styles.popupModal}
       animationType="fade"
       transparent={true}
       visible={props.visible}
@@ -92,7 +86,7 @@ export const PopUpContainer = ({ children, ...props }) => {
           activeOpacity={1}
           onPressOut={props.closePopUp}
         >
-        <Card disabled={true} style={{width:'80%', margin:5}}>
+        <Card disabled={true} style={styles.card}>
           {children}
         </Card>
       </TouchableOpacity>
@@ -115,7 +109,7 @@ export const EnterNumber = ({ children, ...props }) => {
         onChangeText={(nextValue) => props.setValue(nextValue)}
         keyboardType="number-pad"
       />
-      <Button style={{marginTop:5}} onPress={props.closePopUp}>
+      <Button style={styles.button} onPress={props.closePopUp}>
         Confirm
       </Button>
     </PopUpContainer>
@@ -125,7 +119,7 @@ export const EnterNumber = ({ children, ...props }) => {
 export const ConfirmDelete = ({ children, ...props }) => {
   return(
     <Modal
-      style={{width:'80%'}}
+      style={styles.popupModal}
       animationType="fade"
       transparent={true}
       visible={props.visible}
@@ -136,20 +130,20 @@ export const ConfirmDelete = ({ children, ...props }) => {
           onPressOut={()=>{props.setVisible(false)}}
         >
           <Card disabled={true} style={styles.confirmDelete}>
-            <View style={{flexDirection:'row', marginBottom: 5}}>
+            <View style={styles.circleView}>
               <View style = {styles.circle}>
-                <Icon style ={{width:30, height:30}} fill='white' name='trash-2'/>
+                <Icon style ={styles.icon} fill='white' name='trash-2'/>
               </View>
-              <View style={{width:'75%'}}>
-                <Text category='h5' style={{fontSize:25}}>Delete {props.dataType}</Text>
+              <View style={styles.textView}>
+                <Text category='h5' style={styles.deleteText}>Delete {props.dataType}</Text>
               </View>
             </View>
-            <View style={{marginBottom: 10}}>
+            <View style={styles.deleteConfirm}>
               <Text>Are you sure you want to delete this {props.dataType}? {props.extraInfo}</Text>
             </View>
-            <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+            <View style={styles.buttonRow}>
               <Button status='info' appearance={'outline'} onPress={()=>{props.setVisible(false)}}>Cancel</Button>
-              <Button status={'danger'} onPress={props.deleteFunction}>Delete</Button>
+              <Button status='danger' onPress={props.deleteFunction}>Delete</Button>
             </View>
           </Card>
       </TouchableOpacity>

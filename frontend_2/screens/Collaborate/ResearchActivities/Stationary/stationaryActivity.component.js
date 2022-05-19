@@ -8,6 +8,8 @@ import { MovingModal } from '../../../components/Activities/Stationary/movingMod
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
 import CountDown from 'react-native-countdown-component';
 
+import { styles } from '../activity.style';
+
 export function StationaryActivity(props) {
 
     const theme = useTheme();
@@ -58,8 +60,9 @@ export function StationaryActivity(props) {
                 time: new Date(),
                 standingPoint: position[standingIndex]._id,
             }
-
-            obj = {
+            
+            //changed this to have let (it was just: obj = { ...)
+            let obj = {
                 marker: tempMarker,
                 colorIndex: inf.postureIndex
             }
@@ -93,6 +96,7 @@ export function StationaryActivity(props) {
             let info = await response.json()
 
         } catch (error) {
+            console.log('its this error')
             console.log("ERROR: ", error)
         }
 
@@ -136,7 +140,7 @@ export function StationaryActivity(props) {
             return(
                 <Button
                     status={'danger'}
-                    style={{height: 50, marginLeft: 5, width: 90}}
+                    style={styles.stopButton}
                     onPress={() => endActivity()}
                     >
                         End
@@ -145,11 +149,7 @@ export function StationaryActivity(props) {
         }
         else{
             return(
-                <Button
-                    style={{backgroundColor: '#006FD6'}}
-                    style={{height: 50, marginLeft: 5, width: 90}}
-                    onPress={() => setStart(true)}
-                >
+                <Button style={styles.startButton} onPress={() => setStart(true)} >
                     Start
                 </Button>
             )
@@ -181,7 +181,7 @@ export function StationaryActivity(props) {
 
         return(
             <View>
-                <View style={{margin:5, flexDirection: 'row', justifyContent:'space-between', alignItems:'center'}}>
+                <View style={styles.container}>
 
                     <StartStopButton/>
 
@@ -234,5 +234,5 @@ export function StationaryActivity(props) {
 
             </ContentContainer>
         </ViewableArea>
-    )
-};
+    );
+}

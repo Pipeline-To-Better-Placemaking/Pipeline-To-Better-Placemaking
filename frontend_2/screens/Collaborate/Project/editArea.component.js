@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
-import { MapWrapper, ShowAreas, MapAddArea, ShowMarkers, getAreaName } from '../../components/Maps/mapPoints.component';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Button, Input, Icon } from '@ui-kitten/components';
+import { MapAddArea, getAreaName } from '../../components/Maps/mapPoints.component';
 import { ModalContainer, ConfirmDelete } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Location from 'expo-location';
+
+import { styles } from './editArea.styles';
 
 export function EditPoints(props) {
 
@@ -221,12 +222,12 @@ export function EditPoints(props) {
         dataType={"sub-area"}
         deleteFunction={deleteArea}
       />
-      <View style={{justifyContent:'flex-start'}}>
-        <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginBottom: 5}}>
+      <View style={styles.container}>
+        <View style={styles.inputView}>
           <Input
             onChangeText={(value) => setAreaName(value)}
             placeholder={'Enter Area Name...'}
-            style={{flex:1, marginRight: 5, fontSize:25}}
+            style={styles.input}
           >
             {props.areaInfo.title}
           </Input>
@@ -238,7 +239,7 @@ export function EditPoints(props) {
           </Button>
         </View>
 
-        <View style={{height:'80%'}}>
+        <View style={styles.mapWrapper}>
           <MapAddArea
             location={props.areaInfo.location}
             region={props.areaInfo.location}
@@ -251,7 +252,7 @@ export function EditPoints(props) {
         </View>
       </View>
 
-      <View style={{flexDirection:'row', justifyContent: 'space-between', margin:5}}>
+      <View style={styles.buttonRow}>
         <Button
           status='danger'
           onPress={() => setConfirmDeleteVisible(true)}

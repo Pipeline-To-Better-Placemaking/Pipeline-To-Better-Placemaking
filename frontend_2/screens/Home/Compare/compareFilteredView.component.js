@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { View,  ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
-import { Text, Button, Divider, List, ListItem, BottomNavigation, Icon, IndexPath, Select, SelectItem } from '@ui-kitten/components';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Button, Divider, List, ListItem, IndexPath, Select, SelectItem } from '@ui-kitten/components';
 import { CompareListChecks } from '../../components/Compare/compareListChecks.component.js'
-import { styles } from './compare.styles'
-
 import { HeaderBack } from '../../components/headers.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
+
+import { styles } from './compare.styles'
 
 export function CompareFilteredView(props) {
 
     const [selectedCompare, setSelectedCompare] = useState([])
     const [compareCount, setCompareCount] = useState(0)
     const [titleIndex, setTitleIndex] = useState(new IndexPath(0))
+    //add the new tests here
     const activities = ['Stationary Activity Map', 'People Moving']
 
     const selectedActivity = () => {
@@ -23,7 +24,9 @@ export function CompareFilteredView(props) {
         }
         else if (titleIndex.row  === 2) {
             return props.filterCriteria.survey
-        } else {
+        }
+        //add the new tests here 
+        else {
           return props.filterCriteria.all;
         }
     }
@@ -67,7 +70,9 @@ export function CompareFilteredView(props) {
         props.navigation.navigate("StationaryCompare");
       } else if (titleIndex.row === 1) { // moving
         props.navigation.navigate("MovingCompare");
-      } else if (titleIndex.row === 2) { // survey
+      } 
+      //add the new tests here
+      else if (titleIndex.row === 2) { // survey
 
       }
 
@@ -92,10 +97,10 @@ export function CompareFilteredView(props) {
           <HeaderBack {...props} text={'Select 2 to Compare'}/>
           <ContentContainer>
 
-            <View style={{margin:10, flexDirection: 'row'}}>
+            <View style={styles.selectView}>
               <Select
                 status={'primary'}
-                style={{flex:1}}
+                style={styles.selectElement}
                 value={activities[titleIndex.row]}
                 onSelect={index => setTitle(index)}
               >

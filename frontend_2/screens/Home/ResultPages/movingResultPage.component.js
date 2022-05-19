@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView, RefreshControl, Dimensions } from 'react-native';
-import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card, MenuItem, OverflowMenu } from '@ui-kitten/components';
+import { Text, Button, Icon, Divider, MenuItem } from '@ui-kitten/components';
 import { HeaderBack, HeaderBackEdit } from '../../components/headers.component';
-import { MapAreaWrapper, ShowArea } from '../../components/Maps/mapPoints.component';
 import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { helperGetResult, isUserTeamOwner, deleteTimeSlot, getProject, getAllResults } from '../../components/apiCalls';
 import { formatMovingGraphData } from '../../components/helperFunctions';
 import { MyBarChart } from '../../components/charts.component';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { styles } from '../projectResult.styles';
+
+import { styles } from './resultPage.styles';
 
 export function MovingResultPage(props) {
 
@@ -51,7 +49,7 @@ export function MovingResultPage(props) {
   const deleteResult = async () => {
     let success = false;
     if (props.selectedResult !== null) {
-      success = await deleteTimeSlot("moving_maps/", props.selectedResult._id);
+      success = await deleteTimeSlot("moving_maps", props.selectedResult._id);
     }
     if (success) {
       await refreshProjectPageDetails();
@@ -173,33 +171,33 @@ export function MovingResultPage(props) {
         >
 
           <Text category={'h5'}>Moving Result Information</Text>
-          <Divider style={{marginTop:5, marginBottom:10, borderWidth:0.5}} />
+          <Divider style={styles.metaDataTitleSep} />
 
           <Text>Team: {props.team.title}</Text>
           <Text>Admin: {props.team.users[0].firstname} {props.team.users[0].lastname}</Text>
 
-          <Divider style={{marginTop:10, marginBottom:10}} />
+          <Divider style={styles.metaDataSep} />
 
           <Text>Location: {props.project.description}</Text>
           <Text>Area: {areaTitle}</Text>
 
-          <Divider style={{marginTop:10, marginBottom:10}} />
+          <Divider style={styles.metaDataSep} />
 
           <Text>Day: {getDayStr(day)}</Text>
           <Text>Start Time: {getTimeStr(startTime)} </Text>
           <Text>Duration: {props.selectedResult.sharedData.duration} min</Text>
 
-          <Divider style={{marginTop:10, marginBottom:10}} />
+          <Divider style={styles.metaDataSep} />
 
           <Text>Researcher(s): {researchers} </Text>
 
-          <Divider style={{marginTop:10, marginBottom:10, borderWidth:0.5}} />
+          <Divider style={styles.metaDataEndSep} />
 
           {viewMap
             ?
-              <View style={{ marginBottom:10, flexDirection:'row', justifyContent:'center'}}>
+              <View style={styles.mapButton}>
                 <Button
-                  style={{flex:1}}
+                  style={styles.button}
                   status={'info'}
                   appearance={'outline'}
                   accessoryRight={MapIcon}
@@ -209,8 +207,8 @@ export function MovingResultPage(props) {
                 </Button>
               </View>
             :
-              <View style={{margin:15, borderWidth:4, borderColor:'red'}}>
-                <Text status='danger' category='s1' style={{padding:5}}>
+              <View style={styles.errorMsgView}>
+                <Text status='danger' category='s1' style={styles.errorMsgText}>
                   {errorMessage}
                 </Text>
               </View>

@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { AppNavigator } from './navigation/mainNavigation.component';
 import { ThemeContext } from './theme-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default () => {
 

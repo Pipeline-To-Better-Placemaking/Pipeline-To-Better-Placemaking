@@ -3,6 +3,8 @@ import { View } from 'react-native';
 import { Text, CheckBox } from '@ui-kitten/components';
 import { getDayStr, getTimeStr } from '../timeStrings.component';
 
+import { styles } from './compareListChecks.styles';
+
 export function CompareListChecks(props) {
 
     const [checked, setChecked] = useState(0)
@@ -37,7 +39,7 @@ export function CompareListChecks(props) {
         else {
           return (
             <View>
-              <Text style={{fontSize:20}}>
+              <Text style={styles.text}>
                   {props.result.title}
               </Text>
               <Text appearance='hint'>
@@ -54,7 +56,7 @@ export function CompareListChecks(props) {
     }
 
     return (
-      <View style={{flex: 1, flexDirection: 'row', justifyContent:'space-between', marginHorizontal:15}}>
+      <View style={styles.container}>
 
         <TitleText />
 

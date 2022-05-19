@@ -1,16 +1,15 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
 
     container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        flexDirection:'column'
+        margin:20
     },
 
     settingsContainer: {
-        flexDirection: 'column',
-        marginTop:20
+        margin:5, 
+        marginRight:20, 
+        marginLeft:20
     },
 
     userDetails: {
@@ -18,15 +17,24 @@ export const styles = StyleSheet.create({
         marginBottom: 20
     },
 
+    details:{
+        fontSize: 20, 
+        alignSelf: 'center'
+    },
+
     logOutButton: {
-        width: 300,
-        backgroundColor: '#DEBD07'
+        margin:5, 
+        marginTop:50
     },
 
     logOutText: {
-        color: '#091C7A',
-        fontSize: 20,
-        fontWeight: '600',
+        alignSelf:'center', 
+        marginBottom: 15, 
+        marginTop: 5
+    },
+
+    logOutButtonPrompt:{
+        width: 100
     },
 
     circle: {
@@ -59,5 +67,26 @@ export const styles = StyleSheet.create({
 		fontSize: 150/2,
 		textAlign: 'center',
 		color: '#FFFFFF'
-	}
+	},
+
+    errorMsg:{
+        color: '#FF3D71'
+    },
+    
+    buttonRow:{
+        flexDirection:'row', 
+        justifyContent:'space-between', 
+        marginTop:30
+    },
+
+    button:{
+        margin:5
+    },
+
+    submitButton:{
+        marginTop: 20
+    }
+
 });
+
+export default styles;

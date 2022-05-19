@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Pressable, Image, TouchableWithoutFeedback, KeyboardAvoidingView, Alert, SafeAreaView, Modal } from 'react-native';
-import { Text, Button, Input, Icon, Popover, Divider, List, ListItem, Card } from '@ui-kitten/components';
+import { View } from 'react-native';
+import { Text, Button, Input, Icon } from '@ui-kitten/components';
 import { ModalContainer, ConfirmDelete } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Location from 'expo-location';
+
+import { styles } from './editTeam.styles';
 
 export function EditTeamPage(props) {
 
@@ -137,10 +138,10 @@ export function EditTeamPage(props) {
           dataType={"team"} 
           deleteFunction={deleteTeam}
         />
-        <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-          <Text category='h5' style={{fontSize:25}}>Team Information</Text>
+        <View style={styles.teamInfoView}>
+          <Text category='h5' style={styles.textTitle}>Team Information</Text>
           <Button
-            style={{marginBottom:5}}
+            style={styles.button}
             onPress={close}
             status='info'
             appearance={'outline'}
@@ -149,7 +150,7 @@ export function EditTeamPage(props) {
           </Button>
         </View>
 
-        <View style={{marginTop:10, marginBottom:30}}>
+        <View style={styles.teamTitleView}>
           <Text category='s1'>Team Title: </Text>
 					<Input
 						placeholder = 'Team Title'
@@ -158,14 +159,14 @@ export function EditTeamPage(props) {
 					/>
         </View>
 
-        <View style={{marginBottom:30, flexDirection:'row', justifyContent:'space-between'}}>
+        <View style={styles.buttonRow}>
           <Button status={'danger'} onPress={()=>{setConfirmDeleteVisible(true)}}>Delete</Button>
           <Button status={'success'} onPress={updateTeam}>Update!</Button>
         </View>
       </View>
     </ModalContainer>
   );
-};
+}
 
 const ForwardIcon = (props) => (
   <Icon {...props} name='arrow-ios-forward'/>

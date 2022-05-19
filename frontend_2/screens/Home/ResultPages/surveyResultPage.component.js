@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, RefreshControl } from 'react-native';
-import { Text, Button, Input, Icon, Popover, Divider, MenuItem} from '@ui-kitten/components';
+import React, { useState } from 'react';
+import { ScrollView, RefreshControl } from 'react-native';
+import { Text, Icon, Divider, MenuItem} from '@ui-kitten/components';
 import { HeaderBack, HeaderBackEdit } from '../../components/headers.component';
 import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { helperGetResult, isUserTeamOwner, deleteTimeSlot, getProject, getAllResults } from '../../components/apiCalls';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { styles } from '../projectResult.styles';
+
+import { styles } from './resultPage.styles';
 
 export function SurveyResultPage(props) {
 
@@ -142,27 +142,27 @@ export function SurveyResultPage(props) {
         >
 
           <Text category={'h5'}>Moving Result Information</Text>
-          <Divider style={{marginTop:5, marginBottom:10, borderWidth:0.5}} />
+          <Divider style={styles.metaDataTitleSep} />
 
           <Text>Team: {props.team.title}</Text>
           <Text>Admin: {props.team.users[0].firstname} {props.team.users[0].lastname}</Text>
 
-          <Divider style={{marginTop:10, marginBottom:10}} />
+          <Divider style={styles.metaDataSep} />
 
           <Text>Location: {props.project.description}</Text>
           <Text>Area: {areaTitle}</Text>
 
-          <Divider style={{marginTop:10, marginBottom:10}} />
+          <Divider style={styles.metaDataSep} />
 
           <Text>Day: {getDayStr(day)}</Text>
           <Text>Start Time: {getTimeStr(startTime)} </Text>
           <Text>Duration: {props.selectedResult.sharedData.duration} min</Text>
 
-          <Divider style={{marginTop:10, marginBottom:10}} />
+          <Divider style={styles.metaDataSep} />
 
           <Text>Researcher(s): {researchers} </Text>
 
-          <Divider style={{marginTop:10, marginBottom:10, borderWidth:0.5}} />
+          <Divider style={styles.metaDataEndSep} />
 
           <Text>Survey Code: {props.selectedResult.key} </Text>
 

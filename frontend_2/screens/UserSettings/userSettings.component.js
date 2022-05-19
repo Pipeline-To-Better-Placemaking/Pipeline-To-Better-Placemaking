@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Modal, ScrollView } from 'react-native';
-import { Icon, Input, Text, Button, Popover } from '@ui-kitten/components';
+import { Icon, Input, Text, Button } from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
 import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { styles } from './userSettings.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MapConfigButtonGroup } from '../components/UserSettingsModals/mapConfigButtonGroup.component.js'
-import { PropsService } from '@ui-kitten/components/devsupport';
+import { MapConfigButtonGroup } from '../components/UserSettingsModals/mapConfigButtonGroup.component.js';
 
 export function UserSettings(props) {
 
@@ -239,7 +238,7 @@ export function UserSettings(props) {
           <ViewableArea>
             <Header text={'Edit Profile'}/>
             <ContentContainer>
-              <ScrollView style={{margin:20}}>
+              <ScrollView style={styles.container}>
 
                 <Text category='s1'>First Name:</Text>
                 <Input
@@ -264,7 +263,7 @@ export function UserSettings(props) {
                   onFocus={() => setEmailTouched(true)}
                   caption={
                     emailTouched && !isValidEmail &&
-                    <Text style={{color: '#FF3D71'}}>
+                    <Text style={styles.errorMsg}>
                         Email address is not valid
                     </Text>
                   }
@@ -279,7 +278,7 @@ export function UserSettings(props) {
                   onChangeText={nextValue => setNewPassword(nextValue)}
                   caption={
                     passwordTouched && passwordProblems.length > 0 &&
-                    <Text style={{color: '#FF3D71'}}>
+                    <Text style={styles.errorMsg}>
                         {passwordProblems.join('\n')}
                     </Text>
                   }
@@ -291,16 +290,16 @@ export function UserSettings(props) {
                   onChangeText={nextValue => setNewPasswordVerify(nextValue)}
                   caption={
                     newPassword !== newPasswordVerify &&
-                    <Text style={{color: '#FF3D71'}}>
+                    <Text style={styles.errorMsg}>
                         {'Passwords do not match'}
                     </Text>
                   }
                 />
 
-                <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:30}}>
+                <View style={styles.buttonRow}>
                   <Button
                     status={'danger'}
-                    style={{margin:5}}
+                    style={styles.button}
                     onPress={() => cancelEditProfile()}
                     accessoryLeft = {closeIcon}
                   >
@@ -309,7 +308,7 @@ export function UserSettings(props) {
                   <Button
                     disabled={newPassword && passwordProblems.length > 0 || newPassword !== newPasswordVerify}
                     status={'success'}
-                    style={{margin:5}}
+                    style={styles.button}
                     onPress={() => confirmEditProfile()}
                     accessoryRight = {confirmIcon}
                   >
@@ -327,7 +326,7 @@ export function UserSettings(props) {
             <ViewableArea>
                 <Header text='Verify Email'/>
                 <ContentContainer>
-                    <View style={{margin:20}}>
+                    <View style={styles.container}>
                         <Text category='s1'>Enter verification code:</Text>
                         <Input
                             placeholder = 'Code'
@@ -335,7 +334,7 @@ export function UserSettings(props) {
                             onChangeText={nextValue => setVerificationCode(nextValue.replace(/[^0-9]/g, ''))}
                             caption={
                                 verificationError &&
-                                <Text style={{color: '#FF3D71'}}>
+                                <Text style={styles.errorMsg}>
                                     Failed to verify email. Code may be incorrect or expired.
                                 </Text>
                             }
@@ -344,14 +343,14 @@ export function UserSettings(props) {
 
                         <Button
                             status={'success'}
-                            style={{marginTop:20}}
+                            style={styles.submitButton}
                             onPress={() => verifyEmail()}
                             accessoryRight = {confirmIcon}
                         >
                             SUBMIT
                         </Button>
 
-                        <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:20}}>
+                        <View style={styles.buttonRow}>
                             <Button
                                 status={'danger'}
                                 onPress={() => {
@@ -381,7 +380,7 @@ export function UserSettings(props) {
             </ViewableArea>
         </Modal>
 
-        <ScrollView style={{margin:5, marginRight:20, marginLeft:20}}>
+        <ScrollView style={styles.settingsContainer}>
 
           <View style={styles.circle}>
             <Text style={styles.userInitials}>
@@ -390,28 +389,28 @@ export function UserSettings(props) {
           </View>
 
           <View style={styles.userDetails}>
-            <Text style={{fontSize: 20, alignSelf: 'center'}}> {props.firstName} {props.lastName} </Text>
-            <Text style={{fontSize: 20, alignSelf: 'center'}}> {props.email} </Text>
+            <Text style={styles.details}> {props.firstName} {props.lastName} </Text>
+            <Text style={styles.details}> {props.email} </Text>
           </View>
 
-          <Button style={{margin:5}} onPress={() => setSettingsModalVisible(!settingsModalVisible)} accessoryRight = {editIcon}>
+          <Button style={styles.button} onPress={() => setSettingsModalVisible(!settingsModalVisible)} accessoryRight = {editIcon}>
             EDIT PROFILE
           </Button>
 
-          <Button style={{margin:5}} onPress={themeContext.toggleTheme} accessoryRight = {themeIcon}>
+          <Button style={styles.button} onPress={themeContext.toggleTheme} accessoryRight = {themeIcon}>
             TOGGLE THEME
           </Button>
 
           {
               !isVerified &&
-              <Button style={{margin:5}} onPress={() => setVerifyModalVisible(!verifyModalVisible)}>
+              <Button style={styles.button} onPress={() => setVerifyModalVisible(!verifyModalVisible)}>
                 VERIFY EMAIL
               </Button>
           }
 
           <MapConfigButtonGroup/>
 
-          <Button style={{margin:5, marginTop:50}} status='danger' onPress={() => setLogoutVisible(true)}>
+          <Button style={styles.logOutButton} status='danger' onPress={() => setLogoutVisible(true)}>
             LOG OUT
           </Button>
 
@@ -420,13 +419,13 @@ export function UserSettings(props) {
             closePopUp={() => setLogoutVisible(false)}
             >
               <View>
-                <Text style={{alignSelf:'center', marginBottom: 15, marginTop: 5}}>
+                <Text style={styles.logOutText}>
                   Are you sure you want to log out?
                 </Text>
 
                 <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
-                  <Button style={{width: 100}} appearance={'outline'} onPress={() => logOut()}>Yes</Button>
-                  <Button style={{width: 100}} appearance={'outline'} onPress={() => setLogoutVisible(false)}>No</Button>
+                  <Button style={styles.logOutButtonPrompt} appearance={'outline'} onPress={() => logOut()}>Yes</Button>
+                  <Button style={styles.logOutButtonPrompt} appearance={'outline'} onPress={() => setLogoutVisible(false)}>No</Button>
                 </View>
 
               </View>
