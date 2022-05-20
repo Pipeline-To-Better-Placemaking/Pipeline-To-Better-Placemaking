@@ -1,0 +1,125 @@
+#Map{
+    height: calc(100vh - 112px);
+    background-color: rgb(56, 56, 56);
+}
+
+#newProjectButton {
+    background-color: #035FB5;
+    margin: 15px;
+    width: 40%;
+}
+
+#newProjectButtonBox {
+    display: flex;
+    justify-content: center;
+}
+
+#newUserButton {
+    align-self: center;
+    width: 100%;
+}
+
+.backButton{
+    box-shadow: none;
+}
+
+.backButton>svg.css-i4bv87-MuiSvgIcon-root {
+    width: 2.5em;
+    height: auto;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    color: white;
+    box-shadow: none;
+}
+
+.cardRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.iconShadow:hover {
+    -webkit-filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, .7));
+    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.328));
+}
+
+.newformCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tagBox {
+   width: 40vw;
+}
+
+.testBox{
+    position: fixed;
+    top: 112px;
+    height: calc(100vh - 112px); 
+    width: 100%;
+    background-color: black;
+    z-index: 850;
+}
+
+#pageTemplate {
+    text-align: center;
+    align-items: center;
+    background-color: #006FD6;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    min-height: calc(100vh - 40px);
+    padding: 5vh 5vw;
+}
+
+#newUser {
+    padding: 20px;
+}
+
+div#projectCardFlexBox{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: center;
+    margin: 10px;
+}
+
+div.nonFCInput {
+    margin: 8px;
+}
+
+form.MuiBox-root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+div.MuiCardContent-root{
+    width: 80%;
+}
+
+div.MuiCardHeader-root{
+    width: 100%;
+    background-color: #b3daff;
+}
+
+div.MuiFormControl-root{
+    width: 100%;
+}
+
+div.projectCard{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 30%;
+    max-width: 60%;
+    margin: 5px;
+    text-align: center;
+}

@@ -1,0 +1,157 @@
+:root {
+    --tabSelectColor:#fed906;
+    --tabSelectBG:#FED90615;
+    --primaryBlue: #006FD6;
+    --secondaryBlue: #00396D;
+}
+
+@media (max-width: 599px){
+    div.MuiDrawer-paperAnchorLeft,div#leftDrawer,div.MuiDrawer-paperAnchorRight,div#rightDrawer{
+        top: 105px;
+    }
+}
+
+@media (min-width: 600px) {
+    div.MuiDrawer-paperAnchorLeft, div#leftDrawer, div.MuiDrawer-paperAnchorRight, div#rightDrawer {
+        top: 112px;
+    }
+}
+
+.css-heg063-MuiTabs-flexContainer {
+    justify-content:center;
+
+}
+
+div.css-cveggr-MuiListItemIcon-root {
+    min-width: 42px;
+}
+
+.homeButton {
+    box-shadow: none;
+    color: white;
+}
+
+#projTab0 > .MuiBox-root.css-19kzrtu {
+    padding: 0px;
+}
+
+#bottomDrawer, #bottomDrawer > div.MuiPaper-root{
+    top: calc(100vh - 200px);
+}
+
+#leftButton{
+    left: 250px;
+}
+
+#rightButton {
+    position: fixed;
+    left: calc(100vw - 328px)
+}
+
+#bottomButton{
+    position: relative;
+    top: calc(100vh - 190px);
+    margin: 0px calc(50vw - 32px);
+    bottom: 0;
+}
+button#bottomCloseButton{
+    width: 100%;
+    z-index: 1000;
+}
+
+#bottomListBox{
+    margin-top: 30px;
+}
+
+a#siteName{
+    color: white;
+    text-decoration: none;
+}
+
+a#siteName:hover{
+    color: white;
+}
+
+a.css-cjctlb-MuiButtonBase-root-MuiTab-root{
+    color: white;
+}
+
+a.css-cjctlb-MuiButtonBase-root-MuiTab-root:hover {
+    color: var(--tabSelectColor);
+}
+
+a.Mui-selected {
+    color: var(--tabSelectColor)
+}
+
+button.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected{
+    color: var(--tabSelectColor);
+}
+
+button.css-1h9z7r5-MuiButtonBase-root-MuiTab-root{
+    color: white;
+}
+
+div.css-1gsv261{
+    background-color: var(--secondaryBlue);
+}
+
+div.MuiDrawer-paperAnchorLeft, div#leftDrawer, div.MuiDrawer-paperAnchorRight, div#rightDrawer{
+    width: 250px;
+}
+
+div#projectFrame>button.MuiButton-root{
+    z-index: 900;
+    color: var(--tabSelectColor);
+}
+
+div#projectFrame>button.MuiButton-root:hover {
+    background-color: var(--tabSelectBG);
+}
+
+span.MuiTabs-indicator{
+    display: flex;
+    justify-content: center;
+    background-color: transparent;
+}
+
+span.MuiTabs-indicatorSpan{
+    max-width: 40px;
+    width: 100%;
+    background-color: var(--tabSelectColor);
+    left: auto;
+    right: auto;
+}
+
+.homeButton > svg.css-i4bv87-MuiSvgIcon-root{
+    width: 1.5em;
+    height: auto;
+    transition: width 1s ease-in-out;
+}
+
+.homeButton > svg.css-i4bv87-MuiSvgIcon-root:hover {
+    width: 2em;
+    height: auto;
+}
+
+.iconShadow:hover{
+    color: white;
+    -webkit-filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, .7));
+    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.328));
+}
+
+.subtables thead.MuiTableHead-root {
+    background-color: #e2e2e2;
+}
+
+th.catTitle {
+    font-weight: 700;
+}
+
+th.value, th.type, td.value, td.type {
+    width: 15vw;
+}
+
+tr.categories {
+    background-color: #006fd684;
+}

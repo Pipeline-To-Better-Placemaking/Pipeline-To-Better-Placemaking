@@ -1,0 +1,107 @@
+.formCard {
+  display: flex;
+  flex-direction: column;
+  border-bottom:1px solid #bcbcbc;
+}
+
+.logo {
+  margin-bottom: 150px;
+}
+
+div.nonFCInput, button#loginButton{
+  margin: 8px;
+}
+
+#logo1{
+  position: relative;
+  left: -10vw;
+}
+
+#logo2{
+  position: absolute;
+  top: 25vh;
+  left: 30vw;
+
+}
+
+#tagText{
+  z-index: 100;
+}
+
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.scheme{
+  color: black;
+  background-color: #FED806;
+  border-color: #FED806;
+}
+
+.secondButton {
+  align-content: stretch;
+}
+
+.tag {
+  color: #FFFFFF;
+  font-size: 9vh;
+  max-width: calc(50vw);
+
+}
+
+.tagBox {
+  min-width: calc(30vw);
+}
+
+.Title {
+  text-align: center;
+  align-items: center;
+  background-color: #006FD6;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  min-height: calc(100vh - 40px);
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+  padding-right: 5vw;
+  padding-left: 5vw;
+}
+
+.titlePage {
+  padding: 20px;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+  border-radius: 200px;
+  width:300px;
+  height:300px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 60s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
