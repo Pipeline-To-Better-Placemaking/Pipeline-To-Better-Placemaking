@@ -26,17 +26,7 @@ const app = express();
 
 app.use(cors())
 
-if (process.env.NODE_ENV === "production"){
-
-    app.use(express.static("./frontend_web/build"))
-
-    app.get("*",(req,res) => {
-        res.sendFile(path.resolve(__dirname, "frontend_web", "build", "index.html"))}
-    )
-}    
-else{
-    app.use(express.static(path.join(__dirname,'public')))
-}
+app.use(express.static(path.join(__dirname,'public')))
 
 app.use(bodyParser.json())
 
