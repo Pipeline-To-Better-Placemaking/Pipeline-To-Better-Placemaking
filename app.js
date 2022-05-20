@@ -27,7 +27,7 @@ const app = express();
 app.use(cors())
 
 app.use(express.static(path.join(__dirname,'public')))
-app.get('/', (req, res) => res.sendFile(path.resolve(__dirname, "frontend_web", "index.js")));
+app.get('/', (req, res) => res.sendFile(path.resolve(__dirname, "frontend_web/src", "index.js")));
 
 
 app.use(bodyParser.json())
