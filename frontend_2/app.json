@@ -1,8 +1,9 @@
 {
   "expo": {
     "name": "Pipeline to Better Placemaking",
+    "owner": "pipeline-to-better-placemaking",
     "description": "Measure the qualities of public spaces",
-    "slug": "2plus-community",
+    "slug": "app",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
