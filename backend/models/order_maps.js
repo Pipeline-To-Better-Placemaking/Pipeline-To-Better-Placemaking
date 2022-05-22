@@ -27,12 +27,20 @@ const dataSchema = mongoose.Schema({
     description: {
         type: String,
         required: true
+    },
+    
+    standingPoint: {
+        type: ObjectId,
+        required: true,
+        ref: 'Standing_Points'
+
     }
 
 })
 
-const stationary_schema = mongoose.Schema({
+const order_schema = mongoose.Schema({
     
+    title: String,
     
     project: {
         type: ObjectId,
@@ -76,8 +84,8 @@ const stationary_schema = mongoose.Schema({
 })
 
 
-const Maps = module.exports = mongoose.model('Order_Maps', stationary_schema)
-const Entry = mongoose.model('Data_Entry', dataSchema)
+const Maps = module.exports = mongoose.model('Order_Maps', order_schema)
+const Entry = mongoose.model('Order_Entry', dataSchema)
 
 module.exports.addMap = async function(newMap) {
     return await newMap.save()
@@ -111,16 +119,14 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-        time: newEntry.time,
-        gender: newEntry.gender,
-        posture: newEntry.posture,
-        age: newEntry.age,
-        activity: newEntry.activity,
-        location: newEntry.location,
+        garbage_can: newEntry.garbage_can,
+        building_condition: newEntry.building_condition,
+        area_lighting: newEntry.area_lighting,
+        description: newEntry.description,
         standingPoint: newEntry.standingPoint
     })
 
-    Points.addRefrence(newEntry.standingPoints)
+    Points.addRefrence(newEntry.standingPoint)
 
     return await Maps.updateOne(
         { _id: mapId },

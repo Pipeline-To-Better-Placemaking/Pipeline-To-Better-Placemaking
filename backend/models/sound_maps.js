@@ -40,13 +40,20 @@ const dataSchema = mongoose.Schema({
         type: Number,
         enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
         required: true
+    },
+
+    standingPoint: {
+        type: ObjectId,
+        required: true,
+        ref: 'Standing_Points'
     }
 
 })
 
-const stationary_schema = mongoose.Schema({
+const sound_schema = mongoose.Schema({
     
-    
+    title: String,
+
     project: {
         type: ObjectId,
         required: true
@@ -89,8 +96,8 @@ const stationary_schema = mongoose.Schema({
 })
 
 
-const Maps = module.exports = mongoose.model('Sound_Maps', stationary_schema)
-const Entry = mongoose.model('Data_Entry', dataSchema)
+const Maps = module.exports = mongoose.model('Sound_Maps', sound_schema)
+const Entry = mongoose.model('Sound_Entry', dataSchema)
 
 module.exports.addMap = async function(newMap) {
     return await newMap.save()
@@ -124,16 +131,16 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-        time: newEntry.time,
-        gender: newEntry.gender,
-        posture: newEntry.posture,
-        age: newEntry.age,
-        activity: newEntry.activity,
-        location: newEntry.location,
-        standingPoint: newEntry.standingPoint
+        decibal_1: newEntry.decibal_1,
+        decibal_2: newEntry.decibal_2,
+        decibal_3: newEntry.decibal_3,
+        decibal_4: newEntry.decibal_4,
+        decibal_5: newEntry.decibal_5,
+        average: newEntry.average,
+        sound_type: newEntry.sound_type
     })
 
-    Points.addRefrence(newEntry.standingPoints)
+    Points.addRefrence(newEntry.standingPoint)
 
     return await Maps.updateOne(
         { _id: mapId },

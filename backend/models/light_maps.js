@@ -10,12 +10,19 @@ const dataSchema = mongoose.Schema({
         type: String,
         enum: ['task light', 'building', 'rythmatic'],
         required: true
+    },
+
+    standingPoint: {
+        type: ObjectId,
+        required: true,
+        ref: 'Standing_Points'
     }
 
 })
 
-const stationary_schema = mongoose.Schema({
+const light_schema = mongoose.Schema({
     
+    title: String,
     
     project: {
         type: ObjectId,
@@ -59,8 +66,8 @@ const stationary_schema = mongoose.Schema({
 })
 
 
-const Maps = module.exports = mongoose.model('Light_Maps', stationary_schema)
-const Entry = mongoose.model('Data_Entry', dataSchema)
+const Maps = module.exports = mongoose.model('Light_Maps', light_schema)
+const Entry = mongoose.model('Light_Entry', dataSchema)
 
 module.exports.addMap = async function(newMap) {
     return await newMap.save()
@@ -94,16 +101,11 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-        time: newEntry.time,
-        gender: newEntry.gender,
-        posture: newEntry.posture,
-        age: newEntry.age,
-        activity: newEntry.activity,
-        location: newEntry.location,
+        light_description: newEntry.light_description,
         standingPoint: newEntry.standingPoint
     })
 
-    Points.addRefrence(newEntry.standingPoints)
+    Points.addRefrence(newEntry.standingPoint)
 
     return await Maps.updateOne(
         { _id: mapId },
