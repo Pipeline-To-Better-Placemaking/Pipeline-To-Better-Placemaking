@@ -6,6 +6,8 @@ const User = require('../models/users.js')
 const emailer = require('../utils/emailer')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
+const asyncHandler = require('express-async-handler')
+
 
 const { BadRequestError, NotFoundError } = require('../utils/errors.js')
 
@@ -57,22 +59,27 @@ router.post('/', async (req, res, next) => {
 // Get another user's info
 router.get('/:id', async (req, res, next) => {
     // Make a query for the user, excluding fields that contain private info
-     var user = await User.findById(req.params.id)
-        .select('-password -is_verified -verification_code -verification_timeout -invites')
-        .populate('invites','title')
-        .populate('teams', 'title')
-    
-    user = user.toJSON()
+    try{
+        var user = await User.findById(req.params.id)
+            // .select('-password -is_verified -verification_code -verification_timeout -invites')
+            // .populate('invites','title')
+            // .populate('teams', 'title')
+        
+        user = user.toJSON()
 
-    if (!user) throw new NotFoundError('The requested user was not found')
-
-    for(var i = 0; i < user.invites.length; i++){
-        const owner = await Team.getOwner(user.invites[i]._id)
-        user.invites[i].firstname = owner.firstname
-        user.invites[i].lastname = owner.lastname
+        if (!user) throw new NotFoundError('The requested user was not found')
+        
+        for(var i = 0; i < user.invites.length; i++){
+            const owner = await Team.getOwner(user.invites[i]._id)
+            user.invites[i].firstname = owner.firstname
+            user.invites[i].lastname = owner.lastname
+        }
+        
+        res.status(200).json(user)
+    }catch(error){
+        next(error)
     }
-
-    res.status(200).json(user)
+    
 })
 
 // Get my own user info, requires token authentication

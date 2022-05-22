@@ -136,7 +136,6 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
     project = await Project.findById(map.project)
     if(await Team.isAdmin(project.team,user._id)){
         res.json(await Stationary_Collection.deleteMap(map.sharedData,map._id))
-
         
     }
     else{
@@ -188,7 +187,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 
         if(req.body.standingPoint){
             Points.addRefrence(req.body.standingPoint)
-            Points.removeRefrence(oldDat.standingPoint)
+            Points.removeRefrence(oldData.standingPoint)
         }
     
         await Map.updateData(mapId,oldData._id,newData)

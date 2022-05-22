@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Map = require('../models/stationary_maps.js')
+const Map = require('../models/sound_maps.js')
 const Project = require('../models/projects.js')
 const Sound_Collection = require('../models/sound_collections.js')
 const Team = require('../models/teams.js')
@@ -174,21 +174,21 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 
         const newData = {
             _id: oldData._id,
-            location: (req.body.location ? req.body.location : oldData.location),
-            age: (req.body.age ? req.body.age : oldData.age),
-            gender: (req.body.gender ? req.body.gender : oldData.gender),
-            posture: (req.body.posture ? req.body.posture : oldData.posture),
-            activity: (req.body.activity ? req.body.activity : oldData.activity),
-            standingPoint: (req.body.standingPoint ? req.body.standingPoint : oldData.standingPoint),
-            time: (req.body.time ? req.body.time : oldData.time)
+            decibal_1: (req.body.decibal_1 ? req.body.decibal_1 : oldData.decibal_1),
+            decibal_2: (req.body.decibal_2 ? req.body.decibal_2 : oldData.decibal_2),
+            decibal_3: (req.body.decibal_3 ? req.body.decibal_3 : oldData.decibal_3),
+            decibal_4: (req.body.decibal_4 ? req.body.decibal_4 : oldData.decibal_4),
+            decibal_5: (req.body.decibal_5 ? req.body.decibal_5 : oldData.decibal_5),
+            average: (req.body.average ? req.body.average : oldData.average),
+            sound_type: (req.body.sound_type ? req.body.sound_type : oldData.sound_type)
         }
 
-        if (req.body.activity.length > 2)
-            throw new BadRequestError('Datapoints can only have two activies')
+        if (req.body.sound_type.length > 2)
+            throw new BadRequestError('Datapoints can only have one sound type')
 
         if(req.body.standingPoint){
             Points.addRefrence(req.body.standingPoint)
-            Points.removeRefrence(oldDat.standingPoint)
+            Points.removeRefrence(oldData.standingPoint)
         }
     
         await Map.updateData(mapId,oldData._id,newData)
