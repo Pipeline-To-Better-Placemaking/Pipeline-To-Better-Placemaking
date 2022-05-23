@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-    "scripts": {
+  "homepage": "https://measuringplacesd.herokuapp.com/",
+  "scripts": {
     "start": "node app.js",
     "dev": "cross-env NODE_ENV=dev node app.js",
-    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
-    },
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend_web && npm run build --prefix frontend_web"
+  },
   "author": "Bautista Bertolami, Madison Dishman, Joshua Howell, Mason Proco, Mike Triana",
   "license": "ISC",
   "devDependencies": {
