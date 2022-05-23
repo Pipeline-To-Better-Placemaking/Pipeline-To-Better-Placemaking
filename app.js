@@ -45,8 +45,9 @@ app.use((req, res, next) => {
 });
 app.use(express.static(path.join(__dirname,'public')))
 
-app.get(express.static(path.join(__dirname, 'frontend_web','public', 'index.html')))
-  
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, 'frontend_web','public', 'index.html'))
+  })
 
 app.use(bodyParser.json())
 
