@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "homepage": "https://measuringplacesd.herokuapp.com/",
   "scripts": {
     "start": "node app.js",
     "dev": "cross-env NODE_ENV=dev node app.js",
