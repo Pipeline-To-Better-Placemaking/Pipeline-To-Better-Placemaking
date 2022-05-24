@@ -73,7 +73,7 @@ app.use(expressSession);
 // by any errors thrown anywhere in previous routes or middlewares.
 app.use(errorHandler)
 
-app.get('*', function (req, res) {
+app.get('/*', function (req, res) {
     res.sendFile(path.resolve(__dirname, 'frontend_web','public', 'index.html'))
   })
 
