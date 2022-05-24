@@ -73,10 +73,11 @@ app.use(expressSession);
 // by any errors thrown anywhere in previous routes or middlewares.
 app.use(errorHandler)
 
-app.get('/*', function (req, res) {
-    res.sendFile(path.resolve(__dirname, 'frontend_web','public', 'index.html'))
-  })
+app.use(express.static(path.join(__dirname, 'build')));
 
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 const server = app.listen(config.PORT, () => {
     log.info(`Server is running on port ${config.PORT}`)
 })
