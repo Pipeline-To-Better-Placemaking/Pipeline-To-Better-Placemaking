@@ -25,28 +25,15 @@ connect()
 const app = express();
 
 app.use(cors())
-app.use((req, res, next) => {
-
-    res.setHeader(
-        "Access-Control-Allow-Origin",
-        "*"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PATCH, DELETE, OPTIONS"
-    );
-    
-    next();
-
-});
 
 app.use(express.static(path.join(__dirname,'public')))
 
-app.get('/', function (req, res) {
+app.get('/api', function (req, res) {
+    res.set('Content-Type', 'application/json');
+    res.send('{"message":"Hello from the custom server!"}');
+  });
+
+app.get('*', function (req, res) {
     res.sendFile(path.resolve(__dirname, 'frontend_web','public', 'index.html'))
   })
 
