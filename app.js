@@ -28,9 +28,10 @@ app.use(cors())
 
 app.use(express.static(path.join(__dirname,'public')))
 
-app.get('/', function (req, res) {
-    res.sendFile(path.resolve(__dirname, 'frontend_web','public', 'index.html'))
-  })
+// app.get('*', function (req, res) {
+//     res.sendFile(path.resolve(__dirname, 'frontend_web','public', 'index.html'))
+//   })
+
 
 app.use(bodyParser.json())
 
@@ -71,6 +72,10 @@ app.use(expressSession);
 // Handles errors. express-async-errors ensures this is invoked automatically
 // by any errors thrown anywhere in previous routes or middlewares.
 app.use(errorHandler)
+
+app.get('*', function (req, res) {
+    res.sendFile(path.resolve(__dirname, 'frontend_web','public', 'index.html'))
+  })
 
 const server = app.listen(config.PORT, () => {
     log.info(`Server is running on port ${config.PORT}`)
