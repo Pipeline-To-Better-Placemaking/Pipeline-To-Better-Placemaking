@@ -7,7 +7,7 @@ const passport = require('passport')
 const config = require('./utils/config')
 const errorHandler = require('./middlewares/error_handler')
 const log = require('./utils/log')
-const publicPath = path.join(__dirname, "..", 'frontend_web/public');
+const publicPath = path.join(__dirname, 'frontend_web', "..", 'public');
 
 require('express-async-errors')
 
