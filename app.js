@@ -44,11 +44,12 @@ app.use((req, res, next) => {
 
 });
 
-app.use(express.static(path.join(__dirname,'public')))
 app.use(express.static(path.join(__dirname,'build')))
 
+app.use(express.static(path.join(__dirname,'public')))
+
   app.get('/', function (req, res) {
-    res.sendFile('frontend_web/public/index.html', { root: __dirname });
+    res.sendFile('index.html');
 });
 
 app.use(bodyParser.json())
