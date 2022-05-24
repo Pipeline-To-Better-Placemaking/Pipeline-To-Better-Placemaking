@@ -76,7 +76,7 @@ app.use(errorHandler)
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontent_web','public', 'index.html'));
 });
 
 const server = app.listen(config.PORT, () => {
