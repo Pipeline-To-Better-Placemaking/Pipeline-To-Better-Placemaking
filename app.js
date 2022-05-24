@@ -51,10 +51,6 @@ app.get('/', function (req, res) {
     res.sendFile(path.resolve(__dirname, 'frontend_web','public', 'index.html'))
   })
 
-  app.get('/', function (req, res) {
-    res.sendFile('frontend_web/public/index.html', { root: __dirname });
-});
-
 app.use(bodyParser.json())
 
 const loginApi      = require('./routes/login.js')
