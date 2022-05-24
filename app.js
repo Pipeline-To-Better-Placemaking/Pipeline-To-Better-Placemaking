@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname,'public')))
 app.use(express.static(path.join(__dirname,'build')))
 
-app.get('/', function (req, res) {
+app.get('/*', function (req, res) {
     res.sendFile(path.resolve(__dirname, 'frontend_web','public', 'index.html'))
   })
 
