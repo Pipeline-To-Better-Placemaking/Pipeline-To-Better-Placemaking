@@ -45,11 +45,14 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static(path.join(__dirname,'build')))
-
 app.use(express.static(path.join(__dirname,'public')))
 
+app.get('/', function (req, res) {
+    res.sendFile(path.resolve(__dirname, 'frontend_web','public', 'index.html'))
+  })
+
   app.get('/', function (req, res) {
-    res.sendFile('index.html');
+    res.sendFile('frontend_web/public/index.html', { root: __dirname });
 });
 
 app.use(bodyParser.json())
