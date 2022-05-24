@@ -67,6 +67,7 @@ app.use(expressSession);
 
 // Handles errors. express-async-errors ensures this is invoked automatically
 // by any errors thrown anywhere in previous routes or middlewares.
+
 app.use(errorHandler)
 
 app.use(express.static(path.join(__dirname, 'build')));
