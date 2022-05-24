@@ -7,8 +7,6 @@ const passport = require('passport')
 const config = require('./utils/config')
 const errorHandler = require('./middlewares/error_handler')
 const log = require('./utils/log')
-const publicPath = path.join(__dirname, 'frontend_web', "..", 'public');
-
 require('express-async-errors')
 
 log.info('Connecting to ', config.DB_URI)
@@ -71,10 +69,10 @@ app.use(expressSession);
 // by any errors thrown anywhere in previous routes or middlewares.
 app.use(errorHandler)
 
-app.use(express.static(publicPath));
+app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/*', function (req, res) {
-  res.sendFile(path.join(publicPath, 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend_web','public', 'index.html'));
 });
 
 const server = app.listen(config.PORT, () => {
