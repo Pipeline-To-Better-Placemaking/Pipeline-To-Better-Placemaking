@@ -4,8 +4,10 @@ const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 const Points = require('../models/standing_points.js')
 
+
+// Document Schema for data entry
 const dataSchema = mongoose.Schema({
-   
+
     decibal_1: {
         type: Number,
         required: true
@@ -46,10 +48,25 @@ const dataSchema = mongoose.Schema({
         type: ObjectId,
         required: true,
         ref: 'Standing_Points'
-    }
+    },
+
+    // time_of_day: {
+    //     type: String,
+    //     enum: ['morning','afternoon','night'],
+    //     required: true
+    // },
+    // may revisit later
+
+
+    time: {
+        type: Date,
+        required: true
+    },
 
 })
+//end
 
+// Document Schema for Sound Maps
 const sound_schema = mongoose.Schema({
     
     title: String,
@@ -81,20 +98,16 @@ const sound_schema = mongoose.Schema({
         required: true
     },
 
-    time_of_day: {
-        type: String,
-        enum: ['morning','afternoon','night'],
-        required: true
-    },
-
     date:{
         type: Date,
         required: true
     },
 
-    data:[dataSchema]   
+    data:[dataSchema]
+    // data represents const dataSchema which houses the actual testing data parameters  
+   
 })
-
+//end
 
 const Maps = module.exports = mongoose.model('Sound_Maps', sound_schema)
 const Entry = mongoose.model('Sound_Entry', dataSchema)
@@ -137,7 +150,9 @@ module.exports.addEntry = async function(mapId, newEntry) {
         decibal_4: newEntry.decibal_4,
         decibal_5: newEntry.decibal_5,
         average: newEntry.average,
-        sound_type: newEntry.sound_type
+        sound_type: newEntry.sound_type,
+        // time_of_day: newEntry.time_of_day,        
+        time: newEntry.time
     })
 
     Points.addRefrence(newEntry.standingPoint)

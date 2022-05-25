@@ -8,7 +8,7 @@ const Order_Maps = require('./order_maps.js')
 const Area = require('./areas.js')
 const { collection } = require('./surveys.js')
 
-
+// Document Schema for Order Collections.  Maps references Order Maps Schema
 const collection_schema = mongoose.Schema({
     title: String,
 
@@ -30,6 +30,7 @@ const collection_schema = mongoose.Schema({
     }]
 
 })
+//end
 
 const Collection = module.exports = mongoose.model('Order_Collections', collection_schema)
 

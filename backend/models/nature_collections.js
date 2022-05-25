@@ -8,6 +8,7 @@ const Nature_Maps = require('./nature_maps.js')
 const Area = require('./areas.js')
 const { collection } = require('./surveys.js')
 
+// Document Schema for Nature Collections.  Maps references Nature Maps Schema
 
 const collection_schema = mongoose.Schema({
     title: String,
@@ -30,6 +31,7 @@ const collection_schema = mongoose.Schema({
     }]
 
 })
+//end
 
 const Collection = module.exports = mongoose.model('Nature_Collections', collection_schema)
 

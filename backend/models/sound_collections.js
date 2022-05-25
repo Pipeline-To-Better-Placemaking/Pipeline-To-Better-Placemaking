@@ -8,6 +8,7 @@ const Sound_Maps = require('./sound_maps.js')
 const Area = require('./areas.js')
 const { collection } = require('./surveys.js')
 
+// Document Schema for Sound Collections.  Maps references Sound Maps Schema
 
 const collection_schema = mongoose.Schema({
     title: String,
@@ -34,6 +35,7 @@ const collection_schema = mongoose.Schema({
     }]
 
 })
+//end
 
 const Collection = module.exports = mongoose.model('Sound_Collections', collection_schema)
 

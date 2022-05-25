@@ -8,7 +8,7 @@ const Boundaries_Maps = require('./boundaries_maps.js')
 const Area = require('./areas.js')
 const { collection } = require('./surveys.js')
 
-
+// Document Schema for Boundaries Collections.  Maps references Boundaries Maps Schema
 const collection_schema = mongoose.Schema({
     title: String,
 
@@ -30,6 +30,7 @@ const collection_schema = mongoose.Schema({
     }]
 
 })
+//end
 
 const Collection = module.exports = mongoose.model('Boundaries_Collections', collection_schema)
 
