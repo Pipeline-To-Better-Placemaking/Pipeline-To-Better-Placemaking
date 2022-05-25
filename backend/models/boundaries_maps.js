@@ -4,7 +4,19 @@ const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 const Points = require('../models/standing_points.js')
 
+// Document Schema for data entry
 const dataSchema = mongoose.Schema({
+
+    path: [{
+        latitude: {
+            type: Number,
+            required: true
+        },
+        longitude: {
+            type: Number,
+            required: true
+        }
+    }],
 
     horizontal: {
 
@@ -34,13 +46,28 @@ const dataSchema = mongoose.Schema({
         }
     },
 
+    // time_of_day: {
+    //     type: String,
+    //     enum: ['morning','afternoon','night'],
+    //     required: true
+    // },
+    // may revisit later
+
     standingPoint: {
         type: ObjectId,
         required: true,
         ref: 'Standing_Points'
+    },
+
+    time: {
+        type: Date,
+        required: true
     }
 
 })
+//End
+
+// Document Schema for Boundaries Maps
 
 const boundaries_schema = mongoose.Schema({
     
@@ -73,20 +100,15 @@ const boundaries_schema = mongoose.Schema({
         required: true
     },
 
-    time_of_day: {
-        type: String,
-        enum: ['morning','afternoon','night'],
-        required: true
-    },
-
     date:{
         type: Date,
         required: true
     },
 
-    data:[dataSchema]   
+    data:[dataSchema] 
+    // data represents const dataSchema which houses the actual testing data parameters  
 })
-
+// end
 
 const Maps = module.exports = mongoose.model('Boundaries_Maps', boundaries_schema)
 const Entry = mongoose.model('Boundaries_Entry', dataSchema)
@@ -125,7 +147,10 @@ module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
         horizontal: newEntry.horizontal,
         vertical: newEntry.vertical,
-        standingPoint: newEntry.standingPoint
+        // time_of_day: newEntry.time_of_day,
+        standingPoint: newEntry.standingPoint,
+        time: newEntry.time,
+        path: newEntry.path
     })
 
     Points.addRefrence(newEntry.standingPoint)

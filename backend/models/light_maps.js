@@ -4,7 +4,18 @@ const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 const Points = require('../models/standing_points.js')
 
+// Document Schema for data entry
 const dataSchema = mongoose.Schema({
+    path: [{
+        latitude: {
+            type: Number,
+            required: true
+        },
+        longitude: {
+            type: Number,
+            required: true
+        }
+    }],
 
     light_description: {
         type: String,
@@ -12,14 +23,29 @@ const dataSchema = mongoose.Schema({
         required: true
     },
 
+    // time_of_day: {
+    //     type: String,
+    //     enum: ['morning','afternoon','night'],
+    //     required: true
+    // },
+    // may revisit later
+
     standingPoint: {
         type: ObjectId,
         required: true,
         ref: 'Standing_Points'
+    },
+
+    time: {
+        type: Date,
+        required: true
     }
 
 })
+//end
 
+
+// Document Schema for Light Maps
 const light_schema = mongoose.Schema({
     
     title: String,
@@ -51,20 +77,16 @@ const light_schema = mongoose.Schema({
         required: true
     },
 
-    time_of_day: {
-        type: String,
-        enum: ['morning','afternoon','night'],
-        required: true
-    },
-
     date:{
         type: Date,
         required: true
     },
 
-    data:[dataSchema]   
+    data:[dataSchema]
+    // data represents const dataSchema which houses the actual testing data parameters  
+   
 })
-
+// end
 
 const Maps = module.exports = mongoose.model('Light_Maps', light_schema)
 const Entry = mongoose.model('Light_Entry', dataSchema)
@@ -101,8 +123,12 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
+
         light_description: newEntry.light_description,
-        standingPoint: newEntry.standingPoint
+        // time_of_day: newEntry.time_of_day,
+        standingPoint: newEntry.standingPoint,
+        time: newEntry.time,
+        path: newEntry.path
     })
 
     Points.addRefrence(newEntry.standingPoint)
