@@ -4,7 +4,20 @@ const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 const Points = require('../models/standing_points.js')
 
+
+// Document Schema for data entry
 const dataSchema = mongoose.Schema({
+
+    location: {
+        latitude: {
+            type: Number,
+            required: true
+        },
+        longitude: {
+            type: Number,
+            required: true
+        }
+    },
 
     garbage_can: {
         type: String,
@@ -29,6 +42,18 @@ const dataSchema = mongoose.Schema({
         required: true
     },
     
+    time: {
+        type: Date,
+        required: true
+    },
+
+    // time_of_day: {
+    //     type: String,
+    //     enum: ['morning','afternoon','night'],
+    //     required: true
+    // },
+    // may revisit later
+
     standingPoint: {
         type: ObjectId,
         required: true,
@@ -37,7 +62,9 @@ const dataSchema = mongoose.Schema({
     }
 
 })
+// End
 
+// Document Schema for Order Maps
 const order_schema = mongoose.Schema({
     
     title: String,
@@ -69,20 +96,16 @@ const order_schema = mongoose.Schema({
         required: true
     },
 
-    time_of_day: {
-        type: String,
-        enum: ['morning','afternoon','night'],
-        required: true
-    },
-
     date:{
         type: Date,
         required: true
     },
 
-    data:[dataSchema]   
+    data:[dataSchema] 
+    // data represents const dataSchema which houses the actual testing data parameters  
+  
 })
-
+// end
 
 const Maps = module.exports = mongoose.model('Order_Maps', order_schema)
 const Entry = mongoose.model('Order_Entry', dataSchema)
@@ -123,7 +146,10 @@ module.exports.addEntry = async function(mapId, newEntry) {
         building_condition: newEntry.building_condition,
         area_lighting: newEntry.area_lighting,
         description: newEntry.description,
-        standingPoint: newEntry.standingPoint
+        // time_of_day: newEntry.time_of_day,        
+        location: newEntry.location,
+        standingPoint: newEntry.standingPoint,
+        time: newEntry.time
     })
 
     Points.addRefrence(newEntry.standingPoint)
