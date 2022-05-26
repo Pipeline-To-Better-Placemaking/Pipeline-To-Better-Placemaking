@@ -55,23 +55,23 @@ const project_schema = mongoose.Schema({
         type: ObjectId,
         ref: 'Sound_Collections'
     }],
-    natureCollections:[{
-        type: ObjectId,
-        required: true,
-        ref: 'Nature_Collections'
-    }],
-    lightCollections:[{
-        type: ObjectId,
-        ref: 'Light_Collections'
-    }],
-    boundariesCollections:[{
-        type: ObjectId,
-        ref: 'Boundaries_Collections'
-    }],
-    orderCollections:[{
-        type: ObjectId,
-        ref: 'Order_Collections'
-    }],
+    // natureCollections:[{
+    //     type: ObjectId,
+    //     required: true,
+    //     ref: 'Nature_Collections'
+    // }],
+    // lightCollections:[{
+    //     type: ObjectId,
+    //     ref: 'Light_Collections'
+    // }],
+    // boundariesCollections:[{
+    //     type: ObjectId,
+    //     ref: 'Boundaries_Collections'
+    // }],
+    // orderCollections:[{
+    //     type: ObjectId,
+    //     ref: 'Order_Collections'
+    // }],
 
 })
 
