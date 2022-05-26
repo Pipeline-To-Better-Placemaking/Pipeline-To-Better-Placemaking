@@ -174,13 +174,14 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 
         const newData = {
             _id: oldData._id,
-            decibal_1: (req.body.decibal_1 ? req.body.decibal_1 : oldData.decibal_1),
-            decibal_2: (req.body.decibal_2 ? req.body.decibal_2 : oldData.decibal_2),
-            decibal_3: (req.body.decibal_3 ? req.body.decibal_3 : oldData.decibal_3),
-            decibal_4: (req.body.decibal_4 ? req.body.decibal_4 : oldData.decibal_4),
-            decibal_5: (req.body.decibal_5 ? req.body.decibal_5 : oldData.decibal_5),
+            decibel_1: (req.body.decibel_1 ? req.body.decibel_1 : oldData.decibel_1),
+            decibel_2: (req.body.decibel_2 ? req.body.decibel_2 : oldData.decibel_2),
+            decibel_3: (req.body.decibel_3 ? req.body.decibel_3 : oldData.decibel_3),
+            decibel_4: (req.body.decibel_4 ? req.body.decibel_4 : oldData.decibel_4),
+            decibel_5: (req.body.decibel_5 ? req.body.decibel_5 : oldData.decibel_5),
             average: (req.body.average ? req.body.average : oldData.average),
-            sound_type: (req.body.sound_type ? req.body.sound_type : oldData.sound_type)
+            sound_type: (req.body.sound_type ? req.body.sound_type : oldData.sound_type),
+            time: (req.body.time ? req.body.time : oldData.time)
         }
 
         if (req.body.sound_type.length > 2)
