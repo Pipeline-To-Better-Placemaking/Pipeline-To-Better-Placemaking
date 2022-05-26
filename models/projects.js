@@ -51,10 +51,10 @@ const project_schema = mongoose.Schema({
         type: ObjectId,
         ref: 'Moving_Collections'
     }],
-    // soundCollections:[{
-    //     type: ObjectId,
-    //     ref: 'Sound_Collections'
-    // }],
+    soundCollections:[{
+        type: ObjectId,
+        ref: 'Sound_Collections'
+    }],
     // natureCollections:[{
     //     type: ObjectId,
     //     required: true,
@@ -172,21 +172,21 @@ module.exports.deleteSurveyCollection = async function(projectId, collectionId) 
    return await Survey_Collection.deleteCollection(collectionId)
 }    
 
-// module.exports.addSoundCollection = async function (projectId, collectionId) {
-//     return await Projects.updateOne(
-//        { _id: projectId },
-//        { $push: { soundCollections:  collectionId}}
-//    )
-// }
+module.exports.addSoundCollection = async function (projectId, collectionId) {
+    return await Projects.updateOne(
+       { _id: projectId },
+       { $push: { soundCollections:  collectionId}}
+   )
+}
 
-// module.exports.deleteSoundCollection = async function(projectId, collectionId) {
+module.exports.deleteSoundCollection = async function(projectId, collectionId) {
    
-//    await Projects.updateOne(
-//        { _id: projectId },
-//        { $pull: { soundCollections: collectionId}}
-//    )
-//    return await Sound_Collection.deleteCollection(collectionId)
-// }   
+   await Projects.updateOne(
+       { _id: projectId },
+       { $pull: { soundCollections: collectionId}}
+   )
+   return await Sound_Collection.deleteCollection(collectionId)
+}   
 
 // module.exports.addNatureCollection = async function (projectId, collectionId) {
 //     return await Projects.updateOne(

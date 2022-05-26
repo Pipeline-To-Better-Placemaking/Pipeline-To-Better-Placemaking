@@ -81,7 +81,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
             proj = team.projects[0]
             await Stationary_Map.projectCleanup(proj)
             await Moving_Map.projectCleanup(proj)
-            // await Sound_Map.projectCleanup(proj)
+            await Sound_Map.projectCleanup(proj)
             // await Nature_Map.projectCleanup(proj)
             // await Light_Map.projectCleanup(proj)
             // await Order_Map.projectCleanup(proj)
