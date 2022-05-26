@@ -53,10 +53,10 @@ app.use('/api/verify',          verifyApi)
 app.use('/api/stationary_maps', stationApi)
 app.use('/api/moving_maps',     movingApi)
 app.use('/api/sound_maps',      soundApi)
-app.use('/api/nature_maps',     natureApi)
-app.use('/api/light_maps',      lightApi)
-app.use('/api/order_maps',      orderApi)
-app.use('/api/bound_maps',      boundApi)
+// app.use('/api/nature_maps',     natureApi)
+// app.use('/api/light_maps',      lightApi)
+// app.use('/api/order_maps',      orderApi)
+// app.use('/api/bound_maps',      boundApi)
 app.use('/api/surveys',         surveyApi)
 app.use('/api/collections',     collectionApi)
 
@@ -78,10 +78,10 @@ app.use(expressSession);
 // by any errors thrown anywhere in previous routes or middlewares.
 app.use(errorHandler)
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'frontend_web/build')));
 
 app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'frontend_web','public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend_web','build', 'index.html'));
 });
 
 const server = app.listen(config.PORT, () => {
