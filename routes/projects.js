@@ -20,8 +20,8 @@ const jwt = require('jsonwebtoken')
 const emailer = require('../utils/emailer')
 
 const { models } = require('mongoose')
-const { stationaryToCSV, movingToCSV, soundToCSV, lightToCSV, 
-        natureToCSV, orderToCSV, boundariesToCSV, surveyToCSV } = require('../utils/csv_conversions')
+const { stationaryToCSV, movingToCSV, //soundToCSV, lightToCSV, natureToCSV, orderToCSV, boundariesToCSV, 
+surveyToCSV } = require('../utils/csv_conversions')
 
 const { BadRequestError, InternalServerError, UnauthorizedError } = require('../utils/errors')
 
@@ -80,7 +80,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                         //   .populate('lightCollections')
                         //   .populate('boundariesCollections')
                         //   .populate('orderCollections')
-                        //   .populate('surveyCollections')
+                          .populate('surveyCollections')
                           
             )
 })
