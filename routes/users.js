@@ -6,7 +6,7 @@ const User = require('../models/users.js')
 const emailer = require('../utils/emailer')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
-const asyncHandler = require('express-async-handler')
+// const asyncHandler = require('express-async-handler')
 
 
 const { BadRequestError, NotFoundError } = require('../utils/errors.js')
