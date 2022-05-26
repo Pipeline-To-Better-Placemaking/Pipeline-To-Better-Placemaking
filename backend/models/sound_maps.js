@@ -8,27 +8,27 @@ const Points = require('../models/standing_points.js')
 // Document Schema for data entry
 const dataSchema = mongoose.Schema({
 
-    decibal_1: {
+    decibel_1: {
         type: Number,
         required: true
     },
 
-    decibal_2: {
+    decibel_2: {
         type: Number,
         required: true
     },
 
-    decibal_3: {
+    decibel_3: {
         type: Number,
         required: true
     },
 
-    decibal_4: {
+    decibel_4: {
         type: Number,
         required: true
     },
 
-    decibal_5: {
+    decibel_5: {
         type: Number,
         required: true
     },
@@ -144,11 +144,11 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-        decibal_1: newEntry.decibal_1,
-        decibal_2: newEntry.decibal_2,
-        decibal_3: newEntry.decibal_3,
-        decibal_4: newEntry.decibal_4,
-        decibal_5: newEntry.decibal_5,
+        decibel_1: newEntry.decibel_1,
+        decibel_2: newEntry.decibel_2,
+        decibel_3: newEntry.decibel_3,
+        decibel_4: newEntry.decibel_4,
+        decibel_5: newEntry.decibel_5,
         average: newEntry.average,
         sound_type: newEntry.sound_type,
         // time_of_day: newEntry.time_of_day,        
