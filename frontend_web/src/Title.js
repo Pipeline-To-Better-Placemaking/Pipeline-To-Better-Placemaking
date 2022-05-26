@@ -41,7 +41,9 @@ function Title() {
     event.preventDefault();
   };
 
-  const loginUser = () => { }
+  const loginUser = async () => {
+
+   }
 
   return (
     <div className='titlePage'>
