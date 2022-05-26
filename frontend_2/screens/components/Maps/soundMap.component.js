@@ -5,16 +5,16 @@ import { PressMapAreaWrapper } from './mapPoints.component';
 
 import { styles } from './sharedMap.styles';
 
-export function StationaryActivityMap(props) {
+export function SoundMap(props) {
 
-    // Color constants for the data points
-    const colors = ["blue", "red", "yellow", "green"]
+    // Color constant for the proportional data points
+    const color = '#C665E9';
 
     // Custom colored data pin
     const DataPin = (props) => {
 
         return(
-            <View style={[ styles.dataPin, {backgroundColor: colors[props.index]}]}/>
+            <View style={[ styles.dataPin, {backgroundColor: color}]}/>
         )
     }
 
@@ -33,6 +33,7 @@ export function StationaryActivityMap(props) {
                         longitude: coord.marker.longitude
                     }}
                 >
+                    {/* not sure what this coord.colorIndex is supposed to be */}
                     <DataPin index={coord.colorIndex}/>
                 </MapView.Marker>
              )))

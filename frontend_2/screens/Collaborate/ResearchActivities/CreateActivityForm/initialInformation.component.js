@@ -90,10 +90,19 @@ export function IntialForm(props) {
                 appearance={'ghost'}
                 onPress={() => setEditDurationVisible(true)}
               >
+                { props.activityTypes[props.selectedActivityIndex.row] === 'Sound' ?
                 <Text>
+                Time per Standing Point: {props.duration} (sec)
+                </Text>
+                
+                :
+
+                <Text>
+                {/* will need to add the other tests (everything but sound test) for time at site */}
                 {(props.activityTypes[props.selectedActivityIndex.row] === 'Survey' ?
                   "Time at Site" : "Time per Standing Point")}: {props.duration} (min)
                 </Text>
+                }
               </Button>
             </View>
 

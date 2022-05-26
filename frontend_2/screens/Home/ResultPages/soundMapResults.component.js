@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { ViewableArea, ContentContainer } from '../../components/content.component.js'
 import { HeaderBack } from '../../components/headers.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
-import { StationaryMapResults } from '../../components/Maps/stationaryMapResults.component.js';
+import { SoundMapResults } from '../../components/Maps/soundMapResults.component.js'
 
-export function StationaryActivityResultView(props) {
+export function SoundActivityResultView(props) {
 
     // console.log("Project: " + JSON.stringify(props.project))
 
@@ -30,7 +30,7 @@ export function StationaryActivityResultView(props) {
             <HeaderBack {...props} text={getDayStr(day)+ " - " + getTimeStr(startTime)}/>
             <ContentContainer>
 
-                <StationaryMapResults
+                <SoundMapResults
                     area={area}
                     position={position[standingIndex]}
                     dataMarkers={data}

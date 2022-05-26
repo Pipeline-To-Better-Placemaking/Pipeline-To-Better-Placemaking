@@ -104,9 +104,37 @@ export async function getFilteredProjectDetails(project) {
       projectDetails.surveyCollections.splice(removeIndex, 1);
     }
 
+    //added for sound test, verify this is what needs to be done (proper syntax) (copy and paste logic from above)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    let pastSoundCollections = [];
+    if(projectDetails.soundCollections != null) {
+      console.log('makes it here'); //then crashes due to projectDetails.soundCollections.length 
+      for(let i = 0; i < projectDetails.soundCollections.length; i++) {
+        let collection = projectDetails.soundCollections[i];
+        collection.test_type = 'sound';
+        // handle date
+        collection.date = new Date(collection.date);
+        if (moment(today).isAfter(collection.date, 'day')) {
+          pastSoundCollections.push(collection);
+        }
+        projectDetails.soundCollections[i] = collection;
+        }
+      //} if statement above is supposed to end here 
+      // remove collections from the list that are in the past
+      for(let i = 0; i < pastSoundCollections.length; i++) {
+        let removeIndex = projectDetails.soundCollections.findIndex(element => element._id === pastSoundCollections[i]._id);
+        projectDetails.soundCollections.splice(removeIndex, 1);
+      }
+    } // for error testing
+    else { console.log('projectDetails.soundCollections.length is undefined') }
+    //-------------------------------------------------------------------------------------------------------------------------------
+    
+    //added soundCollections stuff to this as well
     // set selected project page information
-    projectDetails.activities = [...projectDetails.stationaryCollections, ...projectDetails.movingCollections, ...projectDetails.surveyCollections];
-    projectDetails.pastActivities = [...pastStationaryCollections, ...pastMovingCollections, ...pastSurveyCollections];
+    // ...projectDetails.soundCollections causes Unhandled promise rejection: TypeError: undefined is not an object error
+    //projectDetails.activities = [...projectDetails.stationaryCollections, ...projectDetails.movingCollections, ...projectDetails.surveyCollections, ...projectDetails.soundCollections];
+    projectDetails.activities = [...projectDetails.stationaryCollections, ...projectDetails.movingCollections, ...projectDetails.surveyCollections, ...projectDetails.soundCollections];
+    projectDetails.pastActivities = [...pastStationaryCollections, ...pastMovingCollections, ...pastSurveyCollections, ...pastSoundCollections];
     return projectDetails;
   } else {
     return null;
@@ -388,7 +416,27 @@ export async function getAllCollectionInfo(collectionDetails) {
       }
       success = true
     }
+
+    //added for the sound test (modeled after moving and stationary if blocks)
+  } else if(collectionDetails.test_type === 'sound') {
+    // get the collection info
+    collectionDetails = await getCollection('sound/', collectionDetails);
+    success = (collectionDetails !== null);
+    // get the timeSlot info
+    //should this be collectionDetails.maps ?
+    if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
+      for (let i = 0; i < collectionDetails.maps.length; i++) {
+        let item = collectionDetails.maps[i];
+        //should this be sound_maps/ ? etc.
+        let timeSlot = await getTimeSlot('sound_maps/', item._id);
+        success = (timeSlot !== null)
+        if (success)
+          timeSlots.push(timeSlot);
+      }
+      success = true
+    }
   }
+
   // if successfully retrieved collection info, Update
   if(success) {
     collectionDetails.timeSlots = timeSlots;
@@ -407,6 +455,8 @@ export async function getAllResults(projectDetails) {
   results = await getStationaryResults(projectDetails, results);
   results = await getMovingResults(projectDetails, results);
   results = await getSurveyResults(projectDetails, results);
+  //added for the sound test
+  results = await getSoundResults(projectDetails, results);
   return  results;
 }
 
@@ -446,6 +496,25 @@ export async function getSurveyResults(projectDetails, results) {
       results.push(tempObj);
     }
   }
+  return results;
+}
+
+//added for the sound test
+export async function getSoundResults(projectDetails, results) {
+  // error handeling if statement
+  if(projectDetails.soundCollections != null){
+    // loop through all Sound Test collections and get all of the maps
+    for (let i = 0; i < projectDetails.soundCollections.length; i++) {
+      let collection = projectDetails.soundCollections[i];
+      for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
+        let id = collection.maps[j];
+        let tempObj = await helperGetResult(id, 'sound_maps/', "sound", collection, projectDetails);
+        results.push(tempObj);
+      }  
+    }
+  }
+  // enters this else (avoids unhandled promise rejection)
+  else { console.log('projectDetails.soundCollections is null') }
   return results;
 }
 

@@ -6,33 +6,15 @@ import { Text } from '@ui-kitten/components';
 
 import { styles } from './sharedMap.styles';
 
-export function StationaryMapResults(props) {
+export function SoundMapResults(props) {
 
-    // Color constants for the data points
-    const colors = ["blue", "red", "yellow", "green"]
+    // Color constant for the data points
+    const color = '#C665E9'
 
-    const get_colorIndex = (posture) => {
-        if (posture == "Standing"){
-            return 0
-        }
-        else if (posture == "Sitting") {
-            return 1
-        }
-        else if (posture == "Laying") {
-            return 2
-        }
-        else {
-            return 3
-        }
-    }
-
-    // Custom colored data pin
+    // Custom colored data pin, need to format these data pins to be data proportion pins
     const DataPin = (props) => {
-
-        let colorIndex = get_colorIndex(props.index)
-
         return(
-            <View style={[ styles.dataPin, {backgroundColor: colors[colorIndex]}]}/>
+            <View style={[ styles.dataPin, {backgroundColor: color}]}/>
         )
     }
 
@@ -40,21 +22,12 @@ export function StationaryMapResults(props) {
 
         return (
             <View style={styles.dataCallOutView}>
+              
+              {/* need to determine wha the point's data for decibel reading is */}
               <Text style={styles.dataText}>
-                  Age: {'\t' + props.point.age}
+                  Sound Decibel: {'\t' + props.point.decibel}
               </Text>
 
-              <Text style={styles.dataText}>
-                  Gender: {' ' + props.point.gender}
-              </Text>
-
-              <Text style={styles.dataText}>
-                  Activity: {' ' + props.point.activity}
-              </Text>
-
-              <Text style={styles.dataText}>
-                  Posture: {' ' + props.point.posture}
-              </Text>
             </View>
         )
     }
@@ -74,7 +47,7 @@ export function StationaryMapResults(props) {
                         longitude: data.location.longitude
                     }}
                 >
-                    <DataPin index={data.posture}/>
+                    <DataPin />
                     <Callout style={styles.callout}>
                         <DataCallout point={data}/>
                     </Callout>

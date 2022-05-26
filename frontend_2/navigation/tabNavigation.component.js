@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { BottomNavigation, BottomNavigationTab, Layout, Text, Icon } from '@ui-kitten/components';
-import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HomeScreenStack } from './homeStack.component';
@@ -47,8 +47,9 @@ export function TabNavigation(props) {
   // total list of projects the user is a part of to display on the home page
   const [allProjects, setAllProjects] = useState([]);
 
+  // add new tests to this tabhiddenroutes (name is from the test's collaborateStack screen)
   // Hide Tabs for these screens within the 3 stack screens (CollaborateStack, HomeScreenStack, UserSettingsStack)
-  const tabHiddenRoutes = ["CreateActivityStack", "StationaryActivity", "SurveyActivity", "PeopleMovingActivity"];
+  const tabHiddenRoutes = ["CreateActivityStack", "StationaryActivity", "SurveyActivity", "PeopleMovingActivity", "SoundTest"];
 
   useEffect(() => {
     async function getInfo() {

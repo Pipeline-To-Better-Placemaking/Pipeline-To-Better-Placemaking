@@ -142,3 +142,47 @@ export async function formatMovingGraphData(result) {
   tempResult.graph = {...graph};
   return tempResult;
 }
+
+//added for the sound test (is the same as the formatMovingGraphData funct.)
+//so should I just use that function ? how would this need to be different ?
+export async function formatSoundGraphData(result) {
+  if (result === null ||
+      result.data === undefined ||
+      result.data === null ||
+      result.data.length <= 0 ||
+      result.graph !== undefined
+    ) {
+    return result;
+  }
+  let tempResult = {...result};
+  let graph = {
+    data: [],
+    labels:[],
+  };
+  let index = -1;
+  let label = '';
+  for (let i = 0; i < result.data.length; i++) {
+    let dataPoint = result.data[i];
+    label = dataPoint.mode;
+    if (label !== undefined) {
+      if (graph.labels !== null && graph.labels.length > 0) {
+        index = graph.labels.findIndex(element => element === label);
+        // add category if it's not currently in the list
+        if (index < 0) {
+          index = graph.labels.length;
+          graph.labels = [...graph.labels, label];
+          graph.data = [...graph.data, Number(0)];
+        }
+      } else { // first entry
+        index = 0;
+        graph.labels = [label];
+        graph.data = [Number(0)];
+      }
+      // increase count
+      graph.data[index] = graph.data[index] + 1;
+    }
+  }
+  //console.log("resulting graph data: ", graph);
+  tempResult.graph = {...graph};
+  return tempResult;
+}

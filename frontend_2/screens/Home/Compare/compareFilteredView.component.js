@@ -13,19 +13,22 @@ export function CompareFilteredView(props) {
     const [compareCount, setCompareCount] = useState(0)
     const [titleIndex, setTitleIndex] = useState(new IndexPath(0))
     //add the new tests here
-    const activities = ['Stationary Activity Map', 'People Moving']
+    const activities = ['Stationary Activity Map', 'People Moving', 'Sound Test']
 
     const selectedActivity = () => {
         if (titleIndex.row === 0) {
-            return props.filterCriteria.stationary
+          return props.filterCriteria.stationary
         }
         else if (titleIndex.row  === 1) {
-            return props.filterCriteria.moving
+          return props.filterCriteria.moving
         }
         else if (titleIndex.row  === 2) {
-            return props.filterCriteria.survey
+          return props.filterCriteria.survey
         }
         //add the new tests here 
+        else if (titleIndex.row === 3){
+          return props.filterCriteria.sound
+        }
         else {
           return props.filterCriteria.all;
         }
@@ -68,12 +71,16 @@ export function CompareFilteredView(props) {
 
       if (titleIndex.row === 0) { // staionary
         props.navigation.navigate("StationaryCompare");
-      } else if (titleIndex.row === 1) { // moving
+      } 
+      else if (titleIndex.row === 1) { // moving
         props.navigation.navigate("MovingCompare");
       } 
-      //add the new tests here
       else if (titleIndex.row === 2) { // survey
 
+      }
+      //add the new tests here
+      else if (titleIndex.row === 3){ //sound
+        props.navigation.navigate("SoundCompare");
       }
 
     }

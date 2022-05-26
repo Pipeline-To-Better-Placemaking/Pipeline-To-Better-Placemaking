@@ -13,7 +13,7 @@ export function ActivitySignUpPage(props) {
 
   //add the new tests here
   // Constant array of activities
-  const activityList = ["stationary", "moving", "survey"]
+  const activityList = ["stationary", "moving", "survey", "sound"]
 
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -66,6 +66,7 @@ export function ActivitySignUpPage(props) {
             <View style={styles.viewSpacer}>
               <Text category='s1'>Activity: {props.activity.test_type}</Text>
               <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
+              {/* add stuff for the new tests here to be time at site (all but sound test) */}
               <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
             </View>
           </ContentContainer>
@@ -73,6 +74,7 @@ export function ActivitySignUpPage(props) {
       );
     }
 
+  // add stuff for new tests to ignore standing points (all but sound test)
   // standing point error checking
   if (props.activity.test_type !== activityList[2]) {
       let allGood = true;
@@ -101,6 +103,7 @@ export function ActivitySignUpPage(props) {
               <View style={styles.viewSpacer}>
                 <Text category='s1'>Activity: {props.activity.test_type}</Text>
                 <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
+                {/* add stuff for the new tests here to be time at site (all but sound test) */}
                 <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
               </View>
               <View style={styles.errorView}>
@@ -196,6 +199,37 @@ export function ActivitySignUpPage(props) {
       props.navigation.navigate("SurveyActivity")
     }
     //add more else ifs here for the new tests
+    // added for the sound test
+    else if (props.activity.test_type == activityList[3]) {
+
+      //console.log("Activity: " + JSON.stringify(props.activity))
+      console.log("timeSlot: ", timeSlot);
+
+      //took of the *60 on the time props to keep it in seconds
+      let activityDetails = {
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
+        position: timeSlot.standingPoints,
+        time: timeSlot.sharedData.duration,
+        timeLeft: timeSlot.sharedData.duration
+      }
+
+      let originalDetails = {
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
+        position: timeSlot.standingPoints,
+        time: timeSlot.sharedData.duration,
+        timeLeft: timeSlot.sharedData.duration
+      }
+
+      props.setTimeSlot(activityDetails);
+      props.setInitialTimeSlot(originalDetails);
+
+      props.navigation.navigate("SoundTest")
+    }
+
   }
 
   const onSignUp = async (timeSlot, index) => {
@@ -213,8 +247,10 @@ export function ActivitySignUpPage(props) {
       route = 'moving_maps/';
     } else if (props.activity.test_type === activityList[2]) {
       route = 'surveys/';
+    } else if (props.activity.test_type === activityList[3]) {
+      route = 'sound_maps/';
     }
-    //add new tests here
+    //add new tests to this ^
 
     // if the researcher is already signed up and they press the button again, unsign them up
     let findIndex = tempResearchers.findIndex(element => element._id === props.userId)
@@ -343,6 +379,7 @@ export function ActivitySignUpPage(props) {
       <View style={styles.rowView}>
         <View style={styles.infoColumn}>
           <Text>Start Time: {getTimeStr(item.date)}</Text>
+          {/* add new tests here; to ignore standing points (for all but sound test) */}
           {(props.activity.test_type === activityList[2] ? null : <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>)}
           <Text>Researchers:</Text>
           <Text>{getResearchers(item)}</Text>
@@ -374,12 +411,14 @@ export function ActivitySignUpPage(props) {
         <View style={styles.mapWrapper}>
           <MapAreaWrapper area={props.activity.area.points} mapHeight={'100%'}>
             <ShowArea area={props.activity.area.points} />
+            {/* add new tests here; to ignore standing points (for all but sound test) */}
             {(props.activity.test_type === activityList[2] ? null : <ShowMarkers markers={props.project.standingPoints} />)}
           </MapAreaWrapper>
         </View>
         <View style={styles.viewSpacer}>
           <Text category='s1'>Activity: {props.activity.test_type}</Text>
           <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
+          {/* add new tests here for time at site for all but sound test */}
           <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
         </View>
         <View style={styles.listView}>

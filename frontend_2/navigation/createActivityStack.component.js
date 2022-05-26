@@ -16,8 +16,9 @@ export function CreateActivityStack(props) {
 
   // List of activity types
   const activityTypes = [...props.activityTypes];
+  // the sound test should be the only new test requiring a standing point
   // these are the activites that require standing points to be defined
-  const activitesRequirePoints = ['Stationary Map', 'People Moving'];
+  const activitesRequirePoints = ['Stationary Map', 'People Moving', 'Sound'];
 
   // This is the unique name the user gives the Activity
   const [activityName, setActivityName] = useState('');
@@ -56,12 +57,10 @@ export function CreateActivityStack(props) {
     await setActivityName(props.activity.title);
     await setDate(props.activity.date);
     await setDuration('' + props.activity.duration);
-
-    //add new test here
-    let types = ['stationary', 'moving', 'survey'];
+    
+    let types = ['stationary', 'moving', 'survey', 'sound'];
     let activityIndex = types.findIndex(element => element === props.activity.test_type);
     setSelectedActivity(new IndexPath(activityIndex));
-
     if (props.activity.area === null) {
       await setArea(props.project.subareas[0]);
       await setSelectedAreaIndex(0);
@@ -73,8 +72,8 @@ export function CreateActivityStack(props) {
     }
 
     let tempTimeSlots = [];
-    if (activityIndex <= 1 && props.activity.maps !== null && props.activity.maps.length >= 1) {
-      for (let j = 0; j < props.activity.maps.length ; j++) {
+    if (activityIndex <= 1 || activityIndex === 3 && props.activity.maps !== null && props.activity.maps.length >= 1) {
+     for (let j = 0; j < props.activity.maps.length ; j++) {
         let timeSlot = props.activity.maps[j];
         // date to value
         timeSlot.date = new Date(timeSlot.date);
@@ -135,6 +134,9 @@ export function CreateActivityStack(props) {
       else if (row === 2) { // Survey
         await putCollection(name, 'survey', '/survey_collections', 'surveys/');
       }
+      else if (row === 3) { // Sound
+        await putCollection(name, 'sound', '/sound_collections', 'sound_maps/');
+      }
       await props.setUpdateActivity(false);
       props.navigation.navigate('ProjectPage')
     }
@@ -148,6 +150,9 @@ export function CreateActivityStack(props) {
       }
       else if (row === 2) { // Survey
         await postCollection(name, 'survey', '/survey_collections', 'surveys/');
+      }
+      else if (row === 3) { // Sound
+        await postCollection(name, 'sound', '/sound_collections', 'sound_maps/');
       }
 
       // Navigate back to Project page
@@ -210,6 +215,7 @@ export function CreateActivityStack(props) {
     let success = false
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
+    // treat the new tests as survey (no standing points) except for the sound test
     if (test_type !== "survey") {
       if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
         selectedPoints = timeSlot.assignedPointIndicies.map(index => {
@@ -286,7 +292,6 @@ export function CreateActivityStack(props) {
       let timesToDelete = [];
       let timesToModify = [];
       let timesToAdd = [];
-
       if (props.activity.test_type === "survey") {
         for (let i=0; i < props.activity.surveys.length; i++) {
           let currId = props.activity.surveys[i]._id
