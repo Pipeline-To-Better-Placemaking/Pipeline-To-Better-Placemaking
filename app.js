@@ -78,7 +78,7 @@ app.use(expressSession);
 // by any errors thrown anywhere in previous routes or middlewares.
 app.use(errorHandler)
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'frontend_web/build')));
 
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'frontend_web','build', 'index.html'));
