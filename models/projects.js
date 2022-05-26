@@ -72,7 +72,10 @@ const project_schema = mongoose.Schema({
     //     type: ObjectId,
     //     ref: 'Order_Collections'
     // }],
-
+    surveyCollections:[{
+        type: ObjectId,
+        ref: 'Survey_Collections'
+    }],
 })
 
 project_schema.plugin(uniqueValidator)
