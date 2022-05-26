@@ -156,6 +156,22 @@ module.exports.deleteMovingCollection = async function(projectId, collectionId) 
    return await Moving_Collection.deleteCollection(collectionId)
 }
 
+module.exports.addSoundCollection = async function (projectId, collectionId) {
+    return await Projects.updateOne(
+       { _id: projectId },
+       { $push: { soundCollections:  collectionId}}
+   )
+}
+
+module.exports.deleteSoundCollection = async function(projectId, collectionId) {
+   
+   await Projects.updateOne(
+       { _id: projectId },
+       { $pull: { soundCollections: collectionId}}
+   )
+   return await Sound_Collection.deleteCollection(collectionId)
+}   
+
 module.exports.addSurveyCollection = async function (projectId, collectionId) {
     return await Projects.updateOne(
        { _id: projectId },
@@ -172,21 +188,7 @@ module.exports.deleteSurveyCollection = async function(projectId, collectionId) 
    return await Survey_Collection.deleteCollection(collectionId)
 }    
 
-module.exports.addSoundCollection = async function (projectId, collectionId) {
-    return await Projects.updateOne(
-       { _id: projectId },
-       { $push: { soundCollections:  collectionId}}
-   )
-}
 
-module.exports.deleteSoundCollection = async function(projectId, collectionId) {
-   
-   await Projects.updateOne(
-       { _id: projectId },
-       { $pull: { soundCollections: collectionId}}
-   )
-   return await Sound_Collection.deleteCollection(collectionId)
-}   
 
 // module.exports.addNatureCollection = async function (projectId, collectionId) {
 //     return await Projects.updateOne(
