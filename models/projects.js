@@ -51,10 +51,10 @@ const project_schema = mongoose.Schema({
         type: ObjectId,
         ref: 'Moving_Collections'
     }],
-    soundCollections:[{
-        type: ObjectId,
-        ref: 'Sound_Collections'
-    }],
+    // soundCollections:[{
+    //     type: ObjectId,
+    //     ref: 'Sound_Collections'
+    // }],
     // natureCollections:[{
     //     type: ObjectId,
     //     required: true,
@@ -109,7 +109,7 @@ module.exports.deleteProject = async function(projectId) {
         await Standing_Point.removeRefrence(project.standingPoints[i])
 
     for(var i = 0; i < project.stationaryCollections.length; i++)   
-        await Stationary_collections.deleteCollection(project.stationaryCollections[i])
+        await Stationary_Collections.deleteCollection(project.stationaryCollections[i])
 
     return await Projects.findByIdAndDelete(projectId)
 }
@@ -169,85 +169,85 @@ module.exports.deleteSurveyCollection = async function(projectId, collectionId) 
    return await Survey_Collection.deleteCollection(collectionId)
 }    
 
-module.exports.addSoundCollection = async function (projectId, collectionId) {
-    return await Projects.updateOne(
-       { _id: projectId },
-       { $push: { soundCollections:  collectionId}}
-   )
-}
+// module.exports.addSoundCollection = async function (projectId, collectionId) {
+//     return await Projects.updateOne(
+//        { _id: projectId },
+//        { $push: { soundCollections:  collectionId}}
+//    )
+// }
 
-module.exports.deleteSoundCollection = async function(projectId, collectionId) {
+// module.exports.deleteSoundCollection = async function(projectId, collectionId) {
    
-   await Projects.updateOne(
-       { _id: projectId },
-       { $pull: { soundCollections: collectionId}}
-   )
-   return await Sound_Collection.deleteCollection(collectionId)
-}   
+//    await Projects.updateOne(
+//        { _id: projectId },
+//        { $pull: { soundCollections: collectionId}}
+//    )
+//    return await Sound_Collection.deleteCollection(collectionId)
+// }   
 
-module.exports.addNatureCollection = async function (projectId, collectionId) {
-    return await Projects.updateOne(
-       { _id: projectId },
-       { $push: { natureCollections:  collectionId}}
-   )
-}
+// module.exports.addNatureCollection = async function (projectId, collectionId) {
+//     return await Projects.updateOne(
+//        { _id: projectId },
+//        { $push: { natureCollections:  collectionId}}
+//    )
+// }
 
-module.exports.deleteNatureCollection = async function(projectId, collectionId) {
+// module.exports.deleteNatureCollection = async function(projectId, collectionId) {
    
-   await Projects.updateOne(
-       { _id: projectId },
-       { $pull: { natureCollections: collectionId}}
-   )
-   return await Nature_Collection.deleteCollection(collectionId)
-}   
+//    await Projects.updateOne(
+//        { _id: projectId },
+//        { $pull: { natureCollections: collectionId}}
+//    )
+//    return await Nature_Collection.deleteCollection(collectionId)
+// }   
 
-module.exports.addLightCollection = async function (projectId, collectionId) {
-    return await Projects.updateOne(
-       { _id: projectId },
-       { $push: { lightCollections:  collectionId}}
-   )
-}
+// module.exports.addLightCollection = async function (projectId, collectionId) {
+//     return await Projects.updateOne(
+//        { _id: projectId },
+//        { $push: { lightCollections:  collectionId}}
+//    )
+// }
 
-module.exports.deleteLightCollection = async function(projectId, collectionId) {
+// module.exports.deleteLightCollection = async function(projectId, collectionId) {
    
-   await Projects.updateOne(
-       { _id: projectId },
-       { $pull: { lightCollections: collectionId}}
-   )
-   return await Light_Collection.deleteCollection(collectionId)
-}  
+//    await Projects.updateOne(
+//        { _id: projectId },
+//        { $pull: { lightCollections: collectionId}}
+//    )
+//    return await Light_Collection.deleteCollection(collectionId)
+// }  
 
-module.exports.addBoundariesCollection = async function (projectId, collectionId) {
-    return await Projects.updateOne(
-       { _id: projectId },
-       { $push: { boundariesCollections:  collectionId}}
-   )
-}
+// module.exports.addBoundariesCollection = async function (projectId, collectionId) {
+//     return await Projects.updateOne(
+//        { _id: projectId },
+//        { $push: { boundariesCollections:  collectionId}}
+//    )
+// }
 
-module.exports.deleteBoundariesCollection = async function(projectId, collectionId) {
+// module.exports.deleteBoundariesCollection = async function(projectId, collectionId) {
    
-   await Projects.updateOne(
-       { _id: projectId },
-       { $pull: { boundariesCollections: collectionId}}
-   )
-   return await Boundaries_Collection.deleteCollection(collectionId)
-}   
+//    await Projects.updateOne(
+//        { _id: projectId },
+//        { $pull: { boundariesCollections: collectionId}}
+//    )
+//    return await Boundaries_Collection.deleteCollection(collectionId)
+// }   
 
-module.exports.addOrderCollection = async function (projectId, collectionId) {
-    return await Projects.updateOne(
-       { _id: projectId },
-       { $push: { orderCollections:  collectionId}}
-   )
-}
+// module.exports.addOrderCollection = async function (projectId, collectionId) {
+//     return await Projects.updateOne(
+//        { _id: projectId },
+//        { $push: { orderCollections:  collectionId}}
+//    )
+// }
 
-module.exports.deleteOrderCollection = async function(projectId, collectionId) {
+// module.exports.deleteOrderCollection = async function(projectId, collectionId) {
    
-   await Projects.updateOne(
-       { _id: projectId },
-       { $pull: { orderCollections: collectionId}}
-   )
-   return await Order_Collection.deleteCollection(collectionId)
-}   
+//    await Projects.updateOne(
+//        { _id: projectId },
+//        { $pull: { orderCollections: collectionId}}
+//    )
+//    return await Order_Collection.deleteCollection(collectionId)
+// }   
 
 
 module.exports.addArea = async function(projectId, areaId) {
