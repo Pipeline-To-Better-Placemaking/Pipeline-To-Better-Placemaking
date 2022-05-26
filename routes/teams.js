@@ -4,12 +4,20 @@ const Team = require('../models/teams.js')
 const User = require('../models/users.js')
 const Project = require('../models/projects.js')
 const Stationary_Map = require('../models/stationary_maps.js')
+const Moving_Map = require('../models/moving_maps.js')
+const Sound_Map = require('../models/sound_maps.js')
+const Nature_Map = require('../models/nature_maps.js')
+const Light_Map = require('../models/light_maps.js')
+const Order_Map = require('../models/order_maps.js')
+const Boundaries_Map = require('../models/boundaries_maps.js')
+
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 const { json } = require('express')
 
 const { UnauthorizedError, NotFoundError, BadRequestError } = require('../utils/errors')
+const teams = require('../models/teams.js')
 
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
@@ -63,6 +71,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     }
 })
 
+//delete removes ALL of the map collections which contain a projectId which belongs to the team
 router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     team = await Team.findById(req.params.id)
@@ -71,6 +80,12 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
         for(var i = 0; i < team.projects.length; i++ ){
             proj = team.projects[0]
             await Stationary_Map.projectCleanup(proj)
+            await Moving_Map.projectCleanup(proj)
+            await Sound_Map.projectCleanup(proj)
+            await Nature_Map.projectCleanup(proj)
+            await Light_Map.projectCleanup(proj)
+            await Order_Map.projectCleanup(proj)
+            await Boundaries_Map.projectCleanup(proj)
         }
         await Project.teamCleanup(team._id)
         res.json(await Team.deleteTeam(team._id))

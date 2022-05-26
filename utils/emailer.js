@@ -34,10 +34,10 @@ const createTransporter = async () => {
         auth: {
             type: 'OAuth2',
             user: config.PROJECT_EMAIL,
-            accessToken,
             clientId: config.CLIENT_ID,
             clientSecret: config.CLIENT_SECRET,
-            refreshToken: config.REFRESH_TOKEN
+            refreshToken: config.REFRESH_TOKEN,
+            accessToken: accessToken
         },
         tls: {
             // Don't require cert if being run from localhost

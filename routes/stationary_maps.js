@@ -136,7 +136,6 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
     project = await Project.findById(map.project)
     if(await Team.isAdmin(project.team,user._id)){
         res.json(await Stationary_Collection.deleteMap(map.sharedData,map._id))
-
         
     }
     else{
@@ -153,7 +152,7 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
             for(var i = 0; i < req.body.entries.length; i++){
                 await Map.addEntry(map._id,req.body.entries[i])
             } 
-            res.status(201).json(await Map.findById(req.params.id))
+            res.status(201).json(await Map.findById(map._id))
         }
         else{
             res.json(await Map.addEntry(map._id,req.body))

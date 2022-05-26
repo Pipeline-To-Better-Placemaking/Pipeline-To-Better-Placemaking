@@ -9,16 +9,23 @@ const Standing_Point = require('../models/standing_points.js')
 const Stationary_Collection = require('../models/stationary_collections.js')
 const Moving_Collection = require('../models/moving_collections.js')
 const Survey_Collection = require('../models/survey_collections.js')
+const Sound_Collection = require('../models/sound_collections.js')
+const Nature_Collection = require('../models/nature_collections.js')
+const Light_Collection = require('../models/light_collections.js')
+const Boundaries_Collection = require('../models/boundaries_collections.js')
+const Order_Collection = require('../models/order_collections.js')
 
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const emailer = require('../utils/emailer')
 
 const { models } = require('mongoose')
-const { stationaryToCSV, movingToCSV, surveyToCSV } = require('../utils/csv_conversions')
+const { stationaryToCSV, movingToCSV, soundToCSV, lightToCSV, 
+        natureToCSV, orderToCSV, boundariesToCSV, surveyToCSV } = require('../utils/csv_conversions')
+
 const { BadRequestError, InternalServerError, UnauthorizedError } = require('../utils/errors')
 
-router.post('/', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
 
     if(await Team.isAdmin(req.body.team,user._id)){
@@ -68,7 +75,13 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                           .populate('standingPoints')
                           .populate('stationaryCollections')
                           .populate('movingCollections')
+                          .populate('soundCollections')
+                          .populate('natureCollections')
+                          .populate('lightCollections')
+                          .populate('boundariesCollections')
+                          .populate('orderCollections')
                           .populate('surveyCollections')
+                          
             )
 })
 
@@ -292,8 +305,6 @@ router.post('/:id/moving_collections', passport.authenticate('jwt',{session:fals
             duration: req.body.duration
         })
 
-        
-
         await newCollection.save()
         await Area.addRefrence(newCollection.area)
 
@@ -341,6 +352,338 @@ router.delete('/:id/moving_collections/:collectionId', passport.authenticate('jw
     if(await Team.isAdmin(project.team,user._id)){
         Area.removeRefrence(collection.area)
         res.status(201).json(await Project.deleteMovingCollection(project._id,req.params.collectionId))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+
+router.post('/:id/sound_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+
+    if(await Team.isUser(project.team,user._id)){   
+
+        let newCollection = new Sound_Collection({
+            title: req.body.title,
+            date: req.body.date,
+            area: req.body.area,
+            duration: req.body.duration
+        })
+
+        await newCollection.save()
+        await Area.addRefrence(newCollection.area)
+
+       
+        await Project.addSoundCollection(project._id,newCollection._id)
+        res.json(newCollection)
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.put('/:id/sound_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Sound_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+    
+        
+        let newCollection = new Sound_Collection({
+                title: (req.body.title ? req.body.title : collection.title),
+                date: (req.body.date ? req.body.date : collection.date),
+                area: (req.body.area ? req.body.area : collection.area),
+                duration: (req.body.duration ? req.body.duration : collection.duration)
+        })
+
+        if(req.body.area){
+            await Area.addRefrence(req.body.area)
+            await Area.removeRefrence(collection.area)
+        }
+  
+        res.status(201).json(await Sound_Collection.updateCollection(req.params.collectionId, newCollection))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.delete('/:id/sound_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Sound_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+        Area.removeRefrence(collection.area)
+        res.status(201).json(await Project.deleteSoundCollection(project._id,req.params.collectionId))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+
+router.post('/:id/nature_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+
+    if(await Team.isUser(project.team,user._id)){   
+
+        let newCollection = new Nature_Collection({
+            title: req.body.title,
+            date: req.body.date,
+            area: req.body.area,
+            duration: req.body.duration
+        })
+
+        await newCollection.save()
+        await Area.addRefrence(newCollection.area)
+
+       
+        await Project.addNatureCollection(project._id,newCollection._id)
+        res.json(newCollection)
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.put('/:id/nature_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Nature_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+    
+        
+        let newCollection = new Nature_Collection({
+                title: (req.body.title ? req.body.title : collection.title),
+                date: (req.body.date ? req.body.date : collection.date),
+                area: (req.body.area ? req.body.area : collection.area),
+                duration: (req.body.duration ? req.body.duration : collection.duration)
+        })
+
+        if(req.body.area){
+            await Area.addRefrence(req.body.area)
+            await Area.removeRefrence(collection.area)
+        }
+  
+        res.status(201).json(await Nature_Collection.updateCollection(req.params.collectionId, newCollection))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.delete('/:id/nature_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Nature_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+        Area.removeRefrence(collection.area)
+        res.status(201).json(await Project.deleteSoundCollection(project._id,req.params.collectionId))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.post('/:id/light_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+
+    if(await Team.isUser(project.team,user._id)){   
+
+        let newCollection = new Light_Collection({
+            title: req.body.title,
+            date: req.body.date,
+            area: req.body.area,
+            duration: req.body.duration
+        })
+
+        await newCollection.save()
+        await Area.addRefrence(newCollection.area)
+
+       
+        await Project.addLightCollection(project._id,newCollection._id)
+        res.json(newCollection)
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.put('/:id/light_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Light_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+    
+        
+        let newCollection = new Light_Collection({
+                title: (req.body.title ? req.body.title : collection.title),
+                date: (req.body.date ? req.body.date : collection.date),
+                area: (req.body.area ? req.body.area : collection.area),
+                duration: (req.body.duration ? req.body.duration : collection.duration)
+        })
+
+        if(req.body.area){
+            await Area.addRefrence(req.body.area)
+            await Area.removeRefrence(collection.area)
+        }
+  
+        res.status(201).json(await Light_Collection.updateCollection(req.params.collectionId, newCollection))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.delete('/:id/light_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Light_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+        Area.removeRefrence(collection.area)
+        res.status(201).json(await Project.deleteLightCollection(project._id,req.params.collectionId))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.post('/:id/boundaries_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+
+    if(await Team.isUser(project.team,user._id)){   
+
+        let newCollection = new Boundaries_Collection({
+            title: req.body.title,
+            date: req.body.date,
+            area: req.body.area,
+            duration: req.body.duration
+        })
+
+        await newCollection.save()
+        await Area.addRefrence(newCollection.area)
+
+       
+        await Project.addBoundariesCollection(project._id,newCollection._id)
+        res.json(newCollection)
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.put('/:id/boundaries_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Boundaries_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+    
+        
+        let newCollection = new Boundaries_Collection({
+                title: (req.body.title ? req.body.title : collection.title),
+                date: (req.body.date ? req.body.date : collection.date),
+                area: (req.body.area ? req.body.area : collection.area),
+                duration: (req.body.duration ? req.body.duration : collection.duration)
+        })
+
+        if(req.body.area){
+            await Area.addRefrence(req.body.area)
+            await Area.removeRefrence(collection.area)
+        }
+  
+        res.status(201).json(await Boundaries_Collection.updateCollection(req.params.collectionId, newCollection))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.delete('/:id/boundaries_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Boundaries_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+        Area.removeRefrence(collection.area)
+        res.status(201).json(await Project.deleteBoundariesCollection(project._id,req.params.collectionId))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.post('/:id/order_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+
+    if(await Team.isUser(project.team,user._id)){   
+
+        let newCollection = new Order_Collection({
+            title: req.body.title,
+            date: req.body.date,
+            area: req.body.area,
+            duration: req.body.duration
+        })
+
+        await newCollection.save()
+        await Area.addRefrence(newCollection.area)
+
+       
+        await Project.addOrderCollection(project._id,newCollection._id)
+        res.json(newCollection)
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.put('/:id/order_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Order_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+    
+        
+        let newCollection = new Order_Collection({
+                title: (req.body.title ? req.body.title : collection.title),
+                date: (req.body.date ? req.body.date : collection.date),
+                area: (req.body.area ? req.body.area : collection.area),
+                duration: (req.body.duration ? req.body.duration : collection.duration)
+        })
+
+        if(req.body.area){
+            await Area.addRefrence(req.body.area)
+            await Area.removeRefrence(collection.area)
+        }
+  
+        res.status(201).json(await Order_Collection.updateCollection(req.params.collectionId, newCollection))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.delete('/:id/order_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Order_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+        Area.removeRefrence(collection.area)
+        res.status(201).json(await Project.deleteOrderCollection(project._id,req.params.collectionId))
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
@@ -410,6 +753,8 @@ router.delete('/:id/survey_collections/:collectionId', passport.authenticate('jw
     }
 })
 
+
+
 router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     stationaryData = await Project.findById(req.params.id)
                           .populate('area')
@@ -457,6 +802,121 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     path: 'area',
                                     }]
                                 }])
+    soundData = await Project.findById(req.params.id)
+                            .populate('area')
+                            .populate([
+                            {
+                                path:'soundCollections',
+                                model:'Sound_Collections',
+                                populate: [{
+                                    path: 'maps',
+                                    model: 'Sound_Maps',
+                                    select: 'date',
+                                    populate: [{
+                                        path: 'data',
+                                        populate:{
+                                            path: 'standingPoint',
+                                            model: 'Standing_Points'
+                                        }
+                                        },{
+                                        path: 'researchers'
+                                        }]
+                                    },{
+                                    path: 'area',
+                                    }]
+                                }])                            
+    lightData = await Project.findById(req.params.id)
+                            .populate('area')
+                            .populate([
+                            {
+                                path:'lightCollections',
+                                model:'Light_Collections',
+                                populate: [{
+                                    path: 'maps',
+                                    model: 'Light_Maps',
+                                    select: 'date',
+                                    populate: [{
+                                        path: 'data',
+                                        populate:{
+                                            path: 'standingPoint',
+                                            model: 'Standing_Points'
+                                        }
+                                        },{
+                                        path: 'researchers'
+                                        }]
+                                    },{
+                                    path: 'area',
+                                    }]
+                                }])                            
+    natureData = await Project.findById(req.params.id)
+                            .populate('area')
+                            .populate([
+                            {
+                                path:'natureCollections',
+                                model:'Nature_Collections',
+                                populate: [{
+                                    path: 'maps',
+                                    model: 'Nature_Maps',
+                                    select: 'date',
+                                    populate: [{
+                                        path: 'data',
+                                        populate:{
+                                            path: 'standingPoint',
+                                            model: 'Standing_Points'
+                                        }
+                                        },{
+                                        path: 'researchers'
+                                        }]
+                                    },{
+                                    path: 'area',
+                                    }]
+                                }])                            
+    movingData = await Project.findById(req.params.id)
+                            .populate('area')
+                            .populate([
+                            {
+                                path:'orderCollections',
+                                model:'Order_Collections',
+                                populate: [{
+                                    path: 'maps',
+                                    model: 'Order_Maps',
+                                    select: 'date',
+                                    populate: [{
+                                        path: 'data',
+                                        populate:{
+                                            path: 'standingPoint',
+                                            model: 'Standing_Points'
+                                        }
+                                        },{
+                                        path: 'researchers'
+                                        }]
+                                    },{
+                                    path: 'area',
+                                    }]
+                                }])                            
+    movingData = await Project.findById(req.params.id)
+                            .populate('area')
+                            .populate([
+                            {
+                                path:'boundariesCollections',
+                                model:'Boundaries_Collections',
+                                populate: [{
+                                    path: 'maps',
+                                    model: 'Boundaries_Maps',
+                                    select: 'date',
+                                    populate: [{
+                                        path: 'data',
+                                        populate:{
+                                            path: 'standingPoint',
+                                            model: 'Standing_Points'
+                                        }
+                                        },{
+                                        path: 'researchers'
+                                        }]
+                                    },{
+                                    path: 'area',
+                                    }]
+                                }])                                                            
     surveyData = await Project.findById(req.params.id)
                             .populate('area')
                             .populate([
@@ -480,11 +940,13 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
         <p>You have requested a copy of project data. Attached is a csv formatted file representing the data.</p>
 
     `
-    
+    //added missing tests to csv and changed code so that subject is the project title, and filename properly reflects the collections
+
+    project = await Project.findById(req.params.id)
     const mailOptions = {
         from: `"2+ Community" <${config.PROJECT_EMAIL}>`,
         to: req.user.email,
-        subject: stationaryData.title + ' Data Export',
+        subject: project.title + ' Data Export',
         text: `Attached is your data`,
         html: emailHTML,
         attachments: [
@@ -493,11 +955,31 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                 content: stationaryToCSV(stationaryData)
             },
             {
-                filename: stationaryData.title + '_moving.csv',
+                filename: movingData.title + '_moving.csv',
                 content:movingToCSV(movingData)
             },
             {
-                filename: stationaryData.title + '_survey.csv',
+                filename: soundData.title + '_sound.csv',
+                content:soundToCSV(soundData)
+            },
+            {
+                filename: natureData.title + '_nature.csv',
+                content:natureToCSV(natureData)
+            },
+            {
+                filename: lightData.title + '_light.csv',
+                content:lightToCSV(lightData)
+            },
+            {
+                filename: orderData.title + '_order.csv',
+                content:orderToCSV(orderData)
+            },
+            {
+                filename: boundariesData.title + '_boundaries.csv',
+                content:boundariesToCSV(boundariesData)
+            },
+            {
+                filename: surveyData.title + '_survey.csv',
                 content:surveyToCSV(surveyData)
             }
         ]

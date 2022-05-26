@@ -12,7 +12,7 @@ const { models } = require('mongoose')
 
 const { UnauthorizedError, BadRequestError } = require('../utils/errors')
 
-router.post('/', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.body.project)
 
