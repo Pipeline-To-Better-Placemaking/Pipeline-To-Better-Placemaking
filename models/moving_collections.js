@@ -6,7 +6,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Moving_Map = require('../models/moving_maps.js')
 const Area = require('../models/areas.js')
-const { collection } = require('./surveys.js')
+// const { collection } = require('./surveys.js')
 
 
 const collection_schema = mongoose.Schema({
