@@ -26,11 +26,7 @@ const app = express();
 
 app.use(cors())
 
-app.use(express.static(path.join(__dirname,'public')))
-
-app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'frontend_web', 'build', 'index.html'))
-  })
+// app.use(express.static(path.join(__dirname,'public')))
 
 app.use(bodyParser.json())
 
@@ -41,6 +37,11 @@ const userApi       = require('./routes/users.js')
 const verifyApi     = require('./routes/verify.js')
 const stationApi    = require('./routes/stationary_maps.js')
 const movingApi     = require('./routes/moving_maps.js')
+const soundApi      = require('./routes/sound_maps.js')
+const natureApi     = require('./routes/nature_maps.js') 
+const lightApi      = require('./routes/light_maps.js')
+const orderApi      = require('./routes/order_maps.js')      
+const boundApi      = require('./routes/boundaries_maps.js')
 const surveyApi     = require('./routes/surveys.js')
 const collectionApi = require('./routes/collections.js')
 
@@ -51,6 +52,11 @@ app.use('/api/users',           userApi)
 app.use('/api/verify',          verifyApi)
 app.use('/api/stationary_maps', stationApi)
 app.use('/api/moving_maps',     movingApi)
+app.use('/api/sound_maps',      soundApi)
+app.use('/api/nature_maps',     natureApi)
+app.use('/api/light_maps',      lightApi)
+app.use('/api/order_maps',      orderApi)
+app.use('/api/bound_maps',      boundApi)
 app.use('/api/surveys',         surveyApi)
 app.use('/api/collections',     collectionApi)
 
@@ -71,6 +77,12 @@ app.use(expressSession);
 // Handles errors. express-async-errors ensures this is invoked automatically
 // by any errors thrown anywhere in previous routes or middlewares.
 app.use(errorHandler)
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'frontend_web','public', 'index.html'));
+});
 
 const server = app.listen(config.PORT, () => {
     log.info(`Server is running on port ${config.PORT}`)
