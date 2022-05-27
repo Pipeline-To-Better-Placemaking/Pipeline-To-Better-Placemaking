@@ -177,7 +177,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             light_description: (req.body.light_description ? req.body.light_description : oldData.light_description),
             standingPoint: (req.body.standingPoint ? req.body.standingPoint : oldData.standingPoint),
             time: (req.body.time ? req.body.time : oldData.time),
-            path: (req.body.path ? req.body.path : oldData.path)
+            location: (req.body.location ? req.body.location : oldData.location)
         }
 
         if (req.body.light_description.length > 1)

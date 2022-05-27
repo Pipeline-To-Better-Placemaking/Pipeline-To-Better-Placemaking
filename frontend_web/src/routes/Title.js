@@ -14,9 +14,9 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { Link } from 'react-router-dom';
 
-import './Title.css';
-import logo1 from './images/city-isometric.jpg';
-import logo2 from './images/construction.jpeg';
+import './routes.css';
+import logo1 from '../images/city-isometric.jpg';
+import logo2 from '../images/construction.jpeg';
 
 function Title() {
 
@@ -42,12 +42,35 @@ function Title() {
   };
 
   const loginUser = async () => {
+    let success = false;
+    let res = null;
 
+    try {
+
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/login', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                    'Content-Type': 'application/json',
+            },
+            body: {
+                email: values.email,
+                password: values.password
+            }
+        });
+        res = JSON.parse(await response.text());
+        success = res.success;
+    } catch (error) {
+        console.log("ERROR: ", error);
+        success = false;
+    }
    }
 
   return (
     <div className='titlePage'>
-      <div className='Title'>
+      {/* pageTemplate -> Blue base background */}
+      <div className='pageTemplate'>
+        {/* tag - sizing for logo/tag (title text) */}
         <div className='tag'>
           <div className='logo'>
             <Image src={logo1} className='App-logo' alt='logo' id='logo1'/>
@@ -58,8 +81,9 @@ function Title() {
         <div className='tagBox'>
           <Card className='formCard'>
             <Card.Body>
-              <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
+              <Box id='titleBox' component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
                 <TextField className='nonFCInput' id='outlined-search' label='Email' type='email' value={values.email} onChange={handleChange('email')} />
+                {/* Form Control component to hold MUI visibility changing password field */}
                 <FormControl sx={{ m: 1 }} variant='outlined'>
                   <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
                   <OutlinedInput
@@ -100,17 +124,3 @@ function Title() {
 }
 
 export default Title;
-/*<header className='App-header'>
-  <img src={logo} className='App-logo' alt='logo' />
-  <p>
-    Edit <code>src/App.js</code> and save to reload.
-  </p>
-  <a
-    className='App-link'
-    href='https://reactjs.org'
-    target='_blank'
-    rel='noopener noreferrer'
-  >
-    Learn React
-  </a>
-</header>*/

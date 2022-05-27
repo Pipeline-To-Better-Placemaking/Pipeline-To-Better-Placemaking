@@ -8,7 +8,7 @@ import './controls.css';
 
 export default function ProjectTabs(props) {
     const location = useLocation();
-    const [value, setValue] = React.useState(props.state != null ? props.state : 0);
+    const [value, setValue] = React.useState(props.state ? props.state : 0);
     const [mapIndex, setMapIndex] = React.useState('unselected');
     const [surveyorIndex, setSurveyorIndex] = React.useState('unselected');
     const [activityIndex, setActivityIndex] = React.useState('unselected');
@@ -16,10 +16,10 @@ export default function ProjectTabs(props) {
     const tail = segment[segment.length - 1];
 
     React.useEffect(() => {
-        if(tail === 'map' || tail === 'project'){ 
-            handleUpdate('map', 0) 
+        if(tail === 'activities'){ 
+            handleUpdate('activities', 2)
         } else{ 
-            tail === 'surveyors' ? handleUpdate('surveyors', 1) : handleUpdate('activities', 2);
+            tail === 'surveyors' ? handleUpdate('surveyors', 1) : handleUpdate('map', 0);
         }
     }, [tail]);
 
@@ -33,10 +33,14 @@ export default function ProjectTabs(props) {
             setMapIndex('unselected');
             setSurveyorIndex('Mui-selected');
             setActivityIndex('unselected');
-        } else {
+        } else if(tab === 'activities') {
             setMapIndex('unselected');
             setSurveyorIndex('unselected');
             setActivityIndex('Mui-selected');
+        } else {
+            setMapIndex('Mui-selected');
+            setSurveyorIndex('unselected');
+            setActivityIndex('unselected');
         }
     };
 
@@ -59,7 +63,7 @@ export default function ProjectTabs(props) {
     }
 
     return (
-        <div>
+        <div id='projectTabs'>
             <Box sx={{ width: '100%', borderBottom: 1, borderColor: 'divider', bgcolor: '#00396D' }}>
                 <Tabs value={value} onChange={handleChange} aria-label='project tabs' TabIndicatorProps={{ children: <span className='MuiTabs-indicatorSpan' /> }}>
                     <LinkTab value={0} label='Map' href='map' className={mapIndex} />

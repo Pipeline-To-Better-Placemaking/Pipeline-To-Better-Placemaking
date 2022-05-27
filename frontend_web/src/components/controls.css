@@ -13,7 +13,7 @@
 
 @media (min-width: 600px) {
     div.MuiDrawer-paperAnchorLeft, div#leftDrawer, div.MuiDrawer-paperAnchorRight, div#rightDrawer {
-        top: 112px;
+        top: 113px;
     }
 }
 
@@ -44,13 +44,29 @@ div.css-cveggr-MuiListItemIcon-root {
 }
 
 #rightButton {
+    position: relative;
+    left: calc(100vw - 416px)
+}
+
+#newProjectInput{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     position: fixed;
-    left: calc(100vw - 328px)
+    top: 70px;
+    left: 29vw;
+    z-index: 999;
+}
+
+#location-search{
+    background-color: #ffffff;
+    border-radius: 5px;
 }
 
 #bottomButton{
     position: relative;
-    top: calc(100vh - 190px);
+    top: calc(100vh - 186px);
     margin: 0px calc(50vw - 32px);
     bottom: 0;
 }
@@ -96,17 +112,69 @@ div.css-1gsv261{
     background-color: var(--secondaryBlue);
 }
 
+button.newHoveringButtons{
+    background-color: #ffffff;
+    margin-left: 5px;
+}
+
+button.newHoveringButtons:hover {
+    background-color: #daebff;
+}
+
+div#MapPage div#mapFrame{
+    width:100vw;
+    height: calc(100vh - 113px);
+    top: -73px;
+}
+
+div#projectEdit div#mapFrame {
+    top: 0px;
+    width: 50vw;
+    height: 50vh;
+    margin-left: 15px;
+    margin-bottom: 20px;
+}
+
+div#newProject div#mapFrame{
+    width: 100vw;
+    height: calc(100vh - 64px);
+}
+
+div#newProjectInput div.MuiFormControl-root {
+    width: 40vw;
+}
+
+div#newProjectInput div.MuiOutlinedInput-root,  div#newProjectInput input#location-search{
+    height: 90%;
+}
+
 div.MuiDrawer-paperAnchorLeft, div#leftDrawer, div.MuiDrawer-paperAnchorRight, div#rightDrawer{
     width: 250px;
 }
 
+div.MuiTabs-flexContainer{
+    align-content: center;
+    align-items: center;
+}
+
+div#cardBox {
+    width:100%;
+    height: auto;
+}
+
 div#projectFrame>button.MuiButton-root{
     z-index: 900;
-    color: var(--tabSelectColor);
+    color: #000000e0;
+    background-color: #ffffffc2;
 }
 
 div#projectFrame>button.MuiButton-root:hover {
-    background-color: var(--tabSelectBG);
+    background-color: #ffffff;
+}
+
+div#rightDrawer.css-1u2w381-MuiModal-root-MuiDrawer-root{
+    left: calc(100vw - 250px);
+    right: 0px;
 }
 
 span.MuiTabs-indicator{

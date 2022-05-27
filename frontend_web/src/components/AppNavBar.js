@@ -17,7 +17,18 @@ import { Link } from 'react-router-dom';
 import './controls.css';
 
 const pages = [''];
-const settings = ['Account', 'Home', 'Logout'];
+const settings = [
+    {
+        page: 'Account',
+        route: 'settings'
+    },
+    {
+        page: 'Logout',
+        route: '/'
+
+    }
+];
+
 const home = <Link className='homeButton' to='/u'><Home className='iconShadow'/></Link>;
 
 const AppNavBar = () => {
@@ -130,8 +141,8 @@ const AppNavBar = () => {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign='center'>{setting}</Typography>
+                                <MenuItem component={Link} to={setting.route} key={setting.page} onClick={handleCloseUserMenu}>
+                                    <Typography textAlign='center'>{setting.page}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>

@@ -187,7 +187,7 @@ lightToCSV = function(data) {
                   "Collection_Date,"  +
                   "Area_Title,Area,Duration,Activity_Time," +
                   "Researchers,Standing_Point,Standing_Point_Title," +
-                  "Light_Description,Path"
+                  "Location,Light_Description"
 
     var csv = headers
 
@@ -226,12 +226,8 @@ lightToCSV = function(data) {
                         csv += researchers + ','
                         csv += entry.standingPoint.title + ','
                         csv += "\"POINT( " + entry.standingPoint.latitude + " " + entry.standingPoint.longitude + ")\","
+                        csv += "\"POINT( " + entry.location.latitude + " " + entry.location.longitude + ")\","
                         csv += entry.light_description
-                        path = "\"LINESTRING ( "
-                        for(var l = 0; l < entry.path.length; l++){
-                           if (l != 0) path += ", "
-                           path += entry.path[l].latitude + " " + entry.path[l].longitude
-                        }
                     }
                 }
             }

@@ -6,7 +6,8 @@ const Points = require('../models/standing_points.js')
 
 // Document Schema for data entry
 const dataSchema = mongoose.Schema({
-    path: [{
+
+    location: {
         latitude: {
             type: Number,
             required: true
@@ -15,7 +16,7 @@ const dataSchema = mongoose.Schema({
             type: Number,
             required: true
         }
-    }],
+    },
 
     light_description: {
         type: String,
@@ -128,7 +129,7 @@ module.exports.addEntry = async function(mapId, newEntry) {
         // time_of_day: newEntry.time_of_day,
         standingPoint: newEntry.standingPoint,
         time: newEntry.time,
-        path: newEntry.path
+        location: newEntry.location
     })
 
     Points.addRefrence(newEntry.standingPoint)

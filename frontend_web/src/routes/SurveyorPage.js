@@ -1,9 +1,6 @@
 import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
 
+import DisplayCards from '../components/DisplayCards';
 import './routes.css';
 
 function SurveyorPage() {
@@ -37,34 +34,11 @@ function SurveyorPage() {
         }
     ];
 
-    const surveyorCards = (surveyors) => (
-        surveyors.map((surveyor, index) => (
-            <Card key={'s'+index} className='projectCard'>
-                <CardHeader title={surveyor.name}/>
-                {surveyorActivities(surveyor.activities)}
-            </Card>
-        ))
-    );
-
-    const surveyorActivities = (activities) => (
-        <CardContent>
-       {activities.map((activity, index) =>(
-            <div key={'a'+index} className='cardRow'>
-                <Typography variant='text' component='div'>
-                    {activity.activity}
-                </Typography>
-               <Typography variant='text' component='div'>
-                   {activity.date}
-               </Typography>
-            </div>
-        ))}
-        </CardContent>
-    );
-
     return(
         <div id='SurveyorPage'>
             <div id='projectCardFlexBox'>
-                {surveyorCards(sampleS)}
+                {/* type = 0 implies Surveyor style cards */}
+                <DisplayCards type={0} surveyors={sampleS}/>
             </div>
         </div>
     );

@@ -52,8 +52,9 @@ function NewUser(){
 
     return(
         <div id='newUser'>
-            <div id='pageTemplate'>
+            <div className='pageTemplate'>
                 <Link className='backButton' to='/'><Back className='iconShadow' /></Link>
+                {/* tagBox - sizing for form card, on Title.js as well */}
                 <div className='tagBox'>
                     <Card id='pageCard'>
                         <Card.Body>

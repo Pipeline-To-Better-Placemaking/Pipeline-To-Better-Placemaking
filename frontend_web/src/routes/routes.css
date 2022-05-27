@@ -1,22 +1,24 @@
-#Map{
-    height: calc(100vh - 112px);
-    background-color: rgb(56, 56, 56);
-}
-
-#newProjectButton {
-    background-color: #035FB5;
-    margin: 15px;
-    width: 40%;
-}
-
-#newProjectButtonBox {
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
-#newUserButton {
-    align-self: center;
-    width: 100%;
+.App-link {
+    color: #61dafb;
+}
+
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
+    border-radius: 200px;
+    width: 25vw;
+    height: 25vw;
 }
 
 .backButton{
@@ -39,9 +41,36 @@
     justify-content: space-between;
 }
 
+.formCard {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #bcbcbc;
+}
+
 .iconShadow:hover {
     -webkit-filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, .7));
     filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.328));
+}
+
+.logo {
+    margin-bottom: 90px;
+}
+
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle {
+    color: rgb(255, 255, 255);
+    background-color: #ff4258;
+    width: 45vw;
+}
+
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#verifyButton {
+    color: rgb(255, 255, 255);
+    background-color: #4e48fe;
+    width: 45vw;
+}
+
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.scheme {
+    color: black;
+    background-color: #FED806;
 }
 
 .newformCard {
@@ -50,20 +79,7 @@
     justify-content: center;
 }
 
-.tagBox {
-   width: 40vw;
-}
-
-.testBox{
-    position: fixed;
-    top: 112px;
-    height: calc(100vh - 112px); 
-    width: 100%;
-    background-color: black;
-    z-index: 850;
-}
-
-#pageTemplate {
+.pageTemplate {
     text-align: center;
     align-items: center;
     background-color: #006FD6;
@@ -76,21 +92,62 @@
     padding: 5vh 5vw;
 }
 
-#newUser {
+.secondButton {
+    align-content: stretch;
+}
+
+.tag {
+    color: #FFFFFF;
+    font-size: 5vw;
+    max-width: 50vw;
+    max-height: 75vh;
+}
+
+.tagBox {
+    min-width: 30vw;
+    max-width: 40vw;
+}
+
+.titlePage {
     padding: 20px;
 }
 
-div#projectCardFlexBox{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-content: center;
-    margin: 10px;
+.testBox{
+    position: fixed;
+    top: 112px;
+    height: calc(100vh - 112px); 
+    width: 100%;
+    background-color: black;
+    z-index: 850;
 }
 
-div.nonFCInput {
+div.nonFCInput,
+button#loginButton {
     margin: 8px;
+}
+
+div.MuiCardContent-root {
+    width: 80%;
+}
+
+div.MuiCardHeader-root {
+    width: 100%;
+    background-color: #b3daff;
+}
+
+div.MuiFormControl-root {
+    width: 100%;
+}
+
+div.projectCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 30%;
+    max-width: 60%;
+    margin: 5px;
+    text-align: center;
 }
 
 form.MuiBox-root {
@@ -100,26 +157,107 @@ form.MuiBox-root {
     align-content: center;
 }
 
-div.MuiCardContent-root{
-    width: 80%;
+#logo1 {
+    position: relative;
+    left: -10vw;
 }
 
-div.MuiCardHeader-root{
+#logo2 {
+    position: absolute;
+    top: 25vh;
+    left: 30vw;
+}
+
+#MapPage {
+    height: calc(100vh - 112px);
+    background-color: rgb(56, 56, 56);
+}
+
+#newProjectButton {
+    background-color: #035FB5;
+    margin: 15px;
+    width: 40%;
+}
+
+#newProjectButtonBox {
+    display: flex;
+    justify-content: center;
+}
+
+#newUser {
+    padding: 20px;
+}
+
+#newUserButton {
+    align-self: center;
     width: 100%;
-    background-color: #b3daff;
 }
 
-div.MuiFormControl-root{
-    width: 100%;
+#settingsCard{
+    width: 50vw;
 }
 
-div.projectCard{
+#tagText {
+    z-index: 100;
+}
+
+div#cardFlexBox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: center;
+    margin: 10px;
+}
+
+div#projectEdit{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-content: center;
     align-items: center;
-    min-width: 30%;
-    max-width: 60%;
-    margin: 5px;
+}
+
+div#projectEdit h1{
+    margin: 15px;
+}
+
+div#settingsTemplate{
+    background-color: #acacac;
+}
+
+form#titleBox {
+    border-bottom: 1px solid #c3baba;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+
+div#userSettings {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-content: center;
+    align-items: center;
     text-align: center;
+    margin: 10px;
+}
+
+div#userSettings h1 {
+    margin-bottom: 20px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-spin infinite 60s linear;
+    }
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }

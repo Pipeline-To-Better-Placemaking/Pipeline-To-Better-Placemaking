@@ -51,10 +51,10 @@ const project_schema = mongoose.Schema({
         type: ObjectId,
         ref: 'Moving_Collections'
     }],
-    // soundCollections:[{
-    //     type: ObjectId,
-    //     ref: 'Sound_Collections'
-    // }],
+    soundCollections:[{
+        type: ObjectId,
+        ref: 'Sound_Collections'
+    }],
     // natureCollections:[{
     //     type: ObjectId,
     //     required: true,

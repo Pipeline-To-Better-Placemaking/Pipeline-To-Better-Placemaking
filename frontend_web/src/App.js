@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Title from './Title';
+import Title from './routes/Title';
 import Home from './routes/Home';
 import MapPage from './routes/MapPage';
 import AppNavBar from './components/AppNavBar';
@@ -10,6 +10,8 @@ import ActivityPage from './routes/ActivityPage';
 import SurveyorPage from './routes/SurveyorPage';
 import NewProject from './routes/NewProject';
 import NewUser from './routes/NewUser';
+import SettingsPage from './routes/SettingsPage';
+import EditProject from './routes/EditProject';
 
 function Project() {
 
@@ -33,8 +35,10 @@ function UserRoutes() {
             <AppNavBar />
             <Routes>
                 <Route index element={<Home />} />
-                <Route path='project/*' element={<Project />} />
+                <Route path='project/:id/*' element={<Project />} />
                 <Route path='new' element={<NewProject />} />
+                <Route path='settings' element={<SettingsPage />} />
+                <Route path='edit/:id' element={<EditProject />} />
             </Routes>
         </div>
     );
@@ -46,7 +50,7 @@ function App(){
             <Routes>
                 <Route index element={<Title />}/>
                     <Route path='u/*' element={<UserRoutes />}/>
-                <Route path='new' element={<NewUser />}/>
+                <Route path='new' element={<NewUser />} />
             </Routes>
         </Router>
     );
