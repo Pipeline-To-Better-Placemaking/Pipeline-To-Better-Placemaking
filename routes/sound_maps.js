@@ -180,12 +180,12 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             decibel_4: (req.body.decibel_4 ? req.body.decibel_4 : oldData.decibel_4),
             decibel_5: (req.body.decibel_5 ? req.body.decibel_5 : oldData.decibel_5),
             average: (req.body.average ? req.body.average : oldData.average),
-            sound_type: (req.body.sound_type ? req.body.sound_type : oldData.sound_type),
+            predominant_type: (req.body.predominant_type ? req.body.predominant_type : oldData.predominant_type),
             time: (req.body.time ? req.body.time : oldData.time)
         }
 
-        if (req.body.sound_type.length > 2)
-            throw new BadRequestError('Datapoints can only have one sound type')
+        if (req.body.predominant_type.length > 2)
+            throw new BadRequestError('Datapoints can only have one predominant sound type')
 
         if(req.body.standingPoint){
             Points.addRefrence(req.body.standingPoint)
