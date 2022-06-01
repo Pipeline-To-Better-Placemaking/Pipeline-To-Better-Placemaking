@@ -8,12 +8,14 @@
 @media (max-width: 599px){
     div.MuiDrawer-paperAnchorLeft,div#leftDrawer,div.MuiDrawer-paperAnchorRight,div#rightDrawer{
         top: 105px;
+        height: calc(100vh - 105px);
     }
 }
 
 @media (min-width: 600px) {
     div.MuiDrawer-paperAnchorLeft, div#leftDrawer, div.MuiDrawer-paperAnchorRight, div#rightDrawer {
         top: 113px;
+        height: calc(100vh - 113px);
     }
 }
 
@@ -221,5 +223,5 @@ th.value, th.type, td.value, td.type {
 }
 
 tr.categories {
-    background-color: #006fd684;
+    background-color: #aed5fa;
 }

@@ -15,6 +15,10 @@ function Home(){
         {
             name: 'Lake Underhill Park',
             id: 'p4343rfi43f'
+        },
+        {
+            name: 'University of Central Florida',
+            id: 'p984f92hdeq'
         }
     ]
 

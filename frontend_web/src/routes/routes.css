@@ -14,9 +14,10 @@
 }
 
 .App-logo {
-    height: 40vmin;
     pointer-events: none;
     border-radius: 200px;
+    min-width: 25vh;
+    min-height: 25vh;
     width: 25vw;
     height: 25vw;
 }
@@ -53,7 +54,8 @@
 }
 
 .logo {
-    margin-bottom: 90px;
+    margin-bottom: 5vh;
+    z-index: 0;
 }
 
 .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle {
@@ -90,6 +92,7 @@
     align-content: center;
     min-height: calc(100vh - 40px);
     padding: 5vh 5vw;
+    z-index: -2;
 }
 
 .secondButton {
@@ -100,12 +103,14 @@
     color: #FFFFFF;
     font-size: 5vw;
     max-width: 50vw;
-    max-height: 75vh;
+    max-height: 80vh;
+    z-index: 2;
 }
 
 .tagBox {
     min-width: 30vw;
     max-width: 40vw;
+    z-index: 3;
 }
 
 .titlePage {
@@ -160,12 +165,14 @@ form.MuiBox-root {
 #logo1 {
     position: relative;
     left: -10vw;
+    z-index: -1;
 }
 
 #logo2 {
     position: absolute;
     top: 25vh;
     left: 30vw;
+    z-index: -1;
 }
 
 #MapPage {
