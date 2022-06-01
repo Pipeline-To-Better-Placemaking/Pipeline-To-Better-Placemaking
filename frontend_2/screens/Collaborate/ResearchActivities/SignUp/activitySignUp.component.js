@@ -205,7 +205,7 @@ export function ActivitySignUpPage(props) {
       //console.log("Activity: " + JSON.stringify(props.activity))
       console.log("timeSlot: ", timeSlot);
 
-      //took of the *60 on the time props to keep it in seconds
+      //took of the *60 on the time props to keep it in seconds; ensure this works as intended
       let activityDetails = {
         _id: timeSlot._id,
         location: timeSlot.sharedData.area.points[0],
@@ -419,7 +419,11 @@ export function ActivitySignUpPage(props) {
           <Text category='s1'>Activity: {props.activity.test_type}</Text>
           <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
           {/* add new tests here for time at site for all but sound test */}
-          <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
+          { props.activity.test_type === activityList[3] ?
+            <Text>Time per Standing Point: {props.activity.duration} (sec)</Text>
+          :
+            <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
+          }
         </View>
         <View style={styles.listView}>
           <List

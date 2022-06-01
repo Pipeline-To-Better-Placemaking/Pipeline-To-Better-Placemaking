@@ -96,14 +96,13 @@ export function StationaryActivity(props) {
             let info = await response.json()
 
         } catch (error) {
-            console.log('its this error')
             console.log("ERROR: ", error)
         }
 
         props.navigation.navigate("ActivitySignUpPage");
     }
 
-    // Called when there is ore than one standing point
+    // Called when there is more than one standing point
     // This function ensures everything resets
     const restart = () => {
         let standingPointLength = Object.keys(props.timeSlot.position).length
