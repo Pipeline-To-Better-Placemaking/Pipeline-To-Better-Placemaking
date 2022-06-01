@@ -126,7 +126,7 @@ soundToCSV = function(data) {
                   "Collection_Date,"  +
                   "Area_Title,Area,Duration,Activity_Time," +
                   "Researchers,Standing_Point,Standing_Point_Title," +
-                  "Predominant_Type,Decibel_1,Decibel_2,Decibel_3,Decibel_4,Decibel_5,Average"
+                  "Sound_Types,Decibel_1,Decibel_2,Decibel_3,Decibel_4,Decibel_5,Average"
 
     var csv = headers
 
@@ -165,7 +165,7 @@ soundToCSV = function(data) {
                         csv += researchers + ','
                         csv += entry.standingPoint.title + ','
                         csv += "\"POINT( " + entry.standingPoint.latitude + " " + entry.standingPoint.longitude + ")\","
-                        csv += entry.predominant_type + ','
+                        csv += entry.sound_type + ','
                         csv += entry.decibel_1 + ','
                         csv += entry.decibel_2 + ','
                         csv += entry.decibel_3 + ','

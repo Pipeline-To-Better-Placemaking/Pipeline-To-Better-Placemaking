@@ -180,7 +180,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             decibel_4: (req.body.decibel_4 ? req.body.decibel_4 : oldData.decibel_4),
             decibel_5: (req.body.decibel_5 ? req.body.decibel_5 : oldData.decibel_5),
             average: (req.body.average ? req.body.average : oldData.average),
-            predominant_type: (req.body.predominant_type ? req.body.predominant_type : oldData.predominant_type),
+            sound_type: (req.body.sound_type ? req.body.sound_type : oldData.sound_type),
             time: (req.body.time ? req.body.time : oldData.time)
         }
 

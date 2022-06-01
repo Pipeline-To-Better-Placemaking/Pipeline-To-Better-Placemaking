@@ -12,7 +12,7 @@ const dataSchema = mongoose.Schema({
             type: Number,
             required: true
             },
-        sound_type: {
+        predominant_type: {
             type: String,
             // type: Number,
             // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
@@ -24,8 +24,8 @@ const dataSchema = mongoose.Schema({
         recording:{
             type: Number,
             required: true
-            },
-        sound_type: {
+        },
+        predominant_type: {
             type: String,
             // type: Number,
             // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
@@ -37,8 +37,8 @@ const dataSchema = mongoose.Schema({
         recording:{
             type: Number,
             required: true
-            },
-        sound_type: {
+        },
+        predominant_type: {
             type: String,
             // type: Number,
             // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
@@ -50,8 +50,8 @@ const dataSchema = mongoose.Schema({
         recording:{
             type: Number,
             required: true
-            },
-        sound_type: {
+        },
+        predominant_type: {
             type: String,
             // type: Number,
             // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
@@ -63,8 +63,8 @@ const dataSchema = mongoose.Schema({
         recording:{
             type: Number,
             required: true
-            },
-        sound_type: {
+        },
+        predominant_type: {
             type: String,
             // type: Number,
             // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
@@ -77,7 +77,7 @@ const dataSchema = mongoose.Schema({
         required: true
     },
 
-    predominant_type: [{
+    sound_type: [{
         type: String,
         // type: Number,
         // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
@@ -190,7 +190,7 @@ module.exports.addEntry = async function(mapId, newEntry) {
         decibel_4: newEntry.decibel_4,
         decibel_5: newEntry.decibel_5,
         average: newEntry.average,
-        predominant_type: newEntry.predominant_type,
+        sound_type: newEntry.sound_type,
         // time_of_day: newEntry.time_of_day,        
         time: newEntry.time
     })
