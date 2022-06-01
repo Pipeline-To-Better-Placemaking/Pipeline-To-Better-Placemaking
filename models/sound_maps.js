@@ -13,8 +13,9 @@ const dataSchema = mongoose.Schema({
             required: true
             },
             sound_type: {
-                type: Number,
-                enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
+                type: String,
+                // type: Number,
+                // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
                 required: true
             },
     },
@@ -25,8 +26,9 @@ const dataSchema = mongoose.Schema({
             required: true
             },
             sound_type: {
-                type: Number,
-                enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
+                type: String,
+                // type: Number,
+                // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
                 required: true
             },
     },
@@ -37,8 +39,9 @@ const dataSchema = mongoose.Schema({
             required: true
             },
             sound_type: {
-                type: Number,
-                enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
+                type: String,
+                // type: Number,
+                // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
                 required: true
             },
     },
@@ -49,8 +52,9 @@ const dataSchema = mongoose.Schema({
             required: true
             },
             sound_type: {
-                type: Number,
-                enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
+                type: String,
+                // type: Number,
+                // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
                 required: true
             },
     },
@@ -61,8 +65,9 @@ const dataSchema = mongoose.Schema({
             required: true
             },
             sound_type: {
-                type: Number,
-                enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
+                type: String,
+                // type: Number,
+                // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
                 required: true
             },
     },
@@ -73,8 +78,9 @@ const dataSchema = mongoose.Schema({
     },
 
     predominant_type: {
-        type: Number,
-        enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
+        type: String,
+        // type: Number,
+        // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
         required: true
     },
 
