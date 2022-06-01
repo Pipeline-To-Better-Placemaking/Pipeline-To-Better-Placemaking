@@ -12,12 +12,12 @@ const dataSchema = mongoose.Schema({
             type: Number,
             required: true
             },
-            sound_type: {
-                type: String,
-                // type: Number,
-                // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
-                required: true
-            },
+        sound_type: {
+            type: String,
+            // type: Number,
+            // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
+            required: true
+        },
     },
 
     decibel_2: {
@@ -25,12 +25,12 @@ const dataSchema = mongoose.Schema({
             type: Number,
             required: true
             },
-            sound_type: {
-                type: String,
-                // type: Number,
-                // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
-                required: true
-            },
+        sound_type: {
+            type: String,
+            // type: Number,
+            // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
+            required: true
+        },
     },
 
     decibel_3: {
@@ -38,12 +38,12 @@ const dataSchema = mongoose.Schema({
             type: Number,
             required: true
             },
-            sound_type: {
-                type: String,
-                // type: Number,
-                // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
-                required: true
-            },
+        sound_type: {
+            type: String,
+            // type: Number,
+            // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
+            required: true
+        },
     },
 
     decibel_4: {
@@ -51,12 +51,12 @@ const dataSchema = mongoose.Schema({
             type: Number,
             required: true
             },
-            sound_type: {
-                type: String,
-                // type: Number,
-                // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
-                required: true
-            },
+        sound_type: {
+            type: String,
+            // type: Number,
+            // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
+            required: true
+        },
     },
 
     decibel_5: {
@@ -64,12 +64,12 @@ const dataSchema = mongoose.Schema({
             type: Number,
             required: true
             },
-            sound_type: {
-                type: String,
-                // type: Number,
-                // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
-                required: true
-            },
+        sound_type: {
+            type: String,
+            // type: Number,
+            // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
+            required: true
+        },
     },
     
     average: {
@@ -77,12 +77,12 @@ const dataSchema = mongoose.Schema({
         required: true
     },
 
-    predominant_type: {
+    predominant_type: [{
         type: String,
         // type: Number,
         // enum: ['nature','diffused conversations','traffic noise','equipment','foundations (water)'],
         required: true
-    },
+    }],
 
     standingPoint: {
         type: ObjectId,
