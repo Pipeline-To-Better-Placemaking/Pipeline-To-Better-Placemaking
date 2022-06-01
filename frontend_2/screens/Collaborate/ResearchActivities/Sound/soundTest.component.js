@@ -69,7 +69,7 @@ export function SoundTest(props){
     const[soundsArr, setSoundsArr] = useState([[]]);
 
                             
-    // End Button press 
+    // ends activity, packages and sends data to the DB
     const endActivity = async () => {
         setStart(false);
         console.log('ending activity');
@@ -82,15 +82,18 @@ export function SoundTest(props){
         }
         
         // each row is a standing point, which contains 5 iterations of measurements (for that point)
-        console.log(decArr);
+        // console.log(decArr);
+        
         // each cell is a standingIndex's average measurement (the 5 iterations of measurements average)
-        console.log(decAvg);
+        // console.log(decAvg);
+        
         // the main sounds array 
         // each row is a standing point, and each cell inside the row is for each iteration of measurement
-        console.log(mainSoundArr);
+        // console.log(mainSoundArr);
+        
         // the sound types (multi-select) array
         // each row is a standing point and each cell is every sound types the user submitted (duplicates ignored)
-        console.log(soundsArr);
+        // console.log(soundsArr);
 
         let objData = [];
         for(let i = 0; i < standingLen; i++){
@@ -128,7 +131,7 @@ export function SoundTest(props){
             }
             objData.push(pointData);
         }
-        // console.log(objData);
+
         try {
             const response = await fetch('https://measuringplacesd.herokuapp.com/api/sound_maps/' + props.timeSlot._id + '/data', {
                 method: 'POST',
@@ -386,18 +389,6 @@ export function SoundTest(props){
                         position={position[standingIndex]}
                         recenter={recenter}
                     />
-                    
-                    {/* ending test early for debugging
-                    <View style={styles.bottomView} >
-                        <Button
-                        status={'danger'}
-                        style={styles.bottomStop}
-                        onPress={() => endActivity()}
-                        >
-                            End
-                        </Button>
-                    </View> */}
-
             </ContentContainer>
         </ViewableArea>
     );
