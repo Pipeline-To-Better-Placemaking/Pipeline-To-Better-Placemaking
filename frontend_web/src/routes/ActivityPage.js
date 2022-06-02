@@ -12,10 +12,8 @@ import './routes.css';
 import ActivityTable from '../components/ActivityTable';
 
 function ActivityPage(){
-    const sample = [
-        {
-            name: 'Absence of Order',
-            history: [
+    const sample = {
+            'Absence of Order': [
                 {
                     value: 'Bricks',
                     type: 'N/A',
@@ -23,11 +21,8 @@ function ActivityPage(){
                     date: '2/2/22',
                     surveyor: 'Bob',
                 }
-            ]
-        },
-        {
-            name: 'Boundaries',
-            history: [
+            ],
+            'Boundaries': [
                 {
                     value: '',
                     type: 'Vertical',
@@ -42,11 +37,8 @@ function ActivityPage(){
                     date: '4/2/22',
                     surveyor: 'Sarah'
                 }
-            ]
-        },
-        {
-            name: 'Lighting',
-            history: [
+            ],
+            'Lighting': [
                 {
                     value: 'N/A',
                     type: 'N/A',
@@ -54,11 +46,8 @@ function ActivityPage(){
                     date: '3/1/22',
                     surveyor: 'Anne'
                 }
-            ]
-        },
-        {
-            name: 'Nature',
-            history: [
+            ],
+            'Nature': [
                 {
                     value: 'Animal',
                     type: 'Domestic',
@@ -87,11 +76,8 @@ function ActivityPage(){
                     date: '4/4/22',
                     surveyor: 'Tim'
                 }
-            ]
-        },
-        {
-            name: 'Sound',
-            history: [
+            ],
+            'Sound': [
                 {
                     value: '2dB',
                     type: 'Barking',
@@ -120,9 +106,8 @@ function ActivityPage(){
                     date: '1/2/22',
                     surveyor: 'Sarah'
                 }
-            ]
-        }
-    ];
+            ],
+        };
 
     return(
         <div id='activityPage'>
@@ -134,7 +119,7 @@ function ActivityPage(){
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        <ActivityTable activity={sample}/>
+                        <ActivityTable type={0} activity={sample}/>
                     </TableBody>
                 </Table>
             </TableContainer>

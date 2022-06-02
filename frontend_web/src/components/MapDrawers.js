@@ -12,13 +12,16 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Close from '@mui/icons-material/Close';
 import Switch from '@mui/material/Switch';
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
 
+import ActivityTable from './ActivityTable';
 import './controls.css';
 
 export default function MapDrawer(props) {
     const drawers = props.drawers;
-    const [checked, setChecked] = React.useState({
-    });
+    const [selections, setSelections] = React.useState({});
+    const [checked, setChecked] = React.useState({});
     const [timeOpen, setTimeOpen] = React.useState({});
 
     const menuAnchors = {
@@ -70,6 +73,13 @@ export default function MapDrawer(props) {
         // default is false has reverse setting so !checked[cat + date] must be sent
         // selected means checked[..]=false
         props.selection(category, date, time, !checked[`${category}.${date}.${time}`]);
+        if(!checked[`${category}.${date}.${time}`]){
+            selections[`${category}.${date}.${time}`] = drawers.Activities[category][date][time];
+        } else {
+            var delSelections = selections;
+            delete delSelections[`${category}.${date}.${time}`];
+            setSelections(delSelections);
+        }
     };
 
     const list = (name, drawer) => (
@@ -123,6 +133,12 @@ export default function MapDrawer(props) {
         </Collapse>
     );
 
+    const dataDrawer = (selections) => (
+        <TableContainer component={Paper}> 
+            <ActivityTable type={1} activity={selections}/>
+        </TableContainer>
+    );
+
     return (
         <div id='projectFrame'>
             {Object.entries(drawers).map(([name, data]) => (
@@ -138,7 +154,7 @@ export default function MapDrawer(props) {
                         hideBackdrop={true}
                     >
                         {menuAnchors[name] === 'bottom' ? <Button id={menuAnchors[name] + 'CloseButton'} sx={{position: 'fixed', alignSelf: 'center'}} onClick={toggleDrawer(menuAnchors[name], !state[menuAnchors[name]])}>Close <Close/></Button> : null}
-                        {list(name, data)}
+                        {menuAnchors[name] === 'left' ? list(name, data) : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : null)}
                     </Drawer>
                 </React.Fragment>
             ))}
