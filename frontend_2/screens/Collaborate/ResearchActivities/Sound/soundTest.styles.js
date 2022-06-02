@@ -9,18 +9,6 @@ export const styles = StyleSheet.create({
         alignItems:'center'
     },
     
-    // // Debug styles ----------------------------------------------------------------------------------
-    // bottomView:{
-    //     flex: 1,
-    //     alignItems: 'center',
-    // },
-
-    // bottomStop:{
-    //     height: 50,
-    //     width: 90
-    // },
-    // //----------------------------------------------------------------------------------
-    
     startButton:{
         backgroundColor: '#006FD6',
         height: 50, 

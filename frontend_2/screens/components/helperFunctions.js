@@ -143,9 +143,7 @@ export async function formatMovingGraphData(result) {
   return tempResult;
 }
 
-//added for the sound test (is the same as the formatMovingGraphData funct.)
-//so should I just use that function ? how would this need to be different ?
-export async function formatSoundGraphData(result) {
+export async function formatSoundGraphData(result){
   if (result === null ||
       result.data === undefined ||
       result.data === null ||
@@ -154,35 +152,45 @@ export async function formatSoundGraphData(result) {
     ) {
     return result;
   }
+  
   let tempResult = {...result};
-  let graph = {
-    data: [],
-    labels:[],
-  };
+  let graph = [];
   let index = -1;
   let label = '';
-  for (let i = 0; i < result.data.length; i++) {
-    let dataPoint = result.data[i];
-    label = dataPoint.mode;
-    if (label !== undefined) {
-      if (graph.labels !== null && graph.labels.length > 0) {
-        index = graph.labels.findIndex(element => element === label);
-        // add category if it's not currently in the list
-        if (index < 0) {
-          index = graph.labels.length;
-          graph.labels = [...graph.labels, label];
-          graph.data = [...graph.data, Number(0)];
-        }
-      } else { // first entry
-        index = 0;
-        graph.labels = [label];
-        graph.data = [Number(0)];
-      }
-      // increase count
-      graph.data[index] = graph.data[index] + 1;
+  let decString = "Decibel";
+  
+  for(let i = 0; i < result.data.length; i++){
+    let data = result.data[i];
+    // push a graph object for the every standing point (# standing point === result.data.length always)
+    graph.push({data: [], labels:[[]], predominant: [[]], average: 0});
+
+    // set the predominant sound for each graph object
+    graph[i].predominant[0] = data.decibel_1.predominant_type;
+    graph[i].predominant[1] = data.decibel_2.predominant_type;
+    graph[i].predominant[2] = data.decibel_3.predominant_type;
+    graph[i].predominant[3] = data.decibel_4.predominant_type;
+    graph[i].predominant[4] = data.decibel_5.predominant_type;
+    
+    // create labels for the 5 decibel recordings for each graph object
+    for(let j = 0; j < 5; j++){
+      let numString = (j + 1).toString();
+      let temp = decString.concat(" ", numString);
+      graph[i].labels[j] = temp + "\n" + graph[i].predominant[j];
     }
+
+    
+    // set the data for each graph object
+    graph[i].data[0] = data.decibel_1.recording;
+    graph[i].data[1] = data.decibel_2.recording;
+    graph[i].data[2] = data.decibel_3.recording;
+    graph[i].data[3] = data.decibel_4.recording;
+    graph[i].data[4] = data.decibel_5.recording;
+
+    // set the graph object's average
+    graph[i].average = data.average;
   }
-  //console.log("resulting graph data: ", graph);
+
+  // console.log("resulting graph data: ", graph);
   tempResult.graph = {...graph};
   return tempResult;
 }

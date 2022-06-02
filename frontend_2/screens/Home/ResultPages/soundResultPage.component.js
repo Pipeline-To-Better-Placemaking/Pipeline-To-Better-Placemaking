@@ -60,9 +60,7 @@ export function SoundResultPage(props) {
   }
 
   if (props.selectedResult === null ||
-      !props.selectedResult.success ||
-      props.selectedResult.graph === undefined
-    ) {
+      !props.selectedResult.success) {
     return (
       <ViewableArea>
         {isUserTeamOwner(props.team, props.userId)
@@ -140,6 +138,67 @@ export function SoundResultPage(props) {
     props.navigation.navigate("SoundActivityResultView");
   }
 
+  // used to find the most common predominant sound type
+  const mostCommon = (arr) =>{
+    // used as a dictonary to store word and its frequency
+    let hm = {};
+    // iterate over the whole array
+    for(let i = 0; i < arr.length; i++){
+      // if the string already exists in hm then increase it's value by 1
+      if(hm.hasOwnProperty(arr[i])) hm[arr[i]] = hm[arr[i]] + 1;
+      // else add it in hm by giving it a value
+      else hm[arr[i]] = 1;
+    }
+
+    let ret = '';
+    let val = 0;
+    // iterate over the dictonary looking for the highest frequency, then return that string
+    for(const [word, value] of Object.entries(hm)){
+      // if the value of the word in hm is larger than our current value
+      if(value > val){
+        // update the current value and the string
+        val = value;
+        ret = word;
+      }
+    }
+    return ret;
+  }
+
+  // used to render multiple barcharts based off the # of standing points/length of the data array
+  const MultiBarChart = () =>{
+    let component = [[]]
+    for(let i = 0; i < props.selectedResult.data.length; i++){
+      // call something here that determines the most common predominant sound
+      let predominant = mostCommon(props.selectedResult.graph[i].predominant);
+      // main component container needs this key={i.toString()}
+      component[i] = (
+        <View key={i.toString()} style={styles.spacing}>
+          <MyBarChart
+            {...props}
+            title={props.selectedResult.standingPoints[i].title}
+            rotation={'0deg'}
+            dataValues={props.selectedResult.graph[i].data}
+            dataLabels={props.selectedResult.graph[i].labels}
+            barColor={color}
+            width={chartWidth}
+            height={chartHeight}
+          />
+  
+          <View style={styles.rowView}>
+            <Text>Sound Decibel: {props.selectedResult.graph[i].average} dB</Text>
+            <Text>Sound Type: {predominant}</Text>
+          </View>
+
+        </View>
+      )
+    }
+    return(
+      <View>
+        {component}
+      </View>
+    )
+  }
+  
   return (
     <ViewableArea>
       {isUserTeamOwner(props.team, props.userId)
@@ -186,7 +245,7 @@ export function SoundResultPage(props) {
 
           <Text>Day: {getDayStr(day)}</Text>
           <Text>Start Time: {getTimeStr(startTime)} </Text>
-          <Text>Duration: {props.selectedResult.sharedData.duration} min</Text>
+          <Text>Duration: {props.selectedResult.sharedData.duration} sec</Text>
 
           <Divider style={styles.metaDataSep} />
 
@@ -215,17 +274,7 @@ export function SoundResultPage(props) {
               </View>
           }
 
-        {/* need to figure out how to create barcharts for each standing point (dynamically render MyBarCharts based off # of standing points) */}
-          <MyBarChart
-            {...props}
-            title={"Point _"}
-            rotation={'0deg'}
-            dataValues={props.selectedResult.graph.data}
-            dataLabels={props.selectedResult.graph.label}
-            barColor={color}
-            width={chartWidth}
-            height={chartHeight}
-          />
+          <MultiBarChart />
 
         </ScrollView>
       </ContentContainer>

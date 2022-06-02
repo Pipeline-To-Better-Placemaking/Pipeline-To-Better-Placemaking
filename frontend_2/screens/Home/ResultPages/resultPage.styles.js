@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
 
@@ -44,6 +47,16 @@ export const styles = StyleSheet.create({
     errorMsgText:{
         padding:5
     },
+
+    // styles used only in sound test
+    spacing:{
+        marginTop: width * .05
+    },
+
+    rowView:{
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
+    }
     
 });
 

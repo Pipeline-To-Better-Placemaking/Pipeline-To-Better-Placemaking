@@ -4,7 +4,6 @@ import { ViewableArea, ContentContainer } from '../../../components/content.comp
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button } from '@ui-kitten/components';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
-//to be used as the map activity for the screen
 import { SoundMap } from '../../../components/Maps/soundMap.component';
 import CountDown from 'react-native-countdown-component';
 
@@ -154,7 +153,8 @@ export function SoundTest(props){
         }
         props.navigation.navigate("ActivitySignUpPage");
     }
-
+    
+    // computes the average of a passed in array
     const computeAverage = (arr) =>{
         let ret = 0;
         let len = arr.length;
@@ -202,7 +202,8 @@ export function SoundTest(props){
         setMainSoundModal(false);
         setSoundsModal(true);
     }
-
+    
+    // closes the sound types modal and stores the data
     const closeSoundsData = async (inf) =>{
         // standingIndex <= # standing points always, so if something exists at that index, push the data onto it
         // don't allow duplicates for the same standingIndex
@@ -218,6 +219,7 @@ export function SoundTest(props){
         resume();
     }
     
+    // compares the soundsArr and passed in array for duplicate entries, only returns elements (as an array) from arr that are not in soundsArr
     const checkDup = (ind, arr) =>{
         // convert both arrays to lowercase to make checks case insensitive (to help deal with other field)
         let lowerSoundsArr = soundsArr[ind].map( element => element.toLowerCase())
@@ -313,7 +315,7 @@ export function SoundTest(props){
             // timer is what actually gets rendered so update every second
             setTimer(count);
             //console.log(count);
-            // every 5 seconds, pause the timer and render the modal(s) for data collection
+            // every 5 seconds or when the timer hits 0, pause the timer and render the modal(s) for data collection
             if(count % 5 == 0){
                 // clear the interval to avoid resuming timer issues
                 clearInterval(id);
