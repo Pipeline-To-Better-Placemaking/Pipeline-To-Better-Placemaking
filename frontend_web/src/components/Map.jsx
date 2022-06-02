@@ -141,7 +141,7 @@ function FullMap(props){
         <>
             {/* Map Drawers overlay in map.jsx to better communicate*/}
             {props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null}
-            <Wrapper apiKey={'AIzaSyAN3YW71AhkuwgGcqPbNsCHR7OMfV9K0Yk'} render={render}>
+            <Wrapper apiKey={''} render={render}>
                 <Map
                     center={center}
                     onClick={onClick}
