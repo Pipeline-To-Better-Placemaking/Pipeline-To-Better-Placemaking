@@ -14,7 +14,7 @@ import SettingsPage from './routes/SettingsPage';
 import EditProject from './routes/EditProject';
 
 function Project() {
-
+    /* can be reached at (url)/u/project/:id */
     return (
         <div id='project'>
             <TabPanel />
@@ -29,7 +29,7 @@ function Project() {
 }
 
 function UserRoutes() {
-
+    /* can be reached at (url)/u/(any extension below) */
     return (
         <div id='userRoutes'>
             <AppNavBar />

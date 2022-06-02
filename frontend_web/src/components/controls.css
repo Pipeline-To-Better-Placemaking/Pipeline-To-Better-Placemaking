@@ -98,8 +98,16 @@ a.css-cjctlb-MuiButtonBase-root-MuiTab-root:hover {
     color: var(--tabSelectColor);
 }
 
+a.css-wigwbp.unselected {
+    opacity: 0.7;
+}
+
+a.css-wigwbp.unselected:hover {
+    color: var(--tabSelectColor);
+}
+
 a.Mui-selected {
-    color: var(--tabSelectColor)
+    color: var(--tabSelectColor);
 }
 
 button.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected{
@@ -155,6 +163,8 @@ div.MuiDrawer-paperAnchorLeft, div#leftDrawer, div.MuiDrawer-paperAnchorRight, d
 }
 
 div.MuiTabs-flexContainer{
+    display: flex;
+    justify-content: center;
     align-content: center;
     align-items: center;
 }
@@ -193,13 +203,13 @@ span.MuiTabs-indicatorSpan{
     right: auto;
 }
 
-.homeButton > svg.css-i4bv87-MuiSvgIcon-root{
+a.homeButton > svg.MuiSvgIcon-root, a.homeButton>svg.css-vubbuv{
     width: 1.5em;
     height: auto;
     transition: width 1s ease-in-out;
 }
 
-.homeButton > svg.css-i4bv87-MuiSvgIcon-root:hover {
+a.homeButton > svg.MuiSvgIcon-root:hover, a.homeButton>svg.css-vubbuv:hover {
     width: 2em;
     height: auto;
 }

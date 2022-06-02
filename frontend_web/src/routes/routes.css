@@ -22,11 +22,16 @@
     height: 25vw;
 }
 
-.backButton{
+a.backButton{
     box-shadow: none;
+    width: 2.5em;
+    height: auto;
+    position: fixed;
+    top: 20px;
+    left: 20px;
 }
 
-.backButton>svg.css-i4bv87-MuiSvgIcon-root {
+a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
     width: 2.5em;
     height: auto;
     position: fixed;
@@ -63,16 +68,30 @@
     background-color: #ff4258;
     width: 45vw;
 }
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle:hover {
+    box-shadow: 0 4px 8px 0 rgba(255, 66, 88, 0.2), 0 6px 20px 0 rgba(255, 66, 88, 0.19);
+}
 
 .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#verifyButton {
     color: rgb(255, 255, 255);
-    background-color: #4e48fe;
+    background-color: rgb(78, 72, 254);
     width: 45vw;
+}
+
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#verifyButton:hover {
+    box-shadow: 0 4px 8px 0 rgba(78, 72, 254, 0.2), 0 6px 20px 0 rgba(78, 72, 254, 0.19);
 }
 
 .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.scheme {
     color: black;
-    background-color: #FED806;
+    background-color: #fed806;
+    margin: 0px 5px;
+    font-size:medium;
+}
+
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.scheme:hover {
+    box-shadow: 0 4px 8px 0 rgba(254, 216, 6, 0.2), 0 6px 20px 0 rgba(254, 216, 6, 0.19);
+    font-weight: 550;
 }
 
 .newformCard {
@@ -155,6 +174,11 @@ div.projectCard {
     text-align: center;
 }
 
+div.projectCard:hover{
+    font-weight: 500;
+    box-shadow: 0 4px 8px 0 rgba(71, 71, 71, 0.2), 0 6px 20px 0 rgba(71, 71, 71, 0.19);
+}
+
 form.MuiBox-root {
     display: flex;
     flex-direction: column;
@@ -181,9 +205,14 @@ form.MuiBox-root {
 }
 
 #newProjectButton {
-    background-color: #035FB5;
+    background-color: #035fb5;
     margin: 15px;
     width: 40%;
+}
+
+#newProjectButton:hover{
+    color: white;
+    box-shadow: 0 4px 8px 0 rgba(3, 95, 181, 0.2), 0 6px 20px 0 rgba(3, 95, 181, 0.19);
 }
 
 #newProjectButtonBox {
@@ -250,7 +279,7 @@ div#userSettings {
 }
 
 div#userSettings h1 {
-    margin-bottom: 20px;
+    margin: 20px 0px;
 }
 
 @media (prefers-reduced-motion: no-preference) {

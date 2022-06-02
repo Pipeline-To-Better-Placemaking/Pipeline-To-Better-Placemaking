@@ -13,8 +13,6 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 function Row(props) {
     const { row } = props;
-    //console.log(row.name);
-    //console.log(row.history[0].value);
     const [open, setOpen] = React.useState(false);
 
     return (

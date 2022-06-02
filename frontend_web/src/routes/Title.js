@@ -15,8 +15,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Link } from 'react-router-dom';
 
 import './routes.css';
-import logo1 from '../images/city-isometric.jpg';
-import logo2 from '../images/construction.jpeg';
+import logo1 from '../images/PtBPLogo.png';
 
 function Title() {
 
@@ -77,7 +76,6 @@ function Title() {
                 <div className='tag'>
                     <div className='logo'>
                         <Image src={logo1} className='App-logo' alt='logo' id='logo1'/>
-                        <Image src={logo2} className='App-logo' alt='logo' id='logo2' roundedCircle/>
                     </div>
                     <div id='tagText'>Pipeline to Better Placemaking</div>
                 </div>
