@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MapView, { Callout } from 'react-native-maps';
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
@@ -8,51 +8,127 @@ import { styles } from './sharedMap.styles';
 
 export function SoundMapResults(props) {
 
-    // Color constant for the data points
-    const color = '#C665E9'
+    const [standingPoints] = useState(props.position);
 
-    // Custom colored data pin, need to format these data pins to be data proportion pins
-    const DataPin = (props) => {
-        return(
-            <View style={[ styles.dataPin, {backgroundColor: color}]}/>
-        )
+    // used to find the most common predominant sound type
+    const mostCommon = (arr) =>{
+        // used as a dictonary to store word and its frequency
+        let hm = {};
+        // iterate over the whole array
+        for(let i = 0; i < arr.length; i++){
+        // if the string already exists in hm then increase it's value by 1
+        if(hm.hasOwnProperty(arr[i])) hm[arr[i]] = hm[arr[i]] + 1;
+        // else add it in hm by giving it a value
+        else hm[arr[i]] = 1;
+        }
+
+        let ret = '';
+        let val = 0;
+        // iterate over the dictonary looking for the highest frequency, then return that string
+        for(const [word, value] of Object.entries(hm)){
+        // if the value of the word in hm is larger than our current value
+        if(value > val){
+            // update the current value and the string
+            val = value;
+            ret = word;
+        }
+        }
+        return ret;
     }
 
+    // data proportion pins whose size is based off the decibel average
+    const DataPin = (props) => {
+        let scale = props.value * .9
+        return(
+            <View style={[ styles.soundDataPin, { width: scale, height: scale }]}/>
+        )
+    }
+    
+    // displays information about the DataPin
     const DataCallout = (props) => {
+        let soundsFormat = []; 
+
+        // formats the all sounds array for a cleaner display
+        props.sounds.forEach(element =>{ 
+            // if we are not at the last element, concat with comma and a whitespace
+            if(element.localeCompare(props.sounds[props.sounds.length - 1]) !== 0) soundsFormat.push(element.concat(", "));
+            // when we are at the last element, concat with nothing
+            else soundsFormat.push(element.concat(''));
+        })
 
         return (
-            <View style={styles.dataCallOutView}>
+            <View style={styles.soundDataCallOutView}>
               
-              {/* need to determine wha the point's data for decibel reading is */}
-              <Text style={styles.dataText}>
-                  Sound Decibel: {'\t' + props.point.decibel}
-              </Text>
+                <View style={styles.spacing} >
+                    <Text style={styles.dataText}>
+                        Decibel: {props.value} dB
+                    </Text>
+                </View>
+                
+                <View style={styles.spacing}>
+                    <Text style={styles.dataText}>
+                        Main Sound: {props.mainSound}
+                    </Text>
+                </View>
+
+                <View style={styles.restrict}>
+                    <Text style={styles.dataText}>
+                        Sounds: {soundsFormat}
+                    </Text>
+                </View>
 
             </View>
         )
     }
 
-    // Shows the project area, along with the plotted points
-    const ShowPolygon = () => {
+    // renders the project data that was collected
+    const ShowData = () => {
         if(props.dataMarkers === null) {
             return (null);
         }
         else {
-            return (
-                props.dataMarkers.map((data, index) => (
-                <MapView.Marker
-                    key={index}
-                    coordinate = {{
-                        latitude: data.location.latitude,
-                        longitude: data.location.longitude
-                    }}
-                >
-                    <DataPin />
-                    <Callout style={styles.callout}>
-                        <DataCallout point={data}/>
-                    </Callout>
-                </MapView.Marker>
-             )))
+            let objData = [[]];
+            // for each standing point
+            for(let i = 0; i < standingPoints.length; i++){
+                // collect the information that needs to be rendered for each standing point
+                let avg = props.graph[i].average;
+                let mainSound = mostCommon(props.graph[i].predominant);
+                let allSounds = props.dataMarkers[i].sound_type;
+                
+                // console.log(avg);
+                // console.log(mainSound);
+                // console.log(allSounds);
+                
+                // create an array of JSX objects to be rendered (at each standing point)
+                objData[i] = (
+                    <View key={i.toString()}>
+                        <MapView.Marker
+                            coordinate = {{
+                                latitude: props.position[i].latitude,
+                                longitude: props.position[i].longitude
+                            }}
+                        >
+                        <DataPin value={avg}/>
+                        
+                        <Callout style={styles.callout}>
+                            <DataCallout 
+                                value={avg}
+                                mainSound={mainSound}
+                                sounds={allSounds}
+                            />
+                        </Callout>
+                        
+                        </MapView.Marker>
+                    </View>
+                )
+            }
+
+            // return that array of JSX in a view (for it to render)
+            return ( 
+                <View>
+                    {objData}
+                </View>
+            )
          }
     }
 
@@ -64,18 +140,16 @@ export function SoundMapResults(props) {
                 mapHeight={'100%'}
                 onPress={() => null}
             >
-                <MapView.Marker
-                    coordinate = {props.position}
-                />
-
+                {/* project perimeter render */}
                 <MapView.Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}
                     fillColor={'rgba(0,0,0,0.2)'}
                 />
-
-                <ShowPolygon/>
+                
+                {/* project data render */}
+                <ShowData/>
 
             </PressMapAreaWrapper>
         </View>

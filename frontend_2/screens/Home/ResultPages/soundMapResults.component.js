@@ -4,22 +4,18 @@ import { HeaderBack } from '../../components/headers.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { SoundMapResults } from '../../components/Maps/soundMapResults.component.js'
 
-export function SoundActivityResultView(props) {
-
-    // console.log("Project: " + JSON.stringify(props.project))
-
-    /// Location, area, and standing points for SM
+export function SoundMapResultsView(props) {
+    // this console log shows all the collected data for the test
+    // console.log(props.selectedResult);
+    
+    /// Location, area, and standing points
     /// Bool indicating to the map to recenter
     // const [location] = useState(props.timeSlot.location)
     const [area] = useState(props.selectedResult.sharedData.area.points)
     const [position] = useState(props.selectedResult.standingPoints)
 
-    // The index of the standing points
-    const [standingIndex, setStandingIndex] = useState(0)
-
     // Temp marker, inputted data points, and all of their locations
     const [data, setData] = useState(props.selectedResult.data)
-    const [markers, setMarkers] = useState([])
 
     let startTime = new Date(props.selectedResult.date);
     let day = new Date(props.selectedResult.sharedData.date);
@@ -32,8 +28,9 @@ export function SoundActivityResultView(props) {
 
                 <SoundMapResults
                     area={area}
-                    position={position[standingIndex]}
+                    position={position}
                     dataMarkers={data}
+                    graph={props.selectedResult.graph}
                 />
 
             </ContentContainer>

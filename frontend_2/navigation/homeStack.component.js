@@ -12,7 +12,7 @@ import { StationaryActivityResultView } from '../screens/Home/ResultPages/statio
 import { MovingMapResultsView } from '../screens/Home/ResultPages/movingMapResultsView.component.js';
 // new tests result screens
 import { SoundResultPage } from '../screens/Home/ResultPages/soundResultPage.component';
-import { SoundMapResults } from '../screens/components/Maps/soundMapResults.component';
+import { SoundMapResultsView } from '../screens/Home/ResultPages/soundMapResults.component';
 import { SoundCompare } from '../screens/Home/Compare/soundCompare.component';
 
 
@@ -258,10 +258,10 @@ export function HomeScreenStack(props){
       </Screen>
 
       <Screen
-        name='SoundMapResults'
+        name='SoundMapResultsView'
       >
       {props=>
-        <SoundMapResults 
+        <SoundMapResultsView 
           {...props}
           selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}

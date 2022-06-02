@@ -135,7 +135,7 @@ export function SoundResultPage(props) {
   const color = '#006FD6';
 
   const viewMapResults = () => {
-    props.navigation.navigate("SoundActivityResultView");
+    props.navigation.navigate("SoundMapResultsView");
   }
 
   // used to find the most common predominant sound type
