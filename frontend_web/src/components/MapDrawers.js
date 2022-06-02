@@ -67,7 +67,8 @@ export default function MapDrawer(props) {
 
     const toggleSwitch = (category, date, time) => (event) => {
         setChecked({ ...checked, [`${category}.${date}.${time}`]: event.target.checked});
-        /* default is false has reverse setting so !checked[cat + date] */
+        // default is false has reverse setting so !checked[cat + date] must be sent
+        // selected means checked[..]=false
         props.selection(category, date, time, !checked[`${category}.${date}.${time}`]);
     };
 
@@ -123,7 +124,6 @@ export default function MapDrawer(props) {
     );
 
     return (
-
         <div id='projectFrame'>
             {Object.entries(drawers).map(([name, data]) => (
                 <React.Fragment key={menuAnchors[name]}>

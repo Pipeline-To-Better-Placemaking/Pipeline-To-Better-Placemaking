@@ -12,6 +12,9 @@ export default function ProjectTabs(props) {
     const [mapIndex, setMapIndex] = React.useState('unselected');
     const [surveyorIndex, setSurveyorIndex] = React.useState('unselected');
     const [activityIndex, setActivityIndex] = React.useState('unselected');
+
+    // needed to keep track of project page location using url
+    // shows proper selection in tab bar and movement from previous page
     const segment = location.pathname.split('/');
     const tail = segment[segment.length - 1];
 
@@ -23,6 +26,7 @@ export default function ProjectTabs(props) {
         }
     }, [tail]);
 
+    // manual adjustment of selected quality for Mui
     const handleUpdate = (tab, value) => {
         setValue(value);
         if (tab === 'map') {

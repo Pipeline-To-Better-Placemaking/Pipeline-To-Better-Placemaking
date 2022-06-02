@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import './routes.css';
 
 function NewUser(){
+    // to access fname lname...etc values.fname, do not access show(Confirm)Password
     const [values, setValues] = React.useState({
         fname: '',
         lname: '',
@@ -30,6 +31,7 @@ function NewUser(){
         setValues({ ...values, [prop]: event.target.value });
     };
 
+    // Handles visibility toggle for password fields
     const handleClickShowPassword = () => {
         setValues({
             ...values,

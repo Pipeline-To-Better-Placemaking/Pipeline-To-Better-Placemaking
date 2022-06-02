@@ -35,7 +35,8 @@ function FullMap(props){
         soundCollections: soundCollections
     });
 
-    // selectedData handles the boolean toggling from Map Drawer selections/switches
+    // onSelection handles the boolean toggling from Map Drawer selections/switches
+    // passes updates to specific state object and then to collections objects to register updates
     function onSelection(category, date, time, check) {
         console.log(`${category} ${date} ${time} ${check}`);
         var newSelection;
@@ -99,7 +100,6 @@ function FullMap(props){
         }  
         
         setKey(key => key + 1)
-        console.log(collections);
     };
 
     const onClick = (e) => {
@@ -138,6 +138,7 @@ function FullMap(props){
 
     return (
         <>
+            {/* Map Drawers overlay in map.jsx to better communicate*/}
             {props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null}
             <Wrapper apiKey={''} render={render}>
                 <Map
@@ -204,7 +205,7 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
             <div ref={ref} style={style} id='mapFrame'/>
             {React.Children.map(children, (child) => {
                 if (React.isValidElement(child)) {
-                    // set the map prop on the child component
+                    // sets the map prop on the child component (markers)
                     return React.cloneElement(child, {map});
                 }
             })}
@@ -213,10 +214,10 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
 };
 
 const Marker = (options) => {
-    console.log('here');
     const markerType = options.markerType;
     const markerSize = Number(options.markerSize);
 
+    //SVG shape icons
     const style = {
         soundCollections: {
             path: google.maps.SymbolPath.CIRCLE,
@@ -244,9 +245,8 @@ const Marker = (options) => {
         }
 
     };
-    const icon = style[markerType] ? style[markerType] : style.soundCollections;
-    console.log(options.position);
 
+    const icon = style[markerType] ? style[markerType] : style.soundCollections;
     const [marker, setMarker] = React.useState();
 
     React.useEffect(() => {

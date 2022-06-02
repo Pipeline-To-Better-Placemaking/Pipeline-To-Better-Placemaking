@@ -16,7 +16,11 @@ import { Link } from 'react-router-dom';
 
 import './controls.css';
 
+// pages left incase of need for additional route info
+// uses hamburger on small viewports
 const pages = [''];
+
+// Routes according to React-Router relative urls
 const settings = [
     {
         page: 'Account',
@@ -29,6 +33,7 @@ const settings = [
     }
 ];
 
+//SVG Home icon link button
 const home = <Link className='homeButton' to='/u'><Home className='iconShadow'/></Link>;
 
 const AppNavBar = () => {
@@ -62,7 +67,6 @@ const AppNavBar = () => {
                     >
                         {home}
                     </Typography>
-
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size='large'
@@ -92,11 +96,11 @@ const AppNavBar = () => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
+                            {/*{pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                                     <Typography textAlign='center'>{page}</Typography>
                                 </MenuItem>
-                            ))}
+                            ))}*/}
                         </Menu>
                     </Box>
                     <Typography
@@ -107,7 +111,7 @@ const AppNavBar = () => {
                         {home}
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
+                        {/*{pages.map((page) => (
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
@@ -115,9 +119,8 @@ const AppNavBar = () => {
                             >
                                 {page}
                             </Button>
-                        ))}
+                        ))}*/}
                     </Box>
-
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title='Open settings'>
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

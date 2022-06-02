@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 import '../routes/routes.css';
 
 function DisplayCards(props){
+
+    //Surveyor Cards have surveyor name in header
     const surveyorCards = (surveyors) => (
         surveyors.map((surveyor, index) => (
             <Card key={'s' + index} className='projectCard'>
@@ -19,6 +21,7 @@ function DisplayCards(props){
         ))
     );
 
+    //Activity renders in the body
     const surveyorActivities = (activities) => (
         <CardContent>
             {activities.map((activity, index) => (
@@ -34,6 +37,7 @@ function DisplayCards(props){
         </CardContent>
     );
 
+    //For Better Placemaking projects listed on home page (url)/u
     const projectCard = (projects) => (
         projects.map((project, index)=>(
             <Card key={'p'+index} className='projectCard'>

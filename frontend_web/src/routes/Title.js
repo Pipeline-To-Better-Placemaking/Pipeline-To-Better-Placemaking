@@ -18,7 +18,7 @@ import './routes.css';
 import logo1 from '../images/PtBPLogo.png';
 
 function Title() {
-
+    // Access email, password like values.email, do not mutate or modify
     const [values, setValues] = React.useState({
         email: '',
         password: '',

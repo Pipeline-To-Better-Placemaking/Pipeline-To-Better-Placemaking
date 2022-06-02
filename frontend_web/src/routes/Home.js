@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import DisplayCards from '../components/DisplayCards';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import './routes.css';
 

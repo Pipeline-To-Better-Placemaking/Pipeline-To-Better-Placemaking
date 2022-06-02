@@ -122,9 +122,7 @@ function ActivityPage(){
                 }
             ]
         }
-
     ];
-
 
     return(
         <div id='activityPage'>
@@ -142,6 +140,5 @@ function ActivityPage(){
             </TableContainer>
         </div>
     );
-
 } 
 export default ActivityPage;
