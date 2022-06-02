@@ -18,7 +18,8 @@ function FullMap(props){
     const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 10); // initial zoom
     const [center, setCenter] = React.useState(props.center.lat ? { lat: props.center.lat, lng: props.center.lng } : { lat:28.54023216523664, lng:-81.38181298263407});
     const [loc, setLoc] = React.useState('');
-    const [data, setData] = React.useState(props.type === 1 ? props.drawers : {})
+    const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
+    const [areaData, setAreaData] = React.useState(props.type === 1 ? props.area : null);
 
     // hold the selections from the switch toggles
     const [key, setKey] = React.useState(0);
@@ -129,7 +130,7 @@ function FullMap(props){
             Object.entries(object).map(([sdate, stimes])=>(
                 stimes.map(time => (
                     Object.entries(data.Activities[title][sdate][time]).map(([ind, point], i2)=>(
-                        <Marker key={`${sdate}.${time}.${i2}`} position={point['standingPoint']} markerType={point['average'] ? 'soundCollections' : (point['result'] ? point['result'] : null)} markerSize={title === 'soundCollections' ? point['average'] : null} /> 
+                        <Marker key={`${sdate}.${time}.${i2}`} position={point['standingPoint']} markerType={point['average'] ? 'soundCollections' : (point['result'] ? point['result'] : null)} markerSize={title === 'soundCollections' ? point['average'] : null} />
                     ))
                 ))
             ))
@@ -140,7 +141,7 @@ function FullMap(props){
         <>
             {/* Map Drawers overlay in map.jsx to better communicate*/}
             {props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null}
-            <Wrapper apiKey={''} render={render}>
+            <Wrapper apiKey={'AIzaSyAN3YW71AhkuwgGcqPbNsCHR7OMfV9K0Yk'} render={render}>
                 <Map
                     center={center}
                     onClick={onClick}
@@ -151,7 +152,9 @@ function FullMap(props){
                     lighting={lightingCollections}
                     nature={natureCollections}
                     sound={soundCollections}
+                    data={areaData}
                 >
+                    {props.type === 1 && areaData ? <Bounds area={areaData}/> : null}
                     {props.type === 1 ?
                        actCoords(collections)
                     :<Marker position={click}/>}
@@ -266,6 +269,43 @@ const Marker = (options) => {
             marker.setOptions({ clickable: true, map: options.map, position: options.position});
         }
     }, [marker, options]);
+
+    return null;
+};
+
+const Bounds = (options) => {
+    const [paths, setPaths] = React.useState();
+    const bounds = {
+        area: {
+            paths: options.area,
+            strokeColor: "rgba(255,0,0,0.5)",
+            strokeOpacity: 0.8,
+            strokeWeight: 3,
+            fillColor: "rgba(0,0,0,0.2)",
+        },
+        water:{},
+        construction:{},
+        material:{},
+        shelter:{}
+    }
+
+    React.useEffect(() => {
+        if (!paths) {
+            setPaths(new google.maps.Polygon(bounds.area));
+        }
+
+        return () => {
+            if (paths) {
+                paths.setMap(null);
+            }
+        };
+    }, [paths, bounds.area]);
+
+    React.useEffect(() => {
+        if (paths) {
+            paths.setOptions({ map: options.map});
+        }
+    }, [paths, options]);
 
     return null;
 };
