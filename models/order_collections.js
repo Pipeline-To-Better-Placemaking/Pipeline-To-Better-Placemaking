@@ -64,7 +64,7 @@ module.exports.updateCollection = async function(collectionId, newCollection){
         { _id: collectionId },
         { $set: {
             title: newCollection.title,
-            time: newCollection.date,
+            date: newCollection.date,
             area: newCollection.area,
             duration: newCollection.duration
         }}

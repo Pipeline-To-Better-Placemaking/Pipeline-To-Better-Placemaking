@@ -38,7 +38,7 @@ module.exports.removeRefrence = async function(pointId) {
     point = await Standing_Points.findById(pointId)
     point.refCount = area.refCount - 1
     if(point.refCount <= 0){
-        return await Standing_Points.findByIdAndDelete(areaId)
+        return await Standing_Points.findByIdAndDelete(pointId)
 
     }
     else{
