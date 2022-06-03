@@ -175,14 +175,21 @@ div#cardBox {
     height: auto;
 }
 
-div#projectFrame>button.MuiButton-root{
+div#projectFrame>button.MuiButton-root, button#printButton{
     z-index: 900;
     color: #000000e0;
     background-color: #ffffffc2;
 }
 
-div#projectFrame>button.MuiButton-root:hover {
+div#projectFrame>button.MuiButton-root:hover, button#printButton:hover {
     background-color: #ffffff;
+}
+
+button#printButton {
+    position: fixed;
+    top: 113px;
+    left: calc(50vw - 46px);
+    color: var(--primaryBlue);
 }
 
 div#rightDrawer.css-1u2w381-MuiModal-root-MuiDrawer-root{

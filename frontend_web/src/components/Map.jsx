@@ -13,6 +13,16 @@ const render = (status) => {
     return <h1>{status}</h1>;
 };
 
+function printMap(){
+    var content = document.getElementById("mapFrame");
+    var pri = document.getElementById("printFrame").contentWindow;
+    pri.document.open();
+    pri.document.write(content.innerHTML);
+    pri.document.close();
+    pri.focus();
+    pri.print();
+}
+
 function FullMap(props){
     const [click, setClick] = React.useState([]);
     const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 10); // initial zoom
@@ -22,7 +32,6 @@ function FullMap(props){
     const [areaData, setAreaData] = React.useState(props.type === 1 ? props.area : null);
 
     // hold the selections from the switch toggles
-    const [key, setKey] = React.useState(0);
     const [orderCollections, setOrderCollections] = React.useState({});
     const [boundariesCollections, setBoundariesCollections] = React.useState({});
     const [lightingCollections, setLightingCollections] = React.useState({});
@@ -39,7 +48,6 @@ function FullMap(props){
     // onSelection handles the boolean toggling from Map Drawer selections/switches
     // passes updates to specific state object and then to collections objects to register updates
     function onSelection(category, date, time, check) {
-        console.log(`${category} ${date} ${time} ${check}`);
         var newSelection;
         if (category === 'orderCollections') {
             newSelection = orderCollections;
@@ -97,10 +105,8 @@ function FullMap(props){
             setSoundCollections(newSelection);
             setCollections({ ...collections, soundCollections: newSelection });
         } else {
-            console.log('error');
-        }  
-        
-        setKey(key => key + 1)
+            console.log('Error handling selection change.');
+        }
     };
 
     const onClick = (e) => {
@@ -141,7 +147,9 @@ function FullMap(props){
         <>
             {/* Map Drawers overlay in map.jsx to better communicate*/}
             {props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null}
-            <Wrapper apiKey={''} render={render}>
+            <Button id='printButton' onClick={() => printMap()}>Print Map</Button>
+            {/* Wrapper imports Google Maps API */}
+            <Wrapper apiKey={''} render={render} id='mapContainer'>
                 <Map
                     center={center}
                     onClick={onClick}
@@ -162,6 +170,7 @@ function FullMap(props){
             </Wrapper>
             {/* Basic form for searching for places */}
             {props.type === 0 ? form0 : null}
+            <iframe title='printFrame' id="printFrame" style={{height: '0px', width: '0px', position: 'absolute'}}></iframe>
         </>
     );
 };
