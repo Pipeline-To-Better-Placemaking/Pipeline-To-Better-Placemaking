@@ -32,6 +32,8 @@ function FullMap(props){
     const [areaData, setAreaData] = React.useState(props.type === 1 ? props.area : null);
 
     // hold the selections from the switch toggles
+    const [stationaryCollections, setStationaryCollections] = React.useState({});
+    const [movingCollections, setMovingCollections] = React.useState({});
     const [orderCollections, setOrderCollections] = React.useState({});
     const [boundariesCollections, setBoundariesCollections] = React.useState({});
     const [lightingCollections, setLightingCollections] = React.useState({});
@@ -49,63 +51,93 @@ function FullMap(props){
     // passes updates to specific state object and then to collections objects to register updates
     function onSelection(category, date, time, check) {
         var newSelection;
-        if (category === 'orderCollections') {
-            newSelection = orderCollections;
-            if (check === true) {
-                if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
-                newSelection[`${date}`].push(time);
-            } else {
-                var o = newSelection[date].indexOf(time);
-                newSelection[date].splice(o, 1);
-            }
-            setOrderCollections(newSelection);
-            setCollections({...collections, orderCollections: newSelection});
-        } else if (category === 'boundariesCollections') {
-            newSelection = boundariesCollections;
-            if (check === true) {
-                if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
-                newSelection[`${date}`].push(time);
-            } else {
-                var b = newSelection[date].indexOf(time);
-                newSelection[date].splice(b, 1);
-            }
-            setBoundariesCollections(newSelection);
-            setCollections({ ...collections, boundariesCollections: newSelection });
-        } else if (category === 'lightingCollections') {
-            newSelection = lightingCollections;
-            if (check === true) {
-                if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
-                newSelection[`${date}`].push(time);
-            } else {
-                var l = newSelection[date].indexOf(time);
-                newSelection[date].splice(l, 1);
-            }
-            setLightingCollections(newSelection);
-            setCollections({ ...collections, lightingCollections: newSelection });
-        } else if (category === 'natureCollections') {
-            newSelection = natureCollections;
-            if (check === true) {
-                if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
-                newSelection[`${date}`].push(time);
-            } else {
-                var n = newSelection[date].indexOf(time);
-                newSelection[date].splice(n, 1);
-            }
-            setNatureCollections(newSelection);
-            setCollections({ ...collections, natureCollections: newSelection });
-        } else if (category === 'soundCollections') {
-            newSelection = soundCollections;
-            if (check === true) {
-                if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
-                newSelection[`${date}`].push(time);
-            } else {
-                var s = newSelection[date].indexOf(time);
-                newSelection[date].splice(s, 1);
-            }
-            setSoundCollections(newSelection);
-            setCollections({ ...collections, soundCollections: newSelection });
-        } else {
-            console.log('Error handling selection change.');
+        switch (category){
+            case 'stationaryCollections':
+                newSelection = stationaryCollections;
+                if (check === true) {
+                    if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
+                    newSelection[`${date}`].push(time);
+                } else {
+                    var st = newSelection[date].indexOf(time);
+                    newSelection[date].splice(st, 1);
+                }
+                setStationaryCollections(newSelection);
+                setCollections({ ...collections, stationaryCollections: newSelection });
+                break;
+            case 'movingCollections':
+                newSelection = movingCollections;
+                if (check === true) {
+                    if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
+                    newSelection[`${date}`].push(time);
+                } else {
+                    var m = newSelection[date].indexOf(time);
+                    newSelection[date].splice(m, 1);
+                }
+                setMovingCollections(newSelection);
+                setCollections({ ...collections, movingCollections: newSelection });
+                break;
+            case 'orderCollections':
+                newSelection = orderCollections;
+                if (check === true) {
+                    if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
+                    newSelection[`${date}`].push(time);
+                } else {
+                    var o = newSelection[date].indexOf(time);
+                    newSelection[date].splice(o, 1);
+                }
+                setOrderCollections(newSelection);
+                setCollections({...collections, orderCollections: newSelection});
+                break;
+            case 'boundariesCollections': 
+                newSelection = boundariesCollections;
+                if (check === true) {
+                    if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
+                    newSelection[`${date}`].push(time);
+                } else {
+                    var b = newSelection[date].indexOf(time);
+                    newSelection[date].splice(b, 1);
+                }
+                setBoundariesCollections(newSelection);
+                setCollections({ ...collections, boundariesCollections: newSelection });
+                break;
+            case 'lightingCollections': 
+                newSelection = lightingCollections;
+                if (check === true) {
+                    if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
+                    newSelection[`${date}`].push(time);
+                } else {
+                    var l = newSelection[date].indexOf(time);
+                    newSelection[date].splice(l, 1);
+                }
+                setLightingCollections(newSelection);
+                setCollections({ ...collections, lightingCollections: newSelection });
+                break;
+            case 'natureCollections':
+                newSelection = natureCollections;
+                if (check === true) {
+                    if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
+                    newSelection[`${date}`].push(time);
+                } else {
+                    var n = newSelection[date].indexOf(time);
+                    newSelection[date].splice(n, 1);
+                }
+                setNatureCollections(newSelection);
+                setCollections({ ...collections, natureCollections: newSelection });
+                break;
+            case 'soundCollections':
+                newSelection = soundCollections;
+                if (check === true) {
+                    if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
+                    newSelection[`${date}`].push(time);
+                } else {
+                    var s = newSelection[date].indexOf(time);
+                    newSelection[date].splice(s, 1);
+                }
+                setSoundCollections(newSelection);
+                setCollections({ ...collections, soundCollections: newSelection });
+                break;
+            default:
+                console.log('Error handling selection change.');
         }
     };
 
@@ -136,7 +168,7 @@ function FullMap(props){
             Object.entries(object).map(([sdate, stimes])=>(
                 stimes.map(time => (
                     Object.entries(data.Activities[title][sdate][time]).map(([ind, point], i2)=>(
-                        <Marker key={`${sdate}.${time}.${i2}`} position={point['standingPoint']} markerType={point['average'] ? 'soundCollections' : (point['result'] ? point['result'] : null)} markerSize={title === 'soundCollections' ? point['average'] : null} />
+                        <Marker key={`${sdate}.${time}.${i2}`} position={point['standingPoint'] ? point['standingPoint'] : point['point']} markerType={point['average'] ? 'soundCollections' : (point['result'] ? point['result'] : (point['posture'] ? point['posture'] : null))} markerSize={title === 'soundCollections' ? point['average'] : null} />
                     ))
                 ))
             ))
@@ -147,9 +179,9 @@ function FullMap(props){
         <>
             {/* Map Drawers overlay in map.jsx to better communicate*/}
             {props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null}
-            <Button id='printButton' onClick={() => printMap()}>Print Map</Button>
+            {props.type === 1 ? <Button id='printButton' onClick={() => printMap()}>Print Map</Button>: null}
             {/* Wrapper imports Google Maps API */}
-            <Wrapper apiKey={''} render={render} id='mapContainer'>
+            <Wrapper apiKey={'AIzaSyCRl7S_birFgaHMCaltRCVkGz9MuttefpQ'} render={render} id='mapContainer'>
                 <Map
                     center={center}
                     onClick={onClick}
@@ -228,37 +260,29 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
 const Marker = (options) => {
     const markerType = options.markerType;
     const markerSize = Number(options.markerSize);
+    const colors = {
+        soundCollections: ['#B073FF', '#B073FF'],
+        animal: ['#9C4B00', 'red'],
+        plant: ['#BEFF05', 'red'],
+        squatting: ['green', 'black'],
+        sitting: ['red', 'black'],
+        standing: ['blue', 'black'],
+        laying: ['yellow', 'black'],
+        none: ['white', 'white']
+    }
 
     //SVG shape icons
     const style = {
-        soundCollections: {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: '#B073FF',
-            fillOpacity: 0.3,
-            scale: (markerSize ? markerSize : 10),
-            strokeWeight: 1, 
-            strokeColor: '#B073FF'
-        }, 
-        animal: {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: '#9C4B00',
-            fillOpacity: 0.9,
-            scale: 10,
-            strokeWeight: 2,
-            strokeColor: 'red'
-        },
-        Plants: {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: '#BEFF05',
-            fillOpacity: 0.9,
-            scale: 10,
-            strokeWeight: 2,
-            strokeColor: 'red'
-        }
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: colors[markerType][0],
+        fillOpacity: (markerSize ? 0.3 : 0.8),
+        scale: (markerSize ? markerSize : 10),
+        strokeWeight: 1, 
+        strokeColor: colors[markerType][1]
 
     };
 
-    const icon = style[markerType] ? style[markerType] : style.soundCollections;
+    const icon = (colors[markerType][0]) ? style : null;
     const [marker, setMarker] = React.useState();
 
     React.useEffect(() => {

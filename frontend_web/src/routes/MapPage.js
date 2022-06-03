@@ -5,6 +5,34 @@ import './routes.css';
 function MapPage(){
     const drawers = {
         Activities: {
+            stationaryCollections:{
+                '3/1/22':{
+                    '2:00':[
+                        {
+                            point: {
+                                lat: 28.603643447056765, 
+                                lng: -81.19916117597768
+                            },
+                            posture: 'laying'
+                        },
+                        {
+                            point: {
+                                lat: 28.603991964597586, 
+                                lng: -81.19940793919763
+                            },
+                            posture: 'sitting'
+                        },
+                        {
+                            point: {
+                                lat: 28.60417328745557, 
+                                lng: -81.19930065084112
+                            },
+                            posture: 'standing'
+                        }
+                    ]
+                }
+            },
+            movingCollections:{},
             orderCollections: {
                 '2/22/22': {
                     '18:00': [
@@ -87,7 +115,7 @@ function MapPage(){
                                 lat: 28.603369329889514,
                                 lng: -81.20129371852886
                             },
-                            result: 'Plants'
+                            result: 'plant'
                         },
                     ]
                 }

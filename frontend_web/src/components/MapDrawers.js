@@ -31,6 +31,8 @@ export default function MapDrawer(props) {
     };
 
     const testNames = {
+        stationaryCollections: 'Stationary',
+        movingCollections: 'Moving',
         orderCollections: 'Absence of Order',
         boundariesCollections: 'Boundaries',
         lightingCollections: 'Lighting',
@@ -39,6 +41,8 @@ export default function MapDrawer(props) {
     };
 
     const [dateOpen, setDateOpen] = React.useState({
+        stationaryCollections: false,
+        movingCollections: false,
         orderCollections: false,
         boundariesCollections: false,
         lightingCollections: false,

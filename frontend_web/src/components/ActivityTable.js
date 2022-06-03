@@ -79,7 +79,7 @@ const subtable = (row, type) => (
                                 {instance.split('.')[0]}
                             </TableCell>
                             <TableCell colSpan={1} className='type'>
-                                {instance.split('.')[0] === 'soundCollections' ? `${point.average} dB` : (point.result ? point.result : 'N/A')}
+                                {instance.split('.')[0] === 'soundCollections' ? `${point.average} dB` : (point.result ? point.result : (point.posture ? point.posture : 'N/A'))}
                             </TableCell>
                             <TableCell></TableCell>
                             <TableCell>Location {index}</TableCell>
