@@ -7,9 +7,9 @@ import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js
 import { CompareBarChart } from '../../components/charts.component';
 
 import { styles } from './compare.styles'
+import { soundStyles } from './soundCompare.styles';
 
 //comparing 2 sound tests
-//this is a copy of the movingCompare file and will likely need to have some changes
 export function SoundCompare(props) {
   if (props.results === null) {
     return (
@@ -40,67 +40,95 @@ export function SoundCompare(props) {
     result.information = result.title + '\n' + result.resultName + '\nLocation: ' + result.sharedData.location;
   });
 
-  const chartWidth = Dimensions.get('window').width*0.95;
-  const chartHeight = 210;
+  // used to find the most common predominant sound type
+  const mostCommon = (arr) =>{
+    // used as a dictonary to store word and its frequency
+    let hm = {};
+    // iterate over the whole array
+    for(let i = 0; i < arr.length; i++){
+      // if the string already exists in hm then increase it's value by 1
+      if(hm.hasOwnProperty(arr[i])) hm[arr[i]] = hm[arr[i]] + 1;
+      // else add it in hm by giving it a value
+      else hm[arr[i]] = 1;
+    }
 
-  var randomColor = require('randomcolor');
-
-  // format moving data
-  let labels = [];
-  let dataset = [];
-
-  for (let i = 0; i < results.length; i++) {
-    if (results[i].data === undefined || results[i].data === null) { continue; }
-    let result = [...results[i].data];
-    // null entry
-    dataset.push({
-      data: [],
-    });
-    // zero out previously made categories
-    labels.map(label => {
-      dataset[i].data.push(Number(0))
-    });
-
-    // for each data point, increase count
-    for (let j = 0; j < result.length; j++) {
-      let dataPoint = result[j];
-      let label = undefined;
-      let labelIndex = -1;
-
-      // movement label
-      label = dataPoint.mode;
-      if (label !== undefined) {
-        labelIndex = labels.findIndex(element => element === label);
-        // add category if it's not currently in the list
-        if (labelIndex < 0) {
-          labelIndex = labels.length;
-          labels.push(label);
-          dataset.map(entry => entry.data.push(Number(0)));
-        }
-        // increase count
-        dataset[i].data[labelIndex] += 1;
-      } // end movement label
-
-    } // end for j loop
-  } // end for i loop
-
-  // add the graph information here
-  //console.log('graph results...');
-  for (let i = 0; i < results.length; i++) {
-    results[i].graph = dataset[i];
-    //results[i].labels = labels;
-    //console.log('i:', i, '\n', results[i].graph);
+    let ret = '';
+    let val = 0;
+    // iterate over the dictonary looking for the highest frequency, then return that string
+    for(const [word, value] of Object.entries(hm)){
+      // if the value of the word in hm is larger than our current value
+      if(value > val){
+        // update the current value and the string
+        val = value;
+        ret = word;
+      }
+    }
+    return ret;
+  }
+  
+  // packages the data for each test for ease of use
+  let test1 = {
+    data: results[0].data,
+    standingPoints: results[0].standingPoints,
+    info: results[0].resultName,
+    color: results[0].color,
+    title: results[0].title
   }
 
-  let dataValues = results.map(result => {
-    console.log('result..', result);
-    return {
-      data: result.graph.data,
-      svg: {fill: result.color, opacity:.5},
-      title: result.resultName,
-    }
-  });
+  let test2 = {
+    data: results[1].data,
+    standingPoints: results[1].standingPoints,
+    info: results[1].resultName,
+    color: results[1].color,
+    title: results[1].title
+  }
+  
+  // returns an array of strings
+  const soundsArray = (arr, ind) =>{
+    let sounds = [
+      arr[ind].decibel_1.predominant_type,
+      arr[ind].decibel_2.predominant_type,
+      arr[ind].decibel_3.predominant_type,
+      arr[ind].decibel_4.predominant_type,
+      arr[ind].decibel_5.predominant_type
+    ]
+    return sounds;
+  }
+  
+  // used to display both tests depending on which 1 was passed as a prop
+  const DisplayTest = (props) =>{
+    let jsxObj = [[]];
+    let test = props.test;
+    for(let i = 0; i < test.data.length; i++){
+      let sounds = soundsArray(test.data, i);
+      let predominant = mostCommon(sounds);
+      let data = "Sound Decibel: " + test.data[i].average.toFixed(1) + " dB\t\t" + "Main Sound: " + predominant;
+      jsxObj[i] = (
+        <View key={i.toString()} >
 
+          <Text category={'h4'}>{test.standingPoints[i].title}</Text>
+
+          <View style={soundStyles.dataView}>
+            <Text>{data}</Text>
+          </View>
+          
+        </View>
+      )
+    }
+    return(
+      <View>
+        {jsxObj}
+          
+          <View style={soundStyles.topSpacing}>
+            <Text category={'s2'}>Data From: </Text>
+            <Text style={{color: test.color}}>{test.title}</Text>
+            <Text style={{color: test.color}}>{test.info}</Text>
+          </View>
+      
+      </View>
+    )
+  }
+    
   return (
     <ViewableArea>
       <HeaderBack {...props} text={"Compare"}/>
@@ -110,7 +138,7 @@ export function SoundCompare(props) {
           <Text category={'h5'}>Sound Result Information</Text>
           <Divider style={styles.metaDataTitleSep} />
 
-          {
+            {
             results.map((result, index) => {
               if (index === results.length - 1) {
                 return (
@@ -131,34 +159,23 @@ export function SoundCompare(props) {
           }
 
           <Divider style={styles.metaDataEndSep} />
+          
+          <View style={soundStyles.bottomSpacing}>
+            <DisplayTest
+              test={test1}
+            />
+          </View>
+          
+          <Divider style={soundStyles.separator} />
 
-          <CompareBarChart
-            {...props}
-            title={"Movement"}
-            rotation={'0deg'}
-            dataValues={dataValues}
-            dataLabels={labels}
-            barColor={color}
-            width={chartWidth}
-            height={chartHeight}
-          />
-
+          <View style={soundStyles.topSpacing}>
+            <DisplayTest
+              test={test2}
+            />
+          </View>
+          
         </ScrollView>
       </ContentContainer>
     </ViewableArea>
   );
-
-
 }
-
-// compass-outline
-// pin-outline
-const MapIcon = (props) => (
-  <Icon {...props} name='compass-outline'/>
-);
-
-// file-text-outline
-// pie-chart-outline
-const ChartIcon = (props) => (
-  <Icon {...props} name='file-text-outline'/>
-);

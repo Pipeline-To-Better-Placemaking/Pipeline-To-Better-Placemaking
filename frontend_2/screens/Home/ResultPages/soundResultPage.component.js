@@ -163,11 +163,11 @@ export function SoundResultPage(props) {
     }
     return ret;
   }
-
+  
   // used to render multiple barcharts based off the # of standing points/length of the data array
   const MultiBarChart = () =>{
     let component = [[]]
-    for(let i = 0; i < props.selectedResult.data.length; i++){
+    for(let i = 0; i < props.selectedResult.standingPoints.length; i++){
       // call something here that determines the most common predominant sound
       let predominant = mostCommon(props.selectedResult.graph[i].predominant);
       // main component container needs this key={i.toString()}
@@ -185,7 +185,7 @@ export function SoundResultPage(props) {
           />
   
           <View style={styles.rowView}>
-            <Text>Sound Decibel: {props.selectedResult.graph[i].average} dB</Text>
+            <Text>Sound Decibel: {props.selectedResult.graph[i].average.toFixed(1)} dB</Text>
             <Text>Sound Type: {predominant}</Text>
           </View>
 

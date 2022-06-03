@@ -13,6 +13,7 @@ export function CompareFilteredView(props) {
     const [compareCount, setCompareCount] = useState(0)
     const [titleIndex, setTitleIndex] = useState(new IndexPath(0))
     //add the new tests here
+    // not index 2 is not for the survery here, index 2 is the sound test
     const activities = ['Stationary Activity Map', 'People Moving', 'Sound Test']
 
     const selectedActivity = () => {
@@ -22,11 +23,12 @@ export function CompareFilteredView(props) {
         else if (titleIndex.row  === 1) {
           return props.filterCriteria.moving
         }
-        else if (titleIndex.row  === 2) {
-          return props.filterCriteria.survey
-        }
+        // survery is not allowed to be compared (nothing to compare)
+        // else if (titleIndex.row  === 2) {
+        //   return props.filterCriteria.survey
+        // }
         //add the new tests here 
-        else if (titleIndex.row === 3){
+        else if (titleIndex.row === 2){
           return props.filterCriteria.sound
         }
         else {
@@ -75,11 +77,12 @@ export function CompareFilteredView(props) {
       else if (titleIndex.row === 1) { // moving
         props.navigation.navigate("MovingCompare");
       } 
-      else if (titleIndex.row === 2) { // survey
+      // survery is not allowed to be compared (nothing to compare)
+      // else if (titleIndex.row === 2) { // survey
 
-      }
+      // }
       //add the new tests here
-      else if (titleIndex.row === 3){ //sound
+      else if (titleIndex.row === 2){ //sound
         props.navigation.navigate("SoundCompare");
       }
 

@@ -67,7 +67,6 @@ export function SoundTest(props){
     // used to store the sound types (multi-select)
     const[soundsArr, setSoundsArr] = useState([[]]);
 
-                            
     // ends activity, packages and sends data to the DB
     const endActivity = async () => {
         setStart(false);
@@ -146,7 +145,7 @@ export function SoundTest(props){
 
             let info = await response.json()
             
-            console.log(info);
+            // console.log(info);
 
         } catch (error) {
             console.log("ERROR: ", error)
@@ -162,7 +161,7 @@ export function SoundTest(props){
         ret = ret / len;
         return ret;
     }
-
+    
     // closes the modal and stores the measurement
     const closeDecibelData = async (inf) => {
         // close the modal

@@ -61,7 +61,7 @@ export function SoundMapResults(props) {
               
                 <View style={styles.spacing} >
                     <Text style={styles.dataText}>
-                        Decibel: {props.value} dB
+                        Decibel: {props.value.toFixed(1)} dB
                     </Text>
                 </View>
                 
