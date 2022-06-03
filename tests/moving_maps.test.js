@@ -20,7 +20,7 @@ const mockObjectId = new mongoose.Types.ObjectId();
 
 
 const testMap = {
-    title: 'Mappy',
+    title: 'Testing points stat',
     standingPoints: mockObjectId,
     researchers: mockObjectId,
     project: mockObjectId,
@@ -88,7 +88,7 @@ describe('When creating a map', () => {
 
         const response = await api
             .get(`${baseUrl}/${id}`)
-            .set('Authorization','Bearer' + token)
+            .set('Authorization','Bearer ' + token)
             .expect(200)
             .expect('Content-Type', /application\/json/)
 
