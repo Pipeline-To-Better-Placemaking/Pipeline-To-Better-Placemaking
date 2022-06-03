@@ -37,24 +37,22 @@ module.exports.updatePoint = async function (pointId, newPoint) {
 module.exports.removeRefrence = async function(pointId) {
     point = await Standing_Points.findById(pointId)
     console.log('point during remove ref: ' + point)
-    console.log('before decrease' + point.refCount)
-    point.refCount = point.refCount - 1
-    console.log('after decrease' + point.refCount)
-    if(point.refCount <= 0){
+    console.log('before decrease: ' + point.refCount)
+    const newRef = point.refCount - 1
+    console.log('after decrease: ' + newRef)
+    if(newRef <= 0){
         return await Standing_Points.findByIdAndDelete(pointId)
 
     }
     else{
-        await point.save()
-        return point
+        return await Standing_Points.updateOne({ _id: pointId }, { refCount: newRef });
     }
 }
 
 module.exports.addRefrence = async function(pointId) {
     point = await Standing_Points.findById(pointId)
-    console.log('before increase' + point.refCount)
-    point.refCount = point.refCount + 1
-    console.log('after increase' + point.refCount)
-    await point.save()
-    return point;
+    console.log('before increase: ' + point.refCount)
+    const newRef = point.refCount + 1
+    console.log('after increase: ' + newRef)
+    return await Standing_Points.updateOne({ _id: pointId }, { refCount: newRef });
 }
