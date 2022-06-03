@@ -181,7 +181,7 @@ function FullMap(props){
             {props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null}
             {props.type === 1 ? <Button id='printButton' onClick={() => printMap()}>Print Map</Button>: null}
             {/* Wrapper imports Google Maps API */}
-            <Wrapper apiKey={'AIzaSyCRl7S_birFgaHMCaltRCVkGz9MuttefpQ'} render={render} id='mapContainer'>
+            <Wrapper apiKey={''} render={render} id='mapContainer'>
                 <Map
                     center={center}
                     onClick={onClick}
