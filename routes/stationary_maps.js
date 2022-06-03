@@ -113,8 +113,8 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 
         for(var i = 0; i < req.body.standingPoints.length; i++){
             console.log('req.body.standing')
-            console.log(req.body.standingPoints[i])
-            Points.addRefrence(req.body.standingPoints[i])
+            console.log(req.body.standingPoints[i]._id)
+            Points.addRefrence(req.body.standingPoints[i]._id)
         }
         for(var i = 0; i < map.standingPoints.length; i++){
             console.log('map.standing')
