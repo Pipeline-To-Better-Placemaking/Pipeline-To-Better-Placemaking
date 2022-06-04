@@ -40,45 +40,73 @@ module.exports.updatePoint = async function (pointId, newPoint) {
 };
 
 module.exports.removeRefrence = async function (pointId) {
-  try {
-    point = await Standing_Points.findById(pointId);
-    console.log("before decrease: " + point.refCount);
-    const newRef = point.refCount - 1;
-    console.log("after decrease: " + newRef);
-    if (newRef <= 0) {
-      return await Standing_Points.findByIdAndDelete(pointId);
-    } else {
-      Standing_Points.findOneAndUpdate(
-        { _id: pointId },
-        { $inc: { refCount: -1 } },
-        { new: true }
-      ),
-        (err, point) => {
-          // callback
-          console.log(point);
-        };
-    }
-  } catch (err) {
-    console.log(err);
+  point = await Standing_Points.findById(pointId);
+  point.refCount = point.refCount - 1;
+  if (point.refCount <= 0) {
+    return await Standing_Points.findByIdAndDelete(pointId);
+  } else {
+    point.save(function (error) {
+      console.log("inside");
+      if (error) {
+        console.log("ERROR: " + error);
+        return error;
+      } else {
+        console.log("User " + user + " added");
+        return point;
+      }
+    });
   }
+  // try {
+  //   point = await Standing_Points.findById(pointId);
+  //   console.log("before decrease: " + point.refCount);
+  //   const newRef = point.refCount - 1;
+  //   console.log("after decrease: " + newRef);
+  //   if (newRef <= 0) {
+  //     return await Standing_Points.findByIdAndDelete(pointId);
+  //   } else {
+  //     Standing_Points.findOneAndUpdate(
+  //       { _id: pointId },
+  //       { $inc: { refCount: -1 } },
+  //       { new: true }
+  //     ),
+  //       (err, point) => {
+  //         // callback
+  //         console.log(point);
+  //       };
+  //   }
+  // } catch (err) {
+  //   console.log(err);
+  // }
 };
 
 module.exports.addRefrence = async function (pointId) {
-  try {
-    point = await Standing_Points.findById(pointId);
-    console.log("before increase: " + point.refCount);
-    const newRef = point.refCount + 1;
-    console.log("after increase: " + newRef);
-    Standing_Points.findOneAndUpdate(
-      { _id: pointId },
-      { $inc: { refCount: 1 } },
-      { new: true }
-    ),
-      (err, point) => {
-        // callback
-        console.log(point);
-      };
-  } catch (err) {
-    console.log(err);
-  }
+  point = await Standing_Points.findById(pointId);
+  point.refCount = point.refCount + 1;
+  point.save(function (error) {
+    console.log("inside");
+    if (error) {
+      console.log("ERROR: " + error);
+      return error;
+    } else {
+      console.log("Point " + point + " added");
+      return point;
+    }
+  });
+
+  // try {
+  //   point = await Standing_Points.findById(pointId);
+  //   console.log("before increase: " + point.refCount);
+  //   const newRef = point.refCount + 1;
+  //   console.log("after increase: " + newRef);
+  //   Standing_Points.findOneAndUpdate(
+  //     { _id: pointId },
+  //     { $inc: { refCount: 1 } },
+  //     { new: true },
+  //     (err, point) => {
+  //       // callback
+  //       console.log(point);
+  //     })
+  // } catch (err) {
+  //   console.log(err);
+  // }
 };
