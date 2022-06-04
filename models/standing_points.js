@@ -50,8 +50,8 @@ module.exports.removeRefrence = async function (pointId) {
     } else {
       const response = await Standing_Points.updateOne(
         { _id: pointId },
-        { $set: { refCount: Number(newRef) } }
-      );
+        { $inc: { refCount: -1} }
+        );
       console.log(response);
     }
   } catch (err) {
@@ -67,7 +67,7 @@ module.exports.addRefrence = async function (pointId) {
     console.log("after increase: " + newRef);
     const response = await Standing_Points.updateOne(
       { _id: pointId },
-      { $set: { refCount: Number(newRef) } }
+      { $inc: { refCount: 1} }
     );
     console.log(response);
   } catch (err) {
