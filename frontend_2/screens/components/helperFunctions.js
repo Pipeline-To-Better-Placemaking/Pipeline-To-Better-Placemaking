@@ -155,9 +155,7 @@ export async function formatSoundGraphData(result){
   
   let tempResult = {...result};
   let graph = [];
-  let index = -1;
-  let label = '';
-  let decString = "Decibel";
+  let decString = "Reading";
   
   for(let i = 0; i < result.data.length; i++){
     let data = result.data[i];
@@ -165,6 +163,7 @@ export async function formatSoundGraphData(result){
     graph.push({data: [], labels:[[]], predominant: [[]], average: 0});
 
     // set the predominant sound for each graph object
+
     graph[i].predominant[0] = data.decibel_1.predominant_type;
     graph[i].predominant[1] = data.decibel_2.predominant_type;
     graph[i].predominant[2] = data.decibel_3.predominant_type;

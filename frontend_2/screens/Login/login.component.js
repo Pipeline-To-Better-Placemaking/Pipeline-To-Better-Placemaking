@@ -65,8 +65,7 @@ export const LoginScreen = ( props ) => {
       await AsyncStorage.setItem("@lastName", res.user.lastname)
       await AsyncStorage.setItem("@teams", JSON.stringify(res.user.teams))
       await AsyncStorage.setItem("@invites", JSON.stringify(res.user.invites))
-      await AsyncStorage.setItem("@mapConfig", "standard")
-
+      await AsyncStorage.setItem("@mapConfig", "satellite")
       let { status } = await Location.requestForegroundPermissionsAsync();
 
       if (status === 'granted') {

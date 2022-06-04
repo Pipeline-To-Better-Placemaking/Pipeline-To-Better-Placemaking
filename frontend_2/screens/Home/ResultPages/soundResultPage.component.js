@@ -185,7 +185,7 @@ export function SoundResultPage(props) {
           />
   
           <View style={styles.rowView}>
-            <Text>Sound Decibel: {props.selectedResult.graph[i].average.toFixed(1)} dB</Text>
+            <Text>Sound Decibel: {props.selectedResult.graph[i].average.toFixed(2)} dB</Text>
             <Text>Sound Type: {predominant}</Text>
           </View>
 

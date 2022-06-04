@@ -155,11 +155,13 @@ export function SoundTest(props){
     
     // computes the average of a passed in array
     const computeAverage = (arr) =>{
-        let ret = 0;
+        let mean = 0;
         let len = arr.length;
-        arr.forEach(element => (ret = ret + element));
-        ret = ret / len;
-        return ret;
+        arr.forEach(element => (mean = mean + element));
+        mean = mean / len;
+        // force it to round to 2 decimal places, then convert it back to a float
+        let tempString = mean.toFixed(2);
+        return parseFloat(tempString);
     }
     
     // closes the modal and stores the measurement
@@ -169,9 +171,8 @@ export function SoundTest(props){
         // pull up next modal only if we are at the end of the measurement
         if(timer === 0){
             // push last measurement on to curr and compute its average, then store in the appropriate row of decArr
-            curr.push(parseInt(inf.decibel));
+            curr.push(parseFloat(inf.decibel));
             let avg = computeAverage(curr);
-            
             // standingIndex <= # standing points always, so if something exists at that index of decArr, push the measurement onto it
             if(decArr[standingIndex]) decArr[standingIndex].push(avg);
             // if nothing existed at that index, push a new array (with the average) into the 2D array (its the 1st iteration of measurement at that standing point)
@@ -179,13 +180,13 @@ export function SoundTest(props){
             
             // reset curr for subsequent entries
             setCurr([]);
-            // pull up main sound modal
-            setMainSoundModal(true);
+            // pull up sounds modal (multi-select)
+            setSoundsModal(true);
         }
         // else resume the measurement
         else{
             // store current measurement in curr
-            curr.push(parseInt(inf.decibel));
+            curr.push(parseFloat(inf.decibel));
             resume();
         }
     }
@@ -199,7 +200,8 @@ export function SoundTest(props){
         else mainSoundArr.push([inf.main_sound_type.toLowerCase()]);
         
         setMainSoundModal(false);
-        setSoundsModal(true);
+        // calls resume which then restarts/ends the test
+        resume();
     }
     
     // closes the sound types modal and stores the data
@@ -214,8 +216,7 @@ export function SoundTest(props){
         // if nothing existed at that index, push a new array (with the data) into the 2D array (its the 1st iteration of data at that standing point)
         else soundsArr.push(inf.sound_type);
         setSoundsModal(false);
-        // calls resume which then restarts/ends the test
-        resume();
+        setMainSoundModal(true);
     }
     
     // compares the soundsArr and passed in array for duplicate entries, only returns elements (as an array) from arr that are not in soundsArr
@@ -369,14 +370,14 @@ export function SoundTest(props){
                         closeData={closeDecibelData}
                     />
 
-                    <MainSoundModal
-                        visible={mainSoundModal}
-                        closeData={closeMainData}
-                    />
-
                     <SoundsModal
                         visible={soundsModal}
                         closeData={closeSoundsData}
+                    />
+
+                    <MainSoundModal
+                        visible={mainSoundModal}
+                        closeData={closeMainData}
                     />
 
                     <MovingModal

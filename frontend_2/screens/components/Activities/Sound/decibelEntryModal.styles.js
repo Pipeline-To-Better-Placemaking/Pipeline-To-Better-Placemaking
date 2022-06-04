@@ -29,16 +29,21 @@ export const styles = StyleSheet.create({
 
     titleLine:{
         alignSelf: 'center', 
-        marginTop: -20
+        marginTop: -20,
+        marginBottom: height * .03
     },
 
     dataView:{
-        alignItems: 'center', 
+        alignItems: 'center',
+    },
+
+    nanSpace:{
+        marginBottom: height * .009,
+        marginTop: -3
     },
 
     inputBox:{
-        marginTop: height * .03,
-        width: width * .75,
+        width: width * .75
     },
 
     button:{
