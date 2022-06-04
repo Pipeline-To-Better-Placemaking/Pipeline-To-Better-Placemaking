@@ -48,7 +48,11 @@ module.exports.removeRefrence = async function (pointId) {
     if (newRef <= 0) {
       return await Standing_Points.findByIdAndDelete(pointId);
     } else {
-      Standing_Points.updateOne({ _id: pointId }, { $inc: { refCount: -1 } }),
+      Standing_Points.findOneAndUpdate(
+        { _id: pointId },
+        { $inc: { refCount: -1 } },
+        { new: true }
+      ),
         (err, point) => {
           // callback
           console.log(point);
@@ -65,7 +69,11 @@ module.exports.addRefrence = async function (pointId) {
     console.log("before increase: " + point.refCount);
     const newRef = point.refCount + 1;
     console.log("after increase: " + newRef);
-    Standing_Points.updateOne({ _id: pointId }, { $inc: { refCount: 1 } }),
+    Standing_Points.findOneAndUpdate(
+      { _id: pointId },
+      { $inc: { refCount: 1 } },
+      { new: true }
+    ),
       (err, point) => {
         // callback
         console.log(point);
