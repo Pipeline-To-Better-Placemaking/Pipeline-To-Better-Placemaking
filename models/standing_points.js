@@ -41,6 +41,8 @@ module.exports.updatePoint = async function (pointId, newPoint) {
 
 module.exports.removeRefrence = async function (pointId) {
   point = await Standing_Points.findById(pointId);
+  console.log(point)
+  console.log(point.ref)
   point.refCount = point.refCount - 1;
   if (point.refCount <= 0) {
     return await Standing_Points.findByIdAndDelete(pointId);
