@@ -142,13 +142,13 @@ router.put(
       for (var i = 0; i < standingPointsLen; i++) {
         if (i < req.body.standingPoints.length) {
           console.log("req.body.standing");
-          console.log(req.body.standingPoints[i]._id);
-          Points.addRefrence(req.body.standingPoints[i]._id).then(console.log("finished adding ref"));
+          console.log(req.body.standingPoints[i]);
+          Points.addRefrence(req.body.standingPoints[i]).then(console.log("finished adding ref"));
         }
         if (i < map.standingPoints.length) {
           console.log("map.standing");
-          console.log(map.standingPoints[i]._id);
-          Points.removeRefrence(map.standingPoints[i]._id).then(console.log("finished removing ref"));
+          console.log(map.standingPoints[i]);
+          Points.removeRefrence(map.standingPoints[i]).then(console.log("finished removing ref"));
         }
       }
     }
