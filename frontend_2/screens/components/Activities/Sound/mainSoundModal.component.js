@@ -38,6 +38,8 @@ export function MainSoundModal(props) {
         // if the user didn't enter any value, do not allow modal to close
         else setEmpty(true);
     }
+    
+    let music = "\t Music\n(entertainment)"; 
 
     return(
         <Modal transparent={true} animationType='slide' visible={props.visible}>
@@ -56,23 +58,18 @@ export function MainSoundModal(props) {
 
                                 <View>
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} onPress={()=> sendData('sample 1')} >Sample_1</Button>
-                                        <Button style={styles.button} onPress={()=> sendData('sample 2')}>Sample_2</Button>
+                                        <Button style={styles.button} onPress={()=> sendData('water feature')} >Water Feature</Button>
+                                        <Button style={styles.button} onPress={()=> sendData('traffic')}>Traffic</Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} onPress={()=> sendData('sample 3')}>Sample_3</Button>
-                                        <Button style={styles.button} onPress={()=> sendData('sample 4')}>Sample_4</Button>
+                                        <Button style={styles.button} onPress={()=> sendData('people sounds')}>People Sounds</Button>
+                                        <Button style={styles.button} onPress={()=> sendData('animals')}>Animals</Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} onPress={()=> sendData('sample 5')}>Sample_5</Button>
-                                        <Button style={styles.button} onPress={()=> sendData('sample 6')}>Sample_6</Button>
-                                    </View>
-
-                                    <View style={styles.buttonRow}>
-                                        <Button style={styles.button} onPress={()=> sendData('sample 7')}>Sample_7</Button>
-                                        <Button style={styles.button} onPress={()=> sendData('sample 8')}>Sample_8</Button>
+                                        <Button style={styles.button} onPress={()=> sendData('wind')}>Wind</Button>
+                                        <Button style={styles.button} onPress={()=> sendData('music')}>{music}</Button>
                                     </View>
                                 </View>
 

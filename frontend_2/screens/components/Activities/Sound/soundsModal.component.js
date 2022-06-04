@@ -20,8 +20,6 @@ export function SoundsModal(props) {
     const [select4, setSelect4] = useState(false);
     const [select5, setSelect5] = useState(false);
     const [select6, setSelect6] = useState(false);
-    const [select7, setSelect7] = useState(false);
-    const [select8, setSelect8] = useState(false);
     const [select9, setSelect9] = useState(false);
     
     const sendData = async () => {
@@ -71,38 +69,29 @@ export function SoundsModal(props) {
         // if an option is selected push its contents onto the data array 
         // then reset that state for subsequent entries
         if(select1){
-            arr.push('sample 1');
+            arr.push('water feature');
             setSelect1(false)
         }
         if(select2){
-            arr.push('sample 2');
+            arr.push('traffic');
             setSelect2(false)
         }
         if(select3){
-            arr.push('sample 3');
+            arr.push('people sounds');
             setSelect3(false)
         }
         if(select4){
-            arr.push('sample 4');
+            arr.push('animals');
             setSelect4(false)
         }
         if(select5){
-            arr.push('sample 5');
+            arr.push('wind');
             setSelect5(false)
         }
         if(select6){
-            arr.push('sample 6');
+            arr.push('music (entertainment)');
             setSelect6(false)
-        }
-        if(select7){
-            arr.push('sample 7');
-            setSelect7(false)
-        }
-        if(select8){
-            arr.push('sample 8');
-            setSelect8(false)
-        }
-        
+        }        
         // return the array of data
         return arr
     }
@@ -145,14 +134,6 @@ export function SoundsModal(props) {
                 setSelect6(!select6);
                 break;
 
-            case 7:
-                setSelect7(!select7);
-                break;
-
-            case 8:
-                setSelect8(!select8);
-                break;
-
             case 9:
                 setSelect9(!select9);
                 break;
@@ -161,13 +142,15 @@ export function SoundsModal(props) {
                 console.log("switch's default; ERROR should never enter here");        
         }
     }
+    
+    let music = "\t Music\n(entertainment)"; 
 
     return(
         <Modal transparent={true} animationType='slide' visible={props.visible}>
             <KeyboardAvoidingView behavior='position' style={styles.avoid}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
                     <View style={styles.modalContainer}>
-                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1'], height:'75%'}]} >
+                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1'], height:'65%'}]} >
                         
                             <Text category={'h1'} style={styles.titleText}>Sound Types</Text>
                             <Text category={'s1'} style={styles.titleLine}>____________________________</Text>
@@ -187,23 +170,18 @@ export function SoundsModal(props) {
 
                                 <View>
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)} >Sample_1</Button>
-                                        <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>Sample_2</Button>
+                                        <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)} >Water Feature</Button>
+                                        <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>Traffic</Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} appearance={select3 ? 'primary' : 'outline'} onPress={()=> setSelect(3)}>Sample_3</Button>
-                                        <Button style={styles.button} appearance={select4 ? 'primary' : 'outline'} onPress={()=> setSelect(4)}>Sample_4</Button>
+                                        <Button style={styles.button} appearance={select3 ? 'primary' : 'outline'} onPress={()=> setSelect(3)}>People Sounds</Button>
+                                        <Button style={styles.button} appearance={select4 ? 'primary' : 'outline'} onPress={()=> setSelect(4)}>Animals</Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} appearance={select5 ? 'primary' : 'outline'} onPress={()=> setSelect(5)}>Sample_5</Button>
-                                        <Button style={styles.button} appearance={select6 ? 'primary' : 'outline'} onPress={()=> setSelect(6)}>Sample_6</Button>
-                                    </View>
-
-                                    <View style={styles.buttonRow}>
-                                        <Button style={styles.button} appearance={select7 ? 'primary' : 'outline'} onPress={()=> setSelect(7)}>Sample_7</Button>
-                                        <Button style={styles.button} appearance={select8 ? 'primary' : 'outline'} onPress={()=> setSelect(8)}>Sample_8</Button>
+                                        <Button style={styles.button} appearance={select5 ? 'primary' : 'outline'} onPress={()=> setSelect(5)}>Wind</Button>
+                                        <Button style={styles.button} appearance={select6 ? 'primary' : 'outline'} onPress={()=> setSelect(6)}>{music}</Button>
                                     </View>
                                 </View>
 

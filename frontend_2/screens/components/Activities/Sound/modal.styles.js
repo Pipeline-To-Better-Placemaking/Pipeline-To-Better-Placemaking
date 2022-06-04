@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     },
 
     viewContainer: {
-        height: '70%',
+        height: '60%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -83,6 +83,12 @@ export const styles = StyleSheet.create({
     errorView:{
         alignItems: 'center',
         marginTop: 5
+    },
+
+    buttonText:{
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     // styles used only on soundsModal
