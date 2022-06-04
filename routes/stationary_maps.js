@@ -110,16 +110,19 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     project = await Project.findById(map.project)
 
     if(req.body.standingPoints){
+        const standingPointsLen = Math.max(req.body.standingPoints.length, map.standingPoints.length)
 
-        for(var i = 0; i < req.body.standingPoints.length; i++){
+        for(var i = 0; i < standingPointsLen; i++){
+            if(i < req.body.standingPoints.length){
             console.log('req.body.standing')
             console.log(req.body.standingPoints[i]._id)
             Points.addRefrence(req.body.standingPoints[i]._id)
-        }
-        for(var i = 0; i < map.standingPoints.length; i++){
+            }
+            if(i < map.standingPoints.length){
             console.log('map.standing')
             console.log(map.standingPoints[i])
             Points.removeRefrence(map.standingPoints[i])
+            }
         }
 
     }
