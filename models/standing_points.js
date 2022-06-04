@@ -48,12 +48,12 @@ module.exports.removeRefrence = async function (pointId) {
     return await Standing_Points.findByIdAndDelete(pointId);
   } else {
     point.save(function (error) {
-      console.log("inside");
+      console.log("inside point save REMOVE ref");
       if (error) {
         console.log("ERROR: " + error);
         return error;
       } else {
-        console.log("User " + user + " added");
+        console.log("Point " + point + " NOT added");
         return point;
       }
     });
@@ -85,7 +85,7 @@ module.exports.addRefrence = async function (pointId) {
   point = await Standing_Points.findById(pointId);
   point.refCount = point.refCount + 1;
   point.save(function (error) {
-    console.log("inside");
+    console.log("inside point save ADD ref");
     if (error) {
       console.log("ERROR: " + error);
       return error;
