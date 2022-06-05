@@ -153,7 +153,7 @@ module.exports.addEntry = async function(mapId, newEntry) {
         path: newEntry.path
     })
 
-    Points.addRefrence(newEntry.standingPoint)
+    await Points.addRefrence(newEntry.standingPoint)
 
     return await Maps.updateOne(
         { _id: mapId },
