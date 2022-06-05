@@ -25,7 +25,14 @@ function Home(){
     return(
         <div id='Home'>
             <div id='newProjectButtonBox'>
-                <Button id='newProjectButton' variant='contained' component={Link} to='new'>New Project</Button>
+                <Button 
+                    id='newProjectButton' 
+                    variant='contained' 
+                    component={Link} 
+                    to='new'
+                >
+                    New Project
+                </Button>
             </div>
             {/* type = 1 implies the project style cards */}
             <DisplayCards type={1} projects={projects}/>

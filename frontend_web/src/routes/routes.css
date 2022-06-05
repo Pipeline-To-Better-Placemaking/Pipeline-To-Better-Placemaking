@@ -150,13 +150,12 @@ button#loginButton {
     margin: 8px;
 }
 
-body {
-    padding-right: 0px;
-    overflow: hidden;
+div#ActivityPage {
+    overflow-y: scroll;
 }
 
 div#MapPage {
-    overflow:hidden;
+    overflow: hidden;
 }
 
 div.MuiCardContent-root {
@@ -208,7 +207,7 @@ form.MuiBox-root {
 }
 
 #MapPage {
-    height: calc(100vh - 112px);
+    height: calc(100vh - 113px);
     background-color: rgb(56, 56, 56);
     width: 100vw;
 }

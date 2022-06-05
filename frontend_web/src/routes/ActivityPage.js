@@ -115,7 +115,12 @@ function ActivityPage(){
                 <Table aria-label='collapsible table'>
                     <TableHead>
                         <TableRow>
-                            <TableCell align='center' colSpan={12}><Typography variant='h6'>Activity Results</Typography></TableCell>
+                            <TableCell 
+                                align='center' 
+                                colSpan={12}
+                            >
+                                <Typography variant='h6'>Activity Results</Typography>
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

@@ -11,6 +11,16 @@ import TableRow from '@mui/material/TableRow';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
+const testNames = {
+    stationaryCollections: 'Humans in Place',
+    movingCollections: 'Humans in Motion',
+    orderCollections: 'Absence of Order Locator',
+    boundariesCollections: 'Spatial and Shelter Boundaries',
+    lightingCollections: 'Lighting Profile',
+    natureCollections: 'Nature Prevalence',
+    soundCollections: 'Acoustical Profile'
+};
+
 function Row(props) {
     const row = props.row;
     const name = props.name;
@@ -53,7 +63,9 @@ const subtable = (row, type) => (
             <TableHead>
                 <TableRow>
                     <TableCell colSpan={2} className='value'>{type === 0 ? 'Value' : 'Category'}</TableCell>
-                    <TableCell colSpan={type === 0 ? 2 : 1} className='type'>{type === 0 ? 'Type' : 'Value'}</TableCell>
+                    <TableCell colSpan={type === 0 ? 2 : 1} className='type'>
+                        {type === 0 ? 'Type' : 'Value'}
+                    </TableCell>
                     <TableCell>{type === 0 ? 'Location' : 'Type'}</TableCell>
                     <TableCell>{type === 0 ? 'Date' : 'Location'}</TableCell>
                     <TableCell>{type === 0 ? 'Surveyor' : 'Date'}</TableCell>
@@ -76,10 +88,16 @@ const subtable = (row, type) => (
                     array.map((point, index)=>(
                         <TableRow key={index}>
                             <TableCell colSpan={2} className='value'>
-                                {instance.split('.')[0]}
+                                {(testNames[instance.split('.')[0]])}
                             </TableCell>
                             <TableCell colSpan={1} className='type'>
-                                {instance.split('.')[0] === 'soundCollections' ? `${point.average} dB` : (point.result ? point.result : (point.posture ? point.posture : 'N/A'))}
+                                {instance.split('.')[0] === 'soundCollections' ? 
+                                    `${point.average} dB` : 
+                                    (point.result ? 
+                                        point.result : 
+                                        (point.posture ? point.posture : 'N/A')
+                                    )
+                                }
                             </TableCell>
                             <TableCell></TableCell>
                             <TableCell>Location {index}</TableCell>
@@ -101,7 +119,6 @@ Row.propTypes = {
         }),
     ).isRequired,
 };
-
 
 function ActivityTable(props){
     /* Nested Expandable Tables */

@@ -69,7 +69,12 @@ export default function ProjectTabs(props) {
     return (
         <div id='projectTabs'>
             <Box sx={{ width: '100%', borderBottom: 1, borderColor: 'divider', bgcolor: '#00396D' }}>
-                <Tabs value={value} onChange={handleChange} aria-label='project tabs' TabIndicatorProps={{ children: <span className='MuiTabs-indicatorSpan' /> }}>
+                <Tabs 
+                    value={value} 
+                    onChange={handleChange} 
+                    aria-label='project tabs' 
+                    TabIndicatorProps={{ children: <span className='MuiTabs-indicatorSpan' /> }}
+                >
                     <LinkTab value={0} label='Map' href='map' className={mapIndex} />
                     <LinkTab value={1} label='Surveyors' href='surveyors' className={surveyorIndex} />
                     <LinkTab value={2} label='Activities' href='activities' className={activityIndex} />

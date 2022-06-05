@@ -3,14 +3,25 @@ import { Wrapper } from '@googlemaps/react-wrapper';
 import { createCustomEqual } from 'fast-equals';
 import { isLatLngLiteral } from '@googlemaps/typescript-guards';
 import Button from '@mui/material/Button';
-import MapDrawers from './MapDrawers';
 import TextField from '@mui/material/TextField';
+
+import MapDrawers from './MapDrawers';
 
 import './controls.css';
 
 const render = (status) => {
     console.log(status);
     return <h1>{status}</h1>;
+};
+
+const testNames = {
+    stationaryCollections: 'Humans in Place',
+    movingCollections: 'Humans in Motion',
+    orderCollections: 'Absence of Order Locator',
+    boundariesCollections: 'Spatial and Shelter Boundaries',
+    lightingCollections: 'Lighting Profile',
+    natureCollections: 'Nature Prevalence',
+    soundCollections: 'Acoustical Profile'
 };
 
 function printMap(){
@@ -137,7 +148,7 @@ function FullMap(props){
                 setCollections({ ...collections, soundCollections: newSelection });
                 break;
             default:
-                console.log('Error handling selection change.');
+                console.log(`Error handling selection change.`);
         }
     };
 
@@ -168,7 +179,20 @@ function FullMap(props){
             Object.entries(object).map(([sdate, stimes])=>(
                 stimes.map(time => (
                     Object.entries(data.Activities[title][sdate][time]).map(([ind, point], i2)=>(
-                        <Marker key={`${sdate}.${time}.${i2}`} position={point['standingPoint'] ? point['standingPoint'] : point['point']} markerType={point['average'] ? 'soundCollections' : (point['result'] ? point['result'] : (point['posture'] ? point['posture'] : null))} markerSize={title === 'soundCollections' ? point['average'] : null} />
+                        <Marker 
+                            key={`${sdate}.${time}.${i2}`} 
+                            info={point['average'] ? 
+                                (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point['average']} dB</div>`) 
+                                : (point['result'] ? 
+                                    (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point['result']}</div>`) 
+                                    : (point['posture'] ? 
+                                        (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point['posture']}</div>`) 
+                                        : null)) } 
+                            position={point['standingPoint'] ? point['standingPoint'] : point['point']} 
+                            markerType={point['average'] ? 'soundCollections' 
+                                : (point['result'] ? point['result'] : (point['posture'] ? point['posture'] : null))} 
+                            markerSize={title === 'soundCollections' ? point['average'] : null} 
+                        />
                     ))
                 ))
             ))
@@ -202,7 +226,12 @@ function FullMap(props){
             </Wrapper>
             {/* Basic form for searching for places */}
             {props.type === 0 ? form0 : null}
-            <iframe title='printFrame' id="printFrame" style={{height: '0px', width: '0px', position: 'absolute'}}></iframe>
+            <iframe 
+                title='printFrame' 
+                id="printFrame" 
+                style={{height: '0px', width: '0px', position: 'absolute'}}
+            >
+            </iframe>
         </>
     );
 };
@@ -259,11 +288,12 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
 
 const Marker = (options) => {
     const markerType = options.markerType;
+    const info = options.info;
     const markerSize = Number(options.markerSize);
     const colors = {
         soundCollections: ['#B073FF', '#B073FF'],
-        animal: ['#9C4B00', 'red'],
-        plant: ['#BEFF05', 'red'],
+        animals: ['#9C4B00', 'red'],
+        plants: ['#BEFF05', 'red'],
         squatting: ['green', 'black'],
         sitting: ['red', 'black'],
         standing: ['blue', 'black'],
@@ -284,10 +314,18 @@ const Marker = (options) => {
 
     const icon = (colors[markerType][0]) ? style : null;
     const [marker, setMarker] = React.useState();
+    const [infoWindow, setInfoWindow] = React.useState()
 
     React.useEffect(() => {
         if (!marker) {
-            setMarker(new google.maps.Marker({icon: icon}));
+            setMarker(new google.maps.Marker({ 
+                icon: icon, 
+                zIndex: (markerType === 'soundCollections' ? 1 : 99999999)}));
+            if(!infoWindow){
+                setInfoWindow(new google.maps.InfoWindow({
+                    content: info,
+                }));
+            }
         }
 
         return () => {
@@ -295,13 +333,21 @@ const Marker = (options) => {
                 marker.setMap(null);
             }
         };
-    }, [marker, icon]);
+    }, [marker, icon, info, infoWindow, markerType]);
 
     React.useEffect(() => {
         if (marker) {
             marker.setOptions({ clickable: true, map: options.map, position: options.position});
+
+            marker.addListener("click", () => {
+                infoWindow.open({
+                    anchor: marker,
+                    map: options.map,
+                    shouldFocus: false,
+                });
+            });
         }
-    }, [marker, options]);
+    }, [marker, options, infoWindow]);
 
     return null;
 };

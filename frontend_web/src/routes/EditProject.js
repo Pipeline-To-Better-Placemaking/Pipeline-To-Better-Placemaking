@@ -26,9 +26,22 @@ function EditProject(){
             <Card id='editCard'>
                 <Card.Body>
                     <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                        <TextField className='nonFCInput' id='outlined-search' label='Project Name' type='text' value={values.projectName} onChange={handleChange('projectName')} />
+                        <TextField 
+                            className='nonFCInput' 
+                            id='outlined-search' 
+                            label='Project Name' 
+                            type='text' 
+                            value={values.projectName} 
+                            onChange={handleChange('projectName')} 
+                        />
                         <Map center={center} zoom={16} type={2}/>
-                        <Button className='scheme' type='submit' size='lg' id='updateProjectButton' onClick={updateProject}>
+                        <Button 
+                            className='scheme' 
+                            type='submit' 
+                            size='lg' 
+                            id='updateProjectButton' 
+                            onClick={updateProject}
+                        >
                             Update
                         </Button>
                         <br/>

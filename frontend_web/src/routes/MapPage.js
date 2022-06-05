@@ -115,8 +115,43 @@ function MapPage(){
                                 lat: 28.603369329889514,
                                 lng: -81.20129371852886
                             },
-                            result: 'plant'
+                            result: 'plants'
                         },
+                        {
+                            standingPoint:{
+                                lat: 28.603868558748708, 
+                                lng: -81.19963074866048
+                            },
+                            result: 'animals'
+                        },
+                        {
+                            standingPoint: {
+                                lat: 28.602512158058847, 
+                                lng: -81.19971657935157
+                            },
+                            result: 'plants'
+                        },
+                        {
+                            standingPoint: {
+                                lat: 28.60181511200448, 
+                                lng: -81.19970585051519
+                            },
+                            result: 'plants'
+                        },
+                        {
+                            standingPoint: {
+                                lat: 28.602578094603327, 
+                                lng: -81.20119715877513
+                            },
+                            result: 'plants'
+                        },
+                        {
+                            standingPoint: {
+                                lat: 28.599999473663722, 
+                                lng: -81.20118911211877
+                            },
+                            result: 'plants'
+                        }
                     ]
                 }
             },

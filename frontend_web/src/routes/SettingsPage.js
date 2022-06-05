@@ -54,9 +54,30 @@ function SettingsPage(){
             <Card id='settingsCard'>
                 <Card.Body>
                     <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                        <TextField className='nonFCInput' id='outlined-search' label='First Name' type='text' value={values.updateFName} onChange={handleChange('updateFName')} />
-                        <TextField className='nonFCInput' id='outlined-search' label='Last Name' type='text' value={values.updateLName} onChange={handleChange('updateLName')} />
-                        <TextField className='nonFCInput' id='outlined-search' label='Email' type='email' value={values.updateEmail} onChange={handleChange('updateEmail')} />
+                        <TextField 
+                            className='nonFCInput' 
+                            id='outlined-search' 
+                            label='First Name' 
+                            type='text' 
+                            value={values.updateFName} 
+                            onChange={handleChange('updateFName')} 
+                        />
+                        <TextField 
+                            className='nonFCInput' 
+                            id='outlined-search' 
+                            label='Last Name' 
+                            type='text'
+                            value={values.updateLName} 
+                            onChange={handleChange('updateLName')} 
+                        />
+                        <TextField 
+                            className='nonFCInput' 
+                            id='outlined-search' 
+                            label='Email' 
+                            type='email' 
+                            value={values.updateEmail} 
+                            onChange={handleChange('updateEmail')} 
+                        />
                         <FormControl sx={{ m: 1 }} variant='outlined'>
                             <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
                             <OutlinedInput
@@ -102,7 +123,13 @@ function SettingsPage(){
                             />
                         </FormControl>
                         <br />
-                        <Button className='scheme' type='submit' size='lg' id='updateUserButton' onClick={updateUser}>
+                        <Button 
+                            className='scheme' 
+                            type='submit' 
+                            size='lg' 
+                            id='updateUserButton' 
+                            onClick={updateUser}
+                        >
                             Update
                         </Button>
                     </Box>

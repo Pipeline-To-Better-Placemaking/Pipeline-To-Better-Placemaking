@@ -63,9 +63,30 @@ function NewUser(){
                             <h3>Create an account</h3>
                             <br/>
                             <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                                <TextField  className='nonFCInput' id='outlined-search' label='First Name' type='text' value={values.fname} onChange={handleChange('fname')}/>
-                                <TextField className='nonFCInput' id='outlined-search' label='Last Name' type='text' value={values.lname} onChange={handleChange('lname')}/>
-                                <TextField className='nonFCInput' id='outlined-search' label='Email' type='email' value={values.email} onChange={handleChange('email')}/>
+                                <TextField  
+                                    className='nonFCInput' 
+                                    id='outlined-search' 
+                                    label='First Name' 
+                                    type='text' 
+                                    value={values.fname} 
+                                    onChange={handleChange('fname')}
+                                />
+                                <TextField 
+                                    className='nonFCInput' 
+                                    id='outlined-search' 
+                                    label='Last Name' 
+                                    type='text' 
+                                    value={values.lname} 
+                                    onChange={handleChange('lname')}
+                                />
+                                <TextField 
+                                    className='nonFCInput' 
+                                    id='outlined-search' 
+                                    label='Email' 
+                                    type='email' 
+                                    value={values.email} 
+                                    onChange={handleChange('email')}
+                                />
                                 <FormControl sx={{ m: 1}} variant='outlined'>
                                     <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
                                     <OutlinedInput
@@ -89,7 +110,9 @@ function NewUser(){
                                     />
                                 </FormControl>
                                 <FormControl sx={{ m: 1 }} variant='outlined'>
-                                    <InputLabel htmlFor='outlined-adornment-password'> Confirm Password</InputLabel>
+                                    <InputLabel htmlFor='outlined-adornment-password'>
+                                        Confirm Password
+                                    </InputLabel>
                                     <OutlinedInput
                                         id='outlined-adornment-password'
                                         type={values.showConfirmPassword ? 'text' : 'password'}
@@ -103,7 +126,10 @@ function NewUser(){
                                                     onMouseDown={handleMouseDownPassword}
                                                     edge='end'
                                                 >
-                                                    {values.showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                                    {
+                                                        values.showConfirmPassword ? 
+                                                        <VisibilityOff /> : <Visibility />
+                                                    }
                                                 </IconButton>
                                             </InputAdornment>
                                         }
@@ -111,7 +137,13 @@ function NewUser(){
                                     />
                                 </FormControl>
                                 <br/>
-                                <Button className='scheme' type='submit' size='lg' id='newUserButton' onClick={submitNewUser}>
+                                <Button 
+                                    className='scheme' 
+                                    type='submit' 
+                                    size='lg' 
+                                    id='newUserButton' 
+                                    onClick={submitNewUser}
+                                >
                                     Create
                                 </Button>
                             </Box>

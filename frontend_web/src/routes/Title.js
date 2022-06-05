@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 import './routes.css';
 import logo1 from '../images/PtBPLogo.png';
@@ -62,9 +62,11 @@ function Title() {
             });
             res = JSON.parse(await response.text());
             success = res.success;
+            <Navigate to='/u'/>
         } catch (error) {
             console.log("ERROR: ", error);
             success = false;
+            //create error component
         }
     };
 
@@ -83,7 +85,15 @@ function Title() {
                     <Card className='formCard'>
                         <Card.Body>
                             <Box id='titleBox' component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                                <TextField className='nonFCInput' id='outlined-search' label='Email' type='email' name='email' value={values.email} onChange={handleChange} />
+                                <TextField 
+                                    className='nonFCInput' 
+                                    id='outlined-search' 
+                                    label='Email' 
+                                    type='email' 
+                                    name='email' 
+                                    value={values.email} 
+                                    onChange={handleChange} 
+                                />
                                 {/* Form Control component to hold MUI visibility changing password field */}
                                 <FormControl sx={{ m: 1 }} variant='outlined'>
                                     <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
@@ -108,7 +118,13 @@ function Title() {
                                         label='Password'
                                     />
                                 </FormControl>
-                                <Button className='scheme' id='loginButton' type='submit' size='lg' onClick={loginUser}>
+                                <Button 
+                                    className='scheme' 
+                                    id='loginButton' 
+                                    type='submit' 
+                                    size='lg' 
+                                    onClick={loginUser}
+                                >
                                     Log in
                                 </Button>
                             </Box>

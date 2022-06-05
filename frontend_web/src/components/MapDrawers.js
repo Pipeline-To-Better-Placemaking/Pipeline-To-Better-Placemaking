@@ -14,7 +14,6 @@ import Close from '@mui/icons-material/Close';
 import Switch from '@mui/material/Switch';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
-
 import ActivityTable from './ActivityTable';
 import './controls.css';
 
@@ -31,13 +30,13 @@ export default function MapDrawer(props) {
     };
 
     const testNames = {
-        stationaryCollections: 'Stationary',
-        movingCollections: 'Moving',
-        orderCollections: 'Absence of Order',
-        boundariesCollections: 'Boundaries',
-        lightingCollections: 'Lighting',
-        natureCollections: 'Nature',
-        soundCollections: 'Sound'
+        stationaryCollections: 'Humans in Place',
+        movingCollections: 'Humans in Motion',
+        orderCollections: 'Absence of Order Locator',
+        boundariesCollections: 'Spatial and Shelter Boundaries',
+        lightingCollections: 'Lighting Profile',
+        natureCollections: 'Nature Prevalence',
+        soundCollections: 'Acoustical Profile'
     };
 
     const [dateOpen, setDateOpen] = React.useState({
@@ -94,9 +93,13 @@ export default function MapDrawer(props) {
             <List>
                 {Object.entries(drawer).map(([category, dates], index) => (
                     <div key={category}>
-                        <ListItemButton key={category+index} onClick={handleClickDate(category, !dateOpen[category])}>
+                        <ListItemButton 
+                            key={category+index} 
+                            onClick={handleClickDate(category, !dateOpen[category])}
+                        >
                             <ListItemText primary={category ? testNames[category] : ''} />
-                            {menuAnchors[name] === 'left' ? (dateOpen[category] ? <ExpandLess /> : <ExpandMore />): null}
+                            {menuAnchors[name] === 'left' ? 
+                                (dateOpen[category] ? <ExpandLess /> : <ExpandMore />): null}
                         </ListItemButton>
                         {menuAnchors[name] === 'left' ? dateList(category, dates) : null}
                     </div>
@@ -111,7 +114,10 @@ export default function MapDrawer(props) {
                 <List component='div' disablePadding>
                     {Object.entries(dates).map(([date, times], index) => (
                         <div key={date}>
-                            <ListItemButton key={date + index} sx={{ pl: 4, bgcolor: '#dcedfc'}} onClick={handleClickTime(date, !timeOpen[date])}>
+                            <ListItemButton 
+                                key={date + index} sx={{ pl: 4, bgcolor: '#dcedfc'}} 
+                                onClick={handleClickTime(date, !timeOpen[date])}
+                            >
                                 <ListItemText primary={date} />
                                 {date ? (timeOpen[date] ? <ExpandLess /> : <ExpandMore />):null }
                             </ListItemButton>
@@ -129,7 +135,13 @@ export default function MapDrawer(props) {
                 {
                     Object.keys(times).map((time, index) => (
                         time ? <ListItem key={date + time + index} sx={{ pl: 4, bgcolor: '#aed5fa' }}>
-                            <FormControlLabel control={<Switch checked={checked[`${title}.${date}.${time}`] ? checked[`${title}.${date}.${time}`] : false} onChange={toggleSwitch(title, date, time, checked[`${title}${date}${time}`])} />} label={time} />
+                            <FormControlLabel 
+                                control={<Switch 
+                                checked={checked[`${title}.${date}.${time}`] ? 
+                                    checked[`${title}.${date}.${time}`] : false} 
+                                onChange={toggleSwitch(title, date, time, checked[`${title}${date}${time}`])} />} 
+                                label={time} 
+                            />
                         </ListItem> : null
                     ))
                 }
@@ -147,7 +159,10 @@ export default function MapDrawer(props) {
         <div id='projectFrame'>
             {Object.entries(drawers).map(([name, data]) => (
                 <React.Fragment key={menuAnchors[name]}>
-                    <Button id={menuAnchors[name] + 'Button'} onClick={toggleDrawer(menuAnchors[name], !state[menuAnchors[name]])}>
+                    <Button 
+                        id={menuAnchors[name] + 'Button'} 
+                        onClick={toggleDrawer(menuAnchors[name], !state[menuAnchors[name]])}
+                    >
                         {name}
                     </Button>
                     <Drawer
@@ -157,8 +172,18 @@ export default function MapDrawer(props) {
                         onClose={toggleDrawer(menuAnchors[name], false)}
                         hideBackdrop={true}
                     >
-                        {menuAnchors[name] === 'bottom' ? <Button id={menuAnchors[name] + 'CloseButton'} sx={{position: 'fixed', alignSelf: 'center'}} onClick={toggleDrawer(menuAnchors[name], !state[menuAnchors[name]])}>Close <Close/></Button> : null}
-                        {menuAnchors[name] === 'left' ? list(name, data) : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : null)}
+                        {menuAnchors[name] === 'bottom' ? 
+                            <Button 
+                                id={menuAnchors[name] + 'CloseButton'} 
+                                sx={{position: 'fixed', alignSelf: 'center'}} 
+                                onClick={toggleDrawer(menuAnchors[name], !state[menuAnchors[name]])}
+                            >
+                                Close <Close/>
+                            </Button> 
+                            : null}
+                        {menuAnchors[name] === 'left' ? 
+                            list(name, data) 
+                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : null)}
                     </Drawer>
                 </React.Fragment>
             ))}

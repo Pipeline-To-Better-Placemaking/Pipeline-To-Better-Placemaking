@@ -8,7 +8,6 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Home from '@mui/icons-material/HomeRounded';
@@ -144,7 +143,12 @@ const AppNavBar = () => {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem component={Link} to={setting.route} key={setting.page} onClick={handleCloseUserMenu}>
+                                <MenuItem 
+                                    component={Link} 
+                                    to={setting.route} 
+                                    key={setting.page} 
+                                    onClick={handleCloseUserMenu}
+                                >
                                     <Typography textAlign='center'>{setting.page}</Typography>
                                 </MenuItem>
                             ))}
