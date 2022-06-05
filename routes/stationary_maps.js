@@ -118,7 +118,7 @@ router.put(
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     user = await req.user;
-    map =  Map.findById(req.params.id);
+    map = await Map.findById(req.params.id);
 
     let newMap = new Map({
       title: req.body.title ? req.body.title : map.title,
@@ -134,23 +134,11 @@ router.put(
     project = await Project.findById(map.project);
 
     if (req.body.standingPoints) {
-      const standingPointsLen = Math.max(
-        req.body.standingPoints.length,
-        map.standingPoints.length
-      );
+      for (var i = 0; i < req.body.standingPoints.length; i++)
+        Points.addRefrence(req.body.standingPoints[i]);
 
-      for (var i = 0; i < standingPointsLen; i++) {
-        if (i < req.body.standingPoints.length) {
-          console.log("req.body.standing");
-          console.log(req.body.standingPoints[i]);
-          Points.addRefrence(req.body.standingPoints[i]).then(console.log("finished adding ref"));
-        }
-        if (i < map.standingPoints.length) {
-          console.log("map.standing");
-          console.log(map.standingPoints[i]);
-          Points.removeRefrence(map.standingPoints[i]).then(console.log("finished removing ref"));
-        }
-      }
+      for (var i = 0; i < map.standingPoints.length; i++)
+        Points.removeRefrence(map.standingPoints[i]);
     }
 
     if (await Team.isAdmin(project.team, user._id)) {
@@ -231,7 +219,7 @@ router.put(
 
       if (req.body.standingPoint) {
         Points.addRefrence(req.body.standingPoint);
-        Points.removeRefrence(oldData.standingPoint);
+        Points.removeRefrence(oldDat.standingPoint);
       }
 
       await Map.updateData(mapId, oldData._id, newData);
