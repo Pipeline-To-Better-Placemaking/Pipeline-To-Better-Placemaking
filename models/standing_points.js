@@ -40,24 +40,23 @@ module.exports.updatePoint = async function (pointId, newPoint) {
 };
 
 module.exports.removeRefrence = async function (pointId) {
-  point = await Standing_Points.findById(pointId);
-  console.log(point)
-  console.log(point.refCount)
-  point.refCount = point.refCount - 1;
-  if (point.refCount <= 0) {
-    return await Standing_Points.findByIdAndDelete(pointId);
-  } else {
-    point.save(function (error) {
-      console.log("inside point save REMOVE ref");
-      if (error) {
-        console.log("ERROR: " + error);
-        return error;
-      } else {
-        console.log("Point " + point + " NOT added");
-        return point;
-      }
-    });
+  try {
+    point = await Standing_Points.findById(pointId);
+    console.log(point);
+    console.log(point.refCount);
+    point.refCount = point.refCount - 1;
+    if (point.refCount <= 0) {
+      return await Standing_Points.findByIdAndDelete(pointId);
+    } else {
+      let newPoint = await point.save();
+      console.log(newPoint);
+      console.log("After saving DECREASE in ref");
+    }
+  } catch (error) {
+    console.log("breaking inside REMOVE try: -----" + error);
+    res.status(500).send(err);
   }
+
   // try {
   //   point = await Standing_Points.findById(pointId);
   //   console.log("before decrease: " + point.refCount);
@@ -82,18 +81,16 @@ module.exports.removeRefrence = async function (pointId) {
 };
 
 module.exports.addRefrence = async function (pointId) {
-  point = await Standing_Points.findById(pointId);
-  point.refCount = point.refCount + 1;
-  point.save(function (error) {
-    console.log("inside point save ADD ref");
-    if (error) {
-      console.log("ERROR: " + error);
-      return error;
-    } else {
-      console.log("Point " + point + " added");
-      return point;
-    }
-  });
+  try {
+    point = await Standing_Points.findById(pointId);
+    point.refCount = point.refCount + 1;
+    let newPoint = await point.save();
+    console.log(newPoint);
+    console.log("After saving INCREASE in ref");
+  } catch (error) {
+    console.log("breaking inside ADD try: -----" + error);
+    res.status(500).send(err);
+  }
 
   // try {
   //   point = await Standing_Points.findById(pointId);
