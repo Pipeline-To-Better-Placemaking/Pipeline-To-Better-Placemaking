@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView, { Callout } from 'react-native-maps'
+import MapView, { Callout } from 'react-native-maps';
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 import { Text } from '@ui-kitten/components';
@@ -107,4 +107,4 @@ export function StationaryMapResults(props) {
             </PressMapAreaWrapper>
         </View>
     )
-};
+}

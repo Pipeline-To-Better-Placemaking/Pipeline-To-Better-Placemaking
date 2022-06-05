@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
         marginLeft: 5, 
         width: 90
     },
-
+    
     startButton:{
         backgroundColor: '#006FD6',
         height: 50, 

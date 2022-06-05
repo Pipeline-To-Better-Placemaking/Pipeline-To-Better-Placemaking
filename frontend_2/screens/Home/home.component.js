@@ -35,7 +35,8 @@ export const HomeScreen = ( props ) => {
     let stationaryResults = []
     let movingResults = []
     let surveyResults = []
-    //add the new test result arrays here
+    let soundResults= []
+    //add the new test result arrays here ^
 
     // Get selected Projects
     for (let i = 0; i < props.selectedProjects.length; i++) {
@@ -58,8 +59,10 @@ export const HomeScreen = ( props ) => {
           movingResults.push(result);
         } else if (result.test_type === "survey") {
           surveyResults.push(result);
+        } else if (result.test_type === "sound"){
+          soundResults.push(result);
         }
-        //add the new tests here
+        //add the new tests here ^^
 
       }
     }
@@ -68,8 +71,9 @@ export const HomeScreen = ( props ) => {
       all: [...allResults],
       stationary: [...stationaryResults],
       moving: [...movingResults],
-      survey: [...surveyResults]
-      //add the new tests here
+      survey: [...surveyResults],
+      sound: [...soundResults]
+      //add the new tests here ^^
     };
 
     await props.setFilterCriteria(filteredResults);
@@ -174,4 +178,4 @@ export const HomeScreen = ( props ) => {
       </ContentContainer>
   </ViewableArea>
   );
-};
+}

@@ -86,7 +86,7 @@ export const SignUpScreen = ( props ) => {
                 await AsyncStorage.setItem("@lastName", res.user.lastname)
                 await AsyncStorage.setItem("@teams", JSON.stringify(res.user.teams))
                 await AsyncStorage.setItem("@invites", JSON.stringify(res.user.invites))
-
+                await AsyncStorage.setItem("@mapConfig", "satellite")
                 // Request permission to use location
                 let { status } = await Location.requestForegroundPermissionsAsync();
 

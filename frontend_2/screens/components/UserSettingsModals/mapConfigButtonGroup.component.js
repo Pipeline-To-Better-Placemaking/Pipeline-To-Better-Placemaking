@@ -10,13 +10,13 @@ export function MapConfigButtonGroup(props) {
     const [selected, setSelected] = useState(true)
 
     const onStandardPress = async () => {
-        setSelected(true)
+        setSelected(false)
 
         await AsyncStorage.setItem("@mapConfig", "standard")
     }
 
     const onSatellitePress = async () => {
-        setSelected(false)
+        setSelected(true)
 
         await AsyncStorage.setItem("@mapConfig", "satellite")
     }
@@ -26,16 +26,16 @@ export function MapConfigButtonGroup(props) {
 
             <Button status={"primary"}
                     appearance={selected ? "primary" : "outline"}
-                    onPress={onStandardPress}
+                    onPress={onSatellitePress}
                     style={styles.buttonRight}>
-                STANDARD MAP
+                SATELLITE MAP
             </Button>
 
             <Button status={"primary"}
                     appearance={selected ? "outline" : "primary"}
-                    onPress={onSatellitePress}
+                    onPress={onStandardPress}
                     style={styles.buttonLeft}>
-                SATELLITE MAP
+                STANDARD MAP
             </Button>
 
         </View>

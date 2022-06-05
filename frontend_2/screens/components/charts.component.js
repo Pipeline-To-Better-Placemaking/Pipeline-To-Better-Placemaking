@@ -60,13 +60,10 @@ export function MyBarChart({children, ...props}) {
       return (
         <Text
           key={index}
-          style={{
-            flex: 1,
+          style={[styles.xaxis0, {
             transform:[{rotate:props.rotation}],
-            fontSize: fontSize,
-            textAlign: 'center',
-            width: ((props.width-10) / (props.dataLabels.length*2)),
-          }}
+            width: ((props.width-10) / (props.dataLabels.length*2))
+          }]}
         >
           {label}
         </Text>
@@ -74,25 +71,8 @@ export function MyBarChart({children, ...props}) {
     }
 
     return (
-      <View
-        key={index}
-        style={{
-          flex: 1,
-          justifyContent:'flex-start',
-          flexDirection:'column',
-          height:100,
-        }}
-      >
-        <Text
-          style={{
-            fontSize: fontSize,
-            transform:[{rotate:props.rotation}],
-            width:110,
-            textAlign: 'right',
-            marginLeft:-40,
-            marginTop:40,
-          }}
-        >
+      <View key={index} style={styles.xaxisView} >
+        <Text style={[ styles.xaxis1, {transform:[{rotate:props.rotation}]}]} >
           {label}
         </Text>
       </View>
@@ -220,7 +200,7 @@ export function CompareBarChart({children, ...props}) {
   let titles = props.dataValues.map(value => {return value.title});
 
   return (
-    <View style={{marginBottom:15}}>
+    <View style={styles.mainView}>
       <Text category={'h4'}> {props.title} </Text>
       <View style={{height:props.height, width:props.width, flexDirection:'row'}}>
         <YAxis

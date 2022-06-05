@@ -8,7 +8,7 @@ import { styles } from './home.map.styles.js';
 
 export function HomeMapView(props) {
 
-    const [mapConfig, setMapConfig] = useState("standard")
+    const [mapConfig, setMapConfig] = useState("satellite")
 
     useEffect(() => {
         async function fetchConfig() {

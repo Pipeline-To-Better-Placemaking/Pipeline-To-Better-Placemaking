@@ -6,7 +6,7 @@ import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getDayStr, getTimeStr } from '../components/timeStrings.component';
 import { getAllResults, getProject } from '../components/apiCalls';
-import { formatStationaryGraphData, formatMovingGraphData } from '../components/helperFunctions';
+import { formatStationaryGraphData, formatMovingGraphData, formatSoundGraphData } from '../components/helperFunctions';
 import { styles } from './projectResult.styles';
 
 const ForwardIcon = (props) => (
@@ -49,7 +49,12 @@ export function ProjectResultPage(props) {
     else if (item.test_type === 'survey') {
       props.navigation.navigate("SurveyResultPage");
     }
-    //add the new tests here
+    else if (item.test_type === 'sound') {
+      let result = await formatSoundGraphData(item);
+      await props.setSelectedResult(result);
+      props.navigation.navigate("SoundResultPage");
+    }
+    //add the new tests here ^^
 
   };
 

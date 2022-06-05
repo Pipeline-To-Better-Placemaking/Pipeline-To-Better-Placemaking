@@ -23,6 +23,10 @@ export const styles = StyleSheet.create({
         marginTop:40,
     },
 
+    mainView:{
+        marginBottom: 15
+    },
+
     container:{
         flex: 1, 
         marginLeft: 5

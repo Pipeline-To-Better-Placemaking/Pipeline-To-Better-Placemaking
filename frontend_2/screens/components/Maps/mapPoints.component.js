@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker, Polygon, Polyline, Callout } from 'react-native-maps'
 import { View, ScrollView } from 'react-native';
 import { Text, Icon, Divider, List, ListItem, Radio, RadioGroup } from '@ui-kitten/components';
@@ -216,6 +216,40 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
       </MapView>
     </View>)
  };
+
+  export const SoundMapAreaWrapper = ({children, area, mapHeight, recenter }) => {
+  
+    const _mapView = useRef();
+
+    const [defaultRegion] = useState(getRegionForCoordinates(area))
+    const [mapConfig, setMapConfig] = useState("standard")
+
+    useEffect(() => {
+        async function fetchConfig() {
+            setMapConfig(await AsyncStorage.getItem("@mapConfig"))
+        }
+        fetchConfig()
+
+    })
+  
+    // recenters the map only if the recenter bool is true
+    if(recenter) _mapView.current.animateToRegion(defaultRegion, 750);
+
+    return (
+      <View>
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          ref={_mapView}
+          style={{height:mapHeight}}
+          zoomEnabled
+          initialRegion={defaultRegion}
+          mapType={mapConfig}
+        >
+          {children}
+        </MapView>
+      </View>
+    )
+  };
 
  export const PressMapAreaWrapper = ({children, area, mapHeight, onPress, recenter }) => {
 

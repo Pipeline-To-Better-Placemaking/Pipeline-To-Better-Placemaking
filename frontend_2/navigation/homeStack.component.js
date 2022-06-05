@@ -10,6 +10,12 @@ import { StationaryCompare } from '../screens/Home/Compare/stationaryCompare.com
 import { MovingCompare } from '../screens/Home/Compare/movingCompare.component.js'
 import { StationaryActivityResultView } from '../screens/Home/ResultPages/stationaryMapResults.component.js'
 import { MovingMapResultsView } from '../screens/Home/ResultPages/movingMapResultsView.component.js';
+// new tests result screens
+import { SoundResultPage } from '../screens/Home/ResultPages/soundResultPage.component';
+import { SoundMapResultsView } from '../screens/Home/ResultPages/soundMapResults.component';
+import { SoundCompare } from '../screens/Home/Compare/soundCompare.component';
+
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { Navigator, Screen } = createStackNavigator();
@@ -132,6 +138,18 @@ export function HomeScreenStack(props){
         />
       }
       </Screen>
+      
+      <Screen
+        name="SoundCompare"
+      >
+      {props =>
+        <SoundCompare 
+          {...props}
+          results={compareResults}
+        />
+      }
+      </Screen>
+
       <Screen
         name='ProjectResultPage'
       >
@@ -197,6 +215,24 @@ export function HomeScreenStack(props){
          />
        }
       </Screen>
+      
+      <Screen
+        name='SoundResultPage'
+      >
+      {props =>
+        <SoundResultPage 
+          {...props}
+          token={token}
+          userId={userId}
+          project={selectedProject}
+          team={selectedTeam}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+          setResults={setResults}
+        />
+      }
+      </Screen>
+
       <Screen
         name='StationaryActivityResultView'
       >
@@ -219,8 +255,20 @@ export function HomeScreenStack(props){
           setSelectedResult={setSelectedResult}
          />
        }
-
       </Screen>
+
+      <Screen
+        name='SoundMapResultsView'
+      >
+      {props=>
+        <SoundMapResultsView 
+          {...props}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+        />
+      }
+      </Screen>
+
     </Navigator>
   )
 }

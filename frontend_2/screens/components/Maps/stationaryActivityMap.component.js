@@ -64,4 +64,4 @@ export function StationaryActivityMap(props) {
             </PressMapAreaWrapper>
         </View>
     )
-};
+}

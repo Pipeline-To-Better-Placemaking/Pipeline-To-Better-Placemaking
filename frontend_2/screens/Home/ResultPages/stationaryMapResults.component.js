@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ViewableArea, ContentContainer } from '../../components/content.component.js'
 import { HeaderBack } from '../../components/headers.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
-import { StationaryMapResults } from '../../components/Maps/stationaryMapResults.component.js'
+import { StationaryMapResults } from '../../components/Maps/stationaryMapResults.component.js';
 
 export function StationaryActivityResultView(props) {
 
@@ -39,4 +39,4 @@ export function StationaryActivityResultView(props) {
             </ContentContainer>
         </ViewableArea>
     )
-};
+}
