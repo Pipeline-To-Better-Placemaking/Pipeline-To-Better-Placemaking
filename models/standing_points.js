@@ -39,13 +39,13 @@ module.exports.updatePoint = async function (pointId, newPoint) {
   );
 };
 
-module.exports.removeRefrence = function (pointId) {
-  point = Standing_Points.findById(pointId);
+module.exports.removeRefrence = async function (pointId) {
+  point = await Standing_Points.findById(pointId);
   console.log(point)
   console.log(point.refCount)
   point.refCount = point.refCount - 1;
   if (point.refCount <= 0) {
-    return Standing_Points.findByIdAndDelete(pointId);
+    return await Standing_Points.findByIdAndDelete(pointId);
   } else {
     point.save(function (error) {
       console.log("inside point save REMOVE ref");
@@ -81,8 +81,8 @@ module.exports.removeRefrence = function (pointId) {
   // }
 };
 
-module.exports.addRefrence = function (pointId) {
-  point = Standing_Points.findById(pointId);
+module.exports.addRefrence = async function (pointId) {
+  point = await Standing_Points.findById(pointId);
   point.refCount = point.refCount + 1;
   point.save(function (error) {
     console.log("inside point save ADD ref");
