@@ -118,7 +118,7 @@ router.put(
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     user = await req.user;
-    map = await Map.findById(req.params.id);
+    map =  Map.findById(req.params.id);
 
     let newMap = new Map({
       title: req.body.title ? req.body.title : map.title,
