@@ -134,11 +134,18 @@ router.put(
     project = await Project.findById(map.project);
 
     if (req.body.standingPoints) {
+
+        console.log("body standingPoints ")
+        console.log(req.body.standingPoints)
+        console.log("map object " + map.standingPoints)
+        console.log(map.standingPoints)
+
+
       for (var i = 0; i < req.body.standingPoints.length; i++)
-        Points.addRefrence(req.body.standingPoints[i]);
+        await Points.addRefrence(req.body.standingPoints[i]);
 
       for (var i = 0; i < map.standingPoints.length; i++)
-        Points.removeRefrence(map.standingPoints[i]);
+        await Points.removeRefrence(map.standingPoints[i]);
     }
 
     if (await Team.isAdmin(project.team, user._id)) {
