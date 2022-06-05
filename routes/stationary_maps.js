@@ -135,12 +135,6 @@ router.put(
 
     if (req.body.standingPoints) {
 
-        console.log("body standingPoints ")
-        console.log(req.body.standingPoints)
-        console.log("map object " + map.standingPoints)
-        console.log(map.standingPoints)
-
-
       for (var i = 0; i < req.body.standingPoints.length; i++)
         await Points.addRefrence(req.body.standingPoints[i]);
 

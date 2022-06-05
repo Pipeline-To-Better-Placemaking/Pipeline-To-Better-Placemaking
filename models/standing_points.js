@@ -54,30 +54,7 @@ module.exports.removeRefrence = async function (pointId) {
     }
   } catch (error) {
     console.log("breaking inside REMOVE try: -----" + error);
-    res.status(500).send(err);
   }
-
-  // try {
-  //   point = await Standing_Points.findById(pointId);
-  //   console.log("before decrease: " + point.refCount);
-  //   const newRef = point.refCount - 1;
-  //   console.log("after decrease: " + newRef);
-  //   if (newRef <= 0) {
-  //     return await Standing_Points.findByIdAndDelete(pointId);
-  //   } else {
-  //     Standing_Points.findOneAndUpdate(
-  //       { _id: pointId },
-  //       { $inc: { refCount: -1 } },
-  //       { new: true }
-  //     ),
-  //       (err, point) => {
-  //         // callback
-  //         console.log(point);
-  //       };
-  //   }
-  // } catch (err) {
-  //   console.log(err);
-  // }
 };
 
 module.exports.addRefrence = async function (pointId) {
@@ -89,23 +66,5 @@ module.exports.addRefrence = async function (pointId) {
     console.log("After saving INCREASE in ref");
   } catch (error) {
     console.log("breaking inside ADD try: -----" + error);
-    res.status(500).send(err);
   }
-
-  // try {
-  //   point = await Standing_Points.findById(pointId);
-  //   console.log("before increase: " + point.refCount);
-  //   const newRef = point.refCount + 1;
-  //   console.log("after increase: " + newRef);
-  //   Standing_Points.findOneAndUpdate(
-  //     { _id: pointId },
-  //     { $inc: { refCount: 1 } },
-  //     { new: true },
-  //     (err, point) => {
-  //       // callback
-  //       console.log(point);
-  //     })
-  // } catch (err) {
-  //   console.log(err);
-  // }
 };
