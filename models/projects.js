@@ -112,7 +112,30 @@ module.exports.deleteProject = async function(projectId) {
         await Standing_Point.removeRefrence(project.standingPoints[i])
 
     for(var i = 0; i < project.stationaryCollections.length; i++)   
-        await Stationary_Collections.deleteCollection(project.stationaryCollections[i])
+        await Stationary_Collection.deleteCollection(project.stationaryCollections[i])
+
+    for(var i = 0; i < project.movingCollections.length; i++)   
+        await Moving_Collection.deleteCollection(project.movingCollections[i])   
+
+    for(var i = 0; i < project.soundCollections.length; i++)   
+        await Sound_Collection.deleteCollection(project.soundCollections[i])
+    
+    // for(var i = 0; i < project.boundariesCollections.length; i++)   
+    //     await Boundaries_Collection.deleteCollection(project.boundariesCollections[i])
+
+    // for(var i = 0; i < project.natureCollections.length; i++)   
+    //     await Nature_Collection.deleteCollection(project.natureCollections[i])   
+
+    // for(var i = 0; i < project.lightCollections.length; i++)   
+    //     await Light_Collection.deleteCollection(project.lightCollections[i])   
+
+    // for(var i = 0; i < project.orderCollections.length; i++)   
+    //     await Order_Collection.deleteCollection(project.orderCollections[i])
+    
+    for(var i = 0; i < project.soundCollections.length; i++)   
+    await Survey.deleteCollection(project.surveyCollections[i])
+
+          
 
     return await Projects.findByIdAndDelete(projectId)
 }

@@ -135,7 +135,7 @@ router.post('/:id/areas', passport.authenticate('jwt',{session:false}), async (r
             points: req.body.points
         })
 
-        newArea.save()
+        await newArea.save()
 
         await Project.addArea(project._id,newArea._id)
         res.json(newArea)

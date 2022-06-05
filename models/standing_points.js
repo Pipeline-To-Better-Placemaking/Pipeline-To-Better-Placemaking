@@ -42,8 +42,8 @@ module.exports.updatePoint = async function (pointId, newPoint) {
 module.exports.removeRefrence = async function (pointId) {
   try {
     point = await Standing_Points.findById(pointId);
-    console.log(point);
-    console.log(point.refCount);
+    // console.log(point);
+    // console.log(point.refCount);
     point.refCount = point.refCount - 1;
     if (point.refCount <= 0) {
       return await Standing_Points.findByIdAndDelete(pointId);
@@ -53,7 +53,7 @@ module.exports.removeRefrence = async function (pointId) {
       console.log("After saving DECREASE in ref");
     }
   } catch (error) {
-    console.log("breaking inside REMOVE try: -----" + error);
+    console.log("REMOVE Standing Point reference causing issue: -----" + error);
   }
 };
 
@@ -65,6 +65,6 @@ module.exports.addRefrence = async function (pointId) {
     console.log(newPoint);
     console.log("After saving INCREASE in ref");
   } catch (error) {
-    console.log("breaking inside ADD try: -----" + error);
+    console.log("ADD Standing Point reference causing issue: -----" + error);
   }
 };
