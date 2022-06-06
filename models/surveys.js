@@ -3,9 +3,6 @@ const mongoose = require('mongoose')
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-const survey_key_schema = mongoose.Schema({
-    key: Number
-})
 
 const survey_schema = mongoose.Schema({
     
@@ -38,26 +35,35 @@ const survey_schema = mongoose.Schema({
         required: true
     },
 
-    data:[survey_key_schema]
-       
+    key:{
+        type: String,
+        unique: true
+    }          
 })
 
 const Surveys = module.exports = mongoose.model('Surveys', survey_schema)
 const Key = mongoose.model('Survey_Key_Tracker', survey_key_schema)
 
-module.exports.addSurvey = async function(newSurvey) {
+module.exports.addSurvey = async function(newSurvey){
+    const surveyId = await newSurvey.save()
+
+    survey = await Surveys.addKey(surveyId)
+    return await survey.save()
+}
+
+module.exports.addKey = async function(surveyId) {
     var builderString = "3UROGSWIVE01A9LMKQB7FZ6DJ4NC28Y5HTXP"
 
-    var key = await Key.findOne()
-    if(key == null){
-        key = new Key({
+    var survey = await Surveys.findById(surveyId)
+    if(survey == null){
+        survey = new Survey({
             key: 0
         })
     }
 
-    var keyCount = key.key
-    key.key = keyCount + 1
-    await key.save()
+    var keyCount = survey.key
+    survey.key = keyCount + 1
+    await survey.save()
 
     var keyInt = (keyCount * 823543 + 23462) % 2176782336
     var keyString = ""
@@ -66,9 +72,9 @@ module.exports.addSurvey = async function(newSurvey) {
         keyString += builderString[ keyInt % 36 ]
         keyInt = Math.floor(keyInt/36)
     }
-    newSurvey.data = keyString
+    survey.key = keyString
     
-    return await newSurvey.save()
+    return await survey.save()
 }
 
 module.exports.updateSurvey = async function (surveyId, newSurvey) {
