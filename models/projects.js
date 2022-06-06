@@ -132,8 +132,8 @@ module.exports.deleteProject = async function(projectId) {
     // for(var i = 0; i < project.orderCollections.length; i++)   
     //     await Order_Collection.deleteCollection(project.orderCollections[i])
     
-    for(var i = 0; i < project.soundCollections.length; i++)   
-    await Survey.deleteCollection(project.surveyCollections[i])
+    for(var i = 0; i < project.surveyCollections.length; i++)   
+        await Survey.deleteCollection(project.surveyCollections[i])
 
           
 

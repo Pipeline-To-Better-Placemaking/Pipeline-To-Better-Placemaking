@@ -122,3 +122,24 @@ module.exports.isResearcher = async function(surveyId, userId){
     }
     return true
 }
+
+module.exports.addEntry = async function(surveyId, newEntry) {
+    var entry = new Entry({
+        time: newEntry.time,
+    })
+
+    return await Surveys.updateOne(
+        { _id: surveyId },
+        { $push: { data: entry}}
+    )
+}
+
+
+module.exports.deleteEntry = async function(surveyId, entryId) {
+
+    return await Surveys.updateOne(
+        { _id: surveyId },
+        { $pull: { data: {_id:entryId }}
+        })
+}
+

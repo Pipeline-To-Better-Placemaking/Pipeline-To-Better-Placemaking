@@ -127,4 +127,36 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 
 })
 
+router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    survey = await Survey.findById(req.params.id)
+    if(Survey.isResearcher(survey._id, user._id)){
+        if(req.body.entries){
+            for(var i = 0; i < req.body.entries.length; i++){
+                await Survey.addEntry(survey._id,req.body.entries[i])
+            } 
+            res.status(201).json(await Survey.findById(survey._id))
+        }
+        else{
+            res.json(await Survey.addEntry(survey._id,req.body))
+       }
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+
+router.delete('/:id/data/:data_id',passport.authenticate('jwt',{session:false}), async (req, res, next) => { 
+    user = await req.user
+    survey = await Survey.findById(req.params.id)
+    if(Survey.isResearcher(survey._id, user._id)){
+        res.json(await Survey.deleteEntry(survey._id,req.params.data_id))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+
 module.exports = router
