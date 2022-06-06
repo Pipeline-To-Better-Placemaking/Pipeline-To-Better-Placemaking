@@ -44,9 +44,9 @@ const survey_schema = mongoose.Schema({
 const Surveys = module.exports = mongoose.model('Surveys', survey_schema)
 
 module.exports.addSurvey = async function(newSurvey){
-    const surveyId = await newSurvey.save()
+    const tempSurvey = await newSurvey.save()
 
-    survey = await Surveys.addKey(surveyId)
+    survey = await Surveys.addKey(tempSurvey._id)
     return await survey.save()
 }
 
