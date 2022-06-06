@@ -68,9 +68,9 @@ module.exports.addSurvey = async function(newSurvey) {
     
     for(var i = 0; i < 6; i++){
         keyString += builderString[ keyInt % 36 ]
-        keyInt = Math.floor(keyInt/36)
+        keyInt = Math.floor(Math.random()*keyInt/36)
     }
-    
+
     newSurvey.key = keyString
     
     return await newSurvey.save()
