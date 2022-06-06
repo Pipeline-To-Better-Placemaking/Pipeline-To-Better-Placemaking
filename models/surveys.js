@@ -54,7 +54,7 @@ module.exports.addKey = async function(surveyId) {
 
     var survey = await Surveys.findById(surveyId)
     if(survey == null){
-        survey = new Survey({
+        survey = new Surveys({
             key: 0
         })
     }
