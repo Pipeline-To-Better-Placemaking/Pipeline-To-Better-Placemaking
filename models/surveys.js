@@ -4,7 +4,7 @@ const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const survey_key_schema = mongoose.Schema({
-    counter: Number
+    key: Number
 })
 
 const survey_schema = mongoose.Schema({
@@ -38,37 +38,35 @@ const survey_schema = mongoose.Schema({
         required: true
     },
 
-    key:{
-        type: String,
-        unique: true
-    }   
+    data:[survey_key_schema]
+       
 })
 
-const Counter = mongoose.model('Survey_Key_Tracker', survey_key_schema)
 const Surveys = module.exports = mongoose.model('Surveys', survey_schema)
+const Key = mongoose.model('Survey_Key_Tracker', survey_key_schema)
 
 module.exports.addSurvey = async function(newSurvey) {
     var builderString = "3UROGSWIVE01A9LMKQB7FZ6DJ4NC28Y5HTXP"
 
-    var counter = await Counter.findOne()
-    if(counter == null){
-        counter = new Counter({
-            counter: 0
+    var key = await Key.findOne()
+    if(key == null){
+        key = new Key({
+            key: 0
         })
     }
 
-    var count = counter.counter
-    counter.counter = count + 1
-    await counter.save()
+    var keyCount = key.key
+    key.key = keyCount + 1
+    await key.save()
 
-    var keyInt = (count * 823543 + 23462) % 2176782336
+    var keyInt = (keyCount * 823543 + 23462) % 2176782336
     var keyString = ""
     
     for(var i = 0; i < 6; i++){
         keyString += builderString[ keyInt % 36 ]
         keyInt = Math.floor(keyInt/36)
     }
-    newSurvey.key = keyString
+    newSurvey.data = keyString
     
     return await newSurvey.save()
 }

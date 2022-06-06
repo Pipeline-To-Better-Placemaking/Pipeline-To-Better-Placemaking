@@ -37,7 +37,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
             title: "Project Perimeter",
             points: req.body.points
         })
-        newArea.save()
+        await newArea.save()
 
         var pointIds = []
         for(var i = 0; i < req.body.standingPoints.length; i++){
@@ -46,7 +46,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                 latitude: req.body.standingPoints[i].latitude,
                 title: req.body.standingPoints[i].title
             })
-            newPoint.save()
+            await newPoint.save()
             pointIds[i] = newPoint._id
         }
         let newProject = new Project({
@@ -753,7 +753,7 @@ router.delete('/:id/survey_collections/:collectionId', passport.authenticate('jw
     project = await Project.findById(req.params.id)
     collection = await Survey_Collection.findById(req.params.collectionId)
     if(await Team.isAdmin(project.team,user._id)){
-        Area.removeRefrence(collection.area)
+        await Area.removeRefrence(collection.area)
         res.status(201).json(await Project.deleteSurveyCollection(project._id,req.params.collectionId))
     }
     else{

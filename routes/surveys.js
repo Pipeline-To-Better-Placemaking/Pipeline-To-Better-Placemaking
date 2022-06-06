@@ -30,7 +30,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                     maxResearchers: slot.maxResearchers,
                 })
 
-                const map = await Survey.addSurvey(newSurvey)
+                const survey = await Survey.addSurvey(newSurvey)
                 await Survey_Collection.addActivity(req.body.collection, survey._id)
             }
             res.status(201).json(await Survey_Collection.findById(req.body.collection))
