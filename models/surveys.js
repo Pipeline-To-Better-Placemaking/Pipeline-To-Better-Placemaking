@@ -42,7 +42,6 @@ const survey_schema = mongoose.Schema({
 })
 
 const Surveys = module.exports = mongoose.model('Surveys', survey_schema)
-const Key = mongoose.model('Survey_Key_Tracker', survey_key_schema)
 
 module.exports.addSurvey = async function(newSurvey){
     const surveyId = await newSurvey.save()
