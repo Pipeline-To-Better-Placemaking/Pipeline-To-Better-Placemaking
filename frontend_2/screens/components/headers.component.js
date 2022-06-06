@@ -25,7 +25,6 @@ export function Header(props) {
   );
 };
 
-// pretty sure this isn't used
 export function HeaderBack(props) {
   return (
     <View style={styles.header}>
@@ -52,7 +51,7 @@ export function HeaderBack(props) {
 export function HeaderExit(props) {
   return (
     <View style={styles.header}>
-    <View style={styles.textHeader}>
+    <View style={styles.textHeaderBackView}>
       <Text style={styles.text} category='h5' status='control'>
         {props.text}
       </Text>

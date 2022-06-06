@@ -32,8 +32,7 @@ export const styles = StyleSheet.create({
     },
 
     textHeaderBack:{
-        maxWidth:'80%', 
-        marginLeft:15        
+        maxWidth:'80%'      
     },
 
     text:{
