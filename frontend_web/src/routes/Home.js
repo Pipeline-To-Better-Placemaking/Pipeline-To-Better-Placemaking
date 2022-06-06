@@ -28,14 +28,14 @@ function Home(){
                 <Button 
                     id='newProjectButton' 
                     variant='contained' 
-                    component={Link} 
+                    component={ Link } 
                     to='new'
                 >
                     New Project
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            <DisplayCards type={1} projects={projects}/>
+            <DisplayCards type={ 1 } projects={ projects }/>
         </div>
     );
 }

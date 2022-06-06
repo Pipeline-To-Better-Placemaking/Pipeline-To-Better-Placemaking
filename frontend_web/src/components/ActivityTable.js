@@ -28,18 +28,18 @@ function Row(props) {
 
     return (
         <React.Fragment>
-            <TableRow className='categories' sx={{'& > *': {borderBottom: 'unset'}}}>
+            <TableRow className='categories' sx={{ '& > *': {borderBottom: 'unset'} }}>
                 <TableCell>
                     <IconButton
                         aria-label='expand row'
                         size='small'
-                        onClick={() => setOpen(!open)}
+                        onClick={ () => setOpen(!open) }
                     >
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        { open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon /> }
                     </IconButton>
                 </TableCell>
                 <TableCell className='catTitle' component='th' scope='row'>
-                    {name}
+                    { testNames[name] }
                 </TableCell>
                 <TableCell> </TableCell>
                 <TableCell> </TableCell>
@@ -47,9 +47,9 @@ function Row(props) {
                 <TableCell> </TableCell>
             </TableRow>
             <TableRow className='subtables'>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
-                    <Collapse in={open} timeout='auto' unmountOnExit>
-                        {subtable(row, 0)}
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={ 12 }>
+                    <Collapse in={ open } timeout='auto' unmountOnExit>
+                        { subtable(row, 0) }
                     </Collapse>
                 </TableCell>
             </TableRow>
@@ -58,66 +58,66 @@ function Row(props) {
 }
 
 const subtable = (row, type) => (    
-    <Box sx={{ margin: 1 }}>
-        <Table size='small' aria-label='activity'>
-            <TableHead>
+    <Box sx={{ margin: 1 }} className='subTable'>
+        <Table stickyHeader size='small' aria-label='activity'>
+            <TableHead sx={{ bgcolor: '#e2e2e2'}}>
                 <TableRow>
-                    <TableCell colSpan={2} className='value'>{type === 0 ? 'Value' : 'Category'}</TableCell>
-                    <TableCell colSpan={type === 0 ? 2 : 1} className='type'>
-                        {type === 0 ? 'Type' : 'Value'}
+                    <TableCell colSpan={ 2 } className='value'>{ type === 0 ? 'Value' : 'Category' }</TableCell>
+                    <TableCell colSpan={ type === 0 ? 2 : 1 } className='type'>
+                        { type === 0 ? 'Type' : 'Value' }
                     </TableCell>
-                    <TableCell>{type === 0 ? 'Location' : 'Type'}</TableCell>
-                    <TableCell>{type === 0 ? 'Date' : 'Location'}</TableCell>
-                    <TableCell>{type === 0 ? 'Surveyor' : 'Date'}</TableCell>
+                    <TableCell>{ type === 0 ? 'Location' : 'Type' }</TableCell>
+                    <TableCell>{ type === 0 ? 'Date Time' : 'Location' }</TableCell>
+                    <TableCell>{ type === 0 ? 'Surveyor' : 'Date Time' }</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
-                {type === 0 ? row.map((object, index) => (
-                    <TableRow key={index}>
-                        <TableCell colSpan={2} className='value'>
-                            {object.value}
-                        </TableCell>
-                        <TableCell colSpan={2} className='type'>
-                            {object.type}
-                        </TableCell>
-                        <TableCell>{object.location}</TableCell>
-                        <TableCell>{object.date}</TableCell>
-                        <TableCell>{object.surveyor}</TableCell>
-                    </TableRow>
-                )) : Object.entries(row).map(([instance, array])=>(
-                    array.map((point, index)=>(
-                        <TableRow key={index}>
-                            <TableCell colSpan={2} className='value'>
-                                {(testNames[instance.split('.')[0]])}
-                            </TableCell>
-                            <TableCell colSpan={1} className='type'>
-                                {instance.split('.')[0] === 'soundCollections' ? 
-                                    `${point.average} dB` : 
-                                    (point.result ? 
-                                        point.result : 
-                                        (point.posture ? point.posture : 'N/A')
-                                    )
-                                }
-                            </TableCell>
-                            <TableCell></TableCell>
-                            <TableCell>Location {index}</TableCell>
-                            <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
-                        </TableRow>
+                { type === 0 ? 
+                    Object.entries(row).map(([date, dObj])=>(
+                        Object.entries(dObj).map(([time, tObj])=>(
+                            tObj.data.map((object, index) => (
+                                <TableRow key={ index }>
+                                    <TableCell colSpan={ 2 } className='value'>
+                                        { object.average ? object.average : (object.result ? object.result : (object.posture ? object.posture : '')) }
+                                    </TableCell>
+                                    <TableCell colSpan={ 2 } className='type'>
+                                    </TableCell>
+                                    <TableCell>Location { index }</TableCell>
+                                    <TableCell>{ date } { time }</TableCell>
+                                    <TableCell>{ tObj.surveyor }</TableCell>
+                                </TableRow>
+                            ))
+                        ))
+                    )) : Object.entries(row).map(([instance, data])=>(
+                        Object.entries(data.data).map(([index, point], ind)=>(
+                            <TableRow key={ ind }>
+                                <TableCell colSpan={ 2 } className='category'>
+                                    { testNames[instance.split('.')[0]] }
+                                </TableCell>
+                                <TableCell colSpan={1} className='value'>
+                                    { instance.split('.')[0] === 'soundCollections' ? 
+                                        `${point.average} dB` : 
+                                        (point.result ? 
+                                            point.result : 
+                                            (point.posture ? point.posture : 'N/A')
+                                        )
+                                    }
+                                </TableCell>
+                                <TableCell></TableCell>
+                                <TableCell>Location { ind }</TableCell>
+                                <TableCell>{ `${instance.split('.')[1]} ${instance.split('.')[2]}` }</TableCell>
+                            </TableRow>
+                        ))
                     ))
-                ))}
+                }
             </TableBody>
         </Table>
     </Box>
 )
 
+
 Row.propTypes = {
-    row: PropTypes.arrayOf(
-        PropTypes.shape({
-            location: PropTypes.string.isRequired,
-            date: PropTypes.string.isRequired,
-            surveyor: PropTypes.string.isRequired
-        }),
-    ).isRequired,
+    row: PropTypes.shape({}).isRequired,
 };
 
 function ActivityTable(props){
@@ -125,8 +125,8 @@ function ActivityTable(props){
     const activityRow = props.activity;
 
     return(
-            props.type === 0 ? (Object.entries(activityRow).map(([type, array]) => (
-                <Row key={type} name={type} row={array} />
+            props.type === 0 ? (Object.entries(activityRow).map(([type, obj]) => (
+                <Row key={ type } name={ type } row={ obj } />
             ))) : subtable(activityRow, 1)
     );
 }

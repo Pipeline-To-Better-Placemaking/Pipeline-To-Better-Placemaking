@@ -21,7 +21,7 @@ export default function ProjectTabs(props) {
     React.useEffect(() => {
         if(tail === 'activities'){ 
             handleUpdate('activities', 2)
-        } else{ 
+        } else { 
             tail === 'surveyors' ? handleUpdate('surveyors', 1) : handleUpdate('map', 0);
         }
     }, [tail]);
@@ -55,13 +55,13 @@ export default function ProjectTabs(props) {
     function LinkTab(props) {
         return (
             <Tab
-                id={props.href}
-                label={props.label}
-                component={Link}
-                to={props.href}
-                state={props.value}
-                className={props.className}
-                tabIndex={0}
+                id={ props.href }
+                label={ props.label }
+                component={ Link }
+                to={ props.href }
+                state={ props.value }
+                className={ props.className }
+                tabIndex={ 0 }
             />
         );
     }
@@ -70,14 +70,14 @@ export default function ProjectTabs(props) {
         <div id='projectTabs'>
             <Box sx={{ width: '100%', borderBottom: 1, borderColor: 'divider', bgcolor: '#00396D' }}>
                 <Tabs 
-                    value={value} 
-                    onChange={handleChange} 
+                    value={ value } 
+                    onChange={ handleChange } 
                     aria-label='project tabs' 
                     TabIndicatorProps={{ children: <span className='MuiTabs-indicatorSpan' /> }}
                 >
-                    <LinkTab value={0} label='Map' href='map' className={mapIndex} />
-                    <LinkTab value={1} label='Surveyors' href='surveyors' className={surveyorIndex} />
-                    <LinkTab value={2} label='Activities' href='activities' className={activityIndex} />
+                    <LinkTab value={ 0 } label='Map' href='map' className={ mapIndex } />
+                    <LinkTab value={ 1 } label='Surveyors' href='surveyors' className={ surveyorIndex } />
+                    <LinkTab value={ 2 } label='Activities' href='activities' className={ activityIndex } />
                 </Tabs>
             </Box>
         </div>

@@ -11,7 +11,7 @@ import './controls.css';
 
 const render = (status) => {
     console.log(status);
-    return <h1>{status}</h1>;
+    return <h1>{ status }</h1>;
 };
 
 const testNames = {
@@ -37,7 +37,7 @@ function printMap(){
 function FullMap(props){
     const [click, setClick] = React.useState([]);
     const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 10); // initial zoom
-    const [center, setCenter] = React.useState(props.center.lat ? { lat: props.center.lat, lng: props.center.lng } : { lat:28.54023216523664, lng:-81.38181298263407});
+    const [center, setCenter] = React.useState(props.center.lat ? { lat: props.center.lat, lng: props.center.lng } : { lat:28.54023216523664, lng:-81.38181298263407 });
     const [loc, setLoc] = React.useState('');
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
     const [areaData, setAreaData] = React.useState(props.type === 1 ? props.area : null);
@@ -168,7 +168,7 @@ function FullMap(props){
 
     const form0 = (
         <div id='newProjectInput'>
-            <TextField id='location-search' label='Project Location' type='search' value={loc}/>
+            <TextField id='location-search' label='Project Location' type='search' value={ loc }/>
             <Button className='newHoveringButtons'>Search</Button>
             <Button className='newHoveringButtons' onClick={() => setClick()}>Clear</Button>
         </div>
@@ -178,20 +178,20 @@ function FullMap(props){
         Object.entries(collections).map(([title, object], index) => (
             Object.entries(object).map(([sdate, stimes])=>(
                 stimes.map(time => (
-                    Object.entries(data.Activities[title][sdate][time]).map(([ind, point], i2)=>(
+                    Object.entries(data.Activities[title][sdate][time].data).map(([ind, point], i2)=>(
                         <Marker 
                             key={`${sdate}.${time}.${i2}`} 
-                            info={point['average'] ? 
-                                (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point['average']} dB</div>`) 
-                                : (point['result'] ? 
-                                    (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point['result']}</div>`) 
-                                    : (point['posture'] ? 
-                                        (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point['posture']}</div>`) 
+                            info={point.average ? 
+                                (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
+                                : (point.result ? 
+                                    (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.result}</div>`) 
+                                    : (point.posture ? 
+                                        (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
                                         : null)) } 
-                            position={point['standingPoint'] ? point['standingPoint'] : point['point']} 
-                            markerType={point['average'] ? 'soundCollections' 
-                                : (point['result'] ? point['result'] : (point['posture'] ? point['posture'] : null))} 
-                            markerSize={title === 'soundCollections' ? point['average'] : null} 
+                            position={point.standingPoint ? point.standingPoint : point.point} 
+                            markerType={point.average ? 'soundCollections' 
+                                : (point.result ? point.result : (point.posture ? point.posture : null))} 
+                            markerSize={title === 'soundCollections' ? point.average : null} 
                         />
                     ))
                 ))
@@ -202,34 +202,34 @@ function FullMap(props){
     return (
         <>
             {/* Map Drawers overlay in map.jsx to better communicate*/}
-            {props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null}
-            {props.type === 1 ? <Button id='printButton' onClick={() => printMap()}>Print Map</Button>: null}
+            { props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null }
+            { props.type === 1 ? <Button id='printButton' onClick={() => printMap()}>Print Map</Button>: null }
             {/* Wrapper imports Google Maps API */}
-            <Wrapper apiKey={''} render={render} id='mapContainer'>
+            <Wrapper apiKey={''} render={ render } id='mapContainer'>
                 <Map
-                    center={center}
-                    onClick={onClick}
-                    onIdle={onIdle}
-                    zoom={zoom}
-                    order={orderCollections}
-                    boundaries={boundariesCollections}
-                    lighting={lightingCollections}
-                    nature={natureCollections}
-                    sound={soundCollections}
-                    data={areaData}
+                    center={ center }
+                    onClick={ onClick }
+                    onIdle={ onIdle }
+                    zoom={ zoom }
+                    order={ orderCollections }
+                    boundaries={ boundariesCollections }
+                    lighting={ lightingCollections }
+                    nature={ natureCollections }
+                    sound={ soundCollections }
+                    data={ areaData }
                 >
-                    {props.type === 1 && areaData ? <Bounds area={areaData}/> : null}
-                    {props.type === 1 ?
+                    { props.type === 1 && areaData ? <Bounds area={areaData}/> : null }
+                    { props.type === 1 ?
                        actCoords(collections)
-                    :<Marker position={click}/>}
+                    :<Marker position={click}/> }
                 </Map>
             </Wrapper>
             {/* Basic form for searching for places */}
-            {props.type === 0 ? form0 : null}
+            { props.type === 0 ? form0 : null }
             <iframe 
                 title='printFrame' 
                 id="printFrame" 
-                style={{height: '0px', width: '0px', position: 'absolute'}}
+                style={{ height: '0px', width: '0px', position: 'absolute' }}
             >
             </iframe>
         </>
@@ -275,11 +275,11 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
 
     return (
         <>
-            <div ref={ref} style={style} id='mapFrame'/>
+            <div ref={ ref } style={ style } id='mapFrame'/>
             {React.Children.map(children, (child) => {
                 if (React.isValidElement(child)) {
                     // sets the map prop on the child component (markers)
-                    return React.cloneElement(child, {map});
+                    return React.cloneElement(child, { map });
                 }
             })}
         </>
@@ -337,7 +337,7 @@ const Marker = (options) => {
 
     React.useEffect(() => {
         if (marker) {
-            marker.setOptions({ clickable: true, map: options.map, position: options.position});
+            marker.setOptions({ clickable: true, map: options.map, position: options.position });
 
             marker.addListener("click", () => {
                 infoWindow.open({
@@ -382,7 +382,7 @@ const Bounds = (options) => {
 
     React.useEffect(() => {
         if (paths) {
-            paths.setOptions({ map: options.map});
+            paths.setOptions({ map: options.map });
         }
     }, [paths, options]);
 

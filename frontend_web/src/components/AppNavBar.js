@@ -64,7 +64,7 @@ const AppNavBar = () => {
                         noWrap
                         sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                     >
-                        {home}
+                        { home }
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
@@ -72,14 +72,14 @@ const AppNavBar = () => {
                             aria-label='account of current user'
                             aria-controls='menu-appbar'
                             aria-haspopup='true'
-                            onClick={handleOpenNavMenu}
+                            onClick={ handleOpenNavMenu }
                             color='inherit'
                         >
                             <MenuIcon />
                         </IconButton>
                         <Menu
                             id='menu-appbar'
-                            anchorEl={anchorElNav}
+                            anchorEl={ anchorElNav }
                             anchorOrigin={{
                                 vertical: 'bottom',
                                 horizontal: 'left',
@@ -89,8 +89,8 @@ const AppNavBar = () => {
                                 vertical: 'top',
                                 horizontal: 'left',
                             }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
+                            open={ Boolean(anchorElNav) }
+                            onClose={ handleCloseNavMenu }
                             sx={{
                                 display: { xs: 'block', md: 'none' },
                             }}
@@ -107,7 +107,7 @@ const AppNavBar = () => {
                         noWrap
                         sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
                     >
-                        {home}
+                        { home }
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {/*{pages.map((page) => (
@@ -122,14 +122,14 @@ const AppNavBar = () => {
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title='Open settings'>
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                            <IconButton onClick={ handleOpenUserMenu } sx={{ p: 0 }}>
                                 <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
                             </IconButton>
                         </Tooltip>
                         <Menu
                             sx={{ mt: '45px' }}
                             id='menu-appbar'
-                            anchorEl={anchorElUser}
+                            anchorEl={ anchorElUser }
                             anchorOrigin={{
                                 vertical: 'top',
                                 horizontal: 'right',
@@ -139,17 +139,17 @@ const AppNavBar = () => {
                                 vertical: 'top',
                                 horizontal: 'right',
                             }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
+                            open={ Boolean(anchorElUser) }
+                            onClose={ handleCloseUserMenu }
                         >
                             {settings.map((setting) => (
                                 <MenuItem 
-                                    component={Link} 
-                                    to={setting.route} 
-                                    key={setting.page} 
-                                    onClick={handleCloseUserMenu}
+                                    component={ Link } 
+                                    to={ setting.route } 
+                                    key={ setting.page } 
+                                    onClick={ handleCloseUserMenu }
                                 >
-                                    <Typography textAlign='center'>{setting.page}</Typography>
+                                    <Typography textAlign='center'>{ setting.page }</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>

@@ -31,21 +31,21 @@ function EditProject(){
                             id='outlined-search' 
                             label='Project Name' 
                             type='text' 
-                            value={values.projectName} 
-                            onChange={handleChange('projectName')} 
+                            value={ values.projectName } 
+                            onChange={ handleChange('projectName') } 
                         />
-                        <Map center={center} zoom={16} type={2}/>
+                        <Map center={ center } zoom={ 16 } type={ 2 }/>
                         <Button 
                             className='scheme' 
                             type='submit' 
                             size='lg' 
                             id='updateProjectButton' 
-                            onClick={updateProject}
+                            onClick={ updateProject }
                         >
                             Update
                         </Button>
                         <br/>
-                        <Button component={Link} type='submit' size='lg' to='/u'>
+                        <Button component={ Link } type='submit' size='lg' to='/u'>
                             Cancel
                         </Button>
                     </Box>

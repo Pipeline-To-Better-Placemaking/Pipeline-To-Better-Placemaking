@@ -59,41 +59,41 @@ function SettingsPage(){
                             id='outlined-search' 
                             label='First Name' 
                             type='text' 
-                            value={values.updateFName} 
-                            onChange={handleChange('updateFName')} 
+                            value={ values.updateFName } 
+                            onChange={ handleChange('updateFName') } 
                         />
                         <TextField 
                             className='nonFCInput' 
                             id='outlined-search' 
                             label='Last Name' 
                             type='text'
-                            value={values.updateLName} 
-                            onChange={handleChange('updateLName')} 
+                            value={ values.updateLName } 
+                            onChange={ handleChange('updateLName') } 
                         />
                         <TextField 
                             className='nonFCInput' 
                             id='outlined-search' 
                             label='Email' 
                             type='email' 
-                            value={values.updateEmail} 
-                            onChange={handleChange('updateEmail')} 
+                            value={ values.updateEmail } 
+                            onChange={ handleChange('updateEmail') } 
                         />
                         <FormControl sx={{ m: 1 }} variant='outlined'>
                             <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
                             <OutlinedInput
                                 id='outlined-adornment-password'
-                                type={values.showPassword ? 'text' : 'password'}
-                                value={values.updatePassword}
-                                onChange={handleChange('password')}
+                                type={ values.showPassword ? 'text' : 'password' }
+                                value={ values.updatePassword }
+                                onChange={ handleChange('password') }
                                 endAdornment={
                                     <InputAdornment position='end'>
                                         <IconButton
                                             aria-label='visibility toggle'
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
+                                            onClick={ handleClickShowPassword }
+                                            onMouseDown={ handleMouseDownPassword }
                                             edge='end'
                                         >
-                                            {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                            { values.showPassword ? <VisibilityOff /> : <Visibility /> }
                                         </IconButton>
                                     </InputAdornment>
                                 }
@@ -104,18 +104,18 @@ function SettingsPage(){
                             <InputLabel htmlFor='outlined-adornment-password'> Confirm Password</InputLabel>
                             <OutlinedInput
                                 id='outlined-adornment-password'
-                                type={values.showConfirmPassword ? 'text' : 'password'}
-                                value={values.confirmUpdatePassword}
-                                onChange={handleChange('confirmPassword')}
+                                type={ values.showConfirmPassword ? 'text' : 'password' }
+                                value={ values.confirmUpdatePassword }
+                                onChange={ handleChange('confirmPassword') }
                                 endAdornment={
                                     <InputAdornment position='end'>
                                         <IconButton
                                             aria-label='visibility toggle'
-                                            onClick={handleClickShowConPassword}
-                                            onMouseDown={handleMouseDownPassword}
+                                            onClick={ handleClickShowConPassword }
+                                            onMouseDown={ handleMouseDownPassword }
                                             edge='end'
                                         >
-                                            {values.showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                            { values.showConfirmPassword ? <VisibilityOff /> : <Visibility /> }
                                         </IconButton>
                                     </InputAdornment>
                                 }
@@ -128,7 +128,7 @@ function SettingsPage(){
                             type='submit' 
                             size='lg' 
                             id='updateUserButton' 
-                            onClick={updateUser}
+                            onClick={ updateUser }
                         >
                             Update
                         </Button>
@@ -136,11 +136,11 @@ function SettingsPage(){
                 </Card.Body>
             </Card>
             <br/>
-            <Button id='verifyButton' type='submit' size='lg' onClick={verify}>
+            <Button id='verifyButton' type='submit' size='lg' onClick={ verify }>
                 Verify Email
             </Button>
             <br/>
-            <Button id='logoutSingle' type='submit' size='lg' onClick={userLogout}>
+            <Button id='logoutSingle' type='submit' size='lg' onClick={ userLogout }>
                 Log Out
             </Button>
         </div>

@@ -14,9 +14,9 @@ function DisplayCards(props){
     //Surveyor Cards have surveyor name in header
     const surveyorCards = (surveyors) => (
         surveyors.map((surveyor, index) => (
-            <Card key={'s' + index} className='projectCard'>
-                <CardHeader title={surveyor.name} />
-                {surveyorActivities(surveyor.activities)}
+            <Card key={ 's' + index } className='projectCard'>
+                <CardHeader title={ surveyor.name } />
+                { surveyorActivities(surveyor.activities) }
             </Card>
         ))
     );
@@ -24,31 +24,31 @@ function DisplayCards(props){
     //Activity renders in the body
     const surveyorActivities = (activities) => (
         <CardContent>
-            {activities.map((activity, index) => (
-                <div key={'a' + index} className='cardRow'>
+            { activities.map((activity, index) => (
+                <div key={ 'a' + index } className='cardRow'>
                     <Typography variant='text' component='div'>
-                        {activity.activity}
+                        { activity.activity }
                     </Typography>
                     <Typography variant='text' component='div'>
-                        {activity.date}
+                        { activity.date }
                     </Typography>
                 </div>
-            ))}
+            )) }
         </CardContent>
     );
 
     //For Better Placemaking projects listed on home page (url)/u
     const projectCard = (projects) => (
         projects.map((project, index)=>(
-            <Card key={'p'+index} className='projectCard'>
+            <Card key={ 'p'+index } className='projectCard'>
                 <CardContent>
                     <Typography variant='h5' component='div'>
-                        {project.name}
+                        { project.name }
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button component={Link} to='project/:id'>View</Button>
-                    <Button component={Link} to='edit/:id' state={project.name}>Edit</Button>
+                    <Button component={ Link } to='project/:id'>View</Button>
+                    <Button component={ Link } to='edit/:id' state={ project.name }>Edit</Button>
                 </CardActions>
             </Card>
         ))
@@ -56,7 +56,7 @@ function DisplayCards(props){
 
     return(
         <div id='cardFlexBox'>
-            {props.type === 0 ? surveyorCards(props.surveyors) : projectCard(props.projects)}
+            { props.type === 0 ? surveyorCards(props.surveyors) : projectCard(props.projects) }
         </div>
     );
 

@@ -63,7 +63,7 @@ function Title() {
             res = JSON.parse(await response.text());
             success = res.success;
             <Navigate to='/u'/>
-        } catch (error) {
+        } catch ( error ) {
             console.log("ERROR: ", error);
             success = false;
             //create error component
@@ -77,7 +77,7 @@ function Title() {
                 {/* tag - sizing for logo/tag (title text) */}
                 <div className='tag'>
                     <div className='logo'>
-                        <Image src={logo1} className='App-logo' alt='logo' id='logo1'/>
+                        <Image src={ logo1 } className='App-logo' alt='logo' id='logo1'/>
                     </div>
                     <div id='tagText'>Pipeline to Better Placemaking</div>
                 </div>
@@ -91,27 +91,27 @@ function Title() {
                                     label='Email' 
                                     type='email' 
                                     name='email' 
-                                    value={values.email} 
-                                    onChange={handleChange} 
+                                    value={ values.email } 
+                                    onChange={ handleChange } 
                                 />
                                 {/* Form Control component to hold MUI visibility changing password field */}
                                 <FormControl sx={{ m: 1 }} variant='outlined'>
                                     <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
                                     <OutlinedInput
                                         id='outlined-adornment-password'
-                                        type={values.showPassword ? 'text' : 'password'}
+                                        type={ values.showPassword ? 'text' : 'password' }
                                         name='password'
-                                        value={values.password}
-                                        onChange={handleChange}
+                                        value={ values.password }
+                                        onChange={ handleChange }
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton
                                                     aria-label='visibility toggle'
-                                                    onClick={handleClickShowPassword}
-                                                    onMouseDown={handleMouseDownPassword}
+                                                    onClick={ handleClickShowPassword }
+                                                    onMouseDown={ handleMouseDownPassword }
                                                     edge='end'
                                                 >
-                                                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    { values.showPassword ? <VisibilityOff /> : <Visibility /> }
                                                 </IconButton>
                                             </InputAdornment>
                                         }
@@ -123,13 +123,13 @@ function Title() {
                                     id='loginButton' 
                                     type='submit' 
                                     size='lg' 
-                                    onClick={loginUser}
+                                    onClick={ loginUser }
                                 >
                                     Log in
                                 </Button>
                             </Box>
                             <div className='d-grid'>
-                                <Button component={Link} to='/new' className='scheme secondButton' size='lg'>
+                                <Button component={ Link } to='/new' className='scheme secondButton' size='lg'>
                                     Create Account
                                 </Button>
                             </div>

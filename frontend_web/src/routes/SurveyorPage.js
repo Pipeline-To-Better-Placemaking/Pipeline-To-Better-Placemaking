@@ -38,7 +38,7 @@ function SurveyorPage() {
         <div id='SurveyorPage'>
             <div id='projectCardFlexBox'>
                 {/* type = 0 implies Surveyor style cards */}
-                <DisplayCards type={0} surveyors={sampleS}/>
+                <DisplayCards type={ 0 } surveyors={ sampleS }/>
             </div>
         </div>
     );

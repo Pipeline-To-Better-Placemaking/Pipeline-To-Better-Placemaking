@@ -68,41 +68,41 @@ function NewUser(){
                                     id='outlined-search' 
                                     label='First Name' 
                                     type='text' 
-                                    value={values.fname} 
-                                    onChange={handleChange('fname')}
+                                    value={ values.fname } 
+                                    onChange={ handleChange('fname') }
                                 />
                                 <TextField 
                                     className='nonFCInput' 
                                     id='outlined-search' 
                                     label='Last Name' 
                                     type='text' 
-                                    value={values.lname} 
-                                    onChange={handleChange('lname')}
+                                    value={ values.lname } 
+                                    onChange={ handleChange('lname') }
                                 />
                                 <TextField 
                                     className='nonFCInput' 
                                     id='outlined-search' 
                                     label='Email' 
                                     type='email' 
-                                    value={values.email} 
-                                    onChange={handleChange('email')}
+                                    value={ values.email } 
+                                    onChange={ handleChange('email') }
                                 />
                                 <FormControl sx={{ m: 1}} variant='outlined'>
                                     <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
                                     <OutlinedInput
                                         id='outlined-adornment-password'
-                                        type={values.showPassword ? 'text' : 'password'}
-                                        value={values.password}
-                                        onChange={handleChange('password')}
+                                        type={values.showPassword ? 'text' : 'password' }
+                                        value={ values.password }
+                                        onChange={ handleChange('password') }
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton
                                                     aria-label='visibility toggle'
-                                                    onClick={handleClickShowPassword}
-                                                    onMouseDown={handleMouseDownPassword}
+                                                    onClick={ handleClickShowPassword }
+                                                    onMouseDown={ handleMouseDownPassword }
                                                     edge='end'
                                                 >
-                                                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    { values.showPassword ? <VisibilityOff /> : <Visibility /> }
                                                 </IconButton>
                                             </InputAdornment>
                                         }
@@ -115,15 +115,15 @@ function NewUser(){
                                     </InputLabel>
                                     <OutlinedInput
                                         id='outlined-adornment-password'
-                                        type={values.showConfirmPassword ? 'text' : 'password'}
-                                        value={values.confirmPassword}
-                                        onChange={handleChange('confirmPassword')}
+                                        type={ values.showConfirmPassword ? 'text' : 'password' }
+                                        value={ values.confirmPassword }
+                                        onChange={ handleChange('confirmPassword') }
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton
                                                     aria-label='visibility toggle'
-                                                    onClick={handleClickShowConPassword}
-                                                    onMouseDown={handleMouseDownPassword}
+                                                    onClick={ handleClickShowConPassword }
+                                                    onMouseDown={ handleMouseDownPassword }
                                                     edge='end'
                                                 >
                                                     {
@@ -142,7 +142,7 @@ function NewUser(){
                                     type='submit' 
                                     size='lg' 
                                     id='newUserButton' 
-                                    onClick={submitNewUser}
+                                    onClick={ submitNewUser }
                                 >
                                     Create
                                 </Button>
