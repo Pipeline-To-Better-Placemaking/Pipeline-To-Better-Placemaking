@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Select, SelectItem, Text, Button, Input, Icon, Datepicker } from '@ui-kitten/components';
 import { ViewableArea, ContentContainer, EnterNumber, ConfirmDelete } from '../../../components/content.component';
 import { HeaderExit } from '../../../components/headers.component';
+import { retrieveTestName } from '../../../components/helperFunctions';
 
 import { styles } from './initialInformation.styles';
 
@@ -43,7 +44,7 @@ export function IntialForm(props) {
             <View style={styles.activityView}>
               <Text>Name: </Text>
               <Input
-                placeholder={props.activityTypes[0]}
+                placeholder={retrieveTestName(props.activityTypes[props.selectedActivityIndex.row])}
                 value={props.activityName}
                 onChangeText={(nextValue) => props.setActivityName(nextValue)}
                 style={styles.input}
@@ -51,21 +52,26 @@ export function IntialForm(props) {
             </View>
             {props.updateActivity ?
               <View style={styles.activityView}>
-                <Text>Research Activity: {props.activityTypes[props.selectedActivityIndex.row]}</Text>
+                <Text>Research Activity: {retrieveTestName(props.activityTypes[props.selectedActivityIndex.row])}</Text>
               </View>
             :
               <View style={styles.activityView}>
                 <Text>Select a Research Activity: </Text>
                 <Select
                   style={styles.input}
-                  placeholder={props.activityTypes[0]}
-                  value={props.activityTypes[props.selectedActivityIndex.row]}
+                  placeholder={retrieveTestName(props.activityTypes[0])}
+                  value={retrieveTestName(props.activityTypes[props.selectedActivityIndex.row])}
                   selectedIndex={props.selectedActivityIndex}
                   onSelect={index => props.setSelectedActivity(index)}
                 >
-                  {props.activityTypes.map((item, index) =>
-                      <SelectItem key="{item}" title={item}/>
-                  )}
+                  {props.activityTypes.map((item, index) =>{
+                    let testType = retrieveTestName(item);
+                    return(
+                      <SelectItem key="{item}" title={testType}/>
+                    )
+                  
+                  
+                  })}
                 </Select>
               </View>
             }
@@ -94,9 +100,7 @@ export function IntialForm(props) {
                 <Text>
                 Time per Standing Point: {props.duration} (sec)
                 </Text>
-                
                 :
-
                 <Text>
                 {/* will need to add the other tests (everything but sound test) for time at site */}
                 {(props.activityTypes[props.selectedActivityIndex.row] === 'Survey' ?

@@ -175,7 +175,9 @@ export function StationaryResultPage(props) {
           }
         >
 
-          <Text category={'h5'}>Stationary Result Information</Text>
+          {/* <Text category={'h5'}>Humans in Place Result Information</Text> */}
+          <Text category={'h5'}>Humans in Place Results</Text>
+
           <Divider style={styles.metaDataTitleSep} />
 
           <Text>Team: {props.team.title}</Text>

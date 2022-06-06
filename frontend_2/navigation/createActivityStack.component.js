@@ -5,6 +5,7 @@ import { IntialForm } from '../screens/Collaborate/ResearchActivities/CreateActi
 import { SelectLocation } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/setLocation.component';
 import { CreateTimeSlots } from '../screens/Collaborate/ResearchActivities/CreateActivityForm/createTimeSlots.component';
 import { getTimeStr } from '../screens/components/timeStrings.component';
+import { retrieveTestName } from '../screens/components/helperFunctions';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -120,7 +121,7 @@ export function CreateActivityStack(props) {
       row = 0;
     }
     if(activityName.trim().length <= 0) {
-      name = activityTypes[row];
+      name = retrieveTestName(activityTypes[row]);
     }
     
     //add new test here

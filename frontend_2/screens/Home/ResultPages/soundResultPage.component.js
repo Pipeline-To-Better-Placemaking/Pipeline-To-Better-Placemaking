@@ -230,7 +230,7 @@ export function SoundResultPage(props) {
           }
         >
 
-          <Text category={'h5'}>Sound Test Result Information</Text>
+          <Text category={'h5'}>Acoustical Profile Results</Text>
           <Divider style={styles.metaDataTitleSep} />
 
           <Text>Team: {props.team.title}</Text>

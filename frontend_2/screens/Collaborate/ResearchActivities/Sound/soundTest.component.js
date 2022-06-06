@@ -360,7 +360,7 @@ export function SoundTest(props){
 
     return(
         <ViewableArea>
-            <Header text={'Sound Test'}/>
+            <Header text={'Acoustical Profile'}/>
             <ContentContainer>
                     
                     <TimeBar/>

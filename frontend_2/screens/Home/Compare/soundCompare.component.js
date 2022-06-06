@@ -135,7 +135,7 @@ export function SoundCompare(props) {
       <ContentContainer>
         <ScrollView style={styles.margins}>
 
-          <Text category={'h5'}>Sound Result Information</Text>
+          <Text category={'h5'}>Acoustical Profile Results</Text>
           <Divider style={styles.metaDataTitleSep} />
 
             {

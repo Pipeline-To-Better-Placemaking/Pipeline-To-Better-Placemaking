@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Image, Linking } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
@@ -13,23 +13,57 @@ export function SurveyActivity(props) {
   const theme = useTheme();
   let surveyLink = 'http://ucf.qualtrics.com/jfe/form/SV_9vozKCHxjfyAHJ3';
 
-  const [location] = useState(props.timeSlot.location)
   const [area] = useState(props.timeSlot.area)
   const [start, setStart] = useState(false)
+  const [initalStart, setInitalStart] = useState(true);
+
+  // timer stuff
+  const initalTime = props.timeSlot.timeLeft
+  // controls the rendered countdown timer
+  const [timer, setTimer] = useState(initalTime);
+  // controls timer interval instance
+  let id;
 
   const endActivity = () => {
-    setStart(false)
+    setStart(false);
+    clearInterval(id);
     props.navigation.navigate("ActivitySignUpPage");
   }
 
-  const updateTime = (value) => {
-    let temp = props.timeSlot;
-    temp.timeLeft = value;
-    props.setTimeSlot(temp);
+  // helps control the countdown timer
+  useEffect(() =>{
+    // only start the timer when we start the test
+    if(start){
+        startTime(timer);
+        setInitalStart(false);
+    }
+  }, [start]);
+
+  // begins/updates the timer
+  function startTime(current){
+      let count = current;
+      id = setInterval(() =>{            
+          count--;
+          // timer is what actually gets rendered so update every second
+          setTimer(count);
+          // when the timer hits 0, end the test (test this to see if it works!!)
+          if(count === 0){
+            setStart(false);
+            clearInterval(id);
+          }
+      // 1000 ms == 1 s
+      }, 1000);
   }
 
   const StartStopButton = () => {
-    if (start) {
+    if (initalStart) {
+      return(
+        <Button style={styles.startButton} onPress={() => setStart(true)} >
+          Start
+        </Button>
+      )
+    }
+    else {
       return(
         <Button
           status={'danger'}
@@ -37,13 +71,6 @@ export function SurveyActivity(props) {
           onPress={() => endActivity()}
         >
           End
-        </Button>
-      )
-    }
-    else {
-      return(
-        <Button style={styles.startButton} onPress={() => setStart(true)} >
-          Start
         </Button>
       )
     }
@@ -65,8 +92,7 @@ export function SurveyActivity(props) {
           <View>
               <CountDown
                   running={start}
-                  until={props.timeSlot.timeLeft}
-                  onChange={(value) => updateTime(value)}
+                  until={timer}
                   size={20}
                   digitStyle={{backgroundColor:theme['background-basic-color-1']}}
                   digitTxtStyle={{color:theme['text-basic-color']}}
@@ -83,7 +109,7 @@ export function SurveyActivity(props) {
 
   return(
     <ViewableArea>
-      <Header text={'Survey Activity'}/>
+      <Header text={'Community Survey'}/>
       <ContentContainer>
         <TimeBar/>
         <View style={styles.mainView}>

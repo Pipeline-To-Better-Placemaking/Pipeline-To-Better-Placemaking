@@ -1,12 +1,15 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
-
+    
     header: {
-        justifyContent:'space-between',
+        justifyContent:'center',
         alignItems:'center',
         flexDirection:'row',
-        marginBottom:5
+        marginBottom:5,
     },
 
     leftContent: {
@@ -16,7 +19,16 @@ export const styles = StyleSheet.create({
     },
     
     textHeader:{
-        maxWidth:'80%'
+        flex: 1,
+        marginRight: width * .09,
+        alignItems: 'center',
+        justifyContent: 'center',        
+    },
+
+    textHeaderBackView:{
+        maxWidth: '80%',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
     textHeaderBack:{
@@ -47,6 +59,22 @@ export const styles = StyleSheet.create({
 
     menu:{
         marginRight: 15 
+    },
+
+    logoView:{
+        positon: 'absolute',
+        left: width * .1,
+        bottom: height * .002
+    },
+
+    logo:{
+        // use hard coded values so logo looks consistent across devices
+        width: 40,
+        height: 40,
+        // makes it somewhat transparent/toned down
+        opacity: .8,
+        // gives the logo a white tint (better matches app's apperance ?)
+        // tintColor: 'rgba(225, 225, 225, .9)' 
     }
 
 });

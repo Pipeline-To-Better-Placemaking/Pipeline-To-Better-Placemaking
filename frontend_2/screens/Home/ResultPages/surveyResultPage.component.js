@@ -141,7 +141,7 @@ export function SurveyResultPage(props) {
           }
         >
 
-          <Text category={'h5'}>Moving Result Information</Text>
+          <Text category={'h5'}>Community Survey Results</Text>
           <Divider style={styles.metaDataTitleSep} />
 
           <Text>Team: {props.team.title}</Text>

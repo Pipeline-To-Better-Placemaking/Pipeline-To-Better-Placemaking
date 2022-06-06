@@ -193,3 +193,50 @@ export async function formatSoundGraphData(result){
   tempResult.graph = {...graph};
   return tempResult;
 }
+
+export function retrieveTestName(str){
+  let lowerStr = str.toLowerCase();
+  
+  //console.log(lowerStr);
+
+  let testType;
+  if(lowerStr.localeCompare('stationary') === 0 || lowerStr.localeCompare('stationary map') === 0){
+    //console.log('stationary activity');
+    testType = 'Humans in Place';
+  }
+  else if(lowerStr.localeCompare('moving') === 0 || lowerStr.localeCompare('people moving') === 0){
+    //console.log('moving activity');
+    testType = 'Humans in Motion';
+  }
+  else if(lowerStr.localeCompare('survey') === 0 ){
+    //console.log('survey activity');
+    testType = 'Community Survey';
+  }
+  // security activties
+  else if(lowerStr.localeCompare('sound') === 0){
+    //console.log('sound test');
+    testType = 'Acoustical Profile';
+   }
+  else if(lowerStr.localeCompare('boundary') === 0){
+    //console.log('boundary test');
+    testType = 'Spatial Boundaries';
+  }
+  else if(lowerStr.localeCompare('nature') === 0){
+    //console.log('nature test');
+    testType = 'Nature Prevalence';
+   }
+  else if(lowerStr.localeCompare('light') === 0){
+    //console.log('light test');
+    testType = 'Lighting Profile';
+  }
+  else if(lowerStr.localeCompare('order') === 0){
+    //console.log('absence of order test');
+    testType = 'Absence of Order Locator';
+   }
+  // it should never enter this else
+  else{
+    console.log('error getting test type');
+    testType = 'N/A';
+  }
+  return testType;
+}

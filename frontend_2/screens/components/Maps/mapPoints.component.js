@@ -214,46 +214,46 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
       >
         {children}
       </MapView>
-    </View>)
- };
+    </View>
+  )
+};
 
-  export const SoundMapAreaWrapper = ({children, area, mapHeight, recenter }) => {
+export const SoundMapAreaWrapper = ({children, area, mapHeight, recenter }) => {
   
-    const _mapView = useRef();
+  const _mapView = useRef();
 
-    const [defaultRegion] = useState(getRegionForCoordinates(area))
-    const [mapConfig, setMapConfig] = useState("standard")
+  const [defaultRegion] = useState(getRegionForCoordinates(area))
+  const [mapConfig, setMapConfig] = useState("standard")
+  useEffect(() => {
+      async function fetchConfig() {
+          setMapConfig(await AsyncStorage.getItem("@mapConfig"))
+      }
+      fetchConfig()
+  })
 
-    useEffect(() => {
-        async function fetchConfig() {
-            setMapConfig(await AsyncStorage.getItem("@mapConfig"))
-        }
-        fetchConfig()
+  // recenters the map only if the recenter bool is true
+  if(recenter) _mapView.current.animateToRegion(defaultRegion, 750);
 
-    })
+  return (
+    <View>
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        ref={_mapView}
+        style={{height:mapHeight}}
+        zoomEnabled
+        initialRegion={defaultRegion}
+        mapType={mapConfig}
+      >
+        {children}
+      </MapView>
+    </View>
+  )
+};
+
+export const PressMapAreaWrapper = ({children, area, mapHeight, onPress, recenter }) => {
+
+  const _mapView = useRef();
   
-    // recenters the map only if the recenter bool is true
-    if(recenter) _mapView.current.animateToRegion(defaultRegion, 750);
-
-    return (
-      <View>
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          ref={_mapView}
-          style={{height:mapHeight}}
-          zoomEnabled
-          initialRegion={defaultRegion}
-          mapType={mapConfig}
-        >
-          {children}
-        </MapView>
-      </View>
-    )
-  };
-
- export const PressMapAreaWrapper = ({children, area, mapHeight, onPress, recenter }) => {
-
-  const [region, setRegion] = useState(getRegionForCoordinates(area));
   const [defaultRegion] = useState(getRegionForCoordinates(area))
   const [mapConfig, setMapConfig] = useState("standard")
 
@@ -264,28 +264,26 @@ export const MapAreaWrapper = ({children, area, mapHeight}) => {
       fetchConfig()
   })
 
-  const regionChange = (newRegion) => {
-    setRegion(newRegion)
-  }
+  // recenters the map only if the recenter bool is true
+  if(recenter) _mapView.current.animateToRegion(defaultRegion, 750);
 
-    return (
-      <View>
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          style={{height:mapHeight}}
-          zoomEnabled
-          initialRegion={region}
-          region={recenter ? defaultRegion : region}
-          mapType={mapConfig}
-          onRegionChangeComplete={(newRegion) => regionChange(newRegion)}
-          onPress={event => onPress(event.nativeEvent.coordinate)}
-        >
-          {children}
-        </MapView>
-      </View>
-      )
+  return (
+    <View>
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        ref={_mapView}
+        style={{height:mapHeight}}
+        zoomEnabled
+        initialRegion={defaultRegion}
+        mapType={mapConfig}
+        onPress={event => onPress(event.nativeEvent.coordinate)}
+      >
+        {children}
+      </MapView>
+    </View>
+  )
 
-  };
+};
 
 export const MapWrapper = ({children, location, mapHeight}) => {
 
@@ -320,16 +318,16 @@ export const MapWrapper = ({children, location, mapHeight}) => {
     </View>)
   };
 
-  export const ShowArea = ({area}) => {
-    return (
-        <MapView.Polygon
-          coordinates={area}
-          strokeWidth={3}
-          strokeColor={'rgba(255,0,0,0.5)'}
-          fillColor={'rgba(0,0,0,0.2)'}
-        />
-        )
-    };
+export const ShowArea = ({area}) => {
+  return (
+    <MapView.Polygon
+      coordinates={area}
+      strokeWidth={3}
+      strokeColor={'rgba(255,0,0,0.5)'}
+      fillColor={'rgba(0,0,0,0.2)'}
+    />
+  )
+};
 
 export const ShowAreas = ({areas}) => {
   const center = areas.map((area, index) => getRegionForCoordinates(area.points));
