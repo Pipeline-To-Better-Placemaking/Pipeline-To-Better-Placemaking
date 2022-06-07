@@ -4,7 +4,7 @@ const Map = require('../models/boundaries_maps.js')
 const Project = require('../models/projects.js')
 const Boundaries_Collection = require('../models/boundaries_collections.js')
 const Team = require('../models/teams.js')
-const Points = require('../models/standing_points.js')
+// const Points = require('../models/standing_points.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
@@ -24,7 +24,6 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
                 let newMap = new Map({
                     title: slot.title,
-                    standingPoints: slot.standingPoints,
                     researchers: slot.researchers,
                     project: req.body.project,
                     sharedData: req.body.collection,
@@ -40,7 +39,6 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
         let newMap = new Map({
             title: req.body.title,
-            standingPoints: req.body.standingPoints,
             researchers: req.body.researchers,
             project: req.body.project,
             sharedData: req.body.collection,
@@ -59,7 +57,6 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     const map = await  Map.findById(req.params.id)
-                           .populate('standingPoints')
                            .populate('researchers','firstname lastname')
                            .populate([
                                {
@@ -104,20 +101,9 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         title: (req.body.title ? req.body.title : map.title),
         date: (req.body.date ? req.body.date : map.date),
         maxResearchers: (req.body.maxResearchers ? req.body.maxResearchers : map.maxResearchers),
-        standingPoints: (req.body.standingPoints ? req.body.standingPoints : map.standingPoints)
     })
 
     project = await Project.findById(map.project)
-
-    if(req.body.standingPoints){
-
-        for(var i = 0; i < req.body.standingPoints.length; i++)
-            await Points.addRefrence(req.body.standingPoints[i])
-        
-        for(var i = 0; i < map.standingPoints.length; i++)
-            await Points.removeRefrence(map.standingPoints[i])
-
-    }
 
 
     if (await Team.isAdmin(project.team,user._id)){
@@ -174,15 +160,8 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             _id: oldData._id,
             horizontal: (req.body.horizontal ? req.body.horizontal : oldData.horizontal),
             vertical: (req.body.vertical ? req.body.vertical : oldData.vertical),
-            standingPoint: (req.body.standingPoint ? req.body.standingPoint : oldData.standingPoint),        
             time: (req.body.time ? req.body.time : oldData.time),
             path: (req.body.path ? req.body.path : oldData.path)
-        }
-       
-
-        if(req.body.standingPoint){
-            Points.addRefrence(req.body.standingPoint)
-            Points.removeRefrence(oldData.standingPoint)
         }
     
         await Map.updateData(mapId,oldData._id,newData)

@@ -39,6 +39,13 @@ router.get('/sound/:id', passport.authenticate('jwt',{session:false}), async (re
 
 })
 
+router.get('/boundary/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    res.status(200).json(await Boundaries_Collection.findById(req.params.id)
+                                                .populate('area')
+                                                .populate('maps'))
+
+})
+
 // router.get('/nature/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
 //     res.status(200).json(await Nature_Collection.findById(req.params.id)
 //                                                 .populate('area')
@@ -53,12 +60,6 @@ router.get('/sound/:id', passport.authenticate('jwt',{session:false}), async (re
 
 // })
 
-// router.get('/boundaries/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-//     res.status(200).json(await Boundaries_Collection.findById(req.params.id)
-//                                                 .populate('area')
-//                                                 .populate('maps'))
-
-// })
 
 // router.get('/order/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
 //     res.status(200).json(await Order_Collection.findById(req.params.id)

@@ -219,6 +219,7 @@ router.put(
         throw new BadRequestError("Datapoints can only have two activies");
 
       if (req.body.standingPoint) {
+        console.log("reaches data update in stationary maps (standing points)")
         Points.addRefrence(req.body.standingPoint);
         Points.removeRefrence(oldData.standingPoint);
       }
