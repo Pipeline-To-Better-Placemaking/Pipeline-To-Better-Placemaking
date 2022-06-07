@@ -33,7 +33,7 @@ const settings = [
 ];
 
 //SVG Home icon link button
-const home = <Link className='homeButton' to='/u'><Home className='iconShadow'/></Link>;
+const home = <Link className='homeButton' to='/home'><Home className='iconShadow'/></Link>;
 
 const AppNavBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);

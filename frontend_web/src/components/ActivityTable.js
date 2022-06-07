@@ -21,6 +21,7 @@ const testNames = {
     soundCollections: 'Acoustical Profile'
 };
 
+// Collapsible Table for Activity Page
 function Row(props) {
     const row = props.row;
     const name = props.name;
@@ -57,6 +58,8 @@ function Row(props) {
     );
 }
 
+
+//Subtables for Map Page Data Drawer and Activity Page Collapsible Table
 const subtable = (row, type) => (    
     <Box sx={{ margin: 1 }} className='subTable'>
         <Table stickyHeader size='small' aria-label='activity'>
@@ -78,7 +81,7 @@ const subtable = (row, type) => (
                             tObj.data.map((object, index) => (
                                 <TableRow key={ index }>
                                     <TableCell colSpan={ 2 } className='value'>
-                                        { object.average ? object.average : (object.result ? object.result : (object.posture ? object.posture : '')) }
+                                        { object.average ? object.average : (object.result ? object.result : (object.posture ? object.posture : (object.movement ? object.movement : ''))) }
                                     </TableCell>
                                     <TableCell colSpan={ 2 } className='type'>
                                     </TableCell>

@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import MapDrawers from './MapDrawers';
-
 import './controls.css';
 
 const render = (status) => {
@@ -14,6 +13,7 @@ const render = (status) => {
     return <h1>{ status }</h1>;
 };
 
+//Official Category Titles
 const testNames = {
     stationaryCollections: 'Humans in Place',
     movingCollections: 'Humans in Motion',
@@ -24,17 +24,8 @@ const testNames = {
     soundCollections: 'Acoustical Profile'
 };
 
-function printMap(){
-    var content = document.getElementById("mapFrame");
-    var pri = document.getElementById("printFrame").contentWindow;
-    pri.document.open();
-    pri.document.write(content.innerHTML);
-    pri.document.close();
-    pri.focus();
-    pri.print();
-}
-
 function FullMap(props){
+    const title = props.title ? props.title : 'Project';
     const [click, setClick] = React.useState([]);
     const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 10); // initial zoom
     const [center, setCenter] = React.useState(props.center.lat ? { lat: props.center.lat, lng: props.center.lng } : { lat:28.54023216523664, lng:-81.38181298263407 });
@@ -50,6 +41,8 @@ function FullMap(props){
     const [lightingCollections, setLightingCollections] = React.useState({});
     const [natureCollections, setNatureCollections] = React.useState({});
     const [soundCollections, setSoundCollections] = React.useState({});
+
+    //holds ALL Collections for rendering
     const [collections, setCollections] = React.useState({
         orderCollections: orderCollections, 
         boundariesCollections: boundariesCollections, 
@@ -152,6 +145,7 @@ function FullMap(props){
         }
     };
 
+    //Handles clicks for Project Map Creation and editing
     const onClick = (e) => {
         if(props.type === 2 || props.type === 0){
             setClick(e.latLng);
@@ -166,6 +160,7 @@ function FullMap(props){
         setCenter(m.getCenter().toJSON());
     };
 
+    //Used for searching Google Places
     const form0 = (
         <div id='newProjectInput'>
             <TextField id='location-search' label='Project Location' type='search' value={ loc }/>
@@ -174,25 +169,32 @@ function FullMap(props){
         </div>
     );
 
+    //Renders all selected activity options to the corresponding markers, polylines and boundaries
     const actCoords = (collections) => (
         Object.entries(collections).map(([title, object], index) => (
             Object.entries(object).map(([sdate, stimes])=>(
                 stimes.map(time => (
                     Object.entries(data.Activities[title][sdate][time].data).map(([ind, point], i2)=>(
-                        <Marker 
-                            key={`${sdate}.${time}.${i2}`} 
-                            info={point.average ? 
-                                (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
-                                : (point.result ? 
-                                    (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.result}</div>`) 
-                                    : (point.posture ? 
-                                        (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
-                                        : null)) } 
-                            position={point.standingPoint ? point.standingPoint : point.point} 
-                            markerType={point.average ? 'soundCollections' 
-                                : (point.result ? point.result : (point.posture ? point.posture : null))} 
-                            markerSize={title === 'soundCollections' ? point.average : null} 
-                        />
+                        (point.movement ? 
+                            <Path 
+                                key={`${sdate}.${time}.${i2}`} 
+                                path={point.path} 
+                                movement={point.movement}
+                            />:<Marker 
+                                key={`${sdate}.${time}.${i2}`} 
+                                info={point.average ? 
+                                    (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
+                                    : (point.result ? 
+                                        (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.result}</div>`) 
+                                        : (point.posture ? 
+                                            (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
+                                            : null)) } 
+                                position={point.standingPoint ? point.standingPoint : point.point} 
+                                markerType={point.average ? 'soundCollections' 
+                                    : (point.result ? point.result : (point.posture ? point.posture : null))} 
+                                markerSize={title === 'soundCollections' ? point.average : null} 
+                            />
+                        )
                     ))
                 ))
             ))
@@ -203,7 +205,7 @@ function FullMap(props){
         <>
             {/* Map Drawers overlay in map.jsx to better communicate*/}
             { props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null }
-            { props.type === 1 ? <Button id='printButton' onClick={() => printMap()}>Print Map</Button>: null }
+            { props.type === 1 ? <Button id='printButton'>Print Map</Button>: null }
             {/* Wrapper imports Google Maps API */}
             <Wrapper apiKey={''} render={ render } id='mapContainer'>
                 <Map
@@ -219,19 +221,11 @@ function FullMap(props){
                     data={ areaData }
                 >
                     { props.type === 1 && areaData ? <Bounds area={areaData}/> : null }
-                    { props.type === 1 ?
-                       actCoords(collections)
-                    :<Marker position={click}/> }
+                    { props.type === 1 ? actCoords(collections) :<Marker position={click}/> }
                 </Map>
             </Wrapper>
             {/* Basic form for searching for places */}
             { props.type === 0 ? form0 : null }
-            <iframe 
-                title='printFrame' 
-                id="printFrame" 
-                style={{ height: '0px', width: '0px', position: 'absolute' }}
-            >
-            </iframe>
         </>
     );
 };
@@ -339,7 +333,7 @@ const Marker = (options) => {
         if (marker) {
             marker.setOptions({ clickable: true, map: options.map, position: options.position });
 
-            marker.addListener("click", () => {
+            marker.addListener('click', () => {
                 infoWindow.open({
                     anchor: marker,
                     map: options.map,
@@ -357,10 +351,10 @@ const Bounds = (options) => {
     const bounds = {
         area: {
             paths: options.area,
-            strokeColor: "rgba(255,0,0,0.5)",
+            strokeColor: 'rgba(255,0,0,0.5)',
             strokeOpacity: 0.8,
             strokeWeight: 3,
-            fillColor: "rgba(0,0,0,0.2)",
+            fillColor: 'rgba(0,0,0,0.2)',
         },
         water:{},
         construction:{},
@@ -388,6 +382,49 @@ const Bounds = (options) => {
 
     return null;
 };
+
+const Path = (options) => {
+    const [path, setPath] = React.useState();
+
+    const colors = {
+        walking: '#0000FF',
+        running: '#FF0000',
+        swimming: '#FFFF00',
+        onwheels: '#008000',
+        handicap: '#FFA500'
+    }
+
+    console.log(colors[options.movement])
+
+    const lines = {
+        style: {
+            path: options.path,
+            strokeColor: colors[options.movement],
+            strokeOpacity: 0.9,
+            strokeWeight: 2
+        }
+    }
+
+    React.useEffect(() => {
+        if (!path) {
+            setPath(new google.maps.Polyline(lines.style));
+        }
+
+        return () => {
+            if (path) {
+                path.setMap(null);
+            }
+        };
+    }, [path, lines.style]);
+
+    React.useEffect(() => {
+        if (path) {
+            path.setOptions({ map: options.map });
+        }
+    }, [path, options]);
+
+    return null;
+}
 
 const deepCompareEqualsForMaps = createCustomEqual((deepEqual) => (a, b) => {
     if (isLatLngLiteral(a) || a instanceof google.maps.LatLng || isLatLngLiteral(b) || b instanceof google.maps.LatLng) {

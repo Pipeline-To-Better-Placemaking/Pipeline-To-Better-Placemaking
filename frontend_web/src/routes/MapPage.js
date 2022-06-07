@@ -4,6 +4,7 @@ import './routes.css';
 
 function MapPage(props){
     const drawers = props.drawers;
+    const title = props.title;
 
     const center = { lat:28.602846550128262, lng:-81.20006526689143 };
 
@@ -25,6 +26,7 @@ function MapPage(props){
     return (
         <div id='MapPage'>
             <Map
+                title={ title }
                 center={ center } 
                 zoom={ 16 } 
                 type={ 1 }

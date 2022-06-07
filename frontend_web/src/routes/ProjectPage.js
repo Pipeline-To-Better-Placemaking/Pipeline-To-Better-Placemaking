@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import MapPage from './MapPage';
 import TabPanel from '../components/ProjectTabPanel';
@@ -43,7 +43,74 @@ function ProjectPage(){
                     }
                 }
             },
-            movingCollections: {},
+            movingCollections: {
+                '3/2/22': {
+                    '2:00': {
+                        surveyor: 'Bob Minns',
+                        data: [
+                            {
+                                movement: 'walking',
+                                path: [
+                                    {
+                                        lat: 28.60362836407018, 
+                                        lng: -81.19919623114687
+                                    },
+                                    { 
+                                        lat: 28.6036848805148, 
+                                        lng: -81.19915331580425
+                                    },
+                                    {
+                                        lat: 28.603783784219722, 
+                                        lng:- 81.19921768881817
+                                    }
+
+                                ]
+                            },
+                            {
+                                movement: 'running',
+                                path: [
+                                    {
+                                        lat: 28.60394862352107, 
+                                        lng: -81.19951273179854
+                                    },
+                                    {
+                                        lat: 28.60407578509113, 
+                                        lng: -81.19949663854507
+                                    },
+                                    {
+                                        lat: 28.604240623934345, 
+                                        lng:-81.19939471460638
+                                    }
+
+                                ]
+                            },
+                            {
+                                movement: 'handicap',
+                                path: [
+                                    {
+                                        lat: 28.60335637825532, 
+                                        lng:-81.1993517992638
+                                    },
+                                    {
+                                        lat: 28.60338699141251, 
+                                        lng:-81.19940142012868
+                                    },
+                                    {
+                                        lat: 28.603442330558636, 
+                                        lng:-81.19949395633616
+                                    },
+                                    {
+                                        lat: 28.603469411406763, 
+                                        lng:-81.19955028272332
+                                    }
+
+                                ]
+                            }
+                        ]
+                    }
+                }
+
+            },
             orderCollections: {
                 '2/22/22': {
                     '18:00': {
@@ -475,14 +542,19 @@ function ProjectPage(){
         }
     }
 
+    const loc = useLocation();
+    const values  = React.useState({
+        projectName: loc.state
+    });
+
     return (
         <div id='ProjectPage'>
             <TabPanel />
             <Routes>
-                <Route index element={<MapPage drawers={drawers} />} />
-                <Route path='map' element={<MapPage drawers={drawers} />} />
-                <Route path='activities' element={<ActivityPage drawers={drawers.Activities} />} />
-                <Route path='surveyors' element={<SurveyorPage drawers={drawers} />} />
+                <Route index element={<MapPage title={values.projectName} drawers={drawers} />} />
+                <Route path='map' element={<MapPage title={values.projectName} drawers={drawers} />} />
+                <Route path='activities' element={<ActivityPage title={values.projectName} drawers={drawers.Activities} />} />
+                <Route path='surveyors' element={<SurveyorPage title={values.projectName} drawers={drawers} />} />
             </Routes>
         </div>
     );

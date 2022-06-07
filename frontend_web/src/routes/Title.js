@@ -64,7 +64,7 @@ function Title() {
             success = res.success;
             <Navigate to='/u'/>
         } catch ( error ) {
-            console.log("ERROR: ", error);
+            console.log('ERROR: ', error);
             success = false;
             //create error component
         }

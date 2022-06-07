@@ -15,6 +15,7 @@ import Switch from '@mui/material/Switch';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 import ActivityTable from './ActivityTable';
+import Charts from './Charts';
 import './controls.css';
 
 export default function MapDrawer(props) {
@@ -67,7 +68,6 @@ export default function MapDrawer(props) {
         if (event.title === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
-
         setState({ ...state, [anchor]: open });
     };
 
@@ -95,9 +95,9 @@ export default function MapDrawer(props) {
                     <div key={ category }>
                         <ListItemButton 
                             key={ category+index } 
-                            onClick={handleClickDate(category, !dateOpen[category])}
+                            onClick={ handleClickDate(category, !dateOpen[category]) }
                         >
-                            <ListItemText primary={ category ? testNames[category] : ''} />
+                            <ListItemText primary={ category ? testNames[category] : '' } />
                             { menuAnchors[name] === 'left' ? 
                                 (dateOpen[category] ? <ExpandLess /> : <ExpandMore />): null }
                         </ListItemButton>
@@ -113,13 +113,13 @@ export default function MapDrawer(props) {
             <Collapse in={ dateOpen[title] } timeout='auto' unmountOnExit>
                 <List component='div' disablePadding>
                     { Object.entries(dates).map(([date, times], index) => (
-                        <div key={ date }>
+                        <div key={ title+date }>
                             <ListItemButton 
-                                key={ date + index } sx={{ pl: 4, bgcolor: '#dcedfc' }} 
-                                onClick={ handleClickTime(date, !timeOpen[date]) }
+                                key={ title + date + index } sx={{ pl: 4, bgcolor: '#dcedfc' }} 
+                                onClick={ handleClickTime(`${title}${date}`, !timeOpen[`${title}${date}`]) }
                             >
-                                <ListItemText primary={ date } />
-                                { date ? (timeOpen[date] ? <ExpandLess /> : <ExpandMore />):null }
+                                <ListItemText primary={ date }/>
+                                {date ? (timeOpen[`${title}${date}`] ? <ExpandLess /> : <ExpandMore />):null }
                             </ListItemButton>
                             { timeList(title, date, times) }
                         </div>
@@ -130,7 +130,7 @@ export default function MapDrawer(props) {
    };
 
     const timeList = (title, date, times) => (
-        <Collapse in={ timeOpen[date] } timeout='auto' unmountOnExit>
+        <Collapse in={ timeOpen[`${title}${date}`] } timeout='auto' unmountOnExit>
             <List component='div' disablePadding>
                 {
                     Object.keys(times).map((time, index) => (
@@ -157,6 +157,12 @@ export default function MapDrawer(props) {
             {/* type 1 - bottom drawer table */}
             <ActivityTable type={ 1 } activity={ selections }/>
         </TableContainer>
+    );
+
+    const charts = (selections) => (
+        Object.entries(selections).map(([selection, obj])=>(
+            <Charts key={selection} data={obj.data}/>
+        ))
     );
 
     return (
@@ -187,7 +193,7 @@ export default function MapDrawer(props) {
                             : null }
                         { menuAnchors[name] === 'left' ? 
                             list(name, data) 
-                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : null) }
+                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : (menuAnchors[name] === 'right' ? charts(selections) : null)) }
                     </Drawer>
                 </React.Fragment>
             ))}
