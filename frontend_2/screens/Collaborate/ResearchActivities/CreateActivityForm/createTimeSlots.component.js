@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Select, SelectItem, Modal, Text, Button, Input, Icon, Divider, List, Card, StyleService } from '@ui-kitten/components';
+import { Select, SelectItem, Modal, Text, Button, Input, Icon, Divider, List, Card } from '@ui-kitten/components';
 import { DateTimePickerModal } from "react-native-modal-datetime-picker";
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { HeaderExit } from '../../../components/headers.component';

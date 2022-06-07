@@ -356,9 +356,12 @@ export function CreateActivityStack(props) {
         });
       }
     }
+    //console.log(timeSlotName);
     // Save the activity
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
+        const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + timeSlot._id, {
+        // original response below, there appeared to be an extra /, but the responses came back looking okay ?
+        // const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -388,8 +391,11 @@ export function CreateActivityStack(props) {
   const deleteTimeSlot = async (timeSlot, timeSlotName) => {
     let success = false
     let res = null
+    //console.log(timeSlotName);
     try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
+      const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + timeSlot._id, {
+      // original response below, there appeared to be an extra /, but the responses came back looking okay ?
+      // const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
           method: 'DELETE',
           headers: {
               Accept: 'application/json',
