@@ -191,8 +191,8 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             throw new BadRequestError('Datapoints can only have one predominant sound type')
 
         if(req.body.standingPoint){
-            await Points.addRefrence(req.body.standingPoint)
-            await Points.removeRefrence(oldData.standingPoint)
+             Points.addRefrence(req.body.standingPoint)
+             Points.removeRefrence(oldData.standingPoint)
         }
     
         await Map.updateData(mapId,oldData._id,newData)
