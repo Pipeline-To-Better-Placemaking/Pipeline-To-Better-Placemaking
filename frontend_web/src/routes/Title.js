@@ -62,7 +62,7 @@ function Title() {
             });
             res = JSON.parse(await response.text());
             success = res.success;
-            <Navigate to='/u'/>
+            <Navigate to='/home'/>
         } catch ( error ) {
             console.log('ERROR: ', error);
             success = false;
