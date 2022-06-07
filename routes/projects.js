@@ -292,7 +292,7 @@ router.delete('/:id/stationary_collections/:collectionId', passport.authenticate
     collection = await Stationary_Collection.findById(req.params.collectionId)
 
     if(await Team.isAdmin(project.team,user._id)){
-        Area.removeRefrence(collection.area)
+        await Area.removeRefrence(collection.area)
         res.status(201).json(await Project.deleteStationaryCollection(project._id, req.params.collectionId))
     }
     else{
@@ -358,7 +358,7 @@ router.delete('/:id/moving_collections/:collectionId', passport.authenticate('jw
     collection = await Moving_Collection.findById(req.params.collectionId)
 
     if(await Team.isAdmin(project.team,user._id)){
-        Area.removeRefrence(collection.area)
+        await Area.removeRefrence(collection.area)
         res.status(201).json(await Project.deleteMovingCollection(project._id,req.params.collectionId))
     }
     else{
@@ -425,7 +425,7 @@ router.delete('/:id/sound_collections/:collectionId', passport.authenticate('jwt
     collection = await Sound_Collection.findById(req.params.collectionId)
 
     if(await Team.isAdmin(project.team,user._id)){
-        Area.removeRefrence(collection.area)
+        await Area.removeRefrence(collection.area)
         res.status(201).json(await Project.deleteSoundCollection(project._id,req.params.collectionId))
     }
     else{
