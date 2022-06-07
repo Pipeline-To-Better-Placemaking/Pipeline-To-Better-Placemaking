@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     leftContent: {
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
     },
     
     textHeader:{
@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     },
 
     textHeaderBack:{
-        maxWidth:'80%'      
+        maxWidth:'80%'    
     },
 
     text:{
@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
     },
 
     button: {
-        marginLeft: 25,
+        marginLeft: 15
       },
 
     buttonHeaderExit:{
