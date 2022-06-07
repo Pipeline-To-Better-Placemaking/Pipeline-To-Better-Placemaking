@@ -18,6 +18,7 @@ import './routes.css';
 import logo1 from '../images/PtBPLogo.png';
 
 function Title() {
+    let navigate = useNavigate();
     // Access email, password like values.email, do not mutate or modify
     const [values, setValues] = React.useState({
         email: '',
@@ -62,7 +63,9 @@ function Title() {
             });
             res = JSON.parse(await response.text());
             success = res.success;
-            <Navigate to='/home'/>
+
+            //user login confirmation and navigation handling in App.js
+            props.onLogin(true);
         } catch ( error ) {
             console.log('ERROR: ', error);
             success = false;

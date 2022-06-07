@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import AppNavBar from './components/AppNavBar';
 import Title from './routes/Title';
@@ -27,11 +27,29 @@ function UserRoutes() {
 } 
 
 function App(){
+    //token/storage of choice
+    //  const token = localStorage.getItem('token_data')
+    // true == active user (logged in)
+    const [state, setState] = useState(token !== null && token !== '' ? true : false);
+
+    // Set user vars to access the user home page
+    function handleOnLogin(active) {
+        setState(active);
+        return <Navigate to='/home' />
+    }
+
+    // clear all fields on logout
+    function handleOnLogout(active) {
+        setState(active);
+        return <Navigate to='/' />
+    }
+
     // (url)/(any path below)
     return(
         <Router>
             <Routes>
-                <Route index element={<Title />}/>
+                {/* pass onLogin function to handle userState */}
+                <Route index element={<Title onLogin={handleOnLogin}/>}/>
                     <Route path='home/*' element={<UserRoutes />}/>
                 <Route path='new' element={<NewUser />} />
             </Routes>
