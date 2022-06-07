@@ -56,7 +56,7 @@ app.use('/api/sound_maps',      soundApi)
 // app.use('/api/nature_maps',     natureApi)
 // app.use('/api/light_maps',      lightApi)
 // app.use('/api/order_maps',      orderApi)
-// app.use('/api/bound_maps',      boundApi)
+app.use('/api/boundary_maps',      boundApi)
 app.use('/api/surveys',         surveyApi)
 app.use('/api/collections',     collectionApi)
 
