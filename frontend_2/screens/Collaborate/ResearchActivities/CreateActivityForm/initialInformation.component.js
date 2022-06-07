@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { Select, SelectItem, Text, Button, Input, Icon, Datepicker } from '@ui-kitten/components';
 import { ViewableArea, ContentContainer, EnterNumber, ConfirmDelete } from '../../../components/content.component';
@@ -12,6 +12,7 @@ export function IntialForm(props) {
   const today = new Date();
   const [editDurationVisible, setEditDurationVisible] = useState(false);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [select, setSelect] = useState(false);
 
   const next = () => {
     if(props.selectArea) {
@@ -20,6 +21,29 @@ export function IntialForm(props) {
       props.navigation.navigate('CreateTimeSlots')
     }
   };
+
+  // used to set the inital timeslots based on the selected activity/test
+  useEffect(()=>{
+    if(select){
+      // inital timeslots for stationary, people moving, and survey activities
+      if(
+        props.activityTypes[props.selectedActivityIndex.row] === 'Stationary Map' || 
+        props.activityTypes[props.selectedActivityIndex.row] === 'People Moving' ||
+        props.activityTypes[props.selectedActivityIndex.row] === 'Survey'
+      ){  
+        props.setDuration('15');
+        setSelect(false);
+      }
+      // security activities
+      // sound test's inital timeslot is 30 s
+      else if(props.activityTypes[props.selectedActivityIndex.row] === 'Sound'){  
+        props.setDuration('30');
+        setSelect(false);
+      }
+      // add more tests here as I do them
+
+    }
+  }, [select])
 
   return (
     <ViewableArea>
@@ -62,15 +86,16 @@ export function IntialForm(props) {
                   placeholder={retrieveTestName(props.activityTypes[0])}
                   value={retrieveTestName(props.activityTypes[props.selectedActivityIndex.row])}
                   selectedIndex={props.selectedActivityIndex}
-                  onSelect={index => props.setSelectedActivity(index)}
+                  onSelect={index =>{
+                    props.setSelectedActivity(index)
+                    setSelect(true);
+                  }}
                 >
                   {props.activityTypes.map((item, index) =>{
                     let testType = retrieveTestName(item);
                     return(
                       <SelectItem key="{item}" title={testType}/>
-                    )
-                  
-                  
+                    )                  
                   })}
                 </Select>
               </View>
