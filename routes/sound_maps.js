@@ -181,15 +181,18 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             decibel_5: (req.body.decibel_5 ? req.body.decibel_5 : oldData.decibel_5),
             average: (req.body.average ? req.body.average : oldData.average),
             sound_type: (req.body.sound_type ? req.body.sound_type : oldData.sound_type),
+            standingPoint: req.body.standingPoint
+            ? req.body.standingPoint
+            : oldData.standingPoint,
             time: (req.body.time ? req.body.time : oldData.time)
         }
 
-        if (req.body.predominant_type.length > 2)
+        if (req.body.sound_type.length > 2)
             throw new BadRequestError('Datapoints can only have one predominant sound type')
 
         if(req.body.standingPoint){
-            Points.addRefrence(req.body.standingPoint)
-            Points.removeRefrence(oldData.standingPoint)
+            await Points.addRefrence(req.body.standingPoint)
+            await Points.removeRefrence(oldData.standingPoint)
         }
     
         await Map.updateData(mapId,oldData._id,newData)
