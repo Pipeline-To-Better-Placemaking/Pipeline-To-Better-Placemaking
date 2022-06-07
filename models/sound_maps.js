@@ -90,13 +90,6 @@ const dataSchema = mongoose.Schema({
         ref: 'Standing_Points'
     },
 
-    // time_of_day: {
-    //     type: String,
-    //     enum: ['morning','afternoon','night'],
-    //     required: true
-    // },
-    // may revisit later
-
 
     time: {
         type: Date,
@@ -191,7 +184,7 @@ module.exports.addEntry = async function(mapId, newEntry) {
         decibel_5: newEntry.decibel_5,
         average: newEntry.average,
         sound_type: newEntry.sound_type,
-        // time_of_day: newEntry.time_of_day,        
+        standingPoint: newEntry.standingPoint,     
         time: newEntry.time
     })
 
