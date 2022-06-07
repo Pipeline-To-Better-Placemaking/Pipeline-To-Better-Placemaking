@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component.js';
 import { PeopleMovingMap } from '../../../components/Maps/peopleMovingMap.component.js';
@@ -24,6 +24,14 @@ export function PeopleMovingActivity(props) {
 
     // Begins the test
     const [start, setStart] = useState(false)
+    const [initalStart, setInitalStart] = useState(true);
+
+    // timer stuff
+    const initalTime = props.timeSlot.timeLeft
+    // controls the rendered countdown timer
+    const [timer, setTimer] = useState(initalTime);
+    // controls timer interval instance
+    let id;
 
     // Shows the moving and data input modal
     const [moving, setMoving] = useState(false)
@@ -43,26 +51,11 @@ export function PeopleMovingActivity(props) {
     const [currentPathSize, setCurrentPathSize] = useState(0)
     const [totalPaths, setTotalPaths] = useState([])
 
-    // Updates the time in TimeBar
-    const updateTime = (value) => {
-        let temp = props.timeSlot;
-        temp.timeLeft = value-1;
-        props.setTimeSlot(temp);
-
-        // If we hit 0, restart the timer
-        if (value-1 == 0){
-            let resetSlot = props.timeSlot;
-            resetSlot.timeLeft = props.initialTimeSlot.timeLeft;
-            props.setTimeSlot(resetSlot);
-            console.log('restarting timer');
-            restart()
-        }
-    }
-
     // End Button press
     const endActivity = async () => {
-        
-        setStart(false)
+        setStart(false);
+        // clear interval if the activity ends early
+        clearInterval(id);
 
         // Saves the PM data
         try {
@@ -99,6 +92,7 @@ export function PeopleMovingActivity(props) {
         if (standingIndex < standingPointLength-1){
 
             setStandingIndex(standingIndex+1)
+            setTimer(initalTime)
             setRecenter(true)
             setStart(false)
             setMoving(true)
@@ -121,7 +115,14 @@ export function PeopleMovingActivity(props) {
     // Start and Exit button
     const StartStopButton = () => {
 
-        if (start) {
+        if (initalStart) {
+            return(
+                <Button style={styles.startButton} onPress={() => setStart(true)} >
+                    Start
+                </Button>
+            )
+        }
+        else{
             return(
                 <Button
                     status={'danger'}
@@ -130,14 +131,7 @@ export function PeopleMovingActivity(props) {
                     >
                         End
                     </Button>
-            )
-        }
-        else{
-            return(
-                <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
-                </Button>
-            )
+            ) 
         }
     }
 
@@ -190,9 +184,9 @@ export function PeopleMovingActivity(props) {
             }
 
             let emptyPath = []
-
-            setData(data.concat(dat))
-            setTotalPaths(totalPaths.concat(totalLines))
+            
+            data.push(dat);
+            totalPaths.push(totalLines);
             setCurrentPath(emptyPath)
             setCurrentPathSize(0)
             setDataModal(false)
@@ -216,6 +210,33 @@ export function PeopleMovingActivity(props) {
       <Icon {...props} fill='#8F9BB3' name={viewAllLines ? 'eye' : 'eye-off'}/>
     )
 
+    // helps control the countdown timer
+    useEffect(() =>{
+        // only start the timer when we start the test
+        if(start){
+            startTime(timer);
+            setInitalStart(false);
+        }
+    }, [start]);
+
+    // begins/updates the timer
+    function startTime(current){
+        let count = current;
+        id = setInterval(() =>{            
+            count--;
+            // timer is what actually gets rendered so update every second
+            setTimer(count);
+            //console.log(count);
+            // when the timer hits 0, call restart
+            if(count === 0){
+                // clear the interval to avoid resuming timer issues
+                clearInterval(id);
+                restart();
+            }
+        // 1000 ms == 1 s
+        }, 1000);
+    }
+
     // Count Down Timer and the Start/Exit button
     const TimeBar = () => {
 
@@ -235,8 +256,7 @@ export function PeopleMovingActivity(props) {
                     <View>
                         <CountDown
                             running={start}
-                            until={props.timeSlot.timeLeft}
-                            onChange={(value) => updateTime(value)}
+                            until={timer}
                             size={20}
                             digitStyle={{backgroundColor:theme['background-basic-color-1']}}
                             digitTxtStyle={{color:theme['text-basic-color']}}
@@ -264,7 +284,7 @@ export function PeopleMovingActivity(props) {
 
     return(
         <ViewableArea>
-            <Header text={'People Moving Acitivity'}/>
+            <Header text={'Humans in Motion'}/>
             <ContentContainer>
 
                 <TimeBar/>

@@ -1,19 +1,26 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { Text, Button, Icon, OverflowMenu } from '@ui-kitten/components';
 
 import { styles } from './headers.styles';
 
+const logoSrc = '../../images/Logo-Coin.png';
+
 export function Header(props) {
   return (
     <View style={styles.header}>
-      <View style={styles.leftContent} />
+      <View style={styles.logoView}>
+        <Image 
+          style={styles.logo}
+          source={require(logoSrc)}
+        />
+      </View>
+      
       <View style={styles.textHeader}>
         <Text category='h5' status='control'>
           {props.text}
         </Text>
       </View>
-      <View style={styles.rightContent} />
     </View>
   );
 };
@@ -31,7 +38,7 @@ export function HeaderBack(props) {
           size='small'
         />
       </View>
-      <View style={styles.textHeaderBack}>
+      <View style={styles.textHeaderBackView}>
         <Text category='h5' status='control'>
           {props.text}
         </Text>
@@ -44,7 +51,7 @@ export function HeaderBack(props) {
 export function HeaderExit(props) {
   return (
     <View style={styles.header}>
-    <View style={styles.textHeader}>
+    <View style={styles.textHeaderBackView}>
       <Text style={styles.text} category='h5' status='control'>
         {props.text}
       </Text>

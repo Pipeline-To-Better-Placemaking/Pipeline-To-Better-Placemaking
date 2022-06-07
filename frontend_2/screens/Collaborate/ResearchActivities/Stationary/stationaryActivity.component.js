@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
@@ -23,6 +23,14 @@ export function StationaryActivity(props) {
 
     // Begins the test
     const [start, setStart] = useState(false)
+    const [initalStart, setInitalStart] = useState(true);
+
+    // timer stuff
+    const initalTime = props.timeSlot.timeLeft
+    // controls the rendered countdown timer
+    const [timer, setTimer] = useState(initalTime);
+    // controls timer interval instance
+    let id;
 
     // Shows the moving and data input modal
     const [moving, setMoving] = useState(false)
@@ -66,9 +74,9 @@ export function StationaryActivity(props) {
                 marker: tempMarker,
                 colorIndex: inf.postureIndex
             }
-
-            setData(() => data.concat(pointData))
-            setMarkers(() => markers.concat(obj))
+            
+            data.push(pointData);
+            markers.push(obj);
 
             setDataModal(false)
         }
@@ -76,8 +84,8 @@ export function StationaryActivity(props) {
 
     // End Button press
     const endActivity = async () => {
-
         setStart(false)
+        clearInterval(id);
 
         // Saves the SM data
         try {
@@ -112,8 +120,10 @@ export function StationaryActivity(props) {
         }
 
         if (standingIndex < standingPointLength-1){
-
+            console.log(data);
+            
             setStandingIndex(standingIndex+1)
+            setTimer(initalTime)
             setRecenter(true)
             setStart(false)
             setMoving(true)
@@ -126,7 +136,6 @@ export function StationaryActivity(props) {
 
     // Starts back up the activity
     const rebegin = () =>{
-
         setStart(true)
         setMoving(false)
         setRecenter(false)
@@ -135,7 +144,14 @@ export function StationaryActivity(props) {
     // Start and Exit button
     const StartStopButton = () => {
 
-        if (start) {
+        if (initalStart) {
+            return(
+                <Button style={styles.startButton} onPress={() => setStart(true)} >
+                    Start
+                </Button>
+            )
+        }
+        else{
             return(
                 <Button
                     status={'danger'}
@@ -146,33 +162,33 @@ export function StationaryActivity(props) {
                     </Button>
             )
         }
-        else{
-            return(
-                <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
-                </Button>
-            )
-        }
     }
 
-    // Updates the time in TimeBar
-    const updateTime = (value) => {
-
-        let temp = props.timeSlot;
-        temp.timeLeft = value-1;
-        props.setTimeSlot(temp);
-
-        // If we hit 0, restart the timer
-        if (value-1 == 0){
-
-            let orgTime = props.initialTimeSlot.timeLeft
-
-            temp.timeLeft = orgTime
-
-            props.setTimeSlot(temp);
-
-            restart()
+    // helps control the countdown timer
+    useEffect(() =>{
+        // only start the timer when we start the test
+        if(start){
+            startTime(timer);
+            setInitalStart(false);
         }
+    }, [start]);
+
+    // begins/updates the timer
+    function startTime(current){
+        let count = current;
+        id = setInterval(() =>{            
+            count--;
+            // timer is what actually gets rendered so update every second
+            setTimer(count);
+            //console.log(count);
+            // when the timer reaches 0, call restart
+            if(count === 0){
+                // clear the interval to avoid resuming timer issues
+                clearInterval(id);
+                restart();
+            }
+        // 1000 ms == 1 s
+        }, 1000);
     }
 
     // Count Down Timer and the Start/Exit button
@@ -187,8 +203,7 @@ export function StationaryActivity(props) {
                     <View>
                         <CountDown
                             running={start}
-                            until={props.timeSlot.timeLeft}
-                            onChange={(value) => updateTime(value)}
+                            until={timer}
                             size={20}
                             digitStyle={{backgroundColor:theme['background-basic-color-1']}}
                             digitTxtStyle={{color:theme['text-basic-color']}}
@@ -206,7 +221,7 @@ export function StationaryActivity(props) {
     // Main render
     return(
         <ViewableArea>
-            <Header text={'Stationary Activity'}/>
+            <Header text={'Humans in Place'}/>
             <ContentContainer>
 
                     <TimeBar/>

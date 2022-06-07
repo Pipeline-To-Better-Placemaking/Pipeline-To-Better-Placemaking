@@ -6,6 +6,7 @@ import { ViewableArea, ContentContainer } from '../../../components/content.comp
 import { MapAreaWrapper, ShowArea, ShowMarkers } from '../../../components/Maps/mapPoints.component';
 import { getDayStr, getTimeStr } from '../../../components/timeStrings.component';
 import { getAllCollectionInfo } from '../../../components/apiCalls';
+import { retrieveTestName } from '../../../components/helperFunctions';
 
 import { styles } from './activitySignUp.styles';
 
@@ -64,7 +65,7 @@ export function ActivitySignUpPage(props) {
               </Text>
             </View>
             <View style={styles.viewSpacer}>
-              <Text category='s1'>Activity: {props.activity.test_type}</Text>
+              <Text category='s1'>Activity: {retrieveTestName(props.activity.test_type)}</Text>
               <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
               {/* add stuff for the new tests here to be time at site (all but sound test) */}
               <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
@@ -101,7 +102,7 @@ export function ActivitySignUpPage(props) {
                 </MapAreaWrapper>
               </View>
               <View style={styles.viewSpacer}>
-                <Text category='s1'>Activity: {props.activity.test_type}</Text>
+                <Text category='s1'>Activity: {retrieveTestName(props.activity.test_type)}</Text>
                 <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
                 {/* add stuff for the new tests here to be time at site (all but sound test) */}
                 <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
@@ -416,7 +417,7 @@ export function ActivitySignUpPage(props) {
           </MapAreaWrapper>
         </View>
         <View style={styles.viewSpacer}>
-          <Text category='s1'>Activity: {props.activity.test_type}</Text>
+          <Text category='s1'>Activity: {retrieveTestName(props.activity.test_type)}</Text>
           <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
           {/* add new tests here for time at site for all but sound test */}
           { props.activity.test_type === activityList[3] ?

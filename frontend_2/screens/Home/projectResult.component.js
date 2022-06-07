@@ -6,7 +6,8 @@ import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getDayStr, getTimeStr } from '../components/timeStrings.component';
 import { getAllResults, getProject } from '../components/apiCalls';
-import { formatStationaryGraphData, formatMovingGraphData, formatSoundGraphData } from '../components/helperFunctions';
+import { formatStationaryGraphData, formatMovingGraphData, formatSoundGraphData, retrieveTestName } from '../components/helperFunctions';
+
 import { styles } from './projectResult.styles';
 
 const ForwardIcon = (props) => (
@@ -90,19 +91,21 @@ export function ProjectResultPage(props) {
     wait(2000).then(() => setSentMsgVisible(false));
   }
 
-  const activityItem = ({ item, index }) => (
+  const activityItem = ({ item, index }) => {
+    let testType = retrieveTestName(item.test_type);
+    return (
       <ListItem
         title={
           <Text style={styles.textTitle}>
               {`${item.title}`}
           </Text>
         }
-        description={getTimeStr(item.date) + ' - ' + getDayStr(item.sharedData.date) + ' - ' + item.test_type}
+        description={getTimeStr(item.date) + ' - ' + getDayStr(item.sharedData.date) + ' - ' + testType}
         accessoryRight={ForwardIcon}
         onPress={() => openActivityPage(item)}
       />
-  );
-
+    );
+  }
   return (
     <ViewableArea>
       <HeaderBack {...props} text={props.project.title}/>

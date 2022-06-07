@@ -6,6 +6,7 @@ import { ViewableArea, ContentContainer } from '../components/content.component'
 import { DummyResult } from '../components/dummyResult.component.js';
 import { HomeMapView } from '../components/Maps/home.map.component.js';
 import { getProject, getAllUserProjects, getAllResults } from '../components/apiCalls';
+
 import { styles } from './home.styles';
 
 export const HomeScreen = ( props ) => {
