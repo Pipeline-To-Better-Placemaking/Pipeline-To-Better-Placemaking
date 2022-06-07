@@ -219,8 +219,8 @@ router.put(
         throw new BadRequestError("Datapoints can only have two activies");
 
       if (req.body.standingPoint) {
-        await Points.addRefrence(req.body.standingPoint);
-        await Points.removeRefrence(oldData.standingPoint);
+        Points.addRefrence(req.body.standingPoint);
+        Points.removeRefrence(oldData.standingPoint);
       }
 
       await Map.updateData(mapId, oldData._id, newData);
