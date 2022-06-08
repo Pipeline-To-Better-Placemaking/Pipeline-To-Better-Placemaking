@@ -11,6 +11,10 @@ const { collection } = require('./surveys.js')
 // Document Schema for Boundaries Collections.  Maps references Boundaries Maps Schema
 const collection_schema = mongoose.Schema({
     title: String,
+    date: {
+        type: Date,
+        required: true
+    },
 
     area: {
         type: ObjectId,
