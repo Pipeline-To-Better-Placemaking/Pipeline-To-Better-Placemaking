@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
@@ -12,12 +13,10 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { Link } from 'react-router-dom';
-
 import './routes.css';
 import logo1 from '../images/PtBPLogo.png';
 
-function Title() {
+function Title(props) {
     const email = React.useRef(null);
     const password = React.useRef(null);
     // Access email, password like values.email, do not mutate or modify
@@ -80,7 +79,7 @@ function Title() {
             success = res.success;
 
             //user login confirmation and navigation handling in App.js
-            // props.onLogin(true);
+            //props.onLogin(true);
         } catch ( error ) {
             console.log('ERROR: ', error);
             success = false;
