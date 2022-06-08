@@ -129,7 +129,7 @@ module.exports.addEntry = async function(mapId, newEntry) {
         location: newEntry.location,
         standingPoint: newEntry.standingPoint
     })
-    console.log("standing point passed to addEntry from Stat")
+    console.log("standing point passed to addEntry from STATIONARY")
     console.log(newEntry.standingPoint)
     const debugPoint = await Points.addRefrence(newEntry.standingPoint)
     console.log(debugPoint)
@@ -204,8 +204,9 @@ module.exports.deleteEntry = async function(mapId, entryId) {
         )
         console.log("standing point passed into delete entry STATIONARY")
         console.log(doc.data[0].standingPoint)
-        await Points.removeRefrence(doc.data[0].standingPoint)
-    
+        const debugPoint = await Points.removeRefrence(doc.data[0].standingPoint)
+        console.log(debugPoint)
+
         return await Maps.updateOne(
             { _id: mapId },
             { $pull: { data: {_id:entryId }}

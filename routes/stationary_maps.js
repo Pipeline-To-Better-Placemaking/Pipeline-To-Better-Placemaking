@@ -220,6 +220,8 @@ router.put(
 
       if (req.body.standingPoint) {
         console.log("reaches data update in stationary maps (standing points)")
+        console.log("req standingPoint: " + req.body.standingPoint)
+        console.log("old standingPoint: " + oldData.standingPoint)
         Points.addRefrence(req.body.standingPoint);
         Points.removeRefrence(oldData.standingPoint);
       }
