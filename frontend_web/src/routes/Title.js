@@ -12,13 +12,14 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import './routes.css';
 import logo1 from '../images/PtBPLogo.png';
 
 function Title() {
-    let navigate = useNavigate();
+    const email = React.useRef(null);
+    const password = React.useRef(null);
     // Access email, password like values.email, do not mutate or modify
     const [values, setValues] = React.useState({
         email: '',
@@ -42,6 +43,20 @@ function Title() {
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
+    };
+
+    const handleLogin = (event) => {
+        event.preventDefault();
+        
+        if(values.email === ''){
+            email.current.focus();
+            return;
+        } else if (values.password === ''){
+            password.current.focus();
+            return;
+        }
+        
+        loginUser();
     };
 
     const loginUser = async () => {
@@ -94,6 +109,7 @@ function Title() {
                                     label='Email' 
                                     type='email' 
                                     name='email' 
+                                    ref={email}
                                     value={ values.email } 
                                     onChange={ handleChange } 
                                 />
@@ -104,6 +120,7 @@ function Title() {
                                         id='outlined-adornment-password'
                                         type={ values.showPassword ? 'text' : 'password' }
                                         name='password'
+                                        ref={ password }
                                         value={ values.password }
                                         onChange={ handleChange }
                                         endAdornment={
@@ -126,7 +143,7 @@ function Title() {
                                     id='loginButton' 
                                     type='submit' 
                                     size='lg' 
-                                    onClick={ loginUser }
+                                    onClick={ handleLogin }
                                 >
                                     Log in
                                 </Button>
