@@ -39,7 +39,7 @@ router.get('/sound/:id', passport.authenticate('jwt',{session:false}), async (re
 
 })
 
-router.get('/boundary/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+router.get('/boundaries/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     res.status(200).json(await Boundaries_Collection.findById(req.params.id)
                                                 .populate('area')
                                                 .populate('maps'))
