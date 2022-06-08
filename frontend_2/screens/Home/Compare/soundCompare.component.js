@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, ScrollView, Dimensions } from 'react-native';
-import { Text, Icon, Divider } from '@ui-kitten/components';
+import { View, ScrollView } from 'react-native';
+import { Text, Divider } from '@ui-kitten/components';
 import { HeaderBack } from '../../components/headers.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
-import { CompareBarChart } from '../../components/charts.component';
 
 import { styles } from './compare.styles'
 import { soundStyles } from './soundCompare.styles';

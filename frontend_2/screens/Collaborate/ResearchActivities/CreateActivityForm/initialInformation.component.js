@@ -35,13 +35,16 @@ export function IntialForm(props) {
         setSelect(false);
       }
       // security activities
-      // sound test's inital timeslot is 30 s
+      // sound test's inital timeslot is 30 sec
       else if(props.activityTypes[props.selectedActivityIndex.row] === 'Sound'){  
         props.setDuration('30');
         setSelect(false);
       }
-      // add more tests here as I do them
-
+      // inital timeslot for boundary, light, nature, and order tests is 20 min
+      else if(props.activityTypes[props.selectedActivityIndex.row] === 'Boundary'){
+        props.setDuration('20');
+        setSelect(false);
+      }
     }
   }, [select])
 
@@ -128,8 +131,12 @@ export function IntialForm(props) {
                 :
                 <Text>
                 {/* will need to add the other tests (everything but sound test) for time at site */}
-                {(props.activityTypes[props.selectedActivityIndex.row] === 'Survey' ?
-                  "Time at Site" : "Time per Standing Point")}: {props.duration} (min)
+                {(props.activityTypes[props.selectedActivityIndex.row] === 'Survey' || 
+                  props.activityTypes[props.selectedActivityIndex.row] === 'Boundary' ?
+                  "Time at Site" 
+                  : 
+                  "Time per Standing Point"
+                  )}: {props.duration} (min)
                 </Text>
                 }
               </Button>

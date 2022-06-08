@@ -6,7 +6,7 @@ import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getDayStr, getTimeStr } from '../components/timeStrings.component';
 import { getAllResults, getProject } from '../components/apiCalls';
-import { formatStationaryGraphData, formatMovingGraphData, formatSoundGraphData, retrieveTestName } from '../components/helperFunctions';
+import { formatStationaryGraphData, formatMovingGraphData, formatSoundGraphData, formatBoundaryGraphData, retrieveTestName } from '../components/helperFunctions';
 
 import { styles } from './projectResult.styles';
 
@@ -54,6 +54,11 @@ export function ProjectResultPage(props) {
       let result = await formatSoundGraphData(item);
       await props.setSelectedResult(result);
       props.navigation.navigate("SoundResultPage");
+    }
+    else if (item.test_type === 'boundary') {
+      let result = await formatBoundaryGraphData(item);
+      await props.setSelectedResult(result);
+      props.navigation.navigate("BoundaryResultPage");
     }
     //add the new tests here ^^
 

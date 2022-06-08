@@ -5,13 +5,13 @@ import { HeaderBack, HeaderBackEdit } from '../../components/headers.component';
 import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { helperGetResult, deleteTimeSlot, getProject, getAllResults, isUserTeamOwner } from '../../components/apiCalls';
-import { formatSoundGraphData } from '../../components/helperFunctions';
+import { formatBoundaryGraphData } from '../../components/helperFunctions';
 import { MyBarChart } from '../../components/charts.component';
 
 import { styles } from './resultPage.styles';
 
 //quantitative data screen
-export function SoundResultPage(props) {
+export function BoundaryResultPage(props) {
 
   const [refreshing, setRefreshing] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
@@ -27,12 +27,12 @@ export function SoundResultPage(props) {
     if (props.selectedResult !== null && props.selectedResult.sharedData !== undefined) {
       let result = await helperGetResult(
                            props.selectedResult._id,
-                           "sound_maps/",
-                           "sound",
+                           "boundary_maps/",
+                           "boundary",
                            props.selectedResult.sharedData,
                            props.project
                          );
-      result = await formatSoundGraphData(result);
+      result = await formatBoundaryGraphData(result);
       await props.setSelectedResult(result);
       await refreshProjectPageDetails();
     }
@@ -50,7 +50,7 @@ export function SoundResultPage(props) {
   const deleteResult = async () => {
     let success = false;
     if (props.selectedResult !== null) {
-      success = await deleteTimeSlot("sound_maps", props.selectedResult._id);
+      success = await deleteTimeSlot("boundary_maps", props.selectedResult._id);
     }
     if (success) {
       await refreshProjectPageDetails();
@@ -60,8 +60,7 @@ export function SoundResultPage(props) {
   }
 
   if (props.selectedResult === null ||
-      !props.selectedResult.success ||
-      props.selectedResult.graph === undefined) {
+      !props.selectedResult.success) {
     return (
       <ViewableArea>
         {isUserTeamOwner(props.team, props.userId)
@@ -136,69 +135,43 @@ export function SoundResultPage(props) {
   const color = '#006FD6';
 
   const viewMapResults = () => {
-    props.navigation.navigate("SoundMapResultsView");
-  }
-
-  // used to find the most common predominant sound type
-  const mostCommon = (arr) =>{
-    // used as a dictonary to store word and its frequency
-    let hm = {};
-    // iterate over the whole array
-    for(let i = 0; i < arr.length; i++){
-      // if the string already exists in hm then increase it's value by 1
-      if(hm.hasOwnProperty(arr[i])) hm[arr[i]] = hm[arr[i]] + 1;
-      // else add it in hm by giving it a value
-      else hm[arr[i]] = 1;
-    }
-
-    let ret = '';
-    let val = 0;
-    // iterate over the dictonary looking for the highest frequency, then return that string
-    for(const [word, value] of Object.entries(hm)){
-      // if the value of the word in hm is larger than our current value
-      if(value > val){
-        // update the current value and the string
-        val = value;
-        ret = word;
-      }
-    }
-    return ret;
+    props.navigation.navigate("BoundaryMapResultsView");
   }
   
-  // used to render multiple barcharts based off the # of standing points/length of the data array
-  const MultiBarChart = () =>{
-    let component = [[]]
-    for(let i = 0; i < props.selectedResult.standingPoints.length; i++){
-      // call something here that determines the most common predominant sound
-      let predominant = mostCommon(props.selectedResult.graph[i].predominant);
-      // main component container needs this key={i.toString()}
-      component[i] = (
-        <View key={i.toString()} style={styles.spacing}>
-          <MyBarChart
-            {...props}
-            title={props.selectedResult.standingPoints[i].title}
-            rotation={'0deg'}
-            dataValues={props.selectedResult.graph[i].data}
-            dataLabels={props.selectedResult.graph[i].labels}
-            barColor={color}
-            width={chartWidth}
-            height={chartHeight}
-          />
+//   // used to render multiple barcharts based off the # of standing points/length of the data array
+//   const MultiBarChart = () =>{
+//     let component = [[]]
+//     for(let i = 0; i < props.selectedResult.standingPoints.length; i++){
+//       // call something here that determines the most common predominant sound
+//       let predominant = mostCommon(props.selectedResult.graph[i].predominant);
+//       // main component container needs this key={i.toString()}
+//       component[i] = (
+//         <View key={i.toString()} style={styles.spacing}>
+//           <MyBarChart
+//             {...props}
+//             title={props.selectedResult.standingPoints[i].title}
+//             rotation={'0deg'}
+//             dataValues={props.selectedResult.graph[i].data}
+//             dataLabels={props.selectedResult.graph[i].labels}
+//             barColor={color}
+//             width={chartWidth}
+//             height={chartHeight}
+//           />
   
-          <View style={styles.rowView}>
-            <Text>Sound Decibel: {props.selectedResult.graph[i].average.toFixed(2)} dB</Text>
-            <Text>Sound Type: {predominant}</Text>
-          </View>
+//           <View style={styles.rowView}>
+//             <Text>Sound Decibel: {props.selectedResult.graph[i].average.toFixed(2)} dB</Text>
+//             <Text>Sound Type: {predominant}</Text>
+//           </View>
 
-        </View>
-      )
-    }
-    return(
-      <View>
-        {component}
-      </View>
-    )
-  }
+//         </View>
+//       )
+//     }
+//     return(
+//       <View>
+//         {component}
+//       </View>
+//     )
+//   }
   
   return (
     <ViewableArea>
@@ -231,7 +204,7 @@ export function SoundResultPage(props) {
           }
         >
 
-          <Text category={'h5'}>Acoustical Profile Results</Text>
+          <Text category={'h5'}>Spatial Boundaries Results</Text>
           <Divider style={styles.metaDataTitleSep} />
 
           <Text>Team: {props.team.title}</Text>
@@ -246,7 +219,7 @@ export function SoundResultPage(props) {
 
           <Text>Day: {getDayStr(day)}</Text>
           <Text>Start Time: {getTimeStr(startTime)} </Text>
-          <Text>Duration: {props.selectedResult.sharedData.duration} sec</Text>
+          <Text>Duration: {props.selectedResult.sharedData.duration} min</Text>
 
           <Divider style={styles.metaDataSep} />
 
@@ -274,8 +247,8 @@ export function SoundResultPage(props) {
                 </Text>
               </View>
           }
-
-          <MultiBarChart />
+            {/* barcharts get rendered here */}
+            {/* <MultiBarChart /> */}
 
         </ScrollView>
       </ContentContainer>

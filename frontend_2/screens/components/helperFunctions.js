@@ -194,6 +194,24 @@ export async function formatSoundGraphData(result){
   return tempResult;
 }
 
+// look at formatSoundGraph data for an idea of how to format the data to be used in a barchart (if doing that)
+export async function formatBoundaryGraphData(result){
+  if (result === null ||
+      result.data === undefined ||
+      result.data === null ||
+      result.data.length <= 0 ||
+      result.graph !== undefined
+    ) {
+    return result;
+  }
+  
+  let tempResult = {...result};
+  let graph = [];
+  
+  
+  return tempResult;
+}
+
 export function retrieveTestName(str){
   let lowerStr = str.toLowerCase();
   

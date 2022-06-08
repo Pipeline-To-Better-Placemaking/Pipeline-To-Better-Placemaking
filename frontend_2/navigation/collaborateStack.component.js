@@ -10,6 +10,7 @@ import { StationaryActivity } from '../screens/Collaborate/ResearchActivities/St
 import { SurveyActivity } from '../screens/Collaborate/ResearchActivities/Survey/surveyActivity.component'
 import { PeopleMovingActivity } from '../screens/Collaborate/ResearchActivities/PeopleMoving/peopeMovingActivity.component';
 import { SoundTest } from '../screens/Collaborate/ResearchActivities/Sound/soundTest.component';
+import { BoundaryTest } from '../screens/Collaborate/ResearchActivities/Boundary/boundaryTest.component';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -20,7 +21,7 @@ export function CollaborateStack(props) {
 
   // add new tests here
   // Array with activity names
-  const activityTypes = ['Stationary Map', 'People Moving', 'Survey', 'Sound'];
+  const activityTypes = ['Stationary Map', 'People Moving', 'Survey', 'Sound', 'Boundary'];
 
   // These are used for api calls
   const [token, setToken] = useState(null);
@@ -252,6 +253,20 @@ export function CollaborateStack(props) {
         name="SoundTest">
         {props =>
           <SoundTest
+            {...props}
+            getSelectedActivity={activities}
+            initialTimeSlot={initialTimeSlot}
+            setTimeSlot={setTimeSlot}
+            timeSlot={timeSlot}
+            token={token}
+          />
+        }
+      </Screen>
+
+      <Screen
+        name="BoundaryTest">
+        {props =>
+          <BoundaryTest
             {...props}
             getSelectedActivity={activities}
             initialTimeSlot={initialTimeSlot}
