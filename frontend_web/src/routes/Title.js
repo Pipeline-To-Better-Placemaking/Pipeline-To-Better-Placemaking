@@ -80,7 +80,7 @@ function Title() {
             success = res.success;
 
             //user login confirmation and navigation handling in App.js
-            props.onLogin(true);
+            // props.onLogin(true);
         } catch ( error ) {
             console.log('ERROR: ', error);
             success = false;

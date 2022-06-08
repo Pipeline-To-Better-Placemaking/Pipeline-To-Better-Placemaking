@@ -9,6 +9,7 @@ import NewUser from './routes/NewUser';
 import SettingsPage from './routes/SettingsPage';
 import EditProject from './routes/EditProject';
 import ProjectPage from './routes/ProjectPage';
+import { useState } from 'react';
 
 function UserRoutes() {
     // can be reached at (url)/home/(any component path below), ex: (url)/home/settings
