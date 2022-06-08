@@ -64,10 +64,10 @@ const project_schema = mongoose.Schema({
     //     type: ObjectId,
     //     ref: 'Light_Collections'
     // }],
-    // boundariesCollections:[{
-    //     type: ObjectId,
-    //     ref: 'Boundaries_Collections'
-    // }],
+    boundariesCollections:[{
+        type: ObjectId,
+        ref: 'Boundaries_Collections'
+    }],
     // orderCollections:[{
     //     type: ObjectId,
     //     ref: 'Order_Collections'
@@ -124,6 +124,7 @@ module.exports.deleteProject = async function(projectId) {
     for(var i = 0; i < project.soundCollections.length; i++)   
         await Sound_Collection.deleteCollection(project.soundCollections[i])
     }
+
     if(project.boundariesCollections.length){    
     for(var i = 0; i < project.boundariesCollections.length; i++)   
         await Boundaries_Collection.deleteCollection(project.boundariesCollections[i])
