@@ -79,7 +79,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                           .populate('soundCollections')
                         //   .populate('natureCollections')
                         //   .populate('lightCollections')
-                        //   .populate('boundariesCollections')
+                          .populate('boundariesCollections')
                         //   .populate('orderCollections')
                           .populate('surveyCollections')
                           
