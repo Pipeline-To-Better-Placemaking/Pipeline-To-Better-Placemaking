@@ -9,7 +9,6 @@ import NewUser from './routes/NewUser';
 import SettingsPage from './routes/SettingsPage';
 import EditProject from './routes/EditProject';
 import ProjectPage from './routes/ProjectPage';
-import { useState } from 'react';
 
 function UserRoutes() {
     // can be reached at (url)/home/(any component path below), ex: (url)/home/settings
@@ -31,7 +30,7 @@ function App(){
     //token/storage of choice
     //  const token = localStorage.getItem('token_data')
     // true == active user (logged in)
-    const [state, setState] = useState(token !== null && token !== '' ? true : false);
+    const [state, setState] = React.useState(/*token !== null && token !== '' ? true : false*/);
 
     // Set user vars to access the user home page
     function handleOnLogin(active) {
