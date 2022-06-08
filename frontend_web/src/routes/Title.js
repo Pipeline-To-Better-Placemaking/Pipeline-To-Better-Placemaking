@@ -84,7 +84,7 @@ function Title(props) {
             props.onLogin(true);
 
             //redirect use to url/home
-            nav('/home/', { replace: true });
+            nav('/home', { replace: true });
         } catch ( error ) {
             console.log('ERROR: ', error);
             success = false;

@@ -7,7 +7,7 @@ function NewProject(){
     return(
         <div id='newProject'>
             {/* Empty New Project page, Google map component w/ searchable locations for new projects */}
-            <Map center={ center } type={ 0 }/>
+            <Map center={ center } type={ 0 } zoom={ 16 }/>
         </div>
     );
 }

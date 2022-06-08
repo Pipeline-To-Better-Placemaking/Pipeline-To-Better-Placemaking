@@ -147,16 +147,16 @@ const AppNavBar = (props) => {
                             open={ Boolean(anchorElUser) }
                             onClose={ handleCloseUserMenu }
                         >
-                            {settings.map((setting) => (
+                            { settings.map((setting) => (
                                 <MenuItem 
                                     component={ Link } 
                                     to={ setting.route } 
                                     key={ setting.page } 
-                                    onClick={setting.page === 'Account' ? handleCloseUserMenu : handleLogOut}
+                                    onClick={ setting.page === 'Account' ? handleCloseUserMenu : handleLogOut }
                                 >
                                     <Typography textAlign='center'>{ setting.page }</Typography>
                                 </MenuItem>
-                            ))}
+                            )) }
                         </Menu>
                     </Box>
                 </Toolbar>

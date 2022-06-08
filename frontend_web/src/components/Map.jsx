@@ -3,7 +3,6 @@ import { Wrapper } from '@googlemaps/react-wrapper';
 import { createCustomEqual } from 'fast-equals';
 import { isLatLngLiteral } from '@googlemaps/typescript-guards';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 
 import MapDrawers from './MapDrawers';
 import './controls.css';
@@ -25,13 +24,17 @@ const testNames = {
 };
 
 function FullMap(props){
+    const [map, setMap] = React.useState(null);
+    const [mapPlaces, setMapPlaces] = React.useState(null);
     const title = props.title ? props.title : 'Project';
-    const [click, setClick] = React.useState([]);
     const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 10); // initial zoom
     const [center, setCenter] = React.useState(props.center.lat ? { lat: props.center.lat, lng: props.center.lng } : { lat:28.54023216523664, lng:-81.38181298263407 });
-    const [loc, setLoc] = React.useState('');
+    const [bounds, setBounds] = React.useState();
+    const [click, setClick] = React.useState(center);
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
     const [areaData, setAreaData] = React.useState(props.type === 1 ? props.area : null);
+
+    const [clicks, setClicks] = React.useState(null);
 
     // hold the selections from the switch toggles
     const [stationaryCollections, setStationaryCollections] = React.useState({});
@@ -146,12 +149,21 @@ function FullMap(props){
     };
 
     //Handles clicks for Project Map Creation and editing
-    const onClick = (e) => {
+    const onMClick = (e) => {
         if(props.type === 2 || props.type === 0){
             setClick(e.latLng);
             setCenter(e.latLng);
         } else {
-            setClick([...click, e.latLng]);
+            setClick(e.latLng);
+        }
+    };
+
+    const onPClick = (e) => {
+        if (props.type === 2 || props.type === 0) {
+            setClick(e.latLng);
+            setCenter(e.latLng);
+        } else {
+            setClick(e.latLng);
         }
     };
 
@@ -160,14 +172,15 @@ function FullMap(props){
         setCenter(m.getCenter().toJSON());
     };
 
-    //Used for searching Google Places
-    const form0 = (
-        <div id='newProjectInput'>
-            <TextField id='location-search' label='Project Location' type='search' value={ loc }/>
-            <Button className='newHoveringButtons'>Search</Button>
-            <Button className='newHoveringButtons' onClick={() => setClick()}>Clear</Button>
-        </div>
-    );
+    const onBounds = (m, p) => (event) => {
+        setBounds(p.setBounds(m.getBounds()));
+    };
+
+    const onChange = (p) => (event) => {
+        const place = p.getPlace()
+        setCenter(place.geometry.location);
+        setClick(place.geometry.location);
+    }
 
     //Renders all selected activity options to the corresponding markers, polylines and boundaries
     const actCoords = (collections) => (
@@ -207,11 +220,14 @@ function FullMap(props){
             { props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null }
             { props.type === 1 ? <Button id='printButton'>Print Map</Button>: null }
             {/* Wrapper imports Google Maps API */}
-            <Wrapper apiKey={''} render={ render } id='mapContainer'>
+            <Wrapper apiKey={''} render={render} id='mapContainer' libraries={['places']}>
                 <Map
                     center={ center }
-                    onClick={ onClick }
+                    onClick={ onMClick }
                     onIdle={ onIdle }
+                    onBounds={ onBounds }
+                    mapObj={ setMap }
+                    places={mapPlaces}
                     zoom={ zoom }
                     order={ orderCollections }
                     boundaries={ boundariesCollections }
@@ -221,11 +237,11 @@ function FullMap(props){
                     data={ areaData }
                 >
                     { props.type === 1 && areaData ? <Bounds area={areaData}/> : null }
-                    { props.type === 1 ? actCoords(collections) :<Marker position={click}/> }
+                    { props.type === 1 ? actCoords(collections) : <Marker position={click}/> }
+                    { props.type === 0 ? <Places map={map} onChange={onChange} onClick={onPClick}/> : null }
                 </Map>
             </Wrapper>
             {/* Basic form for searching for places */}
-            { props.type === 0 ? form0 : null }
         </>
     );
 };
@@ -234,17 +250,20 @@ interface MapProps extends google.maps.MapOptions {
     style: { [key: string]: string };
     onClick?: (e: google.maps.MapMouseEvent) => void;
     onIdle?: (map: google.maps.Map) => void;
+    onBounds?: (map: google.maps.Map, place: google.maps.places.Autocomplete) => void;
 }
 
-const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options }) => {
+const Map: React.FC<MapProps> = ({ onClick, onIdle, onBounds, mapObj, places, children, style, ...options }) => {
     const ref = React.useRef(null);
     const [map, setMap] = React.useState();
+    
 
     React.useEffect(() => {
         if (ref.current && !map) {
             setMap(new window.google.maps.Map(ref.current, {}));
+            mapObj(map);
         }
-    }, [ref, map]);
+    }, [ref, map, mapObj]);
 
     useDeepCompareEffectForMaps(() => {
         if (map) {
@@ -254,7 +273,7 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
 
     React.useEffect(() => {
         if (map) {
-            ['click', 'idle'].forEach((eventName) =>
+            ['click', 'idle', 'bounds_changed'].forEach((eventName) =>
                 google.maps.event.clearListeners(map, eventName)
             );
             if (onClick) {
@@ -264,8 +283,12 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, children, style, ...options 
             if (onIdle) {
                 map.addListener('idle', () => onIdle(map));
             }
+
+            if(onBounds){
+                map.addListener('bounds_changed', () => onBounds(map, places))
+            }
         }
-    }, [map, onClick, onIdle]);
+    }, [map, onClick, onIdle, onBounds, places]);
 
     return (
         <>
@@ -284,6 +307,7 @@ const Marker = (options) => {
     const markerType = options.markerType;
     const info = options.info;
     const markerSize = Number(options.markerSize);
+
     const colors = {
         soundCollections: ['#B073FF', '#B073FF'],
         animals: ['#9C4B00', 'red'],
@@ -296,17 +320,19 @@ const Marker = (options) => {
     }
 
     //SVG shape icons
-    const style = {
+    let style = {
         path: google.maps.SymbolPath.CIRCLE,
-        fillColor: colors[markerType][0],
+        fillColor: markerType ? colors[markerType][0] : null,
         fillOpacity: (markerSize ? 0.3 : 0.8),
         scale: (markerSize ? markerSize : 10),
         strokeWeight: 1, 
-        strokeColor: colors[markerType][1]
+        strokeColor: markerType ? colors[markerType][1] : null
 
     };
 
-    const icon = (colors[markerType][0]) ? style : null;
+    const icon = markerType ? ((colors[markerType][0]) ? style : null) : null;
+    
+
     const [marker, setMarker] = React.useState();
     const [infoWindow, setInfoWindow] = React.useState()
 
@@ -331,7 +357,7 @@ const Marker = (options) => {
 
     React.useEffect(() => {
         if (marker) {
-            marker.setOptions({ clickable: true, map: options.map, position: options.position });
+            marker.setOptions({ clickable: true, map: options.map, position: options.position ? options.position : null });
 
             marker.addListener('click', () => {
                 infoWindow.open({
@@ -394,8 +420,6 @@ const Path = (options) => {
         handicap: '#FFA500'
     }
 
-    console.log(colors[options.movement])
-
     const lines = {
         style: {
             path: options.path,
@@ -424,6 +448,59 @@ const Path = (options) => {
     }, [path, options]);
 
     return null;
+}
+
+interface PlaceProps extends google.maps.places.AutocompleteOptions {
+    onChange?: (place: google.maps.places.Autocomplete) => void;
+}
+
+const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
+    const [placesWidget, setPlacesWidget] = React.useState();
+    const ref = React.useRef(null);
+    
+
+    React.useEffect(() => {
+        if (ref.current && !placesWidget) {
+            setPlacesWidget(
+                new google.maps.places.Autocomplete(ref.current, {
+                    types: ['establishment'],
+                    componentRestrictions: { country: ['US'] },
+                    fields: ['place_id', 'name', 'address_components', 'geometry'],
+                })
+            );
+        }
+    }, [ref, placesWidget]);
+
+    useDeepCompareEffectForMaps(() => {
+        if (placesWidget) {
+            placesWidget.setOptions({
+                types: ['establishment'],
+                componentRestrictions: { country: ['US'] },
+                fields: ['place_id', 'name', 'address_components', 'geometry'],
+            });
+        }
+    }, [placesWidget]);
+
+    React.useEffect(() => {
+        if (placesWidget) {
+            ['place_changed'].forEach((eventName) =>
+                google.maps.event.clearListeners(placesWidget, eventName)
+            );
+
+            if (onChange) {
+                placesWidget.addListener('place_changed', onChange(placesWidget));
+            }
+        }
+    }, [placesWidget, onChange]);
+
+    return(
+        <div id='newProjectInput'>
+            <input ref={ref} name='search' id='locationSearch' label='Project Location' type='text' />
+            <Button className='newHoveringButtons' id='newLocationButton'>Set Project</Button>
+        </div>
+    );
+
+
 }
 
 const deepCompareEqualsForMaps = createCustomEqual((deepEqual) => (a, b) => {
