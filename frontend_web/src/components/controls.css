@@ -142,6 +142,14 @@ button.newHoveringButtons:hover {
     background-color: #daebff;
 }
 
+div#ActivityForm{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 5px;
+    background-color: var(--tabSelectColor);
+}
+
 div#MapPage div#mapFrame{
     width:100vw;
     height: calc(100vh - 113px);
@@ -222,6 +230,22 @@ input#locationSearch {
 
 input#locationSearch:focus-visible {
     outline: var(--primaryBlue) auto 1px;
+}
+
+select#activitySelect, input.dateTimePickers{
+    width: 30vw;
+    display: block;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    -moz-padding-start: calc(0.75rem - 3px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    appearance: none;
 }
 
 span.MuiTabs-indicator{

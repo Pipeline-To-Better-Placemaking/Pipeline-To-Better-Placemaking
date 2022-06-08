@@ -10,12 +10,14 @@ import Paper from '@mui/material/Paper';
 
 import './routes.css';
 import ActivityTable from '../components/ActivityTable';
+import ActivityForm from '../components/ActivityForm';
 
 function ActivityPage(props){
     const drawers = props.drawers
 
     return(
         <div id='activityPage'>
+            <ActivityForm />
             <TableContainer component={Paper}>
                 <Table aria-label='collapsible table'>
                     <TableHead>
