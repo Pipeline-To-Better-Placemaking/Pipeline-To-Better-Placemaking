@@ -35,7 +35,7 @@ const settings = [
 //SVG Home icon link button
 const home = <Link className='homeButton' to='/home'><Home className='iconShadow'/></Link>;
 
-const AppNavBar = () => {
+const AppNavBar = (props) => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -53,6 +53,11 @@ const AppNavBar = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    function handleLogOut(){
+        setAnchorElUser(null);
+        props.passLogout(false)
+    }
 
     return (
         <AppBar position='static'>
@@ -147,7 +152,7 @@ const AppNavBar = () => {
                                     component={ Link } 
                                     to={ setting.route } 
                                     key={ setting.page } 
-                                    onClick={ handleCloseUserMenu }
+                                    onClick={setting.page === 'Account' ? handleCloseUserMenu : handleLogOut}
                                 >
                                     <Typography textAlign='center'>{ setting.page }</Typography>
                                 </MenuItem>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
@@ -17,6 +17,7 @@ import './routes.css';
 import logo1 from '../images/PtBPLogo.png';
 
 function Title(props) {
+    let nav = useNavigate();
     const email = React.useRef(null);
     const password = React.useRef(null);
     // Access email, password like values.email, do not mutate or modify
@@ -75,11 +76,15 @@ function Title(props) {
                     password: values.password
                 }
             });
+
             res = JSON.parse(await response.text());
             success = res.success;
 
             //user login confirmation and navigation handling in App.js
-            //props.onLogin(true);
+            props.onLogin(true);
+
+            //redirect use to url/home
+            nav('/home/', { replace: true });
         } catch ( error ) {
             console.log('ERROR: ', error);
             success = false;
