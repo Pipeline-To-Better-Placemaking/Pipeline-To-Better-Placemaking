@@ -96,10 +96,11 @@ module.exports.deleteMap = async function(mapId) {
 
     const map = await Maps.findById(mapId)
 
-    for(var i = 0; i < map.standingPoints.length; i++)
+    for(var i = 0; i < map.standingPoints.length; i++){
         console.log("deleting form deleteMap in MOVING maps model")
         console.log(map.standingPoints[i])
         await Points.removeRefrence(map.standingPoints[i])
+    }
         
     return await Maps.findByIdAndDelete(mapId)
 }
