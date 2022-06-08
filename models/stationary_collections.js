@@ -51,7 +51,9 @@ module.exports.deleteCollection = async function(collectionId){
     await Area.removeRefrence(collection.area)
 
     for(var i = 0; i < collection.maps.length; i++)
-        await Stationary_Map.findByIdAndDelete(collection.maps[i])
+        console.log("deleting from deleteCollection")
+        console.log(collection.maps[i])
+        await Stationary_Map.deleteMap(collection.maps[i])
 
     return await Collection.findByIdAndDelete(collectionId)
 }

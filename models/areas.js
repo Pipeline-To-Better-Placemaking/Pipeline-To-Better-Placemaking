@@ -45,7 +45,7 @@ module.exports.removeRefrence = async function (areaId) {
     if (area.refCount <= 0) {
       return await Areas.findByIdAndDelete(areaId);
     } else {
-      await area.save();
+      return await area.save();
     }
   } catch (error) {
     console.log("REMOVE Area reference causing issue: -----" + error);

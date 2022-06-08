@@ -108,6 +108,8 @@ module.exports.deleteMap = async function(mapId) {
     const map = await Maps.findById(mapId)
 
     for(var i = 0; i < map.standingPoints.length; i++)
+        console.log("deleting form deleteMap in STATIONARY maps model")
+        console.log(map.standingPoints[i])
         await Points.removeRefrence(map.standingPoints[i])
     
     return await Maps.findByIdAndDelete(mapId)
@@ -129,8 +131,8 @@ module.exports.addEntry = async function(mapId, newEntry) {
     })
     console.log("standing point passed to addEntry from Stat")
     console.log(newEntry.standingPoint)
-    await Points.addRefrence(newEntry.standingPoint)
-
+    const debugPoint = await Points.addRefrence(newEntry.standingPoint)
+    console.log(debugPoint)
     return await Maps.updateOne(
         { _id: mapId },
         { $push: { data: entry}}

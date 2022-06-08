@@ -51,6 +51,7 @@ module.exports.removeRefrence = async function (pointId) {
       let newPoint = await point.save();
       console.log(newPoint);
       console.log("After saving DECREASE in ref");
+      return newPoint;
     }
   } catch (error) {
     console.log("REMOVE Standing Point reference causing issue: -----" + error);
@@ -64,6 +65,7 @@ module.exports.addRefrence = async function (pointId) {
     let newPoint = await point.save();
     console.log(newPoint);
     console.log("After saving INCREASE in ref");
+    return newPoint;
   } catch (error) {
     console.log("ADD Standing Point reference causing issue: -----" + error);
   }
