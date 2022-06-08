@@ -276,8 +276,8 @@ router.put('/:id/stationary_collections/:collectionId', passport.authenticate('j
         })
 
         if(req.body.area){
-             Area.addRefrence(req.body.area)
-             Area.removeRefrence(collection.area)
+             await Area.addRefrence(req.body.area)
+             await Area.removeRefrence(collection.area)
         }
   
         res.status(201).json(await Stationary_Collection.updateCollection(req.params.collectionId, newCollection))
@@ -293,7 +293,7 @@ router.delete('/:id/stationary_collections/:collectionId', passport.authenticate
     collection = await Stationary_Collection.findById(req.params.collectionId)
 
     if(await Team.isAdmin(project.team,user._id)){
-        Area.removeRefrence(collection.area)
+        await Area.removeRefrence(collection.area)
         res.status(201).json(await Project.deleteStationaryCollection(project._id, req.params.collectionId))
     }
     else{
