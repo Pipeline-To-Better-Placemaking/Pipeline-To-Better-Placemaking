@@ -124,9 +124,10 @@ module.exports.deleteProject = async function(projectId) {
     for(var i = 0; i < project.soundCollections.length; i++)   
         await Sound_Collection.deleteCollection(project.soundCollections[i])
     }
-    // for(var i = 0; i < project.boundariesCollections.length; i++)   
-    //     await Boundaries_Collection.deleteCollection(project.boundariesCollections[i])
-
+    if(project.boundariesCollections.length){    
+    for(var i = 0; i < project.boundariesCollections.length; i++)   
+        await Boundaries_Collection.deleteCollection(project.boundariesCollections[i])
+    }
     // for(var i = 0; i < project.natureCollections.length; i++)   
     //     await Nature_Collection.deleteCollection(project.natureCollections[i])   
 
