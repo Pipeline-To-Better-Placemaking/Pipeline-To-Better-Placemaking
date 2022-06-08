@@ -11,6 +11,7 @@ const Area = require('./areas.js')
 // Document Schema for Sound Collections.  Maps references Sound Maps Schema
 const collection_schema = mongoose.Schema({
     title: String,
+    
     date: {
         type: Date,
         required: true

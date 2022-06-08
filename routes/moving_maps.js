@@ -113,33 +113,35 @@ router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async 
 
 })
 
+
+//NEED TO WRAP INTO FOR LOOP BECAUSE THERE CAN BE TIMESLOTS!!!
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
-    
-    let newMap = new Map({
-        title: (req.body.title ? req.body.title : map.title),
-        date: (req.body.date ? req.body.date : map.date),
-        maxResearchers: (req.body.maxResearchers ? req.body.maxResearchers : map.maxResearchers),
-        standingPoints: (req.body.standingPoints ? req.body.standingPoints : map.standingPoints)
-    })
-
-    if(req.body.standingPoints){
-
-        for(var i = 0; i < req.body.standingPoints.length; i++)
-            await Points.addRefrence(req.body.standingPoints[i])
-        
-        for(var i = 0; i < map.standingPoints.length; i++)
-            await Points.removeRefrence(map.standingPoints[i])
-
-    }
-
-    project = await Project.findById(map.project)
 
     if (await Team.isAdmin(project.team,user._id)){
-        res.status(201).json(await Map.updateMap(req.params.id,newMap))
-    }
+        let newMap = new Map({
+            title: (req.body.title ? req.body.title : map.title),
+            date: (req.body.date ? req.body.date : map.date),
+            maxResearchers: (req.body.maxResearchers ? req.body.maxResearchers : map.maxResearchers),
+            standingPoints: (req.body.standingPoints ? req.body.standingPoints : map.standingPoints)
+        })
 
+        project = await Project.findById(map.project)
+
+        if(req.body.standingPoints){
+
+            for(var i = 0; i < req.body.standingPoints.length; i++)
+                await Points.addRefrence(req.body.standingPoints[i])
+            
+            for(var i = 0; i < map.standingPoints.length; i++)
+                await Points.removeRefrence(map.standingPoints[i])
+
+        }
+
+        const updatedMap = await Map.updateMap(req.params.id,newMap)
+        res.status(201).json(updatedMap)
+    }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
     }
