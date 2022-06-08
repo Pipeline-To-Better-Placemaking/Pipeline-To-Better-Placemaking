@@ -18,7 +18,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
     if(await Team.isAdmin(project.team,user._id)){
         
-        if(req.body.timeSlots)
+        if(req.body.timeSlots){
             for(var i = 0; i < req.body.timeSlots.length; i++){
                 var slot = req.body.timeSlots[0]
 
@@ -35,21 +35,37 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                 const map = await Map.addMap(newMap)
                 await Moving_Collection.addActivity(req.body.collection, map._id)
 
+                for (i = 0; i < map.standingPoints.length; i ++){
+                    console.log("point" + map.standingPoints[i] + "referenced on moving map creation: ")
+                    let tempPoint = await Points.addRefrence(map.standingPoints[i]) 
+                    console.log(tempPoint)
+                }
+        
+
                 res.status(201).json(await Moving_Collection.findById(req.body.collection))
             }
-    
-        let newMap = new Map({
-            title: req.body.title,
-            standingPoints: req.body.standingPoints,
-            researchers: req.body.researchers,
-            project: req.body.project,
-            sharedData: req.body.collection,
-            date: req.body.date, 
-            maxResearchers: req.body.maxResearchers
-        })
+        }
+        else{
+            let newMap = new Map({
+                title: req.body.title,
+                standingPoints: req.body.standingPoints,
+                researchers: req.body.researchers,
+                project: req.body.project,
+                sharedData: req.body.collection,
+                date: req.body.date, 
+                maxResearchers: req.body.maxResearchers
+            })
 
-        const map = await Map.addMap(newMap)
-        await Moving_Collection.addActivity(req.body.collection,map._id)
+            const map = await Map.addMap(newMap)
+            await Moving_Collection.addActivity(req.body.collection,map._id)
+            
+            for (i = 0; i < map.standingPoints.length; i ++){
+                console.log("point" + map.standingPoints[i] + "referenced on moving map creation: ")
+                let tempPoint = await Points.addRefrence(map.standingPoints[i]) 
+                console.log(tempPoint) 
+            }
+
+        }
         res.status(201).json(map)
 
     }
@@ -183,8 +199,8 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             console.log("reaches data update in moving maps (standing points)")
             console.log("req standingPoint: " + req.body.standingPoint)
             console.log("old standingPoint: " + oldData.standingPoint)
-            Points.addRefrence(req.body.standingPoint)
-            Points.removeRefrence(oldData.standingPoint)
+            await Points.addRefrence(req.body.standingPoint)
+            await Points.removeRefrence(oldData.standingPoint)
         }
 
         await Map.updateData(map._id,oldData._id,newData)

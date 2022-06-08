@@ -11,6 +11,7 @@ const config = require("../utils/config");
 const { models } = require("mongoose");
 
 const { UnauthorizedError, BadRequestError } = require("../utils/errors");
+const { addRefrence } = require("../models/areas.js");
 
 router.post(
   "",
@@ -20,7 +21,7 @@ router.post(
     project = await Project.findById(req.body.project);
 
     if (await Team.isAdmin(project.team, user._id)) {
-      if (req.body.timeSlots)
+      if (req.body.timeSlots){
         for (var i = 0; i < req.body.timeSlots.length; i++) {
           var slot = req.body.timeSlots[0];
 
@@ -36,23 +37,40 @@ router.post(
 
           const map = await Map.addMap(newMap);
           await Stationary_Collection.addActivity(req.body.collection, map._id);
+          
+          for (i = 0; i < map.standingPoints.length; i ++){
+            console.log("point" + map.standingPoints[i] + "referenced on stat map creation: ")
+            let tempPoint = await Points.addRefrence(map.standingPoints[i])
+            console.log(tempPoint) 
+          }
 
           res
             .status(201)
             .json(await Stationary_Collection.findById(req.body.collection));
         }
+      }
+      else{
+        let newMap = new Map({
+          title: req.body.title,
+          standingPoints: req.body.standingPoints,
+          researchers: req.body.researchers,
+          project: req.body.project,
+          sharedData: req.body.collection,
+          date: req.body.date,
+          maxResearchers: req.body.maxResearchers,
+        });
+        const map = await Map.addMap(newMap);
+        await Stationary_Collection.addActivity(req.body.collection, map._id);
+        
+        for (i = 0; i < map.standingPoints.length; i ++){
+          console.log("point" + map.standingPoints[i] + "referenced on stat map creation: ")
+          let tempPoint = await Points.addRefrence(map.standingPoints[i])
+          console.log(tempPoint) 
+ 
+        }
+    }
 
-      let newMap = new Map({
-        title: req.body.title,
-        standingPoints: req.body.standingPoints,
-        researchers: req.body.researchers,
-        project: req.body.project,
-        sharedData: req.body.collection,
-        date: req.body.date,
-        maxResearchers: req.body.maxResearchers,
-      });
-      const map = await Map.addMap(newMap);
-      await Stationary_Collection.addActivity(req.body.collection, map._id);
+      
       res.status(201).json(map);
     } else {
       throw new UnauthorizedError(
@@ -222,8 +240,8 @@ router.put(
         console.log("reaches data update in stationary maps (standing points)")
         console.log("req standingPoint: " + req.body.standingPoint)
         console.log("old standingPoint: " + oldData.standingPoint)
-        Points.addRefrence(req.body.standingPoint);
-        Points.removeRefrence(oldData.standingPoint);
+        await Points.addRefrence(req.body.standingPoint);
+        await Points.removeRefrence(oldData.standingPoint);
       }
 
       await Map.updateData(mapId, oldData._id, newData);
