@@ -98,7 +98,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
     user = await req.user
     if(map.researchers.length < map.maxResearchers)
         if(Team.isUser(project.team,user._id)){
-            res.status(200).json(Map.addResearcher(map._id,user._id))
+            res.status(200).json(await Map.addResearcher(map._id,user._id))
         }
         else
             throw new UnauthorizedError('You do not have permision to perform this operation')
@@ -114,7 +114,6 @@ router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async 
 })
 
 
-//NEED TO WRAP INTO FOR LOOP BECAUSE THERE CAN BE TIMESLOTS!!!
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
