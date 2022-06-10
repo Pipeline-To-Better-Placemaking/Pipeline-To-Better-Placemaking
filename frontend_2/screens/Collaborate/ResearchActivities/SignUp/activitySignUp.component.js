@@ -269,8 +269,8 @@ export function ActivitySignUpPage(props) {
   }
 
   const onSignUp = async (timeSlot, index) => {
-    let tempTimeSlots = [...props.timeSlots];
 
+    let tempTimeSlots = [...props.timeSlots];
     let tempSlot = {...timeSlot};
     let tempResearchers = [...timeSlot.researchers];
     let max = timeSlot.maxResearchers;
@@ -286,7 +286,7 @@ export function ActivitySignUpPage(props) {
     } else if (props.activity.test_type === activityList[3]) {
       route = 'sound_maps/';
     } else if (props.activity.test_type === activityList[4]) {
-      route = 'boundary_maps/';
+      route = 'boundaries_maps/';
     }
     //add new tests to this ^
 
@@ -294,7 +294,7 @@ export function ActivitySignUpPage(props) {
     let findIndex = tempResearchers.findIndex(element => element._id === props.userId)
     if (findIndex >= 0) {
       max = -1; // don't add the user
-      removeUser(timeSlot, route);
+      await removeUser(timeSlot, route);
       tempResearchers.splice(findIndex, 1);
       tempSlot.researchers = tempResearchers;
       tempTimeSlots[index] = tempSlot;
@@ -304,7 +304,7 @@ export function ActivitySignUpPage(props) {
     // if there's space to add another researcher
     if(max > 0 && (max-len) > 0) {
       let success = false
-      success = signUpTimeSlot(timeSlot, route);
+      success = await signUpTimeSlot(timeSlot, route);
 
       if (success) {
         // add user locally
@@ -340,7 +340,6 @@ export function ActivitySignUpPage(props) {
         console.log("ERROR: ", error)
         success = false
     }
-
     return success;
   }
 
@@ -427,20 +426,25 @@ export function ActivitySignUpPage(props) {
           <Text>{getResearchers(item)}</Text>
         </View>
         <View style={styles.buttonView}>
-          <Button status='info' style={styles.button} onPress={() => onSignUp(item, index)}>
-            Sign Up
-          </Button>
-          {isSignedUp(item, props.userId) &&
-            <Button status='success' style={styles.button} onPress={() => onBeginPress(item, index)}>
-              Begin
+          {isSignedUp(item, props.userId) ?
+            <View>
+              <Button status='primary' style={styles.button} onPress={() => onSignUp(item, index)}>
+                Withdraw
+              </Button>
+              
+              <Button status='success' style={styles.button} onPress={() => onBeginPress(item, index)}>
+                Begin
+              </Button>
+            </View>
+          :
+            <Button status='info' style={styles.button} onPress={() => onSignUp(item, index)}>
+              Sign Up
             </Button>
           }
         </View>
       </View>
     </Card>
   );
-  
-  console.log(props.activity.date);
 
   return (
     <ViewableArea>
