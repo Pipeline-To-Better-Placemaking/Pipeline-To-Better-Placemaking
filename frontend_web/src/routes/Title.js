@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import axios from '../api/axios.js';
 import Box from '@mui/material/Box';
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
@@ -13,13 +14,12 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import { Link, Navigate } from 'react-router-dom';
+
 import './routes.css';
 import logo1 from '../images/PtBPLogo.png';
 
-function Title(props) {
-    let nav = useNavigate();
-    const email = React.useRef(null);
-    const password = React.useRef(null);
+function Title() {
     // Access email, password like values.email, do not mutate or modify
     const [values, setValues] = React.useState({
         email: '',
@@ -45,52 +45,35 @@ function Title(props) {
         event.preventDefault();
     };
 
-    const handleLogin = (event) => {
-        event.preventDefault();
-        
-        if(values.email === ''){
-            email.current.focus();
-            return;
-        } else if (values.password === ''){
-            password.current.focus();
-            return;
-        }
-        
-        loginUser();
-    };
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [user, setUser] = useState("");
 
-    const loginUser = async () => {
-        let success = false;
-        let res = null;
+    const loginUser = async (e) => {
+        e.preventDefault();
+        const user = { email, password };
 
         try {
-
-            const response = await fetch('https://measuringplacesd.herokuapp.com/api/login', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                },
-                body: {
-                    email: values.email,
-                    password: values.password
-                }
+            const response = await axios.post('/login', JSON.stringify({ email, password }), {
+               headers: { 'Content-Type': 'application/json' },
+               withCredentials: true
             });
+            console.log(JSON.stringify(response));
+            console.log(response.data);
+            //nav issue not yet resolved (6/12) need to move logged user to home
+            <Navigate to='/home'/>
 
-            res = JSON.parse(await response.text());
-            success = res.success;
-
-            // user login confirmation and navigation handling in App.js
-            // retrieve user's name or name and token to verify status
-            props.onLogin(true);
-
-            //redirect use to url/home
-            nav('/home', { replace: true });
-        } catch ( error ) {
+        } catch(error){
+            //user login error
             console.log('ERROR: ', error);
-            success = false;
-            //create error component
         }
+    };
+
+    const logoutUser = () => {
+        setUser({});
+        setEmail("");
+        setPassword("");
+        localStorage.clear();
     };
 
     return (
@@ -114,9 +97,8 @@ function Title(props) {
                                     label='Email' 
                                     type='email' 
                                     name='email' 
-                                    ref={email}
-                                    value={ values.email } 
-                                    onChange={ handleChange } 
+                                    value={ email } 
+                                    onChange={({target}) => setEmail(target.value)} 
                                 />
                                 {/* Form Control component to hold MUI visibility changing password field */}
                                 <FormControl sx={{ m: 1 }} variant='outlined'>
@@ -125,9 +107,8 @@ function Title(props) {
                                         id='outlined-adornment-password'
                                         type={ values.showPassword ? 'text' : 'password' }
                                         name='password'
-                                        ref={ password }
-                                        value={ values.password }
-                                        onChange={ handleChange }
+                                        value={ password }
+                                        onChange={ ({target}) => setPassword(target.value) }
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton
@@ -148,7 +129,7 @@ function Title(props) {
                                     id='loginButton' 
                                     type='submit' 
                                     size='lg' 
-                                    onClick={ handleLogin }
+                                    onClick={ loginUser }
                                 >
                                     Log in
                                 </Button>

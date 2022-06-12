@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -11,9 +12,12 @@ import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Back from '@mui/icons-material/ArrowBackRounded';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import axios from '../api/axios.js';
 
 import './routes.css';
+
+const registerURL = '/users'
 
 function NewUser(){
     // to access fname lname...etc values.fname, do not access show(Confirm)Password
@@ -26,6 +30,13 @@ function NewUser(){
         showPassword: false,
         showConfirmPassword: false
     });
+
+    //declaring reg vars
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -50,7 +61,30 @@ function NewUser(){
         event.preventDefault();
     };
 
-    const submitNewUser = () => {}
+    const submitNewUser = async (e) => {
+        e.preventDefault();
+        let res = null;
+        let success = false;
+        const user = { email, password };
+        if(firstname !== '') user.firstname = firstname;
+        if(lastname !== '') user.lastname = lastname;
+
+        try{
+            const response = await axios.post(registerURL, JSON.stringify({ email, password }), {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            });
+            console.log(response.data);
+            console.log(response.accessToken);
+            console.log(JSON.stringify(response))
+            success = true;
+            <Navigate to='/'/>
+        } catch (error){
+            //user login error
+            console.log('ERROR: ', error);
+            success = false;
+        }
+    }
 
     return(
         <div id='newUser'>
@@ -68,32 +102,32 @@ function NewUser(){
                                     id='outlined-search' 
                                     label='First Name' 
                                     type='text' 
-                                    value={ values.fname } 
-                                    onChange={ handleChange('fname') }
+                                    value={ firstname } 
+                                    onChange={ ({target}) => setFirstname(target.value) }
                                 />
                                 <TextField 
                                     className='nonFCInput' 
                                     id='outlined-search' 
                                     label='Last Name' 
                                     type='text' 
-                                    value={ values.lname } 
-                                    onChange={ handleChange('lname') }
+                                    value={ lastname } 
+                                    onChange={ ({target}) => setLastname(target.value) }
                                 />
                                 <TextField 
                                     className='nonFCInput' 
                                     id='outlined-search' 
                                     label='Email' 
                                     type='email' 
-                                    value={ values.email } 
-                                    onChange={ handleChange('email') }
+                                    value={ email } 
+                                    onChange={ ({target}) => setEmail(target.value) }
                                 />
                                 <FormControl sx={{ m: 1}} variant='outlined'>
                                     <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
                                     <OutlinedInput
                                         id='outlined-adornment-password'
                                         type={values.showPassword ? 'text' : 'password' }
-                                        value={ values.password }
-                                        onChange={ handleChange('password') }
+                                        value={ password }
+                                        onChange={ ({target}) => setPassword(target.value) }
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton
@@ -116,8 +150,8 @@ function NewUser(){
                                     <OutlinedInput
                                         id='outlined-adornment-password'
                                         type={ values.showConfirmPassword ? 'text' : 'password' }
-                                        value={ values.confirmPassword }
-                                        onChange={ handleChange('confirmPassword') }
+                                        value={ confirmPassword }
+                                        onChange={ ({target}) => setConfirmPassword(target.value) }
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton
