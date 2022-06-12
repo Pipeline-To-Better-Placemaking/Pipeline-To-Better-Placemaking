@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Back from '@mui/icons-material/ArrowBackRounded';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios.js';
 
 import './routes.css';
@@ -20,6 +20,7 @@ import './routes.css';
 const registerURL = '/users'
 
 function NewUser(){
+    let nav = useNavigate();
     // to access fname lname...etc values.fname, do not access show(Confirm)Password
     const [values, setValues] = React.useState({
         fname: '',
@@ -78,7 +79,8 @@ function NewUser(){
             console.log(response.accessToken);
             console.log(JSON.stringify(response))
             success = true;
-            <Navigate to='/'/>
+            //redirect use to url/home
+            nav('/', { replace: true });
         } catch (error){
             //user login error
             console.log('ERROR: ', error);

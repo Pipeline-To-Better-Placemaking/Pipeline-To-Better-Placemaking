@@ -14,12 +14,13 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './routes.css';
 import logo1 from '../images/PtBPLogo.png';
 
-function Title() {
+function Title(props) {
+    let nav = useNavigate();
     // Access email, password like values.email, do not mutate or modify
     const [values, setValues] = React.useState({
         email: '',
@@ -60,8 +61,12 @@ function Title() {
             });
             console.log(JSON.stringify(response));
             console.log(response.data);
-            //nav issue not yet resolved (6/12) need to move logged user to home
-            <Navigate to='/home'/>
+            // user login confirmation and navigation handling in App.js
+            // retrieve user's name or name and token to verify status
+            props.onLogin(true);
+
+            //redirect use to url/home
+            nav('/home', { replace: true });
 
         } catch(error){
             //user login error
