@@ -65,7 +65,7 @@ div.css-cveggr-MuiListItemIcon-root {
     left: calc(100vw - 416px)
 }
 
-#newProjectInput{
+#newProjectInput, #newAreaButton, #newPointsButton{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -73,6 +73,12 @@ div.css-cveggr-MuiListItemIcon-root {
     position: fixed;
     top: 75px;
     left: 29vw;
+    z-index: 999;
+}
+
+#newAreaButton, #newPointsButton {
+    left: 45vw;
+    position: fixed;
     z-index: 999;
 }
 
@@ -133,12 +139,12 @@ div.css-1gsv261{
     background-color: var(--secondaryBlue);
 }
 
-button.newHoveringButtons{
+a.newHoveringButtons{
     background-color: #ffffff;
     margin-left: 5px;
 }
 
-button.newHoveringButtons:hover {
+a.newHoveringButtons:hover {
     background-color: #daebff;
 }
 
@@ -168,7 +174,25 @@ div#projectEdit div#mapFrame {
     margin-bottom: 20px;
 }
 
-div#newProject div#mapFrame{
+div#projectCreate div#mapFrame {
+    top: 0px;
+    width: 50vw;
+    height: 50vh;
+    margin-left: 15px;
+    margin-bottom: 20px;
+}
+
+div#newProject div#mapFrame {
+    width: 100vw;
+    height: calc(100vh - 64px);
+}
+
+div#newPoints div#mapFrame {
+    width: 100vw;
+    height: calc(100vh - 64px);
+}
+
+div#newArea div#mapFrame {
     width: 100vw;
     height: calc(100vh - 64px);
 }

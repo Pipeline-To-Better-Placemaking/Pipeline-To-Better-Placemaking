@@ -121,42 +121,48 @@ function ProjectPage(){
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                result: 'none'
+                                result: 'built',
+                                type: 'Loose Bricks'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                result: 'Loose Bricks'
+                                result: 'built',
+                                type: 'Loose Bricks'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                result: 'Trash'
+                                result: 'human',
+                                type: 'Trash'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                result: 'none'
+                                result: 'human',
+                                type: 'none'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                result: 'Full Trash'
+                                result: 'human',
+                                type: 'Full Trash'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889514,
                                     lng: -81.20129371852886
                                 },
-                                result: 'none'
+                                result: 'built',
+                                type: 'Structure Damage'
                             }
                         ]
                     }
@@ -168,11 +174,26 @@ function ProjectPage(){
                         surveyor: 'Sam Iam',
                         data: [
                             {
-                                standingPoint: {
-                                    lat: 28.603369329889514,
-                                    lng: -81.20129371852886
-                                },
-                                result: 'none'
+                                boundary: [
+                                    {
+                                        lat: 28.60291560437277, 
+                                        lng: -81.20098575289026
+                                    },
+                                    {
+                                        lat: 28.602907362332807, 
+                                        lng: -81.20094619030888
+                                    }, 
+                                    {
+                                        lat: 28.602830829073785, 
+                                        lng: -81.20096563632346
+                                    },
+                                    {
+                                        lat: 28.602837893684644, 
+                                        lng: -81.20100385780037
+                                    }
+                                ],
+                                result: 'shelter',
+                                area: 80
                             },
                         ]
                     }
@@ -200,46 +221,92 @@ function ProjectPage(){
                         surveyor: 'Jane Doe',
                         data: [
                             {
-                                standingPoint: {
+                                point: {
                                     lat: 28.603369329889514,
                                     lng: -81.20129371852886
                                 },
                                 result: 'plants'
                             },
                             {
-                                standingPoint: {
+                                point: {
                                     lat: 28.603868558748708,
                                     lng: -81.19963074866048
                                 },
                                 result: 'animals'
                             },
                             {
-                                standingPoint: {
+                                point: {
                                     lat: 28.602512158058847,
                                     lng: -81.19971657935157
                                 },
                                 result: 'plants'
                             },
                             {
-                                standingPoint: {
+                                point: {
                                     lat: 28.60181511200448,
                                     lng: -81.19970585051519
                                 },
                                 result: 'plants'
                             },
                             {
-                                standingPoint: {
+                                point: {
                                     lat: 28.602578094603327,
                                     lng: -81.20119715877513
                                 },
                                 result: 'plants'
                             },
                             {
-                                standingPoint: {
+                                point: {
                                     lat: 28.599999473663722,
                                     lng: -81.20118911211877
                                 },
                                 result: 'plants'
+                            },
+                            {
+                                boundary: [
+                                    {
+                                        lat: 28.603006681174694,
+                                        lng: -81.20089406924859
+                                    },
+                                    {
+                                        lat: 28.603216264077535,
+                                        lng: -81.2005319710454
+                                    },
+                                    {
+                                        lat: 28.603263361301526,
+                                        lng: -81.20017255505111
+                                    },
+                                    {
+                                        lat: 28.603230393246935,
+                                        lng: -81.19990969857767
+                                    },
+                                    {
+                                        lat: 28.603112650110408,
+                                        lng: -81.2000867243659
+                                    },
+                                    {
+                                        lat: 28.60299726170858,
+                                        lng: -81.20042200047997
+                                    },
+                                    {
+                                        lat: 28.6029407448941,
+                                        lng: -81.20043809373345
+                                    },
+                                    {
+                                        lat: 28.60296900330514,
+                                        lng: -81.2006178017306
+                                    },
+                                    {
+                                        lat: 28.60290071213211,
+                                        lng: -81.20068753916232
+                                    },
+                                    {
+                                        lat: 28.602994906841896,
+                                        lng: -81.20091016250205
+                                    }
+                                ],
+                                result: 'water',
+                                area: '400'
                             }
                         ]
                     }
@@ -255,42 +322,42 @@ function ProjectPage(){
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: '70'
+                                average: 70
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: '80'
+                                average: 80
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: '33'
+                                average: 33
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: '40'
+                                average: 40
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                average: '68.8'
+                                average: 68.8
                             },
                             {
                                 standingPoint: {
                                     lat: 28.602728806480098,
                                     lng: -81.19716311630009
                                 },
-                                average: '90'
+                                average: 90
                             }
                         ]
                     }
@@ -304,42 +371,42 @@ function ProjectPage(){
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: '40'
+                                average: 40
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: '67'
+                                average: 67
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: '44'
+                                average: 44
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: '37'
+                                average: 37
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                average: '70'
+                                average: 70
                             },
                             {
                                 standingPoint: {
                                     lat: 28.602728806480098,
                                     lng: -81.19716311630009
                                 },
-                                average: '75'
+                                average: 75
                             }
                         ]
                     },
@@ -351,42 +418,42 @@ function ProjectPage(){
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: '60'
+                                average: 60
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: '72'
+                                average: 72
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: '39'
+                                average: 39
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: '40'
+                                average: 40
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                average: '50'
+                                average: 50
                             },
                             {
                                 standingPoint: {
                                     lat: 28.602728806480098,
                                     lng: -81.19716311630009
                                 },
-                                average: '40.5'
+                                average: 40.5
                             }
                         ]
                     }
@@ -400,42 +467,42 @@ function ProjectPage(){
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: '50'
+                                average: 50
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: '60'
+                                average: 60
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: '29'
+                                average: 29
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: '35'
+                                average: 35
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                average: '33.9'
+                                average: 33.9
                             },
                             {
                                 standingPoint: {
                                     lat: 28.602728806480098,
                                     lng: -81.19716311630009
                                 },
-                                average: '50'
+                                average: 50
                             }
                         ]
                     },
@@ -447,42 +514,42 @@ function ProjectPage(){
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: '70'
+                                average: 70
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: '80'
+                                average: 80
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: '33'
+                                average: 33
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: '40'
+                                average: 40
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                average: '68.8'
+                                average: 68.8
                             },
                             {
                                 standingPoint: {
                                     lat: 28.602728806480098,
                                     lng: -81.19716311630009
                                 },
-                                average: '90'
+                                average: 90
                             }
                         ]
                     },
@@ -494,42 +561,42 @@ function ProjectPage(){
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: '30'
+                                average: 30
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: '60'
+                                average: 60
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: '40'
+                                average: 40
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: '20'
+                                average: 20
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                average: '47.8'
+                                average: 47.8
                             },
                             {
                                 standingPoint: {
                                     lat: 28.602728806480098,
                                     lng: -81.19716311630009
                                 },
-                                average: '60'
+                                average: 60
                             }
                         ]
                     }

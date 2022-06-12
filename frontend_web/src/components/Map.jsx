@@ -3,6 +3,7 @@ import { Wrapper } from '@googlemaps/react-wrapper';
 import { createCustomEqual } from 'fast-equals';
 import { isLatLngLiteral } from '@googlemaps/typescript-guards';
 import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 
 import MapDrawers from './MapDrawers';
 import './controls.css';
@@ -26,15 +27,16 @@ const testNames = {
 function FullMap(props){
     const [map, setMap] = React.useState(null);
     const [mapPlaces, setMapPlaces] = React.useState(null);
-    const title = props.title ? props.title : 'Project';
+    const [title, setTitle] = React.useState(props.type > 1 ? props.title : null);
     const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 10); // initial zoom
     const [center, setCenter] = React.useState(props.center.lat ? { lat: props.center.lat, lng: props.center.lng } : { lat:28.54023216523664, lng:-81.38181298263407 });
     const [bounds, setBounds] = React.useState();
     const [click, setClick] = React.useState(center);
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
     const [areaData, setAreaData] = React.useState(props.type === 1 ? props.area : null);
-
-    const [clicks, setClicks] = React.useState(null);
+    
+    const [newArea, setNewArea] = React.useState(props.type === 3 || props.type === 5 ? props.area : null)
+    const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : []);
 
     // hold the selections from the switch toggles
     const [stationaryCollections, setStationaryCollections] = React.useState({});
@@ -148,18 +150,26 @@ function FullMap(props){
         }
     };
 
-    //Handles clicks for Project Map Creation and editing
+    //Handles click position for Project Map Creation and editing
     const onMClick = (e) => {
         if(props.type === 2 || props.type === 0){
             setClick(e.latLng);
             setCenter(e.latLng);
+        } else if(props.type === 3 || props.type === 4) {
+            var clickObj = {
+                lat: 0,
+                lng: 0
+            }
+            clickObj.lat = e.latLng.lat();
+            clickObj.lng = e.latLng.lng();
+            setClicks([...clicks, clickObj])
         } else {
             setClick(e.latLng);
         }
     };
 
     const onPClick = (e) => {
-        if (props.type === 2 || props.type === 0) {
+        if (props.type === 0) {
             setClick(e.latLng);
             setCenter(e.latLng);
         } else {
@@ -177,9 +187,24 @@ function FullMap(props){
     };
 
     const onChange = (p) => (event) => {
-        const place = p.getPlace()
+        const place = p.getPlace();
         setCenter(place.geometry.location);
         setClick(place.geometry.location);
+    }
+
+    const onComplete = (e) => {
+        var lngs = e.getPath().getArray();
+        var clickArr = [];
+        lngs.forEach((lat, ind)=>{
+            var clickObj = {
+                lat: 0,
+                lng: 0
+            }
+            clickObj.lat = lat.lat();
+            clickObj.lng = lat.lng();
+            clickArr.push(clickObj);
+        })
+        setClicks(clickArr);
     }
 
     //Renders all selected activity options to the corresponding markers, polylines and boundaries
@@ -193,20 +218,21 @@ function FullMap(props){
                                 key={`${sdate}.${time}.${i2}`} 
                                 path={point.path} 
                                 movement={point.movement}
-                            />:<Marker 
+                            />:( point.boundary ? <Bounds area={point.boundary} type={point.result}/> :<Marker 
                                 key={`${sdate}.${time}.${i2}`} 
+                                shape={title === 'orderCollections' ? 'triangle' : (title === 'lightCollections' ? 'lightcircle' : 'circle')}
                                 info={point.average ? 
                                     (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
-                                    : (point.result ? 
-                                        (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.result}</div>`) 
-                                        : (point.posture ? 
-                                            (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
-                                            : null)) } 
+                                        : (point.result ? 
+                                            (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.result}</div>`)
+                                                : (point.posture ? 
+                                                    (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
+                                                        : null)) } 
                                 position={point.standingPoint ? point.standingPoint : point.point} 
                                 markerType={point.average ? 'soundCollections' 
                                     : (point.result ? point.result : (point.posture ? point.posture : null))} 
                                 markerSize={title === 'soundCollections' ? point.average : null} 
-                            />
+                            />)
                         )
                     ))
                 ))
@@ -220,14 +246,14 @@ function FullMap(props){
             { props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null }
             { props.type === 1 ? <Button id='printButton'>Print Map</Button>: null }
             {/* Wrapper imports Google Maps API */}
-            <Wrapper apiKey={''} render={render} id='mapContainer' libraries={['places']}>
+            <Wrapper apiKey={''} render={render} id='mapContainer' libraries={['drawing', 'places']}>
                 <Map
                     center={ center }
                     onClick={ onMClick }
                     onIdle={ onIdle }
                     onBounds={ onBounds }
                     mapObj={ setMap }
-                    places={mapPlaces}
+                    places={ mapPlaces }
                     zoom={ zoom }
                     order={ orderCollections }
                     boundaries={ boundariesCollections }
@@ -236,12 +262,24 @@ function FullMap(props){
                     sound={ soundCollections }
                     data={ areaData }
                 >
-                    { props.type === 1 && areaData ? <Bounds area={areaData}/> : null }
-                    { props.type === 1 ? actCoords(collections) : <Marker position={click}/> }
-                    { props.type === 0 ? <Places map={map} onChange={onChange} onClick={onPClick}/> : null }
+                    { areaData ? <Bounds area={ areaData } type={ 'area' }/> : null }
+                    { newArea ? <Bounds area = { newArea } type = { 'area' } /> : null }
+                    { props.type === 1 ? actCoords(collections) : <Marker position={center}/> }
+                    { props.type === 0 ? <Places map={ map } onChange={ onChange } onClick={ onPClick } center={ center }/> : null }
+                    {/* Change marker types for non center markers to show difference */}
+                    { props.type === 3 || props.type === 5 ? clicks.map((latLng, i) => (<Marker key={i} position={ latLng } info={`<div>Position ${i}</div>`}/>)) : null }
+                    { props.type === 4 ? <DrawBounds onComplete= {onComplete } center={ center } title={ title } points={ clicks }/>: null}
                 </Map>
             </Wrapper>
-            {/* Basic form for searching for places */}
+            { props.type === 3 ? <Button
+                id='newPointsButton'
+                className='newHoveringButtons'
+                component={Link}
+                to='/home/new/area/points/form'
+                state={{center: center, title: title, area: newArea, points: clicks}}
+            >
+                Set Points
+            </Button> : null}
         </>
     );
 };
@@ -307,6 +345,7 @@ const Marker = (options) => {
     const markerType = options.markerType;
     const info = options.info;
     const markerSize = Number(options.markerSize);
+    const shape = options.shape;
 
     const colors = {
         soundCollections: ['#B073FF', '#B073FF'],
@@ -316,17 +355,19 @@ const Marker = (options) => {
         sitting: ['red', 'black'],
         standing: ['blue', 'black'],
         laying: ['yellow', 'black'],
+        human: ['#FF9900', '#FF9900'],
+        built: ['#FFE600', '#FFD800'],
         none: ['white', 'white']
     }
-
     //SVG shape icons
     let style = {
-        path: google.maps.SymbolPath.CIRCLE,
-        fillColor: markerType ? colors[markerType][0] : null,
+        path: shape === 'triangle' ? "M 0 2 L 2 2 L 1 0.25 z" : 
+            (shape === 'lightcircle' ? "M 70 110 C 70 140, 110 140, 110 110" : google.maps.SymbolPath.CIRCLE),
+        fillColor: markerType ? colors[markerType][0] : colors.none[0],
         fillOpacity: (markerSize ? 0.3 : 0.8),
-        scale: (markerSize ? markerSize : 10),
+        scale: (markerSize ? (markerSize/2) : 10),
         strokeWeight: 1, 
-        strokeColor: markerType ? colors[markerType][1] : null
+        strokeColor: markerType ? colors[markerType][1] : colors['none'][0]
 
     };
 
@@ -340,7 +381,7 @@ const Marker = (options) => {
         if (!marker) {
             setMarker(new google.maps.Marker({ 
                 icon: icon, 
-                zIndex: (markerType === 'soundCollections' ? 1 : 99999999)}));
+                zIndex: (markerType === 'soundCollections' ? 10 : 99999999)}));
             if(!infoWindow){
                 setInfoWindow(new google.maps.InfoWindow({
                     content: info,
@@ -374,23 +415,29 @@ const Marker = (options) => {
 
 const Bounds = (options) => {
     const [paths, setPaths] = React.useState();
+    const type = options.type
     const bounds = {
         area: {
             paths: options.area,
             strokeColor: 'rgba(255,0,0,0.5)',
             strokeOpacity: 0.8,
             strokeWeight: 3,
-            fillColor: 'rgba(0,0,0,0.2)',
+            fillColor: 'rgba(0,0,0,0.2)',     
+            clickable: false                    
         },
-        water:{},
-        construction:{},
-        material:{},
-        shelter:{}
+        types: {
+            paths: options.area,
+            strokeColor: type === 'water' ? '#2578C5' : (type === 'construction' ? '#FF00E5' : (type === 'material' ? '#FFF066' : (type === 'shelter' ? '#FFF066' : '#FFFFFF'))),
+            strokeWeight: 2,
+            fillColor: '#C4C4C4',
+            fillOpacity: 0.45
+        },
+
     }
 
     React.useEffect(() => {
         if (!paths) {
-            setPaths(new google.maps.Polygon(bounds.area));
+            setPaths(new google.maps.Polygon(type === 'area' ? bounds.area : bounds.types));
         }
 
         return () => {
@@ -398,11 +445,11 @@ const Bounds = (options) => {
                 paths.setMap(null);
             }
         };
-    }, [paths, bounds.area]);
+    }, [paths, type, bounds.area, bounds.types, bounds.new]);
 
     React.useEffect(() => {
         if (paths) {
-            paths.setOptions({ map: options.map });
+            paths.setOptions({ map: options.map});
         }
     }, [paths, options]);
 
@@ -450,6 +497,60 @@ const Path = (options) => {
     return null;
 }
 
+const DrawBounds = ({onComplete, ...options}) => {
+    const [drawing, setDrawing] = React.useState(null);
+
+    React.useEffect(() => {
+        if (!drawing) {
+            setDrawing(new google.maps.drawing.DrawingManager({
+                drawingControl: false,
+                drawingMode: 'polygon'
+            }));
+        }
+
+        return () => {
+            if (drawing) {
+                drawing.setMap(null);
+            }
+        };
+    }, [drawing]);
+
+    React.useEffect(() => {
+        if (drawing) {
+            drawing.setOptions({
+                map: options.map, 
+                polygonOptions: {
+                    strokeColor: 'rgb(78, 72, 254)',
+                    strokeOpacity: 0.6,
+                    strokeWeight: 3,
+                    fillColor: 'rgb(78, 72, 254)',
+                    fillOpacity: 0.6
+                } 
+            });
+
+            ['polygoncomplete'].forEach((eventName) =>
+                google.maps.event.clearListeners(drawing, eventName)
+            );
+            if (onComplete) {
+                drawing.addListener('polygoncomplete', onComplete)
+            }
+        }
+    }, [drawing, options.map, onComplete ]);
+
+    return (
+        <Button 
+            id='newAreaButton' 
+            className='newHoveringButtons' 
+            component={Link}
+            to='points' 
+            state={({ center: options.center, title: options.title, area: options.points})}
+        >
+            Set Bounds
+        </Button>
+    );
+
+}
+
 interface PlaceProps extends google.maps.places.AutocompleteOptions {
     onChange?: (place: google.maps.places.Autocomplete) => void;
 }
@@ -465,7 +566,7 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
                 new google.maps.places.Autocomplete(ref.current, {
                     types: ['establishment'],
                     componentRestrictions: { country: ['US'] },
-                    fields: ['place_id', 'name', 'address_components', 'geometry'],
+                    fields: ['name', 'address_components', 'geometry'],
                 })
             );
         }
@@ -476,7 +577,7 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
             placesWidget.setOptions({
                 types: ['establishment'],
                 componentRestrictions: { country: ['US'] },
-                fields: ['place_id', 'name', 'address_components', 'geometry'],
+                fields: ['name', 'address_components', 'geometry'],
             });
         }
     }, [placesWidget]);
@@ -496,11 +597,16 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
     return(
         <div id='newProjectInput'>
             <input ref={ref} name='search' id='locationSearch' label='Project Location' type='text' />
-            <Button className='newHoveringButtons' id='newLocationButton'>Set Project</Button>
+            <Button 
+                className='newHoveringButtons' 
+                id='newLocationButton' 
+                component={Link} to='area' 
+                state={({ center: options.center, title: (placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : '')})}
+            >
+                Set Project
+            </Button>
         </div>
     );
-
-
 }
 
 const deepCompareEqualsForMaps = createCustomEqual((deepEqual) => (a, b) => {

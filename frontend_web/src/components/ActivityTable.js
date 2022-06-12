@@ -69,7 +69,7 @@ const subtable = (row, type) => (
                     <TableCell colSpan={ type === 0 ? 2 : 1 } className='type'>
                         { type === 0 ? 'Type' : 'Value' }
                     </TableCell>
-                    <TableCell>{ type === 0 ? 'Location' : 'Type' }</TableCell>
+                    <TableCell>{ type === 0 ? 'Location' : 'Type/Source' }</TableCell>
                     <TableCell>{ type === 0 ? 'Date Time' : 'Location' }</TableCell>
                     <TableCell>{ type === 0 ? 'Surveyor' : 'Date Time' }</TableCell>
                 </TableRow>
@@ -98,15 +98,15 @@ const subtable = (row, type) => (
                                     { testNames[instance.split('.')[0]] }
                                 </TableCell>
                                 <TableCell colSpan={1} className='value'>
-                                    { instance.split('.')[0] === 'soundCollections' ? 
-                                        `${point.average} dB` : 
-                                        (point.result ? 
-                                            point.result : 
-                                            (point.posture ? point.posture : 'N/A')
-                                        )
+                                    { 
+                                        instance.split('.')[0] === 'soundCollections' ? `${point.average} dB` : (point.area ? `${point.area} sq.ft.` : (point.type ? `${point.type}` :'N/A'))
                                     }
                                 </TableCell>
-                                <TableCell></TableCell>
+                                <TableCell>
+                                    {   
+                                        point.result ? point.result : (point.posture ? point.posture : 'N/A')
+                                    }
+                                </TableCell>
                                 <TableCell>Location { ind }</TableCell>
                                 <TableCell>{ `${instance.split('.')[1]} ${instance.split('.')[2]}` }</TableCell>
                             </TableRow>

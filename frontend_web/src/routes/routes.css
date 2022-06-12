@@ -254,7 +254,7 @@ div#cardFlexBox {
     margin: 10px;
 }
 
-div#projectEdit{
+div#projectEdit, div#projectCreate{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -262,7 +262,7 @@ div#projectEdit{
     align-items: center;
 }
 
-div#projectEdit h1{
+div#projectEdit h1, div#projectCreate h1{
     margin: 15px;
 }
 

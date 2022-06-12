@@ -80,7 +80,8 @@ function Title(props) {
             res = JSON.parse(await response.text());
             success = res.success;
 
-            //user login confirmation and navigation handling in App.js
+            // user login confirmation and navigation handling in App.js
+            // retrieve user's name or name and token to verify status
             props.onLogin(true);
 
             //redirect use to url/home
