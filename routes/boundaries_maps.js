@@ -152,7 +152,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
     user = await req.user   
     mapId = req.params.id
 
-    if (await Map.isResearcher(mapId, user._id)){
+    if (Map.isResearcher(mapId, user._id)){
 
         oldData = await Map.findData(mapId, req.params.data_id)
 
@@ -177,7 +177,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 router.delete('/:id/data/:data_id',passport.authenticate('jwt',{session:false}), async (req, res, next) => { 
     user = await req.user
     map = await Map.findById(req.params.id)
-    if(await Map.isResearcher(map._id, user._id)){
+    if(Map.isResearcher(map._id, user._id)){
         res.json(await Map.deleteEntry(map._id,req.params.data_id))
     }
     else{
