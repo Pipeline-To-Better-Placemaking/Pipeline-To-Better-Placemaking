@@ -17,33 +17,27 @@ const dataSchema = mongoose.Schema({
         }
     }],
 
-    horizontal: {
-
-        height:{
+    kind: {
         type: String,
-        enum: ['ground level','above ground'],
         required: true
-        },
-        
-        description:{
-            type: String,
-            required:true
-        }
+
     },
 
-    vertical: {
-
-        kind:{
+    description: {
         type: String,
-        enum: ['naturally occuring', 'human made'],
         required: true
-        },
-
-        description:{
-            type: String,
-            required:true
-        }
     },
+
+    value: {
+        type: Number,
+        required: true
+    },
+
+    purpose: [{
+        type: String,
+        required: true
+    }],
+
 
     time: {
         type: Date,
@@ -123,9 +117,11 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-        horizontal: newEntry.horizontal,
-        vertical: newEntry.vertical,
+        kind: newEntry.kind,
+        value: newEntry.value,
         time: newEntry.time,
+        description: newEntry.description,
+        purpose: newEntry.purpose,
         path: newEntry.path
     })
 

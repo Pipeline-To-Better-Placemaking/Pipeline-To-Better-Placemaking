@@ -77,7 +77,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
     project = await Project.findById(map.project)
     user = await req.user
     if(map.researchers.length < map.maxResearchers)
-        if(Team.isUser(project.team,user._id)){
+        if(await Team.isUser(project.team,user._id)){
             res.status(200).json(await Map.addResearcher(map._id,user._id))
         }
         else
@@ -132,7 +132,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
-    if(Map.isResearcher(map._id, user._id)){
+    if(await Map.isResearcher(map._id, user._id)){
         if(req.body.entries){
             for(var i = 0; i < req.body.entries.length; i++){
                 await Map.addEntry(map._id,req.body.entries[i])
@@ -152,14 +152,16 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
     user = await req.user   
     mapId = req.params.id
 
-    if (Map.isResearcher(mapId, user._id)){
+    if (await Map.isResearcher(mapId, user._id)){
 
         oldData = await Map.findData(mapId, req.params.data_id)
 
         const newData = {
             _id: oldData._id,
-            horizontal: (req.body.horizontal ? req.body.horizontal : oldData.horizontal),
-            vertical: (req.body.vertical ? req.body.vertical : oldData.vertical),
+            kind: (req.body.kind ? req.body.kind : oldData.kind),
+            description: (req.body.description ? req.body.description : oldData.description),
+            value: (req.body.value ? req.body.value : oldData.value),
+            purpose: (req.body.purpose ? req.body.purpose : oldData.purpose),
             time: (req.body.time ? req.body.time : oldData.time),
             path: (req.body.path ? req.body.path : oldData.path)
         }
@@ -175,7 +177,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 router.delete('/:id/data/:data_id',passport.authenticate('jwt',{session:false}), async (req, res, next) => { 
     user = await req.user
     map = await Map.findById(req.params.id)
-    if(Map.isResearcher(map._id, user._id)){
+    if(await Map.isResearcher(map._id, user._id)){
         res.json(await Map.deleteEntry(map._id,req.params.data_id))
     }
     else{
