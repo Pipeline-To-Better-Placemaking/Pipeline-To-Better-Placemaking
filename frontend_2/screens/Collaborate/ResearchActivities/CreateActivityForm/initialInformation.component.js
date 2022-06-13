@@ -161,6 +161,7 @@ export function IntialForm(props) {
                 onPress={()=>{setConfirmDeleteVisible(true)}}
                 status='danger'
                 accessoryLeft={DeleteIcon}
+                style={styles.deleteButton}
               >
                 DELETE
               </Button>

@@ -1,23 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, LogBox } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button } from '@ui-kitten/components';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component.js';
 import { BoundaryMap } from '../../../components/Maps/boundaryMap.component';
+import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.component';
+import { DataModal } from '../../../components/Activities/Boundary/dataModal.component';
+import { PurposeModal } from '../../../components/Activities/Boundary/purposeModal.component';
+import { calcArea, haverSine } from '../../../components/helperFunctions';
 import CountDown from 'react-native-countdown-component';
 import DropDownPicker from 'react-native-dropdown-picker';
-
-import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.component';
 
 import { styles } from './boundaryTest.styles';
 
 export function BoundaryTest(props){
     const theme = useTheme();
 
-    /// Location, area, and standing points for SM
-    /// Bool indicating to the map to recenter
-    const [location] = useState(props.timeSlot.location);
     const [area] = useState(props.timeSlot.area);
     const [recenter] = useState(false); // not used
 
@@ -35,13 +34,13 @@ export function BoundaryTest(props){
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(0);
     const [filter, setFilter] = useState([
-        {label: "Show All", value: 0},
-        {label: "Hide", value: 1}, 
+        {label: "Hide", value: 0},
+        {label: "Show All", value: 1}, 
         {label: "Construction", value: 2},
         {label: "Material", value: 3}, 
         {label: "Shelter", value: 4}
     ]);
-    const [viewAll, setViewAll] = useState(true);
+    const [viewAll, setViewAll] = useState(false);
     const [constructBool, setConstructBool] = useState(false);
     const [materialBool, setMaterialBool] = useState(false);
     const [shelterBool, setShelterBool] = useState(false);
@@ -55,72 +54,114 @@ export function BoundaryTest(props){
     const [currentPath, setCurrentPath] = useState([])
     const [currentPathSize, setCurrentPathSize] = useState(0)
     // Stores total paths seperatley for the 3 types of boundaries
-    const [constructTotalPaths, setConstructTotalPaths] = useState([]);
-    const [materialTotalPaths, setMaterialTotalPaths] = useState([]);
-    const [shelterTotalPaths, setShelterTotalPaths] = useState([]);
+    const [constructTotalPaths] = useState([]);
+    const [materialTotalPaths] = useState([]);
+    const [shelterTotalPaths] = useState([]);
 
+    // used to store all collected data during test (to be sent to DB)
+    const [data] = useState([]);
+    const [dataIndex, setDataIndex] = useState(0);
+
+    // Modal controls/tools
     const [errorModal, setErrorModal] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
+    const [dataModal, setDataModal] = useState(false);
+    const [prompts, setPrompts] = useState([]);
+    const [purposeModal, setPurposeModal] = useState(false);
 
+    const constructPrompt = ["Curbs", "Building Wall", "Fences", "Planter", "Partial Wall"]
+    const matPrompt = ["Bricks (pavers)", "Concrete", "Tile", "Natural (grass)", "Wood (deck)"]
+    const shePrompt = ["Canopy", "Trees", "Umbrella Dining", "Temporary", "Constructed Ceiling"]
 
-
-    // ends activity, packages and sends data to the DB
+    // ends activity and sends data to the DB
     const endActivity = async () => {
-
+        console.log('ending activity');
         setStart(false);
         clearInterval(id);
-        console.log('timer: ' + timer);
-        console.log('ending activity');
+
+        //console.log(data);
         
-        // don't try to send any data yet, just close the test
-        // try {
-        //     const response = await fetch('https://measuringplacesd.herokuapp.com/api/boundary_maps/' + props.timeSlot._id + '/data', {
-        //         method: 'POST',
-        //         headers: {
-        //             Accept: 'application/json',
-        //                 'Content-Type': 'application/json',
-        //                 'Authorization': 'Bearer ' + props.token
-        //         },
-        //         body: JSON.stringify({
-        //             entries: objData
-        //         })
-        //     })
+        try {
+            const response = await fetch('https://measuringplacesd.herokuapp.com/api/boundaries_maps/' + props.timeSlot._id + '/data', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + props.token
+                },
+                body: JSON.stringify({
+                    entries: data
+                })
+            })
 
-        //     let info = await response.json()
+            let info = await response.json()
             
-        //     // console.log(info);
+            console.log(info);
 
-        // } catch (error) {
-        //     console.log("ERROR: ", error)
-        // }
+        } catch (error) {
+            console.log("ERROR: ", error)
+        }
         props.navigation.navigate("ActivitySignUpPage");
     }
     
-    // closes the modal and stores the measurement; copy from sound test, ex of how to store data locally
+    // closes the modal and stores the boundary data
     const closeData = async (inf) => {
         // close the modal
-        // setDecibelModal(false);    
-        // // pull up next modal only if we are at the end of the measurement
-        // if(timer === 0){
-        //     // push last measurement on to curr and compute its average, then store in the appropriate row of decArr
-        //     curr.push(parseFloat(inf.decibel));
-        //     let avg = computeAverage(curr);
-        //     // standingIndex <= # standing points always, so if something exists at that index of decArr, push the measurement onto it
-        //     if(decArr[standingIndex]) decArr[standingIndex].push(avg);
-        //     // if nothing existed at that index, push a new array (with the average) into the 2D array (its the 1st iteration of measurement at that standing point)
-        //     else decArr.push([avg]);
-            
-        //     // reset curr for subsequent entries
-        //     setCurr([]);
-        //     // pull up sounds modal (multi-select)
-        //     setSoundsModal(true);
-        // }
-        // // else resume the measurement
-        // else{
-        //     // store current measurement in curr
-        //     curr.push(parseFloat(inf.decibel));
-        //     resume();
-        // }
+        setDataModal(false);
+        let type;
+        let val = 0;
+        // store the boundary in its respective array and set the type variable
+        // if we are doing a construction boundary, pull up the purpose modal
+        if(boundIndex === 0){
+            setPurposeModal(true);
+            constructTotalPaths.push(currentPath);
+            type = 'Construction'
+            // calculate the distance between each subsequent point to find total distance of drawn line
+            for (let i = 1; i < currentPathSize; i++) val += haverSine(currentPath[i-1], currentPath[i]);
+            // ensure the percision is fixed to 2nd decimal place
+            let tempString = val.toFixed(2);
+            val = parseFloat(tempString);
+        }
+        else if (boundIndex === 1){
+            materialTotalPaths.push(currentPath);
+            type = 'Material'
+            val = calcArea(currentPath)
+        }
+        else{
+            shelterTotalPaths.push(currentPath);
+            type = 'Shelter'
+            val = calcArea(currentPath)
+        }
+        // package the data
+        data.push(
+            {
+                path: currentPath,
+                kind: type,
+                description: inf.description,
+                value: val,
+                purpose: [],
+                time: new Date()
+            }
+        );
+        // increase the dataIndex
+        setDataIndex(dataIndex + 1);
+
+        // whenever the data is packaged, clear out the current paths stuff for next enteries
+        let emptyPath = [];
+        setCurrentPath(emptyPath);
+        setCurrentPathSize(0);
+
+        // reset test controls
+        setLineTools(false);
+        setBoundIndex(-1);
+    }
+
+    // closes the purpose modal and stores the purpose(s)
+    const closePurpose = async (inf) => {
+        // use dataIndex - 1 to access the correct data object (dataIndex updates before this is called)
+        data[dataIndex - 1].purpose.push(inf.purpose);
+        // closes modal
+        setPurposeModal(false);
     }
     
     // helps control the countdown timer
@@ -141,12 +182,13 @@ export function BoundaryTest(props){
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            console.log(count);
+            //console.log(count);
             // when timer hits 0, end the test (is a time at site test)
             if(count === 0){
                 console.log('timer hits 0');
                 // clear the interval to avoid resuming timer issues
                 clearInterval(id);
+                setStart(false);
                 endActivity();
             }
         // 1000 ms == 1 s
@@ -179,42 +221,42 @@ export function BoundaryTest(props){
     
     // controls which boundaries show on the map during data collection
     const filterControl = (item) =>{
-        console.log("Value: " + item.value);
         let type = item.value;
-        // Show All
+        // Hide (set to default)
         if(type === 0){
-            setViewAll(true);
-            setConstructBool(true);
-            setMaterialBool(true);
-            setShelterBool(true);
-        }
-        // Hide (set all filter useStates to false to render none of the boundaries)
-        else if(type === 1){
             setViewAll(false);
             setConstructBool(false);
             setMaterialBool(false);
             setShelterBool(false);
         }
-        // Construction
-        else if(type === 2){
-            setViewAll(true);
-            setConstructBool(true);
-            setMaterialBool(false);
-            setShelterBool(false);
-        }
-        // Material
-        else if(type === 3){
-            setViewAll(true);
-            setConstructBool(false);
-            setMaterialBool(true);
-            setShelterBool(false);
-        }
-        // Shelter
-        else if(type === 4){
-            setViewAll(true);
-            setConstructBool(false);
-            setMaterialBool(false);
-            setShelterBool(true);
+        
+        else{
+            // all bounds needs this to be true to render
+            setViewAll(true);  
+            // Show All
+            if(type === 1){
+                setConstructBool(true);
+                setMaterialBool(true);
+                setShelterBool(true);
+            }
+            // Construction
+            else if(type === 2){
+                setConstructBool(true);
+                setMaterialBool(false);
+                setShelterBool(false);
+            }
+            // Material
+            else if(type === 3){
+                setConstructBool(false);
+                setMaterialBool(true);
+                setShelterBool(false);
+            }
+            // Shelter
+            else if(type === 4){
+                setConstructBool(false);
+                setMaterialBool(false);
+                setShelterBool(true);
+            }
         }
 
     }
@@ -265,84 +307,57 @@ export function BoundaryTest(props){
     
     // adds a marker to the current path
     const addMarker = (marker) =>{
-        // only add a marker if the test has started and the line tool bar is pulled up
+        // only add a marker if the test has started and the line toolbar is pulled up
         if(start && lineTools){
             // current marker being added
-            console.log(marker);
+            // console.log(marker);
             // cannot use currentPath.push here, causes a read-only error somehow on the 3rd marker
             setCurrentPath(currentPath.concat(marker));
             setCurrentPathSize(currentPathSize+1);
         }
-        else console.log('map pressed with no linetools');
     }
 
-    // closes the line toolbar and submits the boundary to collect data
+    // checks the boundary and sets the buttons to collect data
     const confirm = () => {
-        console.log('confirm attempt');
-        // boundIndex key: 0 is construction, 1 is material, 2 is shelter
-        // construction is a polyline (requires at least 2 points)
-        // material and shelter is a polygon (requires at least 3 points)
         // construction boundary
         if(boundIndex === 0){
-            // line size check
+            // line size check, needs at least 2 points
             if(currentPathSize < 2){
                 setErrorMsg("Need at least 2 points to confirm a Construction Boundary");
                 setErrorModal(true);
                 return
             }
-            
-            constructTotalPaths.push(currentPath);
-
-            console.log('Construction Boundary Confirmed');
+            // sets the modals buttons and pulls up the modal
+            setPrompts(constructPrompt);
         }
         // material/shelter boundary
         else if(boundIndex === 1 || boundIndex === 2){
-            // polygon size check
+            // polygon size check, needs at lest 3 points
             if(currentPathSize < 3){
                 setErrorMsg("Need at least 3 points to confirm a Material/Shelter Boundary");
                 setErrorModal(true);
                 return
             }
-
-            if(boundIndex === 1) materialTotalPaths.push(currentPath);
-            else shelterTotalPaths.push(currentPath);
-
-            console.log('Material/Shelter Boundary Confirmed');
+            
+            if(boundIndex === 1) setPrompts(matPrompt);
+            else setPrompts(shePrompt); 
         }
-        // error checking
-        else console.log('ERROR: should never enter here');
         
-        
-        console.log(currentPathSize);
-        console.log(currentPath);
-        setLineTools(false);
-        //setDataModal(true)
-
-        // for dev, whenever some drawn boundary is confirmed, clear out the current paths stuff for next enteries
-        let emptyPath = [];
-        setCurrentPath(emptyPath);
-        setCurrentPathSize(0);
+        // pull up the data modal
+        setDataModal(true);
     }
     
-    // removes last plotted marker; if last plotted marker is the only marker, close line toolbar
+    // removes last plotted marker
     const removeLastPoint = () => {
-        if (currentPathSize > 0) {
-
+        if (currentPathSize >= 1) {              
             let currPath = [...currentPath]
             currPath.splice(-1, 1)
-
-            setCurrentPath(currPath)
-            setCurrentPathSize(currentPathSize-1)
-        }
-        else if(currentPathSize === 0){
-            let currPath = [...currentPath]
-            currPath.splice(-1, 1)
-
-            setCurrentPath(currPath)
-            setCurrentPathSize(currentPathSize-1)
             
-            setLineTools(false);
+            setCurrentPath(currPath)
+            setCurrentPathSize(currentPathSize - 1)
         }
+        // if we try deleting with no marker on drawn boundary, put away the line toolbar
+        else setLineTools(false);
     }
     
     // cancels the current line being drawn (also closes line toolbar)
@@ -402,10 +417,19 @@ export function BoundaryTest(props){
             )
         }
     }
-
+    
+    // closes the error modal
     const dismiss = () =>{
         setErrorModal(false);
     }
+    
+    // closes the data modal and brings user back to the boundary they were drawing
+    const goBack = () =>{
+        setDataModal(false);
+    }
+    
+    // ignores the event emitter warnings in app (for dev. only)
+    // LogBox.ignoreAllLogs();
 
     return(
         <ViewableArea>
@@ -419,23 +443,20 @@ export function BoundaryTest(props){
                     />
                     
                     <TimeBar/>
+
+                    <DataModal
+                        visible={dataModal}
+                        closeData={closeData}
+                        back={goBack}
+                        desc={prompts}
+                    />
+
+                    <PurposeModal 
+                        visible={purposeModal}
+                        closePurpose={closePurpose}
+                    />
                     
-                    {/* <DecibelEntryModal
-                        visible={decibelModal}
-                        closeData={closeDecibelData}
-                    />
-
-                    <SoundsModal
-                        visible={soundsModal}
-                        closeData={closeSoundsData}
-                    />
-
-                    <MainSoundModal
-                        visible={mainSoundModal}
-                        closeData={closeMainData}
-                    /> */}
                     {/* this zIndex enables the dropdown menu to render over the map */}
-                    {/* the map should still be fully interactable */}
                     <View style={{zIndex: -1}}>
                         <BoundaryMap
                             area={area}

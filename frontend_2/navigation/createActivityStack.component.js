@@ -435,6 +435,7 @@ export function CreateActivityStack(props) {
     let success = false
     let res = null
     let collectionName = '/' + props.activity.test_type + '_collections';
+    if(props.activity.test_type === 'boundary') collectionName = '/boundaries_collections';
     try {
       const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
                                     props.project._id +

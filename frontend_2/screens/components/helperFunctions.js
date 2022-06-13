@@ -258,3 +258,74 @@ export function retrieveTestName(str){
   }
   return testType;
 }
+
+// calculates the area of a drawn polygon (value returned is in feet squared)
+export function calcArea(markers){
+  //hard coded radius is the approximate (its rounded down) radius of the earth in meters
+  let radius = 6371000;
+  
+  const diameter = radius * 2;
+  const circumference = diameter * Math.PI;
+  const listY = [];
+  const listX = [];
+  const listArea = [];
+
+  // calculate segment x and y in degrees for each point
+  const latitudeRef = markers[0].latitude;
+  const longitudeRef = markers[0].longitude;
+  for (let i = 1; i < markers.length; i++) {
+    let latitude = markers[i].latitude;
+    let longitude = markers[i].longitude;
+    listY.push(calculateYSegment(latitudeRef, latitude, circumference));
+  
+    listX.push(calculateXSegment(longitudeRef, longitude, latitude, circumference));
+  }
+  
+  // calculate areas for each triangle segment
+  for (let i = 1; i < listX.length; i++) {
+    let x1 = listX[i - 1];
+    let y1 = listY[i - 1];
+    let x2 = listX[i];
+    let y2 = listY[i];
+    listArea.push(calculateAreaInSquareMeters(x1, x2, y1, y2));
+  
+  }
+  
+  // sum areas of all triangle segments
+  let areaSum = 0;
+  listArea.forEach(tarea => areaSum = areaSum + tarea)
+
+  // get abolute value of area (which is in meters squared); area can't be negative
+  let metersSqr = Math.abs(areaSum);
+  // convert it to feet squared
+  let feetSqr = metersSqr * 10.76391042;
+  // fix the percision to the 2nd decimal place
+  let tempString = feetSqr.toFixed(2);
+  // return the parsed float of the fixed number
+  return parseFloat(tempString);
+}
+  
+// helpers for calcArea
+function calculateAreaInSquareMeters(x1, x2, y1, y2) {return (y1 * x2 - x1 * y2) / 2}
+function calculateYSegment(latitudeRef, latitude, circumference) {return (latitude - latitudeRef) * circumference / 360.0}
+function calculateXSegment(longitudeRef, longitude, latitude, circumference) {return (longitude - longitudeRef) * circumference * Math.cos((latitude * (Math.PI / 180))) / 360.0}
+
+// calulates the distance of a drawn line (value returned is in feet)
+export function haverSine(coords1, coords2) {
+  const R = 6371000; // approx. of radius of the earth in metres
+  const phi1 = coords1.latitude * Math.PI/180; // φ, λ in radians
+  const phi2 = coords2.latitude * Math.PI/180;
+  const deltaPhi = (coords2.latitude-coords1.latitude) * Math.PI/180;
+  const deltaLambda = (coords2.longitude-coords1.longitude) * Math.PI/180;
+  
+  const a = Math.sin(deltaPhi/2) * Math.sin(deltaPhi/2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda/2) * Math.sin(deltaLambda/2);
+  const C = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  
+  let meters = R * C;
+  // convert it to feet
+  let feet = meters * 3.28084;
+  // fix the percision to the 2nd decimal place
+  let tempString = feet.toFixed(2);
+  // return the parsed float of the fixed number
+  return parseFloat(tempString);
+}
