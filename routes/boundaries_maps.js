@@ -77,7 +77,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
     project = await Project.findById(map.project)
     user = await req.user
     if(map.researchers.length < map.maxResearchers)
-        if(await Team.isUser(project.team,user._id)){
+        if(Team.isUser(project.team,user._id)){
             res.status(200).json(await Map.addResearcher(map._id,user._id))
         }
         else
