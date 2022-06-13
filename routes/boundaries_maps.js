@@ -132,7 +132,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
-    if(await Map.isResearcher(map._id, user._id)){
+    if(Map.isResearcher(map._id, user._id)){
         if(req.body.entries){
             for(var i = 0; i < req.body.entries.length; i++){
                 await Map.addEntry(map._id,req.body.entries[i])
