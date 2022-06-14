@@ -15,7 +15,7 @@ const testNames = {
     stationaryCollections: 'Humans in Place',
     movingCollections: 'Humans in Motion',
     orderCollections: 'Absence of Order Locator',
-    boundariesCollections: 'Spatial and Shelter Boundaries',
+    boundaryCollections: 'Spatial and Shelter Boundaries',
     lightingCollections: 'Lighting Profile',
     natureCollections: 'Nature Prevalence',
     soundCollections: 'Acoustical Profile'
@@ -57,7 +57,6 @@ function Row(props) {
         </React.Fragment>
     );
 }
-
 
 //Subtables for Map Page Data Drawer and Activity Page Collapsible Table
 const subtable = (row, type) => (    
@@ -117,7 +116,6 @@ const subtable = (row, type) => (
         </Table>
     </Box>
 )
-
 
 Row.propTypes = {
     row: PropTypes.shape({}).isRequired,

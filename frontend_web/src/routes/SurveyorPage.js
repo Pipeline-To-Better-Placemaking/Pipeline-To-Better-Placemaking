@@ -11,11 +11,13 @@ function SurveyorPage() {
             activities: [
                 {
                     activity: 'Boundary',
-                    date: '2/2/22'
+                    date: '2/2/22',
+                    time: '2pm'
                 },
                 {
                     activity: 'Lighting',
-                    date: '3/1/22'
+                    date: '3/1/22',
+                    time: '4pm'
                 }
             ]
         },
@@ -24,11 +26,13 @@ function SurveyorPage() {
             activities: [
                 {
                     activity: 'Boundary',
-                    date: '2/2/22'
+                    date: '2/2/22',
+                    time: '12pm'
                 },
                 {
                     activity: 'Lighting',
-                    date: '3/1/22'
+                    date: '3/1/22',
+                    time: '10am'
                 }
             ]
         }

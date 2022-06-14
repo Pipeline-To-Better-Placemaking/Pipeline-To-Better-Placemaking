@@ -231,6 +231,10 @@ div#projectFrame>button.MuiButton-root:hover, button#printButton:hover {
     background-color: #ffffff;
 }
 
+button#deleteButton{
+    color: red;
+}
+
 button#printButton {
     position: fixed;
     top: 113px;
@@ -257,10 +261,8 @@ input#locationSearch:focus-visible {
 }
 
 select#activitySelect, input.dateTimePickers{
-    width: 30vw;
+    width: 23vw;
     display: block;
-    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
-    -moz-padding-start: calc(0.75rem - 3px);
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;

@@ -34,7 +34,7 @@ export default function MapDrawer(props) {
         stationaryCollections: 'Humans in Place',
         movingCollections: 'Humans in Motion',
         orderCollections: 'Absence of Order Locator',
-        boundariesCollections: 'Spatial and Shelter Boundaries',
+        boundaryCollections: 'Spatial and Shelter Boundaries',
         lightingCollections: 'Lighting Profile',
         natureCollections: 'Nature Prevalence',
         soundCollections: 'Acoustical Profile'
@@ -44,7 +44,7 @@ export default function MapDrawer(props) {
         stationaryCollections: false,
         movingCollections: false,
         orderCollections: false,
-        boundariesCollections: false,
+        boundaryCollections: false,
         lightingCollections: false,
         natureCollections: false,
         soundCollections: false

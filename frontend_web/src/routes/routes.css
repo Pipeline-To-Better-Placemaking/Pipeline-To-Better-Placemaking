@@ -62,36 +62,41 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
     margin-bottom: 5vh;
     z-index: 0;
 }
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle, .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#verifyButton {
+    color: rgb(255, 255, 255);
+    margin-top: 10px;
+    width: 45vw;
+}
 
 .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle {
-    color: rgb(255, 255, 255);
     background-color: #ff4258;
-    width: 45vw;
 }
 .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle:hover {
     box-shadow: 0 4px 8px 0 rgba(255, 66, 88, 0.2), 0 6px 20px 0 rgba(255, 66, 88, 0.19);
 }
 
 .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#verifyButton {
-    color: rgb(255, 255, 255);
     background-color: rgb(78, 72, 254);
-    width: 45vw;
 }
 
 .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#verifyButton:hover {
     box-shadow: 0 4px 8px 0 rgba(78, 72, 254, 0.2), 0 6px 20px 0 rgba(78, 72, 254, 0.19);
 }
 
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.scheme {
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.scheme, #newTimeButton {
     color: black;
     background-color: #fed806;
     margin: 0px 5px;
     font-size:medium;
 }
 
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.scheme:hover {
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.scheme:hover, #newTimeButton:hover {
     box-shadow: 0 4px 8px 0 rgba(254, 216, 6, 0.2), 0 6px 20px 0 rgba(254, 216, 6, 0.19);
     font-weight: 550;
+}
+
+#createActivityButton{
+    height: 50px;
 }
 
 .newformCard {
@@ -150,12 +155,23 @@ button#loginButton {
     margin: 8px;
 }
 
+button#newTimeButton {
+    margin-bottom: 10px;
+}
+
 div#ActivityPage {
     overflow-y: scroll;
 }
 
 div#MapPage {
     overflow: hidden;
+}
+
+div#timeCardContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
 }
 
 div.MuiCardContent-root {

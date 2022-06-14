@@ -18,7 +18,7 @@ const testNames = {
     stationaryCollections: 'Humans in Place',
     movingCollections: 'Humans in Motion',
     orderCollections: 'Absence of Order Locator',
-    boundariesCollections: 'Spatial and Shelter Boundaries',
+    boundaryCollections: 'Spatial and Shelter Boundaries',
     lightingCollections: 'Lighting Profile',
     natureCollections: 'Nature Prevalence',
     soundCollections: 'Acoustical Profile'
@@ -42,7 +42,7 @@ function FullMap(props){
     const [stationaryCollections, setStationaryCollections] = React.useState({});
     const [movingCollections, setMovingCollections] = React.useState({});
     const [orderCollections, setOrderCollections] = React.useState({});
-    const [boundariesCollections, setBoundariesCollections] = React.useState({});
+    const [boundaryCollections, setBoundaryCollections] = React.useState({});
     const [lightingCollections, setLightingCollections] = React.useState({});
     const [natureCollections, setNatureCollections] = React.useState({});
     const [soundCollections, setSoundCollections] = React.useState({});
@@ -50,7 +50,7 @@ function FullMap(props){
     //holds ALL Collections for rendering
     const [collections, setCollections] = React.useState({
         orderCollections: orderCollections, 
-        boundariesCollections: boundariesCollections, 
+        boundaryCollections: boundaryCollections, 
         lightingCollections: lightingCollections, 
         natureCollections: natureCollections, 
         soundCollections: soundCollections
@@ -97,8 +97,8 @@ function FullMap(props){
                 setOrderCollections(newSelection);
                 setCollections({...collections, orderCollections: newSelection});
                 break;
-            case 'boundariesCollections': 
-                newSelection = boundariesCollections;
+            case 'boundaryCollections': 
+                newSelection = boundaryCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
                     newSelection[`${date}`].push(time);
@@ -106,8 +106,8 @@ function FullMap(props){
                     var b = newSelection[date].indexOf(time);
                     newSelection[date].splice(b, 1);
                 }
-                setBoundariesCollections(newSelection);
-                setCollections({ ...collections, boundariesCollections: newSelection });
+                setBoundaryCollections(newSelection);
+                setCollections({ ...collections, boundaryCollections: newSelection });
                 break;
             case 'lightingCollections': 
                 newSelection = lightingCollections;
@@ -256,7 +256,7 @@ function FullMap(props){
                     places={ mapPlaces }
                     zoom={ zoom }
                     order={ orderCollections }
-                    boundaries={ boundariesCollections }
+                    boundaries={ boundaryCollections }
                     lighting={ lightingCollections }
                     nature={ natureCollections }
                     sound={ soundCollections }
@@ -432,7 +432,6 @@ const Bounds = (options) => {
             fillColor: '#C4C4C4',
             fillOpacity: 0.45
         },
-
     }
 
     React.useEffect(() => {

@@ -23,7 +23,10 @@ function SettingsPage(){
     });
 
     const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
+        setValues({ 
+            ...values, 
+            [prop]: event.target.value 
+        });
     };
 
     const handleClickShowPassword = () => {
@@ -122,7 +125,6 @@ function SettingsPage(){
                                 label='Confirm Password'
                             />
                         </FormControl>
-                        <br />
                         <Button 
                             className='scheme' 
                             type='submit' 
@@ -135,11 +137,9 @@ function SettingsPage(){
                     </Box>
                 </Card.Body>
             </Card>
-            <br/>
             <Button id='verifyButton' type='submit' size='lg' onClick={ verify }>
                 Verify Email
             </Button>
-            <br/>
             <Button id='logoutSingle' type='submit' size='lg' onClick={ userLogout }>
                 Log Out
             </Button>

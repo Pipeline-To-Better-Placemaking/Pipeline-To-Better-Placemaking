@@ -5,6 +5,7 @@ import MapPage from './MapPage';
 import TabPanel from '../components/ProjectTabPanel';
 import ActivityPage from './ActivityPage';
 import SurveyorPage from './SurveyorPage';
+import NewActivityTimes from './NewActivityTimes';
 
 function ProjectPage(){
     // Project section separated for handling project data
@@ -168,7 +169,7 @@ function ProjectPage(){
                     }
                 }
             },
-            boundariesCollections: {
+            boundaryCollections: {
                 '2/29/22': {
                     '16:00': {
                         surveyor: 'Sam Iam',
@@ -621,6 +622,7 @@ function ProjectPage(){
                 <Route index element={<MapPage title={values.projectName} drawers={drawers} />} />
                 <Route path='map' element={<MapPage title={values.projectName} drawers={drawers} />} />
                 <Route path='activities' element={<ActivityPage title={values.projectName} drawers={drawers.Activities} />} />
+                <Route path='activities/times' element={<NewActivityTimes />}/>
                 <Route path='surveyors' element={<SurveyorPage title={values.projectName} drawers={drawers} />} />
             </Routes>
         </div>

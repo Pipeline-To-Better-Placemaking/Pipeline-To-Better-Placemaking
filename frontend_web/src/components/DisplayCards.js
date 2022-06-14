@@ -32,6 +32,9 @@ function DisplayCards(props){
                     <Typography variant='text' component='div'>
                         { activity.date }
                     </Typography>
+                    <Typography variant='text' component='div'>
+                        { activity.time }
+                    </Typography>
                 </div>
             )) }
         </CardContent>

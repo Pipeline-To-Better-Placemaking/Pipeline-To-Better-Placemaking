@@ -17,14 +17,15 @@ export default function ProjectTabs(props) {
     // shows proper selection in tab bar and movement from previous page
     const segment = location.pathname.split('/');
     const tail = segment[segment.length - 1];
+    const segTail = segment[segment.length - 2]
 
     React.useEffect(() => {
-        if(tail === 'activities'){ 
+        if(tail === 'activities' || segTail === 'activities'){ 
             handleUpdate('activities', 2)
         } else { 
             tail === 'surveyors' ? handleUpdate('surveyors', 1) : handleUpdate('map', 0);
         }
-    }, [tail]);
+    }, [tail, segTail]);
 
     // manual adjustment of selected quality for Mui
     const handleUpdate = (tab, value) => {
