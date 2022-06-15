@@ -161,7 +161,7 @@ export default function MapDrawer(props) {
 
     const charts = (selections) => (
         Object.entries(selections).map(([selection, obj])=>(
-            <Charts key={selection} data={obj.data}/>
+            <Charts key={selection} selection={selection} data={obj.data}/>
         ))
     );
 

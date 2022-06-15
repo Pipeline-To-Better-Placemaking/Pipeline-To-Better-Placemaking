@@ -18,7 +18,8 @@ function EditProject(){
         setValues({ ...values, [prop]: event.target.value });
     };
 
-    const updateProject = () => {}
+    const updateProject = () => {
+    }
 
     return(
         <div id='projectEdit'>

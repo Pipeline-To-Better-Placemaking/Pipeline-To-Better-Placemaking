@@ -25,18 +25,25 @@ const testNames = {
 };
 
 function FullMap(props){
+    // props.type :
+    // 0 - new project
+    // 1 - Map Page
+    // 2 - edit project
+    // 3 - new project points
+    // 4 - new project area
+    // 5 - new project map
     const [map, setMap] = React.useState(null);
     const [mapPlaces, setMapPlaces] = React.useState(null);
     const [title, setTitle] = React.useState(props.type > 1 ? props.title : null);
     const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 10); // initial zoom
     const [center, setCenter] = React.useState(props.center.lat ? { lat: props.center.lat, lng: props.center.lng } : { lat:28.54023216523664, lng:-81.38181298263407 });
     const [bounds, setBounds] = React.useState();
-    const [click, setClick] = React.useState(center);
+    const [click, setClick] = React.useState(props.type === 0 || props.type === 2 ? props.center : null);
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
     const [areaData, setAreaData] = React.useState(props.type === 1 ? props.area : null);
     
     const [newArea, setNewArea] = React.useState(props.type === 3 || props.type === 5 ? props.area : null)
-    const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : []);
+    const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [props.center] :[]));
 
     // hold the selections from the switch toggles
     const [stationaryCollections, setStationaryCollections] = React.useState({});
@@ -164,7 +171,7 @@ function FullMap(props){
             clickObj.lng = e.latLng.lng();
             setClicks([...clicks, clickObj])
         } else {
-            setClick(e.latLng);
+            setCenter(e.latLng);
         }
     };
 
@@ -264,19 +271,30 @@ function FullMap(props){
                 >
                     { areaData ? <Bounds area={ areaData } type={ 'area' }/> : null }
                     { newArea ? <Bounds area = { newArea } type = { 'area' } /> : null }
-                    { props.type === 1 ? actCoords(collections) : <Marker position={center}/> }
-                    { props.type === 0 ? <Places map={ map } onChange={ onChange } onClick={ onPClick } center={ center }/> : null }
+                    { props.type === 1 ? 
+                        actCoords(collections) : 
+                        (props.type === 4 || props.type === 2 ? 
+                            <Marker position={props.center} /> : 
+                            (props.type === 0 ? 
+                                <Marker position={center} /> : null)) }
+                    { props.type === 0 ? <Places map={ map } onChange={ onChange } onClick={ onPClick } center={ center } zoom={ zoom }/> : null }
                     {/* Change marker types for non center markers to show difference */}
                     { props.type === 3 || props.type === 5 ? clicks.map((latLng, i) => (<Marker key={i} position={ latLng } info={`<div>Position ${i}</div>`}/>)) : null }
-                    { props.type === 4 ? <DrawBounds onComplete= {onComplete } center={ center } title={ title } points={ clicks }/>: null}
+                    { props.type === 4 ? <DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null }
                 </Map>
             </Wrapper>
             { props.type === 3 ? <Button
                 id='newPointsButton'
                 className='newHoveringButtons'
-                component={Link}
+                component={ Link }
                 to='/home/new/area/points/form'
-                state={{center: center, title: title, area: newArea, points: clicks}}
+                state={{
+                    center: center, 
+                    title: title, 
+                    area: newArea, 
+                    points: clicks, 
+                    zoom: zoom
+                }}
             >
                 Set Points
             </Button> : null}
@@ -372,7 +390,6 @@ const Marker = (options) => {
     };
 
     const icon = markerType ? ((colors[markerType][0]) ? style : null) : null;
-    
 
     const [marker, setMarker] = React.useState();
     const [infoWindow, setInfoWindow] = React.useState()
@@ -542,7 +559,7 @@ const DrawBounds = ({onComplete, ...options}) => {
             className='newHoveringButtons' 
             component={Link}
             to='points' 
-            state={({ center: options.center, title: options.title, area: options.points})}
+            state={({ center: options.center, title: options.title, area: options.points, zoom: options.zoom})}
         >
             Set Bounds
         </Button>
@@ -600,7 +617,11 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
                 className='newHoveringButtons' 
                 id='newLocationButton' 
                 component={Link} to='area' 
-                state={({ center: options.center, title: (placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : '')})}
+                state={({ 
+                    center: options.center, 
+                    title: (placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : ref.current),
+                    zoom: options.zoom
+                })}
             >
                 Set Project
             </Button>

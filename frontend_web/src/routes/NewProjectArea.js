@@ -7,13 +7,14 @@ function NewArea() {
 
     const [values, setValues] = React.useState({
         center: loc.state.center,
-        title: loc.state.title
+        title: loc.state.title, 
+        zoom: loc.state.zoom
     });
 
     return (
         <div id='newArea'>
             {/* Empty New Project page, Google map component w/ searchable locations for new projects */}
-            <Map center={values.center} title={values.title} type={4} zoom={16} />
+            <Map center={values.center} title={values.title} type={4} zoom={values.zoom} />
         </div>
     );
 }

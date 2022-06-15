@@ -8,13 +8,14 @@ function NewProjectPoints(){
     const [values, setValues] = React.useState({
         center: loc.state.center,
         title: loc.state.title,
-        area: loc.state.area
+        area: loc.state.area,
+        zoom: loc.state.zoom
     });
     
     return(
         <div id='newPoints'>
             {/* Empty New Project page, Google map component w/ searchable locations for new projects */}
-            <Map center={values.center} title={values.title} area={values.area} type={3} zoom={16} />
+            <Map center={ values.center } title={ values.title } area={ values.area } type={3} zoom={ values.zoom } />
         </div>
     );
 

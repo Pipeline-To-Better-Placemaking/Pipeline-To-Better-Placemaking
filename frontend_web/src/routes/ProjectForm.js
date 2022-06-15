@@ -13,7 +13,8 @@ function ProjectForm() {
         center: (loc && loc.state ? loc.state.center : {}),
         title: (loc && loc.state ? loc.state.title : ''),
         area: (loc && loc.state ? loc.state.area: []),
-        points: (loc && loc.state ? loc.state.points : [])
+        points: (loc && loc.state ? loc.state.points : []),
+        zoom: (loc && loc.state ? loc.state.zoom : [])
     });
 
     const handleChange = (prop) => (event) => {
@@ -36,7 +37,7 @@ function ProjectForm() {
                             value={values.title}
                             onChange={handleChange('projectName')}
                         />
-                        {values.points.map((obj, index)=>(
+                        { values.points.map((obj, index)=>(
                             <TextField
                                 key={index}
                                 className='nonFCInput'
@@ -45,7 +46,7 @@ function ProjectForm() {
                                 type='text'
                             />
                         ))}
-                        <Map center={values.center} area={values.area} points={values.points} zoom={16} type={5} />
+                        <Map center={values.center} area={values.area} points={values.points} zoom={values.zoom} type={5} />
                         <Button
                             className='scheme'
                             type='submit'
