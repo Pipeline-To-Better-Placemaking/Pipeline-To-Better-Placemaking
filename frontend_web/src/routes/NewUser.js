@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -33,11 +32,6 @@ function NewUser(){
     });
 
     //declaring reg vars
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [firstname, setFirstname] = useState('');
-    const [lastname, setLastname] = useState('');
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -66,9 +60,11 @@ function NewUser(){
         e.preventDefault();
         let res = null;
         let success = false;
+        let email = values.email;
+        let password = values.password;
         const user = { email, password };
-        if(firstname !== '') user.firstname = firstname;
-        if(lastname !== '') user.lastname = lastname;
+        if(values.firstname !== '') user.firstname = values.firstname;
+        if(values.lastname !== '') user.lastname = values.lastname;
 
         try{
             const response = await axios.post(registerURL, JSON.stringify({ email, password }), {
@@ -104,32 +100,32 @@ function NewUser(){
                                     id='outlined-search' 
                                     label='First Name' 
                                     type='text' 
-                                    value={ firstname } 
-                                    onChange={ ({target}) => setFirstname(target.value) }
+                                    value={ values.firstname } 
+                                    onChange={ handleChange() }
                                 />
                                 <TextField 
                                     className='nonFCInput' 
                                     id='outlined-search' 
                                     label='Last Name' 
                                     type='text' 
-                                    value={ lastname } 
-                                    onChange={ ({target}) => setLastname(target.value) }
+                                    value={ values.lastname } 
+                                    onChange={ handleChange() }
                                 />
                                 <TextField 
                                     className='nonFCInput' 
                                     id='outlined-search' 
                                     label='Email' 
                                     type='email' 
-                                    value={ email } 
-                                    onChange={ ({target}) => setEmail(target.value) }
+                                    value={ values.email } 
+                                    onChange={ handleChange() }
                                 />
                                 <FormControl sx={{ m: 1}} variant='outlined'>
                                     <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
                                     <OutlinedInput
                                         id='outlined-adornment-password'
                                         type={values.showPassword ? 'text' : 'password' }
-                                        value={ password }
-                                        onChange={ ({target}) => setPassword(target.value) }
+                                        value={ values.password }
+                                        onChange={ handleChange() }
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton
@@ -152,8 +148,8 @@ function NewUser(){
                                     <OutlinedInput
                                         id='outlined-adornment-password'
                                         type={ values.showConfirmPassword ? 'text' : 'password' }
-                                        value={ confirmPassword }
-                                        onChange={ ({target}) => setConfirmPassword(target.value) }
+                                        value={ values.confirmPassword }
+                                        onChange={ handleChange() }
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton

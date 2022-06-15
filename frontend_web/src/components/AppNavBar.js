@@ -36,6 +36,7 @@ const settings = [
 const home = <Link className='homeButton' to='/home'><Home className='iconShadow'/></Link>;
 
 const AppNavBar = (props) => {
+    const userName = props.passToken.firstname + " " + props.passToken.lastname;
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -128,7 +129,7 @@ const AppNavBar = (props) => {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title='Open settings'>
                             <IconButton onClick={ handleOpenUserMenu } sx={{ p: 0 }}>
-                                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+                                <Avatar alt={userName}/>
                             </IconButton>
                         </Tooltip>
                         <Menu

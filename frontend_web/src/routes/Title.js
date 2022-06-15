@@ -44,17 +44,15 @@ function Title(props) {
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
-    };
-
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [user, setUser] = useState("");
+    };;
 
     //Needs a handle login function for login field feedback i.e. incorrect email or password
 
     const loginUser = async (e) => {
         e.preventDefault();
-        const user = { email, password };
+
+        let email = values.email;
+        let password = values.password;
 
         try {
             const response = await axios.post('/login', JSON.stringify({ email, password }), {
@@ -62,10 +60,10 @@ function Title(props) {
                withCredentials: true
             });
             console.log(JSON.stringify(response));
-            console.log(response.data);
+            let user = console.log(response.data);
             // user login confirmation and navigation handling in App.js
             // retrieve user's name or name and token to verify status
-            props.onLogin(true);
+            props.onLogin(true, user);
 
             //redirect use to url/home
             nav('/home', { replace: true });
@@ -74,13 +72,6 @@ function Title(props) {
             //user login error
             console.log('ERROR: ', error);
         }
-    };
-
-    const logoutUser = () => {
-        setUser({});
-        setEmail("");
-        setPassword("");
-        localStorage.clear();
     };
 
     return (
@@ -104,8 +95,8 @@ function Title(props) {
                                     label='Email' 
                                     type='email' 
                                     name='email' 
-                                    value={ email } 
-                                    onChange={({target}) => setEmail(target.value)} 
+                                    value={ values.email } 
+                                    onChange={handleChange()} 
                                 />
                                 {/* Form Control component to hold MUI visibility changing password field */}
                                 <FormControl sx={{ m: 1 }} variant='outlined'>
@@ -114,8 +105,8 @@ function Title(props) {
                                         id='outlined-adornment-password'
                                         type={ values.showPassword ? 'text' : 'password' }
                                         name='password'
-                                        value={ password }
-                                        onChange={ ({target}) => setPassword(target.value) }
+                                        value={ values.password }
+                                        onChange={ handleChange() }
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton

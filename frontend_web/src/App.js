@@ -20,14 +20,20 @@ function App(){
     // true == active user (logged in)
     // check token
     const [state, setState] = React.useState(/*token !== null && token !== '' ? true : */false);
+    const [token, setToken] = React.useState("");
 
     // Set user vars to access the user home page
-    function handleOnLogin(active) {
+    function handleOnLogin(active, token) {
         setState(active);
+        setToken(token);
     }
 
     // clear all fields on logout
     function handleOnLogout(active) {
+        // setUser({});
+        // setEmail("");
+        // setPassword("");
+        // localStorage.clear();
         setState(active);
     }
 
@@ -40,7 +46,7 @@ function App(){
 
         return (
             <div id='userRoutes'>
-                <AppNavBar passLogout={passLogout}/>
+                <AppNavBar passLogout={passLogout} passToken={token}/>
                 <Routes>
                     <Route index element={<Home />} />
                     <Route path='project/:id/*' element={<ProjectPage />} />
