@@ -101,7 +101,7 @@ function NewUser(){
                                     label='First Name' 
                                     type='text' 
                                     value={ values.firstname } 
-                                    onChange={ handleChange() }
+                                    onChange={ handleChange }
                                 />
                                 <TextField 
                                     className='nonFCInput' 
@@ -109,7 +109,7 @@ function NewUser(){
                                     label='Last Name' 
                                     type='text' 
                                     value={ values.lastname } 
-                                    onChange={ handleChange() }
+                                    onChange={ handleChange }
                                 />
                                 <TextField 
                                     className='nonFCInput' 
@@ -117,7 +117,7 @@ function NewUser(){
                                     label='Email' 
                                     type='email' 
                                     value={ values.email } 
-                                    onChange={ handleChange() }
+                                    onChange={ handleChange }
                                 />
                                 <FormControl sx={{ m: 1}} variant='outlined'>
                                     <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
@@ -125,7 +125,7 @@ function NewUser(){
                                         id='outlined-adornment-password'
                                         type={values.showPassword ? 'text' : 'password' }
                                         value={ values.password }
-                                        onChange={ handleChange() }
+                                        onChange={ handleChange }
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton
@@ -149,7 +149,7 @@ function NewUser(){
                                         id='outlined-adornment-password'
                                         type={ values.showConfirmPassword ? 'text' : 'password' }
                                         value={ values.confirmPassword }
-                                        onChange={ handleChange() }
+                                        onChange={ handleChange }
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton

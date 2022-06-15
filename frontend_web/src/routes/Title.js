@@ -96,7 +96,7 @@ function Title(props) {
                                     type='email' 
                                     name='email' 
                                     value={ values.email } 
-                                    onChange={handleChange()} 
+                                    onChange={handleChange} 
                                 />
                                 {/* Form Control component to hold MUI visibility changing password field */}
                                 <FormControl sx={{ m: 1 }} variant='outlined'>
@@ -106,7 +106,7 @@ function Title(props) {
                                         type={ values.showPassword ? 'text' : 'password' }
                                         name='password'
                                         value={ values.password }
-                                        onChange={ handleChange() }
+                                        onChange={ handleChange }
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton
