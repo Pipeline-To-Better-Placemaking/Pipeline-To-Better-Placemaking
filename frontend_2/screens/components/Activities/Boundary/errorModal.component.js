@@ -14,9 +14,11 @@ export function ErrorModal(props){
 
     return( 
         <Modal transparent={true} animationType='fade' visible={props.errorModal}>
-            <View style={[ styles.modalContainer, {backgroundColor:theme['background-basic-color-1']}]}>
-                <Text category={'h5'} style={styles.title}>{props.errorMessage}</Text>
-                <Button style={styles.button} onPress={dismiss}>Ok</Button>
+            <View style={styles.background}>
+                <View style={[ styles.modalContainer, {backgroundColor:theme['background-basic-color-1']}]}>
+                    <Text category={'h5'} style={styles.title}>{props.errorMessage}</Text>
+                    <Button style={styles.button} onPress={dismiss}>Ok</Button>
+                </View>
             </View>
         </Modal>
     )

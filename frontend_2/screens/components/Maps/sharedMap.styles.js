@@ -59,6 +59,21 @@ export const styles = StyleSheet.create({
         marginBottom: height * .01
     },
 
+    filterView:{ 
+        flexDirection: 'row', 
+        justifyContent:'center', 
+        alignSelf:'center',
+        margin: 3
+    },
+    
+    filterSelect:{
+        width: 250,
+        borderWidth: 1,
+        borderColor: '#edf1f7',
+        borderRadius: 6,
+        backgroundColor: '#edf1f7',
+    },
+
 });
 
 export default styles;

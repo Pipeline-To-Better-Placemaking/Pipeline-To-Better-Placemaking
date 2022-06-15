@@ -40,7 +40,7 @@ export function PurposeModal(props){
         // if an option is selected push its contents onto the data array 
         // then reset that state for subsequent entries
         if(select1){
-            arr.push('Saftey');
+            arr.push('Safety');
             setSelect1(false)
         }
         if(select2){
@@ -101,7 +101,7 @@ export function PurposeModal(props){
 
                         <View>
                             <View style={styles.buttonRow}>
-                                <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)} >Saftey</Button>
+                                <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)} >Safety</Button>
                                 <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>Prevention</Button>
                             </View>
 

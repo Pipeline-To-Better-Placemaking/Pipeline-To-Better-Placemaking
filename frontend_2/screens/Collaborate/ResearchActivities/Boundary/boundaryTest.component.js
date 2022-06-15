@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, LogBox } from 'react-native';
+import { View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button } from '@ui-kitten/components';
@@ -78,8 +78,6 @@ export function BoundaryTest(props){
         console.log('ending activity');
         setStart(false);
         clearInterval(id);
-
-        //console.log(data);
         
         try {
             const response = await fetch('https://measuringplacesd.herokuapp.com/api/boundaries_maps/' + props.timeSlot._id + '/data', {
@@ -108,6 +106,8 @@ export function BoundaryTest(props){
     const closeData = async (inf) => {
         // close the modal
         setDataModal(false);
+        // increase the dataIndex
+        setDataIndex(dataIndex + 1);
         let type;
         let val = 0;
         // store the boundary in its respective array and set the type variable
@@ -132,19 +132,25 @@ export function BoundaryTest(props){
             type = 'Shelter'
             val = calcArea(currentPath)
         }
+        // gets rid of any parenthesis in the description (for material and shelter prompts)
+        let shorten = inf.description.indexOf("(");
+        let fixedDesc;
+        if(shorten !== -1){
+            fixedDesc = inf.description.slice(0, shorten - 1);
+        }
+        else fixedDesc = inf.description
+
         // package the data
         data.push(
             {
                 path: currentPath,
                 kind: type,
-                description: inf.description,
+                description: fixedDesc,
                 value: val,
                 purpose: [],
                 time: new Date()
             }
         );
-        // increase the dataIndex
-        setDataIndex(dataIndex + 1);
 
         // whenever the data is packaged, clear out the current paths stuff for next enteries
         let emptyPath = [];
@@ -157,10 +163,8 @@ export function BoundaryTest(props){
     }
 
     // closes the purpose modal and stores the purpose(s)
-    const closePurpose = async (inf) => {
-        // use dataIndex - 1 to access the correct data object (dataIndex updates before this is called)
-        data[dataIndex - 1].purpose.push(inf.purpose);
-        // closes modal
+    const closePurpose = async (inf) => {        
+        data[dataIndex - 1].purpose = inf.purpose;
         setPurposeModal(false);
     }
     
@@ -258,7 +262,6 @@ export function BoundaryTest(props){
                 setShelterBool(true);
             }
         }
-
     }
 
      // CountDown Timer and the StartEnd buttons

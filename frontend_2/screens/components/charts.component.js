@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Text, useTheme} from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
-import { BarChart, Grid, YAxis } from 'react-native-svg-charts';
+import { BarChart, Grid, YAxis, PieChart } from 'react-native-svg-charts';
 import { LinearGradient, Stop, Defs, Text as TextSVG } from 'react-native-svg';
 
 import { styles } from './charts.styles';
@@ -84,6 +84,7 @@ export function MyBarChart({children, ...props}) {
       <Text category={'h4'}> {props.title} </Text>
       <View style={{height:props.height, width:props.width, flexDirection:'row'}}>
         <YAxis
+          
           data={props.dataValues}
           contentInset={{top: 20, bottom: 10}}
           svg={{fontSize:fontSize, fill:textColor}}
@@ -240,3 +241,47 @@ export function CompareBarChart({children, ...props}) {
     </View>
   );
 };
+
+export function MyPieChart(props){
+  // if there are not any values for the passed in object, don't render anything
+  if(props.graph[0].value !== undefined){
+    const Legend = () =>{
+      let obj = [];
+      for(let i = 0; i < Object.keys(props.graph).length; i++){
+        // this is mainly for the occupied area chart, if there is no data of that boundary type, don't render anything for it 
+        if(props.graph[i].value !== 0){
+          obj[i] = (
+            <View key={i.toString()} style={styles.pieLegend}>
+              <Text style={{color: props.graph[i].svg.fill}}>{props.graph[i].legend}:</Text>
+              <Text style={styles.whiteText}> {props.graph[i].value} ft²</Text>
+            </View>
+          )
+        }
+      }
+
+      return(
+        <View style={styles.pieLegendView}>
+          <Text category={'s1'} style={styles.whiteText}>Legend</Text>
+          {obj}
+        </View>
+      )
+    }
+
+    return(
+      <View style={{flex: 1}}>
+        <Text category={'h4'}>{props.title}</Text>
+        <PieChart
+          style={{ height: props.height }}
+          outerRadius={'100%'}
+          innerRadius={20}
+          padAngle={0}
+          data={props.graph}
+        />
+        
+        <Legend />
+      
+      </View>
+    )
+  }
+  else return null
+}

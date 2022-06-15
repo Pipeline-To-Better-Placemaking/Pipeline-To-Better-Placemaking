@@ -1,157 +1,194 @@
 import React, { useState } from 'react';
-import MapView, { Callout } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
-import { Text } from '@ui-kitten/components';
+import { InfoModal } from '../Activities/Boundary/infoModal.component';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import { styles } from './sharedMap.styles';
 
-export function SoundMapResults(props) {
+export function BoundaryMapResults(props) {
 
-    const [standingPoints] = useState(props.position);
+    // filter controls
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(1);
+    const [filter, setFilter] = useState([
+        {label: "Show All", value: 1}, 
+        {label: "Construction", value: 2},
+        {label: "Material", value: 3}, 
+        {label: "Shelter", value: 4}
+    ]);
+    const [constructBool, setConstructBool] = useState(true);
+    const [materialBool, setMaterialBool] = useState(true);
+    const [shelterBool, setShelterBool] = useState(true);
 
-    // used to find the most common predominant sound type; take this out (delete it)
-    const mostCommon = (arr) =>{
-        // used as a dictonary to store word and its frequency
-        let hm = {};
-        // iterate over the whole array
-        for(let i = 0; i < arr.length; i++){
-        // if the string already exists in hm then increase it's value by 1
-        if(hm.hasOwnProperty(arr[i])) hm[arr[i]] = hm[arr[i]] + 1;
-        // else add it in hm by giving it a value
-        else hm[arr[i]] = 1;
+    const [infoModal, setInfoModal] = useState(false);
+    const [boundInfo, setBoundInfo] = useState();
+
+
+    const colors = ['rgba(255, 0, 255, 1)', 'rgba(255, 227, 113, 1)', 'rgba(255, 166, 77, 1)'];
+    const fills = ['rgba(255, 227, 113, 0.5)', 'rgba(255, 166, 77, 0.5)'];
+
+    // controls which boundaries show on the map during data collection
+    const filterControl = (item) =>{
+        let type = item.value; 
+        // Show All
+        if(type === 1){
+            setConstructBool(true);
+            setMaterialBool(true);
+            setShelterBool(true);
         }
-
-        let ret = '';
-        let val = 0;
-        // iterate over the dictonary looking for the highest frequency, then return that string
-        for(const [word, value] of Object.entries(hm)){
-        // if the value of the word in hm is larger than our current value
-        if(value > val){
-            // update the current value and the string
-            val = value;
-            ret = word;
+        // Construction
+        else if(type === 2){
+            setConstructBool(true);
+            setMaterialBool(false);
+            setShelterBool(false);
         }
+        // Material
+        else if(type === 3){
+            setConstructBool(false);
+            setMaterialBool(true);
+            setShelterBool(false);
         }
-        return ret;
-    }
-
-    // data proportion pins whose size is based off the decibel average; mirror of sound test will need to change stuff
-    const DataPin = (props) => {
-        let scale = props.value * .9
-        return(
-            <View style={[ styles.soundDataPin, { width: scale, height: scale }]}/>
-        )
+        // Shelter
+        else if(type === 4){
+            setConstructBool(false);
+            setMaterialBool(false);
+            setShelterBool(true);
+        }
     }
     
-    // displays information about the DataPin; mirror of sound test will need to change stuff
-    const DataCallout = (props) => {
-        let soundsFormat = []; 
-
-        // formats the all sounds array for a cleaner display
-        props.sounds.forEach(element =>{ 
-            // if we are not at the last element, concat with comma and a whitespace
-            if(element.localeCompare(props.sounds[props.sounds.length - 1]) !== 0) soundsFormat.push(element.concat(", "));
-            // when we are at the last element, concat with nothing
-            else soundsFormat.push(element.concat(''));
-        })
-
-        return (
-            <View style={styles.soundDataCallOutView}>
-              
-                <View style={styles.spacing} >
-                    <Text style={styles.dataText}>
-                        Decibel: {props.value.toFixed(2)} dB
-                    </Text>
-                </View>
-                
-                <View style={styles.spacing}>
-                    <Text style={styles.dataText}>
-                        Main Sound: {props.mainSound}
-                    </Text>
-                </View>
-
-                <View style={styles.restrict}>
-                    <Text style={styles.dataText}>
-                        Sounds: {soundsFormat}
-                    </Text>
-                </View>
-
-            </View>
-        )
+    // pulls up the information modal of the boundary that was touched
+    const dataCallout = (bound) =>{
+        setInfoModal(true);
+        setBoundInfo(bound);
+    }
+    
+    // closes the information modal
+    const closeModal = () =>{
+        setInfoModal(false);
     }
 
-    // renders the project data that was collected; mirror of sound test, will need to change stuff
-    const ShowData = () => {
+    // renders the project data that was collected
+    const ShowData = () =>{
         if(props.dataMarkers === null) {
             return (null);
         }
-        else {
+        else{
             let objData = [[]];
-            // for each standing point
-            for(let i = 0; i < standingPoints.length; i++){
-                // collect the information that needs to be rendered for each standing point
-                let avg = props.graph[i].average;
-                let mainSound = mostCommon(props.graph[i].predominant);
-                let allSounds = props.dataMarkers[i].sound_type;
-                
-                // console.log(avg);
-                // console.log(mainSound);
-                // console.log(allSounds);
-                
-                // create an array of JSX objects to be rendered (at each standing point)
-                objData[i] = (
-                    <View key={i.toString()}>
-                        <MapView.Marker
-                            coordinate = {{
-                                latitude: props.position[i].latitude,
-                                longitude: props.position[i].longitude
-                            }}
-                        >
-                        <DataPin value={avg}/>
-                        
-                        <Callout style={styles.callout}>
-                            <DataCallout 
-                                value={avg}
-                                mainSound={mainSound}
-                                sounds={allSounds}
-                            />
-                        </Callout>
-                        
-                        </MapView.Marker>
-                    </View>
-                )
+            // loop through all the data objects and add the appropriate rendered object only if that filter is true
+            for(let i = 0; i < props.dataMarkers.length; i++){
+                // filter for construction boundaries
+                if(constructBool){
+                    // if the boundary is a construction boundary, add a polyline
+                    if(props.dataMarkers[i].kind === "Construction"){
+                        //console.log(props.dataMarkers[i].purpose)
+                        objData[i] = (
+                            <View key={i.toString()}>
+                                <MapView.Polyline
+                                    coordinates={props.dataMarkers[i].path}
+                                    strokeWidth={3}
+                                    strokeColor={colors[0]}
+                                    tappable={true}
+                                    onPress={()=> dataCallout(props.dataMarkers[i])}
+                                />
+                            </View>
+                        )
+                    }
+                }
+                // filter for material boundaries
+                if(materialBool){
+                    if(props.dataMarkers[i].kind === "Material"){
+                        objData[i] = (
+                            <View key={i.toString()}>
+                                <MapView.Polygon
+                                    coordinates={props.dataMarkers[i].path}
+                                    strokeWidth={3}
+                                    strokeColor={colors[1]}
+                                    fillColor={fills[0]}
+                                    tappable={true}
+                                    onPress={()=> dataCallout(props.dataMarkers[i])}
+                                />
+                            </View>
+                        )
+                    }
+                }
+                // filter for shelter boundaries
+                if(shelterBool){
+                    if(props.dataMarkers[i].kind === "Shelter"){
+                        objData[i] = (
+                            <View key={i.toString()}>
+                                <MapView.Polygon
+                                    coordinates={props.dataMarkers[i].path}
+                                    strokeWidth={3}
+                                    strokeColor={colors[2]}
+                                    fillColor={fills[1]}
+                                    tappable={true}
+                                    onPress={()=> dataCallout(props.dataMarkers[i])}
+                                />
+                            </View>
+                        )
+                    }
+                }
             }
 
             // return that array of JSX in a view (for it to render)
-            return ( 
+            return(
                 <View>
                     {objData}
                 </View>
             )
-         }
+        }
     }
+    
+    // next steps, create a dynamic info modal for whenever any boundary is touched (use dataCallout funct to get specific boundary information)
+
 
     return(
 
         <View>
-            <PressMapAreaWrapper
-                area={props.area}
-                mapHeight={'100%'}
-                onPress={() => null}
-            >
-                {/* project perimeter render */}
-                <MapView.Polygon
-                    coordinates={props.area}
-                    strokeWidth={3}
-                    strokeColor={'rgba(255,0,0,0.5)'}
-                    fillColor={'rgba(0,0,0,0.2)'}
+            <View>
+                <InfoModal
+                    visible={infoModal}
+                    data={boundInfo}
+                    close={closeModal}
                 />
-                
-                {/* project data render */}
-                <ShowData/>
+            </View>
 
-            </PressMapAreaWrapper>
+            <View style={styles.filterView}>
+                <View>
+                    <DropDownPicker
+                        style={styles.filterSelect}
+                        open={open}
+                        setOpen={setOpen}
+                        value={value}
+                        setValue={setValue}
+                        onSelectItem={ item => filterControl(item)}
+                        items={filter}
+                        setItems={setFilter}
+                    />
+                </View>
+            </View>
+            {/* zIndex allows the dropdown menu to render over the map */}
+            <View style={{zIndex: -1}}>
+                <PressMapAreaWrapper
+                    area={props.area}
+                    mapHeight={'96.5%'}
+                    onPress={() => null}
+                >
+                    {/* project perimeter render */}
+                    <MapView.Polygon
+                        coordinates={props.area}
+                        strokeWidth={3}
+                        strokeColor={'rgba(255,0,0,0.5)'}
+                        fillColor={'rgba(0,0,0,0.2)'}
+                    />
+                    
+                    {/* project data render */}
+                    <ShowData/>
+
+                </PressMapAreaWrapper>
+            </View>
         </View>
     )
 }

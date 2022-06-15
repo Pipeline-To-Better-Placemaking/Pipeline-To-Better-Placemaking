@@ -5,8 +5,8 @@ import { HeaderBack, HeaderBackEdit } from '../../components/headers.component';
 import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { helperGetResult, deleteTimeSlot, getProject, getAllResults, isUserTeamOwner } from '../../components/apiCalls';
-import { formatBoundaryGraphData } from '../../components/helperFunctions';
-import { MyBarChart } from '../../components/charts.component';
+import { formatBoundaryGraphData, calcArea } from '../../components/helperFunctions';
+import { MyPieChart, MyBarChart } from '../../components/charts.component';
 
 import { styles } from './resultPage.styles';
 
@@ -16,6 +16,8 @@ export function BoundaryResultPage(props) {
   const [refreshing, setRefreshing] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  // random colors for pie charts
+  const colors = ["#63A46C", "#DB504A", "#7692FF", "#FFB7FF", "#8A4FFF"]
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -27,7 +29,7 @@ export function BoundaryResultPage(props) {
     if (props.selectedResult !== null && props.selectedResult.sharedData !== undefined) {
       let result = await helperGetResult(
                            props.selectedResult._id,
-                           "boundary_maps/",
+                           "boundaries_maps/",
                            "boundary",
                            props.selectedResult.sharedData,
                            props.project
@@ -50,7 +52,7 @@ export function BoundaryResultPage(props) {
   const deleteResult = async () => {
     let success = false;
     if (props.selectedResult !== null) {
-      success = await deleteTimeSlot("boundary_maps", props.selectedResult._id);
+      success = await deleteTimeSlot("boundaries_maps", props.selectedResult._id);
     }
     if (success) {
       await refreshProjectPageDetails();
@@ -113,14 +115,6 @@ export function BoundaryResultPage(props) {
     areaTitle = (props.selectedResult.sharedData.area.title === undefined ? 'Project Perimeter' : props.selectedResult.sharedData.area.title)
   }
 
-  // error checking for standing points
-  if (props.selectedResult.standingPoints === undefined ||
-      props.selectedResult.standingPoints === null ||
-      props.selectedResult.standingPoints.length <= 0
-    ) {
-      viewMap = false;
-      errorMessage += '- Standing point information has been deleted\n';
-  }
   errorMessage += '\n\t Unable to Load Map View';
 
   let startTime = new Date(props.selectedResult.date);
@@ -130,50 +124,176 @@ export function BoundaryResultPage(props) {
     return "\n\t" + user.firstname + ' ' + user.lastname;
   });
 
+  const viewMapResults = () => {
+    props.navigation.navigate("BoundaryMapResultsView");
+  }
+
+  // returns the total distance of all line boundaries
+  const totalDistance = (arr) =>{
+    let ret = 0;
+    // how to access the length of an object
+    // console.log(Object.keys(arr).length)
+    // go through the entire passed in array and sum all construction values
+    for(let i = 0; i < Object.keys(arr).length; i++){
+      if(arr[i].type == "Construction") ret += arr[i].value
+    }
+    // enforce 2nd decimal rounding and return that as a number (float)
+    let tempString = ret.toFixed(2);
+    ret = parseFloat(tempString);
+    return ret;
+  }
+  const totalLineDistance = totalDistance(props.selectedResult.graph);
+
+  // total project area (in feet squared)
+  const totalArea = calcArea(props.selectedResult.sharedData.area.points)
+
+  // searches to see if we already formatted an entry for that description 
+  const descSearch = (obj, str) =>{
+    // 1st entry into the graph obj
+    if(obj[0].value === undefined) return 0;
+    // search through the formatted graph object to see if that string is already in it
+    for(let i = 0; i < Object.keys(obj).length; i++){
+      // if that string already exists, return -1
+      if(obj[i].legend === str) return -1;
+    }
+    return 0;
+  }
+
+  // does same as above desc search, but needs a different format for arguments
+  const conDescSearch = (arr, str)=>{
+    let len = arr.length
+    // 1st entry
+    if(len === 0) return 0;
+    // search through label array to see if that description is already there
+    for(let i = 0; i < len; i++){
+      // if it is there, return -1
+      if(arr[i] === str) return -1;
+    }
+    return 0;
+  }
+  
+  const formatForTotalPie = (obj) =>{
+    //console.log(obj)
+    let ret = [{}];
+    let sum = 0;
+    let currentType = "Material";
+    let svg = {fill: "#FFE371"};
+    let tempString;
+
+    for(let i = 0; i < 3; i ++){
+      // for open horizontal space, value set to 0 for now
+      if(i === 0){
+        ret[i] = {
+          key: i + 1,
+          value: 0,
+          svg: {fill: "#C4C4C4"},
+          legend: "Free Space"
+        }
+        continue
+      }
+      
+      for(let j = 0; j < Object.keys(obj).length; j++){
+        if(obj[j].type === currentType) sum += obj[j].value;
+      }
+
+      // enforces decimal rounding to 2nd decimal
+      tempString = sum.toFixed(2)
+      sum = parseFloat(tempString);
+      
+      ret[i] = {
+        key: i + 1,
+        value: sum,
+        svg: svg,
+        legend: currentType 
+      }
+      // reset sum and change the variables for the next type of boundary
+      sum = 0;
+      currentType = "Shelter";
+      svg = {fill: "#FFA64D"};
+    }
+    // now compute the free space value since we have the sums of the other 2 boundary areas
+    let areaLeft = totalArea - (ret[1].value + ret[2].value);
+    // ensures the decimal is rounded to the 2nd place
+    tempString = areaLeft.toFixed(2)
+    areaLeft = parseFloat(tempString);
+    ret[0].value = areaLeft;
+
+    return ret;
+  }
+
+  const formatForIndividual = (obj, type) =>{
+    // console.log(obj)
+    let ret = [{}];
+    let index = 0;
+    for(let i = 0; i < Object.keys(obj).length; i++){
+      // if the boundary is the type we're formatting
+      if(obj[i].type === type){
+        let desc = obj[i].description
+        // only add the next object if that description is not already in the format object
+        if(descSearch(ret, desc) !== -1){
+          let sum  = obj[i].value;
+          // look for all instances of that boundary description to sum its values together
+          for(let j = i + 1; j < Object.keys(obj).length; j ++){
+            if(desc === obj[j].description) sum += obj[j].value
+          }
+          
+          // enforces decimal rounding to 2nd decimal
+          let tempString = sum.toFixed(2)
+          sum = parseFloat(tempString);
+          
+          ret[index] ={
+            key: i + 1,
+            value: sum,
+            svg: { fill: colors[index] },
+            legend: obj[i].description 
+          }
+          // increase index after adding the boundary
+          index++;
+        }
+      }
+    }
+    return ret;
+  }
+
+  const formatForConstruction = (obj) =>{
+    // console.log(obj);
+    let ret = {};
+    let values = [];
+    let labels = [];
+    for(let i = 0; i < Object.keys(obj).length; i++){
+      if(obj[i].type === "Construction"){
+        let desc = obj[i].description        
+        // only add the next object if that description is not already in the format object
+        if(conDescSearch(labels, desc) !== -1){
+          let sum  = obj[i].value;
+          // look for all instances of that boundary description to sum its values together
+          for(let j = i + 1; j < Object.keys(obj).length; j++){
+            if(desc === obj[j].description) sum += obj[j].value
+          }
+          
+          // enforces decimal rounding to 2nd decimal
+          let tempString = sum.toFixed(2)
+          sum = parseFloat(tempString);
+          
+          values.push(sum);
+          labels.push(desc)
+        }
+      }
+    }
+    ret = {
+      data: values,
+      label: labels
+    }
+    return ret;
+  }
+
   const chartWidth = Dimensions.get('window').width*0.95;
   const chartHeight = 210;
 
   const color = '#006FD6';
+  
+  const conGraph = formatForConstruction(props.selectedResult.graph)
 
-  const viewMapResults = () => {
-    props.navigation.navigate("BoundaryMapResultsView");
-  }
-  
-//   // used to render multiple barcharts based off the # of standing points/length of the data array
-//   const MultiBarChart = () =>{
-//     let component = [[]]
-//     for(let i = 0; i < props.selectedResult.standingPoints.length; i++){
-//       // call something here that determines the most common predominant sound
-//       let predominant = mostCommon(props.selectedResult.graph[i].predominant);
-//       // main component container needs this key={i.toString()}
-//       component[i] = (
-//         <View key={i.toString()} style={styles.spacing}>
-//           <MyBarChart
-//             {...props}
-//             title={props.selectedResult.standingPoints[i].title}
-//             rotation={'0deg'}
-//             dataValues={props.selectedResult.graph[i].data}
-//             dataLabels={props.selectedResult.graph[i].labels}
-//             barColor={color}
-//             width={chartWidth}
-//             height={chartHeight}
-//           />
-  
-//           <View style={styles.rowView}>
-//             <Text>Sound Decibel: {props.selectedResult.graph[i].average.toFixed(2)} dB</Text>
-//             <Text>Sound Type: {predominant}</Text>
-//           </View>
-
-//         </View>
-//       )
-//     }
-//     return(
-//       <View>
-//         {component}
-//       </View>
-//     )
-//   }
-  
   return (
     <ViewableArea>
       {isUserTeamOwner(props.team, props.userId)
@@ -248,9 +368,42 @@ export function BoundaryResultPage(props) {
                 </Text>
               </View>
           }
-            {/* barcharts get rendered here */}
-            {/* <MultiBarChart /> */}
+          
+          <MyPieChart
+            title={'Occupied Area'}
+            graph={formatForTotalPie(props.selectedResult.graph)}
+            height={200}
+          />
+          
+          <View style={styles.spacing}>
+          <MyPieChart
+            title={'Material Areas'}
+            graph={formatForIndividual(props.selectedResult.graph, "Material")}
+            height={200}
+          />
+          </View>
 
+          <View style={styles.spacing}>
+            <MyPieChart
+              title={'Shelter Areas'}
+              graph={formatForIndividual(props.selectedResult.graph, "Shelter")}
+              height={200}
+            />
+          </View>
+
+          <View style={styles.spacing}>
+            <MyBarChart
+              {...props}
+              title={"Construction Distances"}
+              rotation={'0deg'}
+              dataValues={conGraph.data}
+              dataLabels={conGraph.label}
+              barColor={color}
+              width={chartWidth}
+              height={chartHeight}
+            />
+          </View>
+          
         </ScrollView>
       </ContentContainer>
     </ViewableArea>

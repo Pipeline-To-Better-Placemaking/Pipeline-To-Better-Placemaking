@@ -194,7 +194,7 @@ export async function formatSoundGraphData(result){
   return tempResult;
 }
 
-// look at formatSoundGraph data for an idea of how to format the data to be used in a barchart (if doing that)
+
 export async function formatBoundaryGraphData(result){
   if (result === null ||
       result.data === undefined ||
@@ -208,7 +208,18 @@ export async function formatBoundaryGraphData(result){
   let tempResult = {...result};
   let graph = [];
   
-  
+  for(let i = 0; i < result.data.length; i++){
+    let data = result.data[i];
+    // push a graph object for the every data object and pull out the relevant information the chart needs
+    graph.push({key: 0, value: 0, description: [[]], type: [[]]});
+    graph[i].key = i + 1;
+    graph[i].value = data.value;
+    graph[i].description = data.description;
+    graph[i].type = data.kind;    
+  }
+
+  //console.log("resulting graph data: ", graph);
+  tempResult.graph = {...graph};
   return tempResult;
 }
 

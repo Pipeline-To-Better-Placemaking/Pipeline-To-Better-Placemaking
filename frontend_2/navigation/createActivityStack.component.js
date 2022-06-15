@@ -153,7 +153,7 @@ export function CreateActivityStack(props) {
         await putCollection(name, 'sound', '/sound_collections', 'sound_maps/');
       }
       else if (row === 4) { // Boundary
-        await putCollection(name, 'boundaries', '/boundaries_collections', 'boundaries_maps/');
+        await putCollection(name, 'boundary', '/boundaries_collections', 'boundaries_maps/');
       }
       await props.setUpdateActivity(false);
       props.navigation.navigate('ProjectPage')
@@ -173,7 +173,7 @@ export function CreateActivityStack(props) {
         await postCollection(name, 'sound', '/sound_collections', 'sound_maps/');
       }
       else if (row === 4) { // Boundary
-        await postCollection(name, 'boundaries', '/boundaries_collections', 'boundaries_maps/');
+        await postCollection(name, 'boundary', '/boundaries_collections', 'boundaries_maps/');
       }
 
       // Navigate back to Project page
