@@ -50,6 +50,8 @@ function Title(props) {
     const [password, setPassword] = useState("");
     const [user, setUser] = useState("");
 
+    //Needs a handle login function for login field feedback i.e. incorrect email or password
+
     const loginUser = async (e) => {
         e.preventDefault();
         const user = { email, password };

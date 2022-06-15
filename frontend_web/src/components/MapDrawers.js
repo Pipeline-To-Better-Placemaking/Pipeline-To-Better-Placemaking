@@ -20,8 +20,14 @@ import './controls.css';
 
 export default function MapDrawer(props) {
     const drawers = props.drawers;
+    // Selections holds all selected activity instances and is used to render the data for the data and graph drawers
+    // aka activities with switch toggled 'on', empty because key values are rendered depending on data 
     const [selections, setSelections] = React.useState({});
+
+    // Holds boolean toggle values to pass onto the map and determing if the value needs to be added or removed to selections
     const [checked, setChecked] = React.useState({});
+
+    // Boolean toggle for collapsing time sublists
     const [timeOpen, setTimeOpen] = React.useState({});
 
     const menuAnchors = {
@@ -50,6 +56,7 @@ export default function MapDrawer(props) {
         soundCollections: false
     });
 
+    // Boolean toggle for opening the drawers with the Activity, Graphs, and Data drawers
     const [state, setState] = React.useState({
         left: false,
         bottom: false,
@@ -77,7 +84,9 @@ export default function MapDrawer(props) {
         // selected means checked[..]=false
         props.selection(category, date, time, !checked[`${category}.${date}.${time}`]);
         if(!checked[`${category}.${date}.${time}`]){
-            selections[`${category}.${date}.${time}`] = drawers.Activities[category][date][time];
+            var newSelections = selections;
+            newSelections[`${category}.${date}.${time}`] = drawers.Activities[category][date][time];
+            setSelections(newSelections);
         } else {
             var delSelections = selections;
             delete delSelections[`${category}.${date}.${time}`];
