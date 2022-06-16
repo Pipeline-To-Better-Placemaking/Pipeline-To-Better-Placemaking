@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState } from 'react';
 import axios from '../api/axios.js';
 import Box from '@mui/material/Box';
 import Card from 'react-bootstrap/Card';
@@ -28,6 +27,13 @@ function Title(props) {
         showPassword: false
     });
 
+    const [message, setMessage] = React.useState('');
+    const em = React.useRef(null);
+    const pw = React.useRef(null);
+    const loginResponse = React.useRef(null);
+    const emMess = React.useRef(null);
+    const pwMess = React.useRef(null);
+
     const handleChange = (e) => {
         setValues({
             ...values,
@@ -47,9 +53,29 @@ function Title(props) {
     };;
 
     //Needs a handle login function for login field feedback i.e. incorrect email or password
+    const handleLogin = (e) => {
+        e.preventDefault();
+
+        if (values.email === '' || values.email.length <= 3){
+            pwMess.current.style.display = "none";
+            setMessage('Please provide an email');
+            emMess.current.style.display = "inline-block";
+            em.current.focus();
+            return;
+        } else if (values.password === '' || values.password.length <= 3){
+            emMess.current.style.display = "none";
+            setMessage('Please provide an password');
+            pwMess.current.style.display = "inline-block";
+            pw.current.focus();
+            return;
+        } else {
+            emMess.current.style.display = "none";
+            pwMess.current.style.display = "none";
+            loginUser(e);
+        }
+    }
 
     const loginUser = async (e) => {
-        e.preventDefault();
 
         let email = values.email;
         let password = values.password;
@@ -71,6 +97,8 @@ function Title(props) {
         } catch(error){
             //user login error
             console.log('ERROR: ', error);
+            setMessage(error);
+            loginResponse.current.style.display = "inline-block";
         }
     };
 
@@ -89,6 +117,7 @@ function Title(props) {
                     <Card className='formCard'>
                         <Card.Body>
                             <Box id='titleBox' component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                                <span ref={loginResponse} style={{ display: "none", color: "red" }}>{message}</span>
                                 <TextField 
                                     className='nonFCInput' 
                                     id='outlined-search' 
@@ -97,7 +126,9 @@ function Title(props) {
                                     name='email' 
                                     value={ values.email } 
                                     onChange={handleChange} 
+                                    ref={em}
                                 />
+                                <span ref={emMess} style={{ display: "none", color: "red" }}>{message}</span>
                                 {/* Form Control component to hold MUI visibility changing password field */}
                                 <FormControl sx={{ m: 1 }} variant='outlined'>
                                     <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
@@ -107,6 +138,7 @@ function Title(props) {
                                         name='password'
                                         value={ values.password }
                                         onChange={ handleChange }
+                                        ref={pw}
                                         endAdornment={
                                             <InputAdornment position='end'>
                                                 <IconButton
@@ -122,12 +154,13 @@ function Title(props) {
                                         label='Password'
                                     />
                                 </FormControl>
+                                <span ref={pwMess} style={{ display: "none", color: "red" }}>{message}</span>
                                 <Button 
                                     className='scheme' 
                                     id='loginButton' 
                                     type='submit' 
                                     size='lg' 
-                                    onClick={ loginUser }
+                                    onClick={ handleLogin }
                                 >
                                     Log in
                                 </Button>
