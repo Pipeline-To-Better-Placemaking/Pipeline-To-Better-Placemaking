@@ -32,7 +32,7 @@ function NewActivityTimes(){
 
     const timeCards = (timeSlots) => (
         timeSlots.map((value, index)=>(
-            <Card key={ index }>
+            <Card key={ index } className='timeSlots'>
                 <Card.Body>
                     <TimeForm index={ index } deleteTime={ deleteTimeSlot }/>
                 </Card.Body>

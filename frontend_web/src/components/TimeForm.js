@@ -22,7 +22,7 @@ function TimeForm(props){
 
     return(
         <div className='timeForm'>
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                 <h5>Time Slot { timeForm.index + 1 }</h5> 
                 <Button id='deleteButton' onClick={ handleDelete(timeForm.index) }><DeleteIcon /></Button> 
             </div>

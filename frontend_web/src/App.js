@@ -2,8 +2,9 @@ import * as React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import AppNavBar from './components/AppNavBar';
-import Title from './routes/Title';
 import Home from './routes/Home';
+import Title from './routes/Title';
+import TeamHome from './routes/TeamHome';
 import NewProject from './routes/NewProject';
 import NewUser from './routes/NewUser';
 import SettingsPage from './routes/SettingsPage';
@@ -37,6 +38,22 @@ function App(){
         setState(active);
     }
 
+    function TeamPages(){
+        return(
+            <div id='teamPages'>
+                <Routes>
+                    <Route index element={<TeamHome />}/>
+                    <Route path='project/:id/*' element={<ProjectPage />} />
+                    <Route path='new' element={<NewProject />} />
+                    <Route path='new/area/points' element={<NewProjectPoints />} />
+                    <Route path='new/area/points/form' element={<ProjectForm />} />
+                    <Route path='new/area' element={<NewProjectArea />} />
+                    <Route path='edit/:id' element={<EditProject />} />
+                </Routes>
+            </div>
+        );
+    }
+
     // can be reached at (url)/home/(any component path below), ex: (url)/home/settings
     function UserRoutes() {
         
@@ -49,13 +66,8 @@ function App(){
                 <AppNavBar passLogout={passLogout} passToken={token}/>
                 <Routes>
                     <Route index element={<Home />} />
-                    <Route path='project/:id/*' element={<ProjectPage />} />
-                    <Route path='new' element={<NewProject />} />
-                    <Route path='new/area/points' element={<NewProjectPoints/>}/>
-                    <Route path='new/area/points/form' element={<ProjectForm/>} />
-                    <Route path='new/area' element={<NewProjectArea />}/>
+                    <Route path='teams/:id/*'element={<TeamPages />} />
                     <Route path='settings' element={<SettingsPage />} />
-                    <Route path='edit/:id' element={<EditProject />} />
                 </Routes>
             </div>
         );

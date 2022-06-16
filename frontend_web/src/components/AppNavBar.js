@@ -37,9 +37,9 @@ const home = <Link className='homeButton' to='/home'><Home className='iconShadow
 
 const AppNavBar = (props) => {
     const userName = {
-        fN: props.passToken.user.firstname,
-        lN: props.passToken.user.lastname,
-        full: `${props.passToken.user.firstname} ${props.passToken.user.lastname}`
+        fN: 'J', //props.passToken.user.firstname ,
+        lN: 'H', //props.passToken.user.lastname,
+        full: 'JH'//`${props.passToken.user.firstname} ${props.passToken.user.lastname}`
     }
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);

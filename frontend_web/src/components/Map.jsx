@@ -185,7 +185,7 @@ function FullMap(props){
     };
 
     const onIdle = (m) => {
-        setZoom(m.getZoom());
+        setZoom(m.getZoom() ? m.getZoom() : 10);
         setCenter(m.getCenter().toJSON());
     };
 
@@ -287,7 +287,7 @@ function FullMap(props){
                 id='newPointsButton'
                 className='newHoveringButtons'
                 component={ Link }
-                to='/home/new/area/points/form'
+                to='/home/teams/:id/new/area/points/form'
                 state={{
                     center: center, 
                     title: title, 

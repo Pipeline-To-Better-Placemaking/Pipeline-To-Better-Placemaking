@@ -14,7 +14,7 @@ function DisplayCards(props){
     //Surveyor Cards have surveyor name in header
     const surveyorCards = (surveyors) => (
         surveyors.map((surveyor, index) => (
-            <Card key={ 's' + index } className='projectCard'>
+            <Card key={ 's' + index } className='displayCard'>
                 <CardHeader title={ surveyor.name } />
                 { surveyorActivities(surveyor.activities) }
             </Card>
@@ -41,9 +41,9 @@ function DisplayCards(props){
     );
 
     //For Better Placemaking projects listed on home page (url)/u
-    const projectCard = (projects) => (
+    const projectCards = (projects) => (
         projects.map((project, index)=>(
-            <Card key={ 'p'+index } className='projectCard'>
+            <Card key={ 'p'+index } className='displayCard'>
                 <CardContent>
                     <Typography variant='h5' component='div'>
                         { project.name }
@@ -57,9 +57,25 @@ function DisplayCards(props){
         ))
     );
 
+    const teamCards = (teams) => (
+        teams.map((team, index)=>(
+            <Card key={'p' + index} className='displayCard'>
+                <CardContent>
+                    <Typography variant='h5' component='div'>
+                        {team.title}
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <Button component={Link} to='teams/:id' state={team.name}>View Projects</Button>
+                    <Button component={Link} to='edit/:id' state={team.name}>Edit Team</Button>
+                </CardActions>
+            </Card>
+        ))
+    );
+
     return(
         <div id='cardFlexBox'>
-            { props.type === 0 ? surveyorCards(props.surveyors) : projectCard(props.projects) }
+            { props.type === 0 ? surveyorCards(props.surveyors) : (props.type === 1 ? projectCards(props.projects) : teamCards(props.teams))}
         </div>
     );
 

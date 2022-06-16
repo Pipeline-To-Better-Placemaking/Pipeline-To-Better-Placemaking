@@ -62,16 +62,16 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
     margin-bottom: 5vh;
     z-index: 0;
 }
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle, .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#verifyButton {
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle, .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#verifyButton, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton {
     color: rgb(255, 255, 255);
     margin-top: 10px;
     width: 45vw;
 }
 
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle {
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton {
     background-color: #ff4258;
 }
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle:hover {
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle:hover, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton:hover {
     box-shadow: 0 4px 8px 0 rgba(255, 66, 88, 0.2), 0 6px 20px 0 rgba(255, 66, 88, 0.19);
 }
 
@@ -150,6 +150,11 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
     z-index: 850;
 }
 
+a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton {
+    width: 100%;
+    margin: 0px 0px 0px 5px;
+}
+
 div.nonFCInput,
 button#loginButton {
     margin: 8px;
@@ -159,8 +164,17 @@ button#newTimeButton {
     margin-bottom: 10px;
 }
 
+button#createProjectButton {
+    margin-bottom: 5px;
+}
+
 div#ActivityPage {
     overflow-y: scroll;
+}
+
+div#createCard > div.card-body{
+    display: flex;
+    justify-content: center;
 }
 
 div#MapPage {
@@ -187,7 +201,7 @@ div.MuiFormControl-root {
     width: 100%;
 }
 
-div.projectCard {
+div.displayCard {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -198,9 +212,13 @@ div.projectCard {
     text-align: center;
 }
 
-div.projectCard:hover{
+div.displayCard:hover{
     font-weight: 500;
     box-shadow: 0 4px 8px 0 rgba(71, 71, 71, 0.2), 0 6px 20px 0 rgba(71, 71, 71, 0.19);
+}
+
+div.timeSlots{
+    margin-bottom: 10px;
 }
 
 form.MuiBox-root {
@@ -228,18 +246,18 @@ form.MuiBox-root {
     width: 100vw;
 }
 
-#newProjectButton {
+#newProjectButton, #newTeamButton{
     background-color: #035fb5;
     margin: 15px;
     width: 40%;
 }
 
-#newProjectButton:hover{
+#newProjectButton:hover, #newTeamButton:hover{
     color: white;
     box-shadow: 0 4px 8px 0 rgba(3, 95, 181, 0.2), 0 6px 20px 0 rgba(3, 95, 181, 0.19);
 }
 
-#newProjectButtonBox {
+#newProjectButtonBox, #newTeamButtonBox {
     display: flex;
     justify-content: center;
 }

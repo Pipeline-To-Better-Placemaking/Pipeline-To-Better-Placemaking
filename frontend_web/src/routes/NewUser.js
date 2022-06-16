@@ -75,8 +75,8 @@ function NewUser(){
             console.log(response.accessToken);
             console.log(JSON.stringify(response))
             success = true;
-            //redirect use to url/home
-            nav('/', { replace: true });
+            //redirect user to url/home
+            nav('/home', { replace: true });
         } catch (error){
             //user login error
             console.log('ERROR: ', error);

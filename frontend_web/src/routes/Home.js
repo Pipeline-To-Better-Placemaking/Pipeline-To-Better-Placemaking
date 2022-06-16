@@ -3,40 +3,32 @@ import Button from '@mui/material/Button';
 import DisplayCards from '../components/DisplayCards';
 import { Link } from 'react-router-dom';
 
-import './routes.css';
-
 function Home(){
-    /* Load Viewable Projects */
-    const projects = [
+
+    const teams = [
         {
-            name: 'Lake Eola',
-            id: 'p23e32duew'
-        },
-        {
-            name: 'Lake Underhill Park',
-            id: 'p4343rfi43f'
-        },
-        {
-            name: 'University of Central Florida',
-            id: 'p984f92hdeq'
+            _id: 'jfgn49wgnh58w9hg5uw4n859hw4g549g', 
+            title: 'Test'
         }
     ]
 
     return(
-        <div id='Home'>
-            <div id='newProjectButtonBox'>
-                <Button 
-                    id='newProjectButton' 
-                    variant='contained' 
-                    component={ Link } 
+        <div id='userHome'>
+            <div id='newTeamButtonBox'>
+                <Button
+                    id='newTeamButton'
+                    variant='contained'
+                    component={Link}
                     to='new'
                 >
-                    New Project
+                    New Team
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            <DisplayCards type={ 1 } projects={ projects }/>
+            <DisplayCards type={2} teams={teams} />
         </div>
     );
+
 }
+
 export default Home;

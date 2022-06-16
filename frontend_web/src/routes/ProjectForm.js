@@ -56,8 +56,7 @@ function ProjectForm() {
                         >
                             Create
                         </Button>
-                        <br />
-                        <Button component={Link} type='submit' size='lg' to='/home'>
+                        <Button className='cancelButton' component={Link} size='lg' to='../'>
                             Cancel
                         </Button>
                     </Box>

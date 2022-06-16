@@ -46,7 +46,7 @@ function ActivityForm(){
                 <Form.Control type="number" id='timerSelect' name='timerSelect' className='dateTimePickers' value={form.timer} min="5" max="100" onChange={handleChange('timer')} />
             </div>
             <Button className='newHoveringButtons' component={Link}
-                to='/home/project/:id/activities/times'
+                to='/home/teams/:id/project/:id/activities/times'
                 state={form}
             >
                 <AddIcon />
