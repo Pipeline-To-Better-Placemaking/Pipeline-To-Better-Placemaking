@@ -64,7 +64,7 @@ function Title(props) {
             return;
         } else if (values.password === '' || values.password.length <= 3){
             emMess.current.style.display = "none";
-            setMessage('Please provide an password');
+            setMessage('Please provide a password');
             pwMess.current.style.display = "inline-block";
             pw.current.focus();
             return;
@@ -97,8 +97,9 @@ function Title(props) {
         } catch(error){
             //user login error
             console.log('ERROR: ', error);
-            setMessage(error);
+            setMessage(error.response.data?.message);
             loginResponse.current.style.display = "inline-block";
+            return;
         }
     };
 
