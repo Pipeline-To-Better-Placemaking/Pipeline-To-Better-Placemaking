@@ -36,7 +36,12 @@ const settings = [
 const home = <Link className='homeButton' to='/home'><Home className='iconShadow'/></Link>;
 
 const AppNavBar = (props) => {
-    const userName = props.passToken.user.firstname + " " + props.passToken.user.lastname;
+    const userName = {
+        fN: props.passToken.user.firstname,
+        lN: props.passToken.user.lastname,
+        full: `${props.passToken.user.firstname} ${props.passToken.user.lastname}`
+    }
+
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -57,7 +62,7 @@ const AppNavBar = (props) => {
 
     function handleLogOut(){
         setAnchorElUser(null);
-        props.passLogout(false)
+        props.passLogout(false);
     }
 
     return (
@@ -129,7 +134,7 @@ const AppNavBar = (props) => {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title='Open settings'>
                             <IconButton onClick={ handleOpenUserMenu } sx={{ p: 0 }}>
-                                <Avatar alt={userName}/>
+                                <Avatar>{`${userName.fN[0]}${userName.lN[0]}`}</Avatar>
                             </IconButton>
                         </Tooltip>
                         <Menu

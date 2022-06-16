@@ -40,7 +40,7 @@ function App(){
     // can be reached at (url)/home/(any component path below), ex: (url)/home/settings
     function UserRoutes() {
         
-        const passLogout=(active)=>{
+        const passLogout = (active) => {
             handleOnLogout(active);
         }
 
