@@ -60,7 +60,7 @@ function Title(props) {
                withCredentials: true
             });
             console.log(JSON.stringify(response));
-            let user = console.log(response.data);
+            let user = response.data;
             // user login confirmation and navigation handling in App.js
             // retrieve user's name or name and token to verify status
             props.onLogin(true, user);
