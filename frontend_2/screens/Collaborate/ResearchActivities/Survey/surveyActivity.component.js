@@ -22,7 +22,7 @@ export function SurveyActivity(props) {
   // controls the rendered countdown timer
   const [timer, setTimer] = useState(initalTime);
   // controls timer interval instance
-  const [id, setId];
+  const [id, setId] = useState();
 
   const endActivity = () => {
     setStart(false);
