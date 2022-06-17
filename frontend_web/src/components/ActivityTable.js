@@ -98,7 +98,7 @@ const subtable = (row, type) => (
                                 </TableCell>
                                 <TableCell colSpan={1} className='value'>
                                     { 
-                                        instance.split('.')[0] === 'soundCollections' ? `${point.average} dB` : (point.area ? `${point.area} sq.ft.` : (point.type ? `${point.type}` :'N/A'))
+                                        instance.split('.')[0] === 'soundCollections' ? `${point.average} dB` : (point.area ? `${point.area} sq.ft.` : (point.type ? `${point.type}` : (point.distance ? `${point.distance} ft.` : 'N/A')))
                                     }
                                 </TableCell>
                                 <TableCell>

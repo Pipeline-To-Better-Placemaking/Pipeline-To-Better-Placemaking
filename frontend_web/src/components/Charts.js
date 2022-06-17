@@ -1,11 +1,16 @@
 import * as React from 'react';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, Tooltip, Legend, Label, PieChart, Pie } from 'recharts';
 
 function Charts(props){
     const data = props.data;
     const selection = props.selection;
+    const boundsColor = {
+        construction: '#FF00E5',
+        shelter: '#00B68A',
+        material: '#FFF066'
+    };
     const [soundSources, setSoundSources] = React.useState([]);
-    const [aOO, setAOO] = React.useState([]);
+
 
     const testNames = {
         stationaryCollections: 'Humans in Place',
@@ -28,6 +33,30 @@ function Charts(props){
             <Legend />
             <Bar dataKey={'average'} fill='#B073FF' />
         </BarChart>
+    );
+
+    const BoundaryPieChart=(data)=>(
+    <div id='boundCharts'>
+        Boundary Areas
+        <PieChart width={250} height={190}>
+            <Legend />
+            <Pie data={data} dataKey='area' nameKey='result' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                {data.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={boundsColor[entry.result]} />
+                ))}
+            </Pie>
+            <Tooltip />
+        </PieChart>
+        Boundary Distances
+        <PieChart width={250} height={190}>
+                <Pie data={data} dataKey='distance' nameKey='result' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                    {data.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={boundsColor[entry.result]} />
+                    ))}
+                </Pie>
+            <Tooltip />
+        </PieChart>
+    </div>
     )
 
     return(
@@ -39,7 +68,7 @@ function Charts(props){
                 <br />
                 { type[2] }
             </div>
-            { type[0] === 'soundCollections' ? soundBarChart(data) : null }
+            { type[0] === 'soundCollections' ? soundBarChart(data) : (type[0] === 'boundaryCollections' ? BoundaryPieChart(data) : null) }
         </div>
     );
 }

@@ -156,6 +156,13 @@ div#ActivityForm{
     background-color: var(--tabSelectColor);
 }
 
+div#boundCharts{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 div#MapPage div#mapFrame{
     width:100vw;
     height: calc(100vh - 113px);

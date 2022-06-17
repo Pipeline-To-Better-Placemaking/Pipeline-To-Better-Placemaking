@@ -220,11 +220,11 @@ function FullMap(props){
             Object.entries(object).map(([sdate, stimes])=>(
                 stimes.map(time => (
                     Object.entries(data.Activities[title][sdate][time].data).map(([ind, point], i2)=>(
-                        (point.movement ? 
+                        (point.movement || point.path ? 
                             <Path 
                                 key={`${sdate}.${time}.${i2}`} 
                                 path={point.path} 
-                                movement={point.movement}
+                                movement={point.movement ? point.movement : point.result}
                             />:( point.boundary ? <Bounds area={point.boundary} type={point.result}/> :<Marker 
                                 key={`${sdate}.${time}.${i2}`} 
                                 shape={title === 'orderCollections' ? 'triangle' : (title === 'lightCollections' ? 'lightcircle' : 'circle')}
@@ -444,7 +444,7 @@ const Bounds = (options) => {
         },
         types: {
             paths: options.area,
-            strokeColor: type === 'water' ? '#2578C5' : (type === 'construction' ? '#FF00E5' : (type === 'material' ? '#FFF066' : (type === 'shelter' ? '#FFF066' : '#FFFFFF'))),
+            strokeColor: type === 'water' ? '#2578C5' : (type === 'material' ? '#FFF066' : (type === 'shelter' ? '#00B68A' : '#FFFFFF')),
             strokeWeight: 2,
             fillColor: '#C4C4C4',
             fillOpacity: 0.45
@@ -480,7 +480,8 @@ const Path = (options) => {
         running: '#FF0000',
         swimming: '#FFFF00',
         onwheels: '#008000',
-        handicap: '#FFA500'
+        handicap: '#FFA500',
+        construction: '#FF00E5'
     }
 
     const lines = {

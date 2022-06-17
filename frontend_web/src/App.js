@@ -17,11 +17,12 @@ import ProjectForm from './routes/ProjectForm';
 function App(){
     //token/storage of choice
     //  const token = localStorage.getItem('token_data')
+    const [token, setToken] = React.useState({});
 
     // true == active user (logged in)
     // check token
     const [state, setState] = React.useState(/*token !== null && token !== '' ? true : */false);
-    const [token, setToken] = React.useState({});
+    
 
     // Set user vars to access the user home page
     function handleOnLogin(active, token) {
