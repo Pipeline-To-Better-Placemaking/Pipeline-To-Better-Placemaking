@@ -197,6 +197,8 @@ export function CompareBarChart({children, ...props}) {
   yData[0] = maxValue
 
   let ticks = maxValue/2 + 1;
+  // needed for boundary compare (otherwise it may try rendering thousands of ticks which crashes the app)
+  if(ticks > 10) ticks = 10;
 
   let titles = props.dataValues.map(value => {return value.title});
 

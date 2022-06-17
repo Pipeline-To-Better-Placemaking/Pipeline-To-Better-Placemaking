@@ -27,7 +27,7 @@ export function BoundaryTest(props){
     const initalTime = props.timeSlot.timeLeft
     // controls the rendered countdown timer
     const [timer, setTimer] = useState(initalTime);
-    // controls timer interval instance (changed it to be a useState)
+    // controls timer interval instance
     const [id, setId] = useState();
 
     // filter controls

@@ -31,7 +31,7 @@ export function PeopleMovingActivity(props) {
     // controls the rendered countdown timer
     const [timer, setTimer] = useState(initalTime);
     // controls timer interval instance
-    let id;
+    const [id, setId] = useState();
 
     // Shows the moving and data input modal
     const [moving, setMoving] = useState(false)
@@ -89,6 +89,9 @@ export function PeopleMovingActivity(props) {
     const restart = () => {
         let standingPointLength = Object.keys(props.timeSlot.position).length
 
+        // clear the interval whenever we restart/end
+        clearInterval(id);
+
         if (standingIndex < standingPointLength-1){
 
             setStandingIndex(standingIndex+1)
@@ -106,7 +109,6 @@ export function PeopleMovingActivity(props) {
 
     // Starts back up the activity
     const rebegin = () => {
-
         setStart(true)
         setMoving(false)
         setRecenter(false)
@@ -222,7 +224,7 @@ export function PeopleMovingActivity(props) {
     // begins/updates the timer
     function startTime(current){
         let count = current;
-        id = setInterval(() =>{            
+        setId(setInterval(() =>{            
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
@@ -234,7 +236,7 @@ export function PeopleMovingActivity(props) {
                 restart();
             }
         // 1000 ms == 1 s
-        }, 1000);
+        }, 1000));
     }
 
     // Count Down Timer and the Start/Exit button
