@@ -23,6 +23,13 @@ export default function MapDrawer(props) {
     // Selections holds all selected activity instances and is used to render the data for the data and graph drawers
     // aka activities with switch toggled 'on', empty because key values are rendered depending on data 
     const [selections, setSelections] = React.useState({});
+    const [stationary, setStationary] = React.useState({});
+    const [moving, setMoving] = React.useState({});
+    const [order, setOrder] = React.useState({});
+    const [boundary, setBoundary] = React.useState({});
+    const [lighting, setLighting] = React.useState({});
+    const [nature, setNature] = React.useState({});
+    const [sound, setSound] = React.useState({});
 
     // Holds boolean toggle values to pass onto the map and determing if the value needs to be added or removed to selections
     const [checked, setChecked] = React.useState({});
@@ -40,7 +47,7 @@ export default function MapDrawer(props) {
         stationaryCollections: 'Humans in Place',
         movingCollections: 'Humans in Motion',
         orderCollections: 'Absence of Order Locator',
-        boundaryCollections: 'Spatial and Shelter Boundaries',
+        boundaryCollections: 'Spatial Boundaries',
         lightingCollections: 'Lighting Profile',
         natureCollections: 'Nature Prevalence',
         soundCollections: 'Acoustical Profile'
@@ -85,12 +92,112 @@ export default function MapDrawer(props) {
         props.selection(category, date, time, !checked[`${category}.${date}.${time}`]);
         if(!checked[`${category}.${date}.${time}`]){
             var newSelections = selections;
+            var newEntry;
             newSelections[`${category}.${date}.${time}`] = drawers.Activities[category][date][time];
             setSelections(newSelections);
+
+            switch (category) {
+                case 'stationaryCollections':
+                    newEntry = stationary;
+                    
+
+                    if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
+                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    setStationary(newEntry);
+                    break;
+                case 'movingCollections':
+                    newEntry = moving;
+
+                    if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
+                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    setMoving(newEntry);
+                    break;
+                case 'orderCollections':
+                    newEntry = order;
+
+                    if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
+                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    setOrder(newEntry);
+                    break;
+                case 'boundaryCollections':
+                    newEntry = boundary;
+
+
+                    if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
+                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    setBoundary(newEntry);
+                    break;
+                case 'lightingCollections':
+                    newEntry = lighting;
+
+                    if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
+                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    setLighting(newEntry);
+                    break;
+                case 'natureCollections':
+                    newEntry = nature;
+
+                    if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
+                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    setNature(newEntry);
+                    break;
+                case 'soundCollections':
+                    newEntry = sound;
+
+                    if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
+                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    setSound(newEntry);
+                    break;
+                default:
+                    console.log(`Error handling selection change.`);
+            }
+            //console.log(drawers.Activities[category][date][time].data);
+
         } else {
             var delSelections = selections;
+            var removeEntry;
             delete delSelections[`${category}.${date}.${time}`];
             setSelections(delSelections);
+
+            switch (category) {
+                case 'stationaryCollections':
+                    removeEntry = stationary;
+                    delete removeEntry[`${date}.${time}`]
+                    setStationary(removeEntry);
+                    break;
+                case 'movingCollections':
+                    removeEntry = moving;
+                    delete removeEntry[`${date}.${time}`]
+                    setMoving(removeEntry);
+                    break;
+                case 'orderCollections':
+                    removeEntry = order;
+                    delete removeEntry[`${date}.${time}`]
+                    setOrder(removeEntry);
+                    break;
+                case 'boundaryCollections':
+                    removeEntry = boundary;
+                    delete removeEntry[`${date}.${time}`]
+                    setBoundary(removeEntry);
+                    break;
+                case 'lightingCollections':
+                    removeEntry = lighting;
+                    delete removeEntry[`${date}.${time}`]
+                    setLighting(removeEntry);
+                    break;
+                case 'natureCollections':
+                    removeEntry = nature;
+                    delete removeEntry[`${date}.${time}`]
+                    setNature(removeEntry);
+                    break;
+                case 'soundCollections':
+                    removeEntry = sound;
+                    delete removeEntry[`${date}.${time}`]
+                    setSound(removeEntry);
+                    break;
+                default:
+                    console.log(`Error handling selection change.`);
+            }
         }
     };
 
@@ -168,10 +275,19 @@ export default function MapDrawer(props) {
         </TableContainer>
     );
 
-    const charts = (selections) => (
-        Object.entries(selections).map(([selection, obj])=>(
-            <Charts key={selection} selection={selection} data={obj.data}/>
-        ))
+    const charts = (selections, stationary, moving, order, boundary, lighting, nature, sound) => (
+        <>
+            {Object.entries(selections).map(([selection, obj])=>(
+                <Charts key={selection} selection={selection} data={obj.data} type={0}/>
+            ))}
+            {Object.keys(stationary)?.length > 1 ? <Charts selection='stationaryCollections.Group' data={stationary} type={1} /> : null}
+            {Object.keys(moving)?.length > 1 ? <Charts selection='movingCollections.Group' data={moving} type={1} /> : null}
+            {Object.keys(order)?.length > 1 ? <Charts selection='orderCollections.Group' data={order} type={1} /> : null}
+            {Object.keys(boundary)?.length > 1 ? <Charts selection='boundaryCollections.Group' data={boundary} type={1} /> : null}
+            {Object.keys(lighting)?.length > 1 ? <Charts selection='lightingCollections.Group' data={lighting} type={1} /> : null}
+            {Object.keys(nature)?.length > 1 ? <Charts selection='natureCollections.Group' data={nature} type={1} /> : null}
+            {Object.keys(sound)?.length > 1 ? <Charts selection='soundCollections.Group' data={sound} type={1} /> : null}
+        </>
     );
 
     return (
@@ -202,7 +318,7 @@ export default function MapDrawer(props) {
                             : null }
                         { menuAnchors[name] === 'left' ? 
                             list(name, data) 
-                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : (menuAnchors[name] === 'right' ? charts(selections) : null)) }
+                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : (menuAnchors[name] === 'right' ? charts(selections, stationary, moving, order, boundary, lighting, nature, sound) : null)) }
                     </Drawer>
                 </React.Fragment>
             ))}

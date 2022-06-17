@@ -4,6 +4,7 @@ import { createCustomEqual } from 'fast-equals';
 import { isLatLngLiteral } from '@googlemaps/typescript-guards';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
+import html2canvas from 'html2canvas';
 
 import MapDrawers from './MapDrawers';
 import './controls.css';
@@ -18,7 +19,7 @@ const testNames = {
     stationaryCollections: 'Humans in Place',
     movingCollections: 'Humans in Motion',
     orderCollections: 'Absence of Order Locator',
-    boundaryCollections: 'Spatial and Shelter Boundaries',
+    boundaryCollections: 'Spatial Boundaries',
     lightingCollections: 'Lighting Profile',
     natureCollections: 'Nature Prevalence',
     soundCollections: 'Acoustical Profile'
@@ -248,10 +249,10 @@ function FullMap(props){
     );
 
     return (
-        <>
+        <div id='mapDoc'>
             {/* Map Drawers overlay in map.jsx to better communicate*/}
             { props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null }
-            { props.type === 1 ? <Button id='printButton'>Print Map</Button>: null }
+            {/* props.type === 1 ? <Button id='printButton'>Print Map</Button>: null */}
             {/* Wrapper imports Google Maps API */}
             <Wrapper apiKey={''} render={render} id='mapContainer' libraries={['drawing', 'places']}>
                 <Map
@@ -298,7 +299,7 @@ function FullMap(props){
             >
                 Set Points
             </Button> : null}
-        </>
+        </div>
     );
 };
 
@@ -444,9 +445,9 @@ const Bounds = (options) => {
         },
         types: {
             paths: options.area,
-            strokeColor: type === 'water' ? '#2578C5' : (type === 'material' ? '#FFF066' : (type === 'shelter' ? '#00B68A' : '#FFFFFF')),
+            strokeColor: type === 'water' ? '#2578C5' : (type === 'material' ? '#00FFC1' : (type === 'shelter' ? '#FFA64D' : '#FFFFFF')),
             strokeWeight: 2,
-            fillColor: '#C4C4C4',
+            fillColor: type === 'water' ? '#2578C5' : (type === 'material' ? '#00FFC1' : (type === 'shelter' ? '#FFA64D' : '#C4C4C4')),
             fillOpacity: 0.45
         },
     }
@@ -481,7 +482,7 @@ const Path = (options) => {
         swimming: '#FFFF00',
         onwheels: '#008000',
         handicap: '#FFA500',
-        construction: '#FF00E5'
+        constructed: '#FF00E5'
     }
 
     const lines = {

@@ -229,7 +229,7 @@ function ProjectPage(){
                                         lng: -81.20074444139789
                                     }
                                 ],
-                                result: 'construction',
+                                result: 'constructed',
                                 distance: 200
                             },
                             {
@@ -248,7 +248,44 @@ function ProjectPage(){
                                     }
                                 ],
                                 result: 'shelter',
-                                area: 376
+                                area: 276
+                            }
+                        ]
+                    },
+                    '18:00':{
+                        surveyor: 'Billy Bob',
+                        data: [
+                            {
+                                boundary: [
+                                    {
+                                        lat: 28.602212394739325, 
+                                        lng: -81.1999053211601
+                                    },
+                                    {
+                                        lat: 28.60225825467047, 
+                                        lng: -81.19961280856944
+                                    },
+                                    {
+                                        lat: 28.60203124781571, 
+                                        lng:- 81.19971727735182
+                                    }
+                                ],
+                                result: 'shelter', 
+                                area: 350
+                            },
+                            {
+                                path: [
+                                    {
+                                        lat: 28.60225366867824, 
+                                        lng: -81.20014298764002
+                                    },
+                                    {
+                                        lat: 28.602065642825217, 
+                                        lng: -81.19978518206037
+                                    }
+                                ],
+                                result: 'constructed',
+                                distance: 100
                             }
                         ]
                     }

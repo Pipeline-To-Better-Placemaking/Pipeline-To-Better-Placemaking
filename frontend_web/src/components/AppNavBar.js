@@ -3,6 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
+import Image from 'react-bootstrap/Image';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -10,10 +11,10 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import Home from '@mui/icons-material/HomeRounded';
 import { Link } from 'react-router-dom';
 
 import './controls.css';
+import logo1 from '../images/PtBPLogo.png';
 
 // pages left incase of need for additional route info
 // uses hamburger on small viewports
@@ -33,7 +34,7 @@ const settings = [
 ];
 
 //SVG Home icon link button
-const home = <Link className='homeButton' to='/home'><Home className='iconShadow'/></Link>;
+const home = <Link className='homeButton' to='/home'><Image src={logo1} className='icon-shadow' alt='logo' height='50px'/></Link>;
 
 const AppNavBar = (props) => {
     const userName = {
