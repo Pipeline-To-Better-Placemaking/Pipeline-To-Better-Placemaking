@@ -173,6 +173,10 @@ div.MuiDrawer-paperAnchorBottom div.MuiTableContainer-root{
     margin-top: 35px;
 }
 
+div#rightDrawer.MuiModal-root.MuiDrawer-root.MuiDrawer-modal.css-y28f86{
+    right: 0px
+}
+
 div#projectEdit div#mapFrame {
     top: 0px;
     width: 50vw;
