@@ -35,7 +35,7 @@ function FullMap(props){
     // 5 - new project map
     const [map, setMap] = React.useState(null);
     const [mapPlaces, setMapPlaces] = React.useState(null);
-    const [title, setTitle] = React.useState(props.type > 1 ? props.title : null);
+    const [title, setTitle] = React.useState(props.type > 0 ? props.title : null);
     const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 10); // initial zoom
     const [center, setCenter] = React.useState(props.center.lat ? { lat: props.center.lat, lng: props.center.lng } : { lat:28.54023216523664, lng:-81.38181298263407 });
     const [bounds, setBounds] = React.useState();
@@ -158,6 +158,37 @@ function FullMap(props){
         }
     };
 
+    function saveAs(uri, filename) {
+
+        var link = document.createElement('a');
+
+        if (typeof link.download === 'string') {
+
+            link.href = uri;
+            link.download = filename;
+
+            //Firefox requires the link to be in the body
+            document.body.appendChild(link);
+
+            //simulate click
+            link.click();
+
+            //remove the link when done
+            document.body.removeChild(link);
+        } else {
+            window.open(uri);
+        }
+    }
+
+    const convertToImage = (e) => {
+        html2canvas(document.getElementById('mapFrame'), {
+            useCORS: true,
+            allowTaint:true
+        }).then(
+            function(canvas){saveAs(canvas.toDataURL(), `${title}.png`)}
+        );
+    }
+
     //Handles click position for Project Map Creation and editing
     const onMClick = (e) => {
         if(props.type === 2 || props.type === 0){
@@ -252,7 +283,7 @@ function FullMap(props){
         <div id='mapDoc'>
             {/* Map Drawers overlay in map.jsx to better communicate*/}
             { props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null }
-            {/* props.type === 1 ? <Button id='printButton'>Print Map</Button>: null */}
+            { props.type === 1 ? <Button id='printButton' onClick={convertToImage}>Print Map</Button>: null }
             {/* Wrapper imports Google Maps API */}
             <Wrapper apiKey={''} render={render} id='mapContainer' libraries={['drawing', 'places']}>
                 <Map
@@ -380,8 +411,8 @@ const Marker = (options) => {
     }
     //SVG shape icons
     let style = {
-        path: shape === 'triangle' ? "M 0 2 L 2 2 L 1 0.25 z" : 
-            (shape === 'lightcircle' ? "M 70 110 C 70 140, 110 140, 110 110" : google.maps.SymbolPath.CIRCLE),
+        path: shape === 'triangle' ? 'M 0 2 L 2 2 L 1 0.25 z' : 
+            (shape === 'lightcircle' ? 'M 70 110 C 70 140, 110 140, 110 110' : google.maps.SymbolPath.CIRCLE),
         fillColor: markerType ? colors[markerType][0] : colors.none[0],
         fillOpacity: (markerSize ? 0.3 : 0.8),
         scale: (markerSize ? (markerSize/2) : 10),

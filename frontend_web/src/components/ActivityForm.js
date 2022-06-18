@@ -26,7 +26,7 @@ function ActivityForm(){
             </div>
             <div className='form-group'>
                 <Form.Label>Activity Type</Form.Label>
-                <Form.Select id='activitySelect' placeholder='Select an activity type' value={form.activity} aria-label="activitySelect" onChange={handleChange('activity')}>
+                <Form.Select id='activitySelect' placeholder='Select an activity type' value={form.activity} aria-label='activitySelect' onChange={handleChange('activity')}>
                     {testNames.map((label) => (
                         <option
                             key={label.label}
@@ -43,7 +43,7 @@ function ActivityForm(){
             </div>
             <div className='form-group'>
                 <Form.Label>Time per Location</Form.Label>
-                <Form.Control type="number" id='timerSelect' name='timerSelect' className='dateTimePickers' value={form.timer} min="5" max="100" onChange={handleChange('timer')} />
+                <Form.Control type='number' id='timerSelect' name='timerSelect' className='dateTimePickers' value={form.timer} min='5' max='100' onChange={handleChange('timer')} />
             </div>
             <Button className='newHoveringButtons' component={Link}
                 to='/home/teams/:id/project/:id/activities/times'

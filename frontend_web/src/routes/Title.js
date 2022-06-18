@@ -57,20 +57,20 @@ function Title(props) {
         e.preventDefault();
 
         if (values.email === '' || values.email.length <= 3){
-            pwMess.current.style.display = "none";
+            pwMess.current.style.display = 'none';
             setMessage('Please provide an email');
-            emMess.current.style.display = "inline-block";
+            emMess.current.style.display = 'inline-block';
             em.current.focus();
             return;
         } else if (values.password === '' || values.password.length <= 3){
-            emMess.current.style.display = "none";
+            emMess.current.style.display = 'none';
             setMessage('Please provide a password');
-            pwMess.current.style.display = "inline-block";
+            pwMess.current.style.display = 'inline-block';
             pw.current.focus();
             return;
         } else {
-            emMess.current.style.display = "none";
-            pwMess.current.style.display = "none";
+            emMess.current.style.display = 'none';
+            pwMess.current.style.display = 'none';
             loginUser(e);
         }
     }
@@ -98,7 +98,7 @@ function Title(props) {
             //user login error
             console.log('ERROR: ', error);
             setMessage(error.response.data?.message);
-            loginResponse.current.style.display = "inline-block";
+            loginResponse.current.style.display = 'inline-block';
             return;
         }
     };
@@ -118,7 +118,7 @@ function Title(props) {
                     <Card className='formCard'>
                         <Card.Body>
                             <Box id='titleBox' component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                                <span ref={loginResponse} style={{ display: "none", color: "red" }}>{message}</span>
+                                <span ref={loginResponse} style={{ display: 'none', color: 'red' }}>{message}</span>
                                 <TextField 
                                     className='nonFCInput' 
                                     id='outlined-search' 
@@ -129,7 +129,7 @@ function Title(props) {
                                     onChange={handleChange} 
                                     ref={em}
                                 />
-                                <span ref={emMess} style={{ display: "none", color: "red" }}>{message}</span>
+                                <span ref={emMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                                 {/* Form Control component to hold MUI visibility changing password field */}
                                 <FormControl sx={{ m: 1 }} variant='outlined'>
                                     <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
@@ -155,7 +155,7 @@ function Title(props) {
                                         label='Password'
                                     />
                                 </FormControl>
-                                <span ref={pwMess} style={{ display: "none", color: "red" }}>{message}</span>
+                                <span ref={pwMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                                 <Button 
                                     className='scheme' 
                                     id='loginButton' 

@@ -174,7 +174,8 @@ div.MuiDrawer-paperAnchorBottom div.MuiTableContainer-root{
 }
 
 div#rightDrawer.MuiModal-root.MuiDrawer-root.MuiDrawer-modal.css-y28f86{
-    right: 0px
+    right: 0px;
+    left: calc(100vw - 250px);
 }
 
 div#projectEdit div#mapFrame {

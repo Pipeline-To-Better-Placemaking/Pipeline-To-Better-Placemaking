@@ -702,19 +702,16 @@ function ProjectPage(){
     }
 
     const loc = useLocation();
-    const values  = React.useState({
-        projectName: loc.state
-    });
 
     return (
         <div id='ProjectPage'>
             <TabPanel />
             <Routes>
-                <Route index element={<MapPage title={values.projectName} drawers={drawers} />} />
-                <Route path='map' element={<MapPage title={values.projectName} drawers={drawers} />} />
-                <Route path='activities' element={<ActivityPage title={values.projectName} drawers={drawers.Activities} />} />
+                <Route index element={<MapPage title={ loc.state } drawers={ drawers } />} />
+                <Route path='map' element={<MapPage title={ loc.state } drawers={ drawers } />} />
+                <Route path='activities' element={<ActivityPage title={ loc.state }  drawers={ drawers.Activities } />} />
                 <Route path='activities/times' element={<NewActivityTimes />}/>
-                <Route path='surveyors' element={<SurveyorPage title={values.projectName} drawers={drawers} />} />
+                <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ drawers } />} />
             </Routes>
         </div>
     );
