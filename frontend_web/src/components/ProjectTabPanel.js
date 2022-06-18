@@ -8,7 +8,7 @@ import './controls.css';
 
 export default function ProjectTabs(props) {
     const location = useLocation();
-    const [value, setValue] = React.useState(props.state ? props.state : 0);
+    const [value, setValue] = React.useState(props.value ? props.value : 0);
     const [mapIndex, setMapIndex] = React.useState('unselected');
     const [surveyorIndex, setSurveyorIndex] = React.useState('unselected');
     const [activityIndex, setActivityIndex] = React.useState('unselected');
@@ -60,7 +60,8 @@ export default function ProjectTabs(props) {
                 label={ props.label }
                 component={ Link }
                 to={ props.href }
-                state={ props.value }
+                state={location.state}
+                value={props.value}
                 className={ props.className }
                 tabIndex={ 0 }
             />

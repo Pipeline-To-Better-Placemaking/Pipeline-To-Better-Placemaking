@@ -158,32 +158,27 @@ function FullMap(props){
         }
     };
 
-    function saveAs(uri, filename) {
-
+    function saveAs(url, filename) {
         var link = document.createElement('a');
 
+        //simulated link and link click with removal
         if (typeof link.download === 'string') {
 
-            link.href = uri;
+            link.href = url;
             link.download = filename;
-
-            //Firefox requires the link to be in the body
             document.body.appendChild(link);
-
-            //simulate click
             link.click();
 
             //remove the link when done
             document.body.removeChild(link);
         } else {
-            window.open(uri);
+            window.open(url);
         }
     }
 
     const convertToImage = (e) => {
         html2canvas(document.getElementById('mapFrame'), {
-            useCORS: true,
-            allowTaint:true
+            useCORS: true
         }).then(
             function(canvas){saveAs(canvas.toDataURL(), `${title}.png`)}
         );

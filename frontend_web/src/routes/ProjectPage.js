@@ -705,7 +705,7 @@ function ProjectPage(){
 
     return (
         <div id='ProjectPage'>
-            <TabPanel />
+            <TabPanel state={loc.state}/>
             <Routes>
                 <Route index element={<MapPage title={ loc.state } drawers={ drawers } />} />
                 <Route path='map' element={<MapPage title={ loc.state } drawers={ drawers } />} />
