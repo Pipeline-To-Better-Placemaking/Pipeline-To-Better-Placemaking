@@ -7,7 +7,9 @@ import { Link, useLocation } from 'react-router-dom';
 import Map from '../components/Map';
 
 function ProjectForm() {
+    //Form for creating a NEW Project
     const loc = useLocation();
+    //recieves location data from New Project Points
 
     const [values, setValues] = React.useState({
         center: (loc && loc.state ? loc.state.center : {}),

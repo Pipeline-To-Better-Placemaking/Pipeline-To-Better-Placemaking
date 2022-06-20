@@ -40,7 +40,7 @@ function DisplayCards(props){
         </CardContent>
     );
 
-    //For Better Placemaking projects listed on home page (url)/u
+    //For Better Placemaking projects listed on home page (url)/home
     const projectCards = (projects) => (
         projects.map((project, index)=>(
             <Card key={ 'p'+index } className='displayCard'>
@@ -66,8 +66,8 @@ function DisplayCards(props){
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button component={Link} to='teams/:id' state={team.name}>View Projects</Button>
-                    <Button component={Link} to='edit/:id' state={team.name}>Edit Team</Button>
+                    <Button component={Link} to='teams/:id' state={ team.name }>View Projects</Button>
+                    <Button component={Link} to='edit/:id' state={ team.name }>Edit Team</Button>
                 </CardActions>
             </Card>
         ))

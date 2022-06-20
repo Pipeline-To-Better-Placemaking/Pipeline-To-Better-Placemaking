@@ -107,14 +107,14 @@ function Charts(props){
     return(
        type === 0 ? 
        <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px' }}>
-            <div className='sectionName' style={{ display: 'flex', flexDirection: 'column', paddingLeft: '10px', alignContent: 'center', alignItems: 'center' }}>
+            <div className='sectionName'>
                 <div style={{fontSize: 'large'}}>{ testNames[cat[0]] }</div>
                 {cat[1]}  {cat[2]}
             </div>
             { cat[0] === 'soundCollections' ? soundBarChart(data) : (cat[0] === 'boundaryCollections' ? BoundaryPieChart(data) : null) }
         </div> : 
             <div key={selection} style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px'}}>
-                <div className='sectionName' style={{ display: 'flex', flexDirection: 'column', paddingLeft: '10px', alignContent: 'center', alignItems: 'center', fontSize: 'large', marginBottom: '5px' }}>
+                <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
                     { testNames[cat[0]] }: Summary
                 </div>
                 { cat[0] === 'boundaryCollections' ? multiBoundaryCharts(data) : null }

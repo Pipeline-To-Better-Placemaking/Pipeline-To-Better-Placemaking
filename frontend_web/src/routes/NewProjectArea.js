@@ -3,6 +3,7 @@ import Map from '../components/Map';
 import { useLocation } from 'react-router-dom';
 
 function NewArea() {
+    //recieves location data from NewProject.js
     const loc = useLocation();
 
     const [values, setValues] = React.useState({

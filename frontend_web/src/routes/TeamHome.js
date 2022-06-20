@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom';
 import './routes.css';
 
 function TeamHome(){
-    /* Load Viewable Projects */
+    // Load Viewable Projects by Team selected on previous page
+
+    //project array structure hardcoded on template
     const projects = [
         {
             name: 'Lake Eola',

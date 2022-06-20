@@ -9,7 +9,7 @@ import NewActivityTimes from './NewActivityTimes';
 
 function ProjectPage(){
     // Project section separated for handling project data
-    // can be reached at (url)/u/project/:id 
+    // can be reached at (heroku-url)/home/teams/:id/project/:id 
     // Selected Project's data will be loaded here to pass into its relevant components 
 
     const drawers = {
@@ -701,7 +701,11 @@ function ProjectPage(){
         }
     }
 
+    //load project area and location data here as well and pass to Map Page
+
+    //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
+    //loc.state will be used for maintaining project title across the project sub-pages(map, activities, and surveyors)
 
     return (
         <div id='ProjectPage'>

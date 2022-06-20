@@ -91,7 +91,7 @@ function Title(props) {
             // retrieve user's name or name and token to verify status
             props.onLogin(true, user);
 
-            //redirect use to url/home
+            //redirect user to url/home
             nav('/home', { replace: true });
 
         } catch(error){

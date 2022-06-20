@@ -6,6 +6,8 @@ function MapPage(props){
     const drawers = props.drawers;
     const title = props.title;
 
+
+    // May load coords in Project Page
     const center = { lat:28.602846550128262, lng:-81.20006526689143 };
 
     const area = [
@@ -23,8 +25,10 @@ function MapPage(props){
     ];
 
 
+    //Map Drawers moved inside Map component for more direct data Passing
     return (
         <div id='MapPage'>
+            {/* Map type 1 implies viewing project map and activity results */}
             <Map
                 title={ title }
                 center={ center } 

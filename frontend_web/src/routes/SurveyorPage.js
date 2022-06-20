@@ -5,6 +5,7 @@ import './routes.css';
 
 function SurveyorPage() {
 
+    //default hardcoded Surveyor sample array for website
     const sampleS = [
         {
             name: 'John Smith',

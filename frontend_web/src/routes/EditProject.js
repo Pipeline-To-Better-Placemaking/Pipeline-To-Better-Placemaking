@@ -3,10 +3,11 @@ import Card from 'react-bootstrap/Card';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import {Link, useLocation} from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Map from '../components/Map';
 
 function EditProject(){
+    //load project coords and area(?)
     const center = { lat: 28.602846550128262, lng: -81.20006526689143 };
     const loc = useLocation();
 
@@ -18,6 +19,7 @@ function EditProject(){
         setValues({ ...values, [prop]: event.target.value });
     };
 
+    //update submission function, redirect to TeamHome (project listings)
     const updateProject = () => {
     }
 

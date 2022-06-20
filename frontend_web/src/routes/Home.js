@@ -10,6 +10,7 @@ function Home(props){
         teams: props.passToken.user?.teams ? props.passToken.user.teams : '605e57007a68230004c01a2d'
     }
 
+    //example format hardcoded on template, restructure the data or pass teams info from DB into <DisplayCards teams={DBTeams}/>
     const teams = [
         {
             _id: token.teams[0], 

@@ -230,6 +230,11 @@ div.MuiTabs-flexContainer{
 
 div.sectionName{
     background-color: #aed5fa;
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    align-content: center;
+    align-items: center;
 }
 
 div#cardBox {

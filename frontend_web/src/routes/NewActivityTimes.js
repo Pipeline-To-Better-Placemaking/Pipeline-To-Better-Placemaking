@@ -24,12 +24,13 @@ function NewActivityTimes(){
         stationaryCollections: 'Humans in Place',
         movingCollections: 'Humans in Motion',
         orderCollections: 'Absence of Order Locator',
-        boundaryCollections: 'Spatial and Shelter Boundaries',
+        boundaryCollections: 'Spatial Boundaries',
         lightingCollections: 'Lighting Profile',
         natureCollections: 'Nature Prevalence',
         soundCollections: 'Acoustical Profile'
     };
 
+    //dynamically adds removes timeSlot cards for the activity
     const timeCards = (timeSlots) => (
         timeSlots.map((value, index)=>(
             <Card key={ index } className='timeSlots'>
@@ -54,7 +55,6 @@ function NewActivityTimes(){
         var temp = timeSlots;
         temp = temp.filter((card, ind)=> ind !== index);
         setTimeSlots(temp);
-        //console.log(temp);
     }
 
     return(

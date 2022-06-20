@@ -59,19 +59,10 @@ const testNames = [
     { label: 'Humans in Place', type: 'stationaryCollections' },
     { label: 'Humans in Motion', type: 'movingCollections'},
     { label: 'Absence of Order Locator', type: 'orderCollections'},
-    { label: 'Spatial and Shelter Boundaries', type: 'boundaryCollections' },
+    { label: 'SpatialBoundaries', type: 'boundaryCollections' },
     { label: 'Lighting Profile', type: 'lightingCollections'},
     { label: 'Nature Prevalence', type: 'natureCollections'},
     { label: 'Acoustical Profile', type: 'soundCollections'},
 ];
 
-const mapPoints = [
-    { label: 'Click and drag to select', type: 'none' },
-    { label: 'Location 1', type: 'standingPoint' },
-    { label: 'Location 2', type: 'standingPoint' }, 
-    { label: 'Location 3', type: 'standingPoint' }, 
-    { label: 'Location 4', type: 'standingPoint' }, 
-    { label: 'Location 5', type: 'standingPoint' }, 
-    { label: 'Location 6', type: 'standingPoint' },
-];
 export default ActivityForm;

@@ -60,8 +60,8 @@ export default function ProjectTabs(props) {
                 label={ props.label }
                 component={ Link }
                 to={ props.href }
-                state={location.state}
-                value={props.value}
+                state={ location.state }
+                value={ props.value }
                 className={ props.className }
                 tabIndex={ 0 }
             />
