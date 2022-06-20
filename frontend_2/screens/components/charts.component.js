@@ -255,7 +255,7 @@ export function MyPieChart(props){
           obj[i] = (
             <View key={i.toString()} style={styles.pieLegend}>
               <Text style={{color: props.graph[i].svg.fill}}>{props.graph[i].legend}:</Text>
-              <Text style={styles.whiteText}> {props.graph[i].value} ft²</Text>
+              <Text style={styles.whiteText}> {props.graph[i].value} ft² ({props.graph[i].percent}%)</Text>
             </View>
           )
         }

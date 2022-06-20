@@ -14,7 +14,7 @@ export function BoundaryMapResults(props) {
     const [value, setValue] = useState(1);
     const [filter, setFilter] = useState([
         {label: "Show All", value: 1}, 
-        {label: "Construction", value: 2},
+        {label: "Constructed", value: 2},
         {label: "Material", value: 3}, 
         {label: "Shelter", value: 4}
     ]);
@@ -26,8 +26,8 @@ export function BoundaryMapResults(props) {
     const [boundInfo, setBoundInfo] = useState();
 
 
-    const colors = ['rgba(255, 0, 255, 1)', 'rgba(255, 227, 113, 1)', 'rgba(255, 166, 77, 1)'];
-    const fills = ['rgba(255, 227, 113, 0.5)', 'rgba(255, 166, 77, 0.5)'];
+    const colors = ['rgba(255, 0, 255, 1)', 'rgba(0, 255, 193, 1)', 'rgba(255, 166, 77, 1)'];
+    const fills = ['rgba(0, 255, 193, 0.5)', 'rgba(255, 166, 77, 0.5)'];
 
     // controls which boundaries show on the map during data collection
     const filterControl = (item) =>{
@@ -81,8 +81,7 @@ export function BoundaryMapResults(props) {
                 // filter for construction boundaries
                 if(constructBool){
                     // if the boundary is a construction boundary, add a polyline
-                    if(props.dataMarkers[i].kind === "Construction"){
-                        //console.log(props.dataMarkers[i].purpose)
+                    if(props.dataMarkers[i].kind === "Constructed"){
                         objData[i] = (
                             <View key={i.toString()}>
                                 <MapView.Polyline
@@ -98,6 +97,7 @@ export function BoundaryMapResults(props) {
                 }
                 // filter for material boundaries
                 if(materialBool){
+                    // if the boundary is a material boundary, add a polygon
                     if(props.dataMarkers[i].kind === "Material"){
                         objData[i] = (
                             <View key={i.toString()}>
@@ -115,6 +115,7 @@ export function BoundaryMapResults(props) {
                 }
                 // filter for shelter boundaries
                 if(shelterBool){
+                    // if the boundary is a shelter boundary, add a polygon
                     if(props.dataMarkers[i].kind === "Shelter"){
                         objData[i] = (
                             <View key={i.toString()}>

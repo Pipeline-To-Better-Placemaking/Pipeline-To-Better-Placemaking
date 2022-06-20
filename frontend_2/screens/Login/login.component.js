@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, View, TouchableWithoutFeedback, Modal } from 'react-native';
+import { View, TouchableWithoutFeedback, Modal } from 'react-native';
 import { Icon, Text, Button, Input, Spinner } from '@ui-kitten/components';
 import { BlueViewableArea } from '../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -112,7 +112,7 @@ export const LoginScreen = ( props ) => {
 
   return (
     <BlueViewableArea>
-      <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.container}>
         <Modal
           animationType='fade'
           transparent={true}
@@ -156,7 +156,7 @@ export const LoginScreen = ( props ) => {
         </View>
         <LoginButton />
         <BackButton />
-      </ScrollView>
+      </View>
     </BlueViewableArea>
   );
 };

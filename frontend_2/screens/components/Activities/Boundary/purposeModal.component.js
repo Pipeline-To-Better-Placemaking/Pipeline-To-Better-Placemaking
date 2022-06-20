@@ -48,7 +48,7 @@ export function PurposeModal(props){
             setSelect2(false)
         }
         if(select3){
-            arr.push('Creation');
+            arr.push('Creating Seperation');
             setSelect3(false)
         }
         // return the array of data
@@ -75,8 +75,6 @@ export function PurposeModal(props){
                 console.log("switch's default; ERROR should never enter here");        
         }
     }
-
-    const creation = "Creation\n(seperation)"
 
     return(
         <Modal transparent={true} animationType='slide' visible={props.visible}>
@@ -106,7 +104,7 @@ export function PurposeModal(props){
                             </View>
 
                             <View style={styles.lastButtonView}>
-                                <Button style={styles.button} appearance={select3 ? 'primary' : 'outline'} onPress={()=> setSelect(3)}>Creation (seperation)</Button>
+                                <Button style={styles.button} appearance={select3 ? 'primary' : 'outline'} onPress={()=> setSelect(3)}>Creating Seperation</Button>
                             </View>      
                         
                         </View>

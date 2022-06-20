@@ -8,9 +8,6 @@ export function BoundaryMapResultsView(props) {
     // this console log shows all the collected data for the test
     // console.log(props.selectedResult);
     
-    /// Location, area, and standing points
-    /// Bool indicating to the map to recenter
-    // const [location] = useState(props.timeSlot.location)
     const [area] = useState(props.selectedResult.sharedData.area.points)
     const [position] = useState(props.selectedResult.standingPoints)
 

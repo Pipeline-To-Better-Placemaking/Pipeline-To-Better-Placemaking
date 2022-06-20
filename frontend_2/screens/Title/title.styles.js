@@ -1,7 +1,11 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-
+    
+    logoView:{
+        margin: 40
+    },
+    
     container: {
         flexGrow : 1,
         justifyContent: 'flex-start',
@@ -42,18 +46,11 @@ export const styles = StyleSheet.create({
         textAlign: 'center'
     },
 
-    circle: {
-        width: 150,
-        height: 150,
-        borderRadius: 150/2,
-        backgroundColor: 'white'
-    },
-
     image: {
-        width: 150,
-        height: 150,
-        borderRadius: 150/2
+        width: 175,
+        height: 175,
     }
+
 });
 
 export default styles;

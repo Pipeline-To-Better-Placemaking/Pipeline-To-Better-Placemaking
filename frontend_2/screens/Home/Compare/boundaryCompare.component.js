@@ -5,6 +5,7 @@ import { HeaderBack } from '../../components/headers.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { CompareBarChart } from '../../components/charts.component';
+import { calcArea } from '../../components/helperFunctions'
 
 import { styles } from './compare.styles';
 
@@ -95,12 +96,12 @@ export function BoundaryCompare(props) {
     return ret;
   }
 
-  const formatForConstruction = (obj) =>{
+  const formatForConstructed = (obj) =>{
     let ret = {};
     let values = [];
     let label = [];
     for(let i = 0; i < Object.keys(obj).length; i++){
-      if(obj[i].kind === "Construction"){
+      if(obj[i].kind === "Constructed"){
         let desc = obj[i].description        
         // only add the next object if that description is not already in the format object
         if(conDescSearch(label, desc) === -1){
@@ -133,13 +134,16 @@ export function BoundaryCompare(props) {
   const sheFormat1 = formatForIndividual(results[0].data, "Shelter");
   const sheFormat2 = formatForIndividual(results[1].data, "Shelter");
 
-  const conFormat1 = formatForConstruction(results[0].data);
-  const conFormat2 = formatForConstruction(results[1].data);
+  const conFormat1 = formatForConstructed(results[0].data);
+  const conFormat2 = formatForConstructed(results[1].data);
+
+  const totalArea1 = calcArea(results[0].sharedData.area.points)
+  const totalArea2 = calcArea(results[1].sharedData.area.points)
 
   let labels = {
     materialLabel: [],
     shelterLabel: [],
-    constructionLabel: []
+    constructedLabel: []
   }
   
   // stores result[0] in the 1 arrays, and result[1] in the 2 arrays
@@ -148,9 +152,11 @@ export function BoundaryCompare(props) {
     materialData2: [],
     shelterData1: [],
     shelterData2: [],
-    constructionData1: [],
-    constructionData2: []
+    constructedData1: [],
+    constructedData2: []
   }
+  let temp = 0;
+  let tempString;
 
   // package material info only if one of the formatted objects has something in it
   if(matFormat1[0].description !== undefined || matFormat2[0].description !== undefined){
@@ -158,28 +164,64 @@ export function BoundaryCompare(props) {
     if(Object.keys(matFormat1).length >= Object.keys(matFormat2).length && matFormat1[0].description !== undefined){
       for(let i = 0; i < Object.keys(matFormat1).length; i++){
         labels.materialLabel.push(matFormat1[i].description);
-        data.materialData1.push(matFormat1[i].value);
+        temp = (matFormat1[i].value / totalArea1) * 100
+        tempString = temp.toFixed(0);
+        data.materialData1.push(parseInt(tempString));
         let con = descSearch(matFormat2, matFormat1[i].description)
         // if that description doesn't exists in the other object, push a 0 as its data
         if(con === -1){
           data.materialData2.push(0);
         }
         // if it does exist
-        else data.materialData2.push(matFormat2[con].value);
+        else{
+          temp = (matFormat2[con].value / totalArea2) * 100
+          tempString = temp.toFixed(0);
+          data.materialData2.push(parseInt(tempString));
+        }
+      }
+      // check the other formatted data object for any unaccounted for descriptions
+      for(let i = 0; i < Object.keys(matFormat2).length; i++){ 
+        // is true if that description is not in the labels array, so then add it in and account for the data values
+        if(conDescSearch(labels.materialLabel, matFormat2[i].description) === -1){
+          labels.materialLabel.push(matFormat2[i].description);
+          temp = (matFormat2[i].value / totalArea2) * 100
+          tempString = temp.toFixed(0);
+          data.materialData2.push(parseInt(tempString));
+          // this description wasn't in the formatted object above, so its value is 0
+          data.materialData1.push(0)
+        }
       }
     }
     // otherwise the 2nd format object is larger, so use it as the base
     else{
       for(let i = 0; i < Object.keys(matFormat2).length; i++){
         labels.materialLabel.push(matFormat2[i].description);
-        data.materialData2.push(matFormat2[i].value);
+        temp = (matFormat2[i].value / totalArea2) * 100
+        tempString = temp.toFixed(0);
+        data.materialData2.push(parseInt(tempString));
         let con = descSearch(matFormat1, matFormat2[i].description)
         // if that description doesn't exists in the other object, push a 0 as its data
         if(con === -1){
           data.materialData1.push(0);
         }
         // if it does exist
-        else data.materialData1.push(matFormat1[con].value);
+        else{
+          temp = (matFormat1[con].value / totalArea1) * 100
+          tempString = temp.toFixed(0);
+          data.materialData1.push(parseInt(tempString));
+        }
+      }
+      // check the other formatted data object for any unaccounted for descriptions
+      for(let i = 0; i < Object.keys(matFormat1).length; i++){ 
+        // is true if that description is not in the labels array, so then add it in and account for the data values
+        if(conDescSearch(labels.materialLabel, matFormat1[i].description) === -1){
+          labels.materialLabel.push(matFormat1[i].description);
+          temp = (matFormat1[i].value / totalArea1) * 100
+          tempString = temp.toFixed(0);
+          data.materialData1.push(parseInt(tempString));
+          // this description wasn't in the formatted object above, so its value is 0
+          data.materialData2.push(0)
+        }
       }
     }
   }
@@ -195,28 +237,64 @@ export function BoundaryCompare(props) {
     if(Object.keys(sheFormat1).length >= Object.keys(sheFormat2).length && sheFormat1[0].description !== undefined){
       for(let i = 0; i < Object.keys(sheFormat1).length; i++){
         labels.shelterLabel.push(sheFormat1[i].description);
-        data.shelterData1.push(sheFormat1[i].value);
+        temp = (sheFormat1[i].value / totalArea1) * 100
+        tempString = temp.toFixed(0);
+        data.shelterData1.push(parseInt(tempString));
         let con = descSearch(sheFormat2, sheFormat1[i].description)
         // if that description doesn't exists in the other object, push a 0 as its data
         if(con === -1){
           data.shelterData2.push(0);
         }
         // if it does exist
-        else data.shelterData2.push(sheFormat2[con].value);
+        else{
+          temp = (sheFormat2[con].value / totalArea2) * 100
+          tempString = temp.toFixed(0);
+          data.shelterData2.push(parseInt(tempString));
+        }
+      }
+      // check the other formatted data object for any unaccounted for descriptions
+      for(let i = 0; i < Object.keys(sheFormat2).length; i++){ 
+        // is true if that description is not in the labels array, so then add it in and account for the data values
+        if(conDescSearch(labels.shelterLabel, sheFormat2[i].description) === -1){
+          labels.shelterLabel.push(sheFormat2[i].description);
+          temp = (sheFormat2[i].value / totalArea2) * 100
+          tempString = temp.toFixed(0);
+          data.shelterData2.push(parseInt(tempString));
+          // this description wasn't in the formatted object above, so its value is 0
+          data.shelterData1.push(0);
+        }
       }
     }
     // otherwise the 2nd format object is larger, so use it as the base
     else{
       for(let i = 0; i < Object.keys(sheFormat2).length; i++){
         labels.shelterLabel.push(sheFormat2[i].description);
-        data.shelterData2.push(sheFormat2[i].value);
+        temp = (sheFormat2[i].value / totalArea2) * 100
+        tempString = temp.toFixed(0);
+        data.shelterData2.push(parseInt(tempString));
         let con = descSearch(sheFormat1, sheFormat2[i].description)
         // if that description doesn't exists in the other object, push a 0 as its data
         if(con === -1){
           data.shelterData1.push(0);
         }
         // if it does exist
-        else data.shelterData1.push(sheFormat1[con].value);
+        else{
+          temp = (sheFormat1[con].value / totalArea1) * 100
+          tempString = temp.toFixed(0);
+          data.shelterData1.push(parseInt(tempString));
+        }
+      }
+      // check the other formatted data object for any unaccounted for descriptions
+      for(let i = 0; i < Object.keys(sheFormat1).length; i++){ 
+        // is true if that description is not in the labels array, so then add it in and account for the data values
+        if(conDescSearch(labels.shelterLabel, sheFormat1[i].description) === -1){
+          labels.shelterLabel.push(sheFormat1[i].description);
+          temp = (sheFormat1[i].value / totalArea1) * 100
+          tempString = temp.toFixed(0);
+          data.shelterData1.push(parseInt(tempString));
+          // this description wasn't in the formatted object above, so its value is 0
+          data.shelterData2.push(0);
+        }
       }
     }
   }
@@ -231,42 +309,62 @@ export function BoundaryCompare(props) {
     // if the 1st format object is larger, use that as the base
     if(conFormat1.label.length > conFormat2.label.length){
       for(let i = 0; i < conFormat1.label.length; i++){
-        labels.constructionLabel.push(conFormat1.label[i]);
-        data.constructionData1.push(conFormat1.data[i]);
+        labels.constructedLabel.push(conFormat1.label[i]);
+        data.constructedData1.push(conFormat1.data[i]);
         let con = conDescSearch(conFormat2.label, conFormat1.label[i])
         // if that description doesn't exists in the other object, push a 0 as its data
         if(con === -1){
-          data.constructionData2.push(0);
+          data.constructedData2.push(0);
         }
         // if it does exist
-        else data.constructionData2.push(conFormat2.data[con]);
+        else data.constructedData2.push(conFormat2.data[con]);
+      }
+      // check the other formatted data object for any unaccounted for descriptions
+      for(let i = 0; i < conFormat2.label.length; i++){ 
+        // is true if that description is not in the labels array, so then add it in and account for the data values
+        if(conDescSearch(labels.constructedLabel, conFormat2.label[i]) === -1){
+          labels.constructedLabel.push(conFormat2.label[i]);
+          data.constructedData2.push(conFormat2.data[i]);
+          // this description wasn't in the formatted object above, so its value is 0
+          data.constructedData1.push(0);
+        }
       }
     }
     // otherwise the 2nd format object is larger (or same size), so use it as the base
     else{
       for(let i = 0; i < conFormat2.label.length; i++){
-        labels.constructionLabel.push(conFormat2.label[i]);
-        data.constructionData2.push(conFormat2.data[i]);
+        labels.constructedLabel.push(conFormat2.label[i]);
+        data.constructedData2.push(conFormat2.data[i]);
         let con = conDescSearch(conFormat1.label, conFormat2.label[i])
         // if that description doesn't exists in the other object, push a 0 as its data
         if(con === -1){
-          data.constructionData1.push(0);
+          data.constructedData1.push(0);
         }
         // if it does exist
-        else data.constructionData1.push(conFormat1.data[con]);
+        else data.constructedData1.push(conFormat1.data[con]);
+      }
+      // check the other formatted data object for any unaccounted for descriptions
+      for(let i = 0; i < conFormat1.label.length; i++){ 
+        // is true if that description is not in the labels array, so then add it in and account for the data values
+        if(conDescSearch(labels.constructedLabel, conFormat1.label[i]) === -1){
+          labels.constructedLabel.push(conFormat1.label[i]);
+          data.constructedData1.push(conFormat1.data[i]);
+          // this description wasn't in the formatted object above, so its value is 0
+          data.constructedData2.push(0);
+        }
       }
     }
   }
   // if there was nothing in both formatted objects, set its data to false (to conditional render the barcharts)
   else{
-    data.constructionData1 = false
-    data.constructionData2 = false
+    data.constructedData1 = false
+    data.constructedData2 = false
   }
-  
+
   // final formatting for data to be used by compare bar charts
   let materialData = [{}]
   let shelterData = [{}]
-  let constructionData = [{}]
+  let constructedData = [{}]
   for(let i = 0; i < 2; i ++){
     if(i === 0){
       materialData[i] = {
@@ -279,8 +377,8 @@ export function BoundaryCompare(props) {
         svg: {fill: results[i].color, opacity: 0.5},
         title: results[i].resultName
       }
-      constructionData[i] = {
-        data: data.constructionData1,
+      constructedData[i] = {
+        data: data.constructedData1,
         svg: {fill: results[i].color, opacity: 0.5},
         title: results[i].resultName
       }
@@ -296,8 +394,8 @@ export function BoundaryCompare(props) {
         svg: {fill: results[i].color, opacity: 0.5},
         title: results[i].resultName
       }
-      constructionData[i] = {
-        data: data.constructionData2,
+      constructedData[i] = {
+        data: data.constructedData2,
         svg: {fill: results[i].color, opacity: 0.5},
         title: results[i].resultName
       }
@@ -338,7 +436,7 @@ export function BoundaryCompare(props) {
           { materialData[0].data ?
             <CompareBarChart
               {...props}
-              title={"Material Areas"}
+              title={"Material Areas\n(percent of project area)"}
               rotation={'0deg'}
               dataValues={materialData}
               dataLabels={labels.materialLabel}
@@ -352,7 +450,7 @@ export function BoundaryCompare(props) {
           { shelterData[0].data ?
             <CompareBarChart
               {...props}
-              title={"Shelter Areas"}
+              title={"Shelter Areas\n(percent of project area)"}
               rotation={'0deg'}
               dataValues={shelterData}
               dataLabels={labels.shelterLabel}
@@ -366,10 +464,10 @@ export function BoundaryCompare(props) {
           
           <CompareBarChart
             {...props}
-            title={"Construction Distances"}
+            title={"Constructed Distances\n(linear feet)"}
             rotation={'0deg'}
-            dataValues={constructionData}
-            dataLabels={labels.constructionLabel}
+            dataValues={constructedData}
+            dataLabels={labels.constructedLabel}
             barColor={color}
             width={chartWidth}
             height={chartHeight}

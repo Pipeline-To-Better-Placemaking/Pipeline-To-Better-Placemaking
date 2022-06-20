@@ -7,11 +7,10 @@ export const styles = StyleSheet.create({
 
     viewContainer: {
         width: '80%',
-        //height: '20%',
-        marginTop: '160%',
+        marginTop: '155%',
         borderRadius: 35,
         borderWidth: 1,
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
 
     titleText:{
@@ -34,7 +33,8 @@ export const styles = StyleSheet.create({
     },
 
     buttonView:{
-        marginTop: height * .015,
+        marginTop: height * .01,
+        marginBottom: 10
     },
 
     closeButton:{

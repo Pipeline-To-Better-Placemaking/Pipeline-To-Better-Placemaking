@@ -128,24 +128,28 @@ export function BoundaryResultPage(props) {
     props.navigation.navigate("BoundaryMapResultsView");
   }
 
-  // returns the total distance of all line boundaries
-  const totalDistance = (arr) =>{
-    let ret = 0;
-    // how to access the length of an object
-    // console.log(Object.keys(arr).length)
-    // go through the entire passed in array and sum all construction values
-    for(let i = 0; i < Object.keys(arr).length; i++){
-      if(arr[i].type == "Construction") ret += arr[i].value
-    }
-    // enforce 2nd decimal rounding and return that as a number (float)
-    let tempString = ret.toFixed(2);
-    ret = parseFloat(tempString);
-    return ret;
-  }
-  const totalLineDistance = totalDistance(props.selectedResult.graph);
-
   // total project area (in feet squared)
   const totalArea = calcArea(props.selectedResult.sharedData.area.points)
+
+  const calcPercent = (value, total) =>{
+    // times 100 to convert the decimal to a percentage
+    let ret = (value / total) * 100
+    let tempString = ret.toFixed(0)
+    return parseInt(tempString)
+  }
+
+  // calculates total sum of the boundary type (not boundary description)
+  const calcSum = (obj, type) =>{
+    let sum = 0;
+    let tempString;
+    for(let j = 0; j < Object.keys(obj).length; j++){
+      if(obj[j].type === type) sum += obj[j].value;
+    }
+    // enforces decimal rounding to 2nd decimal
+    tempString = sum.toFixed(2)
+    sum = parseFloat(tempString);
+    return sum;
+  }
 
   // searches to see if we already formatted an entry for that description 
   const descSearch = (obj, str) =>{
@@ -175,39 +179,34 @@ export function BoundaryResultPage(props) {
   const formatForTotalPie = (obj) =>{
     //console.log(obj)
     let ret = [{}];
-    let sum = 0;
+    let sum;
     let currentType = "Material";
-    let svg = {fill: "#FFE371"};
+    let svg = {fill: "#00FFC1"};
     let tempString;
 
     for(let i = 0; i < 3; i ++){
-      // for open horizontal space, value set to 0 for now
+      // for open horizontal space, value and percent set to 0 for now
       if(i === 0){
         ret[i] = {
           key: i + 1,
           value: 0,
           svg: {fill: "#C4C4C4"},
-          legend: "Free Space"
+          legend: "Free Space",
+          percent: 0
         }
         continue
       }
       
-      for(let j = 0; j < Object.keys(obj).length; j++){
-        if(obj[j].type === currentType) sum += obj[j].value;
-      }
+      sum = calcSum(obj, currentType);
 
-      // enforces decimal rounding to 2nd decimal
-      tempString = sum.toFixed(2)
-      sum = parseFloat(tempString);
-      
       ret[i] = {
         key: i + 1,
         value: sum,
         svg: svg,
-        legend: currentType 
+        legend: currentType,
+        percent: calcPercent(sum, totalArea)
       }
-      // reset sum and change the variables for the next type of boundary
-      sum = 0;
+      // change the variables for the next type of boundary
       currentType = "Shelter";
       svg = {fill: "#FFA64D"};
     }
@@ -216,7 +215,9 @@ export function BoundaryResultPage(props) {
     // ensures the decimal is rounded to the 2nd place
     tempString = areaLeft.toFixed(2)
     areaLeft = parseFloat(tempString);
+    let areaPercent = calcPercent(areaLeft, totalArea)
     ret[0].value = areaLeft;
+    ret[0].percent = areaPercent;
 
     return ret;
   }
@@ -240,12 +241,17 @@ export function BoundaryResultPage(props) {
           // enforces decimal rounding to 2nd decimal
           let tempString = sum.toFixed(2)
           sum = parseFloat(tempString);
-          
+
+          let total = 0;
+          if(type === "Material") total = calcSum(obj, "Material");
+          else total = calcSum(obj, "Shelter");
+
           ret[index] ={
             key: i + 1,
             value: sum,
             svg: { fill: colors[index] },
-            legend: obj[i].description 
+            legend: obj[i].description,
+            percent: calcPercent(sum, total)
           }
           // increase index after adding the boundary
           index++;
@@ -255,13 +261,13 @@ export function BoundaryResultPage(props) {
     return ret;
   }
 
-  const formatForConstruction = (obj) =>{
+  const formatForConstructed = (obj) =>{
     // console.log(obj);
     let ret = {};
     let values = [];
     let labels = [];
     for(let i = 0; i < Object.keys(obj).length; i++){
-      if(obj[i].type === "Construction"){
+      if(obj[i].type === "Constructed"){
         let desc = obj[i].description        
         // only add the next object if that description is not already in the format object
         if(conDescSearch(labels, desc) !== -1){
@@ -292,7 +298,7 @@ export function BoundaryResultPage(props) {
 
   const color = '#006FD6';
   
-  const conGraph = formatForConstruction(props.selectedResult.graph)
+  const conGraph = formatForConstructed(props.selectedResult.graph);
 
   return (
     <ViewableArea>
@@ -394,7 +400,7 @@ export function BoundaryResultPage(props) {
           <View style={styles.spacing}>
             <MyBarChart
               {...props}
-              title={"Construction Distances"}
+              title={"Constructed Distances\n(linear feet)"}
               rotation={'0deg'}
               dataValues={conGraph.data}
               dataLabels={conGraph.label}

@@ -36,7 +36,7 @@ export function BoundaryTest(props){
     const [filter, setFilter] = useState([
         {label: "Hide", value: 0},
         {label: "Show All", value: 1}, 
-        {label: "Construction", value: 2},
+        {label: "Constructed", value: 2},
         {label: "Material", value: 3}, 
         {label: "Shelter", value: 4}
     ]);
@@ -111,11 +111,11 @@ export function BoundaryTest(props){
         let type;
         let val = 0;
         // store the boundary in its respective array and set the type variable
-        // if we are doing a construction boundary, pull up the purpose modal
+        // if we are doing a constructed boundary, pull up the purpose modal
         if(boundIndex === 0){
             setPurposeModal(true);
             constructTotalPaths.push(currentPath);
-            type = 'Construction'
+            type = 'Constructed'
             // calculate the distance between each subsequent point to find total distance of drawn line
             for (let i = 1; i < currentPathSize; i++) val += haverSine(currentPath[i-1], currentPath[i]);
             // ensure the percision is fixed to 2nd decimal place
@@ -322,11 +322,11 @@ export function BoundaryTest(props){
 
     // checks the boundary and sets the buttons to collect data
     const confirm = () => {
-        // construction boundary
+        // constructed boundary
         if(boundIndex === 0){
             // line size check, needs at least 2 points
             if(currentPathSize < 2){
-                setErrorMsg("Need at least 2 points to confirm a Construction Boundary");
+                setErrorMsg("Need at least 2 points to confirm a Constructed Boundary");
                 setErrorModal(true);
                 return
             }
@@ -388,7 +388,7 @@ export function BoundaryTest(props){
     const boundaryType = (val) =>{
         if(start){
             if(val === 0){
-                console.log('Construction Boundary');
+                console.log('Constructed Boundary');
                 setBoundIndex(0);
             }
             else if (val === 1){
@@ -413,7 +413,7 @@ export function BoundaryTest(props){
         else{
             return(
                 <View style={styles.buttonRow}>
-                    <Button style={styles.buttons} onPress={() => boundaryType(0)}>Construction</Button>
+                    <Button style={styles.buttons} onPress={() => boundaryType(0)}>Constructed</Button>
                     <Button style={styles.buttons} onPress={() => boundaryType(1)}>Material</Button>
                     <Button style={styles.buttons} onPress={() => boundaryType(2)}>Shelter</Button>
                 </View>

@@ -7,8 +7,8 @@ import { styles } from './sharedMap.styles';
 
 export function BoundaryMap(props) {
 
-    const colors = ['rgba(255, 0, 255, 1)', 'rgba(255, 227, 113, 1)', 'rgba(255, 166, 77, 1)'];
-    // const fills = ['rgba(255, 227, 113, 0.5)', 'rgba(255, 166, 77, 0.5)']
+    const colors = ['rgba(255, 0, 255, 1)', 'rgba(0, 255, 193, 1)', 'rgba(255, 166, 77, 1)'];
+    // const fills = ['rgba(0, 255, 193, 0.5)', 'rgba(255, 166, 77, 0.5)']
 
     // Custom colored data pin
     const DataPin = () =>{
