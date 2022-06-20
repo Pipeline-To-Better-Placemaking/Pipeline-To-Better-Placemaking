@@ -72,7 +72,7 @@ function App(){
             <div id='userRoutes'>
                 <AppNavBar passLogout={passLogout} passToken={token}/>
                 <Routes>
-                    <Route index element={<Home />} />
+                    <Route index element={<Home passtoken={token}/>} />
                     <Route path='teams/:id/*'element={<TeamPages />} />
                     <Route path='settings' element={<SettingsPage />} />
                 </Routes>
