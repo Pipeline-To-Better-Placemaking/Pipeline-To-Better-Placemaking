@@ -47,7 +47,7 @@ function App(){
         return(
             <div id='teamPages'>
                 <Routes>
-                    <Route index element={<TeamHome passtoken={token}/>}/>
+                    <Route index element={<TeamHome />}/>
                     <Route path='project/:id/*' element={<ProjectPage />} />
                     <Route path='new' element={<NewProject />} />
                     <Route path='new/area/points' element={<NewProjectPoints />} />
@@ -72,7 +72,7 @@ function App(){
             <div id='userRoutes'>
                 <AppNavBar passLogout={passLogout} passToken={token}/>
                 <Routes>
-                    <Route index element={<Home passtoken={token}/>} />
+                    <Route index element={<Home passToken={token}/>} />
                     <Route path='teams/:id/*'element={<TeamPages />} />
                     <Route path='settings' element={<SettingsPage />} />
                 </Routes>
