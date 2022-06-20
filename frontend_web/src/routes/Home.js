@@ -3,12 +3,17 @@ import Button from '@mui/material/Button';
 import DisplayCards from '../components/DisplayCards';
 import { Link } from 'react-router-dom';
 
-function Home(){
+function Home(props){
+    let i = 0;
+
+    const token = {
+        teams: props.passToken.user?.teams ? props.passToken.user.teams : '605e57007a68230004c01a2d'
+    }
 
     const teams = [
         {
-            _id: 'jfgn49wgnh58w9hg5uw4n859hw4g549g', 
-            title: 'Test'
+            _id: token.teams[0], 
+            title: token.teams[0].title
         }
     ]
 
