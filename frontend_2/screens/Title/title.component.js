@@ -14,7 +14,7 @@ export const TitleScreen = ({ navigation }) => {
     Animated.loop(
       Animated.timing(spinValue, {
         toValue: 1,
-        duration: 10000,
+        duration: 60000,
         easing: Easing.linear,
         useNativeDriver: true,
       })
