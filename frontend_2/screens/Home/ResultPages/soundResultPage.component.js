@@ -60,7 +60,8 @@ export function SoundResultPage(props) {
   }
 
   if (props.selectedResult === null ||
-      !props.selectedResult.success) {
+      !props.selectedResult.success ||
+      props.selectedResult.graph === undefined) {
     return (
       <ViewableArea>
         {isUserTeamOwner(props.team, props.userId)

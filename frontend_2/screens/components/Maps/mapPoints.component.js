@@ -266,7 +266,7 @@ export const PressMapAreaWrapper = ({children, area, mapHeight, onPress, recente
 
   // recenters the map only if the recenter bool is true
   if(recenter) _mapView.current.animateToRegion(defaultRegion, 750);
-
+  
   return (
     <View>
       <MapView

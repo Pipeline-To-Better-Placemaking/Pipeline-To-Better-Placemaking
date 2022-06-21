@@ -17,7 +17,8 @@ export async function getProject(project) {
       })
       projectDetails = await response.json();
       success = true
-  } catch (error) {
+      console.log(projectDetails);
+    } catch (error) {
       console.log("error getting project", error)
   }
   if(projectDetails.success !== undefined){
@@ -103,7 +104,7 @@ export async function getFilteredProjectDetails(project) {
       let removeIndex = projectDetails.surveyCollections.findIndex(element => element._id === pastSurveyCollections[i]._id);
       projectDetails.surveyCollections.splice(removeIndex, 1);
     }
-
+    // sound test
     let pastSoundCollections = [];
     if(projectDetails.soundCollections != null) {
       for(let i = 0; i < projectDetails.soundCollections.length; i++) {
@@ -122,11 +123,33 @@ export async function getFilteredProjectDetails(project) {
         let removeIndex = projectDetails.soundCollections.findIndex(element => element._id === pastSoundCollections[i]._id);
         projectDetails.soundCollections.splice(removeIndex, 1);
       }
+    // boundary test
+    let pastBoundariesCollections = [];
+    if(projectDetails.boundariesCollections != null) {      
+      for(let i = 0; i < projectDetails.boundariesCollections.length; i++) {
+        let collection = projectDetails.boundariesCollections[i];
+        collection.test_type = 'boundary';
+        
+        //console.log(collection.date);
+        
+        // handle date
+        collection.date = new Date(collection.date);
+        if (moment(today).isAfter(collection.date, 'day')) {
+          pastBoundariesCollections.push(collection);
+        }
+        projectDetails.boundariesCollections[i] = collection;
+      }
+    }
+    // remove collections from the list that are in the past
+    for(let i = 0; i < pastBoundariesCollections.length; i++) {
+      let removeIndex = projectDetails.boundariesCollections.findIndex(element => element._id === pastBoundariesCollections[i]._id);
+      projectDetails.boundariesCollections.splice(removeIndex, 1);
+    }
 
     //add new tests stuff here
     
-    projectDetails.activities = [...projectDetails.stationaryCollections, ...projectDetails.movingCollections, ...projectDetails.surveyCollections, ...projectDetails.soundCollections];
-    projectDetails.pastActivities = [...pastStationaryCollections, ...pastMovingCollections, ...pastSurveyCollections, ...pastSoundCollections];
+    projectDetails.activities = [...projectDetails.stationaryCollections, ...projectDetails.movingCollections, ...projectDetails.surveyCollections, ...projectDetails.soundCollections, ...projectDetails.boundariesCollections];
+    projectDetails.pastActivities = [...pastStationaryCollections, ...pastMovingCollections, ...pastSurveyCollections, ...pastSoundCollections, ...pastBoundariesCollections];
     return projectDetails;
   } else {
     return null;
@@ -408,19 +431,30 @@ export async function getAllCollectionInfo(collectionDetails) {
       }
       success = true
     }
-
-    //added for the sound test (modeled after moving and stationary if blocks)
   } else if(collectionDetails.test_type === 'sound') {
     // get the collection info
     collectionDetails = await getCollection('sound/', collectionDetails);
     success = (collectionDetails !== null);
     // get the timeSlot info
-    //should this be collectionDetails.maps ?
     if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
       for (let i = 0; i < collectionDetails.maps.length; i++) {
         let item = collectionDetails.maps[i];
-        //should this be sound_maps/ ? etc.
         let timeSlot = await getTimeSlot('sound_maps/', item._id);
+        success = (timeSlot !== null)
+        if (success)
+          timeSlots.push(timeSlot);
+      }
+      success = true
+    }
+  } else if(collectionDetails.test_type === 'boundary') {
+    // get the collection info
+    collectionDetails = await getCollection('boundaries/', collectionDetails);
+    success = (collectionDetails !== null);
+    // get the timeSlot info
+    if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
+      for (let i = 0; i < collectionDetails.maps.length; i++) {
+        let item = collectionDetails.maps[i];
+        let timeSlot = await getTimeSlot('boundaries_maps/', item._id);
         success = (timeSlot !== null)
         if (success)
           timeSlots.push(timeSlot);
@@ -447,8 +481,9 @@ export async function getAllResults(projectDetails) {
   results = await getStationaryResults(projectDetails, results);
   results = await getMovingResults(projectDetails, results);
   results = await getSurveyResults(projectDetails, results);
-  //added for the sound test
+  // security activities
   results = await getSoundResults(projectDetails, results);
+  results = await getBoundaryResults(projectDetails, results);
   return  results;
 }
 
@@ -491,7 +526,6 @@ export async function getSurveyResults(projectDetails, results) {
   return results;
 }
 
-//added for the sound test
 export async function getSoundResults(projectDetails, results) {
   // loop through all Sound Test collections and get all of the maps
   for (let i = 0; i < projectDetails.soundCollections.length; i++) {
@@ -501,6 +535,20 @@ export async function getSoundResults(projectDetails, results) {
       let tempObj = await helperGetResult(id, 'sound_maps/', "sound", collection, projectDetails);
       results.push(tempObj);
     }  
+  }
+  return results;
+}
+
+export async function getBoundaryResults(projectDetails, results) {
+  // loop through all Boundary Test collections and get all of the maps
+  //console.log(projectDetails.boundariesCollections);
+  for (let i = 0; i < projectDetails.boundariesCollections.length; i++) {
+    let collection = projectDetails.boundariesCollections[i];
+    for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
+      let id = collection.maps[j];
+      let tempObj = await helperGetResult(id, 'boundaries_maps/', "boundary", collection, projectDetails);
+      results.push(tempObj);
+    }
   }
   return results;
 }

@@ -49,6 +49,29 @@ export const styles = StyleSheet.create({
         marginTop:15
     },
 
+    // used for the pie charts
+    
+    pieLegend:{
+        flexDirection:'row',
+        justifyContent: 'flex-end',
+        marginTop: 5
+    },
+
+    pieLegendView:{
+        flex: 1,
+        marginTop: 2,
+        padding: 8,
+        alignSelf: 'flex-end',
+        backgroundColor: '#3D3D3D',
+        borderWidth: 1,
+        borderRadius: 20,
+        borderColor: "#3D3D3D"
+    },
+
+    whiteText:{
+        color: '#FFFFFF'
+    }
+
 });
 
 export default styles;

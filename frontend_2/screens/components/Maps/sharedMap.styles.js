@@ -5,12 +5,21 @@ const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
 
-//dataPin style is shared between stationaryMapResults, stationaryActivityMap, and peopleMovingMap (for the datapin)
+    // dataPin style is shared between stationaryMapResults, stationaryActivityMap, and peopleMovingMap (for the datapin)
     dataPin:{
         borderRadius: 75, 
         borderWidth: 1, 
         width: 15, 
         height: 15
+    },
+    
+    // used for the other tests that require drawing boundaries (boundary test and nature test)
+    redDataPin:{
+        borderRadius: 75, 
+        borderWidth: 1, 
+        width: 15, 
+        height: 15,
+        backgroundColor: 'red'
     },
 
     soundDataPin:{
@@ -48,6 +57,21 @@ export const styles = StyleSheet.create({
 
     spacing:{
         marginBottom: height * .01
+    },
+
+    filterView:{ 
+        flexDirection: 'row', 
+        justifyContent:'center', 
+        alignSelf:'center',
+        margin: 3
+    },
+    
+    filterSelect:{
+        width: 250,
+        borderWidth: 1,
+        borderColor: '#edf1f7',
+        borderRadius: 6,
+        backgroundColor: '#edf1f7',
     },
 
 });

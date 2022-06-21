@@ -14,7 +14,7 @@ export function ActivitySignUpPage(props) {
 
   //add the new tests here
   // Constant array of activities
-  const activityList = ["stationary", "moving", "survey", "sound"]
+  const activityList = ["stationary", "moving", "survey", "sound", "boundary"]
 
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -67,8 +67,17 @@ export function ActivitySignUpPage(props) {
             <View style={styles.viewSpacer}>
               <Text category='s1'>Activity: {retrieveTestName(props.activity.test_type)}</Text>
               <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
-              {/* add stuff for the new tests here to be time at site (all but sound test) */}
-              <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
+              { props.activity.test_type === activityList[3] ?
+                  <Text>Time per Standing Point: {props.activity.duration} (sec)</Text>
+                :
+                  <Text>
+                    {(props.activity.test_type === activityList[2] || props.activity.test_type === activityList[4] ? 
+                      "Time at Site:"
+                    : 
+                      "Time per Standing Point:"
+                    )} {props.activity.duration} (min)
+                  </Text>
+              }
             </View>
           </ContentContainer>
         </ViewableArea>
@@ -77,7 +86,7 @@ export function ActivitySignUpPage(props) {
 
   // add stuff for new tests to ignore standing points (all but sound test)
   // standing point error checking
-  if (props.activity.test_type !== activityList[2]) {
+  if (props.activity.test_type !== activityList[2] && props.activity.test_type !== activityList[4]){
       let allGood = true;
       for (let i = 0; i < props.timeSlots.length; i++) {
         let points = props.timeSlots[i].standingPoints;
@@ -105,7 +114,17 @@ export function ActivitySignUpPage(props) {
                 <Text category='s1'>Activity: {retrieveTestName(props.activity.test_type)}</Text>
                 <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
                 {/* add stuff for the new tests here to be time at site (all but sound test) */}
-                <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
+                { props.activity.test_type === activityList[3] ?
+                  <Text>Time per Standing Point: {props.activity.duration} (sec)</Text>
+                :
+                  <Text>
+                    {(props.activity.test_type === activityList[2] || props.activity.test_type === activityList[4] ? 
+                      "Time at Site:"
+                    : 
+                      "Time per Standing Point:"
+                    )} {props.activity.duration} (min)
+                  </Text>
+                }
               </View>
               <View style={styles.errorView}>
                 <Text status='danger' category='h5' style={styles.errorText}>
@@ -121,11 +140,7 @@ export function ActivitySignUpPage(props) {
 
   const onBeginPress = async (timeSlot, index) => {
 
-    if (props.activity.test_type == activityList[0]) {
-
-      //console.log("Activity: " + JSON.stringify(props.activity))
-      console.log("timeSlot: ", timeSlot);
-
+    if (props.activity.test_type == activityList[0]){
       let activityDetails = {
         _id: timeSlot._id,
         location: timeSlot.sharedData.area.points[0],
@@ -200,13 +215,8 @@ export function ActivitySignUpPage(props) {
       props.navigation.navigate("SurveyActivity")
     }
     //add more else ifs here for the new tests
-    // added for the sound test
-    else if (props.activity.test_type == activityList[3]) {
-
-      //console.log("Activity: " + JSON.stringify(props.activity))
-      console.log("timeSlot: ", timeSlot);
-
-      //took of the *60 on the time props to keep it in seconds; ensure this works as intended
+    // sound test
+    else if (props.activity.test_type == activityList[3]){
       let activityDetails = {
         _id: timeSlot._id,
         location: timeSlot.sharedData.area.points[0],
@@ -230,12 +240,37 @@ export function ActivitySignUpPage(props) {
 
       props.navigation.navigate("SoundTest")
     }
+    // boundary test
+    else if (props.activity.test_type == activityList[4]){
+      let activityDetails = {
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
+        position: [],
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
+      }
+
+      let originalDetails = {
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
+        position: [],
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
+      }
+
+      props.setTimeSlot(activityDetails);
+      props.setInitialTimeSlot(originalDetails);
+
+      props.navigation.navigate("BoundaryTest")
+    }
 
   }
 
   const onSignUp = async (timeSlot, index) => {
-    let tempTimeSlots = [...props.timeSlots];
 
+    let tempTimeSlots = [...props.timeSlots];
     let tempSlot = {...timeSlot};
     let tempResearchers = [...timeSlot.researchers];
     let max = timeSlot.maxResearchers;
@@ -250,6 +285,8 @@ export function ActivitySignUpPage(props) {
       route = 'surveys/';
     } else if (props.activity.test_type === activityList[3]) {
       route = 'sound_maps/';
+    } else if (props.activity.test_type === activityList[4]) {
+      route = 'boundaries_maps/';
     }
     //add new tests to this ^
 
@@ -257,7 +294,7 @@ export function ActivitySignUpPage(props) {
     let findIndex = tempResearchers.findIndex(element => element._id === props.userId)
     if (findIndex >= 0) {
       max = -1; // don't add the user
-      removeUser(timeSlot, route);
+      await removeUser(timeSlot, route);
       tempResearchers.splice(findIndex, 1);
       tempSlot.researchers = tempResearchers;
       tempTimeSlots[index] = tempSlot;
@@ -267,7 +304,7 @@ export function ActivitySignUpPage(props) {
     // if there's space to add another researcher
     if(max > 0 && (max-len) > 0) {
       let success = false
-      success = signUpTimeSlot(timeSlot, route);
+      success = await signUpTimeSlot(timeSlot, route);
 
       if (success) {
         // add user locally
@@ -303,7 +340,6 @@ export function ActivitySignUpPage(props) {
         console.log("ERROR: ", error)
         success = false
     }
-
     return success;
   }
 
@@ -381,17 +417,28 @@ export function ActivitySignUpPage(props) {
         <View style={styles.infoColumn}>
           <Text>Start Time: {getTimeStr(item.date)}</Text>
           {/* add new tests here; to ignore standing points (for all but sound test) */}
-          {(props.activity.test_type === activityList[2] ? null : <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>)}
+          {(props.activity.test_type === activityList[2] || props.activity.test_type === activityList[4] ? 
+            null 
+          : 
+            <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>)
+          }
           <Text>Researchers:</Text>
           <Text>{getResearchers(item)}</Text>
         </View>
         <View style={styles.buttonView}>
-          <Button status='info' style={styles.button} onPress={() => onSignUp(item, index)}>
-            Sign Up
-          </Button>
-          {isSignedUp(item, props.userId) &&
-            <Button status='success' style={styles.button} onPress={() => onBeginPress(item, index)}>
-              Begin
+          {isSignedUp(item, props.userId) ?
+            <View>
+              <Button status='primary' style={styles.button} onPress={() => onSignUp(item, index)}>
+                Withdraw
+              </Button>
+              
+              <Button status='success' style={styles.button} onPress={() => onBeginPress(item, index)}>
+                Begin
+              </Button>
+            </View>
+          :
+            <Button status='info' style={styles.button} onPress={() => onSignUp(item, index)}>
+              Sign Up
             </Button>
           }
         </View>
@@ -413,7 +460,11 @@ export function ActivitySignUpPage(props) {
           <MapAreaWrapper area={props.activity.area.points} mapHeight={'100%'}>
             <ShowArea area={props.activity.area.points} />
             {/* add new tests here; to ignore standing points (for all but sound test) */}
-            {(props.activity.test_type === activityList[2] ? null : <ShowMarkers markers={props.project.standingPoints} />)}
+            {(props.activity.test_type === activityList[2] || props.activity.test_type === activityList[4] ? 
+              null 
+            : 
+              <ShowMarkers markers={props.project.standingPoints} />)
+            }
           </MapAreaWrapper>
         </View>
         <View style={styles.viewSpacer}>
@@ -423,7 +474,13 @@ export function ActivitySignUpPage(props) {
           { props.activity.test_type === activityList[3] ?
             <Text>Time per Standing Point: {props.activity.duration} (sec)</Text>
           :
-            <Text>{(props.activity.test_type === activityList[2] ? "Time at Site:" : "Time per Standing Point:")} {props.activity.duration} (min)</Text>
+            <Text>
+              {(props.activity.test_type === activityList[2] || props.activity.test_type === activityList[4] ? 
+                "Time at Site:"
+              : 
+                "Time per Standing Point:"
+              )} {props.activity.duration} (min)
+            </Text>
           }
         </View>
         <View style={styles.listView}>

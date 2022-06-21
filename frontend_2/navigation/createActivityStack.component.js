@@ -59,7 +59,7 @@ export function CreateActivityStack(props) {
     await setDate(props.activity.date);
     await setDuration('' + props.activity.duration);
     
-    let types = ['stationary', 'moving', 'survey', 'sound'];
+    let types = ['stationary', 'moving', 'survey', 'sound', 'boundary'];
     let activityIndex = types.findIndex(element => element === props.activity.test_type);
     setSelectedActivity(new IndexPath(activityIndex));
     if (props.activity.area === null) {
@@ -98,7 +98,8 @@ export function CreateActivityStack(props) {
         }
         tempTimeSlots.push(timeSlot);
       }
-    } else if (activityIndex === 2 && props.activity.surveys !== null && props.activity.surveys.length >= 1) {
+    } 
+    else if (activityIndex === 2 && props.activity.surveys !== null && props.activity.surveys.length >= 1) {
       props.activity.surveys.map(timeSlot => {
         // date to value
         timeSlot.date = new Date(timeSlot.date);
@@ -108,6 +109,19 @@ export function CreateActivityStack(props) {
         timeSlot.maxResearchers = '' + timeSlot.maxResearchers;
         tempTimeSlots.push(timeSlot);
       })
+    }
+    else if (activityIndex === 4 && props.activity.maps !== null && props.activity.maps.length >= 1){
+      for (let j = 0; j < props.activity.maps.length ; j++) {
+        let timeSlot = props.activity.maps[j];
+        // date to value
+        timeSlot.date = new Date(timeSlot.date);        
+        // displayable timeString
+        timeSlot.timeString = getTimeStr(new Date(timeSlot.date));
+        // num researchers to string
+        timeSlot.maxResearchers = '' + timeSlot.maxResearchers;
+        // no standing point information should be collected
+        tempTimeSlots.push(timeSlot);
+      }
     }
     await setErrorMessages(msg => msg + "\n\tPlease save the Activity.");
     await setTimeSlots(tempTimeSlots);
@@ -138,6 +152,9 @@ export function CreateActivityStack(props) {
       else if (row === 3) { // Sound
         await putCollection(name, 'sound', '/sound_collections', 'sound_maps/');
       }
+      else if (row === 4) { // Boundary
+        await putCollection(name, 'boundary', '/boundaries_collections', 'boundaries_maps/');
+      }
       await props.setUpdateActivity(false);
       props.navigation.navigate('ProjectPage')
     }
@@ -154,6 +171,9 @@ export function CreateActivityStack(props) {
       }
       else if (row === 3) { // Sound
         await postCollection(name, 'sound', '/sound_collections', 'sound_maps/');
+      }
+      else if (row === 4) { // Boundary
+        await postCollection(name, 'boundary', '/boundaries_collections', 'boundaries_maps/');
       }
 
       // Navigate back to Project page
@@ -217,7 +237,7 @@ export function CreateActivityStack(props) {
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
     // treat the new tests as survey (no standing points) except for the sound test
-    if (test_type !== "survey") {
+    if (test_type !== "survey" && test_type !== "boundary") {
       if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
         selectedPoints = timeSlot.assignedPointIndicies.map(index => {
           return standingPoints[index.row];
@@ -349,7 +369,7 @@ export function CreateActivityStack(props) {
     let success = false
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
-    if (test_type !== "survey") {
+    if (test_type !== "survey" && test_type !== "boundary") {
       if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
         selectedPoints = timeSlot.assignedPointIndicies.map(index => {
           return standingPoints[index.row];
@@ -415,6 +435,7 @@ export function CreateActivityStack(props) {
     let success = false
     let res = null
     let collectionName = '/' + props.activity.test_type + '_collections';
+    if(props.activity.test_type === 'boundary') collectionName = '/boundaries_collections';
     try {
       const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
                                     props.project._id +

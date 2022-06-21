@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button } from '@ui-kitten/components';
@@ -69,7 +69,9 @@ export function SoundTest(props){
 
     // ends activity, packages and sends data to the DB
     const endActivity = async () => {
+        
         setStart(false);
+
         console.log('ending activity');
         
         // calculates average for each standing point and stores it in its array
@@ -391,6 +393,7 @@ export function SoundTest(props){
                         position={position[standingIndex]}
                         recenter={recenter}
                     />
+
             </ContentContainer>
         </ViewableArea>
     );

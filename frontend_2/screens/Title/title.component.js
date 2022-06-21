@@ -1,29 +1,31 @@
-import React from 'react';
-import { View, ScrollView, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Animated, Easing, Image } from 'react-native';
 import { Text, Button } from '@ui-kitten/components';
 import { BlueViewableArea } from '../components/content.component';
+
 import { styles } from './title.styles';
 
-const ImageCircleCity = (props) => (
-  <View style={styles.circle}>
-    <Image
-      style={styles.image}
-      source={require('../../images/city-isometric.jpg')}
-    />
-  </View>
-);
-
-const ImageCircleConstruction = (props) => (
-  <View style={styles.circle}>
-    <Image
-      style={styles.image}
-      source={require('../../images/construction.jpeg')}
-    />
-  </View>
-);
-
 export const TitleScreen = ({ navigation }) => {
-
+  
+  let spinValue = new Animated.Value(0);
+  
+  // main control of rotating animation
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(spinValue, {
+        toValue: 1,
+        duration: 60000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    ).start()
+  }, []);
+  
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
+  
   const navigateLogin = () => {
     navigation.navigate('Login');
   };
@@ -34,15 +36,13 @@ export const TitleScreen = ({ navigation }) => {
 
   return (
     <BlueViewableArea>
-      <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.container}>
 
-        <View style={{flexDirection:'row', margin:30, marginRight:-50}}>
-          <View style={{marginRight:-50}}>
-            <ImageCircleCity/>
-          </View>
-          <View style={{marginTop:50}}>
-            <ImageCircleConstruction/>
-          </View>
+        <View style={styles.logoView}>
+          <Animated.Image
+            style={[styles.image, {transform:[{rotate: spin}]}]} 
+            source={require('../../images/Logo-Coin.png')}
+          />
         </View>
 
 
@@ -62,7 +62,7 @@ export const TitleScreen = ({ navigation }) => {
           </Text>
         </Button>
 
-      </ScrollView>
+      </View>
     </BlueViewableArea>
   );
 };

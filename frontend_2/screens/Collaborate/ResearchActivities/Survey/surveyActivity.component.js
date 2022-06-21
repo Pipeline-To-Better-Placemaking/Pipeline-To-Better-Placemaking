@@ -22,7 +22,7 @@ export function SurveyActivity(props) {
   // controls the rendered countdown timer
   const [timer, setTimer] = useState(initalTime);
   // controls timer interval instance
-  let id;
+  const [id, setId] = useState();
 
   const endActivity = () => {
     setStart(false);
@@ -42,17 +42,18 @@ export function SurveyActivity(props) {
   // begins/updates the timer
   function startTime(current){
       let count = current;
-      id = setInterval(() =>{            
+      setId(setInterval(() =>{            
           count--;
           // timer is what actually gets rendered so update every second
           setTimer(count);
-          // when the timer hits 0, end the test (test this to see if it works!!)
+          // when the timer hits 0, end the test
           if(count === 0){
             setStart(false);
             clearInterval(id);
+            endActivity();
           }
       // 1000 ms == 1 s
-      }, 1000);
+      }, 1000));
   }
 
   const StartStopButton = () => {

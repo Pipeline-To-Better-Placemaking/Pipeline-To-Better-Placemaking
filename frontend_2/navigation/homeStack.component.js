@@ -10,11 +10,14 @@ import { StationaryCompare } from '../screens/Home/Compare/stationaryCompare.com
 import { MovingCompare } from '../screens/Home/Compare/movingCompare.component.js'
 import { StationaryActivityResultView } from '../screens/Home/ResultPages/stationaryMapResults.component.js'
 import { MovingMapResultsView } from '../screens/Home/ResultPages/movingMapResultsView.component.js';
-// new tests result screens
+// sound test result screens
 import { SoundResultPage } from '../screens/Home/ResultPages/soundResultPage.component';
 import { SoundMapResultsView } from '../screens/Home/ResultPages/soundMapResults.component';
 import { SoundCompare } from '../screens/Home/Compare/soundCompare.component';
-
+// boundary test result screens
+import { BoundaryResultPage } from '../screens/Home/ResultPages/boundaryResultPage.component';
+import { BoundaryMapResultsView } from '../screens/Home/ResultPages/boundaryMapResults.component';
+import { BoundaryCompare } from '../screens/Home/Compare/boundaryCompare.component';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -151,6 +154,17 @@ export function HomeScreenStack(props){
       </Screen>
 
       <Screen
+        name="BoundaryCompare"
+      >
+      {props =>
+        <BoundaryCompare 
+          {...props}
+          results={compareResults}
+        />
+      }
+      </Screen>
+
+      <Screen
         name='ProjectResultPage'
       >
       {props =>
@@ -234,6 +248,23 @@ export function HomeScreenStack(props){
       </Screen>
 
       <Screen
+        name='BoundaryResultPage'
+      >
+      {props =>
+        <BoundaryResultPage 
+          {...props}
+          token={token}
+          userId={userId}
+          project={selectedProject}
+          team={selectedTeam}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+          setResults={setResults}
+        />
+      }
+      </Screen>
+
+      <Screen
         name='StationaryActivityResultView'
       >
         {props =>
@@ -262,6 +293,18 @@ export function HomeScreenStack(props){
       >
       {props=>
         <SoundMapResultsView 
+          {...props}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+        />
+      }
+      </Screen>
+
+      <Screen
+        name='BoundaryMapResultsView'
+      >
+      {props=>
+        <BoundaryMapResultsView 
           {...props}
           selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}
