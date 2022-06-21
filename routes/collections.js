@@ -48,12 +48,12 @@ router.get('/boundaries/:id', passport.authenticate('jwt',{session:false}), asyn
 
 })
 
-// router.get('/nature/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-//     res.status(200).json(await Nature_Collection.findById(req.params.id)
-//                                                 .populate('area')
-//                                                 .populate('maps'))
+router.get('/nature/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    res.status(200).json(await Nature_Collection.findById(req.params.id)
+                                                .populate('area')
+                                                .populate('maps'))
 
-// })
+})
 
 // router.get('/light/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
 //     res.status(200).json(await Light_Collection.findById(req.params.id)
