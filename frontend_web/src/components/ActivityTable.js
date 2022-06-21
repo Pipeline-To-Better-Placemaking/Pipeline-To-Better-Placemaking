@@ -12,13 +12,13 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const testNames = {
-    stationaryCollections: 'Humans in Place',
-    movingCollections: 'Humans in Motion',
-    orderCollections: 'Absence of Order Locator',
-    boundaryCollections: 'Spatial Boundaries',
-    lightingCollections: 'Lighting Profile',
-    natureCollections: 'Nature Prevalence',
-    soundCollections: 'Acoustical Profile'
+    stationary_collections: 'Humans in Place',
+    moving_collections: 'Humans in Motion',
+    order_collections: 'Absence of Order Locator',
+    boundary_collections: 'Spatial Boundaries',
+    lighting_collections: 'Lighting Profile',
+    nature_collections: 'Nature Prevalence',
+    sound_collections: 'Acoustical Profile'
 };
 
 // Collapsible Table for Activity Page
@@ -97,13 +97,13 @@ const subtable = (row, type) => (
                                     { testNames[instance.split('.')[0]] }
                                 </TableCell>
                                 <TableCell colSpan={1} className='value'>
-                                    { 
-                                        instance.split('.')[0] === 'soundCollections' ? `${point.average} dB` : (point.area ? `${point.area} sq.ft.` : (point.type ? `${point.type}` : (point.distance ? `${point.distance} ft.` : 'N/A')))
+                                    {
+                                        instance.split('.')[0] === 'sound_collections' ? `${point.average} dB` : (point.area ? `${point.area} sq.ft.` : (point.type ? `${point.type}` : (point.distance ? `${point.distance} ft.` : (point.posture ? point.posture : (point.movement ? `${point.movement}` : 'N/A')))))
                                     }
                                 </TableCell>
                                 <TableCell>
                                     {   
-                                        point.result ? point.result : (point.posture ? point.posture : 'N/A')
+                                        point.result ? point.result : (point.age ? `${point.age} ${point.gender} ${point.activity}` : 'N/A')
                                     }
                                 </TableCell>
                                 <TableCell>Location { ind }</TableCell>

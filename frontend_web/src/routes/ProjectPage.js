@@ -14,43 +14,52 @@ function ProjectPage(){
 
     const drawers = {
         Activities: {
-            stationaryCollections: {
+            stationary_collections: {
                 '3/1/22': {
                     '2:00': {
-                        surveyor: 'Bob Minns',
+                        researcher: 'Bob Minns',
                         data: [
                             {
                                 point: {
                                     lat: 28.603643447056765,
                                     lng: -81.19916117597768
                                 },
-                                posture: 'laying'
+                                posture: 'Laying',
+                                age: '22-30',
+                                gender: 'Male',
+                                activity: ['Solitary', 'Waiting']
                             },
                             {
                                 point: {
                                     lat: 28.603991964597586,
                                     lng: -81.19940793919763
                                 },
-                                posture: 'sitting'
+                                posture: 'Sitting',
+                                age: '30-50',
+                                gender: 'Female',
+                                activity: ['Socializing', 'Eating']
                             },
                             {
                                 point: {
                                     lat: 28.60417328745557,
                                     lng: -81.19930065084112
                                 },
-                                posture: 'standing'
+                                posture: 'Standing',
+                                age: '30-50',
+                                gender: 'Male',
+                                activity: 'Socializing'
                             }
                         ]
                     }
                 }
             },
-            movingCollections: {
+            moving_collections: {
                 '3/2/22': {
                     '2:00': {
-                        surveyor: 'Bob Minns',
+                        researcher: 'Bob Minns',
                         data: [
                             {
-                                movement: 'walking',
+                                mode: 'Walking',
                                 path: [
                                     {
                                         lat: 28.60362836407018, 
@@ -68,7 +77,7 @@ function ProjectPage(){
                                 ]
                             },
                             {
-                                movement: 'running',
+                                mode: 'Running',
                                 path: [
                                     {
                                         lat: 28.60394862352107, 
@@ -86,7 +95,7 @@ function ProjectPage(){
                                 ]
                             },
                             {
-                                movement: 'handicap',
+                                mode: 'Handicap assisted wheels',
                                 path: [
                                     {
                                         lat: 28.60335637825532, 
@@ -112,10 +121,10 @@ function ProjectPage(){
                 }
 
             },
-            orderCollections: {
+            order_collections: {
                 '2/22/22': {
                     '18:00': {
-                        surveyor: 'Anna Smith',
+                        researcher: 'Anna Smith',
                         data: [
                             {
                                 standingPoint: {
@@ -169,13 +178,13 @@ function ProjectPage(){
                     }
                 }
             },
-            boundaryCollections: {
+            boundary_collections: {
                 '2/29/22': {
                     '16:00': {
-                        surveyor: 'Sam Iam',
+                        researcher: 'Sam Iam',
                         data: [
                             {
-                                boundary: [
+                                path: [
                                     {
                                         lat: 28.60291560437277, 
                                         lng: -81.20098575289026
@@ -193,11 +202,12 @@ function ProjectPage(){
                                         lng: -81.20100385780037
                                     }
                                 ],
-                                result: 'material',
-                                area: 80
+                                kind: 'Material',
+                                description: 'bricks',
+                                value: 80
                             },
                             {
-                                boundary: [
+                                path: [
                                     {
                                         lat: 28.602674408332604, 
                                         lng: -81.2008203704324
@@ -215,8 +225,9 @@ function ProjectPage(){
                                         lng: -81.20079876768224
                                     }
                                 ],
-                                result: 'shelter',
-                                area: 300
+                                kind: 'Shelter',
+                                description: 'constructed',
+                                value: 300
                             },
                             {
                                 path:[
@@ -229,11 +240,12 @@ function ProjectPage(){
                                         lng: -81.20074444139789
                                     }
                                 ],
-                                result: 'constructed',
-                                distance: 200
+                                kind: 'Constructed',
+                                description: 'building wall',
+                                value: 200
                             },
                             {
-                                boundary:[
+                                path:[
                                     {
                                         lat: 28.603032029455452, 
                                         lng:-81.2001763275537
@@ -247,16 +259,17 @@ function ProjectPage(){
                                         lng: -81.20003669015477
                                     }
                                 ],
-                                result: 'shelter',
-                                area: 276
+                                kind: 'Shelter',
+                                description: 'canopy',
+                                value: 276
                             }
                         ]
                     },
                     '18:00':{
-                        surveyor: 'Billy Bob',
+                        researcher: 'Billy Bob',
                         data: [
                             {
-                                boundary: [
+                                path: [
                                     {
                                         lat: 28.602212394739325, 
                                         lng: -81.1999053211601
@@ -270,8 +283,9 @@ function ProjectPage(){
                                         lng:- 81.19971727735182
                                     }
                                 ],
-                                result: 'shelter', 
-                                area: 350
+                                kind: 'Shelter',
+                                description: 'canopy',
+                                value: 350
                             },
                             {
                                 path: [
@@ -284,17 +298,18 @@ function ProjectPage(){
                                         lng: -81.19978518206037
                                     }
                                 ],
-                                result: 'constructed',
-                                distance: 100
+                                kind: 'Constructed',
+                                description: 'building wall',
+                                value: 100
                             }
                         ]
                     }
                 }
             },
-            lightingCollections: {
+            lighting_collections: {
                 '2/29/22': {
                     '12:00': {
-                        surveyor: 'Nick Names',
+                        researcher: 'Nick Names',
                         data: [
                             {
                                 standingPoint: {
@@ -307,10 +322,10 @@ function ProjectPage(){
                     }
                 }
             },
-            natureCollections: {
+            nature_collections: {
                 '2/29/22': {
                     '12:00': {
-                        surveyor: 'Jane Doe',
+                        researcher: 'Jane Doe',
                         data: [
                             {
                                 point: {
@@ -355,7 +370,7 @@ function ProjectPage(){
                                 result: 'plants'
                             },
                             {
-                                boundary: [
+                                path: [
                                     {
                                         lat: 28.603006681174694,
                                         lng: -81.20089406924859
@@ -398,297 +413,369 @@ function ProjectPage(){
                                     }
                                 ],
                                 result: 'water',
-                                area: '400'
+                                value: 400
                             }
                         ]
                     }
                 }
             },
-            soundCollections: {
+            sound_collections: {
                 '2/29/22': {
                     '14:00': {
-                        surveyor: 'Bob Minns',
+                        researcher: 'Bob Minns',
                         data: [
                             {
                                 standingPoint: {
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: 70
+                                average: 70,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: 80
+                                average: 80,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: 33
+                                average: 33,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: 40
+                                average: 40,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                average: 68.8
+                                average: 68.8,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.602728806480098,
                                     lng: -81.19716311630009
                                 },
-                                average: 90
+                                average: 90,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             }
                         ]
                     }
                 },
                 '4/1/22': {
                     '12:00': {
-                        surveyor: 'Jane Doe',
+                        researcher: 'Jane Doe',
                         data: [
                             {
                                 standingPoint: {
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: 40
+                                average: 40,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: 67
+                                average: 67,
+                                sound_type: ['animals', 'wind', 'music (entertainment)'],
+                                source: 'music (entertainment)'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: 44
+                                average: 44,
+                                sound_type: ['water feature', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: 37
+                                average: 37,
+                                sound_type: ['water feature', 'wind', 'people sounds'],
+                                source: 'water feature'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                average: 70
+                                average: 70,
+                                sound_type: ['music (entertainment)', 'traffic', 'people sounds'],
+                                source: 'music (entertainment)'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.602728806480098,
                                     lng: -81.19716311630009
                                 },
-                                average: 75
+                                average: 75,
+                                sound_type: ['animals', 'traffic', 'people sounds', 'music (entertainment)'],
+                                source: 'people sounds'
                             }
                         ]
                     },
                     '14:00': {
-                        surveyor: 'Sam Iam',
+                        researcher: 'Sam Iam',
                         data: [
                             {
                                 standingPoint: {
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: 60
+                                average: 60,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: 72
+                                average: 72,
+                                sound_type: ['traffic', 'music (entertainment)', 'people sounds'],
+                                source: 'music (entertainment)'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: 39
+                                average: 39,
+                                sound_type: ['water feature', 'wind', 'people sounds'],
+                                source: 'water feature'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: 40
+                                average: 40,
+                                sound_type: ['wind', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                average: 50
+                                average: 50,
+                                sound_type: ['traffic', 'people sounds'],
+                                source: 'traffic'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.602728806480098,
                                     lng: -81.19716311630009
                                 },
-                                average: 40.5
+                                average: 40.5,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             }
                         ]
                     }
                 },
                 '12/2/21': {
                     '12:00': {
-                        surveyor: 'John Smith',
+                        researcher: 'John Smith',
                         data: [
                             {
                                 standingPoint: {
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: 50
+                                average: 50, 
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: 60
+                                average: 60, 
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: 29
+                                average: 29, 
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: 35
+                                average: 35, 
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                average: 33.9
+                                average: 33.9,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.602728806480098,
                                     lng: -81.19716311630009
                                 },
-                                average: 50
+                                average: 50,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             }
                         ]
                     },
                     '14:00': {
-                        surveyor: 'John Smith',
+                        researcher: 'John Smith',
                         data: [
                             {
                                 standingPoint: {
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: 70
+                                average: 70, 
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: 80
+                                average: 80,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: 33
+                                average: 33,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: 40
+                                average: 40, 
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                average: 68.8
+                                average: 68.8,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.602728806480098,
                                     lng: -81.19716311630009
                                 },
-                                average: 90
+                                average: 90,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             }
                         ]
                     },
                     '17:00': {
-                        surveyor: 'Annie Moore',
+                        researcher: 'Annie Moore',
                         data: [
                             {
                                 standingPoint: {
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: 30
+                                average: 30,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: 60
+                                average: 60,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: 40
+                                average: 40,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: 20
+                                average: 20,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.603369329889580,
                                     lng: -81.20129371852886
                                 },
-                                average: 47.8
+                                average: 47.8,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             },
                             {
                                 standingPoint: {
                                     lat: 28.602728806480098,
                                     lng: -81.19716311630009
                                 },
-                                average: 60
+                                average: 60,
+                                sound_type: ['water feature', 'traffic', 'people sounds'],
+                                source: 'people sounds'
                             }
                         ]
                     }
@@ -705,7 +792,7 @@ function ProjectPage(){
 
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
-    //loc.state will be used for maintaining project title across the project sub-pages(map, activities, and surveyors)
+    //loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
 
     return (
         <div id='ProjectPage'>

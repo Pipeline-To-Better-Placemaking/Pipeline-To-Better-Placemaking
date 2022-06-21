@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
-import AddIcon from '@mui/icons-material/Add';
 import DoneIcon from '@mui/icons-material/Done';
 
 import TimeForm from '../components/TimeForm';
@@ -21,13 +19,13 @@ function NewActivityTimes(){
     const [timeSlots, setTimeSlots] = React.useState([]);
 
     const testNames = {
-        stationaryCollections: 'Humans in Place',
-        movingCollections: 'Humans in Motion',
-        orderCollections: 'Absence of Order Locator',
-        boundaryCollections: 'Spatial Boundaries',
-        lightingCollections: 'Lighting Profile',
-        natureCollections: 'Nature Prevalence',
-        soundCollections: 'Acoustical Profile'
+        stationary_collections: 'Humans in Place',
+        moving_collections: 'Humans in Motion',
+        order_collections: 'Absence of Order Locator',
+        boundary_collections: 'Spatial Boundaries',
+        lighting_collections: 'Lighting Profile',
+        nature_collections: 'Nature Prevalence',
+        sound_collections: 'Acoustical Profile'
     };
 
     //dynamically adds removes timeSlot cards for the activity

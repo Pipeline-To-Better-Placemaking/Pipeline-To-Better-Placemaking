@@ -16,13 +16,13 @@ const render = (status) => {
 
 //Official Category Titles
 const testNames = {
-    stationaryCollections: 'Humans in Place',
-    movingCollections: 'Humans in Motion',
-    orderCollections: 'Absence of Order Locator',
-    boundaryCollections: 'Spatial Boundaries',
-    lightingCollections: 'Lighting Profile',
-    natureCollections: 'Nature Prevalence',
-    soundCollections: 'Acoustical Profile'
+    stationary_collections: 'Humans in Place',
+    moving_collections: 'Humans in Motion',
+    order_collections: 'Absence of Order Locator',
+    boundary_collections: 'Spatial Boundaries',
+    lighting_collections: 'Lighting Profile',
+    nature_collections: 'Nature Prevalence',
+    sound_collections: 'Acoustical Profile'
 };
 
 function FullMap(props){
@@ -57,11 +57,13 @@ function FullMap(props){
 
     //holds ALL Collections for rendering
     const [collections, setCollections] = React.useState({
-        orderCollections: orderCollections, 
-        boundaryCollections: boundaryCollections, 
-        lightingCollections: lightingCollections, 
-        natureCollections: natureCollections, 
-        soundCollections: soundCollections
+        stationary_collections: stationaryCollections,
+        moving_collections: movingCollections,
+        order_collections: orderCollections, 
+        boundary_collections: boundaryCollections, 
+        lighting_collections: lightingCollections, 
+        nature_collections: natureCollections, 
+        sound_collections: soundCollections
     });
 
     // onSelection handles the boolean toggling from Map Drawer selections/switches
@@ -69,7 +71,7 @@ function FullMap(props){
     function onSelection(category, date, time, check) {
         var newSelection;
         switch (category){
-            case 'stationaryCollections':
+            case 'stationary_collections':
                 newSelection = stationaryCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -79,9 +81,9 @@ function FullMap(props){
                     newSelection[date].splice(st, 1);
                 }
                 setStationaryCollections(newSelection);
-                setCollections({ ...collections, stationaryCollections: newSelection });
+                setCollections({ ...collections, stationary_collections: newSelection });
                 break;
-            case 'movingCollections':
+            case 'moving_collections':
                 newSelection = movingCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -91,9 +93,9 @@ function FullMap(props){
                     newSelection[date].splice(m, 1);
                 }
                 setMovingCollections(newSelection);
-                setCollections({ ...collections, movingCollections: newSelection });
+                setCollections({ ...collections, moving_collections: newSelection });
                 break;
-            case 'orderCollections':
+            case 'order_collections':
                 newSelection = orderCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -103,9 +105,9 @@ function FullMap(props){
                     newSelection[date].splice(o, 1);
                 }
                 setOrderCollections(newSelection);
-                setCollections({...collections, orderCollections: newSelection});
+                setCollections({...collections, order_collections: newSelection});
                 break;
-            case 'boundaryCollections': 
+            case 'boundary_collections': 
                 newSelection = boundaryCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -115,9 +117,9 @@ function FullMap(props){
                     newSelection[date].splice(b, 1);
                 }
                 setBoundaryCollections(newSelection);
-                setCollections({ ...collections, boundaryCollections: newSelection });
+                setCollections({ ...collections, boundary_collections: newSelection });
                 break;
-            case 'lightingCollections': 
+            case 'lighting_collections': 
                 newSelection = lightingCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -127,9 +129,9 @@ function FullMap(props){
                     newSelection[date].splice(l, 1);
                 }
                 setLightingCollections(newSelection);
-                setCollections({ ...collections, lightingCollections: newSelection });
+                setCollections({ ...collections, lighting_collections: newSelection });
                 break;
-            case 'natureCollections':
+            case 'nature_collections':
                 newSelection = natureCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -139,9 +141,9 @@ function FullMap(props){
                     newSelection[date].splice(n, 1);
                 }
                 setNatureCollections(newSelection);
-                setCollections({ ...collections, natureCollections: newSelection });
+                setCollections({ ...collections, nature_collections: newSelection });
                 break;
-            case 'soundCollections':
+            case 'sound_collections':
                 newSelection = soundCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -151,7 +153,7 @@ function FullMap(props){
                     newSelection[date].splice(s, 1);
                 }
                 setSoundCollections(newSelection);
-                setCollections({ ...collections, soundCollections: newSelection });
+                setCollections({ ...collections, sound_collections: newSelection });
                 break;
             default:
                 console.log(`Error handling selection change.`);
@@ -247,26 +249,32 @@ function FullMap(props){
             Object.entries(object).map(([sdate, stimes])=>(
                 stimes.map(time => (
                     Object.entries(data.Activities[title][sdate][time].data).map(([ind, point], i2)=>(
-                        (point.movement || point.path ? 
+                        (point.mode || point.kind === 'Constructed' ? 
                             <Path 
                                 key={`${sdate}.${time}.${i2}`} 
                                 path={point.path} 
-                                movement={point.movement ? point.movement : point.result}
-                            />:( point.boundary ? <Bounds area={point.boundary} type={point.result}/> :<Marker 
-                                key={`${sdate}.${time}.${i2}`} 
-                                shape={title === 'orderCollections' ? 'triangle' : (title === 'lightCollections' ? 'lightcircle' : 'circle')}
-                                info={point.average ? 
-                                    (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
-                                        : (point.result ? 
-                                            (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.result}</div>`)
-                                                : (point.posture ? 
-                                                    (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
-                                                        : null)) } 
-                                position={point.standingPoint ? point.standingPoint : point.point} 
-                                markerType={point.average ? 'soundCollections' 
-                                    : (point.result ? point.result : (point.posture ? point.posture : null))} 
-                                markerSize={title === 'soundCollections' ? point.average : null} 
-                            />)
+                                mode={point.mode ? point.mode : point.kind}
+                            /> 
+                            : 
+                            (point.kind === 'Shelter' || point.kind === 'Material' || point.result === 'water' ? 
+                                <Bounds area={point.path} type={point.kind ? point.kind : point.result}/> 
+                                :
+                                <Marker 
+                                    key={`${sdate}.${time}.${i2}`} 
+                                    shape={title === 'order_collections' ? 'triangle' : (title === 'light_collections' ? 'lightcircle' : 'circle')}
+                                    info={point.average ? 
+                                        (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
+                                            : (point.result ? 
+                                                (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.result}</div>`)
+                                                    : (point.posture ? 
+                                                        (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
+                                                            : null)) } 
+                                    position={point.standingPoint ? point.standingPoint : point.point} 
+                                    markerType={point.average ? 'sound_collections' 
+                                        : (point.result ? point.result : (point.posture ? point.posture : null))} 
+                                    markerSize={title === 'sound_collections' ? point.average : null} 
+                                />
+                            )
                         )
                     ))
                 ))
@@ -393,17 +401,18 @@ const Marker = (options) => {
     const shape = options.shape;
 
     const colors = {
-        soundCollections: ['#B073FF', '#B073FF'],
+        sound_collections: ['#B073FF', '#B073FF'],
         animals: ['#9C4B00', 'red'],
         plants: ['#BEFF05', 'red'],
-        squatting: ['green', 'black'],
-        sitting: ['red', 'black'],
-        standing: ['blue', 'black'],
-        laying: ['yellow', 'black'],
+        Squatting: ['green', 'black'],
+        Sitting: ['red', 'black'],
+        Standing: ['blue', 'black'],
+        Laying: ['yellow', 'black'],
         human: ['#FF9900', '#FF9900'],
         built: ['#FFE600', '#FFD800'],
         none: ['white', 'white']
     }
+    
     //SVG shape icons
     let style = {
         path: shape === 'triangle' ? 'M 0 2 L 2 2 L 1 0.25 z' : 
@@ -425,7 +434,7 @@ const Marker = (options) => {
         if (!marker) {
             setMarker(new google.maps.Marker({ 
                 icon: icon, 
-                zIndex: (markerType === 'soundCollections' ? 10 : 99999999)}));
+                zIndex: (markerType === 'sound_collections' ? 10 : 99999999)}));
             if(!infoWindow){
                 setInfoWindow(new google.maps.InfoWindow({
                     content: info,
@@ -471,9 +480,9 @@ const Bounds = (options) => {
         },
         types: {
             paths: options.area,
-            strokeColor: type === 'water' ? '#2578C5' : (type === 'material' ? '#00FFC1' : (type === 'shelter' ? '#FFA64D' : '#FFFFFF')),
+            strokeColor: type === 'water' ? '#2578C5' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : '#FFFFFF')),
             strokeWeight: 2,
-            fillColor: type === 'water' ? '#2578C5' : (type === 'material' ? '#00FFC1' : (type === 'shelter' ? '#FFA64D' : '#C4C4C4')),
+            fillColor: type === 'water' ? '#2578C5' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : '#C4C4C4')),
             fillOpacity: 0.45
         },
     }
@@ -503,18 +512,18 @@ const Path = (options) => {
     const [path, setPath] = React.useState();
 
     const colors = {
-        walking: '#0000FF',
-        running: '#FF0000',
-        swimming: '#FFFF00',
-        onwheels: '#008000',
-        handicap: '#FFA500',
-        constructed: '#FF00E5'
+        Walking: '#0000FF',
+        Running: '#FF0000',
+        Swimming: '#FFFF00',
+        'Activity on wheels': '#008000',
+        'Handicap assisted wheels': '#FFA500',
+        Constructed: '#FF00E5'
     }
 
     const lines = {
         style: {
             path: options.path,
-            strokeColor: colors[options.movement],
+            strokeColor: colors[options.mode],
             strokeOpacity: 0.9,
             strokeWeight: 2
         }
