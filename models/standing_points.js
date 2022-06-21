@@ -39,6 +39,7 @@ module.exports.updatePoint = async function (pointId, newPoint) {
   );
 };
 
+//if the deReferencing results in a Reference count of 0, then the standing point gets deleted.  Should never reach this case
 module.exports.removeRefrence = async function (pointId) {
   try {
     point = await Standing_Points.findById(pointId);
@@ -49,8 +50,6 @@ module.exports.removeRefrence = async function (pointId) {
       return await Standing_Points.findByIdAndDelete(pointId);
     } else {
       let newPoint = await point.save();
-      console.log(newPoint);
-      console.log("After saving DECREASE in ref");
       return newPoint;
     }
   } catch (error) {
@@ -63,8 +62,6 @@ module.exports.addRefrence = async function (pointId) {
     point = await Standing_Points.findById(pointId);
     point.refCount = point.refCount + 1;
     let newPoint = await point.save();
-    console.log(newPoint);
-    console.log("After saving INCREASE in ref");
     return newPoint;
   } catch (error) {
     console.log("ADD Standing Point reference causing issue: -----" + error);

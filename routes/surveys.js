@@ -11,6 +11,7 @@ const { models } = require('mongoose')
 
 const { UnauthorizedError, BadRequestError } = require('../utils/errors')
 
+//route creates new map(s).  If there are multiple time slots in test, multiple timseslots are created.
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.body.project)
@@ -30,6 +31,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                     maxResearchers: slot.maxResearchers,
                 })
 
+                //create new survey with method from surveys models and add ref to its parent collection.
                 const survey = await Survey.addSurvey(newSurvey)
                 await Survey_Collection.addActivity(req.body.collection, survey._id)
             }
@@ -54,6 +56,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     }   
 })
 
+//route gets all survey data, including any collection data.
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     const survey = await  Survey.findById(req.params.id)
                                 .populate('researchers','firstname lastname')
@@ -71,11 +74,13 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     res.status(200).json(survey)
 })
 
+//route signs team member up to a time slot.
 router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     survey = await Survey.findById(req.params.id)
     project = await Project.findById(survey.project)
     user = await req.user
     if(survey.researchers.length < survey.maxResearchers)
+        // adding an await in if statement below causes unwanted behavior.  Reason unkown
         if(Team.isUser(project.team,user._id)){
             res.status(200).json(await Survey.addResearcher(survey._id,user._id))
         }
@@ -85,6 +90,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
         throw new BadRequestError('Research team is already full')
 })
 
+//route reverses sign up to a time slot.
 router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     survey  = await Survey.findById(req.params.id)
     project = await Project.findById(survey.project)
@@ -92,6 +98,7 @@ router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async 
 
 })
 
+//route edits time slot information when updating a survey
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     survey  = await Survey.findById(req.params.id)
@@ -114,6 +121,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     
 })
 
+//route deletes a survey from a test collection
 router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     survey  = await Survey.findById(req.params.id)
@@ -127,6 +135,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 
 })
 
+//route adds survey to its relevant time slot
 router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     survey = await Survey.findById(req.params.id)
@@ -146,7 +155,7 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
     }
 })
 
-
+//route deletes an individual time slot from a survey
 router.delete('/:id/data/:data_id',passport.authenticate('jwt',{session:false}), async (req, res, next) => { 
     user = await req.user
     survey = await Survey.findById(req.params.id)

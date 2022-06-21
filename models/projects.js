@@ -55,11 +55,11 @@ const project_schema = mongoose.Schema({
         type: ObjectId,
         ref: 'Sound_Collections'
     }],
-    // natureCollections:[{
-    //     type: ObjectId,
-    //     required: true,
-    //     ref: 'Nature_Collections'
-    // }],
+    natureCollections:[{
+        type: ObjectId,
+        required: true,
+        ref: 'Nature_Collections'
+    }],
     // lightCollections:[{
     //     type: ObjectId,
     //     ref: 'Light_Collections'
@@ -99,6 +99,8 @@ module.exports.updateProject = async function (projectId, newProject) {
     )
 }
 
+//when deleting a project, ensure that all of the references are deleted as well as the collections
+//collections will always be attached to only one project
 module.exports.deleteProject = async function(projectId) {
 
     project = await Projects.findById(projectId)
@@ -129,8 +131,11 @@ module.exports.deleteProject = async function(projectId) {
     for(var i = 0; i < project.boundariesCollections.length; i++)   
         await Boundaries_Collection.deleteCollection(project.boundariesCollections[i])
     }
-    // for(var i = 0; i < project.natureCollections.length; i++)   
-    //     await Nature_Collection.deleteCollection(project.natureCollections[i])   
+
+    if(project.natureCollections.length){    
+    for(var i = 0; i < project.natureCollections.length; i++)   
+        await Nature_Collection.deleteCollection(project.natureCollections[i])
+    }
 
     // for(var i = 0; i < project.lightCollections.length; i++)   
     //     await Light_Collection.deleteCollection(project.lightCollections[i])   
@@ -145,6 +150,7 @@ module.exports.deleteProject = async function(projectId) {
     return await Projects.findByIdAndDelete(projectId)
 }
 
+//used in teams route.  When deleting an entire team, this deletes a project attached to that team
 module.exports.teamCleanup = async function(teamId) {
     const doc =  await Projects.find({ team: teamId })
 

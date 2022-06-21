@@ -1,3 +1,5 @@
+//route could be considered as the "main point of contact" for getting and displaying any test data to the front end.
+
 const express = require('express')
 const router = express.Router()
 const Project = require('../models/projects.js')

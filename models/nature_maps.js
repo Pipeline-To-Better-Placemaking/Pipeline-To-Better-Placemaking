@@ -20,41 +20,48 @@ const dataSchema = mongoose.Schema({
     },
    
     animals: {
-        type: String,
-        enum: ['domesticated','free roam','none'],
-        required: true
+        kind:{
+            type: String,
+            required: true
+        },
+        description:{
+            type: String,
+            required: true
+        }
+
     },
 
     landscape: {
         type: String,
-        enum: ['landscape plants','natural plants','designed plants','open field'],
         required: true
     },
 
     weather: {
-        type: String,
-        enum: ['sunny','cloudy','rainy','foggy'],
-        required: true
+        temperature:{
+            type: Number,
+            required: true
+        },
+        description:{
+            type: String,
+            required: true
+        }
     },
 
     water: {
+        description: {
         type: String,
-        enum: ['pond','lake','fountain','river', 'ocean'],
         required: true
-    },
+        },
 
-    
-    // time_of_day: {
-    //     type: String,
-    //     enum: ['morning','afternoon','night'],
-    //     required: true
-    // },
-    // may revisit later
-
-    standingPoint: {
-        type: ObjectId,
-        required: true,
-        ref: 'Standing_Points'
+        water_location:[{
+            latitude: {
+                type: Number,
+                required: true
+            },
+            longitude: {
+                type: Number,
+                required: true
+        }}]
     },
     
     time: {
@@ -64,7 +71,7 @@ const dataSchema = mongoose.Schema({
 
 
 })
-//end
+//End
 
 // Document Schema for Nature Maps
 const nature_schema = mongoose.Schema({
@@ -75,11 +82,6 @@ const nature_schema = mongoose.Schema({
         type: ObjectId,
         required: true
     },
-    standingPoints: [{
-        type: ObjectId,
-        required: true,
-        ref: 'Standing_Points'
-    }],
     researchers: [{
         type: ObjectId,
         required: true,
@@ -123,7 +125,6 @@ module.exports.updateMap = async function (projectId, newMap) {
             title: newMap.title,
             date: newMap.date,
             maxResearchers: newMap.maxResearchers,
-            standingPoints: newMap.standingPoints
         }}
     )
 }
@@ -131,9 +132,6 @@ module.exports.updateMap = async function (projectId, newMap) {
 module.exports.deleteMap = async function(mapId) {
 
     const map = await Maps.findById(mapId)
-
-    for(var i = 0; i < map.standingPoints.length; i++)
-       await Points.removeRefrence(map.standingPoints[i])
     
     return await Maps.findByIdAndDelete(mapId)
 }
@@ -148,13 +146,9 @@ module.exports.addEntry = async function(mapId, newEntry) {
         landscape: newEntry.landscape,
         weather: newEntry.weather,
         water: newEntry.water,
-        // time_of_day: newEntry.time_of_day,
         location: newEntry.location,
-        standingPoint: newEntry.standingPoint,
         time: newEntry.time
     })
-
-    Points.addRefrence(newEntry.standingPoint)
 
     return await Maps.updateOne(
         { _id: mapId },
@@ -213,16 +207,6 @@ module.exports.updateData = async function(mapId, dataId, newEntry){
     )}
 
 module.exports.deleteEntry = async function(mapId, entryId) {
-    
-        const doc = await Maps.find(
-            {   
-                _id: mapId, 
-                data: { $elemMatch:  {_id:entryId }}
-            }
-        )
-    
-        await Points.removeRefrence(doc.data[0].standingPoint)
-    
         return await Maps.updateOne(
             { _id: mapId },
             { $pull: { data: {_id:entryId }}

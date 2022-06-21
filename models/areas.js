@@ -37,6 +37,7 @@ module.exports.updateArea = async function (areaId, newArea) {
   );
 };
 
+//if the deReferencing results in a Reference count of 0, then the area gets deleted.  Should never reach this case
 module.exports.removeRefrence = async function (areaId) {
   try {
     area = await Areas.findById(areaId);
@@ -51,6 +52,7 @@ module.exports.removeRefrence = async function (areaId) {
     console.log("REMOVE Area reference causing issue: -----" + error);
   }
 };
+
 module.exports.addRefrence = async function (areaId) {
   try {
     area = await Areas.findById(areaId);

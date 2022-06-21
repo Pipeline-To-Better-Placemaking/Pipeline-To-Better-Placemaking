@@ -61,6 +61,7 @@ const sendEmail = async (mailOptions) => {
     return true
 }
 
+//sent upon registration from login route
 const sendVerificationCode = async (email, code) => {
     if (!code) {
         const user = await User.findUserByEmail(email)

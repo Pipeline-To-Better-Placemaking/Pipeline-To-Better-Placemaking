@@ -13,6 +13,8 @@ const { models } = require("mongoose");
 const { UnauthorizedError, BadRequestError } = require("../utils/errors");
 const { addRefrence } = require("../models/areas.js");
 
+
+//route creates new map(s).  If there are multiple time slots in test, multiple timseslots are created.
 router.post(
   "",
   passport.authenticate("jwt", { session: false }),
@@ -35,13 +37,13 @@ router.post(
             maxResearchers: slot.maxResearchers,
           });
 
+          //create new map with method from _map models and add ref to its parent collection.
           const map = await Map.addMap(newMap);
           await Stationary_Collection.addActivity(req.body.collection, map._id);
           
+          //add references of points used in Points model.
           for (i = 0; i < map.standingPoints.length; i ++){
-            console.log("point" + map.standingPoints[i] + "referenced on stat map creation: ")
-            let tempPoint = await Points.addRefrence(map.standingPoints[i])
-            console.log(tempPoint) 
+            await Points.addRefrence(map.standingPoints[i])
           }
 
           res
@@ -63,14 +65,10 @@ router.post(
         await Stationary_Collection.addActivity(req.body.collection, map._id);
         
         for (i = 0; i < map.standingPoints.length; i ++){
-          console.log("point" + map.standingPoints[i] + "referenced on stat map creation: ")
-          let tempPoint = await Points.addRefrence(map.standingPoints[i])
-          console.log(tempPoint) 
+          await Points.addRefrence(map.standingPoints[i])
  
         }
     }
-
-      
       res.status(201).json(map);
     } else {
       throw new UnauthorizedError(
@@ -80,6 +78,7 @@ router.post(
   }
 );
 
+//route gets all map data, including any collection data.
 router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
@@ -103,6 +102,7 @@ router.get(
   }
 );
 
+//route signs team member up to a time slot.
 router.put(
   "/:id/claim",
   passport.authenticate("jwt", { session: false }),
@@ -111,6 +111,7 @@ router.put(
     project = await Project.findById(map.project);
     user = await req.user;
     if (map.researchers.length < map.maxResearchers)
+    // adding an await in if statement below causes unwanted behavior.  Reason unkown
       if (Team.isUser(project.team, user._id)) {
         res.status(200).json(await Map.addResearcher(map._id, user._id));
       } else
@@ -121,6 +122,7 @@ router.put(
   }
 );
 
+//route reverses sign up to a time slot.
 router.delete(
   "/:id/claim",
   passport.authenticate("jwt", { session: false }),
@@ -131,6 +133,7 @@ router.delete(
   }
 );
 
+//route edits time slot information when updating a map
 router.put(
   "/:id",
   passport.authenticate("jwt", { session: false }),
@@ -153,6 +156,8 @@ router.put(
 
       project = await Project.findById(map.project);
 
+      //if standing points are changed, any new points get referenced, before any old points get dereferenced.
+      //done in this order so points never reach 0 and get deleted in removeRefrence()
       if (req.body.standingPoints) {
 
         for (var i = 0; i < req.body.standingPoints.length; i++)
@@ -172,6 +177,7 @@ router.put(
   }
 );
 
+//route deletes a map from a test collection
 router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
@@ -189,12 +195,14 @@ router.delete(
   }
 );
 
+//route adds test data to its relevant time slot
 router.post(
   "/:id/data",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     user = await req.user;
     map = await Map.findById(req.params.id);
+    //adding await causes unwanted behavior.  Reason unkown    
     if (Map.isResearcher(map._id, user._id)) {
       if (req.body.entries) {
         for (var i = 0; i < req.body.entries.length; i++) {
@@ -212,6 +220,7 @@ router.post(
   }
 );
 
+//route edits any already created tested time slots.  Essentially redoing a test run for a time slot 
 router.put(
   "/:id/data/:data_id",
   passport.authenticate("jwt", { session: false }),
@@ -219,6 +228,7 @@ router.put(
     user = await req.user;
     mapId = req.params.id;
 
+    //adding await causes unwanted behavior.  Reason unkown
     if (Map.isResearcher(mapId, user._id)) {
       oldData = await Map.findData(mapId, req.params.data_id);
 
@@ -238,10 +248,9 @@ router.put(
       if (req.body.activity.length > 2)
         throw new BadRequestError("Datapoints can only have two activies");
 
+      //it is important to note that standingPoint != standingPoints.  standingPoint is an individual point which an instance
+      //of a time slot uses.  standingPoints is an array which includes all of these points.  
       if (req.body.standingPoint) {
-        console.log("reaches data update in stationary maps (standing points)")
-        console.log("req standingPoint: " + req.body.standingPoint)
-        console.log("old standingPoint: " + oldData.standingPoint)
         await Points.addRefrence(req.body.standingPoint);
         await Points.removeRefrence(oldData.standingPoint);
       }
@@ -256,6 +265,7 @@ router.put(
   }
 );
 
+//route deletes an individual time slot from a map
 router.delete(
   "/:id/data/:data_id",
   passport.authenticate("jwt", { session: false }),

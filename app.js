@@ -26,7 +26,6 @@ const app = express();
 
 app.use(cors())
 
-// app.use(express.static(path.join(__dirname,'public')))
 
 app.use(bodyParser.json())
 
@@ -45,6 +44,7 @@ const boundApi      = require('./routes/boundaries_maps.js')
 const surveyApi     = require('./routes/surveys.js')
 const collectionApi = require('./routes/collections.js')
 
+//first parameter will be the directory name used from front end to access these routes
 app.use('/api/login',           loginApi)
 app.use('/api/teams',           teamApi)
 app.use('/api/projects',        projectApi)
@@ -53,7 +53,7 @@ app.use('/api/verify',          verifyApi)
 app.use('/api/stationary_maps', stationApi)
 app.use('/api/moving_maps',     movingApi)
 app.use('/api/sound_maps',      soundApi)
-// app.use('/api/nature_maps',     natureApi)
+app.use('/api/nature_maps',     natureApi)
 // app.use('/api/light_maps',      lightApi)
 // app.use('/api/order_maps',      orderApi)
 app.use('/api/boundaries_maps',      boundApi)
@@ -78,8 +78,10 @@ app.use(expressSession);
 // by any errors thrown anywhere in previous routes or middlewares.
 app.use(errorHandler)
 
+//build is used instead of public because website is made with create-react-app which uses build.
 app.use(express.static(path.join(__dirname, 'frontend_web/build')));
 
+//* allows a dynamic build of all files in frontend_web
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'frontend_web','build', 'index.html'));
 });

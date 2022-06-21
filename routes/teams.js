@@ -19,6 +19,7 @@ const { json } = require('express')
 const { UnauthorizedError, NotFoundError, BadRequestError } = require('../utils/errors')
 const teams = require('../models/teams.js')
 
+//route creates a new team
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     let newTeam = new Team({
@@ -37,6 +38,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     res.status(201).json(team)
 })
 
+//route displays team information
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     var team = await Team.findById(req.params.id).populate('projects', 'title description')
     for(var i = 0; i < team.users.length; i++){
@@ -51,6 +53,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     res.status(200).json(team)
 })
 
+//route updates team information
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     team = await Team.findById(req.params.id)
@@ -71,12 +74,13 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     }
 })
 
-//delete removes ALL of the map collections which contain a projectId which belongs to the team
+//deletes an entire team
 router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     team = await Team.findById(req.params.id)
     if(await Team.isOwner(team._id,user._id)){
     
+        //delete ALL of the map collections which contain a projectId which belongs to the team
         for(var i = 0; i < team.projects.length; i++ ){
             proj = team.projects[0]
             await Stationary_Map.projectCleanup(proj)
@@ -97,6 +101,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 
 })
 
+//route sends invitation to other users signed up to the application
 router.post('/:id/invites', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     team = await Team.findById(req.params.id)

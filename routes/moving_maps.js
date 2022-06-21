@@ -12,6 +12,7 @@ const { models } = require('mongoose')
 
 const { UnauthorizedError, BadRequestError } = require('../utils/errors')
 
+//route creates new map(s).  If there are multiple time slots in test, multiple timseslots are created.
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.body.project)
@@ -32,13 +33,13 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                     maxResearchers: slot.maxResearchers
                 })
 
+                //create new map with method from _map models and add ref to its parent collection.
                 const map = await Map.addMap(newMap)
                 await Moving_Collection.addActivity(req.body.collection, map._id)
 
+                //add references of points used in Points model.
                 for (i = 0; i < map.standingPoints.length; i ++){
-                    console.log("point" + map.standingPoints[i] + "referenced on moving map creation: ")
-                    let tempPoint = await Points.addRefrence(map.standingPoints[i]) 
-                    console.log(tempPoint)
+                    await Points.addRefrence(map.standingPoints[i]) 
                 }
         
 
@@ -60,9 +61,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
             await Moving_Collection.addActivity(req.body.collection,map._id)
             
             for (i = 0; i < map.standingPoints.length; i ++){
-                console.log("point" + map.standingPoints[i] + "referenced on moving map creation: ")
-                let tempPoint = await Points.addRefrence(map.standingPoints[i]) 
-                console.log(tempPoint) 
+                await Points.addRefrence(map.standingPoints[i]) 
             }
 
         }
@@ -74,6 +73,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     }   
 })
 
+//route gets all map data, including any collection data.
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     const map = await  Map.findById(req.params.id)
                            .populate('standingPoints')
@@ -92,11 +92,13 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     res.status(200).json(map)
 })
 
+//route signs team member up to a time slot.
 router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
     user = await req.user
     if(map.researchers.length < map.maxResearchers)
+    // adding an await in if statement below causes unwanted behavior.  Reason unkown
         if(Team.isUser(project.team,user._id)){
             res.status(200).json(await Map.addResearcher(map._id,user._id))
         }
@@ -106,6 +108,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
         throw new BadRequestError('Research team is already full')
 })
 
+//route reverses sign up to a time slot.
 router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
@@ -113,7 +116,7 @@ router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async 
 
 })
 
-
+//route edits time slot information when updating a map
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
@@ -128,6 +131,8 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
 
         project = await Project.findById(map.project)
 
+        //if standing points are changed, any new points get referenced, before any old points get dereferenced.
+        //done in this order so points never reach 0 and get deleted in removeRefrence()
         if(req.body.standingPoints){
 
             for(var i = 0; i < req.body.standingPoints.length; i++)
@@ -147,6 +152,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     
 })
 
+//route deletes a map from a test collection
 router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
@@ -161,6 +167,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 
 })
 
+//route adds test data to its relevant time slot
 router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
@@ -180,10 +187,13 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
     }
 })
 
+
+//route edits any already created tested time slots.  Essentially redoing a test run for a time slot 
 router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user   
     map = await Map.findById(req.params.id)
 
+    //adding await causes unwanted behavior.  Reason unkown
     if (Map.isResearcher(mapId, user._id)){
 
         oldData = await Map.findData(map._id, req.params.data_id)
@@ -196,10 +206,9 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             time: (req.body.time ? req.body.time : oldData.time)
         }
 
+        //it is important to note that standingPoint != standingPoints.  standingPoint is an individual point which an instance
+        //of a time slot uses.  standingPoints is an array which includes all of these points.          
         if(req.body.standingPoint){
-            console.log("reaches data update in moving maps (standing points)")
-            console.log("req standingPoint: " + req.body.standingPoint)
-            console.log("old standingPoint: " + oldData.standingPoint)
             await Points.addRefrence(req.body.standingPoint)
             await Points.removeRefrence(oldData.standingPoint)
         }
@@ -212,6 +221,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
     }  
 })
 
+//route deletes an individual time slot from a map
 router.delete('/:id/data/:data_id',passport.authenticate('jwt',{session:false}), async (req, res, next) => { 
     user = await req.user
     map = await Map.findById(req.params.id)

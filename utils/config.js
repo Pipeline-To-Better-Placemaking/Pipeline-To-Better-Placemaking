@@ -1,3 +1,5 @@
+//.env will not be published to github.  Access to keys can be found in dashboard of heroku application
+
 require('dotenv').config()
 
 let PORT = process.env.PORT
