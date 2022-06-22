@@ -97,7 +97,7 @@ function Charts(props){
         
         var gender =[{gender: 'Male', count: male}, {gender: 'Female', count: female}]
 
-        var activity = [{ activity: 'Socializing', count: socializing }, { activity: 'Waiting', count: waiting }, { activity: 'Recreation', count: recreation }, { activity: 'Eating', count: eating }, { age: 'Solitary', count: solitary }];
+        var activity = [{ activity: 'Socializing', count: socializing }, { activity: 'Waiting', count: waiting }, { activity: 'Recreation', count: recreation }, { activity: 'Eating', count: eating }, { activity: 'Solitary', count: solitary }];
 
         return( 
             <>
@@ -107,7 +107,6 @@ function Charts(props){
                     <XAxis dataKey='posture' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Legend />
                     <Bar dataKey={'count'} >
                         {data.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={stationaryColor[entry.posture]} />
@@ -120,7 +119,6 @@ function Charts(props){
                     <XAxis dataKey='age' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Legend />
                     <Bar dataKey={'count'} fill='#636262' />
                 </BarChart>
                 Gender
@@ -129,7 +127,6 @@ function Charts(props){
                     <XAxis dataKey='gender' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Legend />
                     <Bar dataKey={'count'} fill='#636262' />
                 </BarChart>
                 Activity
@@ -138,7 +135,6 @@ function Charts(props){
                     <XAxis dataKey='activity' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Legend />
                     <Bar dataKey={'count'} fill='#636262' />
                 </BarChart>
             </>
