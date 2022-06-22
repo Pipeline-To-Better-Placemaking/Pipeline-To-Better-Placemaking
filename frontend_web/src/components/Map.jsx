@@ -160,6 +160,7 @@ function FullMap(props){
         }
     };
 
+    //html2canvas functions --- saveAs, convertToImage -----
     function saveAs(url, filename) {
         var link = document.createElement('a');
 
@@ -186,7 +187,7 @@ function FullMap(props){
         );
     }
 
-    //Handles click position for Project Map Creation and editing
+    // Event handling functions ------
     const onMClick = (e) => {
         if(props.type === 2 || props.type === 0){
             setClick(e.latLng);
@@ -243,7 +244,38 @@ function FullMap(props){
         setClicks(clickArr);
     }
 
-    //Renders all selected activity options to the corresponding markers, polylines and boundaries
+    const boundsPathWindow = (title, date, time, index, ver) => (e) => {
+        console.log(title, date, time, index);
+        const popup = document.getElementById('pathBoundWindow');
+        const inner = document.getElementById('popUpText');
+        if(ver === 0 || ver === 2){
+            // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
+            inner.innerHTML = '';
+            inner.innerHTML = `<h5>${testNames[title]}</h5><br/>Location ${index}<br/>kind: ${data.Activities[title][date][time].data[index].kind}<br/>description: ${data.Activities[title][date][time].data[index].description}<br/>value: ${data.Activities[title][date][time].data[index].value}`
+            popup.style.display = 'flex';
+        } else if(ver === 1){
+            // version 1 == water nature collection
+            const popup = document.getElementById('pathBoundWindow');
+            inner.innerHTML = '';
+            inner.innerHTML = `<h5>${testNames[title]}</h5><br/>Location ${index}<br/>result: ${data.Activities[title][date][time].data[index].result}<br/>value: ${data.Activities[title][date][time].data[index].value}`
+            popup.style.display = 'flex';
+        } else {
+            // version 3 moving collections
+            const popup = document.getElementById('pathBoundWindow');
+            inner.innerHTML = '';
+            inner.innerHTML = `<h5>${testNames[title]}</h5><br/>Location ${index}<br/>mode: ${data.Activities[title][date][time].data[index].mode}`
+            popup.style.display = 'flex';
+        }
+    }
+
+    const closeWindow = (e) => {
+        const popup = document.getElementById('pathBoundWindow');
+        const inner = document.getElementById('popUpText');
+        popup.style.display = 'none';
+        inner.innerHTML = '';
+    }
+
+    //Renders all selected activity options to the corresponding markers, polylines and boundaries -----
     const actCoords = (collections) => (
         Object.entries(collections).map(([title, object], index) => (
             Object.entries(object).map(([sdate, stimes])=>(
@@ -254,10 +286,12 @@ function FullMap(props){
                                 key={`${sdate}.${time}.${i2}`} 
                                 path={point.path} 
                                 mode={point.mode ? point.mode : point.kind}
+                                title={title} date={sdate} time={time} index={i2}
+                                boundsPathWindow={boundsPathWindow}
                             /> 
-                            : 
+                            :
                             (point.kind === 'Shelter' || point.kind === 'Material' || point.result === 'water' ? 
-                                <Bounds area={point.path} type={point.kind ? point.kind : point.result}/> 
+                                <Bounds key={`${sdate}.${time}.${i2}`} title={title} date={sdate} time={time} index={i2} area={point.path} type={point.kind ? point.kind : point.result} boundsPathWindow={boundsPathWindow}/> 
                                 :
                                 <Marker 
                                     key={`${sdate}.${time}.${i2}`} 
@@ -282,6 +316,7 @@ function FullMap(props){
         ))
     );
 
+    // Components returned on render -----
     return (
         <div id='mapDoc'>
             {/* Map Drawers overlay in map.jsx to better communicate*/}
@@ -333,6 +368,12 @@ function FullMap(props){
             >
                 Set Points
             </Button> : null}
+            <div id='pathBoundWindow' style={{display: 'none', position: 'fixed', flexDirection: 'row', justifyContent: 'center'}}>
+                <div id='popUpBlock'>
+                    <div id='popUpText'></div>
+                    <Button id='closeButton' onClick={closeWindow}>Close</Button>
+                </div>
+            </div>
         </div>
     );
 };
@@ -466,7 +507,7 @@ const Marker = (options) => {
     return null;
 };
 
-const Bounds = (options) => {
+const Bounds = ({boundsPathWindow, ...options}) => {
     const [paths, setPaths] = React.useState();
     const type = options.type
     const bounds = {
@@ -476,14 +517,15 @@ const Bounds = (options) => {
             strokeOpacity: 0.8,
             strokeWeight: 3,
             fillColor: 'rgba(0,0,0,0.2)',     
-            clickable: false                    
+            clickable: false                 
         },
         types: {
             paths: options.area,
             strokeColor: type === 'water' ? '#2578C5' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : '#FFFFFF')),
             strokeWeight: 2,
             fillColor: type === 'water' ? '#2578C5' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : '#C4C4C4')),
-            fillOpacity: 0.45
+            fillOpacity: 0.45,
+            clickable: true
         },
     }
 
@@ -501,15 +543,25 @@ const Bounds = (options) => {
 
     React.useEffect(() => {
         if (paths) {
-            paths.setOptions({ map: options.map});
+            paths.setOptions({ map: options.map });
+
+            ['click'].forEach((eventName) =>
+                google.maps.event.clearListeners(paths, eventName)
+            );
+
+            if (boundsPathWindow) {
+                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : 0)));
+            }
         }
-    }, [paths, options]);
+
+    }, [paths, options, type, boundsPathWindow]);
 
     return null;
 };
 
-const Path = (options) => {
+const Path = ({boundsPathWindow, ...options}) => {
     const [path, setPath] = React.useState();
+    const type = options.title;
 
     const colors = {
         Walking: '#0000FF',
@@ -525,7 +577,8 @@ const Path = (options) => {
             path: options.path,
             strokeColor: colors[options.mode],
             strokeOpacity: 0.9,
-            strokeWeight: 2
+            strokeWeight: 2,
+            clickable: true
         }
     }
 
@@ -544,8 +597,16 @@ const Path = (options) => {
     React.useEffect(() => {
         if (path) {
             path.setOptions({ map: options.map });
+
+            ['click'].forEach((eventName) =>
+                google.maps.event.clearListeners(path, eventName)
+            );
+
+            if (boundsPathWindow) {
+                path.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'moving_collections' ? 3 : 2)));
+            }
         }
-    }, [path, options]);
+    }, [path, options, type, boundsPathWindow]);
 
     return null;
 }

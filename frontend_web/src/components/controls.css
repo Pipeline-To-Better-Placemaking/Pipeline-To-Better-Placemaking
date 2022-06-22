@@ -48,6 +48,40 @@ div.css-cveggr-MuiListItemIcon-root {
     color: white;
 }
 
+div#pathBoundWindow{
+    background-color: #00000070;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    width:100vw;
+    z-index: 99999;
+    align-content: center;
+}
+
+div#popUpBlock, div#popUpText{
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+div#popUpText{
+    padding-bottom: 20px;
+}
+
+div#popUpBlock{
+    width: 40vw;
+    height: auto;
+    top: 40vh;
+    border-radius: 5px;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+div#pathBoundWindow, div#popUpBlock{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 #projTab0 > .MuiBox-root.css-19kzrtu {
     padding: 0px;
 }
@@ -88,7 +122,7 @@ div.css-cveggr-MuiListItemIcon-root {
     margin: 0px calc(50vw - 32px);
     bottom: 0;
 }
-button#bottomCloseButton{
+button#bottomCloseButton, button#closeButton{
     width: 100%;
     z-index: 1000;
 }
