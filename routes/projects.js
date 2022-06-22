@@ -77,7 +77,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                           .populate('stationaryCollections')
                           .populate('movingCollections')
                           .populate('soundCollections')
-                        //   .populate('natureCollections')
+                          .populate('natureCollections')
                         //   .populate('lightCollections')
                           .populate('boundariesCollections')
                         //   .populate('orderCollections')
@@ -869,6 +869,10 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     select: 'date',
                                     populate: [{
                                         path: 'data',
+                                        populate:{
+                                            path: 'standingPoint',
+                                            model: 'Standing_Points'
+                                        }
                                         },{
                                         path: 'researchers'
                                         }]
@@ -969,10 +973,10 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                 filename: soundData.title + '_sound.csv',
                 content:soundToCSV(soundData)
             },
-            // {
-            //     filename: natureData.title + '_nature.csv',
-            //     content:natureToCSV(natureData)
-            // },
+            {
+                filename: natureData.title + '_nature.csv',
+                content:natureToCSV(natureData)
+            },
             // {
             //     filename: lightData.title + '_light.csv',
             //     content:lightToCSV(lightData)
