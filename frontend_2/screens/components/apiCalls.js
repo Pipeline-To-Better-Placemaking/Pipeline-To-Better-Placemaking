@@ -128,10 +128,7 @@ export async function getFilteredProjectDetails(project) {
     if(projectDetails.boundariesCollections != null) {      
       for(let i = 0; i < projectDetails.boundariesCollections.length; i++) {
         let collection = projectDetails.boundariesCollections[i];
-        collection.test_type = 'boundary';
-        
-        //console.log(collection.date);
-        
+        collection.test_type = 'boundary';        
         // handle date
         collection.date = new Date(collection.date);
         if (moment(today).isAfter(collection.date, 'day')) {
@@ -144,12 +141,31 @@ export async function getFilteredProjectDetails(project) {
     for(let i = 0; i < pastBoundariesCollections.length; i++) {
       let removeIndex = projectDetails.boundariesCollections.findIndex(element => element._id === pastBoundariesCollections[i]._id);
       projectDetails.boundariesCollections.splice(removeIndex, 1);
+    }    
+    // nature test
+    let pastNatureCollections = [];
+    if(projectDetails.natureCollections != null) {
+      for(let i = 0; i < projectDetails.natureCollections.length; i++) {
+        let collection = projectDetails.natureCollections[i];
+        collection.test_type = 'nature';
+        // handle date
+        collection.date = new Date(collection.date);
+        if (moment(today).isAfter(collection.date, 'day')) {
+          pastNatureCollections.push(collection);
+        }
+        projectDetails.natureCollections[i] = collection;
+      }
+    }
+    // remove collections from the list that are in the past
+    for(let i = 0; i < pastNatureCollections.length; i++) {
+      let removeIndex = projectDetails.natureCollections.findIndex(element => element._id === pastNatureCollections[i]._id);
+      projectDetails.natureCollections.splice(removeIndex, 1);
     }
 
     //add new tests stuff here
     
-    projectDetails.activities = [...projectDetails.stationaryCollections, ...projectDetails.movingCollections, ...projectDetails.surveyCollections, ...projectDetails.soundCollections, ...projectDetails.boundariesCollections];
-    projectDetails.pastActivities = [...pastStationaryCollections, ...pastMovingCollections, ...pastSurveyCollections, ...pastSoundCollections, ...pastBoundariesCollections];
+    projectDetails.activities = [...projectDetails.stationaryCollections, ...projectDetails.movingCollections, ...projectDetails.surveyCollections, ...projectDetails.soundCollections, ...projectDetails.boundariesCollections, ...projectDetails.natureCollections];
+    projectDetails.pastActivities = [...pastStationaryCollections, ...pastMovingCollections, ...pastSurveyCollections, ...pastSoundCollections, ...pastBoundariesCollections, ...pastNatureCollections];
     return projectDetails;
   } else {
     return null;
@@ -461,6 +477,21 @@ export async function getAllCollectionInfo(collectionDetails) {
       }
       success = true
     }
+  } else if(collectionDetails.test_type === 'nature'){
+    // get the collection info
+    collectionDetails = await getCollection('nature/', collectionDetails);
+    success = (collectionDetails !== null);
+    // get the timeSlot info
+    if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
+      for (let i = 0; i < collectionDetails.maps.length; i++) {
+        let item = collectionDetails.maps[i];
+        let timeSlot = await getTimeSlot('nature_maps/', item._id);
+        success = (timeSlot !== null)
+        if (success)
+          timeSlots.push(timeSlot);
+      }
+      success = true
+    }
   }
 
   // if successfully retrieved collection info, Update
@@ -484,6 +515,7 @@ export async function getAllResults(projectDetails) {
   // security activities
   results = await getSoundResults(projectDetails, results);
   results = await getBoundaryResults(projectDetails, results);
+  results = await getNatureResults(projectDetails, results);
   return  results;
 }
 
@@ -541,12 +573,25 @@ export async function getSoundResults(projectDetails, results) {
 
 export async function getBoundaryResults(projectDetails, results) {
   // loop through all Boundary Test collections and get all of the maps
-  //console.log(projectDetails.boundariesCollections);
   for (let i = 0; i < projectDetails.boundariesCollections.length; i++) {
     let collection = projectDetails.boundariesCollections[i];
     for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
       let id = collection.maps[j];
       let tempObj = await helperGetResult(id, 'boundaries_maps/', "boundary", collection, projectDetails);
+      results.push(tempObj);
+    }
+  }
+  return results;
+}
+
+export async function getNatureResults(projectDetails, results) {
+  // loop through all Nature Test collections and get all of the maps
+  for (let i = 0; i < projectDetails.natureCollections.length; i++) {
+    let collection = projectDetails.natureCollections[i];
+    console.log(collection.maps)
+    for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
+      let id = collection.maps[j];
+      let tempObj = await helperGetResult(id, 'nature_maps/', "nature", collection, projectDetails);
       results.push(tempObj);
     }
   }

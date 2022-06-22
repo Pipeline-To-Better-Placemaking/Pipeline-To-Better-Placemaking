@@ -61,7 +61,8 @@ export function ProjectPage(props) {
     }
   };
 
-  const activityItem = ({ item, index }) => (
+  const activityItem = ({ item, index }) => {
+      return(
       <ListItem
         title={
           <Text style={styles.textTitle}>
@@ -72,7 +73,8 @@ export function ProjectPage(props) {
         accessoryRight={ForwardIcon}
         onPress={() => openActivityPage(item)}
       />
-  );
+      )
+      };
 
   return (
     <ViewableArea>

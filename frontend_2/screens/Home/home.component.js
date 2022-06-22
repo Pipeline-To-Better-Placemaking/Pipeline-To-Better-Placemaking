@@ -38,6 +38,7 @@ export const HomeScreen = ( props ) => {
     let surveyResults = []
     let soundResults= []
     let boundaryResults= []
+    let natureResults= []
     //add the new test result arrays here ^
 
     // Get selected Projects
@@ -65,6 +66,8 @@ export const HomeScreen = ( props ) => {
           soundResults.push(result);
         } else if (result.test_type === "boundary"){
           boundaryResults.push(result);
+        } else if (result.test_type === "nature"){
+          natureResults.push(result);
         }
         //add the new tests here ^^
 
@@ -77,7 +80,8 @@ export const HomeScreen = ( props ) => {
       moving: [...movingResults],
       survey: [...surveyResults],
       sound: [...soundResults],
-      boundary: [...boundaryResults]
+      boundary: [...boundaryResults],
+      nature: [...natureResults]
       //add the new tests here ^^
     };
 

@@ -59,7 +59,7 @@ export function CreateActivityStack(props) {
     await setDate(props.activity.date);
     await setDuration('' + props.activity.duration);
     
-    let types = ['stationary', 'moving', 'survey', 'sound', 'boundary'];
+    let types = ['stationary', 'moving', 'survey', 'sound', 'boundary', 'nature'];
     let activityIndex = types.findIndex(element => element === props.activity.test_type);
     setSelectedActivity(new IndexPath(activityIndex));
     if (props.activity.area === null) {
@@ -110,7 +110,7 @@ export function CreateActivityStack(props) {
         tempTimeSlots.push(timeSlot);
       })
     }
-    else if (activityIndex === 4 && props.activity.maps !== null && props.activity.maps.length >= 1){
+    else if (activityIndex >= 4 && props.activity.maps !== null && props.activity.maps.length >= 1){
       for (let j = 0; j < props.activity.maps.length ; j++) {
         let timeSlot = props.activity.maps[j];
         // date to value
@@ -155,6 +155,9 @@ export function CreateActivityStack(props) {
       else if (row === 4) { // Boundary
         await putCollection(name, 'boundary', '/boundaries_collections', 'boundaries_maps/');
       }
+      else if (row === 5) { // Nature
+        await putCollection(name, 'nature', '/nature_collections', 'nature_maps/');
+      }
       await props.setUpdateActivity(false);
       props.navigation.navigate('ProjectPage')
     }
@@ -174,6 +177,9 @@ export function CreateActivityStack(props) {
       }
       else if (row === 4) { // Boundary
         await postCollection(name, 'boundary', '/boundaries_collections', 'boundaries_maps/');
+      }
+      else if (row === 5) { // Nature
+        await postCollection(name, 'nature', '/nature_collections', 'nature_maps/');
       }
 
       // Navigate back to Project page
@@ -237,7 +243,7 @@ export function CreateActivityStack(props) {
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
     // treat the new tests as survey (no standing points) except for the sound test
-    if (test_type !== "survey" && test_type !== "boundary") {
+    if (test_type !== "survey" && test_type !== "boundary" && test_type !== "nature") {
       if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
         selectedPoints = timeSlot.assignedPointIndicies.map(index => {
           return standingPoints[index.row];
@@ -369,7 +375,7 @@ export function CreateActivityStack(props) {
     let success = false
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
-    if (test_type !== "survey" && test_type !== "boundary") {
+    if (test_type !== "survey" && test_type !== "boundary" && test_type !== "nature") {
       if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
         selectedPoints = timeSlot.assignedPointIndicies.map(index => {
           return standingPoints[index.row];

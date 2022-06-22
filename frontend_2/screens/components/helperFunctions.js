@@ -194,7 +194,6 @@ export async function formatSoundGraphData(result){
   return tempResult;
 }
 
-
 export async function formatBoundaryGraphData(result){
   if (result === null ||
       result.data === undefined ||
@@ -219,6 +218,28 @@ export async function formatBoundaryGraphData(result){
   }
 
   //console.log("resulting graph data: ", graph);
+  tempResult.graph = {...graph};
+  return tempResult;
+}
+
+// nothing in it, will need to set this up when I know what the data looks like
+export async function formatNatureGraphData(result){
+  if (result === null ||
+      result.data === undefined ||
+      result.data === null ||
+      result.data.length <= 0 ||
+      result.graph !== undefined
+    ) {
+    return result;
+  }
+
+  console.log(result);
+  
+  let tempResult = {...result};
+  let graph = [];
+  
+
+  // console.log("resulting graph data: ", graph);
   tempResult.graph = {...graph};
   return tempResult;
 }

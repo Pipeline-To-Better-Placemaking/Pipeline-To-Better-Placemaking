@@ -14,7 +14,7 @@ export function CompareFilteredView(props) {
     const [titleIndex, setTitleIndex] = useState(new IndexPath(0))
     //add the new tests here
     // not index 2 is not for the survery here, index 2 is the sound test
-    const activities = ['Humans in Place', 'Humans in Motion', 'Acoustical Profile', 'Spatial Boundaries']
+    const activities = ['Humans in Place', 'Humans in Motion', 'Acoustical Profile', 'Spatial Boundaries', 'Nature Prevalence']
 
     const selectedActivity = () => {
         if (titleIndex.row === 0) {
@@ -33,6 +33,9 @@ export function CompareFilteredView(props) {
         }
         else if (titleIndex.row === 3){
           return props.filterCriteria.boundary
+        }
+        else if (titleIndex.row === 4){
+          return props.filterCriteria.nature
         }
         else {
           return props.filterCriteria.all;
@@ -89,6 +92,9 @@ export function CompareFilteredView(props) {
       }
       else if (titleIndex.row === 3){ // boundary
         props.navigation.navigate("BoundaryCompare");
+      }
+      else if (titleIndex.row === 4){ // nature
+        props.navigation.navigate("NatureCompare");
       }
 
     }

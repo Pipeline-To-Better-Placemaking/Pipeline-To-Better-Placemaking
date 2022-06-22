@@ -141,8 +141,6 @@ export function BoundaryMapResults(props) {
             )
         }
     }
-    
-    // next steps, create a dynamic info modal for whenever any boundary is touched (use dataCallout funct to get specific boundary information)
 
 
     return(

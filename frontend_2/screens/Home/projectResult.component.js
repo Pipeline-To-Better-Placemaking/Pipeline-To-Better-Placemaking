@@ -6,7 +6,7 @@ import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getDayStr, getTimeStr } from '../components/timeStrings.component';
 import { getAllResults, getProject } from '../components/apiCalls';
-import { formatStationaryGraphData, formatMovingGraphData, formatSoundGraphData, formatBoundaryGraphData, retrieveTestName } from '../components/helperFunctions';
+import { formatStationaryGraphData, formatMovingGraphData, formatSoundGraphData, formatBoundaryGraphData, formatNatureGraphData, retrieveTestName } from '../components/helperFunctions';
 
 import { styles } from './projectResult.styles';
 
@@ -60,6 +60,11 @@ export function ProjectResultPage(props) {
       await props.setSelectedResult(result);
       props.navigation.navigate("BoundaryResultPage");
     }
+    else if (item.test_type === 'nature') {
+      let result = await formatNatureGraphData(item);
+      await props.setSelectedResult(result);
+      props.navigation.navigate("NatureResultPage");
+    }
     //add the new tests here ^^
 
   };
@@ -95,7 +100,8 @@ export function ProjectResultPage(props) {
     await setSentMsgVisible(true);
     wait(2000).then(() => setSentMsgVisible(false));
   }
-
+  console.log('projectResult')
+  console.log(item.sharedData.date)
   const activityItem = ({ item, index }) => {
     let testType = retrieveTestName(item.test_type);
     return (
