@@ -85,7 +85,7 @@ function Title(props) {
                headers: { 'Content-Type': 'application/json' },
                withCredentials: true
             });
-            console.log(JSON.stringify(response));
+            //console.log(JSON.stringify(response));
             let user = response.data;
             // user login confirmation and navigation handling in App.js
             // retrieve user's name or name and token to verify status
@@ -96,7 +96,7 @@ function Title(props) {
 
         } catch(error){
             //user login error
-            console.log('ERROR: ', error);
+            //console.log('ERROR: ', error);
             setMessage(error.response.data?.message);
             loginResponse.current.style.display = 'inline-block';
             return;

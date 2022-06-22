@@ -575,8 +575,8 @@ const Path = ({boundsPathWindow, ...options}) => {
         Walking: '#0000FF',
         Running: '#FF0000',
         Swimming: '#FFFF00',
-        'Activity on wheels': '#008000',
-        'Handicap assisted wheels': '#FFA500',
+        'Activity on Wheels': '#008000',
+        'Handicap Assisted Wheels': '#FFA500',
         Constructed: '#FF00E5'
     }
 

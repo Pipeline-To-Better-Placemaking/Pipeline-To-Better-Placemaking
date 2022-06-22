@@ -95,7 +95,7 @@ function ProjectPage(){
                                 ]
                             },
                             {
-                                mode: 'Handicap assisted wheels',
+                                mode: 'Handicap Assisted Wheels',
                                 path: [
                                     {
                                         lat: 28.60335637825532, 

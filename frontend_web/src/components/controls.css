@@ -98,7 +98,7 @@ div#pathBoundWindow, div#popUpBlock{
 
 #rightButton {
     position: relative;
-    left: calc(100vw - 416px)
+    left: calc(100vw - 466px)
 }
 
 #newProjectInput, #newAreaButton, #newPointsButton{
@@ -211,7 +211,7 @@ div.MuiDrawer-paperAnchorBottom div.MuiTableContainer-root{
 
 div#rightDrawer.MuiModal-root.MuiDrawer-root.MuiDrawer-modal.css-y28f86{
     right: 0px;
-    left: calc(100vw - 250px);
+    left: calc(100vw - 300px);
 }
 
 div#projectEdit div#mapFrame {
@@ -253,8 +253,13 @@ div#newProjectInput div.MuiOutlinedInput-root,  div#newProjectInput input#locati
     height: 90%;
 }
 
-div.MuiDrawer-paperAnchorLeft, div#leftDrawer, div.MuiDrawer-paperAnchorRight, div#rightDrawer{
+div.MuiDrawer-paperAnchorLeft, div#leftDrawer{
     width: 250px;
+}
+
+div.MuiDrawer-paperAnchorRight,
+div#rightDrawer{
+    width: 300px;
 }
 
 div.MuiTabs-flexContainer{
@@ -330,6 +335,8 @@ select#activitySelect, input.dateTimePickers{
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     appearance: none;
 }
+
+
 
 span.MuiTabs-indicator{
     display: flex;

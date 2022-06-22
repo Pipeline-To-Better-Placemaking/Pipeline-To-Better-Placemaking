@@ -80,13 +80,14 @@ const subtable = (row, type) => (
                             tObj.data.map((object, index) => (
                                 <TableRow key={ index }>
                                     <TableCell colSpan={ 2 } className='value'>
-                                        { object.average ? object.average : (object.result ? object.result : (object.posture ? object.posture : (object.movement ? object.movement : ''))) }
+                                        {object.average ? `${object.average} dB` : (object.value && object.kind === 'Constructed' ? `${object.value} ft.` : (object.value && object.kind ? `${object.value} sq.ft.` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
                                     </TableCell>
                                     <TableCell colSpan={ 2 } className='type'>
+                                        {object.average ? `${object.sound_type}` : (object.kind ? (`${object.kind} (${object.description})`) : (object.age ? `${object.age} ${object.gender} (${object.activity})` : 'N/A'))}
                                     </TableCell>
                                     <TableCell>Location { index }</TableCell>
                                     <TableCell>{ date } { time }</TableCell>
-                                    <TableCell>{ tObj.surveyor }</TableCell>
+                                    <TableCell>{ tObj.researcher }</TableCell>
                                 </TableRow>
                             ))
                         ))
