@@ -68,7 +68,7 @@ const subtable = (row, type) => (
                     <TableCell colSpan={ type === 0 ? 2 : 1 } className='type'>
                         { type === 0 ? 'Type' : 'Value' }
                     </TableCell>
-                    <TableCell>{ type === 0 ? 'Location' : 'Type/Source' }</TableCell>
+                    <TableCell>{ type === 0 ? 'Location' : 'Type(s)/Source(s)' }</TableCell>
                     <TableCell>{ type === 0 ? 'Date Time' : 'Location' }</TableCell>
                     <TableCell>{ type === 0 ? 'Surveyor' : 'Date Time' }</TableCell>
                 </TableRow>
@@ -98,15 +98,15 @@ const subtable = (row, type) => (
                                 </TableCell>
                                 <TableCell colSpan={1} className='value'>
                                     {
-                                        instance.split('.')[0] === 'sound_collections' ? `${point.average} dB` : (point.area ? `${point.area} sq.ft.` : (point.type ? `${point.type}` : (point.distance ? `${point.distance} ft.` : (point.posture ? point.posture : (point.movement ? `${point.movement}` : 'N/A')))))
+                                        instance.split('.')[0] === 'sound_collections' ? `${point.average} dB` : (point.value && point.kind === 'Constructed' ? `${point.value} ft.` : (point.value && point.kind ? `${point.value} sq.ft.` : (point.posture ? point.posture : (point.mode ? `${point.mode}` : 'N/A'))))
                                     }
                                 </TableCell>
                                 <TableCell>
                                     {   
-                                        point.result ? point.result : (point.age ? `${point.age} ${point.gender} ${point.activity}` : 'N/A')
+                                        point.average ? `${point.sound_type}` : (point.kind ? (`${point.kind} (${point.description})`) : (point.age ? `${point.age} ${point.gender} (${point.activity})` : 'N/A'))
                                     }
                                 </TableCell>
-                                <TableCell>Location { ind }</TableCell>
+                                <TableCell>Location { ind+1 }</TableCell>
                                 <TableCell>{ `${instance.split('.')[1]} ${instance.split('.')[2]}` }</TableCell>
                             </TableRow>
                         ))

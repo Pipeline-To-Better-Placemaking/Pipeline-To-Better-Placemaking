@@ -42,7 +42,6 @@ function FullMap(props){
     const [click, setClick] = React.useState(props.type === 0 || props.type === 2 ? props.center : null);
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
     const [areaData, setAreaData] = React.useState(props.type === 1 ? props.area : null);
-    
     const [newArea, setNewArea] = React.useState(props.type === 3 || props.type === 5 ? props.area : null)
     const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [props.center] :[]));
 
@@ -251,19 +250,19 @@ function FullMap(props){
         if(ver === 0 || ver === 2){
             // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames[title]}</h5><br/>Location ${index}<br/>kind: ${data.Activities[title][date][time].data[index].kind}<br/>description: ${data.Activities[title][date][time].data[index].description}<br/>value: ${data.Activities[title][date][time].data[index].value}`
+            inner.innerHTML = `<h5>${testNames[title]}</h5><br/>Location ${index+1}<br/>kind: ${data.Activities[title][date][time].data[index].kind}<br/>description: ${data.Activities[title][date][time].data[index].description}<br/>value: ${data.Activities[title][date][time].data[index].value}`
             popup.style.display = 'flex';
         } else if(ver === 1){
             // version 1 == water nature collection
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames[title]}</h5><br/>Location ${index}<br/>result: ${data.Activities[title][date][time].data[index].result}<br/>value: ${data.Activities[title][date][time].data[index].value}`
+            inner.innerHTML = `<h5>${testNames[title]}</h5><br/>Location ${index+1}<br/>result: ${data.Activities[title][date][time].data[index].result}<br/>value: ${data.Activities[title][date][time].data[index].value}`
             popup.style.display = 'flex';
         } else {
             // version 3 moving collections
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames[title]}</h5><br/>Location ${index}<br/>mode: ${data.Activities[title][date][time].data[index].mode}`
+            inner.innerHTML = `<h5>${testNames[title]}</h5><br/>Location ${index+1}<br/>mode: ${data.Activities[title][date][time].data[index].mode}`
             popup.style.display = 'flex';
         }
     }
@@ -291,7 +290,16 @@ function FullMap(props){
                             /> 
                             :
                             (point.kind === 'Shelter' || point.kind === 'Material' || point.result === 'water' ? 
-                                <Bounds key={`${sdate}.${time}.${i2}`} title={title} date={sdate} time={time} index={i2} area={point.path} type={point.kind ? point.kind : point.result} boundsPathWindow={boundsPathWindow}/> 
+                                <Bounds 
+                                    key={`${sdate}.${time}.${i2}`} 
+                                    title={title} 
+                                    date={sdate} 
+                                    time={time} 
+                                    index={i2} 
+                                    area={point.path} 
+                                    type={point.kind ? point.kind : point.result} 
+                                    boundsPathWindow={boundsPathWindow}
+                                /> 
                                 :
                                 <Marker 
                                     key={`${sdate}.${time}.${i2}`} 
@@ -339,8 +347,7 @@ function FullMap(props){
                     sound={ soundCollections }
                     data={ areaData }
                 >
-                    { areaData ? <Bounds area={ areaData } type={ 'area' }/> : null }
-                    { newArea ? <Bounds area = { newArea } type = { 'area' } /> : null }
+                    {areaData ? <Bounds area={areaData} type={'area'} /> : (newArea ? <Bounds area={newArea} type={'area'} /> : null)}
                     { props.type === 1 ? 
                         actCoords(collections) : 
                         (props.type === 4 || props.type === 2 ? 
@@ -353,21 +360,22 @@ function FullMap(props){
                     { props.type === 4 ? <DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null }
                 </Map>
             </Wrapper>
-            { props.type === 3 ? <Button
-                id='newPointsButton'
-                className='newHoveringButtons'
-                component={ Link }
-                to='/home/teams/:id/new/area/points/form'
-                state={{
-                    center: center, 
-                    title: title, 
-                    area: newArea, 
-                    points: clicks, 
-                    zoom: zoom
-                }}
-            >
-                Set Points
-            </Button> : null}
+            { props.type === 3 ? 
+                <Button
+                    id='newPointsButton'
+                    className='newHoveringButtons'
+                    component={ Link }
+                    to='/home/teams/:id/new/area/points/form'
+                    state={{
+                        center: center, 
+                        title: title, 
+                        area: newArea, 
+                        points: clicks, 
+                        zoom: zoom
+                    }}
+                >
+                    Set Points
+                </Button> : null}
             <div id='pathBoundWindow' style={{display: 'none', position: 'fixed', flexDirection: 'row', justifyContent: 'center'}}>
                 <div id='popUpBlock'>
                     <div id='popUpText'></div>
@@ -727,6 +735,8 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
     );
 }
 
+
+// Helper functions for React use of Google Maps, required for React to recognize changes at deeper elements --
 const deepCompareEqualsForMaps = createCustomEqual((deepEqual) => (a, b) => {
     if (isLatLngLiteral(a) || a instanceof google.maps.LatLng || isLatLngLiteral(b) || b instanceof google.maps.LatLng) {
         return new google.maps.LatLng(a).equals(new google.maps.LatLng(b));
