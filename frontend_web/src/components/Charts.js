@@ -78,15 +78,19 @@ function Charts(props){
                 male++;
             }
 
-            if (obj.activity === 'Socializing') {
-                solitary ++;
-            } else if (obj.activity === 'Waiting') {
+            if (obj.activity.includes('Socializing')) {
+                socializing ++;
+            }
+            if (obj.activity.includes('Waiting')){
                 waiting ++;
-            } else if (obj.activity === 'Recreation') {
+            }
+            if (obj.activity.includes('Recreation')) {
                 recreation ++;
-            } else if (obj.activity === 'Eating') {
+            }
+            if(obj.activity.includes('Eating')) {
                 eating ++;
-            } else {
+            } 
+            if (obj.activity.includes('Solitary')) {
                 solitary ++;
             }
         };
@@ -109,7 +113,7 @@ function Charts(props){
                     <Tooltip />
                     <Bar dataKey={'count'} >
                         {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={stationaryColor[entry.posture]} />
+                            <Cell key={`cell-${index}`} stroke={'#000000'} fill={stationaryColor[entry.posture]} />
                         ))}
                     </Bar>
                 </BarChart>
