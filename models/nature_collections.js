@@ -13,6 +13,11 @@ const { collection } = require('./surveys.js')
 const collection_schema = mongoose.Schema({
     title: String,
 
+    date: {
+        type: Date,
+        required: true
+    },
+
     area: {
         type: ObjectId,
         required: true,
