@@ -100,8 +100,7 @@ export function ProjectResultPage(props) {
     await setSentMsgVisible(true);
     wait(2000).then(() => setSentMsgVisible(false));
   }
-  console.log('projectResult')
-  console.log(item.sharedData.date)
+  
   const activityItem = ({ item, index }) => {
     let testType = retrieveTestName(item.test_type);
     return (
