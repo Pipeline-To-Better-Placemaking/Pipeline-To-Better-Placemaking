@@ -856,7 +856,26 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     },{
                                     path: 'area',
                                     }]
-                                }])                            
+                                }])
+    natureData = await Project.findById(req.params.id)
+                            .populate('area')
+                            .populate([
+                            {
+                                path:'natureCollections',
+                                model:'Nature_Collections',
+                                populate: [{
+                                    path: 'maps',
+                                    model: 'Nature_Maps',
+                                    select: 'date',
+                                    populate: [{
+                                        path: 'data',
+                                        },{
+                                        path: 'researchers'
+                                        }]
+                                    },{
+                                    path: 'area',
+                                    }]
+                                }])                                                               
     // lightData = await Project.findById(req.params.id)
     //                         .populate('area')
     //                         .populate([
@@ -880,25 +899,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
     //                                 path: 'area',
     //                                 }]
     //                             }])                            
-    natureData = await Project.findById(req.params.id)
-                            .populate('area')
-                            .populate([
-                            {
-                                path:'natureCollections',
-                                model:'Nature_Collections',
-                                populate: [{
-                                    path: 'maps',
-                                    model: 'Nature_Maps',
-                                    select: 'date',
-                                    populate: [{
-                                        path: 'data',
-                                        },{
-                                        path: 'researchers'
-                                        }]
-                                    },{
-                                    path: 'area',
-                                    }]
-                                }])                            
+                         
     // movingData = await Project.findById(req.params.id)
     //                         .populate('area')
     //                         .populate([

@@ -57,7 +57,6 @@ const project_schema = mongoose.Schema({
     }],
     natureCollections:[{
         type: ObjectId,
-        required: true,
         ref: 'Nature_Collections'
     }],
     // lightCollections:[{
