@@ -36,7 +36,7 @@ function ActivityPage(props){
                     Object.entries(timeobject.data).forEach(([index, dataobjects])=>{
                         var obj = {}
                         if(category === 'stationary_collections'){
-                            obj = { Category: testNames[category], Date: date, Time: time, Point: index, Posture: dataobjects.posture, Age: dataobjects.age, Gender: dataobjects.gender, Activity: dataobjects.activity }
+                            obj = { Category: testNames[category], Date: date, Time: time, Point: index, Posture: dataobjects.posture, Age: dataobjects.age, Gender: dataobjects.gender, Activity: `${dataobjects.activity}` }
                         } else if(category === 'moving_collections'){
                             obj = { Category: testNames[category], Date: date, Time: time, Point: index, Mode: dataobjects.mode}
                         } else if(category === 'order_collections'){
@@ -46,7 +46,7 @@ function ActivityPage(props){
                         } else if(category === 'lighting_collections'){
                             obj = { Category: testNames[category], Date: date, Time: time, Point: index, Result: dataobjects.result}
                         } else if(category === 'nature_collections' && dataobjects.result === 'Water'){
-                            obj = { Category: testNames[category], Date: date, Time: time, Point: index, Result: dataobjects.result, Value: dataobjects.value}
+                            obj = { Category: testNames[category], Date: date, Time: time, Point: index, Result: dataobjects.result, 'Value (ft/sq.ft)': dataobjects.value}
                         } else if(category === 'nature_collections'){
                             obj = { Category: testNames[category], Date: date, Time: time, Point: index, Result: dataobjects.result}
                         } else if(category === 'sound_collections'){

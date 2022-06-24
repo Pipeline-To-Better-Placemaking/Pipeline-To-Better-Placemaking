@@ -340,7 +340,7 @@ function FullMap(props){
             { props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null }
             { props.type === 1 ? <Button id='printButton' onClick={convertToImage}>Print Map</Button>: null }
             {/* Wrapper imports Google Maps API */}
-            <Wrapper apiKey={'AIzaSyA9UtA9m7WBgKYz897QKQBvegmHK4Ai0IQ'} render={render} id='mapContainer' libraries={['drawing', 'places']}>
+            <Wrapper apiKey={''} render={render} id='mapContainer' libraries={['drawing', 'places']}>
                 <Map
                     center={ center }
                     onClick={ onMClick }
