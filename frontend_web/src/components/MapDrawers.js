@@ -26,7 +26,7 @@ export default function MapDrawer(props) {
     const [stationary, setStationary] = React.useState({});
     const [moving, setMoving] = React.useState({});
     const [order, setOrder] = React.useState({});
-    const [boundary, setBoundary] = React.useState({});
+    const [boundaries, setBoundaries] = React.useState({});
     const [lighting, setLighting] = React.useState({});
     const [nature, setNature] = React.useState({});
     const [sound, setSound] = React.useState({});
@@ -47,7 +47,7 @@ export default function MapDrawer(props) {
         stationary_collections: 'Humans in Place',
         moving_collections: 'Humans in Motion',
         order_collections: 'Absence of Order Locator',
-        boundary_collections: 'Spatial Boundaries',
+        boundaries_collections: 'Spatial Boundaries',
         lighting_collections: 'Lighting Profile',
         nature_collections: 'Nature Prevalence',
         sound_collections: 'Acoustical Profile'
@@ -57,7 +57,7 @@ export default function MapDrawer(props) {
         stationary_collections: false,
         moving_collections: false,
         order_collections: false,
-        boundary_collections: false,
+        boundaries_collections: false,
         lighting_collections: false,
         nature_collections: false,
         sound_collections: false
@@ -100,7 +100,6 @@ export default function MapDrawer(props) {
                 case 'stationary_collections':
                     newEntry = stationary;
                     
-
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
                     newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
                     setStationary(newEntry);
@@ -119,13 +118,12 @@ export default function MapDrawer(props) {
                     newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
                     setOrder(newEntry);
                     break;
-                case 'boundary_collections':
-                    newEntry = boundary;
-
+                case 'boundaries_collections':
+                    newEntry = boundaries;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
                     newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
-                    setBoundary(newEntry);
+                    setBoundaries(newEntry);
                     break;
                 case 'lighting_collections':
                     newEntry = lighting;
@@ -175,10 +173,10 @@ export default function MapDrawer(props) {
                     delete removeEntry[`${date}.${time}`]
                     setOrder(removeEntry);
                     break;
-                case 'boundary_collections':
-                    removeEntry = boundary;
+                case 'boundaries_collections':
+                    removeEntry = boundaries;
                     delete removeEntry[`${date}.${time}`]
-                    setBoundary(removeEntry);
+                    setBoundaries(removeEntry);
                     break;
                 case 'lighting_collections':
                     removeEntry = lighting;
@@ -275,7 +273,7 @@ export default function MapDrawer(props) {
         </TableContainer>
     );
 
-    const charts = (selections, stationary, moving, order, boundary, lighting, nature, sound) => (
+    const charts = (selections, stationary, moving, order, boundaries, lighting, nature, sound) => (
         <>
             {Object.entries(selections).map(([selection, obj])=>(
                 <Charts key={selection} selection={selection} data={obj.data} type={0}/>
@@ -283,7 +281,7 @@ export default function MapDrawer(props) {
             {Object.keys(stationary)?.length > 1 ? <Charts selection='stationary_collections.Group' data={stationary} type={1} /> : null}
             {Object.keys(moving)?.length > 1 ? <Charts selection='moving_collections.Group' data={moving} type={1} /> : null}
             {Object.keys(order)?.length > 1 ? <Charts selection='order_collections.Group' data={order} type={1} /> : null}
-            {Object.keys(boundary)?.length > 1 ? <Charts selection='boundary_collections.Group' data={boundary} type={1} /> : null}
+            {Object.keys(boundaries)?.length > 1 ? <Charts selection='boundaries_collections.Group' data={boundaries} type={1} /> : null}
             {Object.keys(lighting)?.length > 1 ? <Charts selection='lighting_collections.Group' data={lighting} type={1} /> : null}
             {Object.keys(nature)?.length > 1 ? <Charts selection='nature_collections.Group' data={nature} type={1} /> : null}
             {Object.keys(sound)?.length > 1 ? <Charts selection='sound_collections.Group' data={sound} type={1} /> : null}
@@ -318,7 +316,7 @@ export default function MapDrawer(props) {
                             : null }
                         { menuAnchors[name] === 'left' ? 
                             list(name, data) 
-                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : (menuAnchors[name] === 'right' ? charts(selections, stationary, moving, order, boundary, lighting, nature, sound) : null)) }
+                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : (menuAnchors[name] === 'right' ? charts(selections, stationary, moving, order, boundaries, lighting, nature, sound) : null)) }
                     </Drawer>
                 </React.Fragment>
             ))}

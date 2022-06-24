@@ -5,6 +5,7 @@ import Card from 'react-bootstrap/Card';
 import DoneIcon from '@mui/icons-material/Done';
 
 import TimeForm from '../components/TimeForm';
+import '../components/controls.css';
 
 function NewActivityTimes(){
     const loc = useLocation();
@@ -61,7 +62,7 @@ function NewActivityTimes(){
                 <Card.Header >
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <h1>{ activity.title }</h1>
-                        <Button id='createActivityButton'>Schedule Activity <DoneIcon /></Button>
+                        <Button id='createActivityButton' className='confirm'>Schedule Activity <DoneIcon /></Button>
                     </div>
                     Category: { testNames[activity.activity] }
                     <br />

@@ -45,7 +45,7 @@ function ActivityForm(){
                 <Form.Label>Time per Location</Form.Label>
                 <Form.Control type='number' id='timerSelect' name='timerSelect' className='dateTimePickers' value={form.timer} min='5' max='100' onChange={handleChange('timer')} />
             </div>
-            <Button className='newHoveringButtons' component={Link}
+            <Button className='newHoveringButtons confirm' id='addButton' component={Link}
                 to='/home/teams/:id/project/:id/activities/times'
                 state={form}
             >
@@ -59,7 +59,7 @@ const testNames = [
     { label: 'Humans in Place', type: 'stationary_collections' },
     { label: 'Humans in Motion', type: 'moving_collections'},
     { label: 'Absence of Order Locator', type: 'order_collections'},
-    { label: 'SpatialBoundaries', type: 'boundary_collections' },
+    { label: 'Spatial Boundaries', type: 'boundaries_collections' },
     { label: 'Lighting Profile', type: 'lighting_collections'},
     { label: 'Nature Prevalence', type: 'nature_collections'},
     { label: 'Acoustical Profile', type: 'sound_collections'},

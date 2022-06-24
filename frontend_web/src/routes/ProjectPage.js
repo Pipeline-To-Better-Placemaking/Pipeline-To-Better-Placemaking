@@ -178,7 +178,7 @@ function ProjectPage(){
                     }
                 }
             },
-            boundary_collections: {
+            boundaries_collections: {
                 '2/29/22': {
                     '16:00': {
                         researcher: 'Sam Iam',
@@ -316,8 +316,36 @@ function ProjectPage(){
                                     lat: 28.603369329889514,
                                     lng: -81.20129371852886
                                 },
-                                result: 'none'
+                                result: 'Rhythmatic'
                             },
+                            {
+                                standingPoint: {
+                                    lat: 28.60162517274116, 
+                                    lng:-81.20074305288507
+                                },
+                                result: 'Building'
+                            },
+                            {
+                                standingPoint: {
+                                    lat: 28.601574899251066, 
+                                    lng: -81.20058558490983
+                                },
+                                result: 'Building'
+                            },
+                            {
+                                standingPoint: {
+                                    lat: 28.601684872479424, 
+                                    lng: -81.2010866193765
+                                },
+                                result: 'Building'
+                            },
+                            {
+                                standingPoint: {
+                                    lat: 28.60143350493119, 
+                                    lng: -81.2008217868727
+                                },
+                                result: 'Task'
+                            }
                         ]
                     }
                 }
@@ -412,7 +440,7 @@ function ProjectPage(){
                                         lng: -81.20091016250205
                                     }
                                 ],
-                                result: 'water',
+                                result: 'Water',
                                 value: 400
                             }
                         ]

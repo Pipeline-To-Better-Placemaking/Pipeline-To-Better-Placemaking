@@ -33,7 +33,7 @@ function Charts(props){
         stationary_collections: 'Humans in Place',
         moving_collections: 'Humans in Motion',
         order_collections: 'Absence of Order Locator',
-        boundary_collections: 'Spatial Boundaries',
+        boundaries_collections: 'Spatial Boundaries',
         lighting_collections: 'Lighting Profile',
         nature_collections: 'Nature Prevalence',
         sound_collections: 'Acoustical Profile'
@@ -133,7 +133,7 @@ function Charts(props){
                     <XAxis dataKey='age' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.7} />
+                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
                 </BarChart>
                 Gender
                 <BarChart width={width} height={height} data={gender}>
@@ -141,7 +141,7 @@ function Charts(props){
                     <XAxis dataKey='gender' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.7} />
+                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
                 </BarChart>
                 Activity
                 <BarChart width={width} height={height} data={activity}>
@@ -149,7 +149,7 @@ function Charts(props){
                     <XAxis dataKey='activity' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.7} />
+                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
                 </BarChart>
             </>
        )
@@ -214,7 +214,7 @@ function Charts(props){
                     <Legend />
                         <Pie data={array} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                             {array.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.6} />
+                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65} />
                             ))}
                         </Pie>
 
@@ -227,7 +227,7 @@ function Charts(props){
                     <YAxis label={{ value: 'Distance', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey={'value'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.6} />
+                    <Bar dataKey={'value'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.65} />
                 </BarChart>
             </div>
         );
@@ -252,7 +252,7 @@ function Charts(props){
                     <Legend />
                     <Pie data={horizontal} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {horizontal.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.6}/>
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65}/>
                         ))}
                     </Pie>
                     <Tooltip />
@@ -261,7 +261,7 @@ function Charts(props){
                 <PieChart width={width} height={height}>
                         <Pie data={constructed} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                             {constructed.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.6} />
+                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65} />
                             ))}
                         </Pie>
                     <Tooltip />
@@ -277,13 +277,13 @@ function Charts(props){
                 <div style={{fontSize: 'large'}}>{ testNames[cat[0]] }</div>
                 {cat[1]}  {cat[2]}
             </div>
-                {cat[0] === 'sound_collections' ? soundBarChart(data) : (cat[0] === 'boundary_collections' ? BoundaryPieChart(data) : (cat[0] === 'moving_collections' ? movingBarChart(data) : (cat[0] === 'stationary_collections' ? stationaryBarCharts(data) : null))) }
+                {cat[0] === 'sound_collections' ? soundBarChart(data) : (cat[0] === 'boundaries_collections' ? BoundaryPieChart(data) : (cat[0] === 'moving_collections' ? movingBarChart(data) : (cat[0] === 'stationary_collections' ? stationaryBarCharts(data) : null))) }
         </div> : 
             <div key={selection} style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px'}}>
                 <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
                     { testNames[cat[0]] }: Summary
                 </div>
-                { cat[0] === 'boundary_collections' ? multiBoundaryCharts(data) : null }
+                { cat[0] === 'boundaries_collections' ? multiBoundaryCharts(data) : null }
             </div>
     );
 };

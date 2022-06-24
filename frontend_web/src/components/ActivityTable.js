@@ -15,7 +15,7 @@ const testNames = {
     stationary_collections: 'Humans in Place',
     moving_collections: 'Humans in Motion',
     order_collections: 'Absence of Order Locator',
-    boundary_collections: 'Spatial Boundaries',
+    boundaries_collections: 'Spatial Boundaries',
     lighting_collections: 'Lighting Profile',
     nature_collections: 'Nature Prevalence',
     sound_collections: 'Acoustical Profile'

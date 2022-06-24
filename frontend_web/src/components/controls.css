@@ -88,7 +88,7 @@ div#pathBoundWindow, div#popUpBlock{
 
 #bottomDrawer, #bottomDrawer > div.MuiPaper-root{
     top: calc(100vh - 250px);
-    width: calc(100vw - 500px);
+    width: calc(100vw - 550px);
     left: 250px;
 }
 
@@ -101,21 +101,25 @@ div#pathBoundWindow, div#popUpBlock{
     left: calc(100vw - 466px)
 }
 
-#newProjectInput, #newAreaButton, #newPointsButton{
+#newProjectInput, #newAreaBlock, #newPointsButton{
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    position: fixed;
+    position: absolute;
     top: 75px;
     left: 29vw;
     z-index: 999;
 }
 
-#newAreaButton, #newPointsButton {
+#newPointsButton {
     left: 45vw;
-    position: fixed;
+    position: absolute;
     z-index: 999;
+}
+
+#newAreaBlock{
+    left: 45vw;
 }
 
 #bottomButton{
@@ -127,6 +131,16 @@ div#pathBoundWindow, div#popUpBlock{
 button#bottomCloseButton, button#closeButton{
     width: 100%;
     z-index: 1000;
+}
+
+#addButton.confirm, .confirm, button.confirm{
+    display: flex;
+    justify-content: center;
+    height: 38px;
+    color:green;
+    background-color: #d6f9d7;
+    border: 1px solid rgba(0, 128, 0, 0.566);
+    align-items: center;
 }
 
 #bottomListBox{
@@ -175,12 +189,12 @@ div.css-1gsv261{
     background-color: var(--secondaryBlue);
 }
 
-a.newHoveringButtons{
+a.newHoveringButtons, button.newHoveringButtons{
     background-color: #ffffff;
     margin-left: 5px;
 }
 
-a.newHoveringButtons:hover {
+a.newHoveringButtons:hover, button.newHoveringButtons:hover {
     background-color: #daebff;
 }
 
@@ -188,6 +202,7 @@ div#ActivityForm{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    align-items: flex-end;
     padding: 5px;
     background-color: var(--tabSelectColor);
 }
@@ -298,14 +313,14 @@ button#deleteButton{
 }
 
 button#printButton {
-    position: fixed;
+    position: absolute;
     top: 113px;
     left: calc(50vw - 46px);
     color: var(--primaryBlue);
 }
 
 div#rightDrawer.css-1u2w381-MuiModal-root-MuiDrawer-root{
-    left: calc(100vw - 250px);
+    left: calc(100vw - 300px);
     right: 0px;
 }
 
@@ -330,7 +345,7 @@ select#activitySelect, input.dateTimePickers{
     line-height: 1.5;
     color: #212529;
     background-color: #fff;
-    border: 1px solid #ced4da;
+    border: 1px solid #dee5ec;
     border-radius: 0.25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     appearance: none;

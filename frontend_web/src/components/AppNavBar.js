@@ -1,6 +1,7 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Image from 'react-bootstrap/Image';
@@ -18,7 +19,15 @@ import logo1 from '../images/PtBPLogo.png';
 
 // pages left incase of need for additional route info
 // uses hamburger on small viewports
-const pages = [''];
+const pages = [
+    {
+        page: 'Teams',
+        route: '/home'
+    },
+    {
+        page: 'Projects',
+        route: '/home/teams/:id'
+    }];
 
 // Routes according to React-Router relative urls
 const settings = [
