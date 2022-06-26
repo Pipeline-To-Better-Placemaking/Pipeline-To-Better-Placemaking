@@ -46,7 +46,7 @@ export function EditPoints(props) {
 
     // Save the new area
     try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
+      const response = await fetch('https://p2bp.herokuapp.com/api/projects/' +
                                     props.project._id +
                                     '/areas', {
           method: 'POST',
@@ -92,7 +92,7 @@ export function EditPoints(props) {
         console.log("save area with id:", props.areaInfo._id);
         // Save the area
         try {
-          const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
+          const response = await fetch('https://p2bp.herokuapp.com/api/projects/' +
                                         props.project._id +
                                         '/areas/' +
                                         props.areaInfo._id, {
@@ -143,7 +143,7 @@ export function EditPoints(props) {
           console.log("deleteing area with id:", props.areaInfo._id);
           // Delete area
           try {
-              const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
+              const response = await fetch('https://p2bp.herokuapp.com/api/projects/' +
                                             props.project._id +
                                             '/areas/' +
                                             props.areaInfo._id, {
@@ -185,7 +185,7 @@ export function EditPoints(props) {
       let description = await getAreaName(props.tempArea);
 
       try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id, {
+        const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + props.project._id, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',

@@ -62,7 +62,7 @@ export function PeopleMovingActivity(props) {
             console.log("TimeSlot: " + props.timeSlot._id)
             console.log("Data: " + JSON.stringify(data))
 
-            const response = await fetch('https://measuringplacesd.herokuapp.com/api/moving_maps/' + props.timeSlot._id + '/data', {
+            const response = await fetch('https://p2bp.herokuapp.com/api/moving_maps/' + props.timeSlot._id + '/data', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

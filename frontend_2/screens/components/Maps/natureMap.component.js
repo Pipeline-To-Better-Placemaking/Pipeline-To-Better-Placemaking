@@ -8,196 +8,114 @@ import { styles } from './sharedMap.styles';
 export function NatureMap(props) {
 
     // Custom colored data pin
-    const DataPin = () =>{
+    const DataPin = (props) =>{
         return(
-            <View style={styles.redDataPin} />
+            <View style={[styles.natureDataPin, {backgroundColor: props.color}]} />
         )
     }
-
-    // copy of the boundary test, there is a lot here that needs to change
-
-    const CreatePoly = () => {
-        // if the type of boundary is a construction boundary (polyline)
-        if(props.type === 0){
-            if(props.markers === null || props.markers.length == 0) {
-                return (null);
-            }
-
-            else if (props.markers.length == 1) {
-                return (props.markers.map((coord, index) => (
-                    <MapView.Marker
-                        key={index}
-                        coordinate={props.markers[0]}
-                    >
-                        <DataPin/>
-                    </MapView.Marker>
-            )));
-
-            }
-            else if (props.markers.length > 1) {
-
-                return (
-                    <MapView.Polyline
-                        coordinates={props.markers}
-                        strokeWidth={3}
-                        strokeColor={colors[0]}
-                    />
-                );
-            }
+    
+    // renders current data point being placed
+    const AddPoint = () =>{        
+        if(props.marker == undefined || props.marker.length === 0) {
+            return (null);
         }
-        // otherwise, it is a material or shelter boundary (polygon)
+
         else{
-            // let fill;
-            let color;
-            if(props.type === 1){
-                color = colors[1];
-                // fill = fills[0];
-            }
-            else{
-                color = colors[2];
-                // fill = fills[1];
-            }
+            return(
+                <MapView.Marker coordinate={props.marker} >
+                    <DataPin color={'red'} />
+                </MapView.Marker>
+            )
+        }
+    }
 
-            if(props.markers === null || props.markers.length == 0) {
-                return (null);
-            }
+    // renders submitted data points
+    const PlotPoints = () =>{
+        if(props.dataPoints === null || props.dataPoints.length == 0) {
+            return (null);
+        }
 
-            else if (props.markers.length == 1) {
-
-                return (props.markers.map((coord, index) => (
+        else{
+            //console.log(props.dataPoints)
+            let obj = [];
+            for(let i = 0; i < props.dataPoints.length; i++){
+                // set as color for the animal type
+                let color = "#B06A24";
+                // only change color if its for the landscape type
+                if(props.dataPoints[i].type === "Landscape") color = "#00FF00"
+                obj[i] = ( 
                     <MapView.Marker
-                        key={index}
-                        coordinate = {props.markers[0]}
+                        key={i.toString()}
+                        coordinate={props.dataPoints[i].marker}
                     >
-                        <DataPin/>
+                        <DataPin
+                            color={color}
+                        />
                     </MapView.Marker>
-            )));
-
-            }
-            else if (props.markers.length === 2) {
-
-                return (
-                    <MapView.Polyline
-                        coordinates={props.markers}
-                        strokeWidth={3}
-                        strokeColor={color}
-                    />
-                );
-            }
-            // don't render colors with polygons as they don't stay consistent (flashes between set colors and default)
-            else if (props.markers.length > 2){
-                return(
-                    <MapView.Polygon 
-                        coordinates={props.markers}
-                        strokeWidth={0}
-                        // strokeColor={color}
-                        // fillColor={fill}
-                    />
                 )
             }
-        }
-    }
-
-    // with polygons there is a glitch with the strokeColor and fillColor that causes the colors to flicker (likely due to the filter and setInterval as it happens on ticks down)
-    // going with using enclosed polylines intstead for a consistent apperance during the test (the result map will use polygons and the colors shouldn't glitch)
-    
-    
-    const ConstructBounds = () =>{
-        if(props.lineBool){
-            return(    
-                props.linePaths.map((obj, index) => (
-                    <MapView.Polyline
-                        coordinates={obj}
-                        strokeWidth={3}
-                        strokeColor={colors[0]}
-                        key={index}
-                    />
-                ))
-            )
-        }
-        else return null
-    }
-
-    const MaterialBounds = () =>{
-        if(props.matBool){
-            // return(
-            //     props.matPaths.map((obj, index) => (
-            //         <MapView.Polygon
-            //             coordinates={obj}
-            //             strokeWidth={3}
-            //             strokeColor={colors[1]}
-            //             fillColor={fills[0]}
-            //             key={index}
-            //         />
-            //     ))
-            // )
-            // used to convert polygon arrays into enclosed line arrays
-            let paths = props.matPaths;
-            let linePaths = [];
-            let len = props.matPaths.length;
-            // adds the 1st point to the end of each path object
-            for(let i = 0; i < len; i++) linePaths[i] = paths[i].concat(paths[i][0]);
-
             return(
-                linePaths.map((obj, index) => (
-                    <MapView.Polyline
-                        coordinates={obj}
-                        strokeWidth={3}
-                        strokeColor={colors[1]}
-                        key={index}
-                    />
-                ))
-            )
-        }
-        else return null
-    }
-
-    const ShelterBounds = () =>{
-        if(props.sheBool){
-            // return(
-            //     props.shePaths.map((obj, index) => (
-            //         <MapView.Polygon
-            //             coordinates={obj}
-            //             strokeWidth={3}
-            //             strokeColor={colors[2]}
-            //             fillColor={fills[1]}
-            //             key={index}
-            //         />
-            //     ))
-            // )
-            // used to convert polygon arrays into enclosed line arrays
-            let paths = props.shePaths;
-            let linePaths = [];
-            let len = props.shePaths.length;
-            // adds the 1st point to the end of each path object
-            for(let i = 0; i < len; i++) linePaths[i] = paths[i].concat(paths[i][0]);
-
-            return(
-                linePaths.map((obj, index) => (
-                    <MapView.Polyline
-                        coordinates={obj}
-                        strokeWidth={3}
-                        strokeColor={colors[2]}
-                        key={index}
-                    />
-                ))
-            )
-        }
-        else return null
-    }
-
-    const AllBounds = () => {
-        if (props.viewAll) {
-            //console.log("Drawing boundaries")
-            return (
                 <View>
-                    <ConstructBounds />
-                    <MaterialBounds />
-                    <ShelterBounds />
+                    {obj}
                 </View>
             )
         }
+    }
+
+    // renders current body of water being drawn
+    const CreatePoly = () => {
+        if(props.markers === null || props.markers.length == 0) {
+            return (null);
+        }
+
+        else if (props.markers.length == 1) {
+            return (props.markers.map((coord, index) => (
+                <MapView.Marker
+                        key={index}
+                        coordinate = {props.markers[0]}
+                    >
+                        <DataPin color={'red'} />
+                    </MapView.Marker>
+            )));
+
+        }
+        else if (props.markers.length === 2) {
+
+            return (
+                <MapView.Polyline
+                    coordinates={props.markers}
+                    strokeWidth={3}
+                    strokeColor={'red'}
+                />
+            );
+        }
+        else if (props.markers.length > 2){
+            return(
+                <MapView.Polygon 
+                    coordinates={props.markers}
+                    strokeWidth={0}
+                />
+            )
+        }
+    }
+    
+    // renders submitted bodies of water
+    const BodyOfWater = () =>{
+        // if there is a truthy value in the 1st water path then render the water boundary
+        if(props.water[0]){
+            return(
+                props.water.map((obj, index) => (
+                    <MapView.Polygon
+                        coordinates={obj}
+                        strokeWidth={0}
+                        key={index}
+                    />
+                ))
+            )
+        }
+        // otherwise return null
         else return null
+
     }
 
     return(
@@ -205,9 +123,8 @@ export function NatureMap(props) {
             {/* main mapview container */}
             <PressMapAreaWrapper
                 area={props.area}
-                mapHeight={'95%'}
-                onPress={props.addMarker}
-                recenter={props.recenter}
+                mapHeight={props.cond ? '94%' : '94.8%'}
+                onPress={props.cond ? props.addShape : props.addMarker}
             >
                 {/* shows the project area on the map */}
                 <MapView.Polygon
@@ -217,11 +134,13 @@ export function NatureMap(props) {
                     fillColor={'rgba(0,0,0,0.2)'}
                 />
                 
-                {/* draws polyline/polygon that the user is making */}
                 <CreatePoly />
                 
-                {/* renders submitted drawn boundaries during test collection */}
-                <AllBounds />
+                <BodyOfWater />
+
+                <AddPoint />
+
+                <PlotPoints />
 
             </PressMapAreaWrapper>
         </View>

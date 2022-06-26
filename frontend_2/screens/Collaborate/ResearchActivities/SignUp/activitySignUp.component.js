@@ -360,7 +360,7 @@ export function ActivitySignUpPage(props) {
     let success = false
     let res = null
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + route + timeSlot._id + '/claim', {
+        const response = await fetch('https://p2bp.herokuapp.com/api/' + route + timeSlot._id + '/claim', {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -382,7 +382,7 @@ export function ActivitySignUpPage(props) {
     let success = false
     let res = null
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/'+ route + timeSlot._id + '/claim', {
+        const response = await fetch('https://p2bp.herokuapp.com/api/'+ route + timeSlot._id + '/claim', {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',
@@ -482,8 +482,7 @@ export function ActivitySignUpPage(props) {
       </View>
     </Card>
   );
-  console.log('activity signup')
-  console.log(props.activity.date)
+  
   return (
     <ViewableArea>
       {props.teamOwner() ?

@@ -64,7 +64,7 @@ export function EditProjectPage(props) {
 
     // Delete
     try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id, {
+      const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + props.project._id, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
@@ -121,7 +121,7 @@ export function EditProjectPage(props) {
 
     // Delete
     try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id, {
+      const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + props.project._id, {
         method: 'PUT',
         headers: {
           Accept: 'application/json',

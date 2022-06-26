@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button } from '@ui-kitten/components';
-import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component.js';
+import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component';
 import { BoundaryMap } from '../../../components/Maps/boundaryMap.component';
 import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.component';
 import { DataModal } from '../../../components/Activities/Boundary/dataModal.component';
@@ -80,7 +80,7 @@ export function BoundaryTest(props){
         clearInterval(id);
         
         try {
-            const response = await fetch('https://measuringplacesd.herokuapp.com/api/boundaries_maps/' + props.timeSlot._id + '/data', {
+            const response = await fetch('https://p2bp.herokuapp.com/api/boundaries_maps/' + props.timeSlot._id + '/data', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -430,9 +430,6 @@ export function BoundaryTest(props){
     const goBack = () =>{
         setDataModal(false);
     }
-    
-    // ignores the event emitter warnings in app (for dev. only)
-    // LogBox.ignoreAllLogs();
 
     return(
         <ViewableArea>

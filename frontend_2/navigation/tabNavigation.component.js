@@ -76,7 +76,7 @@ export function TabNavigation(props) {
     let teamDetails = null
     // Get the team information
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + team._id, {
+        const response = await fetch('https://p2bp.herokuapp.com/api/teams/' + team._id, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',

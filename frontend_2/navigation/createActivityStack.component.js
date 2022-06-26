@@ -193,7 +193,7 @@ export function CreateActivityStack(props) {
     console.log("saving with area id", area._id);
     // Save the activity
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + collectionName, {
+        const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + props.project._id + collectionName, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -252,7 +252,7 @@ export function CreateActivityStack(props) {
     }
     // Save the activity
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName, {
+        const response = await fetch('https://p2bp.herokuapp.com/api/' + timeSlotName, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -286,7 +286,7 @@ export function CreateActivityStack(props) {
     let collectionDetails = null
     // Save the activity
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
+        const response = await fetch('https://p2bp.herokuapp.com/api/projects/' +
                                       props.project._id +
                                       collectionName  +
                                       '/' + props.activity._id, {
@@ -385,9 +385,9 @@ export function CreateActivityStack(props) {
     //console.log(timeSlotName);
     // Save the activity
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + timeSlot._id, {
+        const response = await fetch('https://p2bp.herokuapp.com/api/' + timeSlotName + timeSlot._id, {
         // original response below, there appeared to be an extra /, but the responses came back looking okay ?
-        // const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
+        // const response = await fetch('https://p2bp.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -419,9 +419,9 @@ export function CreateActivityStack(props) {
     let res = null
     //console.log(timeSlotName);
     try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + timeSlot._id, {
+      const response = await fetch('https://p2bp.herokuapp.com/api/' + timeSlotName + timeSlot._id, {
       // original response below, there appeared to be an extra /, but the responses came back looking okay ?
-      // const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
+      // const response = await fetch('https://p2bp.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
           method: 'DELETE',
           headers: {
               Accept: 'application/json',
@@ -443,7 +443,7 @@ export function CreateActivityStack(props) {
     let collectionName = '/' + props.activity.test_type + '_collections';
     if(props.activity.test_type === 'boundary') collectionName = '/boundaries_collections';
     try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
+      const response = await fetch('https://p2bp.herokuapp.com/api/projects/' +
                                     props.project._id +
                                     collectionName  +
                                     '/' + props.activity._id, {

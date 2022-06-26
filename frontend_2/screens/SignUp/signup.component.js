@@ -64,7 +64,7 @@ export const SignUpScreen = ( props ) => {
 
         try {
             // Make an HTTP request to create a new user
-            const response = await fetch('https://measuringplacesd.herokuapp.com/api/users', {
+            const response = await fetch('https://p2bp.herokuapp.com/api/users', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

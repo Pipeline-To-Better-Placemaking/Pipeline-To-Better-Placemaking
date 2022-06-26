@@ -73,7 +73,7 @@ export function ProjectResultPage(props) {
     let success = false
     let result = null
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + '/export', {
+        const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + props.project._id + '/export', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -116,6 +116,7 @@ export function ProjectResultPage(props) {
       />
     );
   }
+  
   return (
     <ViewableArea>
       <HeaderBack {...props} text={props.project.title}/>
