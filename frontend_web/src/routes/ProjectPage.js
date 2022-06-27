@@ -817,6 +817,22 @@ function ProjectPage(){
     }
 
     //load project area and location data here as well and pass to Map Page
+    const area = [
+        { lat: 28.60554990612719, lng: -81.20110596383721 },
+        { lat: 28.606199831533385, lng: -81.19778002454426 },
+        { lat: 28.603392878566126, lng: -81.19546259587324 },
+        { lat: 28.600755404733533, lng: -81.19444335642248 },
+        { lat: 28.598011890739404, lng: -81.1974018330677 },
+        { lat: 28.59642933335552, lng: -81.19959051571513 },
+        { lat: 28.59729597487453, lng: - 81.20322759118913 },
+        { lat: 28.599839338049176, lng: -81.20663936117703 },
+        { lat: 28.601506620541844, lng: -81.20608146164412 },
+        { lat: 28.604549107390945, lng: -81.2062102077004 },
+        { lat: 28.60644237514531, lng: -81.20359237160903 }
+    ];
+
+    // May load coords in Project Page
+    const center = { lat: 28.602846550128262, lng: -81.20006526689143 };
 
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
@@ -827,7 +843,7 @@ function ProjectPage(){
             <TabPanel state={loc.state}/>
             <Routes>
                 <Route index element={<MapPage title={ loc.state } drawers={ drawers } />} />
-                <Route path='map' element={<MapPage title={ loc.state } drawers={ drawers } />} />
+                <Route path='map' element={<MapPage title={ loc.state } drawers={ drawers } area={ area } center={ center }/>} />
                 <Route path='activities' element={<ActivityPage title={ loc.state }  drawers={ drawers.Activities } />} />
                 <Route path='activities/times' element={<NewActivityTimes />}/>
                 <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ drawers } />} />

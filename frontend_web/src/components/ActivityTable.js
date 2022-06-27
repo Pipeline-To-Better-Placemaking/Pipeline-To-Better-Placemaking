@@ -11,15 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-const testNames = {
-    stationary_collections: 'Humans in Place',
-    moving_collections: 'Humans in Motion',
-    order_collections: 'Absence of Order Locator',
-    boundaries_collections: 'Spatial Boundaries',
-    lighting_collections: 'Lighting Profile',
-    nature_collections: 'Nature Prevalence',
-    sound_collections: 'Acoustical Profile'
-};
+import {testNames} from '../functions/HelperFunctions';
 
 // Collapsible Table for Activity Page
 function Row(props) {
@@ -40,7 +32,7 @@ function Row(props) {
                     </IconButton>
                 </TableCell>
                 <TableCell className='catTitle' component='th' scope='row'>
-                    { testNames[name] }
+                    { testNames(name) }
                 </TableCell>
                 <TableCell> </TableCell>
                 <TableCell> </TableCell>
@@ -95,7 +87,7 @@ const subtable = (row, type) => (
                         Object.entries(data.data).map(([index, point], ind)=>(
                             <TableRow key={ ind }>
                                 <TableCell colSpan={ 2 } className='category'>
-                                    { testNames[instance.split('.')[0]] }
+                                    { testNames(instance.split('.')[0]) }
                                 </TableCell>
                                 <TableCell colSpan={1} className='value'>
                                     {

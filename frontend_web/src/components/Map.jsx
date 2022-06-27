@@ -8,25 +8,15 @@ import { Link } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 
 import MapDrawers from './MapDrawers';
+import { testNames } from '../functions/HelperFunctions';
 import './controls.css';
+
 
 const render = (status) => {
     console.log(status);
     return <h1>{ status }</h1>;
 };
 
-//Official Category Titles
-const testNames = {
-    stationary_collections: 'Humans in Place',
-    moving_collections: 'Humans in Motion',
-    order_collections: 'Absence of Order Locator',
-    boundaries_collections: 'Spatial Boundaries',
-    lighting_collections: 'Lighting Profile',
-    nature_collections: 'Nature Prevalence',
-    sound_collections: 'Acoustical Profile'
-};
-
-function FullMap(props){
     // props.type :
     // 0 - new project
     // 1 - Map Page
@@ -34,6 +24,8 @@ function FullMap(props){
     // 3 - new project points
     // 4 - new project area
     // 5 - new project map
+
+function FullMap(props){
     const [map, setMap] = React.useState(null);
     const [mapPlaces, setMapPlaces] = React.useState(null);
     const [title, setTitle] = React.useState(props.type > 0 ? props.title : null);
@@ -259,19 +251,19 @@ function FullMap(props){
         if(ver === 0 || ver === 2){
             // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames[title]}</h5><br/>Location ${index+1}<br/>kind: ${data.Activities[title][date][time].data[index].kind}<br/>description: ${data.Activities[title][date][time].data[index].description}<br/>value: ${data.Activities[title][date][time].data[index].value}`
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index+1}<br/>kind: ${data.Activities[title][date][time].data[index].kind}<br/>description: ${data.Activities[title][date][time].data[index].description}<br/>value: ${data.Activities[title][date][time].data[index].value}`
             popup.style.display = 'flex';
         } else if(ver === 1){
             // version 1 == water nature collection
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames[title]}</h5><br/>Location ${index+1}<br/>result: ${data.Activities[title][date][time].data[index].result}<br/>value: ${data.Activities[title][date][time].data[index].value}`
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index+1}<br/>result: ${data.Activities[title][date][time].data[index].result}<br/>value: ${data.Activities[title][date][time].data[index].value}`
             popup.style.display = 'flex';
         } else {
             // version 3 moving collections
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames[title]}</h5><br/>Location ${index+1}<br/>mode: ${data.Activities[title][date][time].data[index].mode}`
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index+1}<br/>mode: ${data.Activities[title][date][time].data[index].mode}`
             popup.style.display = 'flex';
         }
     }
@@ -314,11 +306,11 @@ function FullMap(props){
                                     key={`${sdate}.${time}.${i2}`} 
                                     shape={title === 'order_collections' ? 'triangle' : (title === 'lighting_collections' ? 'lightcircle' : 'circle')}
                                     info={ point.average ? 
-                                        (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
+                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
                                             : (point.result ? 
-                                                (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.result}</div>`)
+                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.result}</div>`)
                                                     : (point.posture ? 
-                                                        (`<div><b>${testNames[title]}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
+                                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
                                                             : null)) } 
                                     position={point.standingPoint ? point.standingPoint : point.point} 
                                     markerType={point.average ? 'sound_collections' 
@@ -337,7 +329,7 @@ function FullMap(props){
     return (
         <div id='mapDoc'>
             {/* Map Drawers overlay in map.jsx to better communicate*/}
-            { props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} /> : null }
+            { props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} area={ areaData }/> : null }
             { props.type === 1 ? <Button id='printButton' onClick={convertToImage}>Print Map</Button>: null }
             {/* Wrapper imports Google Maps API */}
             <Wrapper apiKey={''} render={render} id='mapContainer' libraries={['drawing', 'places']}>

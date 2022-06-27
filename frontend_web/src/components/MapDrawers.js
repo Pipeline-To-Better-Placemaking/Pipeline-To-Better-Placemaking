@@ -16,10 +16,12 @@ import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 import ActivityTable from './ActivityTable';
 import Charts from './Charts';
+import { testNames } from '../functions/HelperFunctions';
 import './controls.css';
 
 export default function MapDrawer(props) {
     const drawers = props.drawers;
+    const area = props.area;
     // Selections holds all selected activity instances and is used to render the data for the data and graph drawers
     // aka activities with switch toggled 'on', empty because key values are rendered depending on data 
     const [selections, setSelections] = React.useState({});
@@ -41,16 +43,6 @@ export default function MapDrawer(props) {
         Activities: 'left',
         Graphs: 'right',
         Data: 'bottom'
-    };
-
-    const testNames = {
-        stationary_collections: 'Humans in Place',
-        moving_collections: 'Humans in Motion',
-        order_collections: 'Absence of Order Locator',
-        boundaries_collections: 'Spatial Boundaries',
-        lighting_collections: 'Lighting Profile',
-        nature_collections: 'Nature Prevalence',
-        sound_collections: 'Acoustical Profile'
     };
 
     const [dateOpen, setDateOpen] = React.useState({
@@ -211,7 +203,7 @@ export default function MapDrawer(props) {
                             key={ category+index } 
                             onClick={ handleClickDate(category, !dateOpen[category]) }
                         >
-                            <ListItemText primary={ category ? testNames[category] : '' } />
+                            <ListItemText primary={ category ? testNames(category) : '' } />
                             { menuAnchors[name] === 'left' ? 
                                 (dateOpen[category] ? <ExpandLess /> : <ExpandMore />): null }
                         </ListItemButton>
@@ -276,15 +268,15 @@ export default function MapDrawer(props) {
     const charts = (selections, stationary, moving, order, boundaries, lighting, nature, sound) => (
         <>
             {Object.entries(selections).map(([selection, obj])=>(
-                <Charts key={selection} selection={selection} data={obj.data} type={0}/>
+                <Charts key={ selection } selection={ selection } data={ obj.data } type={ 0 } projArea={ area }/>
             ))}
-            {Object.keys(stationary)?.length > 1 ? <Charts selection='stationary_collections.Group' data={stationary} type={1} /> : null}
-            {Object.keys(moving)?.length > 1 ? <Charts selection='moving_collections.Group' data={moving} type={1} /> : null}
+            {Object.keys(stationary)?.length > 1 ? <Charts selection='stationary_collections.Group' data={stationary} type={1} projArea={area} /> : null}
+            {Object.keys(moving)?.length > 1 ? <Charts selection='moving_collections.Group' data={moving} type={1} projArea={area} /> : null}
             {Object.keys(order)?.length > 1 ? <Charts selection='order_collections.Group' data={order} type={1} /> : null}
-            {Object.keys(boundaries)?.length > 1 ? <Charts selection='boundaries_collections.Group' data={boundaries} type={1} /> : null}
-            {Object.keys(lighting)?.length > 1 ? <Charts selection='lighting_collections.Group' data={lighting} type={1} /> : null}
-            {Object.keys(nature)?.length > 1 ? <Charts selection='nature_collections.Group' data={nature} type={1} /> : null}
-            {Object.keys(sound)?.length > 1 ? <Charts selection='sound_collections.Group' data={sound} type={1} /> : null}
+            {Object.keys(boundaries)?.length > 1 ? <Charts selection='boundaries_collections.Group' data={boundaries} type={1} projArea={area} /> : null}
+            {Object.keys(lighting)?.length > 1 ? <Charts selection='lighting_collections.Group' data={lighting} type={1} projArea={area} /> : null}
+            {Object.keys(nature)?.length > 1 ? <Charts selection='nature_collections.Group' data={nature} type={1} projArea={area} /> : null}
+            {Object.keys(sound)?.length > 1 ? <Charts selection='sound_collections.Group' data={sound} type={1} projArea={area} /> : null}
         </>
     );
 

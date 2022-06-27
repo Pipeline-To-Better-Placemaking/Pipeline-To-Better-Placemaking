@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, Tooltip, Legend, Label, PieChart, Pie } from 'recharts';
+import { Area, testNames } from '../functions/HelperFunctions';
 
 function Charts(props){
     const width = 300;
@@ -7,10 +8,14 @@ function Charts(props){
     const data = props.data;
     const selection = props.selection;
     const type = props.type;
+    const projectArea = Area(props.projArea);
+
+
     const boundsColor = {
         Constructed: '#FF00E5',
         Shelter: '#FFA64D',
-        Material: '#00FFC1'
+        Material: '#00FFC1',
+        Unmarked: '#C4C4C4'
     };
 
     const stationaryColor = {
@@ -27,17 +32,6 @@ function Charts(props){
         'Activity on Wheels': '#008000',
         'Handicap Assisted Wheels': '#FFA500',
     }
-
-
-    const testNames = {
-        stationary_collections: 'Humans in Place',
-        moving_collections: 'Humans in Motion',
-        order_collections: 'Absence of Order Locator',
-        boundaries_collections: 'Spatial Boundaries',
-        lighting_collections: 'Lighting Profile',
-        nature_collections: 'Nature Prevalence',
-        sound_collections: 'Acoustical Profile'
-    };
 
     const cat = selection.split('.');
 
@@ -114,8 +108,8 @@ function Charts(props){
         var activity = [{ activity: 'Socializing', count: socializing }, { activity: 'Waiting', count: waiting }, { activity: 'Recreation', count: recreation }, { activity: 'Eating', count: eating }, { activity: 'Solitary', count: solitary }];
 
         return( 
-            <>
-                Posture
+            <div className='Charts'>
+                <div style={{ fontSize: 'larger' }}>Posture</div>
                 <BarChart width={width} height={height} data={posture}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='posture' />
@@ -127,7 +121,7 @@ function Charts(props){
                         ))}
                     </Bar>
                 </BarChart>
-                Age
+                <div style={{ fontSize: 'larger' }}>Age</div>
                 <BarChart width={width} height={height} data={age}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='age' />
@@ -135,7 +129,7 @@ function Charts(props){
                     <Tooltip />
                     <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
                 </BarChart>
-                Gender
+                <div style={{ fontSize: 'larger' }}>Gender</div>
                 <BarChart width={width} height={height} data={gender}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='gender' />
@@ -143,7 +137,7 @@ function Charts(props){
                     <Tooltip />
                     <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
                 </BarChart>
-                Activity
+                <div style={{ fontSize: 'larger' }}>Activity</div>
                 <BarChart width={width} height={height} data={activity}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='activity' />
@@ -151,7 +145,14 @@ function Charts(props){
                     <Tooltip />
                     <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
                 </BarChart>
-            </>
+                <br />
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: stationaryColor['Sitting'] }}>&nbsp;&nbsp;</div>&nbsp;Sitting</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: stationaryColor['Standing'] }}>&nbsp;&nbsp;</div>&nbsp;Standing</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: stationaryColor['Laying'] }}>&nbsp;&nbsp;</div>&nbsp;Swimming</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: stationaryColor['Squatting'] }}>&nbsp;&nbsp;</div>&nbsp;Squatting</div>
+                </div>
+            </div>
        )
     };
 
@@ -174,17 +175,27 @@ function Charts(props){
 
         var mode = [{ mode: 'Walking', count: walking }, { mode: 'Running', count: running }, { mode: 'Swimming', count: swimming }, { mode: 'Activity on Wheels', count: onwheels }, { mode: 'Handicap Assisted Wheels', count: handicap }];
         return(
-            <BarChart width={width} height={height} data={mode}>
-                <CartesianGrid strokeDasharray='3 3' />
-                <XAxis dataKey='mode' />
-                <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
-                <Tooltip />
-                <Bar dataKey={'count'} fill='#636262'>
-                    {mode.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={movingColor[entry.mode]} fillOpacity={0.8} />
-                    ))}
-                </Bar>
-            </BarChart>
+            <div className='Charts'>
+                <BarChart width={width} height={height} data={mode}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='mode' />
+                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'count'} fill='#636262'>
+                        {mode.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={movingColor[entry.mode]} fillOpacity={0.8} />
+                        ))}
+                    </Bar>
+                </BarChart>
+                <br />
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: movingColor['Walking'] }}>&nbsp;&nbsp;</div>&nbsp;Walking</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: movingColor['Running'] }}>&nbsp;&nbsp;</div>&nbsp;Running</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: movingColor['Swimming'] }}>&nbsp;&nbsp;</div>&nbsp;Swimming</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: movingColor['Activity on Wheels'] }}>&nbsp;&nbsp;</div>&nbsp;Activity on Wheels</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: movingColor['Handicap Assisted Wheels'] }}>&nbsp;&nbsp;</div>&nbsp;Handicap Assisted Wheels</div>
+                </div>
+            </div>
         );
     }
 
@@ -205,30 +216,42 @@ function Charts(props){
            };
         };
 
-        var array = [{kind: 'Shelter', value: shelter},{kind: 'Material', value: material}]
-        
+        var array = [{kind: 'Shelter', value: (shelter/projectArea)},{kind: 'Material', value: (material/projectArea)}, {kind: 'Unmarked', value: ((projectArea-(material+shelter))/projectArea)}]
+        var marked = [{ kind: 'Shelter', value: shelter }, { kind: 'Material', value: material }]
         return(
-            <div id='boundCharts'>
-                Material and Shelter Areas
+            <div className='Charts'>
+                <div style={{fontSize: 'larger'}}>Portion of Total Area</div>
                 <PieChart width={width} height={height}>
-                    <Legend />
                         <Pie data={array} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                             {array.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65} />
                             ))}
                         </Pie>
-
                     <Tooltip />
                 </PieChart>
-                Constructed Distances
+                <div style={{ fontSize: 'larger' }}>Marked Areas</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={marked} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                        {marked.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <div style={{ fontSize: 'larger' }}>Constructed Distances</div>
                 <BarChart width={width} height={height} data={constructed}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='kind' />
                     <YAxis label={{ value: 'Distance', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Legend />
                     <Bar dataKey={'value'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.65} />
                 </BarChart>
+                <br />
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Material'] }}>&nbsp;&nbsp;</div>&nbsp;Material (Horizontal) </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp;Shelter (Horizontal) </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Constructed'] }}>&nbsp;&nbsp;</div>&nbsp;Constructed (Vertical) </div>
+                </div>
             </div>
         );
     };
@@ -246,10 +269,9 @@ function Charts(props){
         };
 
         return(
-            <div id='boundCharts'>
-                Boundary Areas
+            <div id='boundCharts' className='Charts'>
+                <div style={{ fontSize: 'larger' }}>Boundary Areas</div>
                 <PieChart width={width} height={height}>
-                    <Legend />
                     <Pie data={horizontal} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {horizontal.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65}/>
@@ -257,15 +279,20 @@ function Charts(props){
                     </Pie>
                     <Tooltip />
                 </PieChart>
-                Boundary Distances
-                <PieChart width={width} height={height}>
-                        <Pie data={constructed} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
-                            {constructed.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65} />
-                            ))}
-                        </Pie>
+                <div style={{ fontSize: 'larger' }}>Constructed Distances</div>
+                <BarChart width={width} height={height} data={constructed}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='kind' />
+                    <YAxis label={{ value: 'Distance', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                </PieChart>
+                    <Bar dataKey={'value'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.65} />
+                </BarChart>
+                <br/>
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Material'] }}>&nbsp;&nbsp;</div>&nbsp;Material (Horizontal) </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp;Shelter (Horizontal) </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Constructed'] }}>&nbsp;&nbsp;</div>&nbsp;Constructed (Vertical) </div>
+                </div>
             </div>
         );
     };
@@ -274,14 +301,14 @@ function Charts(props){
        type === 0 ? 
        <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px' }}>
             <div className='sectionName'>
-                <div style={{fontSize: 'large'}}>{ testNames[cat[0]] }</div>
+                <div style={{fontSize: 'large'}}>{ testNames(cat[0]) }</div>
                 {cat[1]}  {cat[2]}
             </div>
                 {cat[0] === 'sound_collections' ? soundBarChart(data) : (cat[0] === 'boundaries_collections' ? BoundaryPieChart(data) : (cat[0] === 'moving_collections' ? movingBarChart(data) : (cat[0] === 'stationary_collections' ? stationaryBarCharts(data) : null))) }
         </div> : 
             <div key={selection} style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px'}}>
                 <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
-                    { testNames[cat[0]] }: Summary
+                    { testNames(cat[0]) }: Summary
                 </div>
                 { cat[0] === 'boundaries_collections' ? multiBoundaryCharts(data) : null }
             </div>

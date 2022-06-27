@@ -207,7 +207,7 @@ div#ActivityForm{
     background-color: var(--tabSelectColor);
 }
 
-div#boundCharts{
+div.Charts{
     display: flex;
     flex-direction: column;
     justify-content: center;
