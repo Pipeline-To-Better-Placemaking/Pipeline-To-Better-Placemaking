@@ -1,10 +1,12 @@
 import * as React from 'react';
 import Form from 'react-bootstrap/Form';
+import { useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 
 function TimeForm(props){
     const date = new Date();
+    const activitySelection = useLocation();
     const [timeForm, setTimeForm] = React.useState({
         index: props.index,
         time: `${date.getHours()}:${date.getMinutes()}`,

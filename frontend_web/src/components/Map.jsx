@@ -223,21 +223,6 @@ function FullMap(props){
         setClick(place.geometry.location);
     }
 
-    const onComplete = (e) => {
-        var lngs = e.getPath().getArray();
-        var clickArr = [];
-        lngs.forEach((lat, ind)=>{
-            var clickObj = {
-                lat: 0,
-                lng: 0
-            }
-            clickObj.lat = lat.lat();
-            clickObj.lng = lat.lng();
-            clickArr.push(clickObj);
-        })
-        setClicks(clickArr);
-    }
-
     const removePoint = (e) => {
         let temp = clicks;
         temp.splice(clicks.length-1, 1);

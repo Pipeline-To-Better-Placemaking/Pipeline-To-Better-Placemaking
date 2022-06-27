@@ -5,6 +5,7 @@ import Card from 'react-bootstrap/Card';
 import DoneIcon from '@mui/icons-material/Done';
 
 import TimeForm from '../components/TimeForm';
+import { testNames } from '../functions/HelperFunctions';
 import '../components/controls.css';
 
 function NewActivityTimes(){
@@ -18,16 +19,6 @@ function NewActivityTimes(){
     });
 
     const [timeSlots, setTimeSlots] = React.useState([]);
-
-    const testNames = {
-        stationary_collections: 'Humans in Place',
-        moving_collections: 'Humans in Motion',
-        order_collections: 'Absence of Order Locator',
-        boundary_collections: 'Spatial Boundaries',
-        lighting_collections: 'Lighting Profile',
-        nature_collections: 'Nature Prevalence',
-        sound_collections: 'Acoustical Profile'
-    };
 
     //dynamically adds removes timeSlot cards for the activity
     const timeCards = (timeSlots) => (
@@ -64,7 +55,7 @@ function NewActivityTimes(){
                         <h1>{ activity.title }</h1>
                         <Button id='createActivityButton' className='confirm'>Schedule Activity <DoneIcon /></Button>
                     </div>
-                    Category: { testNames[activity.activity] }
+                    Category: { testNames(activity.activity) }
                     <br />
                     Date: { activity.date }
                     <br />

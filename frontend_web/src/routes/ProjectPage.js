@@ -842,7 +842,7 @@ function ProjectPage(){
         <div id='ProjectPage'>
             <TabPanel state={loc.state}/>
             <Routes>
-                <Route index element={<MapPage title={ loc.state } drawers={ drawers } />} />
+                <Route index element={<MapPage title={ loc.state } drawers={ drawers } area={ area } center={ center } />} />
                 <Route path='map' element={<MapPage title={ loc.state } drawers={ drawers } area={ area } center={ center }/>} />
                 <Route path='activities' element={<ActivityPage title={ loc.state }  drawers={ drawers.Activities } />} />
                 <Route path='activities/times' element={<NewActivityTimes />}/>
