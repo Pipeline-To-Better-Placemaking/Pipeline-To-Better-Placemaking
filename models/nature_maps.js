@@ -50,8 +50,8 @@ const dataSchema = mongoose.Schema({
         },
 
         description: {
-        type: String,
-        required: true
+            type: String,
+            required: true
         },
 
         location:[{
@@ -143,7 +143,7 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-        animals: newEntry.animals,
+        points: newEntry.points,
         weather: newEntry.weather,
         water: newEntry.water,
         time: newEntry.time

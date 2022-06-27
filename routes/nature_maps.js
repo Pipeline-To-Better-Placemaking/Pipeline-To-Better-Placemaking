@@ -173,14 +173,11 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 
         const newData = {
             _id: oldData._id,
-            animals: (req.body.animals ? req.body.animals : oldData.animals),
+            points: (req.body.points ? req.body.points : oldData.points),
             weather: (req.body.weather ? req.body.weather : oldData.weather),
             water: (req.body.water ? req.body.water : oldData.water),
             time: (req.body.time ? req.body.time : oldData.time)
         }
-
-        if (req.body.animals.length > 1)
-            throw new BadRequestError('Datapoints can only have one animal type')
 
         await Map.updateData(mapId,oldData._id,newData)
         res.status(201).json(await Map.findById(req.params.id))
