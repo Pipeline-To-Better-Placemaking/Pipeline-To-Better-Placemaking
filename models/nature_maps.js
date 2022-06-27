@@ -8,18 +8,8 @@ const Points = require('../models/standing_points.js')
 // Document Schema for data entry
 const dataSchema = mongoose.Schema({
 
-    location: {
-        latitude: {
-            type: Number,
-            required: true
-        },
-        longitude: {
-            type: Number,
-            required: true
-        }
-    },
-   
-    animals: {
+       
+    points: [{
         kind:{
             type: String,
             required: true
@@ -27,14 +17,20 @@ const dataSchema = mongoose.Schema({
         description:{
             type: String,
             required: true
+        },
+
+        marker: {
+            latitude: {
+                type: Number,
+                required: true
+            },
+            longitude: {
+                type: Number,
+                required: true
+            }
         }
 
-    },
-
-    landscape: {
-        type: String,
-        required: true
-    },
+    }],
 
     weather: {
         temperature:{
@@ -47,13 +43,18 @@ const dataSchema = mongoose.Schema({
         }
     },
 
-    water: {
+    water: [{
+        area: {
+            type: Number,
+            required: true
+        },
+
         description: {
         type: String,
         required: true
         },
 
-        water_location:[{
+        location:[{
             latitude: {
                 type: Number,
                 required: true
@@ -62,7 +63,7 @@ const dataSchema = mongoose.Schema({
                 type: Number,
                 required: true
         }}]
-    },
+    }],
     
     time: {
         type: Date,
@@ -143,10 +144,8 @@ module.exports.projectCleanup = async function(projectId) {
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
         animals: newEntry.animals,
-        landscape: newEntry.landscape,
         weather: newEntry.weather,
         water: newEntry.water,
-        location: newEntry.location,
         time: newEntry.time
     })
 
