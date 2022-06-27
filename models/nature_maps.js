@@ -14,6 +14,7 @@ const dataSchema = mongoose.Schema({
             type: String,
             required: true
         },
+
         description:{
             type: String,
             required: true
@@ -37,6 +38,7 @@ const dataSchema = mongoose.Schema({
             type: Number,
             required: true
         },
+
         description:{
             type: String,
             required: true
@@ -46,23 +48,20 @@ const dataSchema = mongoose.Schema({
     water: [{
         area: {
             type: Number,
-            required: true
         },
 
         description: {
             type: String,
-            required: true
         },
 
-        location:[{
+        location: [{
             latitude: {
                 type: Number,
-                required: true
             },
             longitude: {
                 type: Number,
-                required: true
-        }}]
+            }
+        }]
     }],
     
     time: {
