@@ -23,11 +23,11 @@ const dataSchema = mongoose.Schema({
         marker: {
             latitude: {
                 type: Number,
-                required: true
+                // required: true
             },
             longitude: {
                 type: Number,
-                required: true
+                // required: true
             }
         }
 
