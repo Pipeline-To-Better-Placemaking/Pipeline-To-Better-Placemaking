@@ -148,6 +148,7 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
     map = await Map.findById(req.params.id)
     console.log("This is the mapId: " + map)
     if(Map.isResearcher(map._id, user._id)){
+        console.log("Makes it in researcher condition")
         if(req.body.entries){
             for(var i = 0; i < req.body.entries.length; i++){
                 console.log("user is researcher.  Multiple entries are as follows:")
