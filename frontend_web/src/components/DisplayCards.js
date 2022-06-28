@@ -43,7 +43,7 @@ function DisplayCards(props) {
     //For Better Placemaking projects listed on home page (url)/home
     const projectCards = (projects) => (
         projects.map((project, index) => (
-            <Card key={ 'p'+index } className='displayCard'>
+            <Card key={ 'p' + index } className='displayCard'>
                 <CardContent>
                     <Typography variant='h5' component='div'>
                         { project.name }
@@ -59,7 +59,7 @@ function DisplayCards(props) {
 
     const teamCards = (teams) => (
         teams.map((team, index)=>(
-            <Card key={'p' + index} className='displayCard'>
+            <Card key={ 'p' + index } className='displayCard'>
                 <CardContent>
                     <Typography variant='h5' component='div'>
                         {team.title}

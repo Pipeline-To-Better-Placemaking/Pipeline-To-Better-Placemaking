@@ -1,34 +1,42 @@
 import * as React from 'react';
+import axios from '../api/axios.js';
 import Button from '@mui/material/Button';
 import DisplayCards from '../components/DisplayCards';
 import { Link, useParams, useLocation } from 'react-router-dom';
 
 import './routes.css';
 
-const teamsURL = '/teams';
-
-function TeamHome() {
-    const location = useLocation();
-
+function TeamHome(props){
     // Load Viewable Projects by Team selected on previous page
-    // Team id is passed in URL useParams can pull it
-    let { teamId } = useParams();
-    
-    // project array structure hardcoded on template
-    const projects = [
-        {
-            name: 'Lake Eola',
-            id: 'p23e32duew'
-        },
-        {
-            name: 'Lake Underhill Park',
-            id: 'p4343rfi43f'
-        },
-        {
-            name: 'University of Central Florida',
-            id: 'p984f92hdeq'
+    const teams = props.passToken.user?.teams
+
+    let teamInfo = teams
+    let projectInfo = ''
+
+
+    const projectToken = async() => {
+        let projectId = teamInfo?.projects;
+
+        try {
+            const response = await axios.post('/projects', JSON.stringify({ projectId }), {
+               headers: { 'Content-Type': 'application/json' },
+               withCredentials: true
+            });
+            console.log(JSON.stringify(response));
+            projectInfo = response.data;
+            
+        } catch(error){
+            //user login error
+            console.log('ERROR: ', error);
+            return;
         }
-    ]
+    }
+
+    React.useEffect(() => {
+        projectToken()
+    });
+
+    //project array structure hardcoded on template
 
     return(
         <div id='teamHome'>
@@ -37,14 +45,14 @@ function TeamHome() {
                     id='newProjectButton' 
                     variant='contained' 
                     component={ Link } 
-                    state={ location.state }
+                    state={ useLocation.state }
                     to='new'
                 >
                     New Project
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            <DisplayCards type={ 1 } projects={ projects }/>
+            <DisplayCards type={ 1 } projects={ projectInfo }/>
         </div>
     );
 }
