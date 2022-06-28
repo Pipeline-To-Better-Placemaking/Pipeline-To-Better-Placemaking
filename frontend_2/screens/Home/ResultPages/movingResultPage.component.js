@@ -169,9 +169,7 @@ export function MovingResultPage(props) {
             />
           }
         >
-
-          {/* <Text category={'h5'}>Humans in Motion Result Information</Text> */}
-          <Text category={'h5'}>Humans in Motion Results</Text>
+          <Text category={'h5'}>People in Motion Results</Text>
           <Divider style={styles.metaDataTitleSep} />
 
           <Text>Team: {props.team.title}</Text>

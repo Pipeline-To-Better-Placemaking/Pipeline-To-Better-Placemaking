@@ -105,7 +105,7 @@ export function MovingCompare(props) {
       <ContentContainer>
         <ScrollView style={styles.margins}>
 
-          <Text category={'h5'}>Humans in Motion Results</Text>
+          <Text category={'h5'}>People in Motion Results</Text>
           <Divider style={styles.metaDataTitleSep} />
 
           {

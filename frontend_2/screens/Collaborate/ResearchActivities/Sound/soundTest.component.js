@@ -50,9 +50,6 @@ export function SoundTest(props){
     const [mainSoundModal, setMainSoundModal] = useState(false);
     const [soundsModal, setSoundsModal] = useState(false);
 
-    // packaged data to be sent
-    const [data, setData] = useState([]);
-
     // for a single measurement's iterations
     const [curr, setCurr] = useState([]);
     

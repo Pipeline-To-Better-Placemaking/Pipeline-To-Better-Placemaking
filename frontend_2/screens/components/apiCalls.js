@@ -17,7 +17,6 @@ export async function getProject(project) {
       })
       projectDetails = await response.json();
       success = true
-      console.log(projectDetails);
     } catch (error) {
       console.log("error getting project", error)
   }
@@ -588,7 +587,6 @@ export async function getNatureResults(projectDetails, results) {
   // loop through all Nature Test collections and get all of the maps
   for (let i = 0; i < projectDetails.natureCollections.length; i++) {
     let collection = projectDetails.natureCollections[i];
-    console.log(collection.maps)
     for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
       let id = collection.maps[j];
       let tempObj = await helperGetResult(id, 'nature_maps/', "nature", collection, projectDetails);

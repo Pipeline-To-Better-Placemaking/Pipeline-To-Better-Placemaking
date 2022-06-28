@@ -11,7 +11,7 @@ export function DataModal(props) {
     
     const sendData = async (type, desc) => {
         let data = {
-            type: type,
+            kind: type,
             marker: props.point,
             description: desc
         }

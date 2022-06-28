@@ -187,7 +187,7 @@ export function StationaryCompare(props) {
       <ContentContainer>
         <ScrollView style={styles.margins}>
 
-          <Text category={'h5'}>Humans in Place Results</Text>
+          <Text category={'h5'}>People in Place Results</Text>
           <Divider style={styles.metaDataTitleSep} />
 
           {

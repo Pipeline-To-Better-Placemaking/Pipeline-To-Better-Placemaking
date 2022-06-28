@@ -51,6 +51,49 @@ export function NatureTest(props) {
     const [weatherData] = useState([]);
     const [waterData] = useState([]);
 
+    // End Button press or whenever the timer hits 0
+    const endActivity = async () => {
+        setStart(false)
+        clearInterval(id);
+
+        // close any of the modals that may be open when the test ends (timer hits 0 while in a modal)
+        if(dataModal) setDataModal(false);
+        if(waterModal) setWaterModal(false);
+        if(errorModal) setErrorModal(false);
+        
+        // package the data; needs to be an array for multiple entries for a test
+        let data =[{
+            weather: weatherData[0],
+            water: waterData,
+            points: dataPoints,
+            time: new Date()
+        }]
+
+        // Sends the collected data to DB
+        try {
+            const response = await fetch('https://p2bp.herokuapp.com/api/nature_maps/' + props.timeSlot._id + '/data', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + props.token
+                },
+                body: JSON.stringify({
+                    entries: data
+                })
+            })
+
+            let info = await response.json()
+        
+            console.log(info)
+        
+        } catch (error) {
+            console.log("ERROR: ", error)
+        }
+
+        props.navigation.navigate("ActivitySignUpPage");
+    }
+    
     // Opens the data model and stores a temporary points
     const onPointCreate = async (marker) => {
         if (start && !lineTools) {
@@ -69,7 +112,6 @@ export function NatureTest(props) {
     
     // Closes the weather modal and saves the data
     const closeWeather = async (inf) =>{
-        console.log(inf)
         weatherData.push(inf)
         setWeatherModal(false)
     }
@@ -78,67 +120,18 @@ export function NatureTest(props) {
         let obj = {
             description: inf.description,
             area: calcArea(currentPath),
-            water_path: currentPath
+            location: currentPath
         }
         waterData.push(obj)
-        console.log(obj)
         setWaterModal(false);
         totalWaterPaths.push(currentPath);
-       // whenever the data is saved, clear out the current paths stuff for next enteries
-       let emptyPath = [];
-       setCurrentPath(emptyPath);
-       setCurrentPathSize(0);
+        // whenever the data is saved, clear out the current paths stuff for next enteries
+        let emptyPath = [];
+        setCurrentPath(emptyPath);
+        setCurrentPathSize(0);
 
-       // reset test controls
-       setLineTools(false);
-    }
-
-    // End Button press
-    const endActivity = async () => {
-        setStart(false)
-        clearInterval(id);
-
-        // close any of the modals that may be open when the test ends (timer hits 0 while in a modal)
-        if(dataModal) setDataModal(false);
-        if(waterModal) setWaterModal(false);
-        if(errorModal) setErrorModal(false);
-
-
-        // console.log(weatherData)
-        // console.log(waterData)
-        // console.log(dataPoints)
-        
-        // package the data
-        let data ={
-            weather: weatherData[0],
-            water: waterData,
-            data: dataPoints
-        }
-        console.log(data)
-
-        
-
-        // // Saves the SM data
-        // try {
-        //     const response = await fetch('https://p2bp.herokuapp.com/api/nature_maps/' + props.timeSlot._id + '/data', {
-        //         method: 'POST',
-        //         headers: {
-        //             Accept: 'application/json',
-        //                 'Content-Type': 'application/json',
-        //                 'Authorization': 'Bearer ' + props.token
-        //         },
-        //         body: JSON.stringify({
-        //             entries: data
-        //         })
-        //     })
-
-        //     let info = await response.json()
-
-        // } catch (error) {
-        //     console.log("ERROR: ", error)
-        // }
-
-        props.navigation.navigate("ActivitySignUpPage");
+        // reset test controls
+        setLineTools(false);
     }
 
     // Start and Exit button

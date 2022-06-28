@@ -14,7 +14,7 @@ export function CompareFilteredView(props) {
     const [titleIndex, setTitleIndex] = useState(new IndexPath(0))
     //add the new tests here
     // not index 2 is not for the survery here, index 2 is the sound test
-    const activities = ['Humans in Place', 'Humans in Motion', 'Acoustical Profile', 'Spatial Boundaries', 'Nature Prevalence']
+    const activities = ['People in Place', 'People in Motion', 'Acoustical Profile', 'Spatial Boundaries', 'Nature Prevalence']
 
     const selectedActivity = () => {
         if (titleIndex.row === 0) {

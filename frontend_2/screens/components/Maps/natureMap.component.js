@@ -42,7 +42,7 @@ export function NatureMap(props) {
                 // set as color for the animal type
                 let color = "#B06A24";
                 // only change color if its for the landscape type
-                if(props.dataPoints[i].type === "Landscape") color = "#00FF00"
+                if(props.dataPoints[i].kind === "Landscape") color = "#00FF00"
                 obj[i] = ( 
                     <MapView.Marker
                         key={i.toString()}
@@ -98,6 +98,26 @@ export function NatureMap(props) {
             )
         }
     }
+
+    // renders markers on the points of the polygon the user is drawing
+    const ShowPoints = () => {
+        if(props.markers === null) {
+            return (null);
+        }
+        else {
+            return (
+                props.markers.map((coord, index) => (
+                <MapView.Marker
+                    coordinate = {{
+                        latitude: coord.latitude,
+                        longitude: coord.longitude
+                    }}
+                >
+                    <DataPin color={'red'}/>
+                </MapView.Marker>
+             )))
+         }
+    }
     
     // renders submitted bodies of water
     const BodyOfWater = () =>{
@@ -123,7 +143,7 @@ export function NatureMap(props) {
             {/* main mapview container */}
             <PressMapAreaWrapper
                 area={props.area}
-                mapHeight={props.cond ? '94%' : '94.8%'}
+                mapHeight={props.cond ? '93%' : '94%'}
                 onPress={props.cond ? props.addShape : props.addMarker}
             >
                 {/* shows the project area on the map */}
@@ -136,6 +156,8 @@ export function NatureMap(props) {
                 
                 <CreatePoly />
                 
+                <ShowPoints />
+
                 <BodyOfWater />
 
                 <AddPoint />

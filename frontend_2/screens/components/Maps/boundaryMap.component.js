@@ -99,6 +99,26 @@ export function BoundaryMap(props) {
         }
     }
 
+    // Shows plotted points of the boundary being drawn
+    const ShowPoints = () => {
+        if(props.markers === null) {
+            return (null);
+        }
+        else {
+            return (
+                props.markers.map((coord, index) => (
+                <MapView.Marker
+                    coordinate = {{
+                        latitude: coord.latitude,
+                        longitude: coord.longitude
+                    }}
+                >
+                    <DataPin/>
+                </MapView.Marker>
+             )))
+         }
+    }
+
     // with polygons there is a glitch with the strokeColor and fillColor that causes the colors to flicker (likely due to the filter and setInterval as it happens on ticks down)
     // going with using enclosed polylines intstead for a consistent apperance during the test (the result map will use polygons and the colors shouldn't glitch)
     
@@ -220,6 +240,8 @@ export function BoundaryMap(props) {
                 
                 {/* draws polyline/polygon that the user is making */}
                 <CreatePoly />
+
+                <ShowPoints />
                 
                 {/* renders submitted drawn boundaries during test collection */}
                 <AllBounds />

@@ -252,11 +252,11 @@ export function retrieveTestName(str){
   let testType;
   if(lowerStr.localeCompare('stationary') === 0 || lowerStr.localeCompare('stationary map') === 0){
     //console.log('stationary activity');
-    testType = 'Humans in Place';
+    testType = 'People in Place';
   }
   else if(lowerStr.localeCompare('moving') === 0 || lowerStr.localeCompare('people moving') === 0){
     //console.log('moving activity');
-    testType = 'Humans in Motion';
+    testType = 'People in Motion';
   }
   else if(lowerStr.localeCompare('survey') === 0 ){
     //console.log('survey activity');

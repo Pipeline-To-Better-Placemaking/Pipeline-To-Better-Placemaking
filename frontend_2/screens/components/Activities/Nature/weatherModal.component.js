@@ -17,7 +17,7 @@ export function WeatherModal(props) {
         if(temp){
             // how should we denote this as an 'other' description ?
             let data = {
-                tempature: temp,
+                temperature: parseInt(temp),
                 description: cond
             }
             // reset modal controls for subsequent enteries

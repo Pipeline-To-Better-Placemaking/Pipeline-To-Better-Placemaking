@@ -30,7 +30,7 @@ export function StationaryActivity(props) {
     // controls the rendered countdown timer
     const [timer, setTimer] = useState(initalTime);
     // controls timer interval instance
-    const [id, setId] = useState();
+    let id;
 
     // Shows the moving and data input modal
     const [moving, setMoving] = useState(false)
@@ -41,12 +41,11 @@ export function StationaryActivity(props) {
 
     // Temp marker, inputted data points, and all of their locations
     const [tempMarker, setTempMarker] = useState([])
-    const [data, setData] = useState([])
-    const [markers, setMarkers] = useState([])
+    const [data] = useState([])
+    const [markers] = useState([])
 
     // Opens the data model and stores a temporary points
     const onPointCreate = async (marker) => {
-
         if (start) {
             setDataModal(true)
             setTempMarker(marker)
@@ -114,17 +113,11 @@ export function StationaryActivity(props) {
     // This function ensures everything resets
     const restart = () => {
         let standingPointLength = Object.keys(props.timeSlot.position).length
-        
         // clear the interval whenever we restart/end
         clearInterval(id);
+        setDataModal(false);
 
-        if (dataModal) {
-            setDataModal(false)
-        }
-
-        if (standingIndex < standingPointLength-1){
-            console.log(data);
-            
+        if (standingIndex < standingPointLength-1){            
             setStandingIndex(standingIndex+1)
             setTimer(initalTime)
             setRecenter(true)
@@ -139,6 +132,7 @@ export function StationaryActivity(props) {
 
     // Starts back up the activity
     const rebegin = () =>{
+        console.log('rebegin called')
         setStart(true)
         setMoving(false)
         setRecenter(false)
@@ -171,6 +165,7 @@ export function StationaryActivity(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
+            // console.log('useEffect start');
             startTime(timer);
             setInitalStart(false);
         }
@@ -179,11 +174,11 @@ export function StationaryActivity(props) {
     // begins/updates the timer
     function startTime(current){
         let count = current;
-        setId(setInterval(() =>{            
+        id = setInterval(() =>{            
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            //console.log(count);
+            // console.log(count);
             // when the timer reaches 0, call restart
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
@@ -191,7 +186,7 @@ export function StationaryActivity(props) {
                 restart();
             }
         // 1000 ms == 1 s
-        }, 1000));
+        }, 1000);
     }
 
     // Count Down Timer and the Start/Exit button
@@ -224,7 +219,7 @@ export function StationaryActivity(props) {
     // Main render
     return(
         <ViewableArea>
-            <Header text={'Humans in Place'}/>
+            <Header text={'People in Place'}/>
             <ContentContainer>
 
                     <TimeBar/>

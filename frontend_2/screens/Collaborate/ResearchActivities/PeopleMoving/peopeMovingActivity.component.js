@@ -15,9 +15,8 @@ export function PeopleMovingActivity(props) {
 
     const theme = useTheme();
 
-    /// Location, area, and standing points for SM
+    /// area, and standing points for SM
     /// Bool indicating to the map to recenter
-    const [location] = useState(props.timeSlot.location)
     const [area] = useState(props.timeSlot.area)
     const [position] = useState(props.timeSlot.position)
     const [recenter, setRecenter] = useState(false)
@@ -31,7 +30,7 @@ export function PeopleMovingActivity(props) {
     // controls the rendered countdown timer
     const [timer, setTimer] = useState(initalTime);
     // controls timer interval instance
-    const [id, setId] = useState();
+    let id;
 
     // Shows the moving and data input modal
     const [moving, setMoving] = useState(false)
@@ -43,13 +42,12 @@ export function PeopleMovingActivity(props) {
     const [standingIndex, setStandingIndex] = useState(0)
 
     // Temp marker, inputted data points, and all of their locations
-    const [tempMarker, setTempMarker] = useState([])
-    const [data, setData] = useState([])
+    const [data] = useState([])
 
     // Current path being drawn
     const [currentPath, setCurrentPath] = useState([])
     const [currentPathSize, setCurrentPathSize] = useState(0)
-    const [totalPaths, setTotalPaths] = useState([])
+    const [totalPaths] = useState([])
 
     // End Button press
     const endActivity = async () => {
@@ -59,8 +57,8 @@ export function PeopleMovingActivity(props) {
 
         // Saves the PM data
         try {
-            console.log("TimeSlot: " + props.timeSlot._id)
-            console.log("Data: " + JSON.stringify(data))
+            // console.log("TimeSlot: " + props.timeSlot._id)
+            // console.log("Data: " + JSON.stringify(data))
 
             const response = await fetch('https://p2bp.herokuapp.com/api/moving_maps/' + props.timeSlot._id + '/data', {
                 method: 'POST',
@@ -91,6 +89,13 @@ export function PeopleMovingActivity(props) {
 
         // clear the interval whenever we restart/end
         clearInterval(id);
+        // resets currentPath (if anything was in it when the timer hits 0)
+        let emptyPath = []            
+        setCurrentPath(emptyPath)
+        setCurrentPathSize(0)
+        // closes the modal/line toolbar if they were opened
+        setDataModal(false);
+        setLineTools(false);
 
         if (standingIndex < standingPointLength-1){
 
@@ -101,7 +106,6 @@ export function PeopleMovingActivity(props) {
             setMoving(true)
         }
         else if (standingIndex == standingPointLength-1){
-            console.log('ending activity');
             endActivity()
             props.navigation.navigate("ActivitySignUpPage");
         }
@@ -164,7 +168,6 @@ export function PeopleMovingActivity(props) {
     }
 
     const confirmLine = () => {
-
         setLineTools(false)
         setDataModal(true)
     }
@@ -224,7 +227,7 @@ export function PeopleMovingActivity(props) {
     // begins/updates the timer
     function startTime(current){
         let count = current;
-        setId(setInterval(() =>{            
+        id = setInterval(() =>{            
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
@@ -236,7 +239,7 @@ export function PeopleMovingActivity(props) {
                 restart();
             }
         // 1000 ms == 1 s
-        }, 1000));
+        }, 1000);
     }
 
     // Count Down Timer and the Start/Exit button
@@ -286,7 +289,7 @@ export function PeopleMovingActivity(props) {
 
     return(
         <ViewableArea>
-            <Header text={'Humans in Motion'}/>
+            <Header text={'People in Motion'}/>
             <ContentContainer>
 
                 <TimeBar/>

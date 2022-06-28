@@ -17,7 +17,7 @@ export function BoundaryResultPage(props) {
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   // random colors for pie charts
-  const colors = ["#63A46C", "#DB504A", "#7692FF", "#FFB7FF", "#8A4FFF"]
+  const colors = ["#2A6EA3", "#4C9F8B", "#847457", "#7F62E9", "#F1CEF6"]
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);

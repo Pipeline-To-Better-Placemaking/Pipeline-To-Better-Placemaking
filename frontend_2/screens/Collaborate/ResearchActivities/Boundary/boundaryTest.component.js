@@ -79,6 +79,11 @@ export function BoundaryTest(props){
         setStart(false);
         clearInterval(id);
         
+        // closes any modals that may be open
+        if(errorModal) setErrorModal(false);
+        if(dataModal) setDataModal(false);
+        if(purposeModal) setPurposeModal(false);
+        
         try {
             const response = await fetch('https://p2bp.herokuapp.com/api/boundaries_maps/' + props.timeSlot._id + '/data', {
                 method: 'POST',
