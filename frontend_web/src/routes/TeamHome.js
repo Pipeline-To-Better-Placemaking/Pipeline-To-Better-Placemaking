@@ -1,14 +1,17 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import DisplayCards from '../components/DisplayCards';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import './routes.css';
 
-function TeamHome(){
-    // Load Viewable Projects by Team selected on previous page
+const teamsURL = '/teams';
 
-    //project array structure hardcoded on template
+function TeamHome() {
+    // Load Viewable Projects by Team selected on previous page
+    // Team id is passed in URL useParams can pull it
+    let { teamId } = useParams();
+    // project array structure hardcoded on template
     const projects = [
         {
             name: 'Lake Eola',

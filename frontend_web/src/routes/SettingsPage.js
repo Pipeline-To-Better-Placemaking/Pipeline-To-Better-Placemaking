@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-function SettingsPage(){
+function SettingsPage() {
     const [values, setValues] = React.useState({
         updateFName: '',
         updateLName: '',

@@ -4,8 +4,9 @@ import DisplayCards from '../components/DisplayCards';
 import { Link } from 'react-router-dom';
 
 function Home(props) {
-
-    //holds passed token from App.js
+    // props.passToken jwt token 
+    // holds passed token from App.js
+    // token should be held in local storage to pull if user navigates to other pages in a different order
     const teams = props.passToken.user?.teams
 
     return(
