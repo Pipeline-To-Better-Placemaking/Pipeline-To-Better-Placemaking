@@ -77,11 +77,8 @@ function Title(props) {
 
     const loginUser = async (e) => {
 
-        let email = values.email;
-        let password = values.password;
-
         try {
-            const response = await axios.post('/login', JSON.stringify({ email, password }), {
+            const response = await axios.post('/login', JSON.stringify({ email: values.email, password: values.password }), {
                headers: { 'Content-Type': 'application/json' },
                withCredentials: true
             });
@@ -119,6 +116,7 @@ function Title(props) {
                         <Card.Body>
                             <Box id='titleBox' component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
                                 <span ref={loginResponse} style={{ display: 'none', color: 'red' }}>{message}</span>
+                                <span ref={emMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                                 <TextField 
                                     className='nonFCInput' 
                                     id='outlined-search' 
@@ -129,7 +127,7 @@ function Title(props) {
                                     onChange={handleChange} 
                                     ref={em}
                                 />
-                                <span ref={emMess} style={{ display: 'none', color: 'red' }}>{message}</span>
+                                <span ref={pwMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                                 {/* Form Control component to hold MUI visibility changing password field */}
                                 <FormControl sx={{ m: 1 }} variant='outlined'>
                                     <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
@@ -155,7 +153,6 @@ function Title(props) {
                                         label='Password'
                                     />
                                 </FormControl>
-                                <span ref={pwMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                                 <Button 
                                     className='scheme' 
                                     id='loginButton' 

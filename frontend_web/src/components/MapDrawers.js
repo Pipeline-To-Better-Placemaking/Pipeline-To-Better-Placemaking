@@ -82,7 +82,7 @@ export default function MapDrawer(props) {
         // default is false has reverse setting so !checked[cat + date] must be sent
         // selected means checked[..]=false
         props.selection(category, date, time, !checked[`${category}.${date}.${time}`]);
-        if(!checked[`${category}.${date}.${time}`]){
+        if(!checked[`${category}.${date}.${time}`]) {
             var newSelections = selections;
             var newEntry;
             newSelections[`${category}.${date}.${time}`] = drawers.Activities[category][date][time];
@@ -141,8 +141,6 @@ export default function MapDrawer(props) {
                 default:
                     console.log(`Error handling selection change.`);
             }
-            //console.log(drawers.Activities[category][date][time].data);
-
         } else {
             var delSelections = selections;
             var removeEntry;
@@ -214,7 +212,7 @@ export default function MapDrawer(props) {
         </Box>
     );
 
-    function dateList(title, dates){
+    function dateList(title, dates) {
         return(
             <Collapse in={ dateOpen[title] } timeout='auto' unmountOnExit>
                 <List component='div' disablePadding>
@@ -267,16 +265,16 @@ export default function MapDrawer(props) {
 
     const charts = (selections, stationary, moving, order, boundaries, lighting, nature, sound) => (
         <>
-            {Object.entries(selections).map(([selection, obj])=>(
+            { Object.entries(selections).map(([selection, obj])=>(
                 <Charts key={ selection } selection={ selection } data={ obj.data } type={ 0 } projArea={ area }/>
-            ))}
-            {Object.keys(stationary)?.length > 1 ? <Charts selection='stationary_collections.Group' data={stationary} type={1} projArea={area} /> : null}
-            {Object.keys(moving)?.length > 1 ? <Charts selection='moving_collections.Group' data={moving} type={1} projArea={area} /> : null}
-            {Object.keys(order)?.length > 1 ? <Charts selection='order_collections.Group' data={order} type={1} /> : null}
-            {Object.keys(boundaries)?.length > 1 ? <Charts selection='boundaries_collections.Group' data={boundaries} type={1} projArea={area} /> : null}
-            {Object.keys(lighting)?.length > 1 ? <Charts selection='lighting_collections.Group' data={lighting} type={1} projArea={area} /> : null}
-            {Object.keys(nature)?.length > 1 ? <Charts selection='nature_collections.Group' data={nature} type={1} projArea={area} /> : null}
-            {Object.keys(sound)?.length > 1 ? <Charts selection='sound_collections.Group' data={sound} type={1} projArea={area} /> : null}
+            )) }
+            { Object.keys(stationary)?.length > 1 ? <Charts selection='stationary_collections.Group' data={stationary} type={1} projArea={area} /> : null }
+            { Object.keys(moving)?.length > 1 ? <Charts selection='moving_collections.Group' data={moving} type={1} projArea={area} /> : null }
+            { Object.keys(order)?.length > 1 ? <Charts selection='order_collections.Group' data={order} type={1} /> : null }
+            { Object.keys(boundaries)?.length > 1 ? <Charts selection='boundaries_collections.Group' data={boundaries} type={1} projArea={area} /> : null }
+            { Object.keys(lighting)?.length > 1 ? <Charts selection='lighting_collections.Group' data={lighting} type={1} projArea={area} /> : null }
+            { Object.keys(nature)?.length > 1 ? <Charts selection='nature_collections.Group' data={nature} type={1} projArea={area} /> : null }
+            { Object.keys(sound)?.length > 1 ? <Charts selection='sound_collections.Group' data={sound} type={1} projArea={area} /> : null }
         </>
     );
 

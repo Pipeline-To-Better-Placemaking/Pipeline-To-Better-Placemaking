@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 import '../routes/routes.css';
 
-function DisplayCards(props){
+function DisplayCards(props) {
 
     //Surveyor Cards have surveyor name in header
     const surveyorCards = (surveyors) => (
@@ -42,7 +42,7 @@ function DisplayCards(props){
 
     //For Better Placemaking projects listed on home page (url)/home
     const projectCards = (projects) => (
-        projects.map((project, index)=>(
+        projects.map((project, index) => (
             <Card key={ 'p'+index } className='displayCard'>
                 <CardContent>
                     <Typography variant='h5' component='div'>

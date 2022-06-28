@@ -2,7 +2,7 @@ import * as React from 'react';
 import Map from '../components/Map';
 import { useLocation } from 'react-router-dom';
 
-function NewProjectPoints(){
+function NewProjectPoints() {
     const loc = useLocation();
     //recieves location data from New Project Area
 

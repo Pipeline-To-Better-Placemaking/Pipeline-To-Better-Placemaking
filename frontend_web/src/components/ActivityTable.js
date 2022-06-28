@@ -114,7 +114,7 @@ Row.propTypes = {
     row: PropTypes.shape({}).isRequired,
 };
 
-function ActivityTable(props){
+function ActivityTable(props) {
     /* Nested Expandable Tables */
     const activityRow = props.activity;
 

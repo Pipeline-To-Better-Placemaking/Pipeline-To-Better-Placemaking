@@ -11,7 +11,6 @@ import MapDrawers from './MapDrawers';
 import { testNames } from '../functions/HelperFunctions';
 import './controls.css';
 
-
 const render = (status) => {
     console.log(status);
     return <h1>{ status }</h1>;
@@ -24,8 +23,7 @@ const render = (status) => {
     // 3 - new project points
     // 4 - new project area
     // 5 - new project map
-
-function FullMap(props){
+function FullMap(props) {
     const [map, setMap] = React.useState(null);
     const [mapPlaces, setMapPlaces] = React.useState(null);
     const [title, setTitle] = React.useState(props.type > 0 ? props.title : null);
@@ -63,7 +61,7 @@ function FullMap(props){
     // passes updates to specific state object and then to collections objects to register updates
     function onSelection(category, date, time, check) {
         var newSelection;
-        switch (category){
+        switch (category) {
             case 'stationary_collections':
                 newSelection = stationaryCollections;
                 if (check === true) {
@@ -176,13 +174,13 @@ function FullMap(props){
         html2canvas(document.getElementById('mapFrame'), {
             useCORS: true
         }).then(
-            function(canvas){saveAs(canvas.toDataURL(), `${title}.png`)}
+            function(canvas) {saveAs(canvas.toDataURL(), `${title}.png`)}
         );
     }
 
     // Event handling functions ------
     const onMClick = (e) => {
-        if(props.type === 2 || props.type === 0){
+        if(props.type === 2 || props.type === 0) {
             setClick(e.latLng);
             setCenter(e.latLng);
         } else if(props.type === 3 || props.type === 4) {
@@ -233,12 +231,12 @@ function FullMap(props){
         console.log(title, date, time, index);
         const popup = document.getElementById('pathBoundWindow');
         const inner = document.getElementById('popUpText');
-        if(ver === 0 || ver === 2){
+        if(ver === 0 || ver === 2) {
             // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
             inner.innerHTML = '';
             inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index+1}<br/>kind: ${data.Activities[title][date][time].data[index].kind}<br/>description: ${data.Activities[title][date][time].data[index].description}<br/>value: ${data.Activities[title][date][time].data[index].value}`
             popup.style.display = 'flex';
-        } else if(ver === 1){
+        } else if(ver === 1) {
             // version 1 == water nature collection
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
@@ -337,21 +335,21 @@ function FullMap(props){
                     { props.type === 0 ? <Places map={ map } onChange={ onChange } onClick={ onPClick } center={ center } zoom={ zoom }/> : null }
                     {/* Change marker types for non center markers to show difference */}
                     { props.type === 3 || props.type === 5 ? clicks.map((latLng, i) => (<Marker key={i} position={ latLng } info={`<div>Position ${i}</div>`}/>)) : null }
-                    { props.type === 4 ? NewArea(clicks,updateKey) : null} {/*<DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null */}
+                    { props.type === 4 ? NewArea(clicks,updateKey) : null } {/*<DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null */}
                 </Map>
             </Wrapper>
-            {props.type === 4 ?
+            { props.type === 4 ?
                 <div id='newAreaBlock'>
                     <Button
                         id='newAreaButton'
                         className='newHoveringButtons confirm'
-                        component={Link}
+                        component={ Link }
                         to='points'
                         state={({ center: center, title: title, area: clicks, zoom: zoom })}
                     >
                         Set Bounds
                     </Button>
-                    <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                    <Button className='newHoveringButtons' onClick={ removePoint }>Undo <UndoIcon /></Button>
                 </div> : null
             }
             { props.type === 3 ? 
@@ -391,7 +389,6 @@ interface MapProps extends google.maps.MapOptions {
 const Map: React.FC<MapProps> = ({ onClick, onIdle, onBounds, mapObj, places, children, style, ...options }) => {
     const ref = React.useRef(null);
     const [map, setMap] = React.useState();
-    
 
     React.useEffect(() => {
         if (ref.current && !map) {
@@ -419,7 +416,7 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, onBounds, mapObj, places, ch
                 map.addListener('idle', () => onIdle(map));
             }
 
-            if(onBounds){
+            if(onBounds) {
                 map.addListener('bounds_changed', () => onBounds(map, places))
             }
         }
@@ -483,7 +480,7 @@ const Marker = (options) => {
             setMarker(new google.maps.Marker({ 
                 icon: icon, 
                 zIndex: (markerType === 'sound_collections' ? 10 : 99999999)}));
-            if(!infoWindow){
+            if(!infoWindow) {
                 setInfoWindow(new google.maps.InfoWindow({
                     content: info,
                 }));
@@ -710,7 +707,6 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
         </div>
     );
 }
-
 
 // Helper functions for React use of Google Maps, required for React to recognize changes at deeper elements --
 const deepCompareEqualsForMaps = createCustomEqual((deepEqual) => (a, b) => {

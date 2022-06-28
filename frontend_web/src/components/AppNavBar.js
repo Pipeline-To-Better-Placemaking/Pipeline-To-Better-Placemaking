@@ -70,7 +70,7 @@ const AppNavBar = (props) => {
         setAnchorElUser(null);
     };
 
-    function handleLogOut(){
+    function handleLogOut() {
         setAnchorElUser(null);
         props.passLogout(false);
     }

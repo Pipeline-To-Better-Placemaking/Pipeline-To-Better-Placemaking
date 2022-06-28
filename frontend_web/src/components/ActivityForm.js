@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { Form } from 'react-bootstrap';
 import AddIcon from '@mui/icons-material/Add';
 
-function ActivityForm(){
+function ActivityForm() {
     const [form, setForm] = React.useState(
         {
             title: '',
@@ -57,12 +57,12 @@ function ActivityForm(){
 
 const testNames = [
     { label: 'Humans in Place', type: 'stationary_collections' },
-    { label: 'Humans in Motion', type: 'moving_collections'},
-    { label: 'Absence of Order Locator', type: 'order_collections'},
+    { label: 'Humans in Motion', type: 'moving_collections' },
+    { label: 'Absence of Order Locator', type: 'order_collections' },
     { label: 'Spatial Boundaries', type: 'boundaries_collections' },
-    { label: 'Lighting Profile', type: 'lighting_collections'},
-    { label: 'Nature Prevalence', type: 'nature_collections'},
-    { label: 'Acoustical Profile', type: 'sound_collections'},
+    { label: 'Lighting Profile', type: 'lighting_collections' },
+    { label: 'Nature Prevalence', type: 'nature_collections' },
+    { label: 'Acoustical Profile', type: 'sound_collections' },
 ];
 
 export default ActivityForm;

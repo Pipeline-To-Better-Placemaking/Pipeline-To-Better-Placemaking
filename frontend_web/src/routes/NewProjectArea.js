@@ -15,7 +15,7 @@ function NewArea() {
     return (
         <div id='newArea'>
             {/* Empty New Project page, Google map component w/ searchable locations for new projects */}
-            <Map center={values.center} title={values.title} type={4} zoom={values.zoom} />
+            <Map center={ values.center } title={ values.title } type={ 4 } zoom={ values.zoom } />
         </div>
     );
 }

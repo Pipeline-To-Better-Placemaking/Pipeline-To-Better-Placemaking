@@ -2,7 +2,7 @@ import * as React from 'react';
 import Map from '../components/Map';
 import './routes.css';
 
-function MapPage(props){
+function MapPage(props) {
     const drawers = props.drawers;
     const title = props.title;
     const area = props.area;

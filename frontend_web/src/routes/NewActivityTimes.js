@@ -8,7 +8,7 @@ import TimeForm from '../components/TimeForm';
 import { testNames } from '../functions/HelperFunctions';
 import '../components/controls.css';
 
-function NewActivityTimes(){
+function NewActivityTimes() {
     const loc = useLocation();
     const [activity, setActivity] = React.useState({
         title: loc.state.title,
@@ -31,7 +31,7 @@ function NewActivityTimes(){
         ))
     );
 
-    function newTime(e){
+    function newTime(e) {
         var temp = timeSlots;
         temp.push(1);
         setTimeSlots(temp);
@@ -41,7 +41,7 @@ function NewActivityTimes(){
         setActivity({ ...activity, number: num })
     }
 
-    function deleteTimeSlot(index){
+    function deleteTimeSlot(index) {
         var temp = timeSlots;
         temp = temp.filter((card, ind)=> ind !== index);
         setTimeSlots(temp);

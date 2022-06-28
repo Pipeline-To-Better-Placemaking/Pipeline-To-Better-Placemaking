@@ -87,7 +87,7 @@ function App(){
                 {/* pass onLogin function to handle user state pass for new user as well (?)*/}
                 <Route index element={<Title onLogin={handleOnLogin}/>}/>
                     <Route path='home/*' element={<UserRoutes />}/>
-                <Route path='new' element={<NewUser />} />
+                <Route path='new' element={<NewUser onLogin={handleOnLogin} />} />
             </Routes>
         </Router>
     );

@@ -1,4 +1,4 @@
-function Area(points){
+function Area(points) {
     // calculates the area of a drawn polygon (value returned is in feet squared)
     //hard coded radius is the approximate (its rounded down) radius of the earth in meters
     let radius = 6371000;
@@ -49,7 +49,7 @@ function calculateAreaInSquareMeters(x1, x2, y1, y2) { return (y1 * x2 - x1 * y2
 function calculateYSegment(latRef, lat, circumference) { return (lat - latRef) * circumference / 360.0 }
 function calculateXSegment(lngRef, lng, lat, circumference) { return (lng - lngRef) * circumference * Math.cos((lat * (Math.PI / 180))) / 360.0 }
 
-function testNames(collection){
+function testNames(collection) {
     const testNames = {
         stationary_collections: 'Humans in Place',
         moving_collections: 'Humans in Motion',

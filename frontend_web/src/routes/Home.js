@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import DisplayCards from '../components/DisplayCards';
 import { Link } from 'react-router-dom';
 
-function Home(props){
+function Home(props) {
 
     //holds passed token from App.js
     const teams = props.passToken.user?.teams
@@ -14,14 +14,14 @@ function Home(props){
                 <Button
                     id='newTeamButton'
                     variant='contained'
-                    component={Link}
+                    component={ Link }
                     to='new'
                 >
                     New Team
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            <DisplayCards type={2} teams={teams} />
+            <DisplayCards type={ 2 } teams={ teams } />
         </div>
     );
 

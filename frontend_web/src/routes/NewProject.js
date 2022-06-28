@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import Map from '../components/Map';
 
-function NewProject(){
+function NewProject() {
     const center = { lat:28.537215742007234, lng:-81.38455963599586 };
     
     return(

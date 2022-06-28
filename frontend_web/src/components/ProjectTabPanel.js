@@ -20,7 +20,7 @@ export default function ProjectTabs(props) {
     const segTail = segment[segment.length - 2]
 
     React.useEffect(() => {
-        if(tail === 'activities' || segTail === 'activities'){ 
+        if(tail === 'activities' || segTail === 'activities') { 
             handleUpdate('activities', 2)
         } else { 
             tail === 'surveyors' ? handleUpdate('surveyors', 1) : handleUpdate('map', 0);

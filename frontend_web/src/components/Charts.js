@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, Tooltip, Legend, Label, PieChart, Pie } from 'recharts';
 import { Area, testNames } from '../functions/HelperFunctions';
 
-function Charts(props){
+function Charts(props) {
     const width = 300;
     const height = 200;
     const data = props.data;
@@ -35,7 +35,7 @@ function Charts(props){
 
     const cat = selection.split('.');
 
-    const soundBarChart=(data)=>(
+    const soundBarChart = (data) => (
         <BarChart width={ width } height={ height } data={ data }>
             <CartesianGrid strokeDasharray='3 3' />
             <XAxis dataKey='name' />
@@ -58,7 +58,7 @@ function Charts(props){
                 standing++;
             } else if (obj.posture === 'Laying') {
                 laying++;
-            } else if (obj.posture === 'Squatting'){
+            } else if (obj.posture === 'Squatting') {
                 squatting++;
             } else {
                 sitting++;
@@ -70,7 +70,7 @@ function Charts(props){
                 teen++;
             } else if (obj.age === '22-30') {
                 yAdult++;
-            } else if (obj.age === '30-50'){
+            } else if (obj.age === '30-50') {
                 mAdult++;
             } else {
                 senior++;
@@ -85,7 +85,7 @@ function Charts(props){
             if (obj.activity.includes('Socializing')) {
                 socializing ++;
             }
-            if (obj.activity.includes('Waiting')){
+            if (obj.activity.includes('Waiting')) {
                 waiting ++;
             }
             if (obj.activity.includes('Recreation')) {
@@ -103,47 +103,47 @@ function Charts(props){
 
         var age = [{ age: '0-14', count: kid }, { age: '15-21', count: teen }, { age: '22-30', count: yAdult }, { age: '30-50', count: mAdult }, { age: '50+', count: senior }];
         
-        var gender =[{gender: 'Male', count: male}, {gender: 'Female', count: female}]
+        var gender =[{ gender: 'Male', count: male }, { gender: 'Female', count: female }]
 
         var activity = [{ activity: 'Socializing', count: socializing }, { activity: 'Waiting', count: waiting }, { activity: 'Recreation', count: recreation }, { activity: 'Eating', count: eating }, { activity: 'Solitary', count: solitary }];
 
         return( 
             <div className='Charts'>
                 <div style={{ fontSize: 'larger' }}>Posture</div>
-                <BarChart width={width} height={height} data={posture}>
+                <BarChart width={ width } height={ height } data={ posture }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='posture' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Bar dataKey={'count'} >
-                        {posture.map((entry, index) => (
-                            <Cell key={`cell-${index}`} stroke={'#000000'} fill={stationaryColor[entry.posture]} fillOpacity={0.7} />
-                        ))}
+                        { posture.map((entry, index) => (
+                            <Cell key={ `cell-${index}` } stroke={ '#000000' } fill={ stationaryColor[entry.posture] } fillOpacity={ 0.7 } />
+                        )) }
                     </Bar>
                 </BarChart>
                 <div style={{ fontSize: 'larger' }}>Age</div>
-                <BarChart width={width} height={height} data={age}>
+                <BarChart width={ width } height={ height } data={ age }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='age' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
+                    <Bar dataKey={ 'count' } fill='#636262' fillOpacity={ 0.75 } />
                 </BarChart>
                 <div style={{ fontSize: 'larger' }}>Gender</div>
-                <BarChart width={width} height={height} data={gender}>
+                <BarChart width={ width } height={ height } data={ gender }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='gender' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
+                    <Bar dataKey={ 'count' } fill='#636262' fillOpacity={ 0.75 } />
                 </BarChart>
                 <div style={{ fontSize: 'larger' }}>Activity</div>
-                <BarChart width={width} height={height} data={activity}>
+                <BarChart width={ width } height={ height } data={ activity }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='activity' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
+                    <Bar dataKey={ 'count' } fill='#636262' fillOpacity={ 0.75 } />
                 </BarChart>
                 <br />
                 <div >
@@ -156,7 +156,7 @@ function Charts(props){
        )
     };
 
-    const movingBarChart=(data)=>{
+    const movingBarChart = (data) => {
         var running = 0, walking = 0, swimming = 0, onwheels = 0, handicap = 0;
 
         for (const obj of Object.values(data)) {
@@ -168,7 +168,7 @@ function Charts(props){
                 swimming++;
             } else if (obj.mode === 'Activity on Wheels') {
                 onwheels++;
-            } else if (obj.mode === 'Handicap Assisted Wheels'){
+            } else if (obj.mode === 'Handicap Assisted Wheels') {
                 handicap++;
             }
         }
@@ -176,15 +176,15 @@ function Charts(props){
         var mode = [{ mode: 'Walking', count: walking }, { mode: 'Running', count: running }, { mode: 'Swimming', count: swimming }, { mode: 'Activity on Wheels', count: onwheels }, { mode: 'Handicap Assisted Wheels', count: handicap }];
         return(
             <div className='Charts'>
-                <BarChart width={width} height={height} data={mode}>
+                <BarChart width={ width } height={ height } data={ mode }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='mode' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={'count'} fill='#636262'>
-                        {mode.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={movingColor[entry.mode]} fillOpacity={0.8} />
-                        ))}
+                    <Bar dataKey={ 'count' } fill='#636262'>
+                        { mode.map((entry, index) => (
+                            <Cell key={ `cell-${index}` } fill={ movingColor[entry.mode] } fillOpacity={ 0.8 } />
+                        )) }
                     </Bar>
                 </BarChart>
                 <br />
@@ -199,52 +199,52 @@ function Charts(props){
         );
     }
 
-    const multiBoundaryCharts=(data)=>{
+    const multiBoundaryCharts = (data) => {
         var constructed = [];
         var shelter = 0;
         var material = 0;
 
-        for (const arr of  Object.values(data)){
-           for(const index in arr[0]){
-               if(arr[0][index].kind === 'Shelter'){
-                shelter += arr[0][index].value 
-                } else if(arr[0][index].kind === 'Material'){
-                material += arr[0][index].value
+        for (const arr of  Object.values(data)) {
+           for(const index in arr[0]) {
+                if(arr[0][index].kind === 'Shelter') {
+                    shelter += arr[0][index].value ;
+                } else if(arr[0][index].kind === 'Material') {
+                    material += arr[0][index].value;
                 } else {
                     constructed.push(arr[0][index]);
                 }
            };
         };
 
-        var array = [{kind: 'Shelter', value: (shelter/projectArea)},{kind: 'Material', value: (material/projectArea)}, {kind: 'Unmarked', value: ((projectArea-(material+shelter))/projectArea)}]
-        var marked = [{ kind: 'Shelter', value: shelter }, { kind: 'Material', value: material }]
+        var array = [{ kind: 'Shelter', value: (shelter/projectArea) },{ kind: 'Material', value: (material/projectArea) }, { kind: 'Unmarked', value: ((projectArea-(material+shelter))/projectArea) }];
+        var marked = [{ kind: 'Shelter', value: shelter }, { kind: 'Material', value: material }];
         return(
             <div className='Charts'>
-                <div style={{fontSize: 'larger'}}>Portion of Total Area</div>
-                <PieChart width={width} height={height}>
-                        <Pie data={array} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
-                            {array.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65} />
-                            ))}
+                <div style={{ fontSize: 'larger' }}>Portion of Total Area</div>
+                <PieChart width={ width } height={ height }>
+                        <Pie data={ array } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
+                            { array.map((entry, index) => (
+                                <Cell key={ `cell-${index}` } fill={ boundsColor[entry.kind] } stroke={ boundsColor[entry.kind] } fillOpacity={ 0.65 } />
+                            )) }
                         </Pie>
                     <Tooltip />
                 </PieChart>
                 <div style={{ fontSize: 'larger' }}>Marked Areas</div>
-                <PieChart width={width} height={height}>
-                    <Pie data={marked} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
-                        {marked.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65} />
-                        ))}
+                <PieChart width={ width } height={ height }>
+                    <Pie data={ marked } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
+                        { marked.map((entry, index) => (
+                            <Cell key={ `cell-${index}` } fill={ boundsColor[entry.kind] } stroke={ boundsColor[entry.kind] } fillOpacity={ 0.65 } />
+                        )) }
                     </Pie>
                     <Tooltip />
                 </PieChart>
                 <div style={{ fontSize: 'larger' }}>Constructed Distances</div>
-                <BarChart width={width} height={height} data={constructed}>
+                <BarChart width={ width } height={ height } data={ constructed }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='kind' />
                     <YAxis label={{ value: 'Distance', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={'value'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.65} />
+                    <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
                 </BarChart>
                 <br />
                 <div >
@@ -256,7 +256,7 @@ function Charts(props){
         );
     };
 
-    const BoundaryPieChart=(data)=>{
+    const BoundaryPieChart = (data) => {
         var constructed = [];
         var horizontal = [];
 
@@ -271,21 +271,21 @@ function Charts(props){
         return(
             <div id='boundCharts' className='Charts'>
                 <div style={{ fontSize: 'larger' }}>Boundary Areas</div>
-                <PieChart width={width} height={height}>
-                    <Pie data={horizontal} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
-                        {horizontal.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65}/>
-                        ))}
+                <PieChart width={ width } height={ height }>
+                    <Pie data={ horizontal } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
+                        { horizontal.map((entry, index) => (
+                            <Cell key={ `cell-${index}` } fill={ boundsColor[entry.kind] } stroke={ boundsColor[entry.kind] } fillOpacity={ 0.65 }/>
+                        )) }
                     </Pie>
                     <Tooltip />
                 </PieChart>
                 <div style={{ fontSize: 'larger' }}>Constructed Distances</div>
-                <BarChart width={width} height={height} data={constructed}>
+                <BarChart width={ width } height={ height } data={ constructed }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='kind' />
                     <YAxis label={{ value: 'Distance', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={'value'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.65} />
+                    <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
                 </BarChart>
                 <br/>
                 <div >
@@ -301,12 +301,12 @@ function Charts(props){
        type === 0 ? 
        <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px' }}>
             <div className='sectionName'>
-                <div style={{fontSize: 'large'}}>{ testNames(cat[0]) }</div>
-                {cat[1]}  {cat[2]}
+                <div style={{ fontSize: 'large' }}>{ testNames(cat[0]) }</div>
+                { cat[1] }  { cat[2] }
             </div>
-                {cat[0] === 'sound_collections' ? soundBarChart(data) : (cat[0] === 'boundaries_collections' ? BoundaryPieChart(data) : (cat[0] === 'moving_collections' ? movingBarChart(data) : (cat[0] === 'stationary_collections' ? stationaryBarCharts(data) : null))) }
+                { cat[0] === 'sound_collections' ? soundBarChart(data) : (cat[0] === 'boundaries_collections' ? BoundaryPieChart(data) : (cat[0] === 'moving_collections' ? movingBarChart(data) : (cat[0] === 'stationary_collections' ? stationaryBarCharts(data) : null))) }
         </div> : 
-            <div key={selection} style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px'}}>
+            <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px'}}>
                 <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
                     { testNames(cat[0]) }: Summary
                 </div>
