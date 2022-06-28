@@ -10,6 +10,7 @@ const dataSchema = mongoose.Schema({
 
        
     points: [{
+
         kind:{
             type: String,
             required: true
@@ -21,6 +22,7 @@ const dataSchema = mongoose.Schema({
         },
 
         marker: {
+
             latitude: {
                 type: Number,
                 // required: true
@@ -55,9 +57,11 @@ const dataSchema = mongoose.Schema({
         },
 
         location: [{
+
             latitude: {
                 type: Number,
             },
+
             longitude: {
                 type: Number,
             }
@@ -147,7 +151,8 @@ module.exports.addEntry = async function(mapId, newEntry) {
         water: newEntry.water,
         time: newEntry.time
     })
-
+    console.log("Entry about to be created")
+    console.log(entry)
     return await Maps.updateOne(
         { _id: mapId },
         { $push: { data: entry}}

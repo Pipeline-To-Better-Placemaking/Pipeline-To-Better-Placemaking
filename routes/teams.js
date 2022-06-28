@@ -89,7 +89,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
             await Nature_Map.projectCleanup(proj)
             // await Light_Map.projectCleanup(proj)
             // await Order_Map.projectCleanup(proj)
-            // await Boundaries_Map.projectCleanup(proj)
+            await Boundaries_Map.projectCleanup(proj)
         }
         await Project.teamCleanup(team._id)
         res.json(await Team.deleteTeam(team._id))
