@@ -120,7 +120,7 @@ const AppNavBar = (props) => {
                             }}
                         >
                             { segment.map((page, index) => (
-                                page !== 'form' && page !== 'area' && page !== 'points' && page !== ':id' && index > 0 ?
+                                !/\d/.test(page) && page !== 'form' && page !== 'area' && page !== 'points' && page !== ':id' && index > 0 ?
                                     <MenuItem 
                                         key={ page } 
                                         component={Link}
@@ -141,7 +141,7 @@ const AppNavBar = (props) => {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         { segment.map((page, index) => (
-                            page !== 'form' && page !== 'area' && page !== 'points' && page !== ':id' && index > 0 ? 
+                            !/\d/.test(page) && page !== 'form' && page !== 'area' && page !== 'points' && page !== ':id' && index > 0 ? 
                             <Button
                                 component={ Link }
                                 to={ segmentLink(page === 'teams'  || page === 'project' ? index+1 : index) }
