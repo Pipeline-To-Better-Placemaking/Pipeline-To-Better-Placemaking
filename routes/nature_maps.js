@@ -151,6 +151,10 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
         console.log("Makes it in researcher condition")
         if(req.body.entries){
             console.log("Array of arrays????")
+            console.log(req.body.entries)
+            console.log(typeof(req.body.entries))
+            console.log("length of object array")
+            console.log(Object.keys(req.body.entries).length)
             for(var i = 0; i < req.body.entries.length; i++){
                 console.log("user is researcher.  Multiple entries are as follows:")
                 console.log(req.body.entries[i])
