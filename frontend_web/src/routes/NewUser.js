@@ -126,7 +126,7 @@ function NewUser(props) {
     const submitNewUser = async (e) => {
         //register new user instead of login, not saving data
         try{
-            const response = await axios.post(registerURL, JSON.stringify({ firstname: values.fname, lastname: values.fname, email: values.email, password: values.password }), {
+            const response = await axios.post(registerURL, JSON.stringify({ firstname: values.fname, lastname: values.lname, email: values.email, password: values.password }), {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
