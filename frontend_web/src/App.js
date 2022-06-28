@@ -47,7 +47,7 @@ function App(){
         return(
             <div id='teamPages'>
                 <Routes>
-                    <Route index element={<TeamHome />}/>
+                    <Route index element={<TeamHome passToken={token}/>}/>
                     <Route path='project/:id/*' element={<ProjectPage />} />
                     <Route path='new' element={<NewProject />} />
                     <Route path='new/area/points' element={<NewProjectPoints />} />
