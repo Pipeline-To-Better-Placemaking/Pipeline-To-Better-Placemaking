@@ -12,22 +12,11 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import './controls.css';
 import logo1 from '../images/PtBPLogo.png';
 
-// pages left incase of need for additional route info
-// uses hamburger on small viewports
-const pages = [
-    {
-        page: 'Teams',
-        route: '/home'
-    },
-    {
-        page: 'Projects',
-        route: '/home/teams/:id'
-    }];
 
 // Routes according to React-Router relative urls
 const settings = [
@@ -46,6 +35,9 @@ const settings = [
 const home = <Link className='homeButton' to='/home'><Image src={logo1} className='icon-shadow' alt='logo' height='50px'/></Link>;
 
 const AppNavBar = (props) => {
+    const location = useLocation();
+    const segment = location.pathname.split('/');
+    
     const userName = {
         fN: props.passToken.user?.firstname ? props.passToken.user.firstname : 'Abc',
         lN: props.passToken.user?.lastname ? props.passToken.user.lastname : 'Bcd',
@@ -73,6 +65,17 @@ const AppNavBar = (props) => {
     function handleLogOut() {
         setAnchorElUser(null);
         props.passLogout(false);
+    }
+
+    const segmentLink = (index) => {
+        var i;
+        var path = '';
+        for (i = 1; i <= index; i++){
+            path = `${path}/${segment[i]}`;
+            //console.log(segment[i]+" "+index);
+        }
+        //console.log(path);
+        return(path);
     }
 
     return (
@@ -116,11 +119,17 @@ const AppNavBar = (props) => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {/*{pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign='center'>{page}</Typography>
-                                </MenuItem>
-                            ))}*/}
+                            { segment.map((page, index) => (
+                                page !== 'form' && page !== 'area' && page !== 'points' && page !== ':id' && index > 0 ?
+                                    <MenuItem 
+                                        key={ page } 
+                                        component={Link}
+                                        to={segmentLink(page === 'teams' || page === 'project' ? index + 1 : index)}
+                                        onClick={ handleCloseNavMenu }>
+                                        <Typography textAlign='center'> {page === 'teams' ? 'Projects' : (page === 'project' ? 'Project Page' : (`${page.charAt(0).toUpperCase()}${page.slice(1)}`))} </Typography>
+                                    </MenuItem>
+                                : null
+                            )) }
                         </Menu>
                     </Box>
                     <Typography
@@ -131,15 +140,19 @@ const AppNavBar = (props) => {
                         { home }
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {/*{pages.map((page) => (
+                        { segment.map((page, index) => (
+                            page !== 'form' && page !== 'area' && page !== 'points' && page !== ':id' && index > 0 ? 
                             <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
+                                component={ Link }
+                                to={ segmentLink(page === 'teams'  || page === 'project' ? index+1 : index) }
+                                key={ page }
+                                onClick={ handleCloseNavMenu }
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                {page}
+                                    {page === 'teams' ? 'Projects' : (page === 'project' ? 'Project Page' : page) }
                             </Button>
-                        ))}*/}
+                            : null
+                        )) }
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title='Open settings'>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 import AppNavBar from './components/AppNavBar';
 import Home from './routes/Home';
@@ -73,7 +73,7 @@ function App(){
                 <AppNavBar passLogout={passLogout} passToken={token}/>
                 <Routes>
                     <Route index element={<Home passToken={token}/>} />
-                    <Route path='teams/:id/*'element={<TeamPages />} />
+                    <Route path='teams/:id/*' element={<TeamPages />} />
                     <Route path='settings' element={<SettingsPage />} />
                 </Routes>
             </div>

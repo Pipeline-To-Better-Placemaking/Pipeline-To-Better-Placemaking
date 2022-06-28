@@ -198,6 +198,11 @@ a.newHoveringButtons:hover, button.newHoveringButtons:hover {
     background-color: #daebff;
 }
 
+button#placesButton{
+    margin-right: 5px;
+    margin-bottom: 0px;
+}
+
 div#ActivityForm{
     display: flex;
     flex-direction: row;
@@ -245,17 +250,7 @@ div#projectCreate div#mapFrame {
     margin-bottom: 20px;
 }
 
-div#newProject div#mapFrame {
-    width: 100vw;
-    height: calc(100vh - 64px);
-}
-
-div#newPoints div#mapFrame {
-    width: 100vw;
-    height: calc(100vh - 64px);
-}
-
-div#newArea div#mapFrame {
+div#newProject div#mapFrame, div#newPoints div#mapFrame, div#newArea div#mapFrame {
     width: 100vw;
     height: calc(100vh - 64px);
 }
@@ -266,6 +261,10 @@ div#newProjectInput div.MuiFormControl-root {
 
 div#newProjectInput div.MuiOutlinedInput-root,  div#newProjectInput input#location-search{
     height: 90%;
+}
+
+div#newProjectInput {
+    left: 20vw;
 }
 
 div.MuiDrawer-paperAnchorLeft, div#leftDrawer{

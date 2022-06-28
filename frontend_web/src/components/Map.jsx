@@ -26,6 +26,7 @@ const render = (status) => {
 function FullMap(props) {
     const [map, setMap] = React.useState(null);
     const [mapPlaces, setMapPlaces] = React.useState(null);
+    const [placeOn, setPlaceOn] = React.useState(false);
     const [title, setTitle] = React.useState(props.type > 0 ? props.title : null);
     const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 10); // initial zoom
     const [center, setCenter] = React.useState(props.center.lat ? { lat: props.center.lat, lng: props.center.lng } : { lat:28.54023216523664, lng:-81.38181298263407 });
@@ -227,6 +228,10 @@ function FullMap(props) {
         setClicks(temp);
     };
 
+    const togglePlaces = (e) => {
+        setPlaceOn(!placeOn);
+    }
+
     const boundsPathWindow = (title, date, time, index, ver) => (e) => {
         console.log(title, date, time, index);
         const popup = document.getElementById('pathBoundWindow');
@@ -332,7 +337,7 @@ function FullMap(props) {
                             <Marker position={props.center} /> : 
                             (props.type === 0 ? 
                                 <Marker position={center} /> : null)) }
-                    { props.type === 0 ? <Places map={ map } onChange={ onChange } onClick={ onPClick } center={ center } zoom={ zoom }/> : null }
+                    { props.type === 0 ? <Places map={map} onChange={placeOn ? onChange : null} on={placeOn} togglePlaces={togglePlaces} onClick={onPClick} center={center} zoom={zoom} /> : null }
                     {/* Change marker types for non center markers to show difference */}
                     { props.type === 3 || props.type === 5 ? clicks.map((latLng, i) => (<Marker key={i} position={ latLng } info={`<div>Position ${i}</div>`}/>)) : null }
                     { props.type === 4 ? NewArea(clicks,updateKey) : null } {/*<DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null */}
@@ -653,10 +658,9 @@ interface PlaceProps extends google.maps.places.AutocompleteOptions {
 const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
     const [placesWidget, setPlacesWidget] = React.useState();
     const ref = React.useRef(null);
-    
 
     React.useEffect(() => {
-        if (ref.current && !placesWidget) {
+        if (ref.current && !placesWidget && options.on) {
             setPlacesWidget(
                 new google.maps.places.Autocomplete(ref.current, {
                     types: ['establishment'],
@@ -665,7 +669,7 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
                 })
             );
         }
-    }, [ref, placesWidget]);
+    }, [ref, placesWidget, options.on]);
 
     useDeepCompareEffectForMaps(() => {
         if (placesWidget) {
@@ -678,7 +682,7 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
     }, [placesWidget]);
 
     React.useEffect(() => {
-        if (placesWidget) {
+        if ( placesWidget) {
             ['place_changed'].forEach((eventName) =>
                 google.maps.event.clearListeners(placesWidget, eventName)
             );
@@ -691,14 +695,21 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
 
     return(
         <div id='newProjectInput'>
-            <input ref={ref} name='search' id='locationSearch' label='Project Location' type='text' />
+            <Button
+                id='placesButton'
+                className='newHoveringButtons'
+                onClick={options.togglePlaces}
+            >
+                { options.on ? 'Disbale Autocomplete' : 'Enable Autocomplete'}
+            </Button>
+            <input ref={ ref } name='search' id='locationSearch' label='Project Location' type='text' />
             <Button 
                 className='newHoveringButtons' 
                 id='newLocationButton' 
-                component={Link} to='area' 
+                component={ Link } to='area' 
                 state={({ 
                     center: options.center, 
-                    title: (placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : ref.current),
+                    title: ( placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : document.getElementById('locationSearch')?.value),
                     zoom: options.zoom
                 })}
             >

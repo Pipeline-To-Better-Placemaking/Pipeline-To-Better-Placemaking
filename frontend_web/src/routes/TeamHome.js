@@ -1,16 +1,19 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import DisplayCards from '../components/DisplayCards';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 
 import './routes.css';
 
 const teamsURL = '/teams';
 
 function TeamHome() {
+    const location = useLocation();
+
     // Load Viewable Projects by Team selected on previous page
     // Team id is passed in URL useParams can pull it
     let { teamId } = useParams();
+    
     // project array structure hardcoded on template
     const projects = [
         {
@@ -34,6 +37,7 @@ function TeamHome() {
                     id='newProjectButton' 
                     variant='contained' 
                     component={ Link } 
+                    state={ location.state }
                     to='new'
                 >
                     New Project
