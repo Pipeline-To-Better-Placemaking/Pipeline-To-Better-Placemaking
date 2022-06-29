@@ -12,7 +12,7 @@ export function NatureMapResults(props) {
     const [infoModal, setInfoModal] = useState(false);
     const [info, setInfo] = useState();
 
-    // data pins for vegitation and animal data
+    // data pins for vegetation and animal data
     const DataPin = (props) => {
         return(
             <View style={[ styles.natureDataPin, { backgroundColor: props.color }]}/>
@@ -64,8 +64,8 @@ export function NatureMapResults(props) {
                 for(let j = 0; j < pointArr.length; j++){
                     // set as color for the animal type
                     let color = "#B06A24";
-                    // only change color if its for the Vegitation type
-                    if(pointArr[j].kind === "Vegitation") color = "#00FF00"
+                    // only change color if its for the Vegetation type
+                    if(pointArr[j].kind === "Vegetation") color = "#00FF00"
                     // add the marker to the rendered JSX array
                     objData.push(
                         <View key={keySum}>

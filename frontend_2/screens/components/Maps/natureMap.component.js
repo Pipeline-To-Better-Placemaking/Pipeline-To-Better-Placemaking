@@ -41,8 +41,8 @@ export function NatureMap(props) {
             for(let i = 0; i < props.dataPoints.length; i++){
                 // set as color for the animal type
                 let color = "#B06A24";
-                // only change color if its for the Vegitation type
-                if(props.dataPoints[i].kind === "Vegitation") color = "#00FF00"
+                // only change color if its for the Vegetation type
+                if(props.dataPoints[i].kind === "Vegetation") color = "#00FF00"
                 obj[i] = ( 
                     <MapView.Marker
                         key={i.toString()}

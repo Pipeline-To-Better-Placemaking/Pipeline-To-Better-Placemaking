@@ -249,8 +249,8 @@ export async function formatNatureGraphData(result){
   let graph = {
     animalData: [],
     animalLabels: [],
-    vegitationData: [],
-    vegitationLabels: [],
+    vegetationData: [],
+    vegetationLabels: [],
     waterData: [],
     waterLabels: [],
     weather: {}
@@ -261,17 +261,17 @@ export async function formatNatureGraphData(result){
     let index = -1;
     // format the points object (of each data object)
     for(let j = 0; j < data.points.length; j++){
-      // the current data point is for vegitation
-      if(data.points[j].kind === "Vegitation"){
-        index = conDescSearch(graph.vegitationLabels, data.points[j].description)
+      // the current data point is for vegetation
+      if(data.points[j].kind === "Vegetation"){
+        index = conDescSearch(graph.vegetationLabels, data.points[j].description)
         // that description is already formatted, so increase its count
         if(index !== -1){
-          graph.vegitationData[index] += 1;
+          graph.vegetationData[index] += 1;
         }
         // otherwise add that description into the labels and increase its count
         else{
-          graph.vegitationLabels.push(data.points[j].description)
-          graph.vegitationData.push(1);
+          graph.vegetationLabels.push(data.points[j].description)
+          graph.vegetationData.push(1);
         }
       }
       // otherwise, its an animal data point

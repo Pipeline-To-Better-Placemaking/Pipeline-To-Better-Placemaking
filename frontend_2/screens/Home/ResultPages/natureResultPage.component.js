@@ -224,10 +224,10 @@ export function NatureResultPage(props) {
 
           <MyBarChart
             {...props}
-            title={"Vegitation Data"}
+            title={"Vegetation Data"}
             rotation={'0deg'}
-            dataValues={props.selectedResult.graph.vegitationData}
-            dataLabels={props.selectedResult.graph.vegitationLabels}
+            dataValues={props.selectedResult.graph.vegetationData}
+            dataLabels={props.selectedResult.graph.vegetationLabels}
             barColor={color}
             width={chartWidth}
             height={chartHeight}
