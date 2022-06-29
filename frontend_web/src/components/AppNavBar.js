@@ -72,7 +72,7 @@ const AppNavBar = (props) => {
         var path = '';
         for (i = 1; i <= index; i++){
             path = `${path}/${segment[i]}`;
-            //console.log(segment[i]+" "+index);
+            //console.log(segment[i]+' '+index);
         }
         //console.log(path);
         return(path);

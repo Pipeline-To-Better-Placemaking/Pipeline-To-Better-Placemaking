@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import AppNavBar from './components/AppNavBar';
 import Home from './routes/Home';
+import NewTeamForm from './routes/NewTeamForm';
 import Title from './routes/Title';
 import Projects from './routes/Projects';
 import NewProject from './routes/NewProject';
@@ -10,9 +11,9 @@ import NewUser from './routes/NewUser';
 import SettingsPage from './routes/SettingsPage';
 import EditProject from './routes/EditProject';
 import ProjectPage from './routes/ProjectPage';
-import NewProjectPoints from './routes/NewProjectPoints';
-import NewProjectArea from './routes/NewProjectArea';
-import ProjectForm from './routes/ProjectForm';
+import NewProjectPoints from './routes/PointsNewProject';
+import NewProjectArea from './routes/AreaNewProject';
+import ProjectForm from './routes/NewProjectForm';
 
 function App() {
     // !! token/storage of choice, verification of choice
@@ -33,8 +34,8 @@ function App() {
     // clear all fields on logout
     function handleOnLogout(active) {
         // setUser({});
-        // setEmail("");
-        // setPassword("");
+        // setEmail('');
+        // setPassword('');
         // localStorage.clear();
         setState(active);
     }
@@ -71,9 +72,10 @@ function App() {
             <div id='userRoutes'>
                 <AppNavBar passLogout={ passLogout } passToken={ token }/>
                 <Routes>
-                    <Route index element={ <Home passToken={ token }/>} />
-                    <Route path='teams/:id/*' element={ <TeamPages /> } />
-                    <Route path='settings' element={ <SettingsPage /> } />
+                    <Route index element={ <Home passToken={ token }/> }/>
+                    <Route path='teams/:id/*' element={ <TeamPages /> }/>
+                    <Route path='settings' element={ <SettingsPage /> }/>
+                    <Route path='new' element={ <NewTeamForm /> }/>
                 </Routes>
             </div>
         );
@@ -84,9 +86,9 @@ function App() {
         <Router>
             <Routes>
                 {/* pass onLogin function to handle user state pass for new user as well (?)*/}
-                <Route index element={<Title onLogin={handleOnLogin}/>}/>
-                    <Route path='home/*' element={<UserRoutes />}/>
-                <Route path='new' element={<NewUser onLogin={handleOnLogin} />} />
+                <Route index element={ <Title onLogin={ handleOnLogin }/> }/>
+                    <Route path='home/*' element={ <UserRoutes /> }/>
+                <Route path='new' element={ <NewUser onLogin={ handleOnLogin }/> } />
             </Routes>
         </Router>
     );

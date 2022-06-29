@@ -99,7 +99,7 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
     height: 50px;
 }
 
-.newformCard {
+.newformCard{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -133,7 +133,7 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
 
 .tagBox {
     min-width: 30vw;
-    max-width: 40vw;
+    max-width: 50vw;
     z-index: 3;
 }
 
@@ -201,7 +201,8 @@ div.MuiFormControl-root {
     width: 100%;
 }
 
-div.displayCard {
+div.displayCard,
+#newTeamCard {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -212,12 +213,16 @@ div.displayCard {
     text-align: center;
 }
 
-div.displayCard:hover{
+#newTeamCard {
+    padding: 20px;
+}
+
+div.displayCard:hover {
     font-weight: 500;
     box-shadow: 0 4px 8px 0 rgba(71, 71, 71, 0.2), 0 6px 20px 0 rgba(71, 71, 71, 0.19);
 }
 
-div.timeSlots{
+div.timeSlots {
     margin-bottom: 10px;
 }
 
@@ -260,6 +265,14 @@ form.MuiBox-root {
 #newProjectButtonBox, #newTeamButtonBox {
     display: flex;
     justify-content: center;
+}
+
+#newTeamForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
 }
 
 #newUser {

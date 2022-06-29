@@ -31,7 +31,7 @@ function EditProject() {
                     <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
                         <TextField 
                             className='nonFCInput' 
-                            id='outlined-search' 
+                            id='outlined-input' 
                             label='Project Name' 
                             type='text' 
                             value={ values.projectName } 

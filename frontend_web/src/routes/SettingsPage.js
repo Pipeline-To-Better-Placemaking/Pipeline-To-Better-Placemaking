@@ -59,7 +59,7 @@ function SettingsPage() {
                     <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
                         <TextField 
                             className='nonFCInput' 
-                            id='outlined-search' 
+                            id='outlined-input' 
                             label='First Name' 
                             type='text' 
                             value={ values.updateFName } 
@@ -67,7 +67,7 @@ function SettingsPage() {
                         />
                         <TextField 
                             className='nonFCInput' 
-                            id='outlined-search' 
+                            id='outlined-input' 
                             label='Last Name' 
                             type='text'
                             value={ values.updateLName } 
@@ -75,7 +75,7 @@ function SettingsPage() {
                         />
                         <TextField 
                             className='nonFCInput' 
-                            id='outlined-search' 
+                            id='outlined-input' 
                             label='Email' 
                             type='email' 
                             value={ values.updateEmail } 

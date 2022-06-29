@@ -33,7 +33,7 @@ function ProjectForm() {
                     <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
                         <TextField
                             className='nonFCInput'
-                            id='outlined-search'
+                            id='outlined-input'
                             label='Project Name'
                             type='text'
                             value={values.title}
@@ -43,9 +43,10 @@ function ProjectForm() {
                             <TextField
                                 key={index}
                                 className='nonFCInput'
-                                id='outlined-search'
+                                id='outlined-input'
                                 label={`Point ${index}`}
                                 type='text'
+                                //value={values.points[index].title}
                             />
                         ))}
                         <Map center={values.center} area={values.area} points={values.points} zoom={values.zoom} type={5} />

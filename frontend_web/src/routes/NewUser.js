@@ -42,11 +42,8 @@ function NewUser(props) {
     const lnameMess = React.useRef(null);
     const emMess = React.useRef(null);
     const pwMess = React.useRef(null);
-
-    //declaring reg vars
-
+    
     const handleChange = (e) => {
-        console.log(e.target.name)
         setValues({
             ...values,
             [e.target.name]: e.target.value
@@ -155,14 +152,14 @@ function NewUser(props) {
                 <div className='tagBox'>
                     <Card id='pageCard'>
                         <Card.Body>
-                            <h3>Create an account</h3>
+                            <h3>Create an Account</h3>
                             <br/>
                             <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
                                 <span ref={ registerResponse } style={{ display: 'none', color: 'red' }}>{message}</span>
                                 <span ref={ fnameMess } style={{ display: 'none', color: 'red' }}>{message}</span>
                                 <TextField  
                                     className='nonFCInput' 
-                                    id='outlined-search' 
+                                    id='outlined-input' 
                                     label='First Name' 
                                     name='fname'
                                     type='text' 
@@ -173,7 +170,7 @@ function NewUser(props) {
                                 <span ref={ lnameMess } style={{ display: 'none', color: 'red' }}>{ message }</span>
                                 <TextField 
                                     className='nonFCInput' 
-                                    id='outlined-search' 
+                                    id='outlined-input' 
                                     label='Last Name' 
                                     name='lname'
                                     type='text' 
@@ -184,7 +181,7 @@ function NewUser(props) {
                                 <span ref={ emMess } style={{ display: 'none', color: 'red' }}>{ message }</span>
                                 <TextField 
                                     className='nonFCInput' 
-                                    id='outlined-search' 
+                                    id='outlined-input' 
                                     label='Email' 
                                     type='email' 
                                     name='email'
