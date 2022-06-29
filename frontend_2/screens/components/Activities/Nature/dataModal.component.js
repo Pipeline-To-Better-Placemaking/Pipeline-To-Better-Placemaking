@@ -63,14 +63,14 @@ export function DataModal(props) {
                             </View>
                             
 
-                            <Text category={'h4'} style={styles.typeSpace}>Landscape</Text>
+                            <Text category={'h4'} style={styles.typeSpace}>Vegitation</Text>
                             <View>
                                 <View style={styles.dataButtonRow}>
-                                    <Button style={styles.button} onPress={()=> sendData("Landscape", "Native")}>Native</Button>
-                                    <Button style={styles.button} onPress={()=> sendData("Landscape", "Design")}>Design</Button>
+                                    <Button style={styles.button} onPress={()=> sendData("Vegitation", "Native")}>Native</Button>
+                                    <Button style={styles.button} onPress={()=> sendData("Vegitation", "Design")}>Design</Button>
                                 </View>
                                 <View style={styles.lastDataButtonView}>
-                                    <Button style={styles.button} onPress={()=> sendData("Landscape", "Open Field")}>Open Field</Button>
+                                    <Button style={styles.button} onPress={()=> sendData("Vegitation", "Open Field")}>Open Field</Button>
                                 </View>
                             </View>
 

@@ -109,7 +109,7 @@ export const styles = StyleSheet.create({
     
     // for dataModal
     dataViewContainer: {
-        height: '75%',
+        height: '50%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,

@@ -5,7 +5,7 @@ import { HeaderBack, HeaderBackEdit } from '../../components/headers.component';
 import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { helperGetResult, deleteTimeSlot, getProject, getAllResults, isUserTeamOwner } from '../../components/apiCalls';
-import { formatNatureGraphData, calcArea } from '../../components/helperFunctions';
+import { formatNatureGraphData } from '../../components/helperFunctions';
 import { MyBarChart } from '../../components/charts.component';
 
 import { styles } from './resultPage.styles';
@@ -205,8 +205,44 @@ export function NatureResultPage(props) {
                 </Text>
               </View>
           }
+
+          <View style={[styles.rowView, styles.rowSpacing]}>
+            <Text category={'s1'}>Temperature: {props.selectedResult.graph.weather.temperature} °F</Text>
+            <Text category={'s1'}>Weather: {props.selectedResult.graph.weather.description}</Text>
+          </View>
           
-          <Text>charts go here</Text>
+          <MyBarChart
+            {...props}
+            title={"Animal Data"}
+            rotation={'0deg'}
+            dataValues={props.selectedResult.graph.animalData}
+            dataLabels={props.selectedResult.graph.animalLabels}
+            barColor={color}
+            width={chartWidth}
+            height={chartHeight}
+          />
+
+          <MyBarChart
+            {...props}
+            title={"Vegitation Data"}
+            rotation={'0deg'}
+            dataValues={props.selectedResult.graph.vegitationData}
+            dataLabels={props.selectedResult.graph.vegitationLabels}
+            barColor={color}
+            width={chartWidth}
+            height={chartHeight}
+          />
+
+          <MyBarChart
+            {...props}
+            title={"Water Data (area in ft²)"}
+            rotation={'0deg'}
+            dataValues={props.selectedResult.graph.waterData}
+            dataLabels={props.selectedResult.graph.waterLabels}
+            barColor={color}
+            width={chartWidth}
+            height={chartHeight}
+          />
           
           
           

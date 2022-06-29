@@ -28,6 +28,7 @@ export function MyBarChart({children, ...props}) {
   let fontSize = 10;
 
   let ticks = Math.max.apply(Math, props.dataValues)%5 + 1;
+  if(ticks > 10) ticks = 10;
 
   const Gradient = () => (
         <Defs key={'gradient'}>

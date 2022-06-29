@@ -12,7 +12,7 @@ export function NatureMapResultsView(props) {
     const [position] = useState(props.selectedResult.standingPoints)
 
     // Temp marker, inputted data points, and all of their locations
-    const [data, setData] = useState(props.selectedResult.data)
+    const [data] = useState(props.selectedResult.data)
 
     let startTime = new Date(props.selectedResult.date);
     let day = new Date(props.selectedResult.sharedData.date);
@@ -27,7 +27,6 @@ export function NatureMapResultsView(props) {
                     area={area}
                     position={position}
                     dataMarkers={data}
-                    graph={props.selectedResult.graph}
                 />
 
             </ContentContainer>
