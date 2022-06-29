@@ -123,10 +123,10 @@ const AppNavBar = (props) => {
                                 !/\d/.test(page) && page !== 'form' && page !== 'area' && page !== 'points' && page !== ':id' && index > 0 ?
                                     <MenuItem 
                                         key={ page } 
-                                        component={Link}
-                                        to={segmentLink(page === 'teams' || page === 'project' ? index + 1 : index)}
+                                        component={ Link }
+                                        to={ segmentLink(page === 'teams' || page === 'projects' ? index + 1 : index)}
                                         onClick={ handleCloseNavMenu }>
-                                        <Typography textAlign='center'> {page === 'teams' ? 'Projects' : (page === 'project' ? 'Project Page' : (`${page.charAt(0).toUpperCase()}${page.slice(1)}`))} </Typography>
+                                        <Typography textAlign='center'> {page === 'teams' ? 'Projects' : (page === 'projects' ? 'Project Page' : (`${page.charAt(0).toUpperCase()}${page.slice(1)}`))} </Typography>
                                     </MenuItem>
                                 : null
                             )) }
@@ -144,12 +144,12 @@ const AppNavBar = (props) => {
                             !/\d/.test(page) && page !== 'form' && page !== 'area' && page !== 'points' && page !== ':id' && index > 0 ? 
                             <Button
                                 component={ Link }
-                                to={ segmentLink(page === 'teams'  || page === 'project' ? index+1 : index) }
+                                to={ segmentLink(page === 'teams'  || page === 'projects' ? index+1 : index) }
                                 key={ page }
                                 onClick={ handleCloseNavMenu }
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                    {page === 'teams' ? 'Projects' : (page === 'project' ? 'Project Page' : page) }
+                                    {page === 'teams' ? 'Projects' : (page === 'projects' ? 'Project Page' : page) }
                             </Button>
                             : null
                         )) }
@@ -193,4 +193,5 @@ const AppNavBar = (props) => {
         </AppBar>
     );
 };
+
 export default AppNavBar;

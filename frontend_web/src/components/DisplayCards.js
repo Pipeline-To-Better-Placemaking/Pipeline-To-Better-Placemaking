@@ -50,7 +50,7 @@ function DisplayCards(props) {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button component={ Link } to='project/:id' state={ project.name }>View</Button>
+                    <Button component={ Link } to='projects/:id' state={ project.name }>View</Button>
                     <Button component={ Link } to='edit/:id' state={ project.name }>Edit</Button>
                 </CardActions>
             </Card>

@@ -45,9 +45,9 @@ function ActivityForm() {
                 <Form.Label>Time per Location</Form.Label>
                 <Form.Control type='number' id='timerSelect' name='timerSelect' className='dateTimePickers' value={form.timer} min='5' max='100' onChange={handleChange('timer')} />
             </div>
-            <Button className='newHoveringButtons confirm' id='addButton' component={Link}
-                to='/home/teams/:id/project/:id/activities/times'
-                state={form}
+            <Button className='newHoveringButtons confirm' id='addButton' component={ Link }
+                to='/home/teams/:id/projects/:id/activities/times'
+                state={ form }
             >
                 <AddIcon />
             </Button>

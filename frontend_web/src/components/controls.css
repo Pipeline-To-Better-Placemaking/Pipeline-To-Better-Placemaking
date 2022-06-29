@@ -22,8 +22,14 @@
 
 @media (max-width: 599px){
     div.MuiDrawer-paperAnchorLeft,div#leftDrawer,div.MuiDrawer-paperAnchorRight,div#rightDrawer{
-        top: 105px;
-        height: calc(100vh - 105px);
+        top: 99px;
+        height: calc(100vh - 99px);
+    }
+    button#printButton{
+        top: 99px;
+    }
+    div#mapFrame {
+        height: calc(100vh - 99px);
     }
 }
 
@@ -31,6 +37,32 @@
     div.MuiDrawer-paperAnchorLeft, div#leftDrawer, div.MuiDrawer-paperAnchorRight, div#rightDrawer {
         top: 113px;
         height: calc(100vh - 113px);
+    }
+    button#printButton {
+        top: 113px;
+    }
+
+    div#mapFrame{
+        height: calc(100vh - 113px);
+    }
+}
+
+@media (min-width: 890px) {
+
+    div.MuiDrawer-paperAnchorLeft,
+    div#leftDrawer,
+    div.MuiDrawer-paperAnchorRight,
+    div#rightDrawer {
+        top: 117px;
+        height: calc(100vh - 117px);
+    }
+
+    button#printButton {
+        top: 117px;
+    }
+
+    div#mapFrame {
+        height: calc(100vh - 117px);
     }
 }
 
@@ -124,7 +156,7 @@ div#pathBoundWindow, div#popUpBlock{
 
 #bottomButton{
     position: relative;
-    top: calc(100vh - 186px);
+    top: calc(100vh - 190px);
     margin: 0px calc(50vw - 32px);
     bottom: 0;
 }
@@ -221,7 +253,6 @@ div.Charts{
 
 div#MapPage div#mapFrame{
     width:100vw;
-    height: calc(100vh - 113px);
     top: -73px;
 }
 
@@ -232,6 +263,10 @@ div.MuiDrawer-paperAnchorBottom div.MuiTableContainer-root{
 div#rightDrawer.MuiModal-root.MuiDrawer-root.MuiDrawer-modal.css-y28f86{
     right: 0px;
     left: calc(100vw - 300px);
+}
+
+div.pac-container.hdpi{
+    overflow: hidden;
 }
 
 div#projectEdit div#mapFrame {
@@ -252,7 +287,7 @@ div#projectCreate div#mapFrame {
 
 div#newProject div#mapFrame, div#newPoints div#mapFrame, div#newArea div#mapFrame {
     width: 100vw;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 69px);
 }
 
 div#newProjectInput div.MuiFormControl-root {
@@ -313,7 +348,6 @@ button#deleteButton{
 
 button#printButton {
     position: absolute;
-    top: 113px;
     left: calc(50vw - 46px);
     color: var(--primaryBlue);
 }

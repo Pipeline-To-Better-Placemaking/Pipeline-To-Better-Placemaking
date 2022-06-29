@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import AppNavBar from './components/AppNavBar';
 import Home from './routes/Home';
 import Title from './routes/Title';
-import TeamHome from './routes/TeamHome';
+import Projects from './routes/Projects';
 import NewProject from './routes/NewProject';
 import NewUser from './routes/NewUser';
 import SettingsPage from './routes/SettingsPage';
@@ -14,7 +14,7 @@ import NewProjectPoints from './routes/NewProjectPoints';
 import NewProjectArea from './routes/NewProjectArea';
 import ProjectForm from './routes/ProjectForm';
 
-function App(){
+function App() {
     //token/storage of choice
     //  const token = localStorage.getItem('token_data')
     const [token, setToken] = React.useState({});
@@ -47,8 +47,9 @@ function App(){
         return(
             <div id='teamPages'>
                 <Routes>
-                    <Route index element={<TeamHome passToken={token}/>}/>
-                    <Route path='project/:id/*' element={<ProjectPage />} />
+                    {/* Find a more stable/consistent way to manage tokens instead of passing states*/}
+                    <Route index element={<Projects passToken={token}/>}/>
+                    <Route path='projects/:id/*' element={<ProjectPage />} />
                     <Route path='new' element={<NewProject />} />
                     <Route path='new/area/points' element={<NewProjectPoints />} />
                     <Route path='new/area/points/form' element={<ProjectForm />} />
@@ -70,11 +71,11 @@ function App(){
         //Logout button in AppNavBar, so logout function is passed there
         return (
             <div id='userRoutes'>
-                <AppNavBar passLogout={passLogout} passToken={token}/>
+                <AppNavBar passLogout={ passLogout } passToken={ token }/>
                 <Routes>
-                    <Route index element={<Home passToken={token}/>} />
-                    <Route path='teams/:id/*' element={<TeamPages />} />
-                    <Route path='settings' element={<SettingsPage />} />
+                    <Route index element={ <Home passToken={ token }/>} />
+                    <Route path='teams/:id/*' element={ <TeamPages /> } />
+                    <Route path='settings' element={ <SettingsPage /> } />
                 </Routes>
             </div>
         );
