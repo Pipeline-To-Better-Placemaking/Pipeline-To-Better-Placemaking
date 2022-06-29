@@ -6,16 +6,15 @@ import { Link, useParams, useLocation } from 'react-router-dom';
 
 import './routes.css';
 
-function TeamHome(props){
+function Projects(props){
     // Load Viewable Projects by Team selected on previous page
+    const teamTitle = useLocation();
     const teams = props.passToken.user?.teams
-
-    let teamInfo = teams
     let projectInfo = ''
 
-
     const projectToken = async() => {
-        let projectId = teamInfo?.projects;
+        // !! There can be multiple projects
+        let projectId = teams?.projects;
 
         try {
             const response = await axios.post('/projects', JSON.stringify({ projectId }), {
@@ -45,7 +44,7 @@ function TeamHome(props){
                     id='newProjectButton' 
                     variant='contained' 
                     component={ Link } 
-                    state={ useLocation.state }
+                    state={ teamTitle.state }
                     to='new'
                 >
                     New Project
@@ -56,4 +55,4 @@ function TeamHome(props){
         </div>
     );
 }
-export default TeamHome;
+export default Projects;

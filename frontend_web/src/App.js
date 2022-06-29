@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import AppNavBar from './components/AppNavBar';
 import Home from './routes/Home';
@@ -15,13 +15,11 @@ import NewProjectArea from './routes/NewProjectArea';
 import ProjectForm from './routes/ProjectForm';
 
 function App() {
-    //token/storage of choice
-    //  const token = localStorage.getItem('token_data')
+    // !! token/storage of choice, verification of choice
     const [token, setToken] = React.useState({});
 
     // true == active user (logged in)
-    // check token
-    //uncomment when testing is complete and ready to use handleLogin and state
+    // check token in place with more persistant storage
     const [state, setState] = React.useState(/*token !== null && token !== '' ? true : */false);
     
 
@@ -47,7 +45,7 @@ function App() {
         return(
             <div id='teamPages'>
                 <Routes>
-                    {/* Find a more stable/consistent way to manage tokens instead of passing states*/}
+                    {/* Find a more stable/consistent way to manage tokens instead of passing states, they can expire after a few mintues*/}
                     <Route index element={<Projects passToken={token}/>}/>
                     <Route path='projects/:id/*' element={<ProjectPage />} />
                     <Route path='new' element={<NewProject />} />
