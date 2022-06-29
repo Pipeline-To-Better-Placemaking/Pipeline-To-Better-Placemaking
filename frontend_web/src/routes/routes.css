@@ -83,14 +83,14 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
     box-shadow: 0 4px 8px 0 rgba(78, 72, 254, 0.2), 0 6px 20px 0 rgba(78, 72, 254, 0.19);
 }
 
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.scheme, #newTimeButton {
+.MuiButton-root.MuiButton-text.MuiButtonBase-root.scheme, #newTimeButton, #newTeamFormButton {
     color: black;
     background-color: #fed806;
     margin: 0px 5px;
     font-size:medium;
 }
 
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.scheme:hover, #newTimeButton:hover {
+.MuiButton-root.MuiButton-text.MuiButtonBase-root.scheme:hover, #newTimeButton:hover, #newTeamFormButton:hover{
     box-shadow: 0 4px 8px 0 rgba(254, 216, 6, 0.2), 0 6px 20px 0 rgba(254, 216, 6, 0.19);
     font-weight: 550;
 }
@@ -251,7 +251,7 @@ form.MuiBox-root {
     width: 100vw;
 }
 
-#newProjectButton, #newTeamButton{
+#newProjectButton #newTeamButton{
     background-color: #035fb5;
     margin: 15px;
     width: 40%;
@@ -270,18 +270,19 @@ form.MuiBox-root {
 #newTeamForm{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-content: center;
     align-items: center;
+    height: calc(100vh - 69px);
+    padding-top: 25px;
 }
 
 #newUser {
     padding: 20px;
 }
 
-#newUserButton {
+#newUserButton, #newTeamFormButton {
     align-self: center;
     width: 100%;
+    margin-top: 10px;
 }
 
 #settingsCard{

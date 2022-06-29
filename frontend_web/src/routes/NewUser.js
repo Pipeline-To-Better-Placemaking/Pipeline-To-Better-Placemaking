@@ -92,7 +92,7 @@ function NewUser(props) {
             fnameMess.current.style.display = 'none';
             lnameMess.current.style.display = 'none';
             pwMess.current.style.display = 'none';
-            setMessage('Please provide an email');
+            setMessage('Please provide an email (minimum length 7)');
             emMess.current.style.display = 'inline-block';
             em.current.focus();
             return;
@@ -153,6 +153,7 @@ function NewUser(props) {
                     <Card id='pageCard'>
                         <Card.Body>
                             <h3>Create an Account</h3>
+                            <span>All fields ending with * are required</span>
                             <br/>
                             <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
                                 <span ref={ registerResponse } style={{ display: 'none', color: 'red' }}>{message}</span>
@@ -165,6 +166,7 @@ function NewUser(props) {
                                     type='text' 
                                     value={ values.fname } 
                                     onChange={ handleChange }
+                                    required
                                     ref={ fn }
                                 />
                                 <span ref={ lnameMess } style={{ display: 'none', color: 'red' }}>{ message }</span>
@@ -176,6 +178,7 @@ function NewUser(props) {
                                     type='text' 
                                     value={ values.lname } 
                                     onChange={ handleChange }
+                                    required
                                     ref={ ln }
                                 />
                                 <span ref={ emMess } style={{ display: 'none', color: 'red' }}>{ message }</span>
@@ -187,11 +190,12 @@ function NewUser(props) {
                                     name='email'
                                     value={ values.email } 
                                     onChange={ handleChange }
+                                    required
                                     ref={ em }
                                 />
                                 <span ref={ pwMess } style={{ display: 'none', color: 'red' }}>{ message }</span>
                                 <FormControl sx={{ m: 1}} variant='outlined'>
-                                    <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
+                                    <InputLabel htmlFor='outlined-adornment-password'>Password *</InputLabel>
                                     <OutlinedInput
                                         id='outlined-adornment-password'
                                         type={ values.showPassword ? 'text' : 'password' }
@@ -216,7 +220,7 @@ function NewUser(props) {
                                 </FormControl>
                                 <FormControl sx={{ m: 1 }} variant='outlined'>
                                     <InputLabel htmlFor='outlined-adornment-password'>
-                                        Confirm Password
+                                        Confirm Password *
                                     </InputLabel>
                                     <OutlinedInput
                                         id='outlined-adornment-password'
@@ -243,7 +247,7 @@ function NewUser(props) {
                                         label='Confirm Password'
                                     />
                                 </FormControl>
-                                <br/>
+                                <br/><br/>
                                 <Button 
                                     className='scheme' 
                                     type='submit' 

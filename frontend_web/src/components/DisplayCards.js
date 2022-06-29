@@ -46,7 +46,7 @@ function DisplayCards(props) {
             <Card key={ 'p' + index } className='displayCard'>
                 <CardContent>
                     <Typography variant='h5' component='div'>
-                        { project.name }
+                        { project.title }
                     </Typography>
                 </CardContent>
                 <CardActions>

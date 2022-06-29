@@ -11,7 +11,7 @@ function Projects(props){
     // depending on selection on this page, we load the entire project and its results on ProjectPage.js
     const teamTitle = useLocation();
     const teams = props.passToken.user?.teams;
-    let projectInfo = '';
+    let projectInfo = [];
 
     const teamProjects = async() => {
         // There can be multiple projects
@@ -36,7 +36,7 @@ function Projects(props){
         teamProjects()
     });
 
-    // Project array structure hardcoded on template
+    // Project array structure hardcoded on template -- leave Template to match structures
     // Data needed project name/title, id
     const projects = [
         {
@@ -67,7 +67,7 @@ function Projects(props){
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            <DisplayCards type={ 1 } projects={ projects /* projectInfo */ }/>
+            <DisplayCards type={ 1 } projects={ projectInfo.length > 0 ? projectInfo : projects}/>
         </div>
     );
 }
