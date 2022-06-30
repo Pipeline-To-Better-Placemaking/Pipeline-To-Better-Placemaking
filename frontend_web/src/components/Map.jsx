@@ -24,7 +24,7 @@ const render = (status) => {
     // 4 - new project area
     // 5 - new project map
 function FullMap(props) {
-    const config = require('../../../utils/config');
+    //const config = require('../../../utils/config');
     const [map, setMap] = React.useState(null);
     const [mapPlaces, setMapPlaces] = React.useState(null);
     const [placeOn, setPlaceOn] = React.useState(false);
@@ -321,7 +321,7 @@ function FullMap(props) {
             { props.type === 1 ? <MapDrawers drawers={ data } selection={onSelection} area={ areaData }/> : null }
             { props.type === 1 ? <Button id='printButton' onClick={convertToImage}>Print Map</Button>: null }
             {/* Wrapper imports Google Maps API */}
-            <Wrapper apiKey={config.GOOGLE_MAP_KEY} render={render} id='mapContainer' libraries={['drawing', 'places']}>
+            <Wrapper apiKey={/*config.GOOGLE_MAP_KEY*/''} render={render} id='mapContainer' libraries={['drawing', 'places']}>
                 <Map
                     center={ center }
                     onClick={ onMClick }
