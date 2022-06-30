@@ -160,6 +160,10 @@ button#loginButton {
     margin: 8px;
 }
 
+div.nonFCInput:focus .css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+    border-color: red;
+}
+
 button#newTimeButton {
     margin-bottom: 10px;
 }
@@ -251,7 +255,7 @@ form.MuiBox-root {
     width: 100vw;
 }
 
-#newProjectButton #newTeamButton{
+#newProjectButton, a#newTeamButton {
     background-color: #035fb5;
     margin: 15px;
     width: 40%;

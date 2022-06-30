@@ -38,6 +38,7 @@ function NewTeamForm() {
 
     const [message, setMessage] = React.useState('');
     const titleRef = React.useRef(null);
+    const titleMess = React.useRef(null);
 
     const handleChange = (e) => {
         setFormValues({ ...formValues, [e.target.name]: e.target.value });
@@ -57,6 +58,15 @@ function NewTeamForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if(!formValues.title || formValues.title === ''){
+            setMessage('Please provide a team name');
+            titleMess.current.style.display = 'block';
+            titleRef.current.focus();
+            return;
+        } else {
+            titleMess.current.style.display = 'none';
+            //call API function
+        }
     }
 
     return(
@@ -66,6 +76,7 @@ function NewTeamForm() {
                 <span>Create a team to create projects and begin surveying. </span>
                 <br/>
                 <Card.Body>
+                    <span ref={titleMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                     <TextField
                         className='nonFCInput'
                         id='outlined-input'
@@ -122,7 +133,15 @@ function NewTeamForm() {
                     <br/>
                     <span style={{fontSize: 'smaller'}}>*Any team you create will have you as an admin and user by default.</span>
                     <br/>
-                    <Button className='scheme' type='submit' size='large' onClick={handleSubmit} id='newTeamFormButton'>Create Team</Button>
+                    <Button 
+                        className='scheme' 
+                        type='submit' 
+                        size='large' 
+                        onClick={handleSubmit} 
+                        id='newTeamFormButton'
+                    >
+                        Create Team
+                    </Button>
                 </Card.Body>
                 
             </Card>
