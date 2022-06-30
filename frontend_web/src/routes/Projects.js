@@ -98,7 +98,7 @@ function Projects(props){
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            <DisplayCards type={ 1 } projects={ teamInfo.teams.length > 0 ? projectInfo : projects }/>
+            <DisplayCards type={ 1 } projects={ teamInfo.length > 0 ? projectInfo : projects }/>
         </div>
     );
 }
