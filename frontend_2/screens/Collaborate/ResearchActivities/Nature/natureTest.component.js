@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, LogBox } from 'react-native';
+import { View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button } from '@ui-kitten/components';
@@ -296,7 +296,7 @@ export function NatureTest(props) {
     }
 
     // ignores the event emitter warnings in app (for dev. only)
-    LogBox.ignoreAllLogs();
+    // LogBox.ignoreAllLogs();
 
     // Main render
     return(

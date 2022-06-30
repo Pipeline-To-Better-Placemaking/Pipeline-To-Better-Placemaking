@@ -108,6 +108,7 @@ export function NatureMap(props) {
             return (
                 props.markers.map((coord, index) => (
                 <MapView.Marker
+                    key={index}
                     coordinate = {{
                         latitude: coord.latitude,
                         longitude: coord.longitude

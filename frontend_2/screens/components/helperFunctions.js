@@ -296,7 +296,7 @@ export async function formatNatureGraphData(result){
     }
     // format the water array (of each data object)
     for(let j = 0; j < data.water.length; j++){
-      let index = conDescSearch(graph.waterLabels, data.water[j].description)
+      index = conDescSearch(graph.waterLabels, data.water[j].description)
       // that description is already formatted, so increase its count
       if(index !== -1){
         let num = graph.waterData[index] + data.water[j].area;

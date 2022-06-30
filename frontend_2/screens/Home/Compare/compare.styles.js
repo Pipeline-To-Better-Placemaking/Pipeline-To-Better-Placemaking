@@ -100,6 +100,22 @@ export const styles = StyleSheet.create({
         borderWidth: 0.5
     },
 
+    dataRow:{
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginTop: 10,
+    },
+
+    legendView:{
+        flex: 1,
+        flexDirection:'row',
+        marginTop: 8
+    },
+
+    chartSpacing:{
+        marginTop: 15
+    }
+
 });
 
 export default styles;
