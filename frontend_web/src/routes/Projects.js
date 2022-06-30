@@ -17,7 +17,7 @@ function Projects(props){
         // There can be multiple projects
 
         try {
-            const response = await axios.post('/teams/:id', JSON.stringify({ teams }), {
+            const response = await axios.post('/teams', JSON.stringify({ teams }), {
                headers: { 'Content-Type': 'application/json' },
                withCredentials: true
             });
@@ -36,7 +36,7 @@ function Projects(props){
         let projectId = teamInfo?.projects;
 
         try {
-            const response = await axios.post('/projects/:id', JSON.stringify({ projectId }), {
+            const response = await axios.post('/projects', JSON.stringify({ projectId }), {
                headers: { 'Content-Type': 'application/json' },
                withCredentials: true
             });
