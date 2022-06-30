@@ -9,7 +9,7 @@ import './routes.css';
 function Projects(props){
 
     const teamTitle = useLocation();
-    const teams = props.passToken.user?.teams;
+    //const teams = props.passToken.user?.teams;
     let [projectInfo, setProjectInfo] = React.useState({});
     let [teamInfo, setTeamInfo] = React.useState({});
 
@@ -18,14 +18,11 @@ function Projects(props){
 
         try {
             const response = await axios.get({
-                url: 'https://p2bp.herokuapp.com/api/teams/', 
+                url: `https://p2bp.herokuapp.com/api/teams/${props.passToken.user.teams._id}`, 
                 method: 'GET',
                 responseType: 'json',
                 headers: { 
                     Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken.token },
-                    params: {
-                        _id: teams._id
-                    },
                     withCredentials: true
             });
             console.log(JSON.stringify(response.data));
@@ -39,35 +36,35 @@ function Projects(props){
         }
     }
 
-    const teamProjects = async() => {
-        // There can be multiple projects
-        let projectId = teamInfo?.projects;
+    // const teamProjects = async() => {
+    //     // There can be multiple projects
+    //     let projectId = teamInfo?.projects;
 
-        try {
-            const response = await axios.get({
-                url: 'https://p2bp.herokuapp.com/api/projects/', 
-                method: 'GET',
-                headers: { 
-                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken.token },
-                    params: {
-                        _id: projectId._id
-                    },
-                    withCredentials: true
-            });
-            console.log(JSON.stringify(response.data));
-            projectInfo = response.data;
-            setProjectInfo(projectInfo);
+    //     try {
+    //         const response = await axios.get({
+    //             url: `https://p2bp.herokuapp.com/api/projects/${projectId._id}`, 
+    //             method: 'GET',
+    //             headers: { 
+    //                 Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken.token },
+    //                 params: {
+    //                     _id: projectId._id
+    //                 },
+    //                 withCredentials: true
+    //         });
+    //         console.log(JSON.stringify(response.data));
+    //         projectInfo = response.data;
+    //         setProjectInfo(projectInfo);
             
-        } catch(error){
-            //proget api get error
-            console.log('ERROR: ', error);
-            return;
-        }
-    }
+    //     } catch(error){
+    //         //proget api get error
+    //         console.log('ERROR: ', error);
+    //         return;
+    //     }
+    // }
 
     React.useEffect(() => {
         teamPull()
-        teamProjects()
+        //teamProjects()
     });
 
     // Project array structure hardcoded on template -- leave Template to match structures
