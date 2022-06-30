@@ -17,10 +17,15 @@ function Projects(props){
         // There can be multiple projects
 
         try {
-            const response = await fetch('https://p2bp.herokuapp.com/api/teams/'+ teams._id, {
+            const response = await axios.get({
+                url: 'https://p2bp.herokuapp.com/api/teams/', 
                 method: 'GET',
+                responseType: 'json',
                 headers: { 
                     Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken.token },
+                    params: {
+                        _id: teams._id
+                    },
                     withCredentials: true
             });
             console.log(JSON.stringify(response.data));
@@ -39,10 +44,14 @@ function Projects(props){
         let projectId = teamInfo?.projects;
 
         try {
-            const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + projectId._id, {
+            const response = await axios.get({
+                url: 'https://p2bp.herokuapp.com/api/projects/', 
                 method: 'GET',
                 headers: { 
                     Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken.token },
+                    params: {
+                        _id: projectId._id
+                    },
                     withCredentials: true
             });
             console.log(JSON.stringify(response.data));
