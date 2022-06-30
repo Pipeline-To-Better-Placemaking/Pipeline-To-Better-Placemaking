@@ -17,9 +17,10 @@ function Projects(props){
         // There can be multiple projects
 
         try {
-            const response = await fetch('https://p2bp.herokuapp.com/api/teams'+ teams._id, {
+            const response = await fetch('https://p2bp.herokuapp.com/api/teams'+ teams, {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    Accept: 'application/json', 'Content-Type': 'application/json' },
                 withCredentials: true
             });
             console.log(JSON.stringify(response.data));
@@ -37,9 +38,10 @@ function Projects(props){
         let projectId = teamInfo?.projects;
 
         try {
-            const response = await fetch('/projects', JSON.stringify({ projectId }), {
+            const response = await fetch('https://p2bp.herokuapp.com/api/projects' + projectId, {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    Accept: 'application/json', 'Content-Type': 'application/json' },
                 withCredentials: true
             });
             console.log(JSON.stringify(response.data));
