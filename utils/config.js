@@ -10,7 +10,6 @@ let CLIENT_ID = process.env.CLIENT_ID
 let CLIENT_SECRET = process.env.CLIENT_SECRET
 let REFRESH_TOKEN = process.env.REFRESH_TOKEN
 let ACCESS_TOKEN = process.env.ACCESS_TOKEN
-let GOOGLE_MAP_KEY = process.env.GOOGLE_MAP_KEY
 
 if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
 	DB_URI = process.env.TEST_DB_URI
@@ -25,6 +24,5 @@ module.exports = {
     CLIENT_ID,
     CLIENT_SECRET,
     REFRESH_TOKEN,
-    ACCESS_TOKEN,
-    GOOGLE_MAP_KEY
+    ACCESS_TOKEN
 }
