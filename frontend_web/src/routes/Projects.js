@@ -10,8 +10,8 @@ function Projects(props){
 
     const teamTitle = useLocation();
     const teams = props.passToken.user?.teams;
-    let projectInfo = [];
-    let teamInfo = [];
+    const [projectInfo, setProjectInfo] = React.useState([]);
+    const [teamInfo, setTeamInfo] = React.useState([]);
 
     const teamPull = async() => {
         // There can be multiple projects
@@ -20,11 +20,11 @@ function Projects(props){
             const response = await fetch('https://p2bp.herokuapp.com/api/teams'+ teams, {
                 method: 'GET',
                 headers: { 
-                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.token },
+                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passtoken.token },
                 withCredentials: true
             });
             console.log(JSON.stringify(response.data));
-            teamInfo = response.data;
+            setTeamInfo(response.data);
             
         } catch(error){
             //teams api get error
@@ -41,11 +41,11 @@ function Projects(props){
             const response = await fetch('https://p2bp.herokuapp.com/api/projects' + projectId, {
                 method: 'GET',
                 headers: { 
-                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.token },
+                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passtoken.token },
                 withCredentials: true
             });
             console.log(JSON.stringify(response.data));
-            projectInfo = response.data;
+            setProjectInfo(response.data);
             
         } catch(error){
             //proget api get error
