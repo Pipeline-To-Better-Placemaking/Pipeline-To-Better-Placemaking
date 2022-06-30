@@ -21,7 +21,7 @@ function Projects(props){
                headers: { 'Content-Type': 'application/json' },
                withCredentials: true
             });
-            console.log(JSON.stringify(response));
+            console.log(JSON.stringify(response.data));
             teamInfo = response.data;
             
         } catch(error){
@@ -36,11 +36,11 @@ function Projects(props){
         let projectId = teamInfo?.projects;
 
         try {
-            const response = await axios.get('/projects', JSON.stringify({ projectId }), {
+            const response = await axios.get('/projects', JSON.stringify({ projectId }).then((response) => this.project = response.data), {
                headers: { 'Content-Type': 'application/json' },
                withCredentials: true
             });
-            console.log(JSON.stringify(response));
+            console.log(JSON.stringify(response.data));
             projectInfo = response.data;
             
         } catch(error){
