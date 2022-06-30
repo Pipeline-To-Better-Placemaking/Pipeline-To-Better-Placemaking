@@ -38,8 +38,9 @@ function Projects(props){
 
         try {
             const response = await fetch('/projects', JSON.stringify({ projectId }), {
-               headers: { 'Content-Type': 'application/json' },
-               withCredentials: true
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
             });
             console.log(JSON.stringify(response.data));
             projectInfo = response.data;
