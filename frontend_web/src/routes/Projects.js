@@ -12,13 +12,32 @@ function Projects(props){
     const teamTitle = useLocation();
     const teams = props.passToken.user?.teams;
     let projectInfo = [];
+    let teamInfo = [];
+
+    const teamPull = async() => {
+        // There can be multiple projects
+
+        try {
+            const response = await axios.post('/teams/:id', JSON.stringify({ teams }), {
+               headers: { 'Content-Type': 'application/json' },
+               withCredentials: true
+            });
+            console.log(JSON.stringify(response));
+            teamInfo = response.data;
+            
+        } catch(error){
+            //user login error
+            console.log('ERROR: ', error);
+            return;
+        }
+    }
 
     const teamProjects = async() => {
         // There can be multiple projects
-        let projectId = teams?.projects;
+        let projectId = teamInfo?.projects;
 
         try {
-            const response = await axios.post('/projects', JSON.stringify({ projectId }), {
+            const response = await axios.post('/projects/:id', JSON.stringify({ projectId }), {
                headers: { 'Content-Type': 'application/json' },
                withCredentials: true
             });
@@ -33,6 +52,7 @@ function Projects(props){
     }
 
     React.useEffect(() => {
+        teamPull()
         teamProjects()
     });
 
