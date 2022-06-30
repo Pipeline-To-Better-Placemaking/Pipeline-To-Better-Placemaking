@@ -20,7 +20,7 @@ function Projects(props){
             const response = await fetch('https://p2bp.herokuapp.com/api/teams/'+ teams, {
                 method: 'GET',
                 headers: { 
-                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.token },
+                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken?.token },
                 withCredentials: true
             });
             console.log(JSON.stringify(response.data));
@@ -42,7 +42,7 @@ function Projects(props){
             const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + projectId, {
                 method: 'GET',
                 headers: { 
-                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.token },
+                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken?.token },
                 withCredentials: true
             });
             console.log(JSON.stringify(response.data));
