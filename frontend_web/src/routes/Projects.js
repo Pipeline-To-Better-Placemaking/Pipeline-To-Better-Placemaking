@@ -24,7 +24,8 @@ function Projects(props){
                 withCredentials: true
             });
             console.log(JSON.stringify(response.data));
-            setTeamInfo(response.data);
+            let teamInfo = response.data;
+            setTeamInfo(teamInfo);
             
         } catch(error){
             //teams api get error
@@ -45,7 +46,8 @@ function Projects(props){
                 withCredentials: true
             });
             console.log(JSON.stringify(response.data));
-            setProjectInfo(response.data);
+            let projectInfo = response.data;
+            setProjectInfo(projectInfo);
             
         } catch(error){
             //proget api get error
