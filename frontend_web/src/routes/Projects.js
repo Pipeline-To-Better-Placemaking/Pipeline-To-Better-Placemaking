@@ -10,8 +10,8 @@ function Projects(props){
 
     const teamTitle = useLocation();
     const teams = props.passToken.user?.teams;
-    const [projectInfo, setProjectInfo] = React.useState([]);
-    const [teamInfo, setTeamInfo] = React.useState([]);
+    const [projectInfo, setProjectInfo] = React.useState({});
+    const [teamInfo, setTeamInfo] = React.useState({});
 
     const teamPull = async() => {
         // There can be multiple projects
