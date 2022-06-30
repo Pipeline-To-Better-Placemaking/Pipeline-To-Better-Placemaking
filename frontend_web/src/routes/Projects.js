@@ -20,12 +20,12 @@ function Projects(props){
             const response = await fetch('https://p2bp.herokuapp.com/api/teams/'+ teams._id, {
                 method: 'GET',
                 headers: { 
-                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.token },
+                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken.token },
                     withCredentials: true
             });
             console.log(JSON.stringify(response.data));
             teamInfo = response.data;
-            //setTeamInfo(teamInfo);
+            setTeamInfo(teamInfo);
             
         } catch(error){
             //teams api get error
@@ -42,12 +42,12 @@ function Projects(props){
             const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + projectId._id, {
                 method: 'GET',
                 headers: { 
-                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.token },
+                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken.token },
                     withCredentials: true
             });
             console.log(JSON.stringify(response.data));
             projectInfo = response.data;
-            //setProjectInfo(projectInfo);
+            setProjectInfo(projectInfo);
             
         } catch(error){
             //proget api get error
