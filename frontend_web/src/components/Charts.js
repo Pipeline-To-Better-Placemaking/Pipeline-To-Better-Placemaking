@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, Tooltip, Legend, Label, PieChart, Pie } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, Tooltip, Legend, PieChart, Pie } from 'recharts';
 import { Area, testNames } from '../functions/HelperFunctions';
 
 function Charts(props) {

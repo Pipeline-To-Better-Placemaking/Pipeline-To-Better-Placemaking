@@ -7,14 +7,13 @@ import { Link, useParams, useLocation } from 'react-router-dom';
 import './routes.css';
 
 function Projects(props){
-    // We just need project titles and ids on this page.
-    // depending on selection on this page, we load the entire project and its results on ProjectPage.js
+
     const teamTitle = useLocation();
     const teams = props.passToken.user?.teams;
     let projectInfo = [];
 
     const teamProjects = async() => {
-        // There can be multiple projects
+
         let projectId = teams?.projects;
 
         try {
@@ -67,8 +66,9 @@ function Projects(props){
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            <DisplayCards type={ 1 } projects={ projectInfo.length > 0 ? projectInfo : projects}/>
+            <DisplayCards type={ 1 } projects={ projectInfo.length > 0 ? projectInfo : projects }/>
         </div>
     );
 }
+
 export default Projects;
