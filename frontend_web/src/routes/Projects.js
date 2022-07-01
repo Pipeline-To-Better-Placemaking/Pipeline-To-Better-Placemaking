@@ -16,6 +16,9 @@ function Projects(props){
     const teamPull = async() => {
         // There can be multiple projects
 
+        console.log("teams")
+        console.log(typeof(props.passToken.user.teams))
+        console.log(props.passToken.user.teams)
         console.log("teams id")
         console.log(typeof(props.passToken.user.teams._id))
         console.log(props.passToken.user.teams._id)
