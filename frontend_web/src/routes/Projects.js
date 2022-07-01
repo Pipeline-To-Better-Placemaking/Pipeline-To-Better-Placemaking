@@ -22,8 +22,9 @@ function Projects(props){
                 method: 'GET',
                 responseType: 'json',
                 headers: { 
-                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken.token },
+                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${props.passToken.token}`,
                     withCredentials: true
+                }
             });
             console.log(JSON.stringify(response.data));
             teamInfo = response.data;
