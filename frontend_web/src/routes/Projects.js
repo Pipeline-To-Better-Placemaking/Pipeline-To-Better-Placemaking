@@ -9,22 +9,25 @@ import './routes.css';
 function Projects(props){
 
     const teamTitle = useLocation();
+    const teamId = teamTitle.pathname.split('/')[3];
+
+    //id from url
+    console.log(teamId);
     //const teams = props.passToken.user?.teams;
     let [projectInfo, setProjectInfo] = React.useState({});
     let [teamInfo, setTeamInfo] = React.useState({});
 
     const teamPull = async() => {
-        // There can be multiple projects
 
-        console.log("teams")
-        console.log(typeof(props.passToken.user.teams))
-        console.log(props.passToken.user.teams)
-        console.log("teams id")
-        console.log(typeof(props.passToken.user.teams._id))
-        console.log(props.passToken.user.teams._id)
+        //console.log("teams")
+        //console.log(typeof(props.passToken.user.teams))
+        //console.log(props.passToken.user.teams)
+        //console.log("teams id")
+        //console.log(typeof(props.passToken.user.teams._id))
+        //console.log(props.passToken.user.teams._id)
         try {
             console.log("makes it to try")
-            const response = await axios.get(`/teams/${props.passToken.user.teams._id}`,{ 
+            const response = await axios.get(`/teams/${teamId}`,{ 
                 headers: { 
                     // 'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*', 

@@ -89,7 +89,7 @@ function Title(props) {
             props.onLogin(true, user);
 
             //redirect user to url/home
-            nav('/home', { replace: true });
+            nav('/home', { state: user });
 
         } catch(error){
             //user login error
