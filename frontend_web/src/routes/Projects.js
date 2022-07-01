@@ -16,9 +16,12 @@ function Projects(props){
     const teamPull = async() => {
         // There can be multiple projects
 
+        console.log("teams id")
+        console.log(typeof(props.passToken.user.teams._id))
+        console.log(props.passToken.user.teams._id)
         try {
+            console.log("makes it to try")
             const response = await axios.get(`/teams/${props.passToken.user.teams._id}`,{ 
-                responseType: 'json',
                 headers: { 
                     // 'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*', 
@@ -33,6 +36,7 @@ function Projects(props){
             
         } catch(error){
             //teams api get error
+            console.log("directly to catch")
             console.log('ERROR: ', error);
             return;
         }
