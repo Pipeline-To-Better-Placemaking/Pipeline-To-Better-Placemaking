@@ -18,7 +18,7 @@ function Projects(props){
 
         try {
             const response = await axios.get({
-                url: `https://p2bp.herokuapp.com/api/teams/${props.passToken.user.teams._id}`, 
+                url: `/teams/${props.passToken.user.teams._id}`, 
                 method: 'GET',
                 responseType: 'json',
                 headers: { 
