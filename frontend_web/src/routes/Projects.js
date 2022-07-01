@@ -2,7 +2,7 @@ import * as React from 'react';
 import axios from '../api/axios.js';
 import Button from '@mui/material/Button';
 import DisplayCards from '../components/DisplayCards';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import './routes.css';
 
@@ -12,9 +12,9 @@ function Projects(props){
     const teamId = teamTitle.pathname.split('/')[3];
 
     //id from url
-    console.log(teamId);
+    //console.log(teamId);
     //const teams = props.passToken.user?.teams;
-    let [projectInfo, setProjectInfo] = React.useState({});
+    //let [projects, setProjects] = React.useState([]);
     let [teamInfo, setTeamInfo] = React.useState({});
 
     const teamPull = async() => {
@@ -37,8 +37,8 @@ function Projects(props){
                 withCredentials: true
             });
             console.log(JSON.stringify(response.data));
-            teamInfo = response.data;
-            setTeamInfo(teamInfo);
+            const info = response.data;
+            setTeamInfo(info);
             
         } catch(error){
             //teams api get error
@@ -48,31 +48,33 @@ function Projects(props){
         }
     }
 
-    // const teamProjects = async() => {
-    //     // There can be multiple projects
-    //     let projectId = teamInfo?.projects;
+    /*const teamProjects = async() => {
+        // There can be multiple projects
+        let projectIds = teamInfo?.projects;
 
-    //     try {
-    //         const response = await axios.get({
-    //             url: `https://p2bp.herokuapp.com/api/projects/${projectId._id}`, 
-    //             method: 'GET',
-    //             headers: { 
-    //                 Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken.token },
-    //                 params: {
-    //                     _id: projectId._id
-    //                 },
-    //                 withCredentials: true
-    //         });
-    //         console.log(JSON.stringify(response.data));
-    //         projectInfo = response.data;
-    //         setProjectInfo(projectInfo);
+        try {
+            const response = await axios.get({
+                url: `https://p2bp.herokuapp.com/api/projects/${projectId._id}`, 
+                method: 'GET',
+                headers: { 
+                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken.token },
+                    params: {
+                        _id: projectId._id
+                    },
+                    withCredentials: true
+            });
+            console.log(project info)
+            console.log(JSON.stringify(response.data));
+            const proj = projects;
+            proj.push(response.data);
+            setProjects(proj);
             
-    //     } catch(error){
-    //         //proget api get error
-    //         console.log('ERROR: ', error);
-    //         return;
-    //     }
-    // }
+        } catch(error){
+            //proget api get error
+            console.log('ERROR: ', error);
+            return;
+        }
+    }*/
 
     React.useEffect(() => {
         teamPull()
@@ -81,7 +83,7 @@ function Projects(props){
 
     // Project array structure hardcoded on template -- leave Template to match structures
     // Data needed project name/title, id
-    const projects = [
+    const templateProjects = [
         {
             title: 'Lake Eola',
             id: 'p23e32duew'
@@ -110,7 +112,7 @@ function Projects(props){
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            <DisplayCards type={ 1 } projects={ Object.keys(teamInfo).length > 0 ? teamInfo : projects }/>
+            <DisplayCards type={ 1 } projects={ teamInfo.projects }/>
         </div>
     );
 }

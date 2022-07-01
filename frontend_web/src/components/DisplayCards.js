@@ -48,10 +48,11 @@ function DisplayCards(props) {
                     <Typography variant='h5' component='div'>
                         { project.title }
                     </Typography>
+                    { project.description }
                 </CardContent>
                 <CardActions>
-                    <Button component={ Link } to='projects/:id' state={ project.title }>View</Button>
-                    <Button component={ Link } to='edit/:id' state={ project.title }>Edit</Button>
+                    <Button component={ Link } to={`projects/${project._id}`} state={ project.title }>View</Button>
+                    <Button component={ Link } to={`edit/${project._id} `} state={ project.title }>Edit</Button>
                 </CardActions>
             </Card>
         ))
