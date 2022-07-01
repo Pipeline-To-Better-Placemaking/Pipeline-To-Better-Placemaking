@@ -22,7 +22,6 @@ function Projects(props){
                 method: 'GET',
                 responseType: 'json',
                 headers: { 
-                    'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*', 
                     'Authorization': `Bearer ${props.passToken.token}` 
                 },
