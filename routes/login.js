@@ -55,6 +55,7 @@ router.post('/', async (req,res,next) => {
     res.status(200).json({
         success: true,
         token: token,
+        map_key: config.GOOGLE_MAP_KEY,
         user: fullUser            
     })
 })
