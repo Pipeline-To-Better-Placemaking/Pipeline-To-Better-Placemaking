@@ -17,9 +17,7 @@ function Projects(props){
         // There can be multiple projects
 
         try {
-            const response = await axios.get({
-                url: `/teams/${props.passToken.user.teams._id}`, 
-                method: 'GET',
+            const response = await axios.get(`/teams/${props.passToken.user.teams._id}`,{ 
                 responseType: 'json',
                 headers: { 
                     // 'Content-Type': 'application/json',
