@@ -160,7 +160,7 @@ button#loginButton {
     margin: 8px;
 }
 
-div.nonFCInput:focus .css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+div.nonFCInput:focus .MuiOutlinedInput-notchedOutline{
     border-color: red;
 }
 
