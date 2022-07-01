@@ -22,19 +22,13 @@ function Projects(props){
                 method: 'GET',
                 responseType: 'json',
                 headers: { 
-<<<<<<< HEAD
-                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${props.passToken.token}`,
-                    withCredentials: true
-                }
-=======
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*', 
-                    'Authorization': 'Bearer ' + props.passToken.token 
+                    'Authorization': `Bearer ${props.passToken.token}` 
                 },
 
                 withCredentials: true
->>>>>>> 706d8b25 (added accept to Projects.js in frontend_web)
             });
             console.log(JSON.stringify(response.data));
             teamInfo = response.data;
