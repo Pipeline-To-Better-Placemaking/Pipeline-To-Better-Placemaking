@@ -17,15 +17,18 @@ function Projects(props){
     const [projects, setProjects] = React.useState([
         {
             title: 'Lake Eola',
-            id: 'p23e32duew'
+            description: 'A template project',
+            _id: 'p23e32duew'
         },
         {
             title: 'Lake Underhill Park',
-            id: 'p4343rfi43f'
+            description: 'Another template project',
+            _id: 'p4343rfi43f'
         },
         {
             title: 'University of Central Florida',
-            id: 'p984f92hdeq'
+            description: 'The third template project, hard coded project data matches this',
+            _id: 'p984f92hdeq'
         }
     ]);
 
@@ -53,7 +56,7 @@ function Projects(props){
             console.log(JSON.stringify(response.data));
             const info = response.data;
             setTeamInfo(info);
-            setProjects(info.projects);
+            //setProjects(info.projects);
         } catch(error){
             //teams api get error
             console.log("directly to catch")
@@ -110,7 +113,7 @@ function Projects(props){
             </div>
             {/* type = 1 implies the project style cards */}
             {
-                projects.map((project, index)=>(
+               teamInfo?.projects.map((project, index)=>(
                     <DisplayCards key={project._id+index}type={ 1 } project={ project }/>
                 ))
             }
