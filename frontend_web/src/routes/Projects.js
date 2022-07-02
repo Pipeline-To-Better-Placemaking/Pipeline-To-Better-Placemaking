@@ -14,7 +14,21 @@ function Projects(props){
     //id from url
     //console.log(teamId);
     //const teams = props.passToken.user?.teams;
-    const [projects, setProjects] = React.useState([]);
+    const [projects, setProjects] = React.useState([
+        {
+            title: 'Lake Eola',
+            id: 'p23e32duew'
+        },
+        {
+            title: 'Lake Underhill Park',
+            id: 'p4343rfi43f'
+        },
+        {
+            title: 'University of Central Florida',
+            id: 'p984f92hdeq'
+        }
+    ]);
+
     const [teamInfo, setTeamInfo] = React.useState({});
 
     const teamPull = async() => {
@@ -39,7 +53,7 @@ function Projects(props){
             console.log(JSON.stringify(response.data));
             const info = response.data;
             setTeamInfo(info);
-            setProjects(teamInfo.projects)
+            setProjects(info.projects);
         } catch(error){
             //teams api get error
             console.log("directly to catch")
@@ -80,23 +94,6 @@ function Projects(props){
         teamPull()
         //teamProjects()
     });
-
-    // Project array structure hardcoded on template -- leave Template to match structures
-    // Data needed project name/title, id
-    const templateProjects = [
-        {
-            title: 'Lake Eola',
-            id: 'p23e32duew'
-        },
-        {
-            title: 'Lake Underhill Park',
-            id: 'p4343rfi43f'
-        },
-        {
-            title: 'University of Central Florida',
-            id: 'p984f92hdeq'
-        }
-    ]
 
     return(
         <div id='teamHome'>
