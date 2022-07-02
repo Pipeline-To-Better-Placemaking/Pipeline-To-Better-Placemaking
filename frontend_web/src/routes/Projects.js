@@ -39,8 +39,7 @@ function Projects(props){
             console.log(JSON.stringify(response.data));
             const info = response.data;
             setTeamInfo(info);
-            setProjects(teamInfo?.projects)
-            
+            setProjects(teamInfo.projects)
         } catch(error){
             //teams api get error
             console.log("directly to catch")
