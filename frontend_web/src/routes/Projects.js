@@ -34,37 +34,6 @@ function Projects(props){
 
     const [teamInfo, setTeamInfo] = React.useState({});
 
-    const teamPull = async() => {
-
-        //console.log("teams")
-        //console.log(typeof(props.passToken.user.teams))
-        //console.log(props.passToken.user.teams)
-        //console.log("teams id")
-        //console.log(typeof(props.passToken.user.teams._id))
-        //console.log(props.passToken.user.teams._id)
-        try {
-            console.log("makes it to try")
-            const response = await axios.get(`/teams/${teamId}`,{ 
-                headers: { 
-                    // 'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*', 
-                    'Authorization': `Bearer ${props.passToken.token}` 
-                },
-
-                withCredentials: true
-            });
-            console.log(JSON.stringify(response.data));
-            const info = response.data;
-            setTeamInfo(info);
-            //setProjects(info.projects);
-        } catch(error){
-            //teams api get error
-            console.log("directly to catch")
-            console.log('ERROR: ', error);
-            return;
-        }
-    }
-
     /*const teamProjects = async() => {
         // There can be multiple projects
         let projectIds = teamInfo?.projects;
@@ -94,9 +63,39 @@ function Projects(props){
     }*/
 
     React.useEffect(() => {
-        teamPull()
-        //teamProjects()
-    });
+        const teamPull = async () => {
+
+            //console.log("teams")
+            //console.log(typeof(props.passToken.user.teams))
+            //console.log(props.passToken.user.teams)
+            //console.log("teams id")
+            //console.log(typeof(props.passToken.user.teams._id))
+            //console.log(props.passToken.user.teams._id)
+            try {
+                console.log("makes it to try")
+                const response = await axios.get(`/teams/${teamId}`, {
+                    headers: {
+                        // 'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': `Bearer ${props.passToken.token}`
+                    },
+
+                    withCredentials: true
+                });
+                console.log(JSON.stringify(response.data));
+                const info = response.data;
+                setTeamInfo(info);
+                return (info.projects);
+            } catch (error) {
+                //teams api get error
+                console.log("directly to catch")
+                console.log('ERROR: ', error);
+                return;
+            }
+        }
+
+        setProjects(teamPull());
+    }, [props.passToken.token, teamId]);
 
     return(
         <div id='teamHome'>
