@@ -41,9 +41,8 @@ function DisplayCards(props) {
     );
 
     //For Better Placemaking projects listed on home page (url)/home
-    const projectCards = (projects) => (
-        projects.map((project, index) => (
-            <Card key={ 'p' + index } className='displayCard'>
+    const projectCards = (project) => (
+            <Card className='displayCard'>
                 <CardContent>
                     <Typography variant='h5' component='div'>
                         { project.title }
@@ -55,7 +54,6 @@ function DisplayCards(props) {
                     <Button component={ Link } to={`edit/${project._id} `} state={ project.title }>Edit</Button>
                 </CardActions>
             </Card>
-        ))
     );
 
     const teamCards = (teams) => (
@@ -76,7 +74,7 @@ function DisplayCards(props) {
 
     return(
         <div id='cardFlexBox'>
-            { props.type === 0 ? surveyorCards(props.surveyors) : (props.type === 1 ? projectCards(props.projects) : teamCards(props.teams))}
+            { props.type === 0 ? surveyorCards(props.surveyors) : (props.type === 1 ? projectCards(props.project) : teamCards(props.teams))}
         </div>
     );
 

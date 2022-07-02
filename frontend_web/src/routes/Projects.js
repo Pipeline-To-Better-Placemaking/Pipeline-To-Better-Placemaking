@@ -14,8 +14,8 @@ function Projects(props){
     //id from url
     //console.log(teamId);
     //const teams = props.passToken.user?.teams;
-    //let [projects, setProjects] = React.useState([]);
-    let [teamInfo, setTeamInfo] = React.useState({});
+    const [projects, setProjects] = React.useState([]);
+    const [teamInfo, setTeamInfo] = React.useState({});
 
     const teamPull = async() => {
 
@@ -39,6 +39,7 @@ function Projects(props){
             console.log(JSON.stringify(response.data));
             const info = response.data;
             setTeamInfo(info);
+            setProjects(teamInfo?.projects)
             
         } catch(error){
             //teams api get error
@@ -112,7 +113,11 @@ function Projects(props){
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            <DisplayCards type={ 1 } projects={ teamInfo?.projects }/>
+            {
+                projects.map((project, index)=>(
+                    <DisplayCards key={project._id+index}type={ 1 } project={ project }/>
+                ))
+            }
         </div>
     );
 }
