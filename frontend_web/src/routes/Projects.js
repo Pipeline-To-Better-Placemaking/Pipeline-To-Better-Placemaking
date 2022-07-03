@@ -66,6 +66,7 @@ function Projects(props){
 
     React.useEffect(() => {
         teamPull();
+        //setLoaded(true)
         //teamProjects()
     },[]);
 
@@ -111,14 +112,10 @@ function Projects(props){
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            {loaded ? 
+            {
                 teamInfo?.projects?.map((project, index) => (
                     <DisplayCards key={project._id + index} type={1} project={project} />
                 ))
-            : 
-                projects.map((project, index) => 
-                    <DisplayCards key={project._id + index} type={1} project={project} />
-                )
             }
         </div>
     );
