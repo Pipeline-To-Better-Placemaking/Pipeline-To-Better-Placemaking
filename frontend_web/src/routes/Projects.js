@@ -7,14 +7,16 @@ import { Link, useLocation } from 'react-router-dom';
 import './routes.css';
 
 function Projects(props){
-    const teamTitle = useLocation();
-    const teamId = teamTitle.pathname.split('/')[3];
+    const teamAndUser = useLocation();
+    const teamId = teamAndUser.pathname.split('/')[3];
     const [teamInfo, setTeamInfo] = React.useState();
-    const [loaded, setLoaded] = React.useState(false);
+    const user = teamAndUser.state.user;
+
+    console.log(`User ${user}`);
+    //const [loaded, setLoaded] = React.useState(false);
 
     //id from url
     //console.log(teamId);
-    //const teams = props.passToken.user?.teams;
 
     // Template Projects
     const [projects, setProjects] = React.useState([
@@ -70,34 +72,6 @@ function Projects(props){
         //teamProjects()
     },[]);
 
-    /*const teamProjects = async() => {
-        // There can be multiple projects
-        let projectIds = teamInfo?.projects;
-
-        try {
-            const response = await axios.get({
-                url: `https://p2bp.herokuapp.com/api/projects/${projectId._id}`, 
-                method: 'GET',
-                headers: { 
-                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken.token },
-                    params: {
-                        _id: projectId._id
-                    },
-                    withCredentials: true
-            });
-            console.log(project info)
-            console.log(JSON.stringify(response.data));
-            const proj = projects;
-            proj.push(response.data);
-            setProjects(proj);
-            
-        } catch(error){
-            //proget api get error
-            console.log('ERROR: ', error);
-            return;
-        }
-    }*/
-
     return(
         <div id='teamHome'>
             <div id='newProjectButtonBox'>
@@ -105,7 +79,7 @@ function Projects(props){
                     id='newProjectButton' 
                     variant='contained'
                     component={ Link } 
-                    state={ teamTitle.state }
+                    state={ teamAndUser.state }
                     to='new'
                 >
                     New Project
@@ -114,7 +88,7 @@ function Projects(props){
             {/* type = 1 implies the project style cards */}
             {
                 teamInfo?.projects?.map((project, index) => (
-                    <DisplayCards key={project._id + index} type={1} project={project} />
+                    <DisplayCards key={(project._id + index)} type={ 1 } project={ project } user={ teamAndUser.state.user } team={ teamAndUser.state.team }/>
                 ))
             }
         </div>

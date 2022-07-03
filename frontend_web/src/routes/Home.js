@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import DisplayCards from '../components/DisplayCards';
 import { Link, useLocation } from 'react-router-dom';
 
-function Home(props) {
+function Home() {
     // props.passToken jwt token 
     // holds passed token from App.js
     // token should be held in storage or have some persistant location to pull if user navigates to other pages in a different order
@@ -33,7 +33,7 @@ function Home(props) {
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            <DisplayCards type={ 2 } teams={ userTeams ? userTeams : teamsTemplate } />
+            <DisplayCards type={ 2 } teams={ userTeams ? userTeams : teamsTemplate } user={ userToken.state }/>
         </div>
     );
 

@@ -50,8 +50,8 @@ function DisplayCards(props) {
                     { project.description }
                 </CardContent>
                 <CardActions>
-                    <Button component={ Link } to={`projects/${project._id}`} state={ project.title }>View</Button>
-                    <Button component={ Link } to={`edit/${project._id} `} state={ project.title }>Edit</Button>
+                <Button component={Link} to={`projects/${project._id}`} state={{ project: project.title, team: props.team, user: props.user }}>View</Button>
+                <Button component={Link} to={`edit/${project._id} `} state={{ project: project.title, team: props.team, user: props.user }}>Edit</Button>
                 </CardActions>
             </Card>
     );
@@ -65,8 +65,8 @@ function DisplayCards(props) {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button component={Link} to={`teams/${team._id}`} state={ team.title }>View Projects</Button>
-                    <Button component={Link} to={`edit/${team._id}`} state={ team.title }>Edit Team</Button>
+                    <Button component={Link} to={`teams/${team._id}`} state={{ team: team.title, user: props.user }}>View Projects</Button>
+                    <Button component={Link} to={`edit/${team._id}`} state={{ team: team.title, user: props.user }}>Edit Team</Button>
                 </CardActions>
             </Card>
         ))

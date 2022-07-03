@@ -47,7 +47,7 @@ function App() {
             <div id='teamPages'>
                 <Routes>
                     {/* Find a more stable/consistent way to manage tokens instead of passing states, they can expire after a few mintues*/}
-                    <Route index element={<Projects passToken={token}/>}/>
+                    <Route index element={<Projects />}/>
                     <Route path='projects/:id/*' element={<ProjectPage />} />
                     <Route path='new' element={<NewProject />} />
                     <Route path='new/area/points' element={<NewProjectPoints />} />
@@ -70,9 +70,9 @@ function App() {
         //Logout button in AppNavBar, so logout function is passed there
         return (
             <div id='userRoutes'>
-                <AppNavBar passLogout={ passLogout } passToken={ token }/>
+                <AppNavBar passLogout={ passLogout } passToken={ token } />
                 <Routes>
-                    <Route index element={ <Home passToken={ token }/> }/>
+                    <Route index element={ <Home /> }/>
                     <Route path='teams/:id/*' element={ <TeamPages /> }/>
                     <Route path='settings' element={ <SettingsPage /> }/>
                     <Route path='new' element={ <NewTeamForm /> }/>
