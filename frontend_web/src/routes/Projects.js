@@ -63,7 +63,7 @@ function Projects(props){
         }
     ]);
 
-    const teamDetails = teamPull(teamId, props.passToken.user.teams)
+    const teamDetails = teamPull(teamId, props.passToken.token);
 
     const [teamInfo, setTeamInfo] = React.useState(teamDetails);
 
