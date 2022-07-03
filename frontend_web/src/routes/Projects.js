@@ -66,9 +66,9 @@ function Projects(props){
 
     const [teamInfo, setTeamInfo] = React.useState({});
 
-    const teamCards = teamInfo.projects ? teamInfo?.projects.map((project, index)=>(
+    const teamCards = teamInfo?.projects.map((project, index)=>(
         <DisplayCards key={ project._id + index } type={ 1 } project={ project } />
-    )) : null
+    ))
 
     /*const teamProjects = async() => {
         // There can be multiple projects
