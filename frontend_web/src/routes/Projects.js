@@ -33,11 +33,9 @@ function Projects(props){
     ]);
 
     const [teamInfo, setTeamInfo] = React.useState({
-        projects: [{}]
     });
 
     const teamPull = async() => {
-
         //console.log("teams")
         //console.log(typeof(props.passToken.user.teams))
         //console.log(props.passToken.user.teams)
@@ -66,7 +64,11 @@ function Projects(props){
         }
     }
 
-    teamPull();
+    /*setTeamInfo(teamPull());*/
+
+    const teamCards = teamInfo.projects ? teamInfo?.projects.map((project, index)=>(
+        <DisplayCards key={project._id + index} type={1} project={project} />
+    )) : null
 
     /*const teamProjects = async() => {
         // There can be multiple projects
@@ -96,10 +98,10 @@ function Projects(props){
         }
     }*/
 
-    /*React.useEffect(() => {
+    React.useEffect(() => {
         teamPull()
         //teamProjects()
-    });*/
+    });
 
     return(
         <div id='teamHome'>
@@ -115,11 +117,7 @@ function Projects(props){
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            {
-               teamInfo?.projects.map((project, index)=>(
-                    <DisplayCards key={ project._id+index }type={ 1 } project={ project }/>
-                ))
-            }
+            { teamCards }
         </div>
     );
 }
