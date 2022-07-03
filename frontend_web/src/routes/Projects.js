@@ -33,7 +33,7 @@ function Projects(props){
     ]);
 
     const [teamInfo, setTeamInfo] = React.useState({
-        projects: []
+        projects: [{}]
     });
 
     const teamPull = async() => {
@@ -67,7 +67,7 @@ function Projects(props){
         }
     }
 
-    teamPull();
+    //teamPull();
 
     /*const teamProjects = async() => {
         // There can be multiple projects
@@ -97,10 +97,10 @@ function Projects(props){
         }
     }*/
 
-    /*React.useEffect(() => {
+    React.useEffect(() => {
         teamPull()
         //teamProjects()
-    }, [setTeamInfo, teamPull]);*/
+    });
 
     return(
         <div id='teamHome'>
