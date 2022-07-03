@@ -66,7 +66,7 @@ function Projects(props){
         }
     }
 
-    //teamPull();
+    teamPull();
 
     /*const teamProjects = async() => {
         // There can be multiple projects
@@ -96,17 +96,17 @@ function Projects(props){
         }
     }*/
 
-    React.useEffect(() => {
+    /*React.useEffect(() => {
         teamPull()
         //teamProjects()
-    });
+    });*/
 
     return(
         <div id='teamHome'>
             <div id='newProjectButtonBox'>
                 <Button 
                     id='newProjectButton' 
-                    variant='contained' 
+                    variant='contained'
                     component={ Link } 
                     state={ teamTitle.state }
                     to='new'
