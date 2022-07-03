@@ -28,6 +28,7 @@ export function MyBarChart({children, ...props}) {
   let fontSize = 10;
 
   let ticks = Math.max.apply(Math, props.dataValues)%5 + 1;
+  if(ticks > 10) ticks = 10;
 
   const Gradient = () => (
         <Defs key={'gradient'}>
@@ -254,7 +255,8 @@ export function MyPieChart(props){
         if(props.graph[i].value !== 0){
           obj[i] = (
             <View key={i.toString()} style={styles.pieLegend}>
-              <Text style={{color: props.graph[i].svg.fill}}>{props.graph[i].legend}:</Text>
+              <Text style={styles.whiteText}>{props.graph[i].legend}: </Text>
+              <Text style={{color: props.graph[i].svg.fill}}>■</Text>
               <Text style={styles.whiteText}> {props.graph[i].value} ft² ({props.graph[i].percent}%)</Text>
             </View>
           )

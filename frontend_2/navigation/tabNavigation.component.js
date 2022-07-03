@@ -49,7 +49,7 @@ export function TabNavigation(props) {
 
   // add new tests to this tabhiddenroutes (name is from the test's collaborateStack screen)
   // Hide Tabs for these screens within the 3 stack screens (CollaborateStack, HomeScreenStack, UserSettingsStack)
-  const tabHiddenRoutes = ["CreateActivityStack", "StationaryActivity", "SurveyActivity", "PeopleMovingActivity", "SoundTest", "BoundaryTest"];
+  const tabHiddenRoutes = ["CreateActivityStack", "StationaryActivity", "SurveyActivity", "PeopleMovingActivity", "SoundTest", "BoundaryTest", "NatureTest"];
 
   useEffect(() => {
     async function getInfo() {
@@ -76,7 +76,7 @@ export function TabNavigation(props) {
     let teamDetails = null
     // Get the team information
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + team._id, {
+        const response = await fetch('https://p2bp.herokuapp.com/api/teams/' + team._id, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',

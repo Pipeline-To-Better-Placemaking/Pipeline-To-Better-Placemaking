@@ -116,7 +116,7 @@ export function TeamPage(props) {
     let res = null;
     // Send invite by user email
     try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/'+ props.team._id +'/invites', {
+      const response = await fetch('https://p2bp.herokuapp.com/api/teams/'+ props.team._id +'/invites', {
         method: 'POST',
         headers: {
             Accept: 'application/json',

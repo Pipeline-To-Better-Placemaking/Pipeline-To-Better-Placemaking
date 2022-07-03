@@ -18,6 +18,10 @@ import { SoundCompare } from '../screens/Home/Compare/soundCompare.component';
 import { BoundaryResultPage } from '../screens/Home/ResultPages/boundaryResultPage.component';
 import { BoundaryMapResultsView } from '../screens/Home/ResultPages/boundaryMapResults.component';
 import { BoundaryCompare } from '../screens/Home/Compare/boundaryCompare.component';
+// nature test result screens
+import { NatureResultPage } from '../screens/Home/ResultPages/natureResultPage.component';
+import { NatureMapResultsView } from '../screens/Home/ResultPages/natureMapResults.component';
+import { NatureCompare } from '../screens/Home/Compare/natureCompare.component';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -165,6 +169,17 @@ export function HomeScreenStack(props){
       </Screen>
 
       <Screen
+        name="NatureCompare"
+      >
+      {props =>
+        <NatureCompare 
+          {...props}
+          results={compareResults}
+        />
+      }
+      </Screen>
+
+      <Screen
         name='ProjectResultPage'
       >
       {props =>
@@ -265,6 +280,23 @@ export function HomeScreenStack(props){
       </Screen>
 
       <Screen
+        name='NatureResultPage'
+      >
+      {props =>
+        <NatureResultPage 
+          {...props}
+          token={token}
+          userId={userId}
+          project={selectedProject}
+          team={selectedTeam}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+          setResults={setResults}
+        />
+      }
+      </Screen>
+
+      <Screen
         name='StationaryActivityResultView'
       >
         {props =>
@@ -305,6 +337,18 @@ export function HomeScreenStack(props){
       >
       {props=>
         <BoundaryMapResultsView 
+          {...props}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+        />
+      }
+      </Screen>
+
+      <Screen
+        name='NatureMapResultsView'
+      >
+      {props=>
+        <NatureMapResultsView
           {...props}
           selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}

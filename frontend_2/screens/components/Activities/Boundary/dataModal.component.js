@@ -13,7 +13,7 @@ export function DataModal(props) {
             description: desc
         }
         
-        // closes the modal (in soundTest)
+        // closes the modal (in boundaryTest)
         await props.closeData(data);
     }
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 // helper function to get a readable date string value
 export const getDayStr = (date) => {
-  return parseInt(date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear();
+    return parseInt(date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear();
 }
 
 // helper function to get a readable time string value

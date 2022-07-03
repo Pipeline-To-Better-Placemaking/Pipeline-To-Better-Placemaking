@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
     },
 
     menu:{
-        marginRight: 15 
+        marginRight: 15
     },
 
     logoView:{

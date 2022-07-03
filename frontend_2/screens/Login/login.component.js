@@ -36,7 +36,7 @@ export const LoginScreen = ( props ) => {
 
     try {
 
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/login', {
+        const response = await fetch('https://p2bp.herokuapp.com/api/login', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

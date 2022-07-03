@@ -6,7 +6,7 @@ import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getDayStr, getTimeStr } from '../components/timeStrings.component';
 import { getAllResults, getProject } from '../components/apiCalls';
-import { formatStationaryGraphData, formatMovingGraphData, formatSoundGraphData, formatBoundaryGraphData, retrieveTestName } from '../components/helperFunctions';
+import { formatStationaryGraphData, formatMovingGraphData, formatSoundGraphData, formatBoundaryGraphData, formatNatureGraphData, retrieveTestName } from '../components/helperFunctions';
 
 import { styles } from './projectResult.styles';
 
@@ -60,6 +60,11 @@ export function ProjectResultPage(props) {
       await props.setSelectedResult(result);
       props.navigation.navigate("BoundaryResultPage");
     }
+    else if (item.test_type === 'nature') {
+      let result = await formatNatureGraphData(item);
+      await props.setSelectedResult(result);
+      props.navigation.navigate("NatureResultPage");
+    }
     //add the new tests here ^^
 
   };
@@ -68,7 +73,7 @@ export function ProjectResultPage(props) {
     let success = false
     let result = null
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + '/export', {
+        const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + props.project._id + '/export', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -95,7 +100,7 @@ export function ProjectResultPage(props) {
     await setSentMsgVisible(true);
     wait(2000).then(() => setSentMsgVisible(false));
   }
-
+  
   const activityItem = ({ item, index }) => {
     let testType = retrieveTestName(item.test_type);
     return (
@@ -111,6 +116,7 @@ export function ProjectResultPage(props) {
       />
     );
   }
+  
   return (
     <ViewableArea>
       <HeaderBack {...props} text={props.project.title}/>

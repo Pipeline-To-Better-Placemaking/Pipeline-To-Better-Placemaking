@@ -68,7 +68,7 @@ export function PeopleMovingMap(props) {
         }
     }
 
-    // Shows the project area, along with the plotted points
+    // Shows plotted points of the line being drawn
     const ShowPolygon = () => {
         if(props.markers === null) {
             return (null);

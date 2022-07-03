@@ -48,7 +48,6 @@ export const styles = StyleSheet.create({
         padding:5
     },
 
-    // styles used only in sound test
     spacing:{
         marginTop: width * .05
     },
@@ -56,6 +55,11 @@ export const styles = StyleSheet.create({
     rowView:{
         flexDirection: 'row',
         justifyContent: 'space-evenly'
+    },
+
+    rowSpacing:{
+        marginTop: height * .015,
+        marginBottom: height * .015
     }
     
 });

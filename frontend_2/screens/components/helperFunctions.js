@@ -194,7 +194,6 @@ export async function formatSoundGraphData(result){
   return tempResult;
 }
 
-
 export async function formatBoundaryGraphData(result){
   if (result === null ||
       result.data === undefined ||
@@ -223,6 +222,102 @@ export async function formatBoundaryGraphData(result){
   return tempResult;
 }
 
+// searches to see if that description exists in the array (helper for formatNatureGraphData)
+const conDescSearch = (arr, str)=>{
+  // search through formatted array to see if that description is in it
+  for(let i = 0; i < arr.length; i++){
+    // if it is there, return its index
+    if(arr[i] === str) return i;
+  }
+  // otherwise return -1
+  return -1;
+}
+
+// nothing in it, will need to set this up when I know what the data looks like
+export async function formatNatureGraphData(result){
+  if (result === null ||
+      result.data === undefined ||
+      result.data === null ||
+      result.data.length <= 0 ||
+      result.graph !== undefined
+    ) {
+    return result;
+  }
+  // each object in data are submitted results for that test
+  console.log(result);
+  let tempResult = {...result};
+  let graph = {
+    animalData: [],
+    animalLabels: [],
+    vegetationData: [],
+    vegetationLabels: [],
+    waterData: [],
+    waterLabels: [],
+    weather: {}
+  };
+  for(let i = 0; i < result.data.length; i++){
+    let data = result.data[i]
+    //console.log(data)
+    let index = -1;
+    // format the points object (of each data object)
+    for(let j = 0; j < data.points.length; j++){
+      // the current data point is for vegetation
+      if(data.points[j].kind === "Vegetation"){
+        index = conDescSearch(graph.vegetationLabels, data.points[j].description)
+        // that description is already formatted, so increase its count
+        if(index !== -1){
+          graph.vegetationData[index] += 1;
+        }
+        // otherwise add that description into the labels and increase its count
+        else{
+          graph.vegetationLabels.push(data.points[j].description)
+          graph.vegetationData.push(1);
+        }
+      }
+      // otherwise, its an animal data point
+      else{
+        let type = data.points[j].kind
+        if(type === "Domesticated") type = "Domestic"
+        let string = type.concat("\n", data.points[j].description)
+        index = conDescSearch(graph.animalLabels, string)
+        // that description is already formatted, so increase its count
+        if(index !== -1){
+          graph.animalData[index] += 1;
+        }
+        // otherwise add that description into the labels and increase its count
+        else{
+          graph.animalLabels.push(string)
+          graph.animalData.push(1);
+        }
+        
+      }
+
+
+    }
+    // format the water array (of each data object)
+    for(let j = 0; j < data.water.length; j++){
+      index = conDescSearch(graph.waterLabels, data.water[j].description)
+      // that description is already formatted, so increase its count
+      if(index !== -1){
+        let num = graph.waterData[index] + data.water[j].area;
+        let string = num.toFixed(2)
+        graph.waterData[index] = parseFloat(string)
+      }
+      // otherwise add that description into the labels and increase its count
+      else{
+        graph.waterLabels.push(data.water[j].description)
+        graph.waterData.push(data.water[j].area)
+      }
+    }
+  }
+  // set the weather info as the 1st data's weather
+  graph.weather = result.data[0].weather;
+
+  // console.log("resulting graph data: ", graph);
+  tempResult.graph = {...graph};
+  return tempResult;
+}
+
 export function retrieveTestName(str){
   let lowerStr = str.toLowerCase();
   
@@ -231,11 +326,11 @@ export function retrieveTestName(str){
   let testType;
   if(lowerStr.localeCompare('stationary') === 0 || lowerStr.localeCompare('stationary map') === 0){
     //console.log('stationary activity');
-    testType = 'Humans in Place';
+    testType = 'People in Place';
   }
   else if(lowerStr.localeCompare('moving') === 0 || lowerStr.localeCompare('people moving') === 0){
     //console.log('moving activity');
-    testType = 'Humans in Motion';
+    testType = 'People in Motion';
   }
   else if(lowerStr.localeCompare('survey') === 0 ){
     //console.log('survey activity');

@@ -4,13 +4,14 @@ import { Text, Button, Icon, Divider, MenuItem } from '@ui-kitten/components';
 import { HeaderBack, HeaderBackEdit } from '../../components/headers.component';
 import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
-import { helperGetResult, isUserTeamOwner, deleteTimeSlot, getProject, getAllResults } from '../../components/apiCalls';
-import { formatMovingGraphData } from '../../components/helperFunctions';
+import { helperGetResult, deleteTimeSlot, getProject, getAllResults, isUserTeamOwner } from '../../components/apiCalls';
+import { formatNatureGraphData } from '../../components/helperFunctions';
 import { MyBarChart } from '../../components/charts.component';
 
 import { styles } from './resultPage.styles';
 
-export function MovingResultPage(props) {
+//quantitative data screen
+export function NatureResultPage(props) {
 
   const [refreshing, setRefreshing] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
@@ -26,12 +27,12 @@ export function MovingResultPage(props) {
     if (props.selectedResult !== null && props.selectedResult.sharedData !== undefined) {
       let result = await helperGetResult(
                            props.selectedResult._id,
-                           "moving_maps/",
-                           "moving",
+                           "nature_maps/",
+                           "nature",
                            props.selectedResult.sharedData,
                            props.project
                          );
-      result = await formatMovingGraphData(result);
+      result = await formatNatureGraphData(result);
       await props.setSelectedResult(result);
       await refreshProjectPageDetails();
     }
@@ -49,7 +50,7 @@ export function MovingResultPage(props) {
   const deleteResult = async () => {
     let success = false;
     if (props.selectedResult !== null) {
-      success = await deleteTimeSlot("moving_maps", props.selectedResult._id);
+      success = await deleteTimeSlot("nature_maps", props.selectedResult._id);
     }
     if (success) {
       await refreshProjectPageDetails();
@@ -60,8 +61,7 @@ export function MovingResultPage(props) {
 
   if (props.selectedResult === null ||
       !props.selectedResult.success ||
-      props.selectedResult.graph === undefined
-    ) {
+      props.selectedResult.graph === undefined) {
     return (
       <ViewableArea>
         {isUserTeamOwner(props.team, props.userId)
@@ -113,14 +113,6 @@ export function MovingResultPage(props) {
     areaTitle = (props.selectedResult.sharedData.area.title === undefined ? 'Project Perimeter' : props.selectedResult.sharedData.area.title)
   }
 
-  // error checking for standing points
-  if (props.selectedResult.standingPoints === undefined ||
-      props.selectedResult.standingPoints === null ||
-      props.selectedResult.standingPoints.length <= 0
-    ) {
-      viewMap = false;
-      errorMessage += '- Standing point information has been deleted\n';
-  }
   errorMessage += '\n\t Unable to Load Map View';
 
   let startTime = new Date(props.selectedResult.date);
@@ -130,14 +122,14 @@ export function MovingResultPage(props) {
     return "\n\t" + user.firstname + ' ' + user.lastname;
   });
 
+  const viewMapResults = () => {
+    props.navigation.navigate("NatureMapResultsView");
+  }
+
   const chartWidth = Dimensions.get('window').width*0.95;
   const chartHeight = 210;
 
-  const fillColor = '#006FD6';
-
-  const viewMapResults = () => {
-    props.navigation.navigate("MovingMapResultsView");
-  }
+  const color = '#006FD6';
 
   return (
     <ViewableArea>
@@ -169,7 +161,8 @@ export function MovingResultPage(props) {
             />
           }
         >
-          <Text category={'h5'}>People in Motion Results</Text>
+
+          <Text category={'h5'}>Nature Prevalence Results</Text>
           <Divider style={styles.metaDataTitleSep} />
 
           <Text>Team: {props.team.title}</Text>
@@ -213,17 +206,46 @@ export function MovingResultPage(props) {
               </View>
           }
 
+          <View style={[styles.rowView, styles.rowSpacing]}>
+            <Text category={'s1'}>Temperature: {props.selectedResult.graph.weather.temperature} °F</Text>
+            <Text category={'s1'}>Weather: {props.selectedResult.graph.weather.description}</Text>
+          </View>
+          
           <MyBarChart
             {...props}
-            title={"Movement"}
+            title={"Animal Data"}
             rotation={'0deg'}
-            dataValues={props.selectedResult.graph.data}
-            dataLabels={props.selectedResult.graph.labels}
-            barColor={fillColor}
+            dataValues={props.selectedResult.graph.animalData}
+            dataLabels={props.selectedResult.graph.animalLabels}
+            barColor={color}
             width={chartWidth}
             height={chartHeight}
           />
 
+          <MyBarChart
+            {...props}
+            title={"Vegetation Data"}
+            rotation={'0deg'}
+            dataValues={props.selectedResult.graph.vegetationData}
+            dataLabels={props.selectedResult.graph.vegetationLabels}
+            barColor={color}
+            width={chartWidth}
+            height={chartHeight}
+          />
+
+          <MyBarChart
+            {...props}
+            title={"Water Data (area in ft²)"}
+            rotation={'0deg'}
+            dataValues={props.selectedResult.graph.waterData}
+            dataLabels={props.selectedResult.graph.waterLabels}
+            barColor={color}
+            width={chartWidth}
+            height={chartHeight}
+          />
+          
+          
+          
         </ScrollView>
       </ContentContainer>
     </ViewableArea>
@@ -234,10 +256,4 @@ export function MovingResultPage(props) {
 // pin-outline
 const MapIcon = (props) => (
   <Icon {...props} name='compass-outline'/>
-);
-
-// file-text-outline
-// pie-chart-outline
-const ChartIcon = (props) => (
-  <Icon {...props} name='file-text-outline'/>
 );

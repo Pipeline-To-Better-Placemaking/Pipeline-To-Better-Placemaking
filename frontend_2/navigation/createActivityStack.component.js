@@ -59,7 +59,7 @@ export function CreateActivityStack(props) {
     await setDate(props.activity.date);
     await setDuration('' + props.activity.duration);
     
-    let types = ['stationary', 'moving', 'survey', 'sound', 'boundary'];
+    let types = ['stationary', 'moving', 'survey', 'sound', 'boundary', 'nature'];
     let activityIndex = types.findIndex(element => element === props.activity.test_type);
     setSelectedActivity(new IndexPath(activityIndex));
     if (props.activity.area === null) {
@@ -110,7 +110,7 @@ export function CreateActivityStack(props) {
         tempTimeSlots.push(timeSlot);
       })
     }
-    else if (activityIndex === 4 && props.activity.maps !== null && props.activity.maps.length >= 1){
+    else if (activityIndex >= 4 && props.activity.maps !== null && props.activity.maps.length >= 1){
       for (let j = 0; j < props.activity.maps.length ; j++) {
         let timeSlot = props.activity.maps[j];
         // date to value
@@ -155,6 +155,9 @@ export function CreateActivityStack(props) {
       else if (row === 4) { // Boundary
         await putCollection(name, 'boundary', '/boundaries_collections', 'boundaries_maps/');
       }
+      else if (row === 5) { // Nature
+        await putCollection(name, 'nature', '/nature_collections', 'nature_maps/');
+      }
       await props.setUpdateActivity(false);
       props.navigation.navigate('ProjectPage')
     }
@@ -175,6 +178,9 @@ export function CreateActivityStack(props) {
       else if (row === 4) { // Boundary
         await postCollection(name, 'boundary', '/boundaries_collections', 'boundaries_maps/');
       }
+      else if (row === 5) { // Nature
+        await postCollection(name, 'nature', '/nature_collections', 'nature_maps/');
+      }
 
       // Navigate back to Project page
       props.navigation.navigate('ProjectPage')
@@ -187,7 +193,7 @@ export function CreateActivityStack(props) {
     console.log("saving with area id", area._id);
     // Save the activity
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' + props.project._id + collectionName, {
+        const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + props.project._id + collectionName, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -237,7 +243,7 @@ export function CreateActivityStack(props) {
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
     // treat the new tests as survey (no standing points) except for the sound test
-    if (test_type !== "survey" && test_type !== "boundary") {
+    if (test_type !== "survey" && test_type !== "boundary" && test_type !== "nature") {
       if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
         selectedPoints = timeSlot.assignedPointIndicies.map(index => {
           return standingPoints[index.row];
@@ -246,7 +252,7 @@ export function CreateActivityStack(props) {
     }
     // Save the activity
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName, {
+        const response = await fetch('https://p2bp.herokuapp.com/api/' + timeSlotName, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -280,7 +286,7 @@ export function CreateActivityStack(props) {
     let collectionDetails = null
     // Save the activity
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
+        const response = await fetch('https://p2bp.herokuapp.com/api/projects/' +
                                       props.project._id +
                                       collectionName  +
                                       '/' + props.activity._id, {
@@ -369,7 +375,7 @@ export function CreateActivityStack(props) {
     let success = false
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
-    if (test_type !== "survey" && test_type !== "boundary") {
+    if (test_type !== "survey" && test_type !== "boundary" && test_type !== "nature") {
       if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
         selectedPoints = timeSlot.assignedPointIndicies.map(index => {
           return standingPoints[index.row];
@@ -379,9 +385,9 @@ export function CreateActivityStack(props) {
     //console.log(timeSlotName);
     // Save the activity
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + timeSlot._id, {
+        const response = await fetch('https://p2bp.herokuapp.com/api/' + timeSlotName + timeSlot._id, {
         // original response below, there appeared to be an extra /, but the responses came back looking okay ?
-        // const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
+        // const response = await fetch('https://p2bp.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -413,9 +419,9 @@ export function CreateActivityStack(props) {
     let res = null
     //console.log(timeSlotName);
     try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + timeSlot._id, {
+      const response = await fetch('https://p2bp.herokuapp.com/api/' + timeSlotName + timeSlot._id, {
       // original response below, there appeared to be an extra /, but the responses came back looking okay ?
-      // const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
+      // const response = await fetch('https://p2bp.herokuapp.com/api/' + timeSlotName + '/' + timeSlot._id, {
           method: 'DELETE',
           headers: {
               Accept: 'application/json',
@@ -437,7 +443,7 @@ export function CreateActivityStack(props) {
     let collectionName = '/' + props.activity.test_type + '_collections';
     if(props.activity.test_type === 'boundary') collectionName = '/boundaries_collections';
     try {
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/' +
+      const response = await fetch('https://p2bp.herokuapp.com/api/projects/' +
                                     props.project._id +
                                     collectionName  +
                                     '/' + props.activity._id, {

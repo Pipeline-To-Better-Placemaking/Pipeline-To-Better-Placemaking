@@ -40,7 +40,7 @@ export function CreateProject(props) {
 
     // Save the new project
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/projects/', {
+        const response = await fetch('https://p2bp.herokuapp.com/api/projects/', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

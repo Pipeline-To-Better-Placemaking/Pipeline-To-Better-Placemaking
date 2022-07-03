@@ -52,7 +52,7 @@ export function EditTeamPage(props) {
 
 		// Delete Team from backend
 		try {
-			const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + deleteTeamID, {
+			const response = await fetch('https://p2bp.herokuapp.com/api/teams/' + deleteTeamID, {
 				method: 'DELETE',
 				headers: {
 					Accept: 'application/json',
@@ -101,7 +101,7 @@ export function EditTeamPage(props) {
 		try {
       console.log("Trying to update a team")
 
-      const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/' + props.team._id, {
+      const response = await fetch('https://p2bp.herokuapp.com/api/teams/' + props.team._id, {
         method: 'PUT',
         headers: {
           Accept: 'application/json',

@@ -57,7 +57,7 @@ export function Collaborate(props) {
     let newTeam = null;
     // Save the new team
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/teams/', {
+        const response = await fetch('https://p2bp.herokuapp.com/api/teams/', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

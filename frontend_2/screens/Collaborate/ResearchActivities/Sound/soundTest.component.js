@@ -50,9 +50,6 @@ export function SoundTest(props){
     const [mainSoundModal, setMainSoundModal] = useState(false);
     const [soundsModal, setSoundsModal] = useState(false);
 
-    // packaged data to be sent
-    const [data, setData] = useState([]);
-
     // for a single measurement's iterations
     const [curr, setCurr] = useState([]);
     
@@ -133,7 +130,7 @@ export function SoundTest(props){
         }
 
         try {
-            const response = await fetch('https://measuringplacesd.herokuapp.com/api/sound_maps/' + props.timeSlot._id + '/data', {
+            const response = await fetch('https://p2bp.herokuapp.com/api/sound_maps/' + props.timeSlot._id + '/data', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

@@ -269,10 +269,14 @@ export function CreateTimeSlots(props) {
           <TimePicker {...{item, index}} />
           <NumResearchers {...{item, index}} />
           {/* may need to add the other tests (everything but sound test) to not show standing points */}
-          {( props.selectedActivity === 'Survey' || props.selectedActivity === 'Boundary' ? 
+          {( 
+          props.selectedActivity === 'Survey' || 
+          props.selectedActivity === 'Boundary' ||
+          props.selectedActivity === 'Nature' ? 
             null 
           : 
-            <SelectPoints {...{item, index}} />)}
+            <SelectPoints {...{item, index}} />
+          )}
         </View>
 
         <View style={styles.endView}>

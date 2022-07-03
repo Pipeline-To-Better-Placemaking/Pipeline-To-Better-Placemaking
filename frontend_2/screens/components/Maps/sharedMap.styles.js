@@ -29,6 +29,14 @@ export const styles = StyleSheet.create({
         backgroundColor: 'rgba(198, 101, 233, 0.5)'
     },
 
+    natureDataPin:{
+        borderRadius: 75, 
+        borderWidth: 1.5, 
+        width: 15, 
+        height: 15,
+        borderColor: 'red',
+    },
+
     dataCallOutView:{
         flexDirection: 'column', 
         margin:10

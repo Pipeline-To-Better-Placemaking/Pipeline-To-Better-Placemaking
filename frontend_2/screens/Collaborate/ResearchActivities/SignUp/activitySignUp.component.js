@@ -14,7 +14,7 @@ export function ActivitySignUpPage(props) {
 
   //add the new tests here
   // Constant array of activities
-  const activityList = ["stationary", "moving", "survey", "sound", "boundary"]
+  const activityList = ["stationary", "moving", "survey", "sound", "boundary", "nature"]
 
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -71,7 +71,9 @@ export function ActivitySignUpPage(props) {
                   <Text>Time per Standing Point: {props.activity.duration} (sec)</Text>
                 :
                   <Text>
-                    {(props.activity.test_type === activityList[2] || props.activity.test_type === activityList[4] ? 
+                    {(props.activity.test_type === activityList[2] || 
+                    props.activity.test_type === activityList[4] ||
+                    props.activity.test_type === activityList[5] ? 
                       "Time at Site:"
                     : 
                       "Time per Standing Point:"
@@ -86,7 +88,11 @@ export function ActivitySignUpPage(props) {
 
   // add stuff for new tests to ignore standing points (all but sound test)
   // standing point error checking
-  if (props.activity.test_type !== activityList[2] && props.activity.test_type !== activityList[4]){
+  if (
+    props.activity.test_type !== activityList[2] && 
+    props.activity.test_type !== activityList[4] && 
+    props.activity.test_type !== activityList[5]
+    ){
       let allGood = true;
       for (let i = 0; i < props.timeSlots.length; i++) {
         let points = props.timeSlots[i].standingPoints;
@@ -118,7 +124,9 @@ export function ActivitySignUpPage(props) {
                   <Text>Time per Standing Point: {props.activity.duration} (sec)</Text>
                 :
                   <Text>
-                    {(props.activity.test_type === activityList[2] || props.activity.test_type === activityList[4] ? 
+                    {(props.activity.test_type === activityList[2] || 
+                    props.activity.test_type === activityList[4] ||
+                    props.activity.test_type === activityList[5] ? 
                       "Time at Site:"
                     : 
                       "Time per Standing Point:"
@@ -265,6 +273,31 @@ export function ActivitySignUpPage(props) {
 
       props.navigation.navigate("BoundaryTest")
     }
+    // nature test
+    else if (props.activity.test_type == activityList[5]){
+      let activityDetails = {
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
+        position: [],
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
+      }
+
+      let originalDetails = {
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
+        position: [],
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
+      }
+
+      props.setTimeSlot(activityDetails);
+      props.setInitialTimeSlot(originalDetails);
+
+      props.navigation.navigate("NatureTest")
+    }
 
   }
 
@@ -287,6 +320,8 @@ export function ActivitySignUpPage(props) {
       route = 'sound_maps/';
     } else if (props.activity.test_type === activityList[4]) {
       route = 'boundaries_maps/';
+    } else if (props.activity.test_type === activityList[5]) {
+      route = 'nature_maps/';
     }
     //add new tests to this ^
 
@@ -325,7 +360,7 @@ export function ActivitySignUpPage(props) {
     let success = false
     let res = null
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/' + route + timeSlot._id + '/claim', {
+        const response = await fetch('https://p2bp.herokuapp.com/api/' + route + timeSlot._id + '/claim', {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -347,7 +382,7 @@ export function ActivitySignUpPage(props) {
     let success = false
     let res = null
     try {
-        const response = await fetch('https://measuringplacesd.herokuapp.com/api/'+ route + timeSlot._id + '/claim', {
+        const response = await fetch('https://p2bp.herokuapp.com/api/'+ route + timeSlot._id + '/claim', {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',
@@ -417,7 +452,9 @@ export function ActivitySignUpPage(props) {
         <View style={styles.infoColumn}>
           <Text>Start Time: {getTimeStr(item.date)}</Text>
           {/* add new tests here; to ignore standing points (for all but sound test) */}
-          {(props.activity.test_type === activityList[2] || props.activity.test_type === activityList[4] ? 
+          {(props.activity.test_type === activityList[2] || 
+          props.activity.test_type === activityList[4] ||
+          props.activity.test_type === activityList[5] ? 
             null 
           : 
             <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>)
@@ -445,7 +482,7 @@ export function ActivitySignUpPage(props) {
       </View>
     </Card>
   );
-
+  
   return (
     <ViewableArea>
       {props.teamOwner() ?
@@ -460,7 +497,9 @@ export function ActivitySignUpPage(props) {
           <MapAreaWrapper area={props.activity.area.points} mapHeight={'100%'}>
             <ShowArea area={props.activity.area.points} />
             {/* add new tests here; to ignore standing points (for all but sound test) */}
-            {(props.activity.test_type === activityList[2] || props.activity.test_type === activityList[4] ? 
+            {(props.activity.test_type === activityList[2] || 
+            props.activity.test_type === activityList[4] ||
+            props.activity.test_type === activityList[5] ? 
               null 
             : 
               <ShowMarkers markers={props.project.standingPoints} />)
@@ -470,12 +509,13 @@ export function ActivitySignUpPage(props) {
         <View style={styles.viewSpacer}>
           <Text category='s1'>Activity: {retrieveTestName(props.activity.test_type)}</Text>
           <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
-          {/* add new tests here for time at site for all but sound test */}
           { props.activity.test_type === activityList[3] ?
             <Text>Time per Standing Point: {props.activity.duration} (sec)</Text>
           :
             <Text>
-              {(props.activity.test_type === activityList[2] || props.activity.test_type === activityList[4] ? 
+              {(props.activity.test_type === activityList[2] || 
+              props.activity.test_type === activityList[4] ||
+              props.activity.test_type === activityList[5] ? 
                 "Time at Site:"
               : 
                 "Time per Standing Point:"
