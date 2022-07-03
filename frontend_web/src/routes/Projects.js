@@ -38,6 +38,7 @@ const teamPull = async (teamId, token) => {
 function Projects(props){
     const teamTitle = useLocation();
     const teamId = teamTitle.pathname.split('/')[3];
+    const [loaded, setLoaded] = React.useState(false);
 
     //id from url
     console.log(teamId);
@@ -65,6 +66,14 @@ function Projects(props){
     //const teamDetails = teamPull(teamId, props.passToken.token);
 
     const [teamInfo, setTeamInfo] = React.useState({});
+
+    React.useEffect(() => {
+        var teamDetails = teamPull(teamId, props.passToken.token);
+        setTeamInfo(teamDetails);
+        console.log(teamDetails);
+        setLoaded(true);
+        //teamProjects()
+    }, [teamId, props.passToken.token]);
 
     const teamCards = teamInfo?.projects.map((project, index)=>(
         <DisplayCards key={ project._id + index } type={ 1 } project={ project } />
@@ -98,12 +107,6 @@ function Projects(props){
         }
     }*/
 
-    React.useEffect(() => {
-        var teamDetails = teamPull(teamId, props.passToken.token);
-        setTeamInfo(teamDetails);
-        //teamProjects()
-    }, [teamId, props.passToken.token]);
-
     return(
         <div id='teamHome'>
             <div id='newProjectButtonBox'>
@@ -118,7 +121,7 @@ function Projects(props){
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            { teamCards }
+            { loaded ? teamCards : null }
         </div>
     );
 }
