@@ -38,13 +38,13 @@ const AppNavBar = (props) => {
     const location = useLocation();
     const segment = location.pathname.split('/');
 
-    //console.log('AppNavBar');
-    //console.log(location.state.user.user);
+    console.log('AppNavBar');
+    console.log(location.state.user.user.user);
     
     const userName = {
-        fN: location.state?.user?.user?.firstname ? location.state?.user?.user?.firstname : 'Abc',
-        lN: location.state?.user?.user?.lastname ? location.state?.user?.user?.lastname : 'Bcd',
-        full: location.state?.user?.user?.lastname ? `${location.state?.user?.user?.firstname} ${location.state?.user?.user?.lastname}` : 'Abc Bcd'
+        fN: location.state?.userToken?.user.firstname ? location.state?.userToken?.user.firstname : 'Abc',
+        lN: location.state?.userToken?.user.lastname ? location.state?.userToken?.user.lastname : 'Bcd',
+        full: location.state?.userToken?.user?.lastname ? `${location.state?.userToken?.user?.firstname} ${location.state?.userToken?.user?.lastname}` : 'Abc Bcd'
     }
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);

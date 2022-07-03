@@ -10,7 +10,7 @@ function Projects(props){
     const teamAndUser = useLocation();
     const teamId = teamAndUser.pathname.split('/')[3];
     const [teamInfo, setTeamInfo] = React.useState();
-    const user = teamAndUser.state ? teamAndUser.state.user.user : {};
+    const user = teamAndUser.state ? teamAndUser.state.userToken.user : {};
 
     console.log(user);
     console.log(user.token);
@@ -57,7 +57,7 @@ function Projects(props){
             });
             //console.log(JSON.stringify(response.data));
             setTeamInfo(response.data);
-            console.log(response.data);
+            //console.log(response.data);
 
         } catch (error) {
             //teams api get error
