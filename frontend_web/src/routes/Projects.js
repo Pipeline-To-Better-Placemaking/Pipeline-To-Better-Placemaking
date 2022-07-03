@@ -13,6 +13,7 @@ function Projects(props){
     const user = teamAndUser.state ? teamAndUser.state.user : {};
 
     console.log(user);
+    console.log(user.token);
     //const [loaded, setLoaded] = React.useState(false);
 
     //id from url
@@ -88,7 +89,7 @@ function Projects(props){
             {/* type = 1 implies the project style cards */}
             {
                 teamInfo?.projects?.map((project, index) => (
-                    <DisplayCards key={(project._id + index)} type={ 1 } project={ project } user={ teamAndUser.state.user } team={ teamAndUser.state.team }/>
+                    <DisplayCards key={(project._id + index)} type={ 1 } project={ project } user={ user } team={ teamAndUser.state.team }/>
                 ))
                 /*projects.map((project, index) => (
                         <DisplayCards key={(project._id + index)} type={ 1 } project={ project } user={ {} } team={ {} }/>
