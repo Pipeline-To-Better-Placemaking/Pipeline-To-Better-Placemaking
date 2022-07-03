@@ -10,7 +10,7 @@ function Projects(props){
     const teamAndUser = useLocation();
     const teamId = teamAndUser.pathname.split('/')[3];
     const [teamInfo, setTeamInfo] = React.useState();
-    const user = teamAndUser.state ? teamAndUser.state.user : {};
+    const user = teamAndUser.state ? teamAndUser.state.user.user : {};
 
     console.log(user);
     console.log(user.token);
