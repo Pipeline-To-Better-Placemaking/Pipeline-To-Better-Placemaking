@@ -6,42 +6,13 @@ import { Link, useLocation } from 'react-router-dom';
 
 import './routes.css';
 
-const teamPull = async (teamId, token) => {
-    //console.log("teams")
-    //console.log(typeof(props.passToken.user.teams))
-    //console.log(props.passToken.user.teams)
-    //console.log("teams id")
-    //console.log(typeof(props.passToken.user.teams._id))
-    //console.log(props.passToken.user.teams._id)
-    try {
-        console.log("makes it to try");
-        const response = await axios.get(`/teams/${teamId}`, {
-            headers: {
-                // 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': `Bearer ${token}`
-            },
-            withCredentials: true
-        });
-        console.log(JSON.stringify(response.data));
-        const info = response.data;
-        return info;
-        //setProjects(info.projects);
-    } catch (error) {
-        //teams api get error
-        console.log("directly to catch")
-        console.log('ERROR: ', error);
-        return;
-    }
-}
-
 function Projects(props){
     const teamTitle = useLocation();
     const teamId = teamTitle.pathname.split('/')[3];
     const [loaded, setLoaded] = React.useState(false);
 
     //id from url
-    console.log(teamId);
+    //console.log(teamId);
     //const teams = props.passToken.user?.teams;
 
     // Template Projects
@@ -65,20 +36,40 @@ function Projects(props){
 
     //const teamDetails = teamPull(teamId, props.passToken.token);
 
-    const [teamInfo, setTeamInfo] = React.useState({
-        projects: [{}]
-    });
+    const [teamInfo, setTeamInfo] = React.useState();
+
+    const teamPull = async () => {
+        //console.log("teams")
+        //console.log(typeof(props.passToken.user.teams))
+        //console.log(props.passToken.user.teams)
+        //console.log("teams id")
+        //console.log(typeof(props.passToken.user.teams._id))
+        //console.log(props.passToken.user.teams._id)
+        try {
+            console.log("makes it to try");
+            const {response} = await axios.get(`/teams/${teamId}`, {
+                headers: {
+                    // 'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${props.passToken.token}`
+                },
+                withCredentials: true
+            });
+            //console.log(JSON.stringify(response.data));
+            setTeamInfo(response.data);
+            //setProjects(info.projects);
+        } catch (error) {
+            //teams api get error
+            console.log("directly to catch")
+            console.log('ERROR: ', error);
+            return;
+        }
+    }
 
     React.useEffect(() => {
-        teamPull(teamId, props.passToken.token).then(setTeamInfo);
-        console.log(teamInfo);
-        setLoaded(true);
+        teamPull();
         //teamProjects()
-    }, [teamId, props.passToken.token, teamInfo]);
-
-    const teamCards = teamInfo?.projects.map((project, index)=>(
-        <DisplayCards key={ project._id + index } type={ 1 } project={ project } />
-    ))
+    },[]);
 
     /*const teamProjects = async() => {
         // There can be multiple projects
@@ -122,9 +113,15 @@ function Projects(props){
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            {loaded ? teamCards : projects.map((project, index) => 
-                <DisplayCards key={project._id + index} type={1} project={project} />
-            )}
+            {loaded ? 
+                teamInfo?.projects?.map((project, index) => (
+                    <DisplayCards key={project._id + index} type={1} project={project} />
+                ))
+            : 
+                projects.map((project, index) => 
+                    <DisplayCards key={project._id + index} type={1} project={project} />
+                )
+            }
         </div>
     );
 }
