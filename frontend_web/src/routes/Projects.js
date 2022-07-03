@@ -25,7 +25,7 @@ const teamPull = async (teamId, token) => {
         });
         console.log(JSON.stringify(response.data));
         const info = response.data;
-        return (info);
+        return info;
         //setProjects(info.projects);
     } catch (error) {
         //teams api get error
@@ -65,7 +65,9 @@ function Projects(props){
 
     //const teamDetails = teamPull(teamId, props.passToken.token);
 
-    const [teamInfo, setTeamInfo] = React.useState({});
+    const [teamInfo, setTeamInfo] = React.useState({
+        projects: [{}]
+    });
 
     React.useEffect(() => {
         var teamDetails = teamPull(teamId, props.passToken.token);
@@ -121,7 +123,9 @@ function Projects(props){
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            { loaded ? teamCards : null }
+            {loaded ? teamCards : projects.map((project, index) => 
+                <DisplayCards key={project._id + index} type={1} project={project} />
+            )}
         </div>
     );
 }
