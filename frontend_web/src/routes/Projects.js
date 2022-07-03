@@ -9,6 +9,7 @@ import './routes.css';
 function Projects(props){
     const teamTitle = useLocation();
     const teamId = teamTitle.pathname.split('/')[3];
+    const [teamInfo, setTeamInfo] = React.useState();
     const [loaded, setLoaded] = React.useState(false);
 
     //id from url
@@ -34,10 +35,6 @@ function Projects(props){
         }
     ]);
 
-    //const teamDetails = teamPull(teamId, props.passToken.token);
-
-    const [teamInfo, setTeamInfo] = React.useState();
-
     const teamPull = async () => {
         //console.log("teams")
         //console.log(typeof(props.passToken.user.teams))
@@ -47,7 +44,7 @@ function Projects(props){
         //console.log(props.passToken.user.teams._id)
         try {
             console.log("makes it to try");
-            const {response} = await axios.get(`/teams/${teamId}`, {
+            const response = await axios.get(`/teams/${teamId}`, {
                 headers: {
                     // 'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
@@ -57,7 +54,8 @@ function Projects(props){
             });
             //console.log(JSON.stringify(response.data));
             setTeamInfo(response.data);
-            //setProjects(info.projects);
+            console.log(response.data);
+
         } catch (error) {
             //teams api get error
             console.log("directly to catch")
