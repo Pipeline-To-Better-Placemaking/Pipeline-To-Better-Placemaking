@@ -10,6 +10,7 @@ function Home() {
     //const teams = props.passToken.user?.teams
     const userToken = useLocation();
     const userTeams = userToken.state.user.teams;
+    console.log('Home');
     console.log(userToken.state);
     console.log(userTeams);
 

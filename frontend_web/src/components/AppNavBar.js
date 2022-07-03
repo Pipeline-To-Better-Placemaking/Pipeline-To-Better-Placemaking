@@ -37,11 +37,14 @@ const home = <Link className='homeButton' to='/home'><Image src={logo1} classNam
 const AppNavBar = (props) => {
     const location = useLocation();
     const segment = location.pathname.split('/');
+
+    console.log('AppNavBar');
+    console.log(location.state.user.user);
     
     const userName = {
-        fN: props.passToken.user?.firstname ? props.passToken.user.firstname : 'Abc',
-        lN: props.passToken.user?.lastname ? props.passToken.user.lastname : 'Bcd',
-        full: props.passToken.user?.lastname ? `${props.passToken.user.firstname} ${props.passToken.user.lastname}` : 'Abc Bcd'
+        fN: location.state?.user?.user?.firstname ? location.state?.user?.user?.firstname : 'Abc',
+        lN: location.state?.user?.user?.lastname ? location.state?.user?.user?.lastname : 'Bcd',
+        full: location.state?.user?.user?.lastname ? `${location.state?.user?.user?.firstname} ${location.state?.user?.user?.lastname}` : 'Abc Bcd'
     }
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -125,6 +128,7 @@ const AppNavBar = (props) => {
                                         key={ page } 
                                         component={ Link }
                                         to={ segmentLink(page === 'teams' || page === 'projects' ? index + 1 : index)}
+                                        state={ location.state }
                                         onClick={ handleCloseNavMenu }>
                                         <Typography textAlign='center'> {page === 'teams' ? 'Projects' : (page === 'projects' ? 'Project Page' : (`${page.charAt(0).toUpperCase()}${page.slice(1)}`))} </Typography>
                                     </MenuItem>
