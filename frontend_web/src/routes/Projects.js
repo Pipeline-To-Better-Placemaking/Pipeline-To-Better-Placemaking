@@ -36,7 +36,6 @@ const teamPull = async (teamId, token) => {
 }
 
 function Projects(props){
-
     const teamTitle = useLocation();
     const teamId = teamTitle.pathname.split('/')[3];
 
@@ -63,9 +62,9 @@ function Projects(props){
         }
     ]);
 
-    const teamDetails = teamPull(teamId, props.passToken.token);
+    //const teamDetails = teamPull(teamId, props.passToken.token);
 
-    const [teamInfo, setTeamInfo] = React.useState(teamDetails);
+    const [teamInfo, setTeamInfo] = React.useState({});
 
     const teamCards = teamInfo.projects ? teamInfo?.projects.map((project, index)=>(
         <DisplayCards key={ project._id + index } type={ 1 } project={ project } />
@@ -100,10 +99,10 @@ function Projects(props){
     }*/
 
     React.useEffect(() => {
-        var teamDetails = teamPull(teamId, props.passToken.user?.teams);
+        var teamDetails = teamPull(teamId, props.passToken.token);
         setTeamInfo(teamDetails);
         //teamProjects()
-    }, [teamId, props.passToken.user.teams]);
+    }, [teamId, props.passToken.token]);
 
     return(
         <div id='teamHome'>
