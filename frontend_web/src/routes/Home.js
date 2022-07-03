@@ -9,7 +9,7 @@ function Home() {
     // token should be held in storage or have some persistant location to pull if user navigates to other pages in a different order
     //const teams = props.passToken.user?.teams
     const userToken = useLocation();
-    const userTeams = userToken.state.user.teams;
+    const userTeams = userToken.state.user.user.teams;
     console.log('Home');
     console.log(userToken.state);
     console.log(userTeams);
