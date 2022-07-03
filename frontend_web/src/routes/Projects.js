@@ -70,12 +70,11 @@ function Projects(props){
     });
 
     React.useEffect(() => {
-        var teamDetails = teamPull(teamId, props.passToken.token);
-        setTeamInfo(teamDetails);
-        console.log(teamDetails);
+        teamPull(teamId, props.passToken.token).then(setTeamInfo);
+        console.log(teamInfo);
         setLoaded(true);
         //teamProjects()
-    }, [teamId, props.passToken.token]);
+    }, [teamId, props.passToken.token, teamInfo]);
 
     const teamCards = teamInfo?.projects.map((project, index)=>(
         <DisplayCards key={ project._id + index } type={ 1 } project={ project } />
