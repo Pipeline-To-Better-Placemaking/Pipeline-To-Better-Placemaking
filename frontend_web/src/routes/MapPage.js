@@ -1,12 +1,17 @@
 import * as React from 'react';
+import { useParams } from 'react-router-dom';
+
 import Map from '../components/Map';
 import './routes.css';
 
 function MapPage(props) {
+    const id = useParams();
     const drawers = props.drawers;
     const title = props.title;
     const area = props.area;
     const center = props.center;
+
+    console.log(id);
 
     //Map Drawers moved inside Map component for more direct data Passing
     return (

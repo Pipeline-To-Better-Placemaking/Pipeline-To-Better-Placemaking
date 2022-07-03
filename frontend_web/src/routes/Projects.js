@@ -45,14 +45,13 @@ function Projects(props){
         //console.log(typeof(props.passToken.user.teams._id))
         //console.log(props.passToken.user.teams._id)
         try {
-            console.log("makes it to try")
+            console.log("makes it to try");
             const response = await axios.get(`/teams/${teamId}`,{ 
                 headers: { 
                     // 'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*', 
                     'Authorization': `Bearer ${props.passToken.token}` 
                 },
-
                 withCredentials: true
             });
             console.log(JSON.stringify(response.data));
@@ -118,7 +117,7 @@ function Projects(props){
             {/* type = 1 implies the project style cards */}
             {
                teamInfo?.projects.map((project, index)=>(
-                    <DisplayCards key={project._id+index}type={ 1 } project={ project }/>
+                    <DisplayCards key={ project._id+index }type={ 1 } project={ project }/>
                 ))
             }
         </div>
