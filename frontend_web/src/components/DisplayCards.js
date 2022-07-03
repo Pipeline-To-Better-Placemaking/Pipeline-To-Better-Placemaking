@@ -5,6 +5,7 @@ import CardActions from '@mui/material/CardActions';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 
 import '../routes/routes.css';
@@ -52,6 +53,7 @@ function DisplayCards(props) {
                 <CardActions>
                 <Button component={Link} to={`projects/${project._id}`} state={{ project: project.title, team: props.team, user: props.user }}>View</Button>
                 <Button component={Link} to={`edit/${project._id} `} state={{ project: project.title, team: props.team, user: props.user }}>Edit</Button>
+                <Button><DeleteIcon /></Button>
                 </CardActions>
             </Card>
     );
@@ -67,6 +69,7 @@ function DisplayCards(props) {
                 <CardActions>
                     <Button component={Link} to={`teams/${team._id}`} state={{ team: team.title, user: props.user }}>View Projects</Button>
                     <Button component={Link} to={`edit/${team._id}`} state={{ team: team.title, user: props.user }}>Edit Team</Button>
+                    <Button><DeleteIcon /></Button>
                 </CardActions>
             </Card>
         ))

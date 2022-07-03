@@ -10,9 +10,9 @@ function Projects(props){
     const teamAndUser = useLocation();
     const teamId = teamAndUser.pathname.split('/')[3];
     const [teamInfo, setTeamInfo] = React.useState();
-    const user = teamAndUser.state.user;
+    const user = teamAndUser.state ? teamAndUser.state.user : {};
 
-    console.log(`User ${user}`);
+    console.log(user);
     //const [loaded, setLoaded] = React.useState(false);
 
     //id from url
@@ -50,7 +50,7 @@ function Projects(props){
                 headers: {
                     // 'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
-                    'Authorization': `Bearer ${props.passToken.token}`
+                    'Authorization': `Bearer ${user.token}`
                 },
                 withCredentials: true
             });
@@ -90,6 +90,9 @@ function Projects(props){
                 teamInfo?.projects?.map((project, index) => (
                     <DisplayCards key={(project._id + index)} type={ 1 } project={ project } user={ teamAndUser.state.user } team={ teamAndUser.state.team }/>
                 ))
+                /*projects.map((project, index) => (
+                        <DisplayCards key={(project._id + index)} type={ 1 } project={ project } user={ {} } team={ {} }/>
+                )) */
             }
         </div>
     );
