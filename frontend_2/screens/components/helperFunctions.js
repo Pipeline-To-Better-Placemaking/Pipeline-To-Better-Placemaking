@@ -1,4 +1,3 @@
-
 export async function formatStationaryGraphData(result) {
   if (result === null ||
       result.data === undefined ||
@@ -233,7 +232,6 @@ const conDescSearch = (arr, str)=>{
   return -1;
 }
 
-// nothing in it, will need to set this up when I know what the data looks like
 export async function formatNatureGraphData(result){
   if (result === null ||
       result.data === undefined ||
@@ -244,7 +242,6 @@ export async function formatNatureGraphData(result){
     return result;
   }
   // each object in data are submitted results for that test
-  console.log(result);
   let tempResult = {...result};
   let graph = {
     animalData: [],
@@ -257,7 +254,6 @@ export async function formatNatureGraphData(result){
   };
   for(let i = 0; i < result.data.length; i++){
     let data = result.data[i]
-    //console.log(data)
     let index = -1;
     // format the points object (of each data object)
     for(let j = 0; j < data.points.length; j++){
@@ -289,10 +285,7 @@ export async function formatNatureGraphData(result){
           graph.animalLabels.push(string)
           graph.animalData.push(1);
         }
-        
       }
-
-
     }
     // format the water array (of each data object)
     for(let j = 0; j < data.water.length; j++){
@@ -313,6 +306,47 @@ export async function formatNatureGraphData(result){
   // set the weather info as the 1st data's weather
   graph.weather = result.data[0].weather;
 
+  // console.log("resulting graph data: ", graph);
+  tempResult.graph = {...graph};
+  return tempResult;
+}
+
+export async function formatLightGraphData(result){
+  if (result === null ||
+      result.data === undefined ||
+      result.data === null ||
+      result.data.length <= 0 ||
+      result.graph !== undefined
+    ) {
+    return result;
+  }
+  
+  console.log(result);
+
+  // each object in data are submitted results for that test
+  let tempResult = {...result};
+  let graph = {};
+  
+  // console.log("resulting graph data: ", graph);
+  tempResult.graph = {...graph};
+  return tempResult;
+}
+
+export async function formatOrderGraphData(result){
+  if (result === null ||
+      result.data === undefined ||
+      result.data === null ||
+      result.data.length <= 0 ||
+      result.graph !== undefined
+    ) {
+    return result;
+  }
+  console.log(result);
+
+  // each object in data are submitted results for that test
+  let tempResult = {...result};
+  let graph = {};
+  
   // console.log("resulting graph data: ", graph);
   tempResult.graph = {...graph};
   return tempResult;

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { ViewableArea, ContentContainer } from '../../components/content.component.js'
 import { HeaderBack } from '../../components/headers.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
-import { NatureMapResults } from '../../components/Maps/natureMapResults.component.js';
+import { LightMapResults } from '../../components/Maps/lightMapResults.component.js';
 
-export function NatureMapResultsView(props) {
+export function LightMapResultsView(props) {
     // this console log shows all the collected data for the test
     // console.log(props.selectedResult);
     
@@ -23,7 +23,7 @@ export function NatureMapResultsView(props) {
             <HeaderBack {...props} text={getDayStr(day)+ " - " + getTimeStr(startTime)}/>
             <ContentContainer>
 
-                <NatureMapResults
+                <LightMapResults
                     area={area}
                     position={position}
                     dataMarkers={data}

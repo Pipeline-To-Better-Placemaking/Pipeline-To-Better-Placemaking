@@ -295,9 +295,6 @@ export function NatureTest(props) {
         }
     }
 
-    // ignores the event emitter warnings in app (for dev. only)
-    // LogBox.ignoreAllLogs();
-
     // Main render
     return(
         <ViewableArea>

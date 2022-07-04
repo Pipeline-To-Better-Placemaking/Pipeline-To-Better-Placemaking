@@ -160,11 +160,67 @@ export async function getFilteredProjectDetails(project) {
       let removeIndex = projectDetails.natureCollections.findIndex(element => element._id === pastNatureCollections[i]._id);
       projectDetails.natureCollections.splice(removeIndex, 1);
     }
+    // light test
+    let pastLightCollections = [];
+    if(projectDetails.lightCollections != null) {
+      for(let i = 0; i < projectDetails.lightCollections.length; i++) {
+        let collection = projectDetails.lightCollections[i];
+        collection.test_type = 'light';
+        // handle date
+        collection.date = new Date(collection.date);
+        if (moment(today).isAfter(collection.date, 'day')) {
+          pastLightCollections.push(collection);
+        }
+        projectDetails.lightCollections[i] = collection;
+      }
+    }
+    // remove collections from the list that are in the past
+    for(let i = 0; i < pastLightCollections.length; i++) {
+      let removeIndex = projectDetails.lightCollections.findIndex(element => element._id === pastLightCollections[i]._id);
+      projectDetails.lightCollections.splice(removeIndex, 1);
+    }
+    // order test
+    let pastOrderCollections = [];
+    if(projectDetails.orderCollections != null) {
+      for(let i = 0; i < projectDetails.orderCollections.length; i++) {
+        let collection = projectDetails.orderCollections[i];
+        collection.test_type = 'order';
+        // handle date
+        collection.date = new Date(collection.date);
+        if (moment(today).isAfter(collection.date, 'day')) {
+          pastOrderCollections.push(collection);
+        }
+        projectDetails.orderCollections[i] = collection;
+      }
+    }
+    // remove collections from the list that are in the past
+    for(let i = 0; i < pastOrderCollections.length; i++) {
+      let removeIndex = projectDetails.orderCollections.findIndex(element => element._id === pastOrderCollections[i]._id);
+      projectDetails.orderCollections.splice(removeIndex, 1);
+    }
 
-    //add new tests stuff here
+    // add new tests here (above and then below)
     
-    projectDetails.activities = [...projectDetails.stationaryCollections, ...projectDetails.movingCollections, ...projectDetails.surveyCollections, ...projectDetails.soundCollections, ...projectDetails.boundariesCollections, ...projectDetails.natureCollections];
-    projectDetails.pastActivities = [...pastStationaryCollections, ...pastMovingCollections, ...pastSurveyCollections, ...pastSoundCollections, ...pastBoundariesCollections, ...pastNatureCollections];
+    projectDetails.activities = [
+      ...projectDetails.stationaryCollections, 
+      ...projectDetails.movingCollections, 
+      ...projectDetails.surveyCollections, 
+      ...projectDetails.soundCollections, 
+      ...projectDetails.boundariesCollections, 
+      ...projectDetails.natureCollections, 
+      ...projectDetails.lightCollections, 
+      ...projectDetails.orderCollections
+    ];
+    projectDetails.pastActivities = [
+      ...pastStationaryCollections, 
+      ...pastMovingCollections, 
+      ...pastSurveyCollections, 
+      ...pastSoundCollections, 
+      ...pastBoundariesCollections, 
+      ...pastNatureCollections,
+      ...pastLightCollections,
+      ...pastOrderCollections
+    ];
     return projectDetails;
   } else {
     return null;
@@ -491,6 +547,36 @@ export async function getAllCollectionInfo(collectionDetails) {
       }
       success = true
     }
+  } else if(collectionDetails.test_type === 'light'){
+    // get the collection info
+    collectionDetails = await getCollection('light/', collectionDetails);
+    success = (collectionDetails !== null);
+    // get the timeSlot info
+    if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
+      for (let i = 0; i < collectionDetails.maps.length; i++) {
+        let item = collectionDetails.maps[i];
+        let timeSlot = await getTimeSlot('light_maps/', item._id);
+        success = (timeSlot !== null)
+        if (success)
+          timeSlots.push(timeSlot);
+      }
+      success = true
+    }
+  } else if(collectionDetails.test_type === 'order'){
+    // get the collection info
+    collectionDetails = await getCollection('order/', collectionDetails);
+    success = (collectionDetails !== null);
+    // get the timeSlot info
+    if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
+      for (let i = 0; i < collectionDetails.maps.length; i++) {
+        let item = collectionDetails.maps[i];
+        let timeSlot = await getTimeSlot('order_maps/', item._id);
+        success = (timeSlot !== null)
+        if (success)
+          timeSlots.push(timeSlot);
+      }
+      success = true
+    }
   }
 
   // if successfully retrieved collection info, Update
@@ -515,6 +601,8 @@ export async function getAllResults(projectDetails) {
   results = await getSoundResults(projectDetails, results);
   results = await getBoundaryResults(projectDetails, results);
   results = await getNatureResults(projectDetails, results);
+  results = await getLightResults(projectDetails, results);
+  results = await getOrderResults(projectDetails, results);
   return  results;
 }
 
@@ -590,6 +678,32 @@ export async function getNatureResults(projectDetails, results) {
     for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
       let id = collection.maps[j];
       let tempObj = await helperGetResult(id, 'nature_maps/', "nature", collection, projectDetails);
+      results.push(tempObj);
+    }
+  }
+  return results;
+}
+
+export async function getLightResults(projectDetails, results) {
+  // loop through all Light Test collections and get all of the maps
+  for (let i = 0; i < projectDetails.lightCollections.length; i++) {
+    let collection = projectDetails.lightCollections[i];
+    for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
+      let id = collection.maps[j];
+      let tempObj = await helperGetResult(id, 'light_maps/', "light", collection, projectDetails);
+      results.push(tempObj);
+    }
+  }
+  return results;
+}
+
+export async function getOrderResults(projectDetails, results) {
+  // loop through all Order Test collections and get all of the maps
+  for (let i = 0; i < projectDetails.orderCollections.length; i++) {
+    let collection = projectDetails.orderCollections[i];
+    for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
+      let id = collection.maps[j];
+      let tempObj = await helperGetResult(id, 'order_maps/', "order", collection, projectDetails);
       results.push(tempObj);
     }
   }

@@ -14,7 +14,7 @@ export function CompareFilteredView(props) {
     const [titleIndex, setTitleIndex] = useState(new IndexPath(0))
     //add the new tests here
     // not index 2 is not for the survery here, index 2 is the sound test
-    const activities = ['People in Place', 'People in Motion', 'Acoustical Profile', 'Spatial Boundaries', 'Nature Prevalence']
+    const activities = ['People in Place', 'People in Motion', 'Acoustical Profile', 'Spatial Boundaries', 'Nature Prevalence', 'Lighting Profile', 'Absence of Order Locator']
 
     const selectedActivity = () => {
         if (titleIndex.row === 0) {
@@ -23,11 +23,6 @@ export function CompareFilteredView(props) {
         else if (titleIndex.row  === 1) {
           return props.filterCriteria.moving
         }
-        // survery is not allowed to be compared (nothing to compare)
-        // else if (titleIndex.row  === 2) {
-        //   return props.filterCriteria.survey
-        // }
-        //add the new tests here 
         else if (titleIndex.row === 2){
           return props.filterCriteria.sound
         }
@@ -36,6 +31,12 @@ export function CompareFilteredView(props) {
         }
         else if (titleIndex.row === 4){
           return props.filterCriteria.nature
+        }
+        else if (titleIndex.row === 5){
+          return props.filterCriteria.light
+        }
+        else if (titleIndex.row === 6){
+          return props.filterCriteria.order
         }
         else {
           return props.filterCriteria.all;
@@ -82,11 +83,7 @@ export function CompareFilteredView(props) {
       } 
       else if (titleIndex.row === 1) { // moving
         props.navigation.navigate("MovingCompare");
-      } 
-      // survery is not allowed to be compared (nothing to compare)
-      // else if (titleIndex.row === 2) { // survey
-
-      // }
+      }
       else if (titleIndex.row === 2){ // sound
         props.navigation.navigate("SoundCompare");
       }
@@ -95,6 +92,12 @@ export function CompareFilteredView(props) {
       }
       else if (titleIndex.row === 4){ // nature
         props.navigation.navigate("NatureCompare");
+      }
+      else if (titleIndex.row === 5){ // light
+        props.navigation.navigate("LightCompare");
+      }
+      else if (titleIndex.row === 6){ // order
+        props.navigation.navigate("OrderCompare");
       }
 
     }

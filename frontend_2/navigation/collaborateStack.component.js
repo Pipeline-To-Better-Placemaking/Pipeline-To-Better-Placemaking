@@ -6,12 +6,15 @@ import { Collaborate } from '../screens/Collaborate/collaborate.component';
 import { TeamPage } from '../screens/Collaborate/Team/team.component';
 import { ProjectPage } from '../screens/Collaborate/Project/project.component';
 import { ActivitySignUpPage } from '../screens/Collaborate/ResearchActivities/SignUp/activitySignUp.component';
+// the actual test's screens goes here
 import { StationaryActivity } from '../screens/Collaborate/ResearchActivities/Stationary/stationaryActivity.component'
 import { SurveyActivity } from '../screens/Collaborate/ResearchActivities/Survey/surveyActivity.component'
 import { PeopleMovingActivity } from '../screens/Collaborate/ResearchActivities/PeopleMoving/peopeMovingActivity.component';
 import { SoundTest } from '../screens/Collaborate/ResearchActivities/Sound/soundTest.component';
 import { BoundaryTest } from '../screens/Collaborate/ResearchActivities/Boundary/boundaryTest.component';
-import { NatureTest } from '../screens/Collaborate/ResearchActivities/Nature/natureTest.component'
+import { NatureTest } from '../screens/Collaborate/ResearchActivities/Nature/natureTest.component';
+import { LightTest } from '../screens/Collaborate/ResearchActivities/Light/lightTest.component';
+import { OrderTest } from '../screens/Collaborate/ResearchActivities/Order/orderTest.component';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -22,7 +25,7 @@ export function CollaborateStack(props) {
 
   // add new tests here
   // Array with activity names
-  const activityTypes = ['Stationary Map', 'People Moving', 'Survey', 'Sound', 'Boundary', 'Nature'];
+  const activityTypes = ['Stationary Map', 'People Moving', 'Survey', 'Sound', 'Boundary', 'Nature', 'Light', 'Order'];
 
   // These are used for api calls
   const [token, setToken] = useState(null);
@@ -283,6 +286,34 @@ export function CollaborateStack(props) {
         name="NatureTest">
         {props =>
           <NatureTest
+            {...props}
+            getSelectedActivity={activities}
+            initialTimeSlot={initialTimeSlot}
+            setTimeSlot={setTimeSlot}
+            timeSlot={timeSlot}
+            token={token}
+          />
+        }
+      </Screen>
+
+      <Screen
+        name="LightTest">
+        {props =>
+          <LightTest
+            {...props}
+            getSelectedActivity={activities}
+            initialTimeSlot={initialTimeSlot}
+            setTimeSlot={setTimeSlot}
+            timeSlot={timeSlot}
+            token={token}
+          />
+        }
+      </Screen>
+
+      <Screen
+        name="OrderTest">
+        {props =>
+          <OrderTest
             {...props}
             getSelectedActivity={activities}
             initialTimeSlot={initialTimeSlot}
