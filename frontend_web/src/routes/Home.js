@@ -4,15 +4,12 @@ import DisplayCards from '../components/DisplayCards';
 import { Link, useLocation } from 'react-router-dom';
 
 function Home() {
-    // props.passToken jwt token 
-    // holds passed token from App.js
-    // token should be held in storage or have some persistant location to pull if user navigates to other pages in a different order
-    //const teams = props.passToken.user?.teams
     const location = useLocation();
     const userTeams = location.state.userToken.user.teams;
-    console.log('Home');
-    console.log(location.state.userToken);
-    console.log(userTeams);
+    
+    //console.log('Home');
+    //console.log(location.state.userToken);
+    //console.log(userTeams);
 
     const teamsTemplate = [
         {
