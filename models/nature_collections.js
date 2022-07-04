@@ -6,7 +6,6 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Nature_Maps = require('./nature_maps.js')
 const Area = require('./areas.js')
-const { collection } = require('./surveys.js')
 
 // Document Schema for Nature Collections.  Maps references Nature Maps Schema
 

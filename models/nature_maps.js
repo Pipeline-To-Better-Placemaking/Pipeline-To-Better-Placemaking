@@ -133,10 +133,7 @@ module.exports.updateMap = async function (projectId, newMap) {
     )
 }
 
-module.exports.deleteMap = async function(mapId) {
-
-    const map = await Maps.findById(mapId)
-    
+module.exports.deleteMap = async function(mapId) {    
     return await Maps.findByIdAndDelete(mapId)
 }
 
@@ -151,8 +148,6 @@ module.exports.addEntry = async function(mapId, newEntry) {
         water: newEntry.water,
         time: newEntry.time
     })
-    console.log("Entry about to be created")
-    console.log(entry)
     return await Maps.updateOne(
         { _id: mapId },
         { $push: { data: entry}}

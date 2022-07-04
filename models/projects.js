@@ -4,8 +4,6 @@ const uniqueValidator = require('mongoose-unique-validator')
 const Area = require('../models/areas.js')
 const Standing_Point = require('../models/standing_points.js')
 const Stationary_Map = require('../models/stationary_maps.js')
-const Moving_Map = require('../models/moving_maps.js')
-const Survey = require('../models/surveys.js')
 const Stationary_Collection = require('../models/stationary_collections.js')
 const Moving_Collection = require('../models/moving_collections.js')
 const Survey_Collection = require('../models/survey_collections.js')
@@ -59,18 +57,18 @@ const project_schema = mongoose.Schema({
         type: ObjectId,
         ref: 'Nature_Collections'
     }],
-    // lightCollections:[{
-    //     type: ObjectId,
-    //     ref: 'Light_Collections'
-    // }],
+    lightCollections:[{
+        type: ObjectId,
+        ref: 'Light_Collections'
+    }],
     boundariesCollections:[{
         type: ObjectId,
         ref: 'Boundaries_Collections'
     }],
-    // orderCollections:[{
-    //     type: ObjectId,
-    //     ref: 'Order_Collections'
-    // }],
+    orderCollections:[{
+        type: ObjectId,
+        ref: 'Order_Collections'
+    }],
     surveyCollections:[{
         type: ObjectId,
         ref: 'Survey_Collections'
@@ -106,44 +104,43 @@ module.exports.deleteProject = async function(projectId) {
 
     await Stationary_Map.projectCleanup(project._id)
 
-    for(var i = 0; i < project.subareas.length; i++)   
+    for(var i = 0; i < project.subareas.length; i++){   
         await Area.findByIdAndDelete(project.subareas[i])
-    
-    for(var i = 0; i < project.standingPoints.length; i++)   
-        await Standing_Point.removeRefrence(project.standingPoints[i])
-
-    if(project.stationaryCollections.length){    
-    for(var i = 0; i < project.stationaryCollections.length; i++)   
-        await Stationary_Collection.deleteCollection(project.stationaryCollections[i])
     }
-
+    for(var i = 0; i < project.standingPoints.length; i++){  
+        await Standing_Point.removeRefrence(project.standingPoints[i])
+    }
+    if(project.stationaryCollections.length){    
+        for(var i = 0; i < project.stationaryCollections.length; i++)   
+            await Stationary_Collection.deleteCollection(project.stationaryCollections[i])
+    }
     if(project.movingCollections.length){    
-    for(var i = 0; i < project.movingCollections.length; i++)   
-        await Moving_Collection.deleteCollection(project.movingCollections[i])   
+        for(var i = 0; i < project.movingCollections.length; i++)   
+            await Moving_Collection.deleteCollection(project.movingCollections[i])   
     }
     if(project.soundCollections.length){    
-    for(var i = 0; i < project.soundCollections.length; i++)   
-        await Sound_Collection.deleteCollection(project.soundCollections[i])
+        for(var i = 0; i < project.soundCollections.length; i++)   
+            await Sound_Collection.deleteCollection(project.soundCollections[i])
     }
-
     if(project.boundariesCollections.length){    
-    for(var i = 0; i < project.boundariesCollections.length; i++)   
-        await Boundaries_Collection.deleteCollection(project.boundariesCollections[i])
+        for(var i = 0; i < project.boundariesCollections.length; i++)   
+            await Boundaries_Collection.deleteCollection(project.boundariesCollections[i])
     }
-
     if(project.natureCollections.length){    
-    for(var i = 0; i < project.natureCollections.length; i++)   
-        await Nature_Collection.deleteCollection(project.natureCollections[i])
+        for(var i = 0; i < project.natureCollections.length; i++)   
+            await Nature_Collection.deleteCollection(project.natureCollections[i])
     }
-
-    // for(var i = 0; i < project.lightCollections.length; i++)   
-    //     await Light_Collection.deleteCollection(project.lightCollections[i])   
-
-    // for(var i = 0; i < project.orderCollections.length; i++)   
-    //     await Order_Collection.deleteCollection(project.orderCollections[i])
+    if(project.lightCollections.length){
+        for(var i = 0; i < project.lightCollections.length; i++)   
+            await Light_Collection.deleteCollection(project.lightCollections[i])
+    }  
+    if(project.orderCollections.length){
+        for(var i = 0; i < project.orderCollections.length; i++)   
+            await Order_Collection.deleteCollection(project.orderCollections[i])
+    }s
     if(project.surveyCollections.length){    
-    for(var i = 0; i < project.surveyCollections.length; i++)   
-        await Survey_Collection.deleteCollection(project.surveyCollections[i])
+        for(var i = 0; i < project.surveyCollections.length; i++)   
+            await Survey_Collection.deleteCollection(project.surveyCollections[i])
     }
           
     return await Projects.findByIdAndDelete(projectId)

@@ -146,29 +146,16 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
-    console.log("This is the mapId: " + map)
     if(Map.isResearcher(map._id, user._id)){
-        console.log("Makes it in researcher condition")
         if(req.body.entries){
-            console.log("Array of arrays????")
-            console.log(req.body.entries)
-            console.log(typeof(req.body.entries))
-            console.log("length of object array")
-            console.log(Object.keys(req.body.entries).length)
             for(var i = 0; i < req.body.entries.length; i++){
-                console.log("user is researcher.  Multiple entries are as follows:")
-                console.log(req.body.entries[i])
                 await Map.addEntry(map._id,req.body.entries[i])
             } 
             res.status(201).json(await Map.findById(map._id))
         }
         else{
-            console.log("user is researcher.  Single entry is as follows:")
-            console.log(req.body)
-            const param = await Map.addEntry(map._id,req.body)
-            console.log("this is the return after adding to database:")
-            console.log(param)
-            res.json(param)
+
+            res.json(await Map.addEntry(map._id,req.body))
        }
     }
     else{

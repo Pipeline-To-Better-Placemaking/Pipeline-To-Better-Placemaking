@@ -6,7 +6,6 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Order_Maps = require('./order_maps.js')
 const Area = require('./areas.js')
-const { collection } = require('./surveys.js')
 
 // Document Schema for Order Collections.  Maps references Order Maps Schema
 const collection_schema = mongoose.Schema({

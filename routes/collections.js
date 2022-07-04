@@ -55,20 +55,20 @@ router.get('/nature/:id', passport.authenticate('jwt',{session:false}), async (r
 
 })
 
-// router.get('/light/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-//     res.status(200).json(await Light_Collection.findById(req.params.id)
-//                                                 .populate('area')
-//                                                 .populate('maps'))
+router.get('/light/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    res.status(200).json(await Light_Collection.findById(req.params.id)
+                                                .populate('area')
+                                                .populate('maps'))
 
-// })
+})
 
 
-// router.get('/order/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-//     res.status(200).json(await Order_Collection.findById(req.params.id)
-//                                                 .populate('area')
-//                                                 .populate('maps'))
+router.get('/order/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    res.status(200).json(await Order_Collection.findById(req.params.id)
+                                                .populate('area')
+                                                .populate('maps'))
 
-// })
+})
 
 router.get('/survey/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     res.status(200).json(await Survey_Collection.findById(req.params.id)

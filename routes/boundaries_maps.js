@@ -39,7 +39,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                 res.status(201).json(await Boundaries_Collection.findById(req.body.collection))
             }
             
-            //note that boundaries does not use any standing points
+        //note that boundaries does not use any standing points
 
         let newMap = new Map({
             title: req.body.title,

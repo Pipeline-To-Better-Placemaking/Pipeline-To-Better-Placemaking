@@ -4,14 +4,13 @@ const Map = require('../models/order_maps.js')
 const Project = require('../models/projects.js')
 const Order_Collection = require('../models/order_collections.js')
 const Team = require('../models/teams.js')
-const Points = require('../models/standing_points.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
-const config = require('../utils/config')
-const { models } = require('mongoose')
+
 
 const { UnauthorizedError, BadRequestError } = require('../utils/errors')
 
+//route creates new map(s).  If there are multiple time slots in test, multiple timseslots are created.
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.body.project)
@@ -24,7 +23,6 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
                 let newMap = new Map({
                     title: slot.title,
-                    standingPoints: slot.standingPoints,
                     researchers: slot.researchers,
                     project: req.body.project,
                     sharedData: req.body.collection,
@@ -32,15 +30,17 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                     maxResearchers: slot.maxResearchers,
                 })
 
+                //create new map with method from _map models and add ref to its parent collection.                
                 const map = await Map.addMap(newMap)
                 await Order_Collection.addActivity(req.body.collection, map._id)
 
                 res.status(201).json(await Order_Collection.findById(req.body.collection))
             }
 
+        //note that order test does not use any standing points
+        
         let newMap = new Map({
             title: req.body.title,
-            standingPoints: req.body.standingPoints,
             researchers: req.body.researchers,
             project: req.body.project,
             sharedData: req.body.collection,
@@ -57,9 +57,9 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     }   
 })
 
+//route gets all map data, including any collection data.
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     const map = await  Map.findById(req.params.id)
-                           .populate('standingPoints')
                            .populate('researchers','firstname lastname')
                            .populate([
                                {
@@ -75,11 +75,13 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     res.status(200).json(map)
 })
 
+//route signs team member up to a time slot.
 router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
     user = await req.user
     if(map.researchers.length < map.maxResearchers)
+        // adding an await in if statement below causes unwanted behavior.  Reason unkown
         if(Team.isUser(project.team,user._id)){
             res.status(200).json(await Map.addResearcher(map._id,user._id))
         }
@@ -89,6 +91,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
         throw new BadRequestError('Research team is already full')
 })
 
+//route reverses sign up to a time slot.
 router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
@@ -96,6 +99,7 @@ router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async 
 
 })
 
+//route edits time slot information when updating a map
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
@@ -104,20 +108,10 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
         title: (req.body.title ? req.body.title : map.title),
         date: (req.body.date ? req.body.date : map.date),
         maxResearchers: (req.body.maxResearchers ? req.body.maxResearchers : map.maxResearchers),
-        standingPoints: (req.body.standingPoints ? req.body.standingPoints : map.standingPoints)
     })
 
     project = await Project.findById(map.project)
 
-    if(req.body.standingPoints){
-
-        for(var i = 0; i < req.body.standingPoints.length; i++)
-            await Points.addRefrence(req.body.standingPoints[i])
-        
-        for(var i = 0; i < map.standingPoints.length; i++)
-            await Points.removeRefrence(map.standingPoints[i])
-
-    }
 
 
     if (await Team.isAdmin(project.team,user._id)){
@@ -130,6 +124,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     
 })
 
+//route deletes a map from a test collection
 router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
@@ -145,6 +140,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 
 })
 
+//route adds test data to its relevant time slot
 router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
@@ -164,6 +160,7 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
     }
 })
 
+//route edits any already created tested time slots.  Essentially redoing a test run for a time slot 
 router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user   
     mapId = req.params.id
@@ -179,17 +176,9 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             building_condition: (req.body.building_condition ? req.body.building_condition : oldData.building_condition),
             area_lighting: (req.body.area_lighting ? req.body.area_lighting : oldData.area_lighting),
             description: (req.body.description ? req.body.description : oldData.description),
-            standingPoint: (req.body.standingPoint ? req.body.standingPoint : oldData.standingPoint),
             time: (req.body.time ? req.body.time : oldData.time)
         }
 
-        if (req.body.area_lighting.length > 1)
-            throw new BadRequestError('Datapoints can only have one description for area lighting')
-
-        if(req.body.standingPoint){
-            Points.addRefrence(req.body.standingPoint)
-            Points.removeRefrence(oldData.standingPoint)
-        }
     
         await Map.updateData(mapId,oldData._id,newData)
         res.status(201).json(await Map.findById(req.params.id))
@@ -199,6 +188,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
     }  
 })
 
+//route deletes an individual time slot from a map
 router.delete('/:id/data/:data_id',passport.authenticate('jwt',{session:false}), async (req, res, next) => { 
     user = await req.user
     map = await Map.findById(req.params.id)

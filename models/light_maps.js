@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
-const Points = require('../models/standing_points.js')
 
 // Document Schema for data entry
 const dataSchema = mongoose.Schema({
@@ -24,19 +23,6 @@ const dataSchema = mongoose.Schema({
         required: true
     },
 
-    // time_of_day: {
-    //     type: String,
-    //     enum: ['morning','afternoon','night'],
-    //     required: true
-    // },
-    // may revisit later
-
-    standingPoint: {
-        type: ObjectId,
-        required: true,
-        ref: 'Standing_Points'
-    },
-
     time: {
         type: Date,
         required: true
@@ -55,11 +41,6 @@ const light_schema = mongoose.Schema({
         type: ObjectId,
         required: true
     },
-    standingPoints: [{
-        type: ObjectId,
-        required: true,
-        ref: 'Standing_Points'
-    }],
     researchers: [{
         type: ObjectId,
         required: true,
@@ -103,18 +84,11 @@ module.exports.updateMap = async function (projectId, newMap) {
             title: newMap.title,
             date: newMap.date,
             maxResearchers: newMap.maxResearchers,
-            standingPoints: newMap.standingPoints
         }}
     )
 }
 
 module.exports.deleteMap = async function(mapId) {
-
-    const map = await Maps.findById(mapId)
-
-    for(var i = 0; i < map.standingPoints.length; i++)
-        await Points.removeRefrence(map.standingPoints[i])
-    
     return await Maps.findByIdAndDelete(mapId)
 }
 
@@ -126,13 +100,9 @@ module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
 
         light_description: newEntry.light_description,
-        // time_of_day: newEntry.time_of_day,
-        standingPoint: newEntry.standingPoint,
         time: newEntry.time,
         location: newEntry.location
     })
-
-    await Points.addRefrence(newEntry.standingPoint)
 
     return await Maps.updateOne(
         { _id: mapId },
@@ -191,16 +161,6 @@ module.exports.updateData = async function(mapId, dataId, newEntry){
     )}
 
 module.exports.deleteEntry = async function(mapId, entryId) {
-    
-        const doc = await Maps.find(
-            {   
-                _id: mapId, 
-                data: { $elemMatch:  {_id:entryId }}
-            }
-        )
-    
-        await Points.removeRefrence(doc.data[0].standingPoint)
-    
         return await Maps.updateOne(
             { _id: mapId },
             { $pull: { data: {_id:entryId }}
