@@ -149,11 +149,12 @@ const AppNavBar = (props) => {
                             <Button
                                 component={ Link }
                                 to={ segmentLink(page === 'teams'  || page === 'projects' ? index+1 : index) }
+                                state={ location.state }
                                 key={ page }
                                 onClick={ handleCloseNavMenu }
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                    {page === 'teams' ? 'Projects' : (page === 'projects' ? 'Project Page' : page) }
+                                    { page === 'teams' ? 'Projects' : (page === 'projects' ? 'Project Page' : page) }
                             </Button>
                             : null
                         )) }
