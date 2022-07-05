@@ -27,8 +27,9 @@ export const styles = StyleSheet.create({
 
     buttonView:{
         width: width,
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-around',
         marginTop: - 70
     },
 

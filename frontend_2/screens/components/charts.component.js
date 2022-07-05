@@ -16,7 +16,7 @@ barColor={}
 width={}
 height={}
 */
-export function MyBarChart({children, ...props}) {
+export function MyBarChart({children, ...props}){
 
   if(props.dataLabels === null || props.dataLabels.length <= 0) {
     return null;
@@ -121,9 +121,9 @@ export function MyBarChart({children, ...props}) {
       </View>
     </View>
   );
-};
+}
 
-export function CompareBarChart({children, ...props}) {
+export function CompareBarChart({children, ...props}){
 
   if(props.dataLabels === null || props.dataLabels.length <= 0) {
     return null;
@@ -243,7 +243,7 @@ export function CompareBarChart({children, ...props}) {
       </View>
     </View>
   );
-};
+}
 
 export function MyPieChart(props){
   // if there are not any values for the passed in object, don't render anything

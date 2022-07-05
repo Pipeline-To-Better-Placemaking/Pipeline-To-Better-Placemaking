@@ -177,7 +177,7 @@ export function LightTest(props) {
     }
 
     // ignores the event emitter warnings in app (for dev. only)
-    LogBox.ignoreAllLogs();
+    // LogBox.ignoreAllLogs();
 
     // Main render
     return(

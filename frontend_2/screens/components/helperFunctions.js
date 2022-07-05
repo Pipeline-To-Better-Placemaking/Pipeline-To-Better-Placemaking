@@ -255,36 +255,35 @@ export async function formatNatureGraphData(result){
   for(let i = 0; i < result.data.length; i++){
     let data = result.data[i]
     let index = -1;
-    // format the points object (of each data object)
-    for(let j = 0; j < data.points.length; j++){
-      // the current data point is for vegetation
-      if(data.points[j].kind === "Vegetation"){
-        index = conDescSearch(graph.vegetationLabels, data.points[j].description)
-        // that description is already formatted, so increase its count
-        if(index !== -1){
-          graph.vegetationData[index] += 1;
-        }
-        // otherwise add that description into the labels and increase its count
-        else{
-          graph.vegetationLabels.push(data.points[j].description)
-          graph.vegetationData.push(1);
-        }
+    // format the animal object array
+    for(let j = 0; j < data.animal.length; j++){
+      let type = data.points[j].kind
+      if(type === "Domesticated") type = "Domestic"
+      let string = type.concat("\n", data.points[j].description)
+      index = conDescSearch(graph.animalLabels, string)
+      // that description is already formatted, so increase its count
+      if(index !== -1){
+        graph.animalData[index] += 1;
       }
-      // otherwise, its an animal data point
+      // otherwise add that description into the labels and increase its count
       else{
-        let type = data.points[j].kind
-        if(type === "Domesticated") type = "Domestic"
-        let string = type.concat("\n", data.points[j].description)
-        index = conDescSearch(graph.animalLabels, string)
-        // that description is already formatted, so increase its count
-        if(index !== -1){
-          graph.animalData[index] += 1;
-        }
-        // otherwise add that description into the labels and increase its count
-        else{
-          graph.animalLabels.push(string)
-          graph.animalData.push(1);
-        }
+        graph.animalLabels.push(string)
+        graph.animalData.push(1);
+      }
+    }
+    // format the vegetation array (of each data object) (need to check if this works)
+    for(let j = 0; j < data.vegetation.length; j++){
+      index = conDescSearch(graph.vegetationLabels, data.vegetation[j].description)
+      // that description is already formatted, so increase its count
+      if(index !== -1){
+        let num = graph.vegetationData[index] + data.vegetation[j].area;
+        let string = num.toFixed(2)
+        graph.vegetationData[index] = parseFloat(string)
+      }
+      // otherwise add that description into labels and it's area into data
+      else{
+        graph.vegetationLabels.push(data.vegetation[j].description)
+        graph.vegetationData.push(data.vegetation[j].area)
       }
     }
     // format the water array (of each data object)

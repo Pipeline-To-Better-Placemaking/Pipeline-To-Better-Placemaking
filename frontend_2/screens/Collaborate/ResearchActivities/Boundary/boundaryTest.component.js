@@ -194,7 +194,6 @@ export function BoundaryTest(props){
             //console.log(count);
             // when timer hits 0, end the test (is a time at site test)
             if(count === 0){
-                console.log('timer hits 0');
                 // clear the interval to avoid resuming timer issues
                 clearInterval(id);
                 setStart(false);

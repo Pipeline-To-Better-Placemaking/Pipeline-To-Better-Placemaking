@@ -8,9 +8,16 @@ import { styles } from './sharedMap.styles';
 export function NatureMap(props) {
 
     // Custom colored data pin
-    const DataPin = (props) =>{
+    const DataPin = () =>{
         return(
-            <View style={[styles.natureDataPin, {backgroundColor: props.color}]} />
+            <View style={styles.natureDataPin} />
+        )
+    }
+    
+    // Custom colored data pin used for plotting polygons
+    const TempDataPin = (props) =>{
+        return(
+            <View style={[styles.dataPin, {backgroundColor: props.color}]} />
         )
     }
     
@@ -23,7 +30,7 @@ export function NatureMap(props) {
         else{
             return(
                 <MapView.Marker coordinate={props.marker} >
-                    <DataPin color={'red'} />
+                    <DataPin />
                 </MapView.Marker>
             )
         }
@@ -36,21 +43,15 @@ export function NatureMap(props) {
         }
 
         else{
-            //console.log(props.dataPoints)
             let obj = [];
             for(let i = 0; i < props.dataPoints.length; i++){
-                // set as color for the animal type
-                let color = "#B06A24";
-                // only change color if its for the Vegetation type
-                if(props.dataPoints[i].kind === "Vegetation") color = "#00FF00"
+                //if(props.dataPoints[i].kind === "Vegetation") color = "#00FF00"
                 obj[i] = ( 
                     <MapView.Marker
                         key={i.toString()}
                         coordinate={props.dataPoints[i].marker}
                     >
-                        <DataPin
-                            color={color}
-                        />
+                        <DataPin />
                     </MapView.Marker>
                 )
             }
@@ -62,30 +63,37 @@ export function NatureMap(props) {
         }
     }
 
-    // renders current body of water being drawn
+    // renders current polygon being drawn
     const CreatePoly = () => {
         if(props.markers === null || props.markers.length == 0) {
             return (null);
         }
 
         else if (props.markers.length == 1) {
+            // set the color as the vegetation color
+            let color = '#00FF00';
+            // change it only if it is a body of water
+            if(props.polyType === 0) color = 'red'
             return (props.markers.map((coord, index) => (
                 <MapView.Marker
                         key={index}
                         coordinate = {props.markers[0]}
                     >
-                        <DataPin color={'red'} />
+                        <TempDataPin color={color} />
                     </MapView.Marker>
             )));
 
         }
         else if (props.markers.length === 2) {
-
+            // set the color as the vegetation color
+            let color = '#00FF00';
+            // change it only if it is a body of water
+            if(props.polyType === 0) color = 'red'
             return (
                 <MapView.Polyline
                     coordinates={props.markers}
                     strokeWidth={3}
-                    strokeColor={'red'}
+                    strokeColor={color}
                 />
             );
         }
@@ -105,6 +113,10 @@ export function NatureMap(props) {
             return (null);
         }
         else {
+            // set the color as the vegetation color
+            let color = '#00FF00';
+            // change it only if it is a body of water
+            if(props.polyType === 0) color = 'red'
             return (
                 props.markers.map((coord, index) => (
                 <MapView.Marker
@@ -114,7 +126,7 @@ export function NatureMap(props) {
                         longitude: coord.longitude
                     }}
                 >
-                    <DataPin color={'red'}/>
+                    <TempDataPin color={color}/>
                 </MapView.Marker>
              )))
          }
@@ -129,6 +141,33 @@ export function NatureMap(props) {
                     <MapView.Polygon
                         coordinates={obj}
                         strokeWidth={0}
+                        key={index}
+                    />
+                ))
+            )
+        }
+        // otherwise return null
+        else return null
+
+    }
+
+    // renders submitted vegetation
+    const Vegetation = () =>{
+        // if there is a truthy value in the 1st vege path then render the vegetation paths
+        if(props.vege[0]){
+            // used to convert polygon arrays into enclosed line arrays (for consistent color)
+            let paths = props.vege;
+            let linePaths = [];
+            let len = props.vege.length;
+            // adds the 1st point to the end of each path object
+            for(let i = 0; i < len; i++) linePaths[i] = paths[i].concat(paths[i][0]);
+            
+            return(
+                linePaths.map((obj, index) => (
+                    <MapView.Polyline
+                        coordinates={obj}
+                        strokeWidth={3}
+                        strokeColor={'#00FF00'}
                         key={index}
                     />
                 ))
@@ -160,6 +199,8 @@ export function NatureMap(props) {
                 <ShowPoints />
 
                 <BodyOfWater />
+
+                <Vegetation />
 
                 <AddPoint />
 

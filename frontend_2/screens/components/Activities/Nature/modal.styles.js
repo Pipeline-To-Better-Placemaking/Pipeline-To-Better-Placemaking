@@ -14,16 +14,24 @@ export const styles = StyleSheet.create({
         flex: 1
     },
 
-    viewContainer: {
-        height: '47%',
+    viewContainer:{
+        height: '45%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
         borderWidth: 1
     },
 
-    waterViewContainer: {
+    waterViewContainer:{
         height: '38%',
+        marginTop: 'auto',
+        borderTopLeftRadius: 35,
+        borderTopRightRadius: 35,
+        borderWidth: 1
+    },
+
+    vegeViewContainer:{
+        height: '30%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -72,6 +80,12 @@ export const styles = StyleSheet.create({
         alignSelf:'center'
     },
 
+    vegeButton:{
+        width: width * .28,
+        height: height * .062, 
+        alignSelf:'center'
+    },
+
     backButton:{
         width: width * .3,
         height: height * .04, 
@@ -106,19 +120,11 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 5
     },
-    
-    // for dataModal
-    dataViewContainer: {
-        height: '50%',
-        marginTop: 'auto',
-        borderTopLeftRadius: 35,
-        borderTopRightRadius: 35,
-        borderWidth: 1
-    },
 
     typeView:{
         height: '100%',
         width: '90%',
+        marginTop: height * .01,
     },
 
     dataButtonRow:{
@@ -137,6 +143,7 @@ export const styles = StyleSheet.create({
     },
 
     backButtonView:{
+        marginTop: height * .015,
         paddingBottom: 30
     }
 

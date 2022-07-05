@@ -6,7 +6,7 @@ import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { helperGetResult, deleteTimeSlot, getProject, getAllResults, isUserTeamOwner } from '../../components/apiCalls';
 import { formatNatureGraphData } from '../../components/helperFunctions';
-import { MyBarChart } from '../../components/charts.component';
+import { MyBarChart, MyPieChart } from '../../components/charts.component';
 
 import { styles } from './resultPage.styles';
 
@@ -222,7 +222,7 @@ export function NatureResultPage(props) {
             height={chartHeight}
           />
 
-          <MyBarChart
+          {/* <MyBarChart
             {...props}
             title={"Vegetation Data"}
             rotation={'0deg'}
@@ -231,9 +231,9 @@ export function NatureResultPage(props) {
             barColor={color}
             width={chartWidth}
             height={chartHeight}
-          />
+          /> */}
 
-          <MyBarChart
+          {/* <MyBarChart
             {...props}
             title={"Water Data (area in ft²)"}
             rotation={'0deg'}
@@ -242,7 +242,7 @@ export function NatureResultPage(props) {
             barColor={color}
             width={chartWidth}
             height={chartHeight}
-          />
+          /> */}
           
           
           

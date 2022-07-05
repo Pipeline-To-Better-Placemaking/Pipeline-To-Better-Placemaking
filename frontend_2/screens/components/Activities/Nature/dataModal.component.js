@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Modal} from 'react-native';
 import { useTheme, Text, Button } from '@ui-kitten/components';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import { styles } from './modal.styles';
-import { ScrollView } from 'react-native-gesture-handler';
 
 export function DataModal(props) {
 
@@ -23,65 +23,51 @@ export function DataModal(props) {
     return(
         <Modal transparent={true} animationType='slide' visible={props.visible}>
             <View style={styles.modalContainer}>
-                <View style={[ styles.dataViewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
+                <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                     <ScrollView>
-                    <Text category={'h1'} style={styles.titleText}>Nature Data</Text>
-                    <Text category={'s1'} style={styles.titleLine}>__________________________</Text>
-                    <View style={styles.dataView}>
-                                
-                        <View style={styles.titleDesc}>
-                            <Text category={'s1'} style={styles.titleDescTxt}>Select the best description from the appropriate type for the marker you created</Text>
-                        </View>
-
-                        <View style={styles.typeView}>
-                            <Text category={'h4'}>Animal</Text>
-                            <View>
-                                <Text category={'s1'} style={styles.titleDescTxt}>Domesticated</Text>
-                                <View style={styles.dataButtonRow}>
-                                    <Button style={styles.button} onPress={()=> sendData("Domesticated", "Dog")}>Dog</Button>
-                                    <Button style={styles.button} onPress={()=> sendData("Domesticated", "Cat")}>Cat</Button>
-                                </View>
-                                <View style={styles.lastDataButtonView}>
-                                    <Button style={styles.button} onPress={()=> sendData("Domesticated", "Other")}>Other</Button>
-                                </View>
+                        <Text category={'h1'} style={styles.titleText}>Animal Data</Text>
+                        <Text category={'s1'} style={styles.titleLine}>__________________________</Text>
+                        <View style={styles.dataView}>
+                                    
+                            <View style={styles.titleDesc}>
+                                <Text category={'s1'} style={styles.titleDescTxt}>Select the best description for the marker you created</Text>
                             </View>
 
-                            <View>
-                                <Text category={'s1'} style={styles.titleDescTxt}>Wild</Text>
-                                <View style={styles.dataButtonRow}>
-                                    <Button style={styles.button} onPress={()=> sendData("Wild", "Squirrel")}>Squirrel</Button>
-                                    <Button style={styles.button} onPress={()=> sendData("Wild", "Bird")}>Bird</Button>
+                            <View style={styles.typeView}>
+                                <View>
+                                    <Text category={'s1'}>Domesticated</Text>
+                                    <View style={styles.dataButtonRow}>
+                                        <Button style={styles.button} onPress={()=> sendData("Domesticated", "Dog")}>Dog</Button>
+                                        <Button style={styles.button} onPress={()=> sendData("Domesticated", "Cat")}>Cat</Button>
+                                    </View>
+                                    <View style={styles.lastDataButtonView}>
+                                        <Button style={styles.button} onPress={()=> sendData("Domesticated", "Other")}>Other</Button>
+                                    </View>
                                 </View>
-                                <View style={styles.dataButtonRow}>
-                                    <Button style={styles.button} onPress={()=> sendData("Wild", "Rabbit")}>Rabbit</Button>
-                                    <Button style={styles.button} onPress={()=> sendData("Wild", "Otter")}>Otter</Button>
+
+                                <View>
+                                    <Text category={'s1'}>Wild</Text>
+                                    <View style={styles.dataButtonRow}>
+                                        <Button style={styles.button} onPress={()=> sendData("Wild", "Squirrel")}>Squirrel</Button>
+                                        <Button style={styles.button} onPress={()=> sendData("Wild", "Bird")}>Bird</Button>
+                                    </View>
+                                    <View style={styles.dataButtonRow}>
+                                        <Button style={styles.button} onPress={()=> sendData("Wild", "Rabbit")}>Rabbit</Button>
+                                        <Button style={styles.button} onPress={()=> sendData("Wild", "Duck")}>Duck</Button>
+                                    </View>
+                                    <View style={styles.dataButtonRow}>
+                                        <Button style={styles.button} onPress={()=> sendData("Wild", "Turtle")}>Turtle</Button>
+                                        <Button style={styles.button} onPress={()=> sendData("Wild", "Other")}>Other</Button>
+                                    </View>
                                 </View>
-                                <View style={styles.dataButtonRow}>
-                                    <Button style={styles.button} onPress={()=> sendData("Wild", "Turtle")}>Turtle</Button>
-                                    <Button style={styles.button} onPress={()=> sendData("Wild", "Other")}>Other</Button>
+
+                                <View style={styles.backButtonView}>
+                                    <Button style={styles.backButton} onPress={() => props.back()}>Back</Button>
                                 </View>
+
                             </View>
-                            
-
-                            <Text category={'h4'} style={styles.typeSpace}>Vegetation</Text>
-                            <View>
-                                <View style={styles.dataButtonRow}>
-                                    <Button style={styles.button} onPress={()=> sendData("Vegetation", "Native")}>Native</Button>
-                                    <Button style={styles.button} onPress={()=> sendData("Vegetation", "Design")}>Design</Button>
-                                </View>
-                                <View style={styles.lastDataButtonView}>
-                                    <Button style={styles.button} onPress={()=> sendData("Vegetation", "Open Field")}>Open Field</Button>
-                                </View>
-                            </View>
-
-
-                            <View style={styles.backButtonView}>
-                                <Button style={styles.backButton} onPress={() => props.back()}>Back</Button>
-                            </View>
-
-                        </View>
-                    </View>     
-                    </ScrollView>                 
+                        </View>  
+                    </ScrollView>               
                 </View>
             </View>
         </Modal>
