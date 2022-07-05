@@ -39,12 +39,7 @@ function Projects(props){
     ]);
 
     const teamPull = async () => {
-        //console.log("teams")
-        //console.log(typeof(props.passToken.user.teams))
-        //console.log(props.passToken.user.teams)
-        //console.log("teams id")
-        //console.log(typeof(props.passToken.user.teams._id))
-        //console.log(props.passToken.user.teams._id)
+        
         try {
             console.log("makes it to try");
             const response = await axios.get(`/teams/${teamId}`, {
@@ -69,8 +64,6 @@ function Projects(props){
 
     React.useEffect(() => {
         teamPull();
-        //setLoaded(true)
-        //teamProjects()
     },[]);
 
     return(

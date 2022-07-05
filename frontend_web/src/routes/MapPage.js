@@ -11,35 +11,7 @@ function MapPage(props) {
     const area = props.area;
     const center = props.center;
 
-    console.log(id);
-
-    /*const teamProjects = async() => {
-        // There can be multiple projects
-        let projectIds = teamInfo?.projects;
-
-        try {
-            const response = await axios.get({
-                url: `https://p2bp.herokuapp.com/api/projects/${projectId._id}`, 
-                method: 'GET',
-                headers: { 
-                    Accept: 'application/json', 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + props.passToken.token },
-                    params: {
-                        _id: projectId._id
-                    },
-                    withCredentials: true
-            });
-            console.log(project info)
-            console.log(JSON.stringify(response.data));
-            const proj = projects;
-            proj.push(response.data);
-            setProjects(proj);
-            
-        } catch(error){
-            //proget api get error
-            console.log('ERROR: ', error);
-            return;
-        }
-    }*/
+    //console.log(id);
 
     //Map Drawers moved inside Map component for more direct data Passing
     return (

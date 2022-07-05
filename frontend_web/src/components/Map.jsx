@@ -279,7 +279,7 @@ function FullMap(props) {
                                 boundsPathWindow={boundsPathWindow}
                             /> 
                             :
-                            (point.kind === 'Shelter' || point.kind === 'Material' || point.result === 'Water' ? 
+                            (point.kind === 'Shelter' || point.kind === 'Material' || point.result === 'Water' || point.kind === 'Vegetation' ? 
                                 <Bounds 
                                     key={`${sdate}.${time}.${i2}`} 
                                     title={title} 
@@ -331,7 +331,7 @@ function FullMap(props) {
                     places={ mapPlaces }
                     zoom={ zoom }
                 >
-                    { areaData ? <Bounds area={areaData} type={'area'} /> :  null }
+                    { areaData ? areaData.map((area, index) => (<Bounds area={area} type={'area'} />)) :  null }
                     { props.type === 1 ? 
                         actCoords(collections) : 
                         (props.type === 2 || props.type === 4 ? 
@@ -341,7 +341,7 @@ function FullMap(props) {
                     { props.type === 0 ? <Places map={map} onChange={placeOn ? onChange : null} on={placeOn} togglePlaces={togglePlaces} onClick={onPClick} center={center} zoom={zoom} /> : null }
                     {/* Change marker types for non center markers to show difference */}
                     { props.type === 3 || props.type === 5 ? clicks.map((latLng, i) => (<Marker key={i} position={ latLng } info={`<div>Position ${i}</div>`}/>)) : null }
-                    { props.type === 4 ? NewArea(clicks,updateKey) : null } {/*<DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null */}
+                    { props.type === 4 ? NewArea(clicks, updateKey) : null } {/*<DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null */}
                 </Map>
             </Wrapper>
             { props.type === 4 ?
@@ -351,7 +351,7 @@ function FullMap(props) {
                         className='newHoveringButtons confirm'
                         component={ Link }
                         to='points'
-                        state={({ center: center, title: title, area: clicks, zoom: zoom })}
+                        state={({ center: center, title: title, area: [clicks], zoom: zoom })}
                     >
                         Set Bounds
                     </Button>

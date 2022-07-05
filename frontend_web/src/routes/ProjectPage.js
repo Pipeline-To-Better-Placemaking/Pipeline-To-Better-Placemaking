@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-
+import axios from '../api/axios.js';
 import MapPage from './MapPage';
 import TabPanel from '../components/ProjectTabPanel';
 import ActivityPage from './ActivityPage';
@@ -8,9 +8,14 @@ import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
 
 function ProjectPage(){
+    //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
+    const loc = useLocation();
+    const [projectInfo, setProjectInfo] = React.useState();
+    const user = loc.state ? loc.state.userToken : {};
     // Project section separated for handling project data
     // can be reached at (heroku-url)/home/teams/:id/project/:id 
     // Selected Project's data will be loaded here to pass into its relevant components 
+    const projectId = loc.pathname.split('/')[5];
 
     const drawers = {
         Activities: {
@@ -360,42 +365,48 @@ function ProjectPage(){
                                     lat: 28.603369329889514,
                                     lng: -81.20129371852886
                                 },
-                                result: 'plants'
+                                description: 'Design',
+                                kind: 'Vegetation'
                             },
                             {
                                 point: {
                                     lat: 28.603868558748708,
                                     lng: -81.19963074866048
                                 },
-                                result: 'animals'
+                                description: 'Native',
+                                kind: 'Vegetation'
                             },
                             {
                                 point: {
                                     lat: 28.602512158058847,
                                     lng: -81.19971657935157
                                 },
-                                result: 'plants'
+                                description: 'Dog',
+                                kind: 'Wild'
                             },
                             {
                                 point: {
                                     lat: 28.60181511200448,
                                     lng: -81.19970585051519
                                 },
-                                result: 'plants'
+                                description: 'Bird',
+                                kind: 'Wild'
                             },
                             {
                                 point: {
                                     lat: 28.602578094603327,
                                     lng: -81.20119715877513
                                 },
-                                result: 'plants'
+                                description: 'Dog',
+                                kind: 'Domesticated'
                             },
                             {
                                 point: {
                                     lat: 28.599999473663722,
                                     lng: -81.20118911211877
                                 },
-                                result: 'plants'
+                                description: 'Cat',
+                                kind: 'Domesticated'
                             },
                             {
                                 path: [
@@ -440,8 +451,8 @@ function ProjectPage(){
                                         lng: -81.20091016250205
                                     }
                                 ],
-                                result: 'Water',
-                                value: 400
+                                description: 'Lake',
+                                area: 400
                             }
                         ]
                     }
@@ -834,9 +845,33 @@ function ProjectPage(){
     // May load coords in Project Page
     const center = { lat: 28.602846550128262, lng: -81.20006526689143 };
 
-    //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
-    const loc = useLocation();
     //loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
+
+    const projectData = async() => {
+        try {
+
+            const response = await axios.get(`/projects/${projectId}`, {
+                headers: {
+                    // 'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${user.token}`
+                },
+                withCredentials: true
+            });
+
+            console.log(response.data);
+            setProjectInfo(response.data);
+            
+        } catch(error){
+            //proget api get error
+            console.log('ERROR: ', error);
+            return;
+        }
+    }
+
+    React.useEffect(() => {
+        projectData();
+    }, []);
 
     return (
         <div id='ProjectPage'>
