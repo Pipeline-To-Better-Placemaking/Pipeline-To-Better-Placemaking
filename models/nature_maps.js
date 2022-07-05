@@ -9,7 +9,7 @@ const Points = require('../models/standing_points.js')
 const dataSchema = mongoose.Schema({
 
        
-    points: [{
+    animal: [{
 
         kind:{
             type: String,
@@ -47,26 +47,26 @@ const dataSchema = mongoose.Schema({
         }
     },
 
-    // vegetation: [{
-    //     area: {
-    //         type: Number,
-    //     },
+    vegetation: [{
+        area: {
+            type: Number,
+        },
 
-    //     description: {
-    //         type: String,
-    //     },
+        description: {
+            type: String,
+        },
 
-    //     location: [{
+        location: [{
 
-    //         latitude: {
-    //             type: Number,
-    //         },
+            latitude: {
+                type: Number,
+            },
 
-    //         longitude: {
-    //             type: Number,
-    //         }
-    //     }]
-    // }],
+            longitude: {
+                type: Number,
+            }
+        }]
+    }],
 
     water: [{
         area: {
@@ -164,10 +164,10 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-        points: newEntry.points,
+        animal: newEntry.animal,
         weather: newEntry.weather,
         water: newEntry.water,
-        // vegetation: newEntry.vegetation,
+        vegetation: newEntry.vegetation,
         time: newEntry.time
     })
     return await Maps.updateOne(
