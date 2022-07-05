@@ -37,6 +37,21 @@ export const styles = StyleSheet.create({
         borderColor: 'red',
     },
 
+    lightDataPinCircle:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 150, 
+        borderWidth: 1.5, 
+        width: 40, 
+        height: 40,
+    },
+
+    lightDataPin:{
+        borderRadius: 75, 
+        width: 10, 
+        height: 10,
+    },
+
     dataCallOutView:{
         flexDirection: 'column', 
         margin:10

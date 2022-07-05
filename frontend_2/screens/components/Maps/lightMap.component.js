@@ -10,7 +10,9 @@ export function LightMap(props) {
     // Custom colored data pin
     const DataPin = (props) =>{
         return(
-            <View style={[styles.natureDataPin, {backgroundColor: props.color}]} />
+            <View style={[styles.lightDataPinCircle, {backgroundColor: props.colorFill, borderColor: props.color}]}>
+                <View style={[styles.lightDataPin, {backgroundColor: props.color}]} />
+            </View>
         )
     }
     
@@ -23,7 +25,7 @@ export function LightMap(props) {
         else{
             return(
                 <MapView.Marker coordinate={props.marker} >
-                    <DataPin color={'red'} />
+                    <DataPin color={'#FD0000'} colorFill={'rgba(253, 0, 0, .5)'} />
                 </MapView.Marker>
             )
         }
@@ -39,17 +41,29 @@ export function LightMap(props) {
             //console.log(props.dataPoints)
             let obj = [];
             for(let i = 0; i < props.dataPoints.length; i++){
-                // set as color for the animal type
-                let color = "#B06A24";
+                let color;
+                let colorFill;
                 // only change color if its for the Vegetation type
-                if(props.dataPoints[i].kind === "Vegetation") color = "#00FF00"
+                if(props.dataPoints[i].light_description === "Rhythmic"){
+                    color = "#FFE371"
+                    colorFill = 'rgba(255, 227, 113, .5)'
+                }
+                else if(props.dataPoints[i].light_description === "Building"){
+                    color = "#FF9933"
+                    colorFill = 'rgba(255, 153, 51, .5)'
+                }
+                else{
+                    color = '#FF00FF'
+                    colorFill = 'rgba(255, 0, 255, .5)'
+                }
                 obj[i] = ( 
                     <MapView.Marker
                         key={i.toString()}
-                        coordinate={props.dataPoints[i].marker}
+                        coordinate={props.dataPoints[i].location}
                     >
                         <DataPin
                             color={color}
+                            colorFill={colorFill}
                         />
                     </MapView.Marker>
                 )
@@ -67,7 +81,7 @@ export function LightMap(props) {
             {/* main mapview container */}
             <PressMapAreaWrapper
                 area={props.area}
-                mapHeight={'95%'}
+                mapHeight={'97.5%'}
                 onPress={props.addMarker}
             >
                 {/* shows the project area on the map */}

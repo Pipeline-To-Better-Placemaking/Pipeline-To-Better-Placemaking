@@ -3,7 +3,8 @@ import { View, LogBox } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button } from '@ui-kitten/components';
-// import { OrderMap } from '../../../components/Maps/orderMap.component.js';
+import { OrderMap } from '../../../components/Maps/orderMap.component.js';
+import { DataModal } from '../../../components/Activities/Order/dataModal.component';
 import CountDown from 'react-native-countdown-component';
 
 import { styles } from './orderTest.styles';
@@ -39,9 +40,7 @@ export function OrderTest(props) {
         clearInterval(id);
 
         // close any of the modals that may be open when the test ends (timer hits 0 while in a modal)
-        // if(dataModal) setDataModal(false);
-        // if(waterModal) setWaterModal(false);
-        // if(errorModal) setErrorModal(false);
+        if(dataModal) setDataModal(false);
         
         // // package the data; needs to be an array for multiple entries for a test
         // let data =[{
@@ -87,7 +86,8 @@ export function OrderTest(props) {
     // Closes the modal and saves the data point
     const closeData = async (inf) => {
         // save the data point to be rendered
-        dataPoints.push(inf);
+        console.log(inf)
+        
         setDataModal(false);
         setTempMarker();
     }
@@ -169,6 +169,13 @@ export function OrderTest(props) {
         )
     }
 
+    // closes the modals without submitting anything
+    const goBack = () =>{
+        // reset the tempMarker and close the modal
+        setTempMarker();
+        setDataModal(false);
+    }
+
     // ignores the event emitter warnings in app (for dev. only)
     LogBox.ignoreAllLogs();
 
@@ -180,18 +187,18 @@ export function OrderTest(props) {
 
                 <TimeBar/>
 
-                {/* <DataModal
+                <DataModal
                     visible={dataModal}
                     closeData={closeData}
-                    point={tempMarker}
                     back={goBack}
-                /> */}
+                />
 
-                {/* <OrderMap
+                <OrderMap
                     area={area}
                     marker={tempMarker}
                     dataPoints={dataPoints}
-                /> */}
+                    addMarker={onPointCreate}
+                />
 
             </ContentContainer>
         </ViewableArea>
