@@ -102,8 +102,8 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-        time: newEntry.time,
-        points: newEntry.points
+        points: newEntry.points,
+        time: newEntry.time
     })
 
     return await Maps.updateOne(
