@@ -177,6 +177,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             points: (req.body.points ? req.body.points : oldData.points),
             weather: (req.body.weather ? req.body.weather : oldData.weather),
             water: (req.body.water ? req.body.water : oldData.water),
+            // vegetation: (req.body.vegetation ? req.body.vegetation : oldData.vegetation),            
             time: (req.body.time ? req.body.time : oldData.time)
         }
 

@@ -47,6 +47,27 @@ const dataSchema = mongoose.Schema({
         }
     },
 
+    // vegetation: [{
+    //     area: {
+    //         type: Number,
+    //     },
+
+    //     description: {
+    //         type: String,
+    //     },
+
+    //     location: [{
+
+    //         latitude: {
+    //             type: Number,
+    //         },
+
+    //         longitude: {
+    //             type: Number,
+    //         }
+    //     }]
+    // }],
+
     water: [{
         area: {
             type: Number,
@@ -146,6 +167,7 @@ module.exports.addEntry = async function(mapId, newEntry) {
         points: newEntry.points,
         weather: newEntry.weather,
         water: newEntry.water,
+        // vegetation: newEntry.vegetation,
         time: newEntry.time
     })
     return await Maps.updateOne(

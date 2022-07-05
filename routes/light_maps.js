@@ -169,9 +169,8 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 
         const newData = {
             _id: oldData._id,
-            light_description: (req.body.light_description ? req.body.light_description : oldData.light_description),
             time: (req.body.time ? req.body.time : oldData.time),
-            location: (req.body.location ? req.body.location : oldData.location)
+            points: (req.body.points ? req.body.points : oldData.points)
         }
 
         await Map.updateData(mapId,oldData._id,newData)

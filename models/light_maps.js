@@ -6,22 +6,26 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 // Document Schema for data entry
 const dataSchema = mongoose.Schema({
 
-    location: {
-        latitude: {
-            type: Number,
+    points: [{
+
+        light_description:{
+            type: String,
             required: true
         },
-        longitude: {
-            type: Number,
-            required: true
-        }
-    },
 
-    light_description: {
-        type: String,
-        enum: ['task light', 'building', 'rythmatic'],
-        required: true
-    },
+        location: {
+
+            latitude: {
+                type: Number,
+                required: true
+            },
+            longitude: {
+                type: Number,
+                required: true
+            }
+        }
+
+    }],
 
     time: {
         type: Date,
@@ -98,10 +102,8 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-
-        light_description: newEntry.light_description,
         time: newEntry.time,
-        location: newEntry.location
+        points: newEntry.points
     })
 
     return await Maps.updateOne(
