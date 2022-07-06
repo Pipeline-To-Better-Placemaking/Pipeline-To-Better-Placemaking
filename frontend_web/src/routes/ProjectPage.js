@@ -21,7 +21,7 @@ function ProjectPage(){
     const projectId = loc.pathname.split('/')[5];
 
     const drawers = {
-        Activities: {
+        Results: {
             stationary_maps: {
                 '3/1/22': {
                     '2:00': {
@@ -578,6 +578,88 @@ function ProjectPage(){
                             }
                         ]
                     }
+                },
+                '4/16/22': {
+                    '1:00':{
+                        researcher: 'Nick Names',
+                        data: [
+                            {
+                                animal: [
+                                    {
+                                        marker: {
+                                            lat: 28.60400662742351, lng:-81.19915996167126
+                                        },
+                                        description: 'Dog',
+                                        kind: 'Domesticated'
+                                    }
+                                ],
+                                water: [
+                                    {
+                                        location: [
+                                            {
+                                                lat: 28.60292191958614, 
+                                                lng: -81.1994307139586
+                                            },
+                                            {
+                                                lat: 28.60257186563576, 
+                                                lng: -81.19919044158637
+                                            },
+                                            {
+                                                lat: 28.602175951683893, 
+                                                lng: -81.19915736060757
+                                            },
+                                            {
+                                                lat: 28.60189621235522, 
+                                                lng: -81.19925486243979
+                                            },
+                                            {
+                                                lat: 28.60169290406697, 
+                                                lng: -81.19946727714618
+                                            },
+                                            {
+                                                lat: 28.60206741902445, 
+                                                lng: -81.19935236427251
+                                            },
+                                            {
+                                                lat: 28.60240218840762, 
+                                                lng:-81.19929142562737
+                                            },
+                                            {
+                                                lat: 28.60261160980823, 
+                                                lng: -81.19951080474986
+                                            }
+                                        ],
+                                        description: 'Lake',
+                                        area: 1000
+                                    }
+                                ],
+                                vegetation:[
+                                    {
+                                        location: [
+                                            {
+                                                lat: 28.606273297480485, 
+                                                lng: -81.19839454889278
+                                            },
+                                            {
+                                                lat: 28.603696745776244, 
+                                                lng: -81.19974962765141
+                                            },
+                                            {
+                                                lat: 28.603422075434583, 
+                                                lng: -81.19914709587648
+                                            },
+                                            {
+                                                lat: 28.606087364724456, 
+                                                lng: -81.19751330779448
+                                            }
+                                        ],
+                                        description: 'Open Field',
+                                        area: 37965
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 }
             },
             sound_maps: {
@@ -1002,7 +1084,7 @@ function ProjectPage(){
             <Routes>
                 <Route index element={<MapPage title={ loc.state } drawers={ drawers } area={ area } center={ center } />} />
                 <Route path='map' element={<MapPage title={ loc.state } drawers={ drawers } area={ area } center={ center }/>} />
-                <Route path='activities' element={<ActivityPage title={ loc.state }  drawers={ drawers.Activities } />} />
+                <Route path='activities' element={<ActivityPage title={ loc.state }  drawers={ drawers.Results } />} />
                 <Route path='activities/times' element={<NewActivityTimes />}/>
                 <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ drawers } />} />
             </Routes>

@@ -53,9 +53,118 @@ function Charts(props) {
         </BarChart>
     );
 
-    const multiStationary = (data) => (
-        console.log(data)
-    )
+    const multiStationary = (data) => {
+        var standing = 0, laying = 0, squatting = 0, sitting = 0;
+        var kid = 0, teen = 0, yAdult = 0, mAdult = 0, senior = 0;
+        var male = 0, female = 0;
+        var socializing = 0, waiting = 0, recreation = 0, eating = 0, solitary = 0;
+
+        for (const [dateTime, resultArr] of Object.entries(data)) {
+            for(const index1 of resultArr){
+                for (const obj of index1) {
+                    if (obj.posture === 'Standing') {
+                        standing++;
+                    } else if (obj.posture === 'Laying') {
+                        laying++;
+                    } else if (obj.posture === 'Squatting') {
+                        squatting++;
+                    } else {
+                        sitting++;
+                    }
+
+                    if (obj.age === '0-14') {
+                        kid++;
+                    } else if (obj.age === '15-21') {
+                        teen++;
+                    } else if (obj.age === '22-30') {
+                        yAdult++;
+                    } else if (obj.age === '30-50') {
+                        mAdult++;
+                    } else {
+                        senior++;
+                    }
+
+                    if (obj.gender === 'Female') {
+                        female++;
+                    } else {
+                        male++;
+                    }
+
+                    if (obj.activity.includes('Socializing')) {
+                        socializing++;
+                    }
+                    if (obj.activity.includes('Waiting')) {
+                        waiting++;
+                    }
+                    if (obj.activity.includes('Recreation')) {
+                        recreation++;
+                    }
+                    if (obj.activity.includes('Eating')) {
+                        eating++;
+                    }
+                    if (obj.activity.includes('Solitary')) {
+                        solitary++;
+                    }
+                }
+            }
+        }
+
+        var posture = [{ posture: 'Sitting', count: sitting }, { posture: 'Standing', count: standing }, { posture: 'Laying', count: laying }, { posture: 'Squatting', count: squatting }];
+
+        var age = [{ age: '0-14', count: kid }, { age: '15-21', count: teen }, { age: '22-30', count: yAdult }, { age: '30-50', count: mAdult }, { age: '50+', count: senior }];
+
+        var gender = [{ gender: 'Male', count: male }, { gender: 'Female', count: female }]
+
+        var activity = [{ activity: 'Socializing', count: socializing }, { activity: 'Waiting', count: waiting }, { activity: 'Recreation', count: recreation }, { activity: 'Eating', count: eating }, { activity: 'Solitary', count: solitary }];
+
+        return (
+            <div className='Charts'>
+                <div style={{ fontSize: 'larger' }}>Posture</div>
+                <BarChart width={width} height={height} data={posture}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='posture' />
+                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'count'} >
+                        {posture.map((entry, index) => (
+                            <Cell key={`cell-${index}`} stroke={'#000000'} fill={stationaryColor[entry.posture]} fillOpacity={0.7} />
+                        ))}
+                    </Bar>
+                </BarChart>
+                <div style={{ fontSize: 'larger' }}>Age</div>
+                <BarChart width={width} height={height} data={age}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='age' />
+                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
+                </BarChart>
+                <div style={{ fontSize: 'larger' }}>Gender</div>
+                <BarChart width={width} height={height} data={gender}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='gender' />
+                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
+                </BarChart>
+                <div style={{ fontSize: 'larger' }}>Activity</div>
+                <BarChart width={width} height={height} data={activity}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='activity' />
+                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
+                </BarChart>
+                <br />
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: stationaryColor['Sitting'] }}>&nbsp;&nbsp;</div>&nbsp;Sitting</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: stationaryColor['Standing'] }}>&nbsp;&nbsp;</div>&nbsp;Standing</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: stationaryColor['Laying'] }}>&nbsp;&nbsp;</div>&nbsp;Swimming</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: stationaryColor['Squatting'] }}>&nbsp;&nbsp;</div>&nbsp;Squatting</div>
+                </div>
+            </div>
+        )
+    }
 
     // posture, age, gender, activity
     const stationaryBarCharts = (data) => {
@@ -308,6 +417,121 @@ function Charts(props) {
         );
     };
 
+    const multiNatureChart = (data) => {
+        var waterAndVeg = [{nature: 'Water', area: 0}, {nature: 'Vegetation', area: 0}];
+        var domestic = 0, wild = 0;
+        var dogs = 0, cats = 0, otherD = 0;
+        var otherW = 0;
+        var ducks = 0;
+        var turtles = 0;
+        var rabbits = 0;
+        var birds = 0;
+        var squirrels = 0;
+        var water = 0;
+        var veg = 0;
+
+        for (const [dateTime, resultArr] of Object.entries(data)) {
+            for (const index1 of resultArr) {
+                for (const obj of index1) {
+                    for (const [natureType, typeArr] of Object.entries(obj)){
+                        for(const typePoint in typeArr){
+                            console.log(typePoint);
+                            var adjusted;
+                            if (natureType === 'water') {
+                                waterAndVeg[0].area += typeArr[typePoint].area;
+                                water += typeArr[typePoint].area;
+                            } else if (natureType === 'vegetation') {
+                                waterAndVeg[1].area += typeArr[typePoint].area;
+                                veg += typeArr[typePoint].area;
+                            } else {
+                                if (typeArr[typePoint].description === 'Dog') {
+                                    dogs++;
+                                } else if (typeArr[typePoint].description === 'Cat') {
+                                    cats++;
+                                } else if (typeArr[typePoint].description === 'Duck') {
+                                    ducks++;
+                                } else if (typeArr[typePoint].description === 'Turtle') {
+                                    turtles++;
+                                } else if (typeArr[typePoint].description === 'Rabbit') {
+                                    rabbits++;
+                                } else if (typeArr[typePoint].description === 'Bird') {
+                                    birds++;
+                                } else if (typeArr[typePoint].description === 'Squirrel') {
+                                    squirrels++;
+                                }
+
+                                if (typeArr[typePoint].kind === 'Domesticated') {
+                                    domestic++;
+                                    if (typeArr[typePoint].description === 'Other') {
+                                        otherD++;
+                                    }
+                                } else {
+                                    wild++;
+                                    if (typeArr[typePoint].description === 'Other') {
+                                        otherW++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        var totalArea = [{ nature: 'Water', area: water / projectArea }, { nature: 'Vegetation', area: veg / projectArea }, { nature: 'None', area: (projectArea - (veg + water)) / projectArea }];
+        var species = [{ species: 'Dogs', count: dogs }, { species: 'Cats', count: cats }, { species: 'Birds', count: birds }, { species: 'Ducks', count: ducks }, { species: 'Rabbits', count: rabbits }, { species: 'Squirrels', count: squirrels }, { species: 'Turtles', count: turtles }, { species: 'Domestic (Other)', count: otherD }, { species: 'Wild (Other)', count: otherW }];
+        var variant = [{ variant: 'Wild', count: (wild + otherW) }, { variant: 'Domesticated', count: (domestic + otherD) }]
+
+        return (
+            <div id='natureCharts' className='Charts'>
+                <div style={{ fontSize: 'larger' }}>Vegetation and Water</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={waterAndVeg} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                        {waterAndVeg.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={natureColor[entry.nature]} stroke={'#ff0000'} fillOpacity={0.65} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <div style={{ fontSize: 'larger' }}>Portion of Nature in Total Area</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={totalArea} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                        {totalArea.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={natureColor[entry.nature]} stroke={'#ff0000'} fillOpacity={0.65} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Vegetation'] }}>&nbsp;&nbsp;</div>&nbsp; Vegetation: {totalArea[1].area*100}% </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: {totalArea[0].area * 100}% </div>
+                </div>
+                <div style={{ fontSize: 'larger' }}>Species</div>
+                <BarChart width={width} height={height} data={species}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='species' />
+                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'count'} fill={natureColor['Animals']} stroke={natureColor['Animals']} fillOpacity={0.65} />
+                </BarChart>
+                <div style={{ fontSize: 'larger' }}>Wild vs Domesticated</div>
+                <BarChart width={width} height={height} data={variant}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='variant' />
+                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'count'} fill={natureColor['Animals']} stroke={natureColor['Animals']} fillOpacity={0.65} />
+                </BarChart>
+                <br />
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Animals'] }}>&nbsp;&nbsp;</div>&nbsp; Animals </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Vegetation'] }}>&nbsp;&nbsp;</div>&nbsp; Vegetation </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water </div>
+                </div>
+            </div>
+        );
+    }
+
     const NaturePieChart = (data) => {
         var waterAndVeg = [];
         var domestic = 0;
@@ -371,8 +595,7 @@ function Charts(props) {
             }
         }
 
-        var totalArea = [{ nature: 'Water', area: water/projectArea }, { nature: 'Vegetation', area: veg/projectArea}, {nature: 'None', area: (projectArea-(veg+water))/projectArea}]
-
+        var totalArea = [{ nature: 'Water', area: water/projectArea }, { nature: 'Vegetation', area: veg/projectArea}, {nature: 'None', area: (projectArea-(veg+water))/projectArea}];
         var species = [{ species: 'Dogs', count: dogs }, { species: 'Cats', count: cats }, { species: 'Birds', count: birds }, {species: 'Ducks', count: ducks }, { species: 'Rabbits', count: rabbits }, { species: 'Squirrels', count: squirrels }, { species: 'Turtles', count: turtles}, {species: 'Domestic (Other)', count: otherD}, {species: 'Wild (Other)', count: otherW}];
         var variant = [{ variant: 'Wild', count: (wild+otherW)}, {variant: 'Domesticated', count: (domestic+otherD)}]
 
@@ -435,7 +658,7 @@ function Charts(props) {
                 <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
                     { testNames(cat[0]) }: Summary
                 </div>
-                { cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : ( cat[0] === 'stationary_maps' ? multiStationary(data) : null )}
+                { cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : ( cat[0] === 'stationary_maps' ? multiStationary(data) : ( cat[0] === 'nature_maps' ? multiNatureChart(data) : null) )}
             </div>
     );
 };

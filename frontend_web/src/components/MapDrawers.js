@@ -40,7 +40,7 @@ export default function MapDrawer(props) {
     const [timeOpen, setTimeOpen] = React.useState({});
 
     const menuAnchors = {
-        Activities: 'left',
+        Results: 'left',
         Graphs: 'right',
         Data: 'bottom'
     };
@@ -85,7 +85,7 @@ export default function MapDrawer(props) {
         if(!checked[`${category}.${date}.${time}`]) {
             var newSelections = selections;
             var newEntry;
-            newSelections[`${category}.${date}.${time}`] = drawers.Activities[category][date][time];
+            newSelections[`${category}.${date}.${time}`] = drawers.Results[category][date][time];
             setSelections(newSelections);
             //console.log(`${category}.${date}.${time}`);
             switch (category) {
@@ -93,49 +93,49 @@ export default function MapDrawer(props) {
                     newEntry = stationary;
                     
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
-                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setStationary(newEntry);
                     break;
                 case 'moving_maps':
                     newEntry = moving;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
-                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setMoving(newEntry);
                     break;
                 case 'order_maps':
                     newEntry = order;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
-                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setOrder(newEntry);
                     break;
                 case 'boundaries_maps':
                     newEntry = boundaries;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
-                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setBoundaries(newEntry);
                     break;
                 case 'lighting_maps':
                     newEntry = lighting;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
-                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setLighting(newEntry);
                     break;
                 case 'nature_maps':
                     newEntry = nature;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
-                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setNature(newEntry);
                     break;
                 case 'sound_maps':
                     newEntry = sound;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
-                    newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
+                    newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setSound(newEntry);
                     break;
                 default:
