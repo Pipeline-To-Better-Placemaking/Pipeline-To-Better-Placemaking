@@ -8,7 +8,7 @@ function ActivityForm() {
     const [form, setForm] = React.useState(
         {
             title: '',
-            activity: 'stationary_collections',
+            activity: 'stationary_maps',
             date: new Date().toISOString().split('T')[0],
             timer: 15
         }
@@ -56,13 +56,13 @@ function ActivityForm() {
 }
 
 const testNames = [
-    { label: 'Humans in Place', type: 'stationary_collections' },
-    { label: 'Humans in Motion', type: 'moving_collections' },
-    { label: 'Absence of Order Locator', type: 'order_collections' },
-    { label: 'Spatial Boundaries', type: 'boundaries_collections' },
-    { label: 'Lighting Profile', type: 'lighting_collections' },
-    { label: 'Nature Prevalence', type: 'nature_collections' },
-    { label: 'Acoustical Profile', type: 'sound_collections' },
+    { label: 'Humans in Place', type: 'stationary_maps' },
+    { label: 'Humans in Motion', type: 'moving_maps' },
+    { label: 'Absence of Order Locator', type: 'order_maps' },
+    { label: 'Spatial Boundaries', type: 'boundaries_maps' },
+    { label: 'Lighting Profile', type: 'lighting_maps' },
+    { label: 'Nature Prevalence', type: 'nature_maps' },
+    { label: 'Acoustical Profile', type: 'sound_maps' },
 ];
 
 export default ActivityForm;

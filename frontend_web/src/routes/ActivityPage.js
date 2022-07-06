@@ -35,28 +35,28 @@ function ActivityPage(props) {
                     Object.entries(timeobject.data).forEach(([index, dataobjects])=>{
                         var obj = {}
                         // Create an object based on category and append it to its related array
-                        if(category === 'stationary_collections') {
+                        if(category === 'stationary_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Posture: dataobjects.posture, Age: dataobjects.age, Gender: dataobjects.gender, Activity: `${dataobjects.activity}` };
                             stationary.push(obj);
-                        } else if(category === 'moving_collections') {
+                        } else if(category === 'moving_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Mode: dataobjects.mode }
                             moving.push(obj);
-                        } else if(category === 'order_collections') {
+                        } else if(category === 'order_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Result: dataobjects.result, Type: dataobjects.type }
                             order.push(obj);
-                        } else if(category === 'boundaries_collections') {
+                        } else if(category === 'boundaries_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Kind: dataobjects.kind, Description: dataobjects.description, 'Value (ft/sq.ft)': dataobjects.value }
                             boundaries.push(obj);
-                        } else if(category === 'lighting_collections') {
+                        } else if(category === 'lighting_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Result: dataobjects.result }
                             lighting.push(obj);
-                        } else if(category === 'nature_collections' && dataobjects.result === 'Water') {
+                        } else if(category === 'nature_maps' && dataobjects.result === 'Water') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Result: dataobjects.result, 'Value (ft/sq.ft)': dataobjects.value }
                             nature.push(obj);
-                        } else if(category === 'nature_collections') {
+                        } else if(category === 'nature_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Result: dataobjects.result }
                             nature.push(obj);
-                        } else if(category === 'sound_collections') {
+                        } else if(category === 'sound_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, 'Average (dB)': dataobjects.average, 'Sound Type': `${dataobjects.sound_type}`, Source: dataobjects.source}
                             sound.push(obj);
                         }

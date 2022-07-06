@@ -12,12 +12,7 @@ function Projects(props){
     const [teamInfo, setTeamInfo] = React.useState();
     const user = teamAndUser.state ? teamAndUser.state.userToken : {};
 
-    console.log(user);
-    console.log(user.token);
-    //const [loaded, setLoaded] = React.useState(false);
-
-    //id from url
-    //console.log(teamId);
+    //console.log(user);
 
     // Template Projects
     const [projects, setProjects] = React.useState([
@@ -65,6 +60,8 @@ function Projects(props){
     React.useEffect(() => {
         teamPull();
     },[]);
+
+    console.log(teamInfo);
 
     return(
         <div id='teamHome'>

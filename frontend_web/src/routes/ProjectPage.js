@@ -10,16 +10,19 @@ import NewActivityTimes from './NewActivityTimes';
 function ProjectPage(){
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
+    //Holds basic projects info including map ids
     const [projectInfo, setProjectInfo] = React.useState();
+    //Holds specifics like results, locations, and types of markers, boundaries, etc.
+    const [projectMaps, setProjectMaps] = React.useState();
     const user = loc.state ? loc.state.userToken : {};
-    // Project section separated for handling project data
+
     // can be reached at (heroku-url)/home/teams/:id/project/:id 
     // Selected Project's data will be loaded here to pass into its relevant components 
     const projectId = loc.pathname.split('/')[5];
 
     const drawers = {
         Activities: {
-            stationary_collections: {
+            stationary_maps: {
                 '3/1/22': {
                     '2:00': {
                         researcher: 'Bob Minns',
@@ -56,9 +59,48 @@ function ProjectPage(){
                             }
                         ]
                     }
+                },
+                '5/13/22': {
+                    '4:00': {
+                        researcher: 'Sally Lynn',
+                        data: [
+                            {
+                                point: {
+                                    lat: 28.603232199908305, 
+                                    lng: -81.1995854914737
+                                },
+                                posture: 'Standing',
+                                age: '15-21',
+                                gender: 'Female',
+                                activity: 'Socializing'
+                            },
+                            {
+                                point: {
+                                    lat: 28.603253393658516, 
+                                    lng: -81.19965254669451
+                                },
+                                posture: 'Standing',
+                                age: '15-21',
+                                gender: 'Female',
+                                activity: 'Socializing'
+                            },
+                            {
+                                point: {
+                                    lat: 28.603430029048898, 
+                                    lng: -81.19939323473407
+                                },
+                                posture: 'Laying',
+                                age: '15-21',
+                                gender: 'Male',
+                                activity: 'Solitary'
+                            },
+
+                        ]
+
+                    }
                 }
             },
-            moving_collections: {
+            moving_maps: {
                 '3/2/22': {
                     '2:00': {
                         researcher: 'Bob Minns',
@@ -126,7 +168,7 @@ function ProjectPage(){
                 }
 
             },
-            order_collections: {
+            order_maps: {
                 '2/22/22': {
                     '18:00': {
                         researcher: 'Anna Smith',
@@ -183,7 +225,7 @@ function ProjectPage(){
                     }
                 }
             },
-            boundaries_collections: {
+            boundaries_maps: {
                 '2/29/22': {
                     '16:00': {
                         researcher: 'Sam Iam',
@@ -311,7 +353,7 @@ function ProjectPage(){
                     }
                 }
             },
-            lighting_collections: {
+            lighting_maps: {
                 '2/29/22': {
                     '12:00': {
                         researcher: 'Nick Names',
@@ -355,110 +397,190 @@ function ProjectPage(){
                     }
                 }
             },
-            nature_collections: {
+            nature_maps: {
                 '2/29/22': {
                     '12:00': {
                         researcher: 'Jane Doe',
                         data: [
                             {
-                                point: {
-                                    lat: 28.603369329889514,
-                                    lng: -81.20129371852886
-                                },
-                                description: 'Design',
-                                kind: 'Vegetation'
-                            },
-                            {
-                                point: {
-                                    lat: 28.603868558748708,
-                                    lng: -81.19963074866048
-                                },
-                                description: 'Native',
-                                kind: 'Vegetation'
-                            },
-                            {
-                                point: {
-                                    lat: 28.602512158058847,
-                                    lng: -81.19971657935157
-                                },
-                                description: 'Dog',
-                                kind: 'Wild'
-                            },
-                            {
-                                point: {
-                                    lat: 28.60181511200448,
-                                    lng: -81.19970585051519
-                                },
-                                description: 'Bird',
-                                kind: 'Wild'
-                            },
-                            {
-                                point: {
-                                    lat: 28.602578094603327,
-                                    lng: -81.20119715877513
-                                },
-                                description: 'Dog',
-                                kind: 'Domesticated'
-                            },
-                            {
-                                point: {
-                                    lat: 28.599999473663722,
-                                    lng: -81.20118911211877
-                                },
-                                description: 'Cat',
-                                kind: 'Domesticated'
-                            },
-                            {
-                                path: [
+                                animal:[
+                                   
                                     {
-                                        lat: 28.603006681174694,
-                                        lng: -81.20089406924859
+                                        marker: {
+                                            lat: 28.602512158058847,
+                                            lng: -81.19971657935157
+                                        },
+                                        description: 'Dog',
+                                        kind: 'Wild'
                                     },
                                     {
-                                        lat: 28.603216264077535,
-                                        lng: -81.2005319710454
+                                        marker: {
+                                            lat: 28.60181511200448,
+                                            lng: -81.19970585051519
+                                        },
+                                        description: 'Bird',
+                                        kind: 'Wild'
                                     },
                                     {
-                                        lat: 28.603263361301526,
-                                        lng: -81.20017255505111
+                                        marker: {
+                                            lat: 28.602578094603327,
+                                            lng: -81.20119715877513
+                                        },
+                                        description: 'Dog',
+                                        kind: 'Domesticated'
                                     },
                                     {
-                                        lat: 28.603230393246935,
-                                        lng: -81.19990969857767
-                                    },
-                                    {
-                                        lat: 28.603112650110408,
-                                        lng: -81.2000867243659
-                                    },
-                                    {
-                                        lat: 28.60299726170858,
-                                        lng: -81.20042200047997
-                                    },
-                                    {
-                                        lat: 28.6029407448941,
-                                        lng: -81.20043809373345
-                                    },
-                                    {
-                                        lat: 28.60296900330514,
-                                        lng: -81.2006178017306
-                                    },
-                                    {
-                                        lat: 28.60290071213211,
-                                        lng: -81.20068753916232
-                                    },
-                                    {
-                                        lat: 28.602994906841896,
-                                        lng: -81.20091016250205
+                                        marker: {
+                                            lat: 28.599999473663722,
+                                            lng: -81.20118911211877
+                                        },
+                                        description: 'Cat',
+                                        kind: 'Domesticated'
                                     }
                                 ],
-                                description: 'Lake',
-                                area: 400
+                                water: [
+                                    {
+                                        location: [
+                                            {
+                                                lat: 28.603006681174694,
+                                                lng: -81.20089406924859
+                                            },
+                                            {
+                                                lat: 28.603216264077535,
+                                                lng: -81.2005319710454
+                                            },
+                                            {
+                                                lat: 28.603263361301526,
+                                                lng: -81.20017255505111
+                                            },
+                                            {
+                                                lat: 28.603230393246935,
+                                                lng: -81.19990969857767
+                                            },
+                                            {
+                                                lat: 28.603112650110408,
+                                                lng: -81.2000867243659
+                                            },
+                                            {
+                                                lat: 28.60299726170858,
+                                                lng: -81.20042200047997
+                                            },
+                                            {
+                                                lat: 28.6029407448941,
+                                                lng: -81.20043809373345
+                                            },
+                                            {
+                                                lat: 28.60296900330514,
+                                                lng: -81.2006178017306
+                                            },
+                                            {
+                                                lat: 28.60290071213211,
+                                                lng: -81.20068753916232
+                                            },
+                                            {
+                                                lat: 28.602994906841896,
+                                                lng: -81.20091016250205
+                                            }
+                                        ],
+                                        description: 'Lake',
+                                        area: 400.64
+                                    }
+                                ],
+                                vegetation: [
+                                    {
+                                        location: [
+                                            {
+                                                lat: 28.60343502765433, 
+                                                lng: -81.20112589672814
+                                            },
+                                            {
+                                                lat: 28.60370371997612, 
+                                                lng:-81.20121631882381
+                                            },
+                                            {
+                                                lat: 28.603257934612053, 
+                                                lng:-81.20164292563418
+                                            }
+                                        ],
+                                        description: 'Design',
+                                        area: 400.94
+                                    },
+                                    {
+                                        location: [
+                                            {
+                                                lat: 28.603868558748708,
+                                                lng: -81.19963074866048
+                                            },
+                                            {
+                                                lat: 28.603710972773605, 
+                                                lng: -81.19975755193431
+                                            },
+                                            {
+                                                lat: 28.60363211744467, 
+                                                lng: -81.19953575813689
+                                            },
+                                            {
+                                                lat: 28.60365947542264, 
+                                                lng: -81.1993982826426
+                                            },
+                                            {
+                                                lat: 28.603532341229318, 
+                                                lng:-81.19932496237898
+                                            },
+                                            {
+                                                lat: 28.60341808125346, 
+                                                lng:-81.19913432969358
+                                            },
+                                            {
+                                                lat: 28.60363372673768, 
+                                                lng:- 81.19902618230475
+                                            }
+
+                                        ],
+                                        description: 'Native',
+                                        area: 250
+                                    },
+                                    {
+                                        location: [
+                                            {
+                                                lat: 28.602997644416632, 
+                                                lng:-81.2009270644679
+                                            },
+                                            {
+                                                lat: 28.60239335916406, 
+                                                lng:-81.20078274707231
+                                            },
+                                            {
+                                                lat: 28.60229589347528, 
+                                                lng:-81.20013331879221
+                                            },
+                                            {
+                                                lat: 28.602086341938286, 
+                                                lng:- 81.1997947279795
+                                            },
+                                            {
+                                                lat: 28.601467431470592, 
+                                                lng:-81.1996948159364
+                                            },
+                                            {
+                                                lat: 28.60238361259924, 
+                                                lng: -81.19903983698723
+                                            },
+                                            {
+                                                lat: 28.603265673053194, 
+                                                lng: -81.2002609841806
+                                            }
+                                        ],
+                                        description: 'Native',
+                                        area: 20544
+                                    }
+                                ]
                             }
                         ]
                     }
                 }
             },
-            sound_collections: {
+            sound_maps: {
                 '2/29/22': {
                     '14:00': {
                         researcher: 'Bob Minns',
@@ -844,6 +966,7 @@ function ProjectPage(){
 
     // May load coords in Project Page
     const center = { lat: 28.602846550128262, lng: -81.20006526689143 };
+
 
     //loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
 

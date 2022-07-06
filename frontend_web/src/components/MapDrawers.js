@@ -46,13 +46,13 @@ export default function MapDrawer(props) {
     };
 
     const [dateOpen, setDateOpen] = React.useState({
-        stationary_collections: false,
-        moving_collections: false,
-        order_collections: false,
-        boundaries_collections: false,
-        lighting_collections: false,
-        nature_collections: false,
-        sound_collections: false
+        stationary_maps: false,
+        moving_maps: false,
+        order_maps: false,
+        boundaries_maps: false,
+        lighting_maps: false,
+        nature_maps: false,
+        sound_maps: false
     });
 
     // Boolean toggle for opening the drawers with the Activity, Graphs, and Data drawers
@@ -87,51 +87,51 @@ export default function MapDrawer(props) {
             var newEntry;
             newSelections[`${category}.${date}.${time}`] = drawers.Activities[category][date][time];
             setSelections(newSelections);
-
+            //console.log(`${category}.${date}.${time}`);
             switch (category) {
-                case 'stationary_collections':
+                case 'stationary_maps':
                     newEntry = stationary;
                     
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
                     newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
                     setStationary(newEntry);
                     break;
-                case 'moving_collections':
+                case 'moving_maps':
                     newEntry = moving;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
                     newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
                     setMoving(newEntry);
                     break;
-                case 'order_collections':
+                case 'order_maps':
                     newEntry = order;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
                     newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
                     setOrder(newEntry);
                     break;
-                case 'boundaries_collections':
+                case 'boundaries_maps':
                     newEntry = boundaries;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
                     newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
                     setBoundaries(newEntry);
                     break;
-                case 'lighting_collections':
+                case 'lighting_maps':
                     newEntry = lighting;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
                     newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
                     setLighting(newEntry);
                     break;
-                case 'nature_collections':
+                case 'nature_maps':
                     newEntry = nature;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
                     newEntry[`${date}.${time}`].push(drawers.Activities[category][date][time].data);
                     setNature(newEntry);
                     break;
-                case 'sound_collections':
+                case 'sound_maps':
                     newEntry = sound;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
@@ -148,37 +148,37 @@ export default function MapDrawer(props) {
             setSelections(delSelections);
 
             switch (category) {
-                case 'stationary_collections':
+                case 'stationary_maps':
                     removeEntry = stationary;
                     delete removeEntry[`${date}.${time}`]
                     setStationary(removeEntry);
                     break;
-                case 'moving_collections':
+                case 'moving_maps':
                     removeEntry = moving;
                     delete removeEntry[`${date}.${time}`]
                     setMoving(removeEntry);
                     break;
-                case 'order_collections':
+                case 'order_maps':
                     removeEntry = order;
                     delete removeEntry[`${date}.${time}`]
                     setOrder(removeEntry);
                     break;
-                case 'boundaries_collections':
+                case 'boundaries_maps':
                     removeEntry = boundaries;
                     delete removeEntry[`${date}.${time}`]
                     setBoundaries(removeEntry);
                     break;
-                case 'lighting_collections':
+                case 'lighting_maps':
                     removeEntry = lighting;
                     delete removeEntry[`${date}.${time}`]
                     setLighting(removeEntry);
                     break;
-                case 'nature_collections':
+                case 'nature_maps':
                     removeEntry = nature;
                     delete removeEntry[`${date}.${time}`]
                     setNature(removeEntry);
                     break;
-                case 'sound_collections':
+                case 'sound_maps':
                     removeEntry = sound;
                     delete removeEntry[`${date}.${time}`]
                     setSound(removeEntry);
@@ -268,13 +268,13 @@ export default function MapDrawer(props) {
             { Object.entries(selections).map(([selection, obj])=>(
                 <Charts key={ selection } selection={ selection } data={ obj.data } type={ 0 } projArea={ area }/>
             )) }
-            { Object.keys(stationary)?.length > 1 ? <Charts selection='stationary_collections.Group' data={stationary} type={1} projArea={area} /> : null }
-            { Object.keys(moving)?.length > 1 ? <Charts selection='moving_collections.Group' data={moving} type={1} projArea={area} /> : null }
-            { Object.keys(order)?.length > 1 ? <Charts selection='order_collections.Group' data={order} type={1} /> : null }
-            { Object.keys(boundaries)?.length > 1 ? <Charts selection='boundaries_collections.Group' data={boundaries} type={1} projArea={area} /> : null }
-            { Object.keys(lighting)?.length > 1 ? <Charts selection='lighting_collections.Group' data={lighting} type={1} projArea={area} /> : null }
-            { Object.keys(nature)?.length > 1 ? <Charts selection='nature_collections.Group' data={nature} type={1} projArea={area} /> : null }
-            { Object.keys(sound)?.length > 1 ? <Charts selection='sound_collections.Group' data={sound} type={1} projArea={area} /> : null }
+            { Object.keys(stationary)?.length > 1 ? <Charts selection='stationary_maps.Group' data={stationary} type={1} projArea={area} /> : null }
+            { Object.keys(moving)?.length > 1 ? <Charts selection='moving_maps.Group' data={moving} type={1} projArea={area} /> : null }
+            { Object.keys(order)?.length > 1 ? <Charts selection='order_maps.Group' data={order} type={1} /> : null }
+            { Object.keys(boundaries)?.length > 1 ? <Charts selection='boundaries_maps.Group' data={boundaries} type={1} projArea={area} /> : null }
+            { Object.keys(lighting)?.length > 1 ? <Charts selection='lighting_maps.Group' data={lighting} type={1} projArea={area} /> : null }
+            { Object.keys(nature)?.length > 1 ? <Charts selection='nature_maps.Group' data={nature} type={1} projArea={area} /> : null }
+            { Object.keys(sound)?.length > 1 ? <Charts selection='sound_maps.Group' data={sound} type={1} projArea={area} /> : null }
         </>
     );
 

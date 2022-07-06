@@ -48,13 +48,13 @@ function FullMap(props) {
 
     //holds ALL Collections for rendering
     const [collections, setCollections] = React.useState({
-        stationary_collections: stationaryCollections,
-        moving_collections: movingCollections,
-        order_collections: orderCollections, 
-        boundaries_collections: boundariesCollections, 
-        lighting_collections: lightingCollections, 
-        nature_collections: natureCollections, 
-        sound_collections: soundCollections
+        stationary_maps: stationaryCollections,
+        moving_maps: movingCollections,
+        order_maps: orderCollections, 
+        boundaries_maps: boundariesCollections, 
+        lighting_maps: lightingCollections, 
+        nature_maps: natureCollections, 
+        sound_maps: soundCollections
     });
 
     var updateKey = 0;
@@ -64,7 +64,7 @@ function FullMap(props) {
     function onSelection(category, date, time, check) {
         var newSelection;
         switch (category) {
-            case 'stationary_collections':
+            case 'stationary_maps':
                 newSelection = stationaryCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -74,9 +74,9 @@ function FullMap(props) {
                     newSelection[date].splice(st, 1);
                 }
                 setStationaryCollections(newSelection);
-                setCollections({ ...collections, stationary_collections: newSelection });
+                setCollections({ ...collections, [category]: newSelection });
                 break;
-            case 'moving_collections':
+            case 'moving_maps':
                 newSelection = movingCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -86,9 +86,9 @@ function FullMap(props) {
                     newSelection[date].splice(m, 1);
                 }
                 setMovingCollections(newSelection);
-                setCollections({ ...collections, moving_collections: newSelection });
+                setCollections({ ...collections, [category]: newSelection });
                 break;
-            case 'order_collections':
+            case 'order_maps':
                 newSelection = orderCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -98,9 +98,9 @@ function FullMap(props) {
                     newSelection[date].splice(o, 1);
                 }
                 setOrderCollections(newSelection);
-                setCollections({...collections, order_collections: newSelection});
+                setCollections({ ...collections, [category]: newSelection });
                 break;
-            case 'boundaries_collections': 
+            case 'boundaries_maps': 
                 newSelection = boundariesCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -110,9 +110,9 @@ function FullMap(props) {
                     newSelection[date].splice(b, 1);
                 }
                 setBoundariesCollections(newSelection);
-                setCollections({ ...collections, boundaries_collections: newSelection });
+                setCollections({ ...collections, [category]: newSelection });
                 break;
-            case 'lighting_collections': 
+            case 'lighting_maps': 
                 newSelection = lightingCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -122,9 +122,9 @@ function FullMap(props) {
                     newSelection[date].splice(l, 1);
                 }
                 setLightingCollections(newSelection);
-                setCollections({ ...collections, lighting_collections: newSelection });
+                setCollections({ ...collections, [category]: newSelection });
                 break;
-            case 'nature_collections':
+            case 'nature_maps':
                 newSelection = natureCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -134,9 +134,9 @@ function FullMap(props) {
                     newSelection[date].splice(n, 1);
                 }
                 setNatureCollections(newSelection);
-                setCollections({ ...collections, nature_collections: newSelection });
+                setCollections({ ...collections, [category]: newSelection });
                 break;
-            case 'sound_collections':
+            case 'sound_maps':
                 newSelection = soundCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -146,7 +146,7 @@ function FullMap(props) {
                     newSelection[date].splice(s, 1);
                 }
                 setSoundCollections(newSelection);
-                setCollections({ ...collections, sound_collections: newSelection });
+                setCollections({ ...collections, [category]: newSelection });
                 break;
             default:
                 console.log(`Error handling selection change.`);
@@ -193,7 +193,7 @@ function FullMap(props) {
             clickObj.lat = e.latLng.lat();
             clickObj.lng = e.latLng.lng();
             setClicks([...clicks, clickObj]);
-            console.log(clicks);
+            //console.log(clicks);
         } else {
             setCenter(e.latLng);
         }
@@ -234,25 +234,32 @@ function FullMap(props) {
     }
 
     const boundsPathWindow = (title, date, time, index, ver) => (e) => {
-        console.log(title, date, time, index);
+        //console.log(title);
         const popup = document.getElementById('pathBoundWindow');
         const inner = document.getElementById('popUpText');
         if(ver === 0 || ver === 2) {
             // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index+1}<br/>kind: ${data.Activities[title][date][time].data[index].kind}<br/>description: ${data.Activities[title][date][time].data[index].description}<br/>value: ${data.Activities[title][date][time].data[index].value}`
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index + 1}<br/>kind: ${data.Activities[title][date][time].data[index].kind}<br/>description: ${data.Activities[title][date][time].data[index].description}<br/>value: ${data.Activities[title][date][time].data[index].value}`
             popup.style.display = 'flex';
         } else if(ver === 1) {
             // version 1 == water nature collection
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index+1}<br/>result: ${data.Activities[title][date][time].data[index].result}<br/>value: ${data.Activities[title][date][time].data[index].value}`
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Water<br/>Location ${index + 1}<br/>Description: ${data.Activities[title][date][time].data[0].water[index].description}<br/>Area: ${data.Activities[title][date][time].data[0].vegetation[index].area} sq.ft.`
             popup.style.display = 'flex';
-        } else {
-            // version 3 moving collections
+        } else if(ver === 3){
+            // version 3 == vegetation nature collection
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index+1}<br/>mode: ${data.Activities[title][date][time].data[index].mode}`
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Vegetation<br/>Location ${index + 1}<br/>Description: ${data.Activities[title][date][time].data[0].vegetation[index].description}<br/>Area: ${data.Activities[title][date][time].data[0].vegetation[index].area} sq.ft.`
+            popup.style.display = 'flex';
+
+        } else {
+            // version 4 moving collections
+            const popup = document.getElementById('pathBoundWindow');
+            inner.innerHTML = '';
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index + 1}<br/>mode: ${data.Activities[title][date][time].data[index].mode}`
             popup.style.display = 'flex';
         }
     }
@@ -268,7 +275,31 @@ function FullMap(props) {
     const actCoords = (collections) => (
         Object.entries(collections).map(([title, object], index) => (
             Object.entries(object).map(([sdate, stimes])=>(
-                stimes.map(time => (
+                stimes.map(time => (title === 'nature_maps'  ?
+                    Object.entries(data.Activities[title][sdate][time].data[0]).map(([natureType, pointArr], ind1)=>(
+                        pointArr.map((natureObj, ind2)=>(
+                            natureType === 'animal' ? 
+                                <Marker
+                                    key={`${sdate}.${time}.${ind2}`}
+                                    shape='circle'
+                                    info={
+                                        `<div><b>${testNames(title)}</b><br/>Location ${ind2}<br/>Animal: ${natureObj.description}<br/>[${natureObj.kind}]</div>`}
+                                    position={natureObj.marker}
+                                    markerType={natureType}
+                                /> :
+                                <Bounds
+                                    key={`${sdate}.${time}.${ind2}`}
+                                    title={title}
+                                    date={sdate}
+                                    time={time}
+                                    index={ind2}
+                                    area={natureObj.location}
+                                    type={natureType}
+                                    boundsPathWindow={boundsPathWindow}
+                                />
+                        ))
+                    ))
+                    :
                     Object.entries(data.Activities[title][sdate][time].data).map(([ind, point], i2)=>(
                         (point.mode || point.kind === 'Constructed' ? 
                             <Path 
@@ -293,7 +324,7 @@ function FullMap(props) {
                                 :
                                 <Marker 
                                     key={`${sdate}.${time}.${i2}`} 
-                                    shape={title === 'order_collections' ? 'triangle' : (title === 'lighting_collections' ? 'lightcircle' : 'circle')}
+                                    shape={title === 'order_maps' ? 'triangle' : (title === 'lighting_maps' ? 'lightcircle' : 'circle')}
                                     info={ point.average ? 
                                         (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
                                             : (point.result ? 
@@ -302,9 +333,9 @@ function FullMap(props) {
                                                         (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
                                                             : null)) } 
                                     position={point.standingPoint ? point.standingPoint : point.point} 
-                                    markerType={point.average ? 'sound_collections' 
+                                    markerType={point.average ? 'sound_maps' 
                                         : (point.result ? point.result : (point.posture ? point.posture : null))} 
-                                    markerSize={title === 'sound_collections' ? point.average : null} 
+                                    markerSize={title === 'sound_maps' ? point.average : null} 
                                 />
                             )
                         )
@@ -331,7 +362,7 @@ function FullMap(props) {
                     places={ mapPlaces }
                     zoom={ zoom }
                 >
-                    { areaData ? areaData.map((area, index) => (<Bounds area={area} type={'area'} />)) :  null }
+                    { areaData ? /*areaData.map((area, index) => (*/<Bounds area={areaData} type={'area'} /> :  null }
                     { props.type === 1 ? 
                         actCoords(collections) : 
                         (props.type === 2 || props.type === 4 ? 
@@ -448,9 +479,8 @@ const Marker = (options) => {
     const shape = options.shape;
 
     const colors = {
-        sound_collections: ['#B073FF', '#B073FF'],
-        animals: ['#9C4B00', 'red'],
-        plants: ['#BEFF05', 'red'],
+        sound_maps: ['#B073FF', '#B073FF'],
+        animal: ['#9C4B00', 'red'],
         Squatting: ['green', 'black'],
         Sitting: ['red', 'black'],
         Standing: ['blue', 'black'],
@@ -485,7 +515,7 @@ const Marker = (options) => {
         if (!marker) {
             setMarker(new google.maps.Marker({ 
                 icon: icon, 
-                zIndex: (markerType === 'sound_collections' ? 10 : 99999999)}));
+                zIndex: (markerType === 'sound_maps' ? 10 : 99999999)}));
             if(!infoWindow) {
                 setInfoWindow(new google.maps.InfoWindow({
                     content: info,
@@ -538,9 +568,9 @@ const Bounds = ({boundsPathWindow, ...options}) => {
         },
         types: {
             paths: area,
-            strokeColor: type === 'Water' ? '#2578C5' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#FFFFFF'))),
+            strokeColor: type === 'water' ? '#2578C5' : (type === 'vegetation' ? '#ff0000' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#FFFFFF')))),
             strokeWeight: 2,
-            fillColor: type === 'Water' ? '#2578C5' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' :'#C4C4C4'))),
+            fillColor: type === 'water' ? '#2578C5' : (type === 'vegetation' ? '#BEFF05' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' :'#C4C4C4')))),
             fillOpacity: 0.45,
             clickable: type === 'New' ? false : true
         },
@@ -567,7 +597,7 @@ const Bounds = ({boundsPathWindow, ...options}) => {
             );
 
             if (boundsPathWindow) {
-                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'Water' ? 1 : 0)));
+                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : (type === 'vegetation' ? 3 : 0))));
             }
         }
 
@@ -621,7 +651,7 @@ const Path = ({boundsPathWindow, ...options}) => {
             );
 
             if (boundsPathWindow) {
-                path.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'moving_collections' ? 3 : 2)));
+                path.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'moving_maps' ? 4 : 2)));
             }
         }
     }, [path, options, type, boundsPathWindow]);

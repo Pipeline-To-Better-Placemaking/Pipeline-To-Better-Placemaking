@@ -51,13 +51,13 @@ function calculateXSegment(lngRef, lng, lat, circumference) { return (lng - lngR
 
 function testNames(collection) {
     const testNames = {
-        stationary_collections: 'People in Place',
-        moving_collections: 'People in Motion',
-        order_collections: 'Absence of Order Locator',
-        boundaries_collections: 'Spatial Boundaries',
-        lighting_collections: 'Lighting Profile',
-        nature_collections: 'Nature Prevalence',
-        sound_collections: 'Acoustical Profile'
+        stationary_maps: 'People in Place',
+        moving_maps: 'People in Motion',
+        order_maps: 'Absence of Order Locator',
+        boundaries_maps: 'Spatial Boundaries',
+        lighting_maps: 'Lighting Profile',
+        nature_maps: 'Nature Prevalence',
+        sound_maps: 'Acoustical Profile'
     };
     
     return(testNames[collection]);
