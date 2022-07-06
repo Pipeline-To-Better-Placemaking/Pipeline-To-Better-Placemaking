@@ -362,7 +362,7 @@ function FullMap(props) {
                     places={ mapPlaces }
                     zoom={ zoom }
                 >
-                    { areaData ? /*areaData.map((area, index) => (*/<Bounds area={areaData} type={'area'} /> :  null }
+                    { areaData ? <Bounds area={areaData} type={'area'} /> :  null }
                     { props.type === 1 ? 
                         actCoords(collections) : 
                         (props.type === 2 || props.type === 4 ? 
