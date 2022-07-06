@@ -5,7 +5,7 @@ import { HeaderBack, HeaderBackEdit } from '../../components/headers.component';
 import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { helperGetResult, deleteTimeSlot, getProject, getAllResults, isUserTeamOwner } from '../../components/apiCalls';
-import { formatNatureGraphData } from '../../components/helperFunctions';
+import { formatNatureGraphData, calcArea } from '../../components/helperFunctions';
 import { MyBarChart, MyPieChart } from '../../components/charts.component';
 
 import { styles } from './resultPage.styles';
@@ -210,29 +210,36 @@ export function NatureResultPage(props) {
             <Text category={'s1'}>Temperature: {props.selectedResult.graph.weather.temperature} °F</Text>
             <Text category={'s1'}>Weather: {props.selectedResult.graph.weather.description}</Text>
           </View>
-          
-          <MyBarChart
-            {...props}
-            title={"Animal Data"}
-            rotation={'0deg'}
-            dataValues={props.selectedResult.graph.animalData}
-            dataLabels={props.selectedResult.graph.animalLabels}
-            barColor={color}
-            width={chartWidth}
-            height={chartHeight}
+
+          <MyPieChart
+            title={'Vegetation Areas'}
+            graph={props.selectedResult.graph.vegetation}
+            cond={true}
+            height={200}
           />
 
-          {/* <MyBarChart
-            {...props}
-            title={"Vegetation Data"}
-            rotation={'0deg'}
-            dataValues={props.selectedResult.graph.vegetationData}
-            dataLabels={props.selectedResult.graph.vegetationLabels}
-            barColor={color}
-            width={chartWidth}
-            height={chartHeight}
-          /> */}
-
+          <View style={styles.spacing}>
+            <MyPieChart
+              title={'Water Areas'}
+              graph={props.selectedResult.graph.water}
+              cond={true}
+              height={200}
+            />
+          </View>
+          
+          <View style={styles.spacing}>
+            <MyBarChart
+              {...props}
+              title={"Animal Data"}
+              rotation={'0deg'}
+              dataValues={props.selectedResult.graph.animalData}
+              dataLabels={props.selectedResult.graph.animalLabels}
+              barColor={color}
+              width={chartWidth}
+              height={chartHeight}
+            />
+          </View>
+          
           {/* <MyBarChart
             {...props}
             title={"Water Data (area in ft²)"}

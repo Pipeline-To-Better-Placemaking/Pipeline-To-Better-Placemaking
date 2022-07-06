@@ -15,7 +15,7 @@ export function InfoModal(props) {
                     <TouchableOpacity onPress={() => props.close()} activeOpacity={1}>
                         <TouchableWithoutFeedback style={styles.sizing}>
                             <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]}>   
-                                <Text category={'h4'} style={styles.titleText}>Body of Water</Text>
+                                <Text category={'h4'} style={styles.titleText}>{props.title}</Text>
                                 <View style={styles.dataView}>
                                     
                                     <View style={styles.spacing}>

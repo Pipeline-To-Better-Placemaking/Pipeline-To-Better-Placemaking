@@ -257,7 +257,13 @@ export function MyPieChart(props){
             <View key={i.toString()} style={styles.pieLegend}>
               <Text style={styles.whiteText}>{props.graph[i].legend}: </Text>
               <Text style={{color: props.graph[i].svg.fill}}>■</Text>
-              <Text style={styles.whiteText}> {props.graph[i].value} ft² ({props.graph[i].percent}%)</Text>
+              
+              {props.cond ?
+                <Text style={styles.whiteText}> {props.graph[i].value} ft² ({props.graph[i].percent}% of project area)</Text>
+              :
+                <Text style={styles.whiteText}> {props.graph[i].value} ft² ({props.graph[i].percent}%)</Text>
+              }
+            
             </View>
           )
         }

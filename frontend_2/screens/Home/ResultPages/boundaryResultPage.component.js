@@ -378,6 +378,7 @@ export function BoundaryResultPage(props) {
           <MyPieChart
             title={'Occupied Area'}
             graph={formatForTotalPie(props.selectedResult.graph)}
+            cond={false}
             height={200}
           />
           
@@ -385,6 +386,7 @@ export function BoundaryResultPage(props) {
           <MyPieChart
             title={'Material Areas'}
             graph={formatForIndividual(props.selectedResult.graph, "Material")}
+            cond={false}
             height={200}
           />
           </View>
@@ -393,6 +395,7 @@ export function BoundaryResultPage(props) {
             <MyPieChart
               title={'Shelter Areas'}
               graph={formatForIndividual(props.selectedResult.graph, "Shelter")}
+              cond={false}
               height={200}
             />
           </View>

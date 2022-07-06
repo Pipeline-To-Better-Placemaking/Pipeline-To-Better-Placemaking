@@ -232,7 +232,21 @@ const conDescSearch = (arr, str)=>{
   return -1;
 }
 
+const calcPercent = (value, total) =>{
+  // times 100 to convert the decimal to a percentage
+  let ret = (value / total) * 100
+  let tempString = ret.toFixed(0)
+  return parseInt(tempString)
+}
+
 export async function formatNatureGraphData(result){
+  
+  // random colors for pie chart
+  const colors = ["#2A6EA3", "#4C9F8B", "#7F62E9", "#847457"]
+
+  // total project area (in feet squared)
+  const totalArea = calcArea(result.sharedData.area.points)
+
   if (result === null ||
       result.data === undefined ||
       result.data === null ||
@@ -246,10 +260,8 @@ export async function formatNatureGraphData(result){
   let graph = {
     animalData: [],
     animalLabels: [],
-    vegetationData: [],
-    vegetationLabels: [],
-    waterData: [],
-    waterLabels: [],
+    vegetation: [],
+    water: [],
     weather: {}
   };
   for(let i = 0; i < result.data.length; i++){
@@ -257,9 +269,9 @@ export async function formatNatureGraphData(result){
     let index = -1;
     // format the animal object array
     for(let j = 0; j < data.animal.length; j++){
-      let type = data.points[j].kind
+      let type = data.animal[j].kind
       if(type === "Domesticated") type = "Domestic"
-      let string = type.concat("\n", data.points[j].description)
+      let string = type.concat("\n", data.animal[j].description)
       index = conDescSearch(graph.animalLabels, string)
       // that description is already formatted, so increase its count
       if(index !== -1){
@@ -271,35 +283,62 @@ export async function formatNatureGraphData(result){
         graph.animalData.push(1);
       }
     }
-    // format the vegetation array (of each data object) (need to check if this works)
+
+    let vegetationData = []
+    let vegetationLabels = []
+    // format the vegetation array (of each data object)
     for(let j = 0; j < data.vegetation.length; j++){
-      index = conDescSearch(graph.vegetationLabels, data.vegetation[j].description)
+      index = conDescSearch(vegetationLabels, data.vegetation[j].description)
       // that description is already formatted, so increase its count
       if(index !== -1){
-        let num = graph.vegetationData[index] + data.vegetation[j].area;
+        let num = vegetationData[index] + data.vegetation[j].area;
         let string = num.toFixed(2)
-        graph.vegetationData[index] = parseFloat(string)
+        vegetationData[index] = parseFloat(string)
       }
       // otherwise add that description into labels and it's area into data
       else{
-        graph.vegetationLabels.push(data.vegetation[j].description)
-        graph.vegetationData.push(data.vegetation[j].area)
+        vegetationLabels.push(data.vegetation[j].description)
+        vegetationData.push(data.vegetation[j].area)
       }
     }
+
+    // now with the arrays of vegetation area sums, format the data in the vegetation graph object
+    for(let j = 0; j < vegetationData.length; j++){
+      graph.vegetation.push({
+            key: j + 1,
+            value: vegetationData[j],
+            svg: { fill: colors[j] },
+            legend: vegetationLabels[j],
+            percent: calcPercent(vegetationData[j], totalArea)
+      })
+    }
+
+    let waterData = []
+    let waterLabels = []
     // format the water array (of each data object)
     for(let j = 0; j < data.water.length; j++){
-      index = conDescSearch(graph.waterLabels, data.water[j].description)
+      index = conDescSearch(waterLabels, data.water[j].description)
       // that description is already formatted, so increase its count
       if(index !== -1){
-        let num = graph.waterData[index] + data.water[j].area;
+        let num = waterData[index] + data.water[j].area;
         let string = num.toFixed(2)
-        graph.waterData[index] = parseFloat(string)
+        waterData[index] = parseFloat(string)
       }
       // otherwise add that description into the labels and increase its count
       else{
-        graph.waterLabels.push(data.water[j].description)
-        graph.waterData.push(data.water[j].area)
+        waterLabels.push(data.water[j].description)
+        waterData.push(data.water[j].area)
       }
+    }
+    // now with the arrays of water area sums, format the data in the water graph object
+    for(let j = 0; j < waterData.length; j++){
+      graph.water.push({
+            key: j + 1,
+            value: waterData[j],
+            svg: { fill: colors[j] },
+            legend: waterLabels[j],
+            percent: calcPercent(waterData[j], totalArea)
+      })
     }
   }
   // set the weather info as the 1st data's weather
