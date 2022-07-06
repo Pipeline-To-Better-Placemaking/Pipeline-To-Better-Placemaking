@@ -130,7 +130,7 @@ div#pathBoundWindow, div#popUpBlock{
 
 #rightButton {
     position: relative;
-    left: calc(100vw - 466px)
+    left: calc(100vw - 450px)
 }
 
 #newProjectInput, #newAreaBlock, #newPointsButton{

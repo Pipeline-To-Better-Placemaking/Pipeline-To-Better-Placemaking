@@ -625,7 +625,7 @@ const Path = ({boundsPathWindow, ...options}) => {
             path: options.path,
             strokeColor: colors[options.mode],
             strokeOpacity: 0.9,
-            strokeWeight: 2,
+            strokeWeight: 4,
             clickable: true
         }
     }

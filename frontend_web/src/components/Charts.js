@@ -110,11 +110,8 @@ function Charts(props) {
         }
 
         var posture = [{ posture: 'Sitting', count: sitting }, { posture: 'Standing', count: standing }, { posture: 'Laying', count: laying }, { posture: 'Squatting', count: squatting }];
-
         var age = [{ age: '0-14', count: kid }, { age: '15-21', count: teen }, { age: '22-30', count: yAdult }, { age: '30-50', count: mAdult }, { age: '50+', count: senior }];
-
         var gender = [{ gender: 'Male', count: male }, { gender: 'Female', count: female }]
-
         var activity = [{ activity: 'Socializing', count: socializing }, { activity: 'Waiting', count: waiting }, { activity: 'Recreation', count: recreation }, { activity: 'Eating', count: eating }, { activity: 'Solitary', count: solitary }];
 
         return (
@@ -220,11 +217,8 @@ function Charts(props) {
         };
 
         var posture = [{ posture: 'Sitting', count: sitting }, { posture: 'Standing', count: standing }, { posture: 'Laying', count: laying }, { posture: 'Squatting', count: squatting }];
-
         var age = [{ age: '0-14', count: kid }, { age: '15-21', count: teen }, { age: '22-30', count: yAdult }, { age: '30-50', count: mAdult }, { age: '50+', count: senior }];
-        
-        var gender =[{ gender: 'Male', count: male }, { gender: 'Female', count: female }]
-
+        var gender =[{ gender: 'Male', count: male }, { gender: 'Female', count: female }];
         var activity = [{ activity: 'Socializing', count: socializing }, { activity: 'Waiting', count: waiting }, { activity: 'Recreation', count: recreation }, { activity: 'Eating', count: eating }, { activity: 'Solitary', count: solitary }];
 
         return( 
@@ -275,6 +269,53 @@ function Charts(props) {
             </div>
        )
     };
+
+    const multiMoving = (data) => {
+        var running = 0, walking = 0, swimming = 0, onwheels = 0, handicap = 0;
+
+        for (const [dateTime, resultArr] of Object.entries(data)) {
+            for (const index1 of resultArr) {
+                for (const obj of index1) {
+                    if (obj.mode === 'Walking') {
+                        walking++;
+                    } else if (obj.mode === 'Running') {
+                        running++;
+                    } else if (obj.mode === 'Swimming') {
+                        swimming++;
+                    } else if (obj.mode === 'Activity on Wheels') {
+                        onwheels++;
+                    } else if (obj.mode === 'Handicap Assisted Wheels') {
+                        handicap++;
+                    }
+                }
+            }
+        }
+
+        var mode = [{ mode: 'Walking', count: walking }, { mode: 'Running', count: running }, { mode: 'Swimming', count: swimming }, { mode: 'Activity on Wheels', count: onwheels }, { mode: 'Handicap Assisted Wheels', count: handicap }];
+        return (
+            <div className='Charts'>
+                <BarChart width={width} height={height} data={mode}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='mode' />
+                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'count'} fill='#636262'>
+                        {mode.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={movingColor[entry.mode]} fillOpacity={0.8} />
+                        ))}
+                    </Bar>
+                </BarChart>
+                <br />
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: movingColor['Walking'] }}>&nbsp;&nbsp;</div>&nbsp;Walking</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: movingColor['Running'] }}>&nbsp;&nbsp;</div>&nbsp;Running</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: movingColor['Swimming'] }}>&nbsp;&nbsp;</div>&nbsp;Swimming</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: movingColor['Activity on Wheels'] }}>&nbsp;&nbsp;</div>&nbsp;Activity on Wheels</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: movingColor['Handicap Assisted Wheels'] }}>&nbsp;&nbsp;</div>&nbsp;Handicap Assisted Wheels</div>
+                </div>
+            </div>
+        );
+    }
 
     const movingBarChart = (data) => {
         var running = 0, walking = 0, swimming = 0, onwheels = 0, handicap = 0;
@@ -435,8 +476,7 @@ function Charts(props) {
                 for (const obj of index1) {
                     for (const [natureType, typeArr] of Object.entries(obj)){
                         for(const typePoint in typeArr){
-                            console.log(typePoint);
-                            var adjusted;
+                            //console.log(typePoint);
                             if (natureType === 'water') {
                                 waterAndVeg[0].area += typeArr[typePoint].area;
                                 water += typeArr[typePoint].area;
@@ -503,8 +543,8 @@ function Charts(props) {
                     <Tooltip />
                 </PieChart>
                 <div >
-                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Vegetation'] }}>&nbsp;&nbsp;</div>&nbsp; Vegetation: {totalArea[1].area*100}% </div>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: {totalArea[0].area * 100}% </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Vegetation'] }}>&nbsp;&nbsp;</div>&nbsp; Vegetation: { totalArea[1].area * 100 }% </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: { totalArea[0].area * 100 }% </div>
                 </div>
                 <div style={{ fontSize: 'larger' }}>Species</div>
                 <BarChart width={width} height={height} data={species}>
@@ -658,7 +698,7 @@ function Charts(props) {
                 <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
                     { testNames(cat[0]) }: Summary
                 </div>
-                { cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : ( cat[0] === 'stationary_maps' ? multiStationary(data) : ( cat[0] === 'nature_maps' ? multiNatureChart(data) : null) )}
+                { cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : ( cat[0] === 'stationary_maps' ? multiStationary(data) : ( cat[0] === 'nature_maps' ? multiNatureChart(data) : ( cat[0] === 'moving_maps' ? multiMoving(data) : null )) )}
             </div>
     );
 };
