@@ -52,13 +52,38 @@ export function LightCompare(props) {
     return -1;
   }
 
+  // formats each test's data individually for easier formatting to compare
   const formatForIndividual = (obj)=>{
-    let graph = {};
-    console.log(obj);
+    let graph = {
+      data: [],
+      labels: []
+    };
+    let index;
+    // loop through the entire data array to format each points array for the barchart
+    for(let i = 0; i < obj.length; i++){
+      let data = obj[i].points;
+      // loop through the entire points array and format its data into the graph object
+      for(let j = 0; j < data.length; j++){
+        index = conDescSearch(graph.labels, data[j].light_description)
+        // if that description already exists in graph's labels
+        if(index !== -1){
+          // increase the count of that index
+          graph.data[index] += 1;
+        }
+        // otherwise, that description does not exist in graph's labels
+        else{
+          // so push the description to the end of graph's labels and a 1 onto the end of data labels
+          graph.labels.push(data[j].light_description);
+          graph.data.push(1);
+        }
+      }
+    }
+    return graph;
   }
   
   // returns fully formatted array of data objects that the compare barchart needs
-  const formatForCompare = (obj1, obj2, type) =>{
+  const formatForCompare = (obj1, obj2) =>{
+    let index;
     let resObj = {
       labels: [],
       graph: []
@@ -67,11 +92,105 @@ export function LightCompare(props) {
     resObj.graph.push({data: [], svg: {}, title: []})
     resObj.graph.push({data: [], svg: {}, title: []})
     
+    // if both data arrays are empty, there is nothing to compare so return false
+    if(obj1.data.length === 0 && obj2.data.length === 0) return false;
+    
+    // if the 1st formatted data object has more data/labels, then use it as the base
+    if(obj1.data.length > obj2.data.length){
+      // loop through the data object and format the data
+      for(let i = 0; i < obj1.data.length; i++){
+        // push the new label onto the end of the labels array
+        resObj.labels.push(obj1.labels[i]);
+        // add its data to the 1st graph data object
+        resObj.graph[0].data.push(obj1.data[i]);
+        // search through the other object to see if that label exists in it
+        index = conDescSearch(obj2.labels, obj1.labels[i]);
+        // that label exists in the other data object
+        if(index !== -1){
+          // add its data to the 2nd graph data object
+          resObj.graph[1].data.push(obj2.data[index])
+        }
+        // otherwise, that label doesn't exist in the other data object
+        else{
+          // so add a 0 to the 2nd graph data object
+          resObj.graph[1].data.push(0)
+        }
+      }
+      // check the other formatted data object for any labels unaccounted for (is unlikely but possible to happen)
+      for(let i = 0; i < obj2.data.length; i++){
+        index = conDescSearch(resObj.labels, obj2.labels[i]);
+        // if that object does not exist, add it to the end of the formatted graph obj
+        if(index === -1){
+          resObj.labels.push(obj2.labels[i]);
+          resObj.graph[1].data.push(obj2.data[i]);
+          // push a 0 onto the 1st graph object as the data didn't exist in obj1 
+          resObj.graph[0].data.push(0);
+        }
+        // otherwise, it already exists in labels and nothing needs to be done
+      }
+      // add the other information into the return object graph array
+      resObj.graph[0].svg = {
+        fill: results[0].color,
+        opacity: 0.5
+      }
+      resObj.graph[1].svg={
+        fill: results[1].color,
+        opacity: 0.5
+      }
+      resObj.graph[0].title = results[0].resultName
+      resObj.graph[1].title = results[1].resultName
+    }
+    // otherwise they are likely the same size (or the 2nd data object is larger)
+    else{
+      // loop through the data object and format the data
+      for(let i = 0; i < obj2.data.length; i++){
+        // push the new label onto the end of the labels array
+        resObj.labels.push(obj2.labels[i]);
+        // add its data to the 1st graph data object
+        resObj.graph[0].data.push(obj2.data[i]);
+        // search through the other object to see if that label exists in it
+        index = conDescSearch(obj1.labels, obj2.labels[i]);
+        // that label exists in the other data object
+        if(index !== -1){
+          // add its data to the 2nd graph data object
+          resObj.graph[1].data.push(obj1.data[index])
+        }
+        // otherwise, that label doesn't exist in the other data object
+        else{
+          // so add a 0 to the 2nd graph data object
+          resObj.graph[1].data.push(0)
+        }
+      }
+      // check the other formatted data object for any labels unaccounted for (is unlikely but possible to happen)
+      for(let i = 0; i < obj1.data.length; i++){
+        index = conDescSearch(resObj.labels, obj1.labels[i]);
+        // if that object does not exist, add it to the end of the formatted graph obj
+        if(index === -1){
+          resObj.labels.push(obj1.labels[i]);
+          resObj.graph[1].data.push(obj1.data[i]);
+          // push a 0 onto the 1st graph object as the data didn't exist in obj1 
+          resObj.graph[0].data.push(0);
+        }
+        // otherwise, it already exists in labels and nothing needs to be done
+      }
+      // add the other information into the return object graph array
+      resObj.graph[0].svg = {
+        fill: results[1].color,
+        opacity: 0.5
+      }
+      resObj.graph[1].svg={
+        fill: results[0].color,
+        opacity: 0.5
+      }
+      resObj.graph[0].title = results[1].resultName
+      resObj.graph[1].title = results[0].resultName
+    }    
     return resObj;
   }
   
   const formatTest1 = formatForIndividual(results[0].data)
   const formatTest2 = formatForIndividual(results[1].data)
+  const compareFormat = formatForCompare(formatTest1, formatTest2)
 
   return (
     <ViewableArea>
@@ -104,7 +223,20 @@ export function LightCompare(props) {
 
           <Divider style={styles.metaDataEndSep} />
           
-          <Text>Compare Charts go here</Text>
+          {compareFormat ? 
+            <CompareBarChart
+              {...props}
+              title={"Light Data"}
+              rotation={'0deg'}
+              dataValues={compareFormat.graph}
+              dataLabels={compareFormat.labels}
+              barColor={color}
+              width={chartWidth}
+              height={chartHeight}
+            />
+          :
+            <Text category={'s1'}>Both test's results are blank; there is nothing to compare</Text>
+          }
 
         </ScrollView>
       </ContentContainer>

@@ -8,33 +8,27 @@ import { styles } from './sharedMap.styles';
 
 export function LightMapResults(props) {
 
-    // data pins
+    // light data pin
     const DataPin = (props) => {
         return(
-            <View style={[ styles.natureDataPin, { backgroundColor: props.color }]}/>
+            <View style={[styles.lightDataPinCircle, {backgroundColor: props.colorFill, borderColor: props.color}]}>
+                <View style={[styles.lightDataPin, {backgroundColor: props.color}]} />
+            </View>
         )
     }
 
     // displays information about the DataPin
     const DataCallout = (props) => {
-        let title = props.type
-        // if the type is an animal marker, change its title
-        if(title === "Domesticated" || title === "Wild") title = "Animal: " + title;
         return (
             <View style={styles.soundDataCallOutView}>
-                <View style={styles.spacing} >
-                    <Text style={styles.dataText}>{title}</Text>
-                </View>
-                
-                <View style={styles.spacing}>
-                    <Text style={styles.dataText}>Description: {props.desc}</Text>
-                </View>
+                <Text style={styles.dataText}>Light: {props.desc}</Text>
             </View>
         )
     }
 
     // renders the project data that was collected
     const ShowData = () =>{
+        
         if(props.dataMarkers === null) {
             return (null);
         }
@@ -47,26 +41,35 @@ export function LightMapResults(props) {
                 let pointArr = props.dataMarkers[i].points;
                 // loop through the points array and plot those data points
                 for(let j = 0; j < pointArr.length; j++){
-                    // set as color for the animal type
-                    let color = "#B06A24";
+                    // gets the color based on the light_description
+                    let color;
+                    let colorFill;
                     // only change color if its for the Vegetation type
-                    if(pointArr[j].kind === "Vegetation") color = "#00FF00"
+                    if(pointArr[j].light_description === "Rhythmic"){
+                        color = "#FFE371"
+                        colorFill = 'rgba(255, 227, 113, .5)'
+                    }
+                    else if(pointArr[j].light_description === "Building"){
+                        color = "#FF9933"
+                        colorFill = 'rgba(255, 153, 51, .5)'
+                    }
+                    else{
+                        color = '#FF00FF'
+                        colorFill = 'rgba(255, 0, 255, .5)'
+                    }
                     // add the marker to the rendered JSX array
                     objData.push(
                         <View key={keySum}>
                             <MapView.Marker
                                 coordinate = {{
-                                    latitude: pointArr[j].marker.latitude,
-                                    longitude: pointArr[j].marker.longitude
+                                    latitude: pointArr[j].location.latitude,
+                                    longitude: pointArr[j].location.longitude
                                 }}
                             >
-                                <DataPin color={color}/>
+                                <DataPin color={color} colorFill={colorFill}/>
 
                                 <Callout style={styles.callout}>
-                                    <DataCallout 
-                                        type={pointArr[j].kind}
-                                        desc={pointArr[j].description}
-                                    />
+                                    <DataCallout desc={pointArr[j].light_description}/>
                                 </Callout>
                         
                             </MapView.Marker>

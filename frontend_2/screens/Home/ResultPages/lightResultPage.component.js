@@ -206,40 +206,16 @@ export function LightResultPage(props) {
               </View>
           }
 
-          {/* <MyBarChart
+          <MyBarChart
             {...props}
-            title={"Animal Data"}
+            title={"Light Data"}
             rotation={'0deg'}
-            dataValues={props.selectedResult.graph.animalData}
-            dataLabels={props.selectedResult.graph.animalLabels}
+            dataValues={props.selectedResult.graph.data}
+            dataLabels={props.selectedResult.graph.labels}
             barColor={color}
             width={chartWidth}
             height={chartHeight}
           />
-
-          <MyBarChart
-            {...props}
-            title={"Vegetation Data"}
-            rotation={'0deg'}
-            dataValues={props.selectedResult.graph.vegetationData}
-            dataLabels={props.selectedResult.graph.vegetationLabels}
-            barColor={color}
-            width={chartWidth}
-            height={chartHeight}
-          />
-
-          <MyBarChart
-            {...props}
-            title={"Water Data (area in ft²)"}
-            rotation={'0deg'}
-            dataValues={props.selectedResult.graph.waterData}
-            dataLabels={props.selectedResult.graph.waterLabels}
-            barColor={color}
-            width={chartWidth}
-            height={chartHeight}
-          /> */}
-          
-          
           
         </ScrollView>
       </ContentContainer>
