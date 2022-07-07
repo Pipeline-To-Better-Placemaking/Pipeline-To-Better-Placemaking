@@ -238,21 +238,7 @@ export function NatureResultPage(props) {
               width={chartWidth}
               height={chartHeight}
             />
-          </View>
-          
-          {/* <MyBarChart
-            {...props}
-            title={"Water Data (area in ft²)"}
-            rotation={'0deg'}
-            dataValues={props.selectedResult.graph.waterData}
-            dataLabels={props.selectedResult.graph.waterLabels}
-            barColor={color}
-            width={chartWidth}
-            height={chartHeight}
-          /> */}
-          
-          
-          
+          </View>  
         </ScrollView>
       </ContentContainer>
     </ViewableArea>

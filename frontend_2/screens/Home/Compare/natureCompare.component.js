@@ -82,7 +82,6 @@ export function NatureCompare(props) {
           graph.animalLabels.push(string)
           graph.animalData.push(1);
         }
-        
       }
 
       // format the vegetation array (of each data object)
@@ -241,6 +240,7 @@ export function NatureCompare(props) {
         for(let i = 0; i < obj1.vegetationData.length; i++){
           // push that label onto the labels array
           resObj.labels.push(obj1.vegetationLabels[i])
+          // calculate and format the precentage of its project area that polygon type takes up
           temp = (obj1.vegetationData[i] / totalArea1) * 100
           tempString = temp.toFixed(0)
           // push the data for that label onto its graph object
@@ -253,8 +253,10 @@ export function NatureCompare(props) {
           }
           // otherwise that label does exist, so push its value
           else{
+            // calculate and format the precentage of its project area that polygon type takes up
             temp = (obj2.vegetationData[cond] / totalArea2) * 100
             tempString = temp.toFixed(0)
+            // push the data for that label onto its graph object
             resObj.graph[1].data.push(parseInt(tempString))
           }
         }
@@ -265,6 +267,7 @@ export function NatureCompare(props) {
           if(cond === -1){
             // push that label onto the labels array
             resObj.labels.push(obj2.vegetationLabels[i])
+            // calculate and format the precentage of its project area that polygon type takes up
             temp = (obj2.vegetationData[i] / totalArea2) * 100
             tempString = temp.toFixed(0)
             // push the data for that label onto its graph object
@@ -291,6 +294,7 @@ export function NatureCompare(props) {
         for(let i = 0; i < obj2.vegetationData.length; i++){
           // push that label onto the labels array
           resObj.labels.push(obj2.vegetationLabels[i])
+          // calculate and format the precentage of its project area that polygon type takes up
           temp = (obj2.vegetationData[i] / totalArea2) * 100
           tempString = temp.toFixed(0)
           // push the data for that label onto its graph object
@@ -303,8 +307,10 @@ export function NatureCompare(props) {
           }
           // otherwise that label does exist, so push its value
           else{
+            // calculate and format the precentage of its project area that polygon type takes up
             temp = (obj1.vegetationData[cond] / totalArea1) * 100
             tempString = temp.toFixed(0)
+            // push the data for that label onto its graph object
             resObj.graph[1].data.push(parseInt(tempString))
           }
         }
@@ -315,6 +321,7 @@ export function NatureCompare(props) {
           if(cond === -1){
             // push that label onto the labels array
             resObj.labels.push(obj1.vegetationLabels[i])
+            // calculate and format the precentage of its project area that polygon type takes up
             temp = (obj1.vegetationData[i] / totalArea1) * 100
             tempString = temp.toFixed(0)
             // push the data for that label onto its graph object
@@ -346,6 +353,7 @@ export function NatureCompare(props) {
         for(let i = 0; i < obj1.waterData.length; i++){
           // push that label onto the labels array
           resObj.labels.push(obj1.waterLabels[i])
+          // calculate and format the precentage of its project area that polygon type takes up
           temp = (obj1.waterData[i] / totalArea1) * 100
           tempString = temp.toFixed(0)
           // push the data for that label onto its graph object
@@ -358,8 +366,10 @@ export function NatureCompare(props) {
           }
           // otherwise that label does exist, so push its value
           else{
+            // calculate and format the precentage of its project area that polygon type takes up
             temp = (obj2.waterData[cond] / totalArea2) * 100
             tempString = temp.toFixed(0)
+            // push the data for that label onto its graph object
             resObj.graph[1].data.push(parseInt(tempString))
           }
         }
@@ -370,6 +380,7 @@ export function NatureCompare(props) {
           if(cond === -1){
             // push that label onto the labels array
             resObj.labels.push(obj2.waterLabels[i])
+            // calculate and format the precentage of its project area that polygon type takes up
             temp = (obj2.waterData[i] / totalArea2) * 100
             tempString = temp.toFixed(0)
             // push the data for that label onto its graph object
@@ -396,6 +407,7 @@ export function NatureCompare(props) {
         for(let i = 0; i < obj2.waterData.length; i++){
           // push that label onto the labels array
           resObj.labels.push(obj2.waterLabels[i])
+          // calculate and format the precentage of its project area that polygon type takes up
           temp = (obj2.waterData[i] / totalArea2) * 100
           tempString = temp.toFixed(0)
           // push the data for that label onto its graph object
@@ -408,8 +420,10 @@ export function NatureCompare(props) {
           }
           // otherwise that label does exist, so push its value
           else{
+            // calculate and format the precentage of its project area that polygon type takes up
             temp = (obj1.waterData[cond] / totalArea1) * 100
             tempString = temp.toFixed(0)
+            // push the data for that label onto its graph object
             resObj.graph[1].data.push(parseInt(tempString))
           }
         }
@@ -420,6 +434,7 @@ export function NatureCompare(props) {
           if(cond === -1){
             // push that label onto the labels array
             resObj.labels.push(obj1.waterLabels[i])
+            // calculate and format the precentage of its project area that polygon type takes up
             temp = (obj1.waterData[i] / totalArea1) * 100
             tempString = temp.toFixed(0)
             // push the data for that label onto its graph object

@@ -232,6 +232,14 @@ const conDescSearch = (arr, str)=>{
   return -1;
 }
 
+// searches to see if that description exists in the array (helper for formatNatureGraphData)
+const objDescSearch = (objArr, str)=>{
+  for(let i = 0; i < objArr.length; i++){
+    if(objArr[i].legend === str) return i
+  }
+  return -1;
+}
+
 const calcPercent = (value, total) =>{
   // times 100 to convert the decimal to a percentage
   let ret = (value / total) * 100
@@ -264,6 +272,7 @@ export async function formatNatureGraphData(result){
     water: [],
     weather: {}
   };
+
   for(let i = 0; i < result.data.length; i++){
     let data = result.data[i]
     let index = -1;
@@ -304,13 +313,25 @@ export async function formatNatureGraphData(result){
 
     // now with the arrays of vegetation area sums, format the data in the vegetation graph object
     for(let j = 0; j < vegetationData.length; j++){
-      graph.vegetation.push({
+      // check to see if this label is already formatted (from a previous data index)
+      index = objDescSearch(graph.vegetation, vegetationLabels[j])
+      // that entry already exists, so update it with the new data
+      if(index !== -1){
+        let num = graph.vegetation[index].value + vegetationData[j]
+        let string = num.toFixed(2)
+        graph.vegetation[index].value = parseFloat(string)
+        graph.vegetation[index].percent = calcPercent(graph.vegetation[index].value, totalArea)
+      }
+      // that entry did not exist so add it to the end
+      else{
+        graph.vegetation.push({
             key: j + 1,
             value: vegetationData[j],
             svg: { fill: colors[j] },
             legend: vegetationLabels[j],
             percent: calcPercent(vegetationData[j], totalArea)
-      })
+        })
+      }
     }
 
     let waterData = []
@@ -332,13 +353,24 @@ export async function formatNatureGraphData(result){
     }
     // now with the arrays of water area sums, format the data in the water graph object
     for(let j = 0; j < waterData.length; j++){
-      graph.water.push({
-            key: j + 1,
-            value: waterData[j],
-            svg: { fill: colors[j] },
-            legend: waterLabels[j],
-            percent: calcPercent(waterData[j], totalArea)
-      })
+      // check to see if this label is already formatted (from s previous data index)
+      index = objDescSearch(graph.water, waterLabels[j])
+      // that entry already exists, so update it with the new data
+      if(index !== -1){
+        let num = graph.water[index].value + waterData[j]
+        let string = num.toFixed(2)
+        graph.water[index].value = parseFloat(string)
+        graph.water[index].percent = calcPercent(graph.water[index].value, totalArea)
+      }
+      else{
+        graph.water.push({
+          key: j + 1,
+          value: waterData[j],
+          svg: { fill: colors[j] },
+          legend: waterLabels[j],
+          percent: calcPercent(waterData[j], totalArea)
+        })
+      }
     }
   }
   // set the weather info as the 1st data's weather
