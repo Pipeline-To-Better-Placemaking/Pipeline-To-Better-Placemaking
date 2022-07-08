@@ -1152,7 +1152,7 @@ function ProjectPage(){
             </Routes>
             {
                 projectInfo?.map((project, index) => (
-                    <MapPage title={ project.area } key={(project._id + index)} drawers={ project } area={ project.area } center={ center }/>
+                    <Route path='map' element={<MapPage title={ project.area } key={(project._id + index)} drawers={ project } area={ project.area } center={ center }/>} />
                 ))
             }
             {/* {
