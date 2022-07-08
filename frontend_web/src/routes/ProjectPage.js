@@ -1124,7 +1124,7 @@ function ProjectPage(){
                 withCredentials: true
             });
 
-            //console.log(response.data);
+            console.log(response.data);
             setProjectInfo(response.data);
             setProjectMaps(projectInfo.area);
             
