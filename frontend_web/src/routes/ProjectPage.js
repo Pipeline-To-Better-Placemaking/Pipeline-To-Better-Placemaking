@@ -18,7 +18,7 @@ function ProjectPage(){
 
     // can be reached at (heroku-url)/home/teams/:id/project/:id 
     // Selected Project's data will be loaded here to pass into its relevant components 
-    const projectId = loc.pathname.split('/')[5];
+    const projectId = loc.pathname.split('/')[3];
 
     const drawers = {
         Results: {
