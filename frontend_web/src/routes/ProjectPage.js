@@ -1126,6 +1126,7 @@ function ProjectPage(){
 
             //console.log(response.data);
             setProjectInfo(response.data);
+            setProjectMaps(projectInfo.area);
             
         } catch(error){
             //proget api get error
@@ -1144,17 +1145,17 @@ function ProjectPage(){
         <div id='ProjectPage'>
             <TabPanel state={loc.state}/>
             <Routes>
-                <Route index element={<MapPage title={ loc.state } drawers={ drawers } area={ area } center={ center } />} />
-                <Route path='map' element={<MapPage title={ loc.state } drawers={ drawers } area={ area } center={ center }/>} />
-                <Route path='activities' element={<ActivityPage title={ loc.state }  drawers={ drawers.Results } />} />
+                <Route index element={<MapPage title={ projectInfo.title } drawers={ projectInfo } area={ projectInfo.area } center={ center } />} />
+                <Route path='map' element={<MapPage title={ projectInfo.title } drawers={ projectInfo } area={ projectInfo.area } center={ center }/>} />
+                <Route path='activities' element={<ActivityPage title={ projectInfo.title }  drawers={ projectInfo } />} />
                 <Route path='activities/times' element={<NewActivityTimes />}/>
-                <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ drawers } />} />
+                <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ projectInfo } />} />
             </Routes>
-            {
-                projectInfo?.map((project, index) => (
-                    <Route path='map' element={<MapPage title={ project.area } key={(project._id + index)} drawers={ project } area={ project.area } center={ center }/>} />
+            {/* {
+                projectInfo?.area.ActivityPage((projectMaps) => (
+                    <Route path='map' element={<MapPage title={ projectInfo.title } key={(project._id + index)} drawers={ drawers.Results=project } area={ project.area } center={ project.area.points }/>} />
                 ))
-            }
+            } */}
             {/* {
                projectInfo?.map((project, index) => (
                 <Route path='activities' element={<ActivityPage title={ project.area }  drawers={ project } />} />
