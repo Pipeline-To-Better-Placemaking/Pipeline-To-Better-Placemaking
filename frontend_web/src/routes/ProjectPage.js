@@ -8,20 +8,6 @@ import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
 
 function ProjectPage(){
-    //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
-    const loc = useLocation();
-    //Holds basic projects info including map ids
-    const [projectInfo, setProjectInfo] = React.useState({});
-    //Holds specifics like results, locations, and types of markers, boundaries, etc.
-    const [projectMaps, setProjectMaps] = React.useState();
-    const user = loc.state ? loc.state.userToken : {};
-
-    // page url: path (split index)
-    // can be reached at (heroku-url)/home (1)/teams (2)/:id (3)/projects (4)/:id (5)
-    // Selected Project's data will be loaded here to pass into its relevant components 
-    const projectId = loc.pathname.split('/')[5];
-    //console.log(projectId);
-
     const drawers = {
         Results: {
             stationary_maps: {
@@ -68,7 +54,7 @@ function ProjectPage(){
                         data: [
                             {
                                 point: {
-                                    lat: 28.603232199908305, 
+                                    lat: 28.603232199908305,
                                     lng: -81.1995854914737
                                 },
                                 posture: 'Standing',
@@ -78,7 +64,7 @@ function ProjectPage(){
                             },
                             {
                                 point: {
-                                    lat: 28.603253393658516, 
+                                    lat: 28.603253393658516,
                                     lng: -81.19965254669451
                                 },
                                 posture: 'Standing',
@@ -88,7 +74,7 @@ function ProjectPage(){
                             },
                             {
                                 point: {
-                                    lat: 28.603430029048898, 
+                                    lat: 28.603430029048898,
                                     lng: -81.19939323473407
                                 },
                                 posture: 'Laying',
@@ -111,16 +97,16 @@ function ProjectPage(){
                                 mode: 'Walking',
                                 path: [
                                     {
-                                        lat: 28.60362836407018, 
+                                        lat: 28.60362836407018,
                                         lng: -81.19919623114687
                                     },
-                                    { 
-                                        lat: 28.6036848805148, 
+                                    {
+                                        lat: 28.6036848805148,
                                         lng: -81.19915331580425
                                     },
                                     {
-                                        lat: 28.603783784219722, 
-                                        lng:- 81.19921768881817
+                                        lat: 28.603783784219722,
+                                        lng: - 81.19921768881817
                                     }
 
                                 ]
@@ -129,16 +115,16 @@ function ProjectPage(){
                                 mode: 'Running',
                                 path: [
                                     {
-                                        lat: 28.60394862352107, 
+                                        lat: 28.60394862352107,
                                         lng: -81.19951273179854
                                     },
                                     {
-                                        lat: 28.60407578509113, 
+                                        lat: 28.60407578509113,
                                         lng: -81.19949663854507
                                     },
                                     {
-                                        lat: 28.604240623934345, 
-                                        lng:-81.19939471460638
+                                        lat: 28.604240623934345,
+                                        lng: -81.19939471460638
                                     }
 
                                 ]
@@ -147,20 +133,20 @@ function ProjectPage(){
                                 mode: 'Handicap Assisted Wheels',
                                 path: [
                                     {
-                                        lat: 28.60335637825532, 
-                                        lng:-81.1993517992638
+                                        lat: 28.60335637825532,
+                                        lng: -81.1993517992638
                                     },
                                     {
-                                        lat: 28.60338699141251, 
-                                        lng:-81.19940142012868
+                                        lat: 28.60338699141251,
+                                        lng: -81.19940142012868
                                     },
                                     {
-                                        lat: 28.603442330558636, 
-                                        lng:-81.19949395633616
+                                        lat: 28.603442330558636,
+                                        lng: -81.19949395633616
                                     },
                                     {
-                                        lat: 28.603469411406763, 
-                                        lng:-81.19955028272332
+                                        lat: 28.603469411406763,
+                                        lng: -81.19955028272332
                                     }
 
                                 ]
@@ -169,19 +155,19 @@ function ProjectPage(){
                                 mode: 'Walking',
                                 path: [
                                     {
-                                        lat: 28.603656543435022, 
+                                        lat: 28.603656543435022,
                                         lng: -81.1996947201365
                                     },
                                     {
-                                        lat: 28.603533283354167, 
+                                        lat: 28.603533283354167,
                                         lng: -81.19973601274066
                                     },
                                     {
-                                        lat: 28.60345110988662, 
+                                        lat: 28.60345110988662,
                                         lng: -81.19951853835869
                                     },
                                     {
-                                        lat: 28.60327709527261, 
+                                        lat: 28.60327709527261,
                                         lng: -81.19961488776843
                                     }
                                 ]
@@ -195,15 +181,15 @@ function ProjectPage(){
                                 mode: 'Walking',
                                 path: [
                                     {
-                                        lat: 28.60396106772952, 
-                                        lng:-81.19966719174398
+                                        lat: 28.60396106772952,
+                                        lng: -81.19966719174398
                                     },
                                     {
-                                        lat: 28.604367098737516, 
+                                        lat: 28.604367098737516,
                                         lng: -81.1994276946398
                                     },
                                     {
-                                        lat: 28.604526610489927, 
+                                        lat: 28.604526610489927,
                                         lng: -81.1993643793134
                                     }
                                 ]
@@ -212,15 +198,15 @@ function ProjectPage(){
                                 mode: 'Activity on Wheels',
                                 path: [
                                     {
-                                        lat: 28.604108495836478, 
-                                        lng:-81.1987449902508
+                                        lat: 28.604108495836478,
+                                        lng: -81.1987449902508
                                     },
                                     {
-                                        lat: 28.603944149736797, 
+                                        lat: 28.603944149736797,
                                         lng: -81.1988083055772
                                     },
                                     {
-                                        lat: 28.603622707357623, 
+                                        lat: 28.603622707357623,
                                         lng: -81.1989872401953
                                     }
                                 ]
@@ -295,19 +281,19 @@ function ProjectPage(){
                             {
                                 path: [
                                     {
-                                        lat: 28.60291560437277, 
+                                        lat: 28.60291560437277,
                                         lng: -81.20098575289026
                                     },
                                     {
-                                        lat: 28.602907362332807, 
+                                        lat: 28.602907362332807,
                                         lng: -81.20094619030888
-                                    }, 
+                                    },
                                     {
-                                        lat: 28.602830829073785, 
+                                        lat: 28.602830829073785,
                                         lng: -81.20096563632346
                                     },
                                     {
-                                        lat: 28.602837893684644, 
+                                        lat: 28.602837893684644,
                                         lng: -81.20100385780037
                                     }
                                 ],
@@ -318,19 +304,19 @@ function ProjectPage(){
                             {
                                 path: [
                                     {
-                                        lat: 28.602674408332604, 
+                                        lat: 28.602674408332604,
                                         lng: -81.2008203704324
                                     },
                                     {
-                                        lat: 28.602775562223734, 
+                                        lat: 28.602775562223734,
                                         lng: -81.20056833834718
                                     },
                                     {
-                                        lat: 28.6025163551828, 
+                                        lat: 28.6025163551828,
                                         lng: -81.20042071955443
                                     },
                                     {
-                                        lat: 28.602377268214305, 
+                                        lat: 28.602377268214305,
                                         lng: -81.20079876768224
                                     }
                                 ],
@@ -339,13 +325,13 @@ function ProjectPage(){
                                 value: 300
                             },
                             {
-                                path:[
+                                path: [
                                     {
-                                        lat: 28.602559620802463, 
+                                        lat: 28.602559620802463,
                                         lng: -81.20132648151288
                                     },
                                     {
-                                        lat: 28.60227126142984, 
+                                        lat: 28.60227126142984,
                                         lng: -81.20074444139789
                                     }
                                 ],
@@ -354,17 +340,17 @@ function ProjectPage(){
                                 value: 200
                             },
                             {
-                                path:[
+                                path: [
                                     {
-                                        lat: 28.603032029455452, 
-                                        lng:-81.2001763275537
+                                        lat: 28.603032029455452,
+                                        lng: -81.2001763275537
                                     },
                                     {
-                                        lat: 28.60312103727488, 
+                                        lat: 28.60312103727488,
                                         lng: -81.19993530957748
                                     },
                                     {
-                                        lat: 28.602761646749155, 
+                                        lat: 28.602761646749155,
                                         lng: -81.20003669015477
                                     }
                                 ],
@@ -374,22 +360,22 @@ function ProjectPage(){
                             }
                         ]
                     },
-                    '18:00':{
+                    '18:00': {
                         researcher: 'Billy Bob',
                         data: [
                             {
                                 path: [
                                     {
-                                        lat: 28.602212394739325, 
+                                        lat: 28.602212394739325,
                                         lng: -81.1999053211601
                                     },
                                     {
-                                        lat: 28.60225825467047, 
+                                        lat: 28.60225825467047,
                                         lng: -81.19961280856944
                                     },
                                     {
-                                        lat: 28.60203124781571, 
-                                        lng:- 81.19971727735182
+                                        lat: 28.60203124781571,
+                                        lng: - 81.19971727735182
                                     }
                                 ],
                                 kind: 'Shelter',
@@ -399,11 +385,11 @@ function ProjectPage(){
                             {
                                 path: [
                                     {
-                                        lat: 28.60225366867824, 
+                                        lat: 28.60225366867824,
                                         lng: -81.20014298764002
                                     },
                                     {
-                                        lat: 28.602065642825217, 
+                                        lat: 28.602065642825217,
                                         lng: -81.19978518206037
                                     }
                                 ],
@@ -429,28 +415,28 @@ function ProjectPage(){
                             },
                             {
                                 standingPoint: {
-                                    lat: 28.60162517274116, 
-                                    lng:-81.20074305288507
+                                    lat: 28.60162517274116,
+                                    lng: -81.20074305288507
                                 },
                                 result: 'Building'
                             },
                             {
                                 standingPoint: {
-                                    lat: 28.601574899251066, 
+                                    lat: 28.601574899251066,
                                     lng: -81.20058558490983
                                 },
                                 result: 'Building'
                             },
                             {
                                 standingPoint: {
-                                    lat: 28.601684872479424, 
+                                    lat: 28.601684872479424,
                                     lng: -81.2010866193765
                                 },
                                 result: 'Building'
                             },
                             {
                                 standingPoint: {
-                                    lat: 28.60143350493119, 
+                                    lat: 28.60143350493119,
                                     lng: -81.2008217868727
                                 },
                                 result: 'Task'
@@ -465,8 +451,8 @@ function ProjectPage(){
                         researcher: 'Jane Doe',
                         data: [
                             {
-                                animal:[
-                                   
+                                animal: [
+
                                     {
                                         marker: {
                                             lat: 28.602512158058847,
@@ -552,16 +538,16 @@ function ProjectPage(){
                                     {
                                         location: [
                                             {
-                                                lat: 28.60343502765433, 
+                                                lat: 28.60343502765433,
                                                 lng: -81.20112589672814
                                             },
                                             {
-                                                lat: 28.60370371997612, 
-                                                lng:-81.20121631882381
+                                                lat: 28.60370371997612,
+                                                lng: -81.20121631882381
                                             },
                                             {
-                                                lat: 28.603257934612053, 
-                                                lng:-81.20164292563418
+                                                lat: 28.603257934612053,
+                                                lng: -81.20164292563418
                                             }
                                         ],
                                         description: 'Design',
@@ -574,28 +560,28 @@ function ProjectPage(){
                                                 lng: -81.19963074866048
                                             },
                                             {
-                                                lat: 28.603710972773605, 
+                                                lat: 28.603710972773605,
                                                 lng: -81.19975755193431
                                             },
                                             {
-                                                lat: 28.60363211744467, 
+                                                lat: 28.60363211744467,
                                                 lng: -81.19953575813689
                                             },
                                             {
-                                                lat: 28.60365947542264, 
+                                                lat: 28.60365947542264,
                                                 lng: -81.1993982826426
                                             },
                                             {
-                                                lat: 28.603532341229318, 
-                                                lng:-81.19932496237898
+                                                lat: 28.603532341229318,
+                                                lng: -81.19932496237898
                                             },
                                             {
-                                                lat: 28.60341808125346, 
-                                                lng:-81.19913432969358
+                                                lat: 28.60341808125346,
+                                                lng: -81.19913432969358
                                             },
                                             {
-                                                lat: 28.60363372673768, 
-                                                lng:- 81.19902618230475
+                                                lat: 28.60363372673768,
+                                                lng: - 81.19902618230475
                                             }
 
                                         ],
@@ -605,31 +591,31 @@ function ProjectPage(){
                                     {
                                         location: [
                                             {
-                                                lat: 28.602997644416632, 
-                                                lng:-81.2009270644679
+                                                lat: 28.602997644416632,
+                                                lng: -81.2009270644679
                                             },
                                             {
-                                                lat: 28.60239335916406, 
-                                                lng:-81.20078274707231
+                                                lat: 28.60239335916406,
+                                                lng: -81.20078274707231
                                             },
                                             {
-                                                lat: 28.60229589347528, 
-                                                lng:-81.20013331879221
+                                                lat: 28.60229589347528,
+                                                lng: -81.20013331879221
                                             },
                                             {
-                                                lat: 28.602086341938286, 
-                                                lng:- 81.1997947279795
+                                                lat: 28.602086341938286,
+                                                lng: - 81.1997947279795
                                             },
                                             {
-                                                lat: 28.601467431470592, 
-                                                lng:-81.1996948159364
+                                                lat: 28.601467431470592,
+                                                lng: -81.1996948159364
                                             },
                                             {
-                                                lat: 28.60238361259924, 
+                                                lat: 28.60238361259924,
                                                 lng: -81.19903983698723
                                             },
                                             {
-                                                lat: 28.603265673053194, 
+                                                lat: 28.603265673053194,
                                                 lng: -81.2002609841806
                                             }
                                         ],
@@ -642,14 +628,14 @@ function ProjectPage(){
                     }
                 },
                 '4/16/22': {
-                    '1:00':{
+                    '1:00': {
                         researcher: 'Nick Names',
                         data: [
                             {
                                 animal: [
                                     {
                                         marker: {
-                                            lat: 28.60400662742351, lng:-81.19915996167126
+                                            lat: 28.60400662742351, lng: -81.19915996167126
                                         },
                                         description: 'Dog',
                                         kind: 'Domesticated'
@@ -659,35 +645,35 @@ function ProjectPage(){
                                     {
                                         location: [
                                             {
-                                                lat: 28.60292191958614, 
+                                                lat: 28.60292191958614,
                                                 lng: -81.1994307139586
                                             },
                                             {
-                                                lat: 28.60257186563576, 
+                                                lat: 28.60257186563576,
                                                 lng: -81.19919044158637
                                             },
                                             {
-                                                lat: 28.602175951683893, 
+                                                lat: 28.602175951683893,
                                                 lng: -81.19915736060757
                                             },
                                             {
-                                                lat: 28.60189621235522, 
+                                                lat: 28.60189621235522,
                                                 lng: -81.19925486243979
                                             },
                                             {
-                                                lat: 28.60169290406697, 
+                                                lat: 28.60169290406697,
                                                 lng: -81.19946727714618
                                             },
                                             {
-                                                lat: 28.60206741902445, 
+                                                lat: 28.60206741902445,
                                                 lng: -81.19935236427251
                                             },
                                             {
-                                                lat: 28.60240218840762, 
-                                                lng:-81.19929142562737
+                                                lat: 28.60240218840762,
+                                                lng: -81.19929142562737
                                             },
                                             {
-                                                lat: 28.60261160980823, 
+                                                lat: 28.60261160980823,
                                                 lng: -81.19951080474986
                                             }
                                         ],
@@ -695,23 +681,23 @@ function ProjectPage(){
                                         area: 1000
                                     }
                                 ],
-                                vegetation:[
+                                vegetation: [
                                     {
                                         location: [
                                             {
-                                                lat: 28.606273297480485, 
+                                                lat: 28.606273297480485,
                                                 lng: -81.19839454889278
                                             },
                                             {
-                                                lat: 28.603696745776244, 
+                                                lat: 28.603696745776244,
                                                 lng: -81.19974962765141
                                             },
                                             {
-                                                lat: 28.603422075434583, 
+                                                lat: 28.603422075434583,
                                                 lng: -81.19914709587648
                                             },
                                             {
-                                                lat: 28.606087364724456, 
+                                                lat: 28.606087364724456,
                                                 lng: -81.19751330779448
                                             }
                                         ],
@@ -915,7 +901,7 @@ function ProjectPage(){
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: 50, 
+                                average: 50,
                                 sound_type: ['water feature', 'traffic', 'people sounds'],
                                 source: 'people sounds'
                             },
@@ -924,7 +910,7 @@ function ProjectPage(){
                                     lat: 28.60161204591758,
                                     lng: -81.20087900870764
                                 },
-                                average: 60, 
+                                average: 60,
                                 sound_type: ['water feature', 'traffic', 'people sounds'],
                                 source: 'people sounds'
                             },
@@ -933,7 +919,7 @@ function ProjectPage(){
                                     lat: 28.601207002735954,
                                     lng: -81.19759598512186
                                 },
-                                average: 29, 
+                                average: 29,
                                 sound_type: ['water feature', 'traffic', 'people sounds'],
                                 source: 'people sounds'
                             },
@@ -942,7 +928,7 @@ function ProjectPage(){
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: 35, 
+                                average: 35,
                                 sound_type: ['water feature', 'traffic', 'people sounds'],
                                 source: 'people sounds'
                             },
@@ -974,7 +960,7 @@ function ProjectPage(){
                                     lat: 28.603797368242464,
                                     lng: -81.19945207347551
                                 },
-                                average: 70, 
+                                average: 70,
                                 sound_type: ['water feature', 'traffic', 'people sounds'],
                                 source: 'people sounds'
                             },
@@ -1001,7 +987,7 @@ function ProjectPage(){
                                     lat: 28.59915350397974,
                                     lng: -81.20035329578052
                                 },
-                                average: 40, 
+                                average: 40,
                                 sound_type: ['water feature', 'traffic', 'people sounds'],
                                 source: 'people sounds'
                             },
@@ -1092,6 +1078,21 @@ function ProjectPage(){
         Data: {
         }
     }
+    //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
+    const loc = useLocation();
+    //Holds basic projects info including map ids, default data overwritten on async function
+    const [projectInfo, setProjectInfo] = React.useState({});
+    //Holds specifics like results, locations, and types of markers, boundaries, etc.
+    const [projectMaps, setProjectMaps] = React.useState();
+    const user = loc.state ? loc.state.userToken : {};
+
+    // page url: path (split index)
+    // can be reached at (heroku-url)/home (1)/teams (2)/:id (3)/projects (4)/:id (5)
+    // Selected Project's data will be loaded here to pass into its relevant components 
+    const projectId = loc.pathname.split('/')[5];
+    //console.log(projectId);
+
+    
 
     //load project area and location data here as well and pass to Map Page
     const area = [
@@ -1144,13 +1145,13 @@ function ProjectPage(){
     return (
         <div id='ProjectPage'>
             <TabPanel state={loc.state}/>
-            <Routes>
+            {projectInfo?.title ? <Routes>
                 <Route index element={<MapPage title={ projectInfo?.title } drawers={ projectInfo } area={ projectInfo?.area } center={ center } />} />
                 <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ projectInfo } area={ projectInfo?.area } center={ center }/>} />
                 <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ projectInfo } />} />
                 <Route path='activities/times' element={<NewActivityTimes />}/>
                 <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ projectInfo } />} />
-            </Routes>
+            </Routes> : null}
             {/* {
                 projectInfo?.area.ActivityPage((projectMaps) => (
                     <Route path='map' element={<MapPage title={ projectInfo.title } key={(project._id + index)} drawers={ drawers.Results=project } area={ project.area } center={ project.area.points }/>} />
