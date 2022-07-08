@@ -1145,9 +1145,9 @@ function ProjectPage(){
         <div id='ProjectPage'>
             <TabPanel state={loc.state}/>
             <Routes>
-                <Route index element={<MapPage title={ projectInfo.title } drawers={ projectInfo } area={ projectInfo.area } center={ center } />} />
-                <Route path='map' element={<MapPage title={ projectInfo.title } drawers={ projectInfo } area={ projectInfo.area } center={ center }/>} />
-                <Route path='activities' element={<ActivityPage title={ projectInfo.title }  drawers={ projectInfo } />} />
+                <Route index element={<MapPage title={ projectInfo?.title } drawers={ projectInfo } area={ projectInfo?.area } center={ center } />} />
+                <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ projectInfo } area={ projectInfo?.area } center={ center }/>} />
+                <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ projectInfo } />} />
                 <Route path='activities/times' element={<NewActivityTimes />}/>
                 <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ projectInfo } />} />
             </Routes>
