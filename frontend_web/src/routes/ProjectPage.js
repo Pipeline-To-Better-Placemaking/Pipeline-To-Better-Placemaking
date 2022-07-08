@@ -16,9 +16,11 @@ function ProjectPage(){
     const [projectMaps, setProjectMaps] = React.useState();
     const user = loc.state ? loc.state.userToken : {};
 
-    // can be reached at (heroku-url)/home/teams/:id/project/:id 
+    // page url: path (split index)
+    // can be reached at (heroku-url)/home (1)/teams (2)/:id (3)/projects (4)/:id (5)
     // Selected Project's data will be loaded here to pass into its relevant components 
-    const projectId = loc.pathname.split('/')[3];
+    const projectId = loc.pathname.split('/')[5];
+    console.log(projectId);
 
     const drawers = {
         Results: {
@@ -1109,9 +1111,7 @@ function ProjectPage(){
     // May load coords in Project Page
     const center = { lat: 28.602846550128262, lng: -81.20006526689143 };
 
-
     //loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
-
     const projectData = async() => {
         try {
 

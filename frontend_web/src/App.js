@@ -40,6 +40,10 @@ function App() {
         setState(active);
     }
 
+    /*if (!token) {
+        return <Title onLogin={handleOnLogin} />
+    }*/
+
     function TeamPages(){
         // User Pages
         // (heroku-url)/home/teams/:id/(any url below)

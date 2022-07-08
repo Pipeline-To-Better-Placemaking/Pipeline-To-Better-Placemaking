@@ -13,10 +13,8 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link, useLocation } from 'react-router-dom';
-
 import './controls.css';
 import logo1 from '../images/PtBPLogo.png';
-
 
 // Routes according to React-Router relative urls
 const settings = [
