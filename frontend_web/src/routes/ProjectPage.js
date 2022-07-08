@@ -1092,8 +1092,6 @@ function ProjectPage(){
     const projectId = loc.pathname.split('/')[5];
     //console.log(projectId);
 
-    
-
     //load project area and location data here as well and pass to Map Page
     const area = [
         { lat: 28.60554990612719, lng: -81.20110596383721 },
@@ -1112,7 +1110,7 @@ function ProjectPage(){
     // May load coords in Project Page
     const center = { lat: 28.602846550128262, lng: -81.20006526689143 };
 
-    //loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
+    // loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
     const projectData = async() => {
         try {
 
@@ -1125,7 +1123,7 @@ function ProjectPage(){
                 withCredentials: true
             });
 
-            //console.log(response.data);
+            // console.log(response.data);
             setProjectInfo(response.data);
             setProjectMaps(projectInfo.area);
             
@@ -1145,13 +1143,19 @@ function ProjectPage(){
     return (
         <div id='ProjectPage'>
             <TabPanel state={loc.state}/>
-            {projectInfo?.title ? <Routes>
-                <Route index element={<MapPage title={ projectInfo?.title } drawers={ projectInfo } area={ projectInfo?.area } center={ center } />} />
-                <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ projectInfo } area={ projectInfo?.area } center={ center }/>} />
-                <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ projectInfo } />} />
-                <Route path='activities/times' element={<NewActivityTimes />}/>
-                <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ projectInfo } />} />
-            </Routes> : null}
+            {/* data passed into drawers needs map data and to match the format drawers component above */}
+            {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
+            {projectInfo?.title ? 
+                <Routes>
+                    <Route index element={<MapPage title={ projectInfo?.title } drawers={ projectInfo } area={ projectInfo?.area } center={ center } />} />
+                    <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ projectInfo } area={ projectInfo?.area } center={ center }/>} />
+                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ projectInfo } />} />
+                    <Route path='activities/times' element={<NewActivityTimes />}/>
+                    <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ projectInfo } />} />
+                </Routes> 
+                : 
+                null
+            }
             {/* {
                 projectInfo?.area.ActivityPage((projectMaps) => (
                     <Route path='map' element={<MapPage title={ projectInfo.title } key={(project._id + index)} drawers={ drawers.Results=project } area={ project.area } center={ project.area.points }/>} />
