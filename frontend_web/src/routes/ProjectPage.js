@@ -1147,11 +1147,11 @@ function ProjectPage(){
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
             {projectInfo?.title ? 
                 <Routes>
-                    <Route index element={<MapPage title={ projectInfo?.title } drawers={drawers.Results = projectInfo} area={ projectInfo?.area } center={ center } />} />
-                    <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ drawers.Results = projectInfo } area={ projectInfo?.area } center={ center }/>} />
-                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ drawers.Results = projectInfo } />} />
+                    <Route index element={<MapPage title={ projectInfo?.title } drawers={ drawers.Results.boundaries_maps = projectInfo?.boundariesCollection } area={ projectInfo?.area } center={ center } />} />
+                    <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ drawers.Results.boundaries_maps = projectInfo?.boundariesCollection } area={ projectInfo?.area } center={ center }/>} />
+                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ drawers.Results.boundaries_maps = projectInfo?.boundariesCollection } />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
-                    <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ drawers.Results = projectInfo } />} />
+                    <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ drawers.Results.boundaries_maps = projectInfo?.boundariesCollection } />} />
                 </Routes> 
                 : 
                 null
