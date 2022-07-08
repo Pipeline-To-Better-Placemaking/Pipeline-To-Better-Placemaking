@@ -11,7 +11,7 @@ function ProjectPage(){
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
     //Holds basic projects info including map ids
-    const [projectInfo, setProjectInfo] = React.useState();
+    const [projectInfo, setProjectInfo] = React.useState({});
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
     const [projectMaps, setProjectMaps] = React.useState();
     const user = loc.state ? loc.state.userToken : {};
@@ -20,7 +20,7 @@ function ProjectPage(){
     // can be reached at (heroku-url)/home (1)/teams (2)/:id (3)/projects (4)/:id (5)
     // Selected Project's data will be loaded here to pass into its relevant components 
     const projectId = loc.pathname.split('/')[5];
-    console.log(projectId);
+    //console.log(projectId);
 
     const drawers = {
         Results: {
@@ -1124,12 +1124,12 @@ function ProjectPage(){
                 withCredentials: true
             });
 
-            console.log(response.data);
+            //console.log(response.data);
             setProjectInfo(response.data);
             setProjectMaps(projectInfo.area);
             
         } catch(error){
-            //proget api get error
+            //project api get error
             console.log('ERROR: ', error);
             return;
         }
