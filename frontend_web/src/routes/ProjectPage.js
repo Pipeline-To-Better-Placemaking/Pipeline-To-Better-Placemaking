@@ -1124,7 +1124,7 @@ function ProjectPage(){
                 withCredentials: true
             });
 
-            console.log(response.data);
+            //console.log(response.data);
             setProjectInfo(response.data);
             
         } catch(error){
@@ -1150,12 +1150,12 @@ function ProjectPage(){
                 <Route path='activities/times' element={<NewActivityTimes />}/>
                 <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ drawers } />} />
             </Routes>
-            {/* {
+            {
                 projectInfo?.map((project, index) => (
-                    <Route path='map' element={<MapPage title={ project.area } key={(project._id + index)} drawers={ project } area={ project.area } center={ center }/>} />
+                    <MapPage title={ project.area } key={(project._id + index)} drawers={ project } area={ project.area } center={ center }/>
                 ))
             }
-            {
+            {/* {
                projectInfo?.map((project, index) => (
                 <Route path='activities' element={<ActivityPage title={ project.area }  drawers={ project } />} />
             )) 
