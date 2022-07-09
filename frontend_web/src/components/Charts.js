@@ -377,11 +377,28 @@ function Charts(props) {
            };
         };
 
-        var array = [{ kind: 'Shelter', value: (shelter/projectArea) },{ kind: 'Material', value: (material/projectArea) }, { kind: 'Unmarked', value: ((projectArea-(material+shelter))/projectArea) }];
+        var totalPerc = [];
+        totalPerc[0] = (shelter / projectArea) * 100;
+        totalPerc[1] = Math.round(totalPerc[0]);
+        totalPerc[2] = (material / projectArea) * 100;
+        totalPerc[3] = Math.round(totalPerc[2]);
+        totalPerc[4] = ((projectArea - (material + shelter)) / projectArea) * 100;
+        totalPerc[5] = Math.round(totalPerc[4]);
+
+        var array = [{ kind: 'Shelter', value: totalPerc[0] }, { kind: 'Material', value: totalPerc[2] }, { kind: 'Unmarked', value: totalPerc[4] }];
         var marked = [{ kind: 'Shelter', value: shelter }, { kind: 'Material', value: material }];
         return(
             <div className='Charts'>
-                <div style={{ fontSize: 'larger' }}>Portion of Total Area</div>
+                <div style={{ fontSize: 'larger' }}> Marked Areas </div>
+                <PieChart width={width} height={height}>
+                    <Pie data={marked} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                        {marked.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <div style={{ fontSize: 'larger' }}> Portion of Total Area </div>
                 <PieChart width={ width } height={ height }>
                         <Pie data={ array } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
                             { array.map((entry, index) => (
@@ -390,15 +407,13 @@ function Charts(props) {
                         </Pie>
                     <Tooltip />
                 </PieChart>
-                <div style={{ fontSize: 'larger' }}>Marked Areas</div>
-                <PieChart width={ width } height={ height }>
-                    <Pie data={ marked } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
-                        { marked.map((entry, index) => (
-                            <Cell key={ `cell-${index}` } fill={ boundsColor[entry.kind] } stroke={ boundsColor[entry.kind] } fillOpacity={ 0.65 } />
-                        )) }
-                    </Pie>
-                    <Tooltip />
-                </PieChart>
+                <br />
+                <div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Material'] }}>&nbsp;&nbsp;</div>&nbsp; Material (Horizontal): {totalPerc[2] < totalPerc[3] ? `<${totalPerc[3]}%` : (totalPerc[2] > totalPerc[3] ? `>${totalPerc[3]}%` : `${totalPerc[3]}%`)} </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp; Shelter (Horizontal): {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : (totalPerc[0] > totalPerc[1] ? `>${totalPerc[1]}%` : `${totalPerc[1]}%`)} </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
+                </div>
+                <br />
                 <div style={{ fontSize: 'larger' }}>Constructed Distances</div>
                 <BarChart width={ width } height={ height } data={ constructed }>
                     <CartesianGrid strokeDasharray='3 3' />
@@ -518,13 +533,21 @@ function Charts(props) {
             }
         }
 
-        var totalArea = [{ nature: 'Water', area: water / projectArea }, { nature: 'Vegetation', area: veg / projectArea }, { nature: 'None', area: (projectArea - (veg + water)) / projectArea }];
-        var species = [{ species: 'Dogs', count: dogs }, { species: 'Cats', count: cats }, { species: 'Birds', count: birds }, { species: 'Ducks', count: ducks }, { species: 'Rabbits', count: rabbits }, { species: 'Squirrels', count: squirrels }, { species: 'Turtles', count: turtles }, { species: 'Domestic (Other)', count: otherD }, { species: 'Wild (Other)', count: otherW }];
+        var totalPerc = [];
+        totalPerc[0] = (water / projectArea) * 100;
+        totalPerc[1] = Math.round(totalPerc[0]);
+        totalPerc[2] = (veg / projectArea) * 100;
+        totalPerc[3] = Math.round(totalPerc[2]);
+        totalPerc[4] = ((projectArea - (water + veg)) / projectArea) * 100;
+        totalPerc[5] = Math.round(totalPerc[4]);
+
+        var totalArea = [{ nature: 'Water', area: totalPerc[0] }, { nature: 'Vegetation', area: totalPerc[2] }, { nature: 'None', area: totalPerc[4] }];
+        var species = [{ species: 'Domestic Dogs', count: dogs }, { species: 'Domestic Cats', count: cats }, { species: 'Wild Birds', count: birds }, { species: 'Wild Ducks', count: ducks }, { species: 'Wild Rabbits', count: rabbits }, { species: 'Wild Squirrels', count: squirrels }, { species: 'Wild Turtles', count: turtles }, { species: 'Domestic (Other)', count: otherD }, { species: 'Wild (Other)', count: otherW }];
         var variant = [{ variant: 'Wild', count: (wild + otherW) }, { variant: 'Domesticated', count: (domestic + otherD) }]
 
         return (
             <div id='natureCharts' className='Charts'>
-                <div style={{ fontSize: 'larger' }}>Vegetation and Water</div>
+                <div style={{ fontSize: 'larger' }}>Vegetation and Water Areas</div>
                 <PieChart width={width} height={height}>
                     <Pie data={waterAndVeg} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {waterAndVeg.map((entry, index) => (
@@ -533,7 +556,7 @@ function Charts(props) {
                     </Pie>
                     <Tooltip />
                 </PieChart>
-                <div style={{ fontSize: 'larger' }}>Portion of Nature in Total Area</div>
+                <div style={{ fontSize: 'larger' }}>Portion of All Nature in Total Area</div>
                 <PieChart width={width} height={height}>
                     <Pie data={totalArea} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {totalArea.map((entry, index) => (
@@ -543,8 +566,9 @@ function Charts(props) {
                     <Tooltip />
                 </PieChart>
                 <div >
-                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Vegetation'] }}>&nbsp;&nbsp;</div>&nbsp; Vegetation: { totalArea[1].area * 100 }% </div>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: { totalArea[0].area * 100 }% </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Vegetation'] }}>&nbsp;&nbsp;</div>&nbsp; Vegetation: { totalPerc[2] < totalPerc[3] ? `<${totalPerc[3]}%` : `${totalPerc[3]}%` }</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: { totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : `${totalPerc[1]}%` }</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; None: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
                 <div style={{ fontSize: 'larger' }}>Species</div>
                 <BarChart width={width} height={height} data={species}>
@@ -634,9 +658,16 @@ function Charts(props) {
                 }
             }
         }
+        var totalPerc = [];
+        totalPerc[0] = (water / projectArea) * 100;
+        totalPerc[1] = Math.round(totalPerc[0]);
+        totalPerc[2] = (veg / projectArea) * 100;
+        totalPerc[3] = Math.round(totalPerc[2]);
+        totalPerc[4] = ((projectArea - (water + veg)) / projectArea) * 100;
+        totalPerc[5] = Math.round(totalPerc[4]);
 
-        var totalArea = [{ nature: 'Water', area: water/projectArea }, { nature: 'Vegetation', area: veg/projectArea}, {nature: 'None', area: (projectArea-(veg+water))/projectArea}];
-        var species = [{ species: 'Dogs', count: dogs }, { species: 'Cats', count: cats }, { species: 'Birds', count: birds }, {species: 'Ducks', count: ducks }, { species: 'Rabbits', count: rabbits }, { species: 'Squirrels', count: squirrels }, { species: 'Turtles', count: turtles}, {species: 'Domestic (Other)', count: otherD}, {species: 'Wild (Other)', count: otherW}];
+        var totalArea = [{ nature: 'Water', area: totalPerc[0] }, { nature: 'Vegetation', area: totalPerc[2] }, { nature: 'None', area: totalPerc[4] }];
+        var species = [{ species: 'Domestic Dogs', count: dogs }, { species: 'Domestic Cats', count: cats }, { species: 'Wild Birds', count: birds }, {species: 'Wild Ducks', count: ducks }, { species: 'Wild Rabbits', count: rabbits }, { species: 'Wild Squirrels', count: squirrels }, { species: 'Wild Turtles', count: turtles}, {species: 'Domestic (Other)', count: otherD}, {species: 'Wild (Other)', count: otherW}];
         var variant = [{ variant: 'Wild', count: (wild+otherW)}, {variant: 'Domesticated', count: (domestic+otherD)}]
 
         return (
@@ -659,6 +690,11 @@ function Charts(props) {
                     </Pie>
                     <Tooltip />
                 </PieChart>
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Vegetation'] }}>&nbsp;&nbsp;</div>&nbsp; Vegetation: {totalPerc[2] < totalPerc[3] ? `<${totalPerc[3]}%` : `${totalPerc[3]}%`}</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : `${totalPerc[1]}%`}</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; None: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
+                </div>
                 <div style={{ fontSize: 'larger' }}>Species</div>
                 <BarChart width={width} height={height} data={species}>
                     <CartesianGrid strokeDasharray='3 3' />
