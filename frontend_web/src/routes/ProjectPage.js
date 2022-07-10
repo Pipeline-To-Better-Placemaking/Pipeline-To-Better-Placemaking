@@ -6,6 +6,7 @@ import TabPanel from '../components/ProjectTabPanel';
 import ActivityPage from './ActivityPage';
 import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
+import { collection } from '../../../models/surveys.js';
 
 function ProjectPage(){
     /*const templateDrawers = {
@@ -1216,9 +1217,11 @@ function ProjectPage(){
 
     React.useEffect(() => {
         projectData();
+        collectionPoints();
     }, []);
 
     console.log(projectInfo)
+    console.log(results)
     //console.log(templateDrawers)
 
     return (
@@ -1239,7 +1242,7 @@ function ProjectPage(){
                         stationary_maps: projectInfo.stationaryCollections
                         }} 
                         area={ projectInfo?.area.points } 
-                        center={ projectInfo.standingPoints } />} />
+                        center={ projectInfo?.standingPoints } />} />
                     <Route path='map' element={<MapPage title={ projectInfo?.title } 
                     drawers={{
                         boundaries_maps: projectInfo.boundariesCollections,
@@ -1251,7 +1254,7 @@ function ProjectPage(){
                         stationary_maps: projectInfo.stationaryCollections
                         }} 
                         area={ projectInfo?.area.points } 
-                        center={ center }/>} />
+                        center={ projectInfo?.standingPoints }/>} />
                     <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
                     drawers={{
                         boundaries_maps: projectInfo.boundariesCollections,
