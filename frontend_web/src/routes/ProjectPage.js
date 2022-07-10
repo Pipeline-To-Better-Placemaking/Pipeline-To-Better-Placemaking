@@ -1201,7 +1201,7 @@ function ProjectPage(){
 
             // console.log(response.data);
             projectMaps.Results[apiCategory[cat]] = {};
-            projectMaps.Results[apiCategory[cat]][dateTime.toLocaleDateString()][dateTime.toLocaleTimeString()] = response;
+            projectMaps.Results[apiCategory[cat]][Date(dateTime).toLocaleDateString()][Date(dateTime).toLocaleTimeString()] = response;
             console.log(projectMaps.Results[apiCategory[cat]]);
             loaded.test = true;
 
