@@ -1081,7 +1081,7 @@ function ProjectPage(){
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
     //Holds basic projects info including map ids, default data overwritten on async function
-    const [projectInfo, setProjectInfo] = React.useState({});
+    const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
     const [projectMaps, setProjectMaps] = React.useState();
     const user = loc.state ? loc.state.userToken : {};
@@ -1090,7 +1090,7 @@ function ProjectPage(){
     // can be reached at (heroku-url)/home (1)/projects (2)/:id (3)
     // Selected Project's data will be loaded here to pass into its relevant components 
     const projectId = loc.pathname.split('/')[5];
-    console.log(projectId);
+    //console.log(projectId);
 
     //load project area and location data here as well and pass to Map Page
     const area = [
