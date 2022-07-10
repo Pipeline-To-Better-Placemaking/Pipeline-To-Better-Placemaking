@@ -1125,7 +1125,6 @@ function ProjectPage(){
 
             // console.log(response.data);
             setProjectInfo(response.data);
-            setProjectMaps(projectInfo.area);
             
         } catch(error){
             //project api get error
