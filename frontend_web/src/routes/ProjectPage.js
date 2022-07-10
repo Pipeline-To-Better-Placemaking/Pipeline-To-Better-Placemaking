@@ -1090,6 +1090,7 @@ function ProjectPage(){
     // can be reached at (heroku-url)/home (1)/projects (2)/:id (3)
     // Selected Project's data will be loaded here to pass into its relevant components 
     const projectId = loc.pathname.split('/')[5];
+    const teamId = loc.pathname.split('/')[3];
     //console.log(projectId);
 
     //load project area and location data here as well and pass to Map Page
@@ -1146,11 +1147,11 @@ function ProjectPage(){
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
             {projectInfo?.title ? 
                 <Routes>
-                    <Route index element={<MapPage title={ projectInfo?.title } drawers={ drawers } area={ projectInfo?.area.points } center={ center } />} />
-                    <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ drawers } area={ projectInfo?.area.points } center={ center }/>} />
-                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ drawers } />} />
+                    <Route index element={<MapPage title={ projectInfo?.title } drawers={ teamId?.projects } area={ projectInfo?.area.points } center={ center } />} />
+                    <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ teamId?.projects } area={ projectInfo?.area.points } center={ center }/>} />
+                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ teamId?.projectss } />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
-                    <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } drawers={ drawers } />} />
+                    <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } drawers={ teamId?.projects } />} />
                 </Routes> 
                 : 
                 null
