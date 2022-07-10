@@ -6,6 +6,7 @@ import TabPanel from '../components/ProjectTabPanel';
 import ActivityPage from './ActivityPage';
 import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
+import { LocalDining } from '@mui/icons-material';
 
 function ProjectPage(){
     const templateDrawers = {
@@ -1080,7 +1081,7 @@ function ProjectPage(){
     }
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
-    var loaded = false;
+    var loaded;
     //Holds basic projects info including map ids, default data overwritten on async function
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
@@ -1166,6 +1167,7 @@ function ProjectPage(){
             projectMaps.Results[apiCategory[cat]] = {};
             projectMaps.Results[apiCategory[cat]][dateTime.toLocaleDateString()][dateTime.toLocaleTimeString()] = response;
             console.log(projectMaps.Results[apiCategory[cat]]);
+            loaded.test = true;
 
         } catch (error) {
             //project api get error
@@ -1226,7 +1228,7 @@ function ProjectPage(){
             <TabPanel state={loc.state}/>
             {/* data passed into drawers needs map data and to match the format drawers component above */}
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
-            { projectMaps?.Results.boundaries_maps !== {}/*projectInfo?.title*/ ?
+            { loaded?.test/*projectInfo?.title*/ ?
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo?.title } 
                     drawers={{
