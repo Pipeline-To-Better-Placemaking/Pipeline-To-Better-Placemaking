@@ -1080,6 +1080,7 @@ function ProjectPage(){
     }
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
+    const [loaded, setLoaded] = React.useState(false);
     //Holds basic projects info including map ids, default data overwritten on async function
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
@@ -1215,6 +1216,7 @@ function ProjectPage(){
                 collectionPoints(id, 'stationary', collection.date)
             ))
         ))*/
+        setLoaded(true);
     }, []);
 
     console.log(projectInfo)
@@ -1225,7 +1227,7 @@ function ProjectPage(){
             <TabPanel state={loc.state}/>
             {/* data passed into drawers needs map data and to match the format drawers component above */}
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
-            {projectInfo?.title ? 
+            {loaded ? 
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo?.title } 
                     drawers={{
