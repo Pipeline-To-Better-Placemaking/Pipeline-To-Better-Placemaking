@@ -6,7 +6,6 @@ import TabPanel from '../components/ProjectTabPanel';
 import ActivityPage from './ActivityPage';
 import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
-import { collection } from '../../../models/surveys.js';
 
 function ProjectPage(){
     /*const templateDrawers = {
