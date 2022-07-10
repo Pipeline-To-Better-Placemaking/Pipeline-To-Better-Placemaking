@@ -1151,42 +1151,50 @@ function ProjectPage(){
             {projectInfo?.title ? 
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo?.title } 
-                    drawers={[
-                        drawers.Results.boundaries_maps = projectInfo.boundariesCollections,
-                        drawers.Results.sound_maps = projectInfo.soundCollections,
-                        drawers.Results.order_maps = projectInfo.orderCollections, drawers.Results.nature_maps = projectInfo.natureCollections,
-                        drawers.Results.moving_maps = projectInfo.movingCollections, drawers.Results.lighting_maps = projectInfo.lightingCollections,
-                        drawers.Results.stationary_maps = projectInfo.stationaryCollections
-                        ]} 
+                    drawers={{
+                        boundaries_maps: projectInfo.boundariesCollections,
+                        sound_maps: projectInfo.soundCollections,
+                        order_maps: projectInfo.orderCollections, 
+                        nature_maps: projectInfo.natureCollections,
+                        moving_maps: projectInfo.movingCollections, 
+                        lighting_maps: projectInfo.lightingCollections,
+                        stationary_maps: projectInfo.stationaryCollections
+                        }} 
                         area={ projectInfo?.area.points } 
                         center={ projectInfo.standingPoints } />} />
                     <Route path='map' element={<MapPage title={ projectInfo?.title } 
-                    drawers={[
-                        drawers.Results.boundaries_maps = projectInfo.boundariesCollections,
-                        drawers.Results.sound_maps = projectInfo.soundCollections,
-                        drawers.Results.order_maps = projectInfo.orderCollections, drawers.Results.nature_maps = projectInfo.natureCollections,
-                        drawers.Results.moving_maps = projectInfo.movingCollections, drawers.Results.lighting_maps = projectInfo.lightingCollections,
-                        drawers.Results.stationary_maps = projectInfo.stationaryCollections
-                        ]} 
+                    drawers={{
+                        boundaries_maps: projectInfo.boundariesCollections,
+                        sound_maps: projectInfo.soundCollections,
+                        order_maps: projectInfo.orderCollections, 
+                        nature_maps: projectInfo.natureCollections,
+                        moving_maps: projectInfo.movingCollections, 
+                        lighting_maps: projectInfo.lightingCollections,
+                        stationary_maps: projectInfo.stationaryCollections
+                        }} 
                         area={ projectInfo?.area.points } 
                         center={ center }/>} />
                     <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
-                    drawers={[
-                        drawers.Results.boundaries_maps = projectInfo.boundariesCollections,
-                        drawers.Results.sound_maps = projectInfo.soundCollections,
-                        drawers.Results.order_maps = projectInfo.orderCollections, drawers.Results.nature_maps = projectInfo.natureCollections,
-                        drawers.Results.moving_maps = projectInfo.movingCollections, drawers.Results.lighting_maps = projectInfo.lightingCollections,
-                        drawers.Results.stationary_maps = projectInfo.stationaryCollections
-                        ]} />} />
+                    drawers={{
+                        boundaries_maps: projectInfo.boundariesCollections,
+                        sound_maps: projectInfo.soundCollections,
+                        order_maps: projectInfo.orderCollections, 
+                        nature_maps: projectInfo.natureCollections,
+                        moving_maps: projectInfo.movingCollections, 
+                        lighting_maps: projectInfo.lightingCollections,
+                        stationary_maps: projectInfo.stationaryCollections
+                        }} />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
                     <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } 
-                    drawers={[
-                        drawers.Results.boundaries_maps = projectInfo.boundariesCollections,
-                        drawers.Results.sound_maps = projectInfo.soundCollections,
-                        drawers.Results.order_maps = projectInfo.orderCollections, drawers.Results.nature_maps = projectInfo.natureCollections,
-                        drawers.Results.moving_maps = projectInfo.movingCollections, drawers.Results.lighting_maps = projectInfo.lightingCollections,
-                        drawers.Results.stationary_maps = projectInfo.stationaryCollections
-                        ]} />} />
+                    drawers={{
+                        boundaries_maps: projectInfo.boundariesCollections,
+                        sound_maps: projectInfo.soundCollections,
+                        order_maps: projectInfo.orderCollections, 
+                        nature_maps: projectInfo.natureCollections,
+                        moving_maps: projectInfo.movingCollections, 
+                        lighting_maps: projectInfo.lightingCollections,
+                        stationary_maps: projectInfo.stationaryCollections
+                        }} />} />
                 </Routes> 
                 : 
                 null
