@@ -1220,7 +1220,7 @@ function ProjectPage(){
         collectionPoints();
     }, []);
 
-    console.log(projectInfo)
+    //console.log(projectInfo)
     console.log(results)
     //console.log(templateDrawers)
 
