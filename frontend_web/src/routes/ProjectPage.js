@@ -1146,11 +1146,11 @@ function ProjectPage(){
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
             {projectInfo?.title ? 
                 <Routes>
-                    <Route index element={<MapPage title={ projectInfo?.title } drawers={ drawers } area={ projectInfo?.area } center={ center } />} />
-                    <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ drawers } area={ projectInfo?.area } center={ center }/>} />
+                    <Route index element={<MapPage title={ projectInfo?.title } drawers={ drawers } area={ projectInfo?.area.points } center={ center } />} />
+                    <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ drawers } area={ projectInfo?.area.points } center={ center }/>} />
                     <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ drawers } />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
-                    <Route path='surveyors' element={<SurveyorPage title={ loc.state } drawers={ drawers } />} />
+                    <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } drawers={ drawers } />} />
                 </Routes> 
                 : 
                 null
