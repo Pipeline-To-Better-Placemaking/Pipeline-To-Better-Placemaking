@@ -1183,7 +1183,7 @@ function ProjectPage(){
         projectData();
 
         //get Map data for activity results (needed in drawers)
-        projectInfo?.boundariesCollections.map((collection)=>(
+        projectInfo.boundariesCollections.map((collection)=>(
             collection.maps.map((id)=>(
                 collectionPoints(id, 'bounds', collection.date)
             ))
