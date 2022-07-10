@@ -1186,8 +1186,6 @@ function ProjectPage(){
             stationary: 'stationary_maps'
         }
 
-        console.log(typeof(dateTime));
-
         try {
 
             const response = await axios.get(`/${apiCategory[cat]}/${projectId}`, {
@@ -1201,7 +1199,9 @@ function ProjectPage(){
 
             // console.log(response.data);
             var date = new Date(dateTime);
+            //console.log(typeof (dateTime));
             projectMaps.Results[apiCategory[cat]] = {};
+            projectMaps.Results[apiCategory[cat]][date.toLocaleDateString()]={};
             projectMaps.Results[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = response;
             console.log(projectMaps.Results[apiCategory[cat]]);
             loaded.test = true;
