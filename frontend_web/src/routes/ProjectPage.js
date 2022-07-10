@@ -1146,11 +1146,11 @@ function ProjectPage(){
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
             {projectInfo?.title ? 
                 <Routes>
-                    <Route index element={<MapPage title={ projectInfo?.title } drawers={ projectInfo } area={ projectInfo?.area.points } center={ center } />} />
-                    <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ projectInfo } area={ projectInfo?.area.points } center={ center }/>} />
-                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ projectInfo } />} />
+                    <Route index element={<MapPage title={ projectInfo?.title } drawers={ [projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections] } area={ projectInfo?.area.points } center={ center } />} />
+                    <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ [projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections] } area={ projectInfo?.area.points } center={ center }/>} />
+                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ [projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections] } />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
-                    <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } drawers={ projectInfo } />} />
+                    <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } drawers={ [projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections] } />} />
                 </Routes> 
                 : 
                 null
