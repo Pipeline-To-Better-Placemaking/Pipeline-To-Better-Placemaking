@@ -1081,15 +1081,11 @@ function ProjectPage(){
 
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
-    var loaded = {test: false};
+    //var loaded = { test: false };
     //Holds basic projects info including map ids, default data overwritten on async function
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
-    const [projectMaps, setProjectMaps] = React.useState({
-        Results:{},
-        Graphs:{},
-        Data: {}
-    });
+    const [results, setResults] = React.useState({});
     const user = loc.state ? loc.state.userToken : {};
 
     // page url: path (split index)
@@ -1131,13 +1127,14 @@ function ProjectPage(){
 
             // console.log(response.data);
             setProjectInfo(response.data);
-            //get Map data for activity results (needed in drawers)
+
+            /*//get Map data for activity results (needed in drawers)
             response.data.boundariesCollections.map((collection) => (
                 collection.maps.map((id) => (
                     collectionPoints(id, 'bounds', collection.date)
                 ))
             ))
-            /*projectInfo?.lightCollections.map((collection) => (
+            projectInfo?.lightCollections.map((collection) => (
                 collection.maps.map((id) => (
                     collectionPoints(id, 'light', collection.date)
                 ))
@@ -1199,12 +1196,13 @@ function ProjectPage(){
 
             // console.log(response.data);
             var date = new Date(dateTime);
+            var map = results;
             //console.log(typeof (dateTime));
-            projectMaps.Results[apiCategory[cat]] = {};
-            projectMaps.Results[apiCategory[cat]][date.toLocaleDateString()]={};
-            projectMaps.Results[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = response.data;
-            console.log(projectMaps.Results[apiCategory[cat]]);
-            loaded.test = true;
+            map[apiCategory[cat]] = {};
+            map[apiCategory[cat]][date.toLocaleDateString()] = {};
+            map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = response.data;
+            setResults(map);
+            console.log(map);
 
         } catch (error) {
             //project api get error
@@ -1212,7 +1210,7 @@ function ProjectPage(){
             return;
         }
     }
-    
+
     //need to pull each collection object to pass into the drawer
     //projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections]
 
@@ -1228,7 +1226,7 @@ function ProjectPage(){
             <TabPanel state={loc.state}/>
             {/* data passed into drawers needs map data and to match the format drawers component above */}
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
-            { loaded?.test/*projectInfo?.title*/ ?
+            { projectInfo?.title ?
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo?.title } 
                     drawers={{
@@ -1279,16 +1277,6 @@ function ProjectPage(){
                 : 
                 null
             }
-            {/* {
-                projectInfo?.area.ActivityPage((projectMaps) => (
-                    <Route path='map' element={<MapPage title={ projectInfo.title } key={(project._id + index)} drawers={ drawers.Results=project } area={ project.area } center={ project.area.points }/>} />
-                ))
-            } */}
-            {/* {
-               projectInfo?.map((project, index) => (
-                <Route path='activities' element={<ActivityPage title={ project.area }  drawers={ project } />} />
-            )) 
-            } */}
         </div>
     );
 }
