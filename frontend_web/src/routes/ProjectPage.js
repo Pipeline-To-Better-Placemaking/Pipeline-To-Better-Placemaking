@@ -1149,7 +1149,7 @@ function ProjectPage(){
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo?.title } drawers={ teamId?.projects } area={ projectInfo?.area.points } center={ center } />} />
                     <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ teamId?.projects } area={ projectInfo?.area.points } center={ center }/>} />
-                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ teamId?.projectss } />} />
+                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ teamId?.projects } />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
                     <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } drawers={ teamId?.projects } />} />
                 </Routes> 
