@@ -6,10 +6,9 @@ import TabPanel from '../components/ProjectTabPanel';
 import ActivityPage from './ActivityPage';
 import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
-import { LocalDining } from '@mui/icons-material';
 
 function ProjectPage(){
-    const templateDrawers = {
+    /*const templateDrawers = {
         Results: {
             stationary_maps: {
                 '3/1/22': {
@@ -1078,7 +1077,8 @@ function ProjectPage(){
         },
         Data: {
         }
-    }
+    }*/
+
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
     var loaded = {test: false};
@@ -1188,7 +1188,7 @@ function ProjectPage(){
 
         try {
 
-            const response = await axios.get(`/${apiCategory[cat]}/${projectId}`, {
+            const response = await axios.get(`/${apiCategory[cat]}/${id}`, {
                 headers: {
                     // 'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
@@ -1202,7 +1202,7 @@ function ProjectPage(){
             //console.log(typeof (dateTime));
             projectMaps.Results[apiCategory[cat]] = {};
             projectMaps.Results[apiCategory[cat]][date.toLocaleDateString()]={};
-            projectMaps.Results[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = response;
+            projectMaps.Results[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = response.data;
             console.log(projectMaps.Results[apiCategory[cat]]);
             loaded.test = true;
 
@@ -1221,7 +1221,7 @@ function ProjectPage(){
     }, []);
 
     console.log(projectInfo)
-    console.log(templateDrawers)
+    //console.log(templateDrawers)
 
     return (
         <div id='ProjectPage'>
