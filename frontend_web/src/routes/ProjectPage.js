@@ -1081,7 +1081,7 @@ function ProjectPage(){
     }
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
-    var loaded;
+    var loaded = {test: false};
     //Holds basic projects info including map ids, default data overwritten on async function
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
