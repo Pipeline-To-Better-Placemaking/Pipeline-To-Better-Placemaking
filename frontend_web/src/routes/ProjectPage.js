@@ -1186,7 +1186,7 @@ function ProjectPage(){
             stationary: 'stationary_maps'
         }
 
-        console.log(apiCategory[cat]);
+        console.log(dateTime);
 
         try {
 
@@ -1201,7 +1201,7 @@ function ProjectPage(){
 
             // console.log(response.data);
             projectMaps.Results[apiCategory[cat]] = {};
-            projectMaps.Results[apiCategory[cat]][Date(dateTime).toLocaleDateString()][Date(dateTime).toLocaleTimeString()] = response;
+            projectMaps.Results[apiCategory[cat]][new Date(dateTime).toLocaleDateString()][new Date(dateTime).toLocaleTimeString()] = response;
             console.log(projectMaps.Results[apiCategory[cat]]);
             loaded.test = true;
 
