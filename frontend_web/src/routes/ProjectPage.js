@@ -1226,7 +1226,7 @@ function ProjectPage(){
             <TabPanel state={loc.state}/>
             {/* data passed into drawers needs map data and to match the format drawers component above */}
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
-            {projectMaps?.Results.boundaries !== {}/*projectInfo?.title*/ ? 
+            { projectMaps?.Results.boundaries_maps !== {}/*projectInfo?.title*/ ? 
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo?.title } 
                     drawers={{
