@@ -1131,6 +1131,42 @@ function ProjectPage(){
 
             // console.log(response.data);
             setProjectInfo(response.data);
+            //get Map data for activity results (needed in drawers)
+            response.data.boundariesCollections.map((collection) => (
+                collection.maps.map((id) => (
+                    collectionPoints(id, 'bounds', collection.date)
+                ))
+            ))
+            /*projectInfo?.lightCollections.map((collection) => (
+                collection.maps.map((id) => (
+                    collectionPoints(id, 'light', collection.date)
+                ))
+            ))
+            projectInfo?.movingCollections.map((collection) => (
+                collection.maps.map((id) => (
+                    collectionPoints(id, 'moving', collection.date)
+                ))
+            ))
+            projectInfo?.natureCollections.map((collection) => (
+                collection.maps.map((id) => (
+                    collectionPoints(id, 'nature', collection.date)
+                ))
+            ))
+            projectInfo?.orderCollections.map((collection) => (
+                collection.maps.map((id) => (
+                    collectionPoints(id, 'order', collection.date)
+                ))
+            ))
+            projectInfo?.soundCollections.map((collection) => (
+                collection.maps.map((id) => (
+                    collectionPoints(id, 'moving', collection.date)
+                ))
+            ))
+            projectInfo?.stationaryCollections.map((collection) => (
+                collection.maps.map((id) => (
+                    collectionPoints(id, 'stationary', collection.date)
+                ))
+            ))*/
             
         } catch(error){
             //project api get error
@@ -1181,43 +1217,6 @@ function ProjectPage(){
 
     React.useEffect(() => {
         projectData();
-
-        //get Map data for activity results (needed in drawers)
-        projectInfo.boundariesCollections.map((collection)=>(
-            collection.maps.map((id)=>(
-                collectionPoints(id, 'bounds', collection.date)
-            ))
-        ))
-        /*projectInfo?.lightCollections.map((collection) => (
-            collection.maps.map((id) => (
-                collectionPoints(id, 'light', collection.date)
-            ))
-        ))
-        projectInfo?.movingCollections.map((collection) => (
-            collection.maps.map((id) => (
-                collectionPoints(id, 'moving', collection.date)
-            ))
-        ))
-        projectInfo?.natureCollections.map((collection) => (
-            collection.maps.map((id) => (
-                collectionPoints(id, 'nature', collection.date)
-            ))
-        ))
-        projectInfo?.orderCollections.map((collection) => (
-            collection.maps.map((id) => (
-                collectionPoints(id, 'order', collection.date)
-            ))
-        ))
-        projectInfo?.soundCollections.map((collection) => (
-            collection.maps.map((id) => (
-                collectionPoints(id, 'moving', collection.date)
-            ))
-        ))
-        projectInfo?.stationaryCollections.map((collection) => (
-            collection.maps.map((id) => (
-                collectionPoints(id, 'stationary', collection.date)
-            ))
-        ))*/
     }, []);
 
     console.log(projectInfo)
