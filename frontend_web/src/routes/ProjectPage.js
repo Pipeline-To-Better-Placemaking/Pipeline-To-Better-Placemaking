@@ -1087,9 +1087,9 @@ function ProjectPage(){
     const user = loc.state ? loc.state.userToken : {};
 
     // page url: path (split index)
-    // can be reached at (heroku-url)/home (1)/teams (2)/:id (3)/projects (4)/:id (5)
+    // can be reached at (heroku-url)/home (1)/projects (2)/:id (3)
     // Selected Project's data will be loaded here to pass into its relevant components 
-    const projectId = loc.pathname.split('/')[5];
+    const projectId = loc.pathname.split('/')[3];
     //console.log(projectId);
 
     //load project area and location data here as well and pass to Map Page
