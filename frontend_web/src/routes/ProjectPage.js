@@ -1150,11 +1150,43 @@ function ProjectPage(){
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
             {projectInfo?.title ? 
                 <Routes>
-                    <Route index element={<MapPage title={ projectInfo?.title } drawers={ drawers.Results.boundaries_maps = projectInfo.boundariesCollections } area={ projectInfo?.area.points } center={ center } />} />
-                    <Route path='map' element={<MapPage title={ projectInfo?.title } drawers={ drawers.Results.boundaries_maps = projectInfo.boundariesCollections } area={ projectInfo?.area.points } center={ center }/>} />
-                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  drawers={ drawers.Results.boundaries_maps = projectInfo.boundariesCollections } />} />
+                    <Route index element={<MapPage title={ projectInfo?.title } 
+                    drawers={[
+                        drawers.Results.boundaries_maps = projectInfo.boundariesCollections,
+                        drawers.Results.sound_maps = projectInfo.soundCollections,
+                        drawers.Results.order_maps = projectInfo.orderCollections, drawers.Results.nature_maps = projectInfo.natureCollections,
+                        drawers.Results.moving_maps = projectInfo.movingCollections, drawers.Results.lighting_maps = projectInfo.lightingCollections,
+                        drawers.Results.stationary_maps = projectInfo.stationaryCollections
+                        ]} 
+                        area={ projectInfo?.area.points } 
+                        center={ projectInfo.standingPoints } />} />
+                    <Route path='map' element={<MapPage title={ projectInfo?.title } 
+                    drawers={[
+                        drawers.Results.boundaries_maps = projectInfo.boundariesCollections,
+                        drawers.Results.sound_maps = projectInfo.soundCollections,
+                        drawers.Results.order_maps = projectInfo.orderCollections, drawers.Results.nature_maps = projectInfo.natureCollections,
+                        drawers.Results.moving_maps = projectInfo.movingCollections, drawers.Results.lighting_maps = projectInfo.lightingCollections,
+                        drawers.Results.stationary_maps = projectInfo.stationaryCollections
+                        ]} 
+                        area={ projectInfo?.area.points } 
+                        center={ center }/>} />
+                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
+                    drawers={[
+                        drawers.Results.boundaries_maps = projectInfo.boundariesCollections,
+                        drawers.Results.sound_maps = projectInfo.soundCollections,
+                        drawers.Results.order_maps = projectInfo.orderCollections, drawers.Results.nature_maps = projectInfo.natureCollections,
+                        drawers.Results.moving_maps = projectInfo.movingCollections, drawers.Results.lighting_maps = projectInfo.lightingCollections,
+                        drawers.Results.stationary_maps = projectInfo.stationaryCollections
+                        ]} />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
-                    <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } drawers={ drawers.Results.boundaries_maps = projectInfo.boundariesCollections } />} />
+                    <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } 
+                    drawers={[
+                        drawers.Results.boundaries_maps = projectInfo.boundariesCollections,
+                        drawers.Results.sound_maps = projectInfo.soundCollections,
+                        drawers.Results.order_maps = projectInfo.orderCollections, drawers.Results.nature_maps = projectInfo.natureCollections,
+                        drawers.Results.moving_maps = projectInfo.movingCollections, drawers.Results.lighting_maps = projectInfo.lightingCollections,
+                        drawers.Results.stationary_maps = projectInfo.stationaryCollections
+                        ]} />} />
                 </Routes> 
                 : 
                 null
