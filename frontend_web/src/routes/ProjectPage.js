@@ -8,7 +8,7 @@ import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
 
 function ProjectPage(){
-    const drawers = {
+    const templateDrawers = {
         Results: {
             stationary_maps: {
                 '3/1/22': {
@@ -1083,11 +1083,15 @@ function ProjectPage(){
     //Holds basic projects info including map ids, default data overwritten on async function
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
-    const [projectMaps, setProjectMaps] = React.useState();
+    const [projectMaps, setProjectMaps] = React.useState({
+        Results:{},
+        Graphs:{},
+        Data: {}
+    });
     const user = loc.state ? loc.state.userToken : {};
 
     // page url: path (split index)
-    // can be reached at (heroku-url)/home (1)/projects (2)/:id (3)
+    // can be reached at (heroku-url)/home (1)/teams (2)/ :id (3) /projects (4)/:id (5)
     // Selected Project's data will be loaded here to pass into its relevant components 
     const projectId = loc.pathname.split('/')[5];
     //console.log(projectId);
@@ -1132,16 +1136,89 @@ function ProjectPage(){
             return;
         }
     }
+
+    const collectionPoints = async (id, cat, dateTime) => {
+        const apiCategory = {
+            bounds: 'boundaries_maps',
+            light: 'light_maps',
+            moving: 'moving_maps',
+            nature: 'nature_maps',
+            order: 'order_maps',
+            sound: 'sound_maps',
+            stationary: 'stationary_maps'
+        }
+
+        console.log(apiCategory[cat]);
+
+        try {
+
+            const response = await axios.get(`/${apiCategory[cat]}/${projectId}`, {
+                headers: {
+                    // 'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${user.token}`
+                },
+                withCredentials: true
+            });
+
+            // console.log(response.data);
+            projectMaps.Results[apiCategory[cat]] = {};
+            projectMaps.Results[apiCategory[cat]][dateTime.toLocaleDateString()][dateTime.toLocaleTimeString()] = response;
+            console.log(projectMaps.Results[apiCategory[cat]]);
+
+        } catch (error) {
+            //project api get error
+            console.log('ERROR: ', error);
+            return;
+        }
+    }
     
     //need to pull each collection object to pass into the drawer
     //projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections]
 
     React.useEffect(() => {
         projectData();
+
+        //get Map data for activity results (needed in drawers)
+        projectInfo?.boundariesCollections.map((collection)=>(
+            collection.maps.map((id)=>(
+                collectionPoints(id, 'bounds', collection.date)
+            ))
+        ))
+        /*projectInfo?.lightCollections.map((collection) => (
+            collection.maps.map((id) => (
+                collectionPoints(id, 'light', collection.date)
+            ))
+        ))
+        projectInfo?.movingCollections.map((collection) => (
+            collection.maps.map((id) => (
+                collectionPoints(id, 'moving', collection.date)
+            ))
+        ))
+        projectInfo?.natureCollections.map((collection) => (
+            collection.maps.map((id) => (
+                collectionPoints(id, 'nature', collection.date)
+            ))
+        ))
+        projectInfo?.orderCollections.map((collection) => (
+            collection.maps.map((id) => (
+                collectionPoints(id, 'order', collection.date)
+            ))
+        ))
+        projectInfo?.soundCollections.map((collection) => (
+            collection.maps.map((id) => (
+                collectionPoints(id, 'moving', collection.date)
+            ))
+        ))
+        projectInfo?.stationaryCollections.map((collection) => (
+            collection.maps.map((id) => (
+                collectionPoints(id, 'stationary', collection.date)
+            ))
+        ))*/
     }, []);
 
     console.log(projectInfo)
-    console.log(drawers)
+    console.log(templateDrawers)
 
     return (
         <div id='ProjectPage'>
