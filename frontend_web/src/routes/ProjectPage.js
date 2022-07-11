@@ -1219,6 +1219,7 @@ function ProjectPage(){
     }, []);
 
     //console.log(projectInfo)
+    console.log(results)
     //console.log(templateDrawers)
 
     return (
@@ -1229,15 +1230,7 @@ function ProjectPage(){
             { projectInfo?.title ?
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo?.title } 
-                    drawers={{
-                        boundaries_maps: projectInfo.boundariesCollections,
-                        sound_maps: projectInfo.soundCollections,
-                        order_maps: projectInfo.orderCollections, 
-                        nature_maps: projectInfo.natureCollections,
-                        moving_maps: projectInfo.movingCollections, 
-                        lighting_maps: projectInfo.lightingCollections,
-                        stationary_maps: projectInfo.stationaryCollections
-                        }} 
+                    drawers={{ results }} 
                         area={ projectInfo?.area.points } 
                         center={ projectInfo?.standingPoints } />} />
                     <Route path='map' element={<MapPage title={ projectInfo?.title } 
