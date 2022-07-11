@@ -11,14 +11,6 @@ export const styles = StyleSheet.create({
         width: 15, 
         height: 15
     },
-    
-    // redDataPin:{
-    //     borderRadius: 75, 
-    //     borderWidth: 1, 
-    //     width: 15, 
-    //     height: 15,
-    //     backgroundColor: 'red'
-    // },
 
     soundDataPin:{
         borderRadius: 75, 
@@ -60,9 +52,9 @@ export const styles = StyleSheet.create({
 
     orderArrowUp:{
         borderTopWidth: 0,
-        borderRightWidth: 15,
-        borderBottomWidth: 27,
-        borderLeftWidth: 15,
+        borderRightWidth: 13,
+        borderBottomWidth: 25,
+        borderLeftWidth: 13,
         borderTopColor: 'transparent',
         borderRightColor: 'transparent',
         borderLeftColor: 'transparent',
@@ -83,6 +75,7 @@ export const styles = StyleSheet.create({
     
     // used only for the soundMapResults component
     soundDataCallOutView:{
+        maxWidth: width * .85,
         flexDirection: 'column', 
         justifyContent: 'center',
         alignItems: 'center',

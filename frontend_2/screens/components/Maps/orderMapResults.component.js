@@ -11,24 +11,29 @@ export function OrderMapResults(props) {
     // data pins
     const DataPin = (props) => {
         return(
-            <View style={[ styles.natureDataPin, { backgroundColor: props.color }]}/>
+            <View style={[styles.orderTriangle, styles.orderArrowUp, {borderBottomColor: props.color}]}/>
         )
     }
 
     // displays information about the DataPin
     const DataCallout = (props) => {
-        let title = props.type
-        // if the type is an animal marker, change its title
-        if(title === "Domesticated" || title === "Wild") title = "Animal: " + title;
+        let descriptionFormat = []; 
+
+        // formats the description array for a cleaner display
+        props.desc.forEach(element =>{ 
+            // if we are not at the last element, concat with comma and a whitespace
+            if(element.localeCompare(props.desc[props.desc.length - 1]) !== 0) descriptionFormat.push(element.concat(", "));
+            // when we are at the last element, concat with nothing
+            else descriptionFormat.push(element.concat(''));
+        })
+
         return (
             <View style={styles.soundDataCallOutView}>
                 <View style={styles.spacing} >
-                    <Text style={styles.dataText}>{title}</Text>
+                    <Text style={styles.dataText}>Type: {props.type}</Text>
                 </View>
-                
-                <View style={styles.spacing}>
-                    <Text style={styles.dataText}>Description: {props.desc}</Text>
-                </View>
+
+                <Text style={styles.dataText}>Description(s): {descriptionFormat}</Text>
             </View>
         )
     }
@@ -47,17 +52,17 @@ export function OrderMapResults(props) {
                 let pointArr = props.dataMarkers[i].points;
                 // loop through the points array and plot those data points
                 for(let j = 0; j < pointArr.length; j++){
-                    // set as color for the animal type
-                    let color = "#B06A24";
-                    // only change color if its for the Vegetation type
-                    if(pointArr[j].kind === "Vegetation") color = "#00FF00"
+                    // set as color for the maintenance type
+                    let color = "#FFE371";
+                    // change its color if it is for the behavior type
+                    if(pointArr[j].kind === "Behavior") color = "#FF9933"
                     // add the marker to the rendered JSX array
                     objData.push(
                         <View key={keySum}>
                             <MapView.Marker
                                 coordinate = {{
-                                    latitude: pointArr[j].marker.latitude,
-                                    longitude: pointArr[j].marker.longitude
+                                    latitude: pointArr[j].location.latitude,
+                                    longitude: pointArr[j].location.longitude
                                 }}
                             >
                                 <DataPin color={color}/>

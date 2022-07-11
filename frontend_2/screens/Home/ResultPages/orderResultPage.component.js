@@ -10,7 +10,7 @@ import { MyBarChart } from '../../components/charts.component';
 
 import { styles } from './resultPage.styles';
 
-//quantitative data screen
+// quantitative data screen
 export function OrderResultPage(props) {
 
   const [refreshing, setRefreshing] = useState(false);
@@ -162,7 +162,7 @@ export function OrderResultPage(props) {
           }
         >
 
-          <Text category={'h5'}>AoO Locator Results</Text>
+          <Text category={'h5'}>Absence of Order Locator Results</Text>
           <Divider style={styles.metaDataTitleSep} />
 
           <Text>Team: {props.team.title}</Text>
@@ -206,40 +206,16 @@ export function OrderResultPage(props) {
               </View>
           }
 
-          {/* <MyBarChart
-            {...props}
-            title={"Animal Data"}
-            rotation={'0deg'}
-            dataValues={props.selectedResult.graph.animalData}
-            dataLabels={props.selectedResult.graph.animalLabels}
-            barColor={color}
-            width={chartWidth}
-            height={chartHeight}
-          />
-
           <MyBarChart
             {...props}
-            title={"Vegetation Data"}
+            title={"Disorder Data"}
             rotation={'0deg'}
-            dataValues={props.selectedResult.graph.vegetationData}
-            dataLabels={props.selectedResult.graph.vegetationLabels}
+            dataValues={props.selectedResult.graph.data}
+            dataLabels={props.selectedResult.graph.labels}
             barColor={color}
             width={chartWidth}
             height={chartHeight}
-          />
-
-          <MyBarChart
-            {...props}
-            title={"Water Data (area in ft²)"}
-            rotation={'0deg'}
-            dataValues={props.selectedResult.graph.waterData}
-            dataLabels={props.selectedResult.graph.waterLabels}
-            barColor={color}
-            width={chartWidth}
-            height={chartHeight}
-          /> */}
-          
-          
+          />          
           
         </ScrollView>
       </ContentContainer>
