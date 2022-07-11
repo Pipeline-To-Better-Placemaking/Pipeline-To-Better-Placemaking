@@ -171,11 +171,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 
         const newData = {
             _id: oldData._id,
-            location: (req.body.location ? req.body.location : oldData.location),
-            garbage_can: (req.body.garbage_can ? req.body.garbage_can : oldData.garbage_can),
-            building_condition: (req.body.building_condition ? req.body.building_condition : oldData.building_condition),
-            area_lighting: (req.body.area_lighting ? req.body.area_lighting : oldData.area_lighting),
-            description: (req.body.description ? req.body.description : oldData.description),
+            points: (req.body.points ? req.body.points : oldData.points),
             time: (req.body.time ? req.body.time : oldData.time)
         }
 

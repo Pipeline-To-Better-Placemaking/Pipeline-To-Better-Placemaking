@@ -7,44 +7,36 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 // Document Schema for data entry
 const dataSchema = mongoose.Schema({
 
-    location: {
-        latitude: {
-            type: Number,
+    points: [{
+
+        kind:{
+            type: String,
             required: true
         },
-        longitude: {
-            type: Number,
+
+        location: {
+
+            latitude: {
+                type: Number,
+                required: true
+            },
+            longitude: {
+                type: Number,
+                required: true
+            }
+        },
+
+        description: [{
+            type: String,
             required: true
-        }
-    },
+        }]
 
-    garbage_can: {
-        type: String,
-        enum: ['overflowing', 'neat'],
-        required: true
-    },
+    }],
 
-    building_condition: {
-        type: String,
-        enum: ['run down', 'dirty', 'clean','pristine'],
-        required: true
-    },
-
-    area_lighting: {
-        type: String,
-        enum: ['dimly lit', 'well lit'],
-        required: true
-    },
-
-    description: {
-        type: String,
-        required: true
-    },
-    
     time: {
         type: Date,
         required: true
-    },
+    }
 
 })
 // End
@@ -115,11 +107,7 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-        garbage_can: newEntry.garbage_can,
-        building_condition: newEntry.building_condition,
-        area_lighting: newEntry.area_lighting,
-        description: newEntry.description,
-        location: newEntry.location,
+        points: newEntry.points,
         time: newEntry.time
     })
 
