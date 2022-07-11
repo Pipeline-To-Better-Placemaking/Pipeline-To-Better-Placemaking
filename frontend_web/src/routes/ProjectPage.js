@@ -1128,8 +1128,8 @@ function ProjectPage(){
             // console.log(response.data);
             setProjectInfo(response.data);
 
-            /*//get Map data for activity results (needed in drawers)
-            response.data.boundariesCollections.map((collection) => (
+            //get Map data for activity results (needed in drawers)
+            projectInfo?.boundariesCollections.map((collection) => (
                 collection.maps.map((id) => (
                     collectionPoints(id, 'bounds', collection.date)
                 ))
@@ -1163,7 +1163,7 @@ function ProjectPage(){
                 collection.maps.map((id) => (
                     collectionPoints(id, 'stationary', collection.date)
                 ))
-            ))*/
+            ))
             
         } catch(error){
             //project api get error
@@ -1216,11 +1216,9 @@ function ProjectPage(){
 
     React.useEffect(() => {
         projectData();
-        collectionPoints();
     }, []);
 
     //console.log(projectInfo)
-    console.log(results)
     //console.log(templateDrawers)
 
     return (
