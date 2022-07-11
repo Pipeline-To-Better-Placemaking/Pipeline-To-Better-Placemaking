@@ -10,7 +10,7 @@ export function OrderMap(props) {
     // Custom colored data pin
     const DataPin = (props) =>{
         return(
-            <View style={[styles.natureDataPin, {backgroundColor: props.color}]} />
+            <View style={[styles.orderTriangle, styles.orderArrowUp, {borderBottomColor: props.color}]} />
         )
     }
     
@@ -39,14 +39,14 @@ export function OrderMap(props) {
             //console.log(props.dataPoints)
             let obj = [];
             for(let i = 0; i < props.dataPoints.length; i++){
-                // set as color for the animal type
-                let color = "#B06A24";
-                // only change color if its for the Vegetation type
-                if(props.dataPoints[i].kind === "Vegetation") color = "#00FF00"
+                // set as color for the maintenance type
+                let color = "#FFE371";
+                // change its color if it is for the behavior type
+                if(props.dataPoints[i].kind === "Behavior") color = "#FF9933"
                 obj[i] = ( 
                     <MapView.Marker
                         key={i.toString()}
-                        coordinate={props.dataPoints[i].marker}
+                        coordinate={props.dataPoints[i].location}
                     >
                         <DataPin
                             color={color}
@@ -67,7 +67,7 @@ export function OrderMap(props) {
             {/* main mapview container */}
             <PressMapAreaWrapper
                 area={props.area}
-                mapHeight={'95%'}
+                mapHeight={'97.5%'}
                 onPress={props.addMarker}
             >
                 {/* shows the project area on the map */}

@@ -5,6 +5,7 @@ import { Header } from '../../../components/headers.component';
 import { useTheme, Button } from '@ui-kitten/components';
 import { OrderMap } from '../../../components/Maps/orderMap.component.js';
 import { DataModal } from '../../../components/Activities/Order/dataModal.component';
+import { DescModal } from '../../../components/Activities/Order/descModal.component';
 import CountDown from 'react-native-countdown-component';
 
 import { styles } from './orderTest.styles';
@@ -28,11 +29,16 @@ export function OrderTest(props) {
 
     // Modal controls
     const [dataModal, setDataModal] = useState(false);
-    
+    const [descModal, setDescModal] = useState(false);
     const [tempMarker, setTempMarker] = useState();
+    const [prompt, setPrompt] = useState([]);
+
+    const behaviorPrompts = ['Panhandling', 'Screaming', 'Dangerous Wildlife', 'Reckless Behavior', 'Unsafe Equipment', 'Living in Public'];
+    const maintenancePrompts = ['Broken Environment', 'Dirty/Unmaintained', 'Graffiti', 'Littering', 'Overfilled Trashcan', 'Overgrowth'];
 
     // Used to store all the data info
-    const [dataPoints] = useState([]);
+    const [data] = useState([]);
+    const [tempKind, setTempKind] = useState();
 
     // End Button press or whenever the timer hits 0
     const endActivity = async () => {
@@ -41,55 +47,75 @@ export function OrderTest(props) {
 
         // close any of the modals that may be open when the test ends (timer hits 0 while in a modal)
         if(dataModal) setDataModal(false);
+        if(descModal) setDescModal(false);
         
-        // // package the data; needs to be an array for multiple entries for a test
-        // let data =[{
-        //     weather: weatherData[0],
-        //     water: waterData,
-        //     points: dataPoints,
-        //     time: new Date()
-        // }]
+        // package the data; needs to be an array for multiple entries for a test
+        let packageData =[{
+            points: data,
+            time: new Date()
+        }]
 
-        // // Sends the collected data to DB
-        // try {
-        //     const response = await fetch('https://p2bp.herokuapp.com/api/light_maps/' + props.timeSlot._id + '/data', {
-        //         method: 'POST',
-        //         headers: {
-        //             Accept: 'application/json',
-        //                 'Content-Type': 'application/json',
-        //                 'Authorization': 'Bearer ' + props.token
-        //         },
-        //         body: JSON.stringify({
-        //             entries: data
-        //         })
-        //     })
+        console.log(packageData[0].points);
 
-        //     let info = await response.json()
+        // Sends the collected data to DB
+        try {
+            const response = await fetch('https://p2bp.herokuapp.com/api/order_maps/' + props.timeSlot._id + '/data', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + props.token
+                },
+                body: JSON.stringify({
+                    entries: packageData
+                })
+            })
+
+            let info = await response.json()
         
-        //     console.log(info)
+            console.log(info)
         
-        // } catch (error) {
-        //     console.log("ERROR: ", error)
-        // }
+        } catch (error) {
+            console.log("ERROR: ", error)
+        }
 
         props.navigation.navigate("ActivitySignUpPage");
     }
     
-    // Opens the data model and stores a temporary points
+    // Opens the data model and stores a temporary point
     const onPointCreate = async (marker) => {
-        if (start) {
+        if(start){
             setDataModal(true)
             setTempMarker(marker)
         }
     }
 
-    // Closes the modal and saves the data point
+    // Closes the modal, saves the data locally, and pulls up the next modal
     const closeData = async (inf) => {
-        // save the data point to be rendered
-        console.log(inf)
+        // save the kind locally
+        setTempKind(inf.kind);
         
+        // sets the description choices based on the kind
+        if(inf.kind === 'Behavior') setPrompt(behaviorPrompts);
+        else setPrompt(maintenancePrompts);
+        
+        // close the modal and pull up the description modal
         setDataModal(false);
+        setDescModal(true);
+    }
+    
+    // Closes the modal and saves the data
+    const closeDesc = async (inf) =>{        
+        let info = {
+            kind: tempKind,
+            location: tempMarker,
+            description: inf.description
+        }
+        data.push(info);
+        // reset tempMarker, tempKind, and close the modal
         setTempMarker();
+        setTempKind();
+        setDescModal(false);
     }
     
     // Start and Exit button
@@ -171,9 +197,16 @@ export function OrderTest(props) {
 
     // closes the modals without submitting anything
     const goBack = () =>{
-        // reset the tempMarker and close the modal
-        setTempMarker();
-        setDataModal(false);
+        // if the description modal was open, close it and pull up the data modal
+        if(descModal){
+            setDescModal(false);
+            setDataModal(true);
+        }
+        // otherwise, reset the tempMarker and close the data modal
+        else if (dataModal){
+            setTempMarker();
+            setDataModal(false);
+        }
     }
 
     // ignores the event emitter warnings in app (for dev. only)
@@ -182,7 +215,7 @@ export function OrderTest(props) {
     // Main render
     return(
         <ViewableArea>
-            <Header text={'Absence of Order Locator'}/>
+            <Header text={'Absence of Order'}/>
             <ContentContainer>
 
                 <TimeBar/>
@@ -193,10 +226,17 @@ export function OrderTest(props) {
                     back={goBack}
                 />
 
+                <DescModal
+                    visible={descModal}
+                    prompt={prompt}
+                    closeData={closeDesc}
+                    back={goBack}
+                />
+
                 <OrderMap
                     area={area}
                     marker={tempMarker}
-                    dataPoints={dataPoints}
+                    dataPoints={data}
                     addMarker={onPointCreate}
                 />
 

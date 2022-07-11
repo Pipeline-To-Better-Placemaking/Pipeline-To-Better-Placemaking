@@ -51,6 +51,12 @@ export const styles = StyleSheet.create({
     button:{
         width: width * .35,
         height: height * .06, 
+        alignSelf:'center' 
+    },
+
+    multiButton:{
+        width: width * .45,
+        height: height * .06, 
         alignSelf:'center'
     },
 
@@ -62,9 +68,29 @@ export const styles = StyleSheet.create({
         borderColor: '#6690FF'
     },
 
+    submitButton:{
+        width: width * .3,
+        height: height * .04, 
+        alignSelf:'center',
+    },
+
     backButtonView:{
         marginTop: height * .015
-    }
+    },
+    
+    selectError:{
+        alignItems: 'center',
+        marginTop: height * .009,
+        marginBottom: -8,
+    },
+
+    bottomRowView:{
+        marginTop: height * .04,
+        width: width,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around'
+    },
 
 })
 

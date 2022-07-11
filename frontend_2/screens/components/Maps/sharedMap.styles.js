@@ -50,6 +50,23 @@ export const styles = StyleSheet.create({
         width: 10, 
         height: 10,
     },
+    
+    orderTriangle:{
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+        borderStyle: 'solid',
+    },
+
+    orderArrowUp:{
+        borderTopWidth: 0,
+        borderRightWidth: 15,
+        borderBottomWidth: 27,
+        borderLeftWidth: 15,
+        borderTopColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderLeftColor: 'transparent',
+    },
 
     dataCallOutView:{
         flexDirection: 'column', 
