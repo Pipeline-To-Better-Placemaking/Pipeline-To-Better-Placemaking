@@ -1216,11 +1216,11 @@ function ProjectPage(){
 
     React.useEffect(() => {
         projectData();
-    }, []);
+    });
 
     //console.log(projectInfo)
-    console.log(results)
     //console.log(templateDrawers)
+    console.log(results);
 
     return (
         <div id='ProjectPage'>
@@ -1234,38 +1234,14 @@ function ProjectPage(){
                         area={ projectInfo?.area.points } 
                         center={ projectInfo?.standingPoints } />} />
                     <Route path='map' element={<MapPage title={ projectInfo?.title } 
-                    drawers={{
-                        boundaries_maps: projectInfo.boundariesCollections,
-                        sound_maps: projectInfo.soundCollections,
-                        order_maps: projectInfo.orderCollections, 
-                        nature_maps: projectInfo.natureCollections,
-                        moving_maps: projectInfo.movingCollections, 
-                        lighting_maps: projectInfo.lightingCollections,
-                        stationary_maps: projectInfo.stationaryCollections
-                        }} 
+                    drawers={{ results }} 
                         area={ projectInfo?.area.points } 
                         center={ projectInfo?.standingPoints }/>} />
                     <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
-                    drawers={{
-                        boundaries_maps: projectInfo.boundariesCollections,
-                        sound_maps: projectInfo.soundCollections,
-                        order_maps: projectInfo.orderCollections, 
-                        nature_maps: projectInfo.natureCollections,
-                        moving_maps: projectInfo.movingCollections, 
-                        lighting_maps: projectInfo.lightingCollections,
-                        stationary_maps: projectInfo.stationaryCollections
-                        }} />} />
+                    drawers={{ results }} />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
                     <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } 
-                    drawers={{
-                        boundaries_maps: projectInfo.boundariesCollections,
-                        sound_maps: projectInfo.soundCollections,
-                        order_maps: projectInfo.orderCollections, 
-                        nature_maps: projectInfo.natureCollections,
-                        moving_maps: projectInfo.movingCollections, 
-                        lighting_maps: projectInfo.lightingCollections,
-                        stationary_maps: projectInfo.stationaryCollections
-                        }} />} />
+                    drawers={{ results }} />} />
                 </Routes> 
                 : 
                 null
