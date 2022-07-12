@@ -1081,11 +1081,12 @@ function ProjectPage(){
 
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
-    //var loaded = { test: false };
+    const [loaded, setLoaded] = React.useState(false);
     //Holds basic projects info including map ids, default data overwritten on async function
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
     const [results, setResults] = React.useState({});
+    const [drawer, setDrawer] = React.useState();
     const user = loc.state ? loc.state.userToken : {};
 
     // page url: path (split index)
@@ -1161,6 +1162,9 @@ function ProjectPage(){
                     collectionPoints(id, 'stationary', collection.date)
                 ))
             ))
+
+            setDrawer({ Results: results, Graphs: '', Data: '' })
+            setLoaded(true);
             
         } catch(error){
             //project api get error
@@ -1208,6 +1212,31 @@ function ProjectPage(){
         }
     }
 
+    function Subpages(props){
+        if(!props.loaded){
+            return null;
+        } else {
+            return(
+                <Routes>
+                    <Route index element={<MapPage title={projectInfo.title}
+                        drawers={drawer}
+                        area={area}
+                        center={center} />} />
+                    <Route path='map' element={<MapPage title={projectInfo.title}
+                        drawers={{ Results: results, Data: '', Graphs: '' }}
+                        area={area}
+                        center={center} />} />
+                    <Route path='activities' element={<ActivityPage title={projectInfo.title}
+                        drawers={results} />} />
+                    <Route path='activities/times' element={<NewActivityTimes />} />
+                    <Route path='surveyors' element={<SurveyorPage title={projectInfo.title}
+                        drawers={results} />} />
+                </Routes>
+            );
+        }
+
+    };
+
     //need to pull each collection object to pass into the drawer
     //projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections]
 
@@ -1228,25 +1257,7 @@ function ProjectPage(){
             <TabPanel state={ loc.state }/>
             {/* data passed into drawers needs map data and to match the format drawers component above */}
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
-            { results?.stationary_maps ?
-                <Routes>
-                    <Route index element={<MapPage title={ projectInfo.title } 
-                    drawers={{ Results: results, Data: '', Graphs: '' }} 
-                        area={ area } 
-                        center={ center } />} />
-                    <Route path='map' element={<MapPage title={ projectInfo.title } 
-                    drawers={{ Results: results, Data: '', Graphs: '' }}  
-                        area={ area } 
-                        center={ center }/>} />
-                    <Route path='activities' element={<ActivityPage title={ projectInfo.title }  
-                    drawers={ results }  />} />
-                    <Route path='activities/times' element={<NewActivityTimes />}/>
-                    <Route path='surveyors' element={<SurveyorPage title={ projectInfo.title } 
-                    drawers={ results }  />} />
-                </Routes> 
-                : 
-                null
-            }
+            {<Subpages loaded={loaded} />}
         </div>
     );
 }
