@@ -1,4 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+frontend_web\src\routes\ProjectPageResultsComment.txt
 
 # dependencies
 /node_modules
