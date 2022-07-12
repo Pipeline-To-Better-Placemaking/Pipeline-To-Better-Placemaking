@@ -1109,9 +1109,6 @@ function ProjectPage(){
         { lat: 28.60644237514531, lng: -81.20359237160903 }
     ];
 
-    // May load coords in Project Page
-    const center = { lat: 28.602846550128262, lng: -81.20006526689143 };
-
     // loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
     const projectData = async() => {
         try {
@@ -1218,9 +1215,12 @@ function ProjectPage(){
         projectData();
     });
 
-    console.log(projectInfo)
+    //loading in center from project
+    var center = { lat: projectInfo?.standingPoints[0], lng: projectInfo?.standingPoints[0] };
+
+    //console.log(projectInfo)
     //console.log(templateDrawers)
-    //console.log(results)
+    console.log(results)
 
     return (
         <div id='ProjectPage'>
@@ -1236,7 +1236,7 @@ function ProjectPage(){
                     <Route path='map' element={<MapPage title={ projectInfo?.title } 
                     drawers={{ results }} 
                         area={ area } 
-                        center={ projectInfo?.standingPoints }/>} />
+                        center={ center }/>} />
                     <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
                     drawers={{ results }} />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
