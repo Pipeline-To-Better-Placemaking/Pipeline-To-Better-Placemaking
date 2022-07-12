@@ -1164,6 +1164,7 @@ function ProjectPage(){
             ))
 
             setDrawer({ Results: results, Graphs: '', Data: '' })
+            setLoaded(true);
             
         } catch(error){
             //project api get error
@@ -1215,7 +1216,7 @@ function ProjectPage(){
     //projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections]
 
     React.useEffect(() => {
-        projectData().then(setLoaded(true))
+        projectData()
     }, []);
 
     //loading in center from project
