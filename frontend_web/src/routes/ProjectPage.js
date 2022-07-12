@@ -6,6 +6,7 @@ import TabPanel from '../components/ProjectTabPanel';
 import ActivityPage from './ActivityPage';
 import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
+import { SettingsApplicationsRounded } from '@mui/icons-material';
 
 function ProjectPage(){
     /*const templateDrawers = {
@@ -1081,7 +1082,6 @@ function ProjectPage(){
 
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
-    const [loaded, setLoaded] = React.useState(false);
     //Holds basic projects info including map ids, default data overwritten on async function
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
@@ -1164,7 +1164,6 @@ function ProjectPage(){
             ))
 
             setDrawer({ Results: results, Graphs: '', Data: '' })
-            setLoaded(true);
             
         } catch(error){
             //project api get error
@@ -1212,45 +1211,18 @@ function ProjectPage(){
         }
     }
 
+    //need to pull each collection object to pass into the drawer
+    //projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections]
+
     React.useEffect(() => {
         projectData();
     }, []);
 
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
-    area = projectInfo?.area?.points
-
-    function Subpages(props){
-        if(!props.loaded){
-            return null;
-        } else {
-            return(
-                <Routes>
-                    <Route index element={<MapPage title={projectInfo.title}
-                        drawers={ props.drawer }
-                        area={ props.area }
-                        center={ props.center } />} />
-                    <Route path='map' element={<MapPage title={projectInfo.title}
-                        drawers={ props.drawer }
-                        area={ props.area }
-                        center={ props.center } />} />
-                    <Route path='activities' element={<ActivityPage title={projectInfo.title}
-                        drawers={ results } />} />
-                    <Route path='activities/times' element={<NewActivityTimes />} />
-                    <Route path='surveyors' element={<SurveyorPage title={projectInfo.title}
-                        drawers={ results } />} />
-                </Routes>
-            );
-        }
-    };
-
-    //need to pull each collection object to pass into the drawer
-    //projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections]
-
-
+    area =  projectInfo?.area?.points
 
     //console.log(projectInfo)
-    console.log(results)
     //console.log(templateDrawers)
     //console.log(center)
 
@@ -1259,7 +1231,25 @@ function ProjectPage(){
             <TabPanel state={ loc.state }/>
             {/* data passed into drawers needs map data and to match the format drawers component above */}
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
-            {<Subpages loaded={loaded} drawer={drawer} center={center} area={area}/>}
+            {
+                drawer ? 
+                <Routes>
+                    <Route index element={<MapPage title={ projectInfo?.title } 
+                    drawers={ drawer } 
+                        area={ area } 
+                        center={ center } />} />
+                    <Route path='map' element={<MapPage title={ projectInfo?.title } 
+                        drawers={ drawer }  
+                        area={ area } 
+                        center={ center }/>} />
+                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
+                        drawers={ results }  />} />
+                    <Route path='activities/times' element={<NewActivityTimes />}/>
+                    <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } 
+                        drawers={ results }  />} />
+                </Routes>
+                : null
+            }
         </div>
     );
 }
