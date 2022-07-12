@@ -1127,39 +1127,40 @@ function ProjectPage(){
             setProjectInfo(response.data);
 
             //get Map data for activity results (needed in drawers)
-            response?.data?.boundariesCollections.map((collection) => (
-                collection.maps.map((id) => (
-                    collectionPoints(id, 'bounds', collection.date)
-                ))
+            response?.data?.boundariesCollections.forEach((collection) => (
+                collection.maps.forEach( async (id) => {
+                    await collectionPoints(id, 'bounds', collection.date);
+
+                })
             ))
             response?.data?.lightCollections.map((collection) => (
-                collection.maps.map((id) => (
-                    collectionPoints(id, 'light', collection.date)
+                collection.maps.map( async (id) => (
+                    await collectionPoints(id, 'light', collection.date)
                 ))
             ))
             response?.data?.movingCollections.map((collection) => (
-                collection.maps.map((id) => (
-                    collectionPoints(id, 'moving', collection.date)
+                collection.maps.map( async (id) => (
+                    await collectionPoints(id, 'moving', collection.date)
                 ))
             ))
             response?.data?.natureCollections.map((collection) => (
-                collection.maps.map((id) => (
-                    collectionPoints(id, 'nature', collection.date)
+                collection.maps.map( async (id) => (
+                    await collectionPoints(id, 'nature', collection.date)
                 ))
             ))
             response?.data?.orderCollections.map((collection) => (
-                collection.maps.map((id) => (
-                    collectionPoints(id, 'order', collection.date)
+                collection.maps.map( async (id) => (
+                    await collectionPoints(id, 'order', collection.date)
                 ))
             ))
             response?.data?.soundCollections.map((collection) => (
-                collection.maps.map((id) => (
-                    collectionPoints(id, 'sound', collection.date)
+                collection.maps.map( async (id) => (
+                    await collectionPoints(id, 'sound', collection.date)
                 ))
             ))
             response?.data?.stationaryCollections.map((collection) => (
-                collection.maps.map((id) => (
-                    collectionPoints(id, 'stationary', collection.date)
+                collection.maps.map( async (id) => (
+                    await collectionPoints(id, 'stationary', collection.date)
                 ))
             ))
 
