@@ -1213,7 +1213,7 @@ function ProjectPage(){
 
     React.useEffect(() => {
         projectData();
-    });
+    }, []);
 
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
@@ -1231,18 +1231,18 @@ function ProjectPage(){
             { projectInfo?.title ?
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo.title } 
-                    drawers={{ results }} 
+                    drawers={{ Results: results, Data: '', Graphs: '' }} 
                         area={ area } 
                         center={ center } />} />
                     <Route path='map' element={<MapPage title={ projectInfo.title } 
-                    drawers={{ results }} 
+                    drawers={{ Results: results, Data: '', Graphs: '' }}  
                         area={ area } 
                         center={ center }/>} />
                     <Route path='activities' element={<ActivityPage title={ projectInfo.title }  
-                    drawers={{ results }} />} />
+                    drawers={{ Results: results, Data: '', Graphs: '' }}  />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
                     <Route path='surveyors' element={<SurveyorPage title={ projectInfo.title } 
-                    drawers={{ results }} />} />
+                    drawers={{ Results: results, Data: '', Graphs: '' }}  />} />
                 </Routes> 
                 : 
                 null
