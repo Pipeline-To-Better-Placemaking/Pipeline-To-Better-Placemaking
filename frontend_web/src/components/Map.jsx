@@ -274,8 +274,8 @@ function FullMap(props) {
                 stimes.map(time => (title === 'nature_maps'  ?
                     (data.Results[title][sdate][time].data).map((inst) => (
                         Object.entries(inst).map(([natureType, pointArr], ind1)=>(
-                            natureType === 'weather' ? null :
-                            pointArr.map((natureObj, ind2)=>(
+                            natureType === 'weather' ? console.log(inst[natureType]) :
+                                console.log(inst[natureType]) && pointArr.map((natureObj, ind2)=>(
                                 natureType === 'animal' ? 
                                     <Marker
                                         key={`${sdate}.${time}.${ind2}`}
