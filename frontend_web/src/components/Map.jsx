@@ -272,27 +272,30 @@ function FullMap(props) {
         Object.entries(collections).map(([title, object], index) => (
             Object.entries(object).map(([sdate, stimes])=>(
                 stimes.map(time => (title === 'nature_maps'  ?
-                    Object.entries(data.Results[title][sdate][time].data[0]).map(([natureType, pointArr], ind1)=>(
-                        pointArr.map((natureObj, ind2)=>(
-                            natureType === 'animal' ? 
-                                <Marker
-                                    key={`${sdate}.${time}.${ind2}`}
-                                    shape='circle'
-                                    info={
-                                        `<div><b>${testNames(title)}</b><br/>Location ${ind2}<br/>Animal: ${natureObj.description}<br/>[${natureObj.kind}]</div>`}
-                                    position={natureObj.marker}
-                                    markerType={natureType}
-                                /> :
-                                <Bounds
-                                    key={`${sdate}.${time}.${ind2}`}
-                                    title={title}
-                                    date={sdate}
-                                    time={time}
-                                    index={ind2}
-                                    area={natureObj.location}
-                                    type={natureType}
-                                    boundsPathWindow={boundsPathWindow}
-                                />
+                    (data.Results[title][sdate][time].data).map((inst) => (
+                        Object.entries(inst).map(([natureType, pointArr], ind1)=>(
+                            natureType === 'weather' ? null :
+                            pointArr.map((natureObj, ind2)=>(
+                                natureType === 'animal' ? 
+                                    <Marker
+                                        key={`${sdate}.${time}.${ind2}`}
+                                        shape='circle'
+                                        info={
+                                            `<div><b>${testNames(title)}</b><br/>Location ${ind2}<br/>Animal: ${natureObj.description}<br/>[${natureObj.kind}]</div>`}
+                                        position={natureObj.marker}
+                                        markerType={natureType}
+                                    /> :
+                                    <Bounds
+                                        key={`${sdate}.${time}.${ind2}`}
+                                        title={title}
+                                        date={sdate}
+                                        time={time}
+                                        index={ind2}
+                                        area={natureObj.location}
+                                        type={natureType}
+                                        boundsPathWindow={boundsPathWindow}
+                                    />
+                            ))
                         ))
                     ))
                     :
