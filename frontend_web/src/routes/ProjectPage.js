@@ -6,7 +6,6 @@ import TabPanel from '../components/ProjectTabPanel';
 import ActivityPage from './ActivityPage';
 import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
-import { SettingsApplicationsRounded } from '@mui/icons-material';
 
 function ProjectPage(){
     /*const templateDrawers = {
@@ -1085,7 +1084,7 @@ function ProjectPage(){
     //Holds basic projects info including map ids, default data overwritten on async function
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
-    const [results, setResults] = React.useState({});
+    var results;
     const [drawer, setDrawer] = React.useState();
     const user = loc.state ? loc.state.userToken : {};
 
@@ -1127,37 +1126,37 @@ function ProjectPage(){
             setProjectInfo(response.data);
 
             //get Map data for activity results (needed in drawers)
-            projectInfo?.boundariesCollections.map((collection) => (
+            response?.data?.boundariesCollections.map((collection) => (
                 collection.maps.map((id) => (
                     collectionPoints(id, 'bounds', collection.date)
                 ))
             ))
-            projectInfo?.lightCollections.map((collection) => (
+            response?.data?.lightCollections.map((collection) => (
                 collection.maps.map((id) => (
                     collectionPoints(id, 'light', collection.date)
                 ))
             ))
-            projectInfo?.movingCollections.map((collection) => (
+            response?.data?.movingCollections.map((collection) => (
                 collection.maps.map((id) => (
                     collectionPoints(id, 'moving', collection.date)
                 ))
             ))
-            projectInfo?.natureCollections.map((collection) => (
+            response?.data?.natureCollections.map((collection) => (
                 collection.maps.map((id) => (
                     collectionPoints(id, 'nature', collection.date)
                 ))
             ))
-            projectInfo?.orderCollections.map((collection) => (
+            response?.data?.orderCollections.map((collection) => (
                 collection.maps.map((id) => (
                     collectionPoints(id, 'order', collection.date)
                 ))
             ))
-            projectInfo?.soundCollections.map((collection) => (
+            response?.data?.soundCollections.map((collection) => (
                 collection.maps.map((id) => (
                     collectionPoints(id, 'sound', collection.date)
                 ))
             ))
-            projectInfo?.stationaryCollections.map((collection) => (
+            response?.data?.stationaryCollections.map((collection) => (
                 collection.maps.map((id) => (
                     collectionPoints(id, 'stationary', collection.date)
                 ))
@@ -1201,7 +1200,7 @@ function ProjectPage(){
             map[apiCategory[cat]] = {};
             map[apiCategory[cat]][date.toLocaleDateString()] = {};
             map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = response.data;
-            await setResults(map);
+            results = map;
             console.log(map);
 
         } catch (error) {
@@ -1232,7 +1231,7 @@ function ProjectPage(){
             {/* data passed into drawers needs map data and to match the format drawers component above */}
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
             {
-                drawer ? 
+                drawer?.Results ? 
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo?.title } 
                         drawers={ drawer } 
