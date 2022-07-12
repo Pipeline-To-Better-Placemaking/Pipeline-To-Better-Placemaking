@@ -68,7 +68,7 @@ const subtable = (row, type) => (
             <TableBody>
                 { type === 0 ? 
                     Object.entries(row).map(([dObj, date])=>(
-                        Object.entries(dObj).map(([time, tObj])=>(
+                        Object.entries(dObj).map(([date, tObj])=>(
                             tObj.data.map((object, index) => (
                                 <TableRow key={ index }>
                                     <TableCell colSpan={ 2 } className='value'>
@@ -78,7 +78,7 @@ const subtable = (row, type) => (
                                         {object.average ? `${object.sound_type}` : (object.kind ? (`${object.kind} (${object.description})`) : (object.age ? `${object.age} ${object.gender} (${object.activity})` : 'N/A'))}
                                     </TableCell>
                                     <TableCell>Location { index }</TableCell>
-                                    <TableCell>{ date } { time }</TableCell>
+                                    <TableCell>{ date } { date }</TableCell>
                                     <TableCell>{ tObj.researcher }</TableCell>
                                 </TableRow>
                             ))
