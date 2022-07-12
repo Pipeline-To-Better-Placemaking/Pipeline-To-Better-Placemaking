@@ -1217,7 +1217,7 @@ function ProjectPage(){
 
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
-    area =  projectInfo.areas
+    area =  projectInfo?.areas
 
     //console.log(projectInfo)
     //console.log(templateDrawers)
@@ -1225,10 +1225,10 @@ function ProjectPage(){
 
     return (
         <div id='ProjectPage'>
-            <TabPanel state={loc.state}/>
+            <TabPanel state={ loc.state }/>
             {/* data passed into drawers needs map data and to match the format drawers component above */}
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
-            { projectInfo?.title ?
+            { results?.stationary_maps ?
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo.title } 
                     drawers={{ Results: results, Data: '', Graphs: '' }} 
@@ -1239,10 +1239,10 @@ function ProjectPage(){
                         area={ area } 
                         center={ center }/>} />
                     <Route path='activities' element={<ActivityPage title={ projectInfo.title }  
-                    drawers={{ Results: results, Data: '', Graphs: '' }}  />} />
+                    drawers={ results }  />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
                     <Route path='surveyors' element={<SurveyorPage title={ projectInfo.title } 
-                    drawers={{ Results: results, Data: '', Graphs: '' }}  />} />
+                    drawers={ results }  />} />
                 </Routes> 
                 : 
                 null
