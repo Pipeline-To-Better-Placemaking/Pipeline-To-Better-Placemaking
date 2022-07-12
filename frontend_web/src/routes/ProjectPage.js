@@ -1158,8 +1158,8 @@ function ProjectPage(){
                     await collectionPoints(id, 'sound', collection.date)
                 ))
             ))
-            response?.data?.stationaryCollections.map((collection) => (
-                collection.maps.map( async (id) => (
+            await response?.data?.stationaryCollections.map(async (collection) => (
+                await collection.maps.map( async (id) => (
                     await collectionPoints(id, 'stationary', collection.date)
                 ))
             ))
@@ -1224,7 +1224,7 @@ function ProjectPage(){
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
     area =  projectInfo?.area?.points
 
-    //console.log(projectInfo)
+    console.log(projectInfo)
     //console.log(templateDrawers)
     //console.log(center)
 
