@@ -67,7 +67,7 @@ const subtable = (row, type) => (
             </TableHead>
             <TableBody>
                 { type === 0 ? 
-                    Object.entries(row).map(([date, dObj])=>(
+                    Object.entries(row).map(([dObj, date])=>(
                         Object.entries(dObj).map(([time, tObj])=>(
                             tObj.data.map((object, index) => (
                                 <TableRow key={ index }>

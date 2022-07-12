@@ -1220,7 +1220,7 @@ function ProjectPage(){
 
     //console.log(projectInfo)
     //console.log(templateDrawers)
-    console.log(results)
+    console.log(center)
 
     return (
         <div id='ProjectPage'>
