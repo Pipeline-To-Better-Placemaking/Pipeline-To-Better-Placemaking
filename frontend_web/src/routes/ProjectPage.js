@@ -1084,7 +1084,7 @@ function ProjectPage(){
     //Holds basic projects info including map ids, default data overwritten on async function
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
-    var results;
+    var results = {};
     const [drawer, setDrawer] = React.useState();
     const user = loc.state ? loc.state.userToken : {};
 
