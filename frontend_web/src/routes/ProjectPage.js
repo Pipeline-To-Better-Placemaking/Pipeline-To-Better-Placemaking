@@ -1212,6 +1212,14 @@ function ProjectPage(){
         }
     }
 
+    React.useEffect(() => {
+        projectData();
+    }, []);
+
+    //loading in center from project
+    var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
+    area = projectInfo?.area?.points
+
     function Subpages(props){
         if(!props.loaded){
             return null;
@@ -1219,36 +1227,30 @@ function ProjectPage(){
             return(
                 <Routes>
                     <Route index element={<MapPage title={projectInfo.title}
-                        drawers={drawer}
-                        area={area}
-                        center={center} />} />
+                        drawers={ props.drawer }
+                        area={ props.area }
+                        center={ props.center } />} />
                     <Route path='map' element={<MapPage title={projectInfo.title}
-                        drawers={{ Results: results, Data: '', Graphs: '' }}
-                        area={area}
-                        center={center} />} />
+                        drawers={ props.drawer }
+                        area={ props.area }
+                        center={ props.center } />} />
                     <Route path='activities' element={<ActivityPage title={projectInfo.title}
-                        drawers={results} />} />
+                        drawers={ results } />} />
                     <Route path='activities/times' element={<NewActivityTimes />} />
                     <Route path='surveyors' element={<SurveyorPage title={projectInfo.title}
-                        drawers={results} />} />
+                        drawers={ results } />} />
                 </Routes>
             );
         }
-
     };
 
     //need to pull each collection object to pass into the drawer
     //projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections]
 
-    React.useEffect(() => {
-        projectData();
-    }, []);
 
-    //loading in center from project
-    var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
-    area =  projectInfo?.areas
 
     //console.log(projectInfo)
+    console.log(results)
     //console.log(templateDrawers)
     //console.log(center)
 
@@ -1257,7 +1259,7 @@ function ProjectPage(){
             <TabPanel state={ loc.state }/>
             {/* data passed into drawers needs map data and to match the format drawers component above */}
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
-            {<Subpages loaded={loaded} />}
+            {<Subpages loaded={loaded} drawer={drawer} center={center} area={area}/>}
         </div>
     );
 }
