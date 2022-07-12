@@ -87,6 +87,32 @@ const sendVerificationCode = async (email, code) => {
     return (await sendEmail(mailOptions))
 }
 
+//sent upon registration from login route
+const sendResetPassword = async (email, code) => {
+    if (!code) {
+        const user = await User.findUserByEmail(email)
+        code = user.verification_code
+    }
+
+    const emailHTML = `
+        <h3>Hello from 2+ Community!</h3>
+        <p>Thank you for creating a Measuring Place account. Please enter the code below in the app to verify your email address.</p>
+
+        <p><b>Your code is:</b> ${code}</p>
+    `
+    
+    const mailOptions = {
+        from: `"2+ Community" <${config.PROJECT_EMAIL}>`,
+        to: email,
+        subject: 'Email Verification',
+        text: `Thank you for creating a Measuring Place account. 
+            Please enter the following code in the app to verify your email address: ${code}`,
+        html: emailHTML
+    }
+
+    return (await sendEmail(mailOptions))
+}
+
 module.exports = {
     sendEmail,
     sendVerificationCode

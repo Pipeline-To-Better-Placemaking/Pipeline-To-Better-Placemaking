@@ -124,6 +124,17 @@ router.put('/', passport.authenticate('jwt',{session:false}), async (req, res, n
     res.status(200).json(user)
 })
 
+router.put('/password', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    
+    if (req.body.password) {
+        // Check password
+        if (!testPassword(req.body.password)) {
+            throw new BadRequestError('Missing or invalid field: password')
+        }
+        newUser.password = await User.createPasswordHash(req.body.password)
+    }
+})
+
 // Accept invite
 router.post('/invites', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
 

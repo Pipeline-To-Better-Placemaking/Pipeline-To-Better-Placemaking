@@ -186,8 +186,8 @@ lightToCSV = function(data) {
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
                   "Area_Title,Area,Duration,Activity_Time," +
-                  "Researchers,Standing_Point,Standing_Point_Title," +
-                  "Location,Light_Description"
+                  "Researchers," +
+                  "Location, Light_Description"
 
     var csv = headers
 
@@ -224,13 +224,11 @@ lightToCSV = function(data) {
                         csv += collection.duration + ','
                         csv += map.date + ','
                         csv += researchers + ','
-                        csv += entry.standingPoint.title + ','
-                        csv += "\"POINT( " + entry.standingPoint.latitude + " " + entry.standingPoint.longitude + ")\","
-                        csv += "\"POINT( " + entry.location.latitude + " " + entry.location.longitude + ")\","
-                        csv += entry.light_description
+                        csv += "\"POINT( " + entry.points.location.latitude + " " + entry.points.locaiton.longitude + ")\","
+                        csv += entry.points.light_description
                     }
                 }
-            }
+            }a
         }
     }
 
@@ -242,8 +240,8 @@ natureToCSV = function(data) {
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
                   "Area_Title,Area,Duration,Activity_Time," +
-                  "Researchers,Standing_Point,Standing_Point_Title," +
-                  "Location,Animals,Landscape,Weather,Water"
+                  "Researchers" +
+                  "Animals,Vegetation,Weather,Water"
 
     var csv = headers
 
@@ -280,11 +278,8 @@ natureToCSV = function(data) {
                         csv += collection.duration + ','
                         csv += map.date + ','
                         csv += researchers + ','
-                        csv += entry.standingPoint.title + ','
-                        csv += "\"POINT( " + entry.standingPoint.latitude + " " + entry.standingPoint.longitude + ")\","
-                        csv += "\"POINT( " + entry.location.latitude + " " + entry.location.longitude + ")\","
                         csv += entry.animals + ','
-                        csv += entry.landscape + ','
+                        csv += entry.vegetation + ','
                         csv += entry.weather + ','
                         csv += entry.water
                     
@@ -302,8 +297,8 @@ orderToCSV = function(data) {
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
                   "Area_Title,Area,Duration,Activity_Time," +
-                  "Researchers,Standing_Point,Standing_Point_Title," +
-                  "Location,Garbage_Can,Building_Condition,Area_Lighting,Description"
+                  "Researchers" +
+                  "Location,Points"
 
     var csv = headers
 
@@ -340,13 +335,8 @@ orderToCSV = function(data) {
                         csv += collection.duration + ','
                         csv += map.date + ','
                         csv += researchers + ','
-                        csv += entry.standingPoint.title + ','
-                        csv += "\"POINT( " + entry.standingPoint.latitude + " " + entry.standingPoint.longitude + ")\","
-                        csv += "\"POINT( " + entry.location.latitude + " " + entry.location.longitude + ")\","
-                        csv += entry.garbage_can + ','
-                        csv += entry.building_condition + ','
-                        csv += entry.area_lighting + ','
-                        csv += entry.description
+                        // csv += "\"POINT( " + entry.location.latitude + " " + entry.location.longitude + ")\","
+                        csv += entry.points 
                     }
                 }
             }
@@ -361,8 +351,8 @@ boundariesToCSV = function(data) {
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
                   "Area_Title,Area,Duration,Activity_Time," +
-                  "Researchers,Standing_Point,Standing_Point_Title," +
-                  "Horizontal,Vertical,Path"
+                  "Researchers," +
+                  "Path,Kind,Description,Value,Purpose"
 
     var csv = headers
 
@@ -399,15 +389,18 @@ boundariesToCSV = function(data) {
                         csv += collection.duration + ','
                         csv += map.date + ','
                         csv += researchers + ','
-                        csv += entry.standingPoint.title + ','
-                        csv += "\"POINT( " + entry.standingPoint.latitude + " " + entry.standingPoint.longitude + ")\","
-                        csv += "\"HORIZONTAL( " + entry.horizontal.height + " " + entry.horizontal.description + ")\","
-                        csv += "\"VERTICAL( " + entry.vertical.kind + " " + entry.vertical.description + ")\","
                         path = "\"LINESTRING ( "
                         for(var l = 0; l < entry.path.length; l++){
                            if (l != 0) path += ", "
                            path += entry.path[l].latitude + " " + entry.path[l].longitude
                         }
+                        path += ")\""
+                        csv += path
+                        csv += entry.kind + ','
+                        csv += entry.description + ','
+                        csv += entry.value + ',' 
+                        csv += entry.purpose  
+
                     }
                 }
             }
