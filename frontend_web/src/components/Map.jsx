@@ -51,7 +51,7 @@ function FullMap(props) {
         moving_maps: movingCollections,
         order_maps: orderCollections, 
         boundaries_maps: boundariesCollections, 
-        lighting_maps: lightingCollections, 
+        light_maps: lightingCollections, 
         nature_maps: natureCollections, 
         sound_maps: soundCollections
     });
@@ -274,7 +274,7 @@ function FullMap(props) {
                 stimes.map(time => (title === 'nature_maps'  ?
                     (data.Results[title][sdate][time].data).map((inst) => (
                         Object.entries(inst).map(([natureType, pointArr], ind1)=>(
-                            natureType === 'weather' ? console.log(inst[natureType]) :
+                            natureType === 'weather' || natureType === '_id' || natureType === 'time' ? console.log(natureType) :
                                 console.log(inst[natureType]) && pointArr.map((natureObj, ind2)=>(
                                 natureType === 'animal' ? 
                                     <Marker
@@ -299,46 +299,63 @@ function FullMap(props) {
                         ))
                     ))
                     :
-                    Object.entries(data.Results[title][sdate][time].data).map(([ind, point], i2)=>(
-                        (point.mode || point.kind === 'Constructed' ? 
-                            <Path 
-                                key={`${sdate}.${time}.${i2}`} 
-                                path={point.path} 
-                                mode={point.mode ? point.mode : point.kind}
-                                title={title} date={sdate} time={time} index={i2}
-                                boundsPathWindow={boundsPathWindow}
-                            /> 
-                            :
-                            (point.kind === 'Shelter' || point.kind === 'Material' || point.result === 'Water' || point.kind === 'Vegetation' ? 
-                                <Bounds 
-                                    key={`${sdate}.${time}.${i2}`} 
-                                    title={title} 
-                                    date={sdate} 
-                                    time={time} 
-                                    index={i2} 
-                                    area={point.path} 
-                                    type={point.kind ? point.kind : point.result} 
-                                    boundsPathWindow={boundsPathWindow}
-                                /> 
-                                :
-                                <Marker 
-                                    key={`${sdate}.${time}.${i2}`} 
-                                    shape={title === 'order_maps' ? 'triangle' : (title === 'lighting_maps' ? 'lightcircle' : 'circle')}
-                                    info={ point.average ? 
-                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
-                                            : (point.result ? 
-                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.result}</div>`)
-                                                    : (point.posture ? 
-                                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
-                                                            : null)) } 
-                                    position={point.standingPoint ? point.standingPoint : point.point} 
-                                    markerType={point.average ? 'sound_maps' 
-                                        : (point.result ? point.result : (point.posture ? point.posture : null))} 
-                                    markerSize={title === 'sound_maps' ? point.average : null} 
+                    (title === 'light_maps' || title === 'order_maps' ? 
+                        (data.Results[title][sdate][time].data).map((inst) => (
+                            console.log(inst)&&Object.entries(inst.points).map(([ind, point], i2) => (
+                                console.log(point)&&<Marker
+                                    key={`${sdate}.${time}.${i2}`}
+                                    shape={'title' === 'order_maps' ? 'triangle' : 'lightcircle'}
+                                    info={point.light_description ?
+                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`) : null}
+                                    position={point.location}
+                                    markerType={point.light_description ? point.light_description : null}
                                 />
-                            )
-                        )
-                    ))
+                            ))
+                        ))
+
+                        : 
+                        (data.Results[title][sdate][time].data).map((point, i2) => (
+                                console.log(point)&&(point.mode || point.kind === 'Constructed' ? 
+                                    <Path 
+                                        key={`${sdate}.${time}.${i2}`} 
+                                        path={point.path} 
+                                        mode={point.mode ? point.mode : point.kind}
+                                        title={title} date={sdate} time={time} index={i2}
+                                        boundsPathWindow={boundsPathWindow}
+                                    /> 
+                                    :
+                                    (point.kind === 'Shelter' || point.kind === 'Material' || point.result === 'Water' || point.kind === 'Vegetation' ? 
+                                        <Bounds 
+                                            key={`${sdate}.${time}.${i2}`} 
+                                            title={title} 
+                                            date={sdate} 
+                                            time={time} 
+                                            index={i2} 
+                                            area={point.path} 
+                                            type={point.kind ? point.kind : point.result} 
+                                            boundsPathWindow={boundsPathWindow}
+                                        /> 
+                                        :
+                                        <Marker 
+                                            key={`${sdate}.${time}.${i2}`} 
+                                            shape={title === 'order_maps' ? 'triangle' : (title === 'light_maps' ? 'lightcircle' : 'circle')}
+                                            info={ point.average ? 
+                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
+                                                    : (point.result ? 
+                                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.result}</div>`)
+                                                            : (point.posture ? 
+                                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
+                                                                : (point.light_description ? 
+                                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`) : null))) } 
+                                            position={point.standingPoint ? point.standingPoint : point.point} 
+                                            markerType={point.average ? 'sound_maps' 
+                                                : (point.result ? point.result : (point.posture ? point.posture : null))} 
+                                            markerSize={title === 'sound_maps' ? point.average : null} 
+                                        />
+                                    )
+                                )
+                        ))
+                    )
                 ))
             ))
         ))
