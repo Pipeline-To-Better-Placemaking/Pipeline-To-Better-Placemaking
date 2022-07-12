@@ -4,6 +4,7 @@ import { Text, Divider } from '@ui-kitten/components';
 import { HeaderBack } from '../../components/headers.component';
 import { ViewableArea, ContentContainer } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
+import { calcArea } from '../../components/helperFunctions';
 import { CompareBarChart } from '../../components/charts.component';
 
 import { styles } from './compare.styles';
@@ -64,41 +65,41 @@ export function NatureCompare(props) {
     };
     for(let i = 0; i < obj.length; i++){
       let data = obj[i]
-      //console.log(data)
+      // console.log(data)
       let index = -1;
-      // format the points object (of each data object)
-      for(let j = 0; j < data.points.length; j++){
-        // the current data point is for vegetation
-        if(data.points[j].kind === "Vegetation"){
-          index = conDescSearch(graph.vegetationLabels, data.points[j].description)
-          // that description is already formatted, so increase its count
-          if(index !== -1){
-            graph.vegetationData[index] += 1;
-          }
-          // otherwise add that description into the labels and increase its count
-          else{
-            graph.vegetationLabels.push(data.points[j].description)
-            graph.vegetationData.push(1);
-          }
+      // format the animal object (of each data object)
+      for(let j = 0; j < data.animal.length; j++){
+        let type = data.animal[j].kind
+        if(type === "Domesticated") type = "Domestic"
+        let string = type.concat("\n", data.animal[j].description)
+        index = conDescSearch(graph.animalLabels, string)
+        // that description is already formatted, so increase its count
+        if(index !== -1){
+           graph.animalData[index] += 1;
         }
-        // otherwise, its an animal data point
+        // otherwise add that description into the labels and increase its count
         else{
-          let type = data.points[j].kind
-          if(type === "Domesticated") type = "Domestic"
-          let string = type.concat("\n", data.points[j].description)
-          index = conDescSearch(graph.animalLabels, string)
-          // that description is already formatted, so increase its count
-          if(index !== -1){
-            graph.animalData[index] += 1;
-          }
-          // otherwise add that description into the labels and increase its count
-          else{
-            graph.animalLabels.push(string)
-            graph.animalData.push(1);
-          }
-        
+          graph.animalLabels.push(string)
+          graph.animalData.push(1);
         }
       }
+
+      // format the vegetation array (of each data object)
+      for(let j = 0; j < data.vegetation.length; j++){
+        index = conDescSearch(graph.vegetationLabels, data.vegetation[j].description)
+        // that description is already formatted, so increase its count
+        if(index !== -1){
+          let num = graph.vegetationData[index] + data.vegetation[j].area;
+          let string = num.toFixed(2)
+          graph.vegetationData[index] = parseFloat(string)
+        }
+        // otherwise add that description into the labels and increase its count
+        else{
+          graph.vegetationLabels.push(data.vegetation[j].description)
+          graph.vegetationData.push(data.vegetation[j].area)
+        }
+      }
+      
       // format the water array (of each data object)
       for(let j = 0; j < data.water.length; j++){
         index = conDescSearch(graph.waterLabels, data.water[j].description)
@@ -121,8 +122,14 @@ export function NatureCompare(props) {
     return graph;
   }
   
+  // needed for formatForCompare funct
+  const totalArea1 = calcArea(results[0].sharedData.area.points)
+  const totalArea2 = calcArea(results[1].sharedData.area.points)
+  
   // returns fully formatted array of data objects that the compare barchart needs
   const formatForCompare = (obj1, obj2, type) =>{
+    let temp = 0;
+    let tempString;
     let resObj = {
       labels: [],
       graph: []
@@ -233,8 +240,11 @@ export function NatureCompare(props) {
         for(let i = 0; i < obj1.vegetationData.length; i++){
           // push that label onto the labels array
           resObj.labels.push(obj1.vegetationLabels[i])
+          // calculate and format the precentage of its project area that polygon type takes up
+          temp = (obj1.vegetationData[i] / totalArea1) * 100
+          tempString = temp.toFixed(0)
           // push the data for that label onto its graph object
-          resObj.graph[0].data.push(obj1.vegetationData[i])
+          resObj.graph[0].data.push(parseInt(tempString))
           // search the other format object array for the same label
           let cond = conDescSearch(obj2.vegetationLabels, obj1.vegetationLabels[i])
           // that label doesn't exist so push a 0
@@ -243,7 +253,11 @@ export function NatureCompare(props) {
           }
           // otherwise that label does exist, so push its value
           else{
-            resObj.graph[1].data.push(obj2.vegetationData[cond])
+            // calculate and format the precentage of its project area that polygon type takes up
+            temp = (obj2.vegetationData[cond] / totalArea2) * 100
+            tempString = temp.toFixed(0)
+            // push the data for that label onto its graph object
+            resObj.graph[1].data.push(parseInt(tempString))
           }
         }
         // check the other format object array for any labels not accounted for
@@ -253,8 +267,11 @@ export function NatureCompare(props) {
           if(cond === -1){
             // push that label onto the labels array
             resObj.labels.push(obj2.vegetationLabels[i])
+            // calculate and format the precentage of its project area that polygon type takes up
+            temp = (obj2.vegetationData[i] / totalArea2) * 100
+            tempString = temp.toFixed(0)
             // push the data for that label onto its graph object
-            resObj.graph[1].data.push(obj2.vegetationData[i])
+            resObj.graph[1].data.push(parseInt(tempString))
             // this label wasn't in the formatted object above, so its value is 0
             resObj.graph[0].data.push(0)
           }
@@ -277,8 +294,11 @@ export function NatureCompare(props) {
         for(let i = 0; i < obj2.vegetationData.length; i++){
           // push that label onto the labels array
           resObj.labels.push(obj2.vegetationLabels[i])
+          // calculate and format the precentage of its project area that polygon type takes up
+          temp = (obj2.vegetationData[i] / totalArea2) * 100
+          tempString = temp.toFixed(0)
           // push the data for that label onto its graph object
-          resObj.graph[0].data.push(obj2.vegetationData[i])
+          resObj.graph[0].data.push(parseInt(tempString))
           // search the other format object array for the same label
           let cond = conDescSearch(obj1.vegetationLabels, obj2.vegetationLabels[i])
           // that label doesn't exist so push a 0
@@ -287,7 +307,11 @@ export function NatureCompare(props) {
           }
           // otherwise that label does exist, so push its value
           else{
-            resObj.graph[1].data.push(obj1.vegetationData[cond])
+            // calculate and format the precentage of its project area that polygon type takes up
+            temp = (obj1.vegetationData[cond] / totalArea1) * 100
+            tempString = temp.toFixed(0)
+            // push the data for that label onto its graph object
+            resObj.graph[1].data.push(parseInt(tempString))
           }
         }
         // check the other format object array for any labels not accounted for
@@ -297,8 +321,11 @@ export function NatureCompare(props) {
           if(cond === -1){
             // push that label onto the labels array
             resObj.labels.push(obj1.vegetationLabels[i])
+            // calculate and format the precentage of its project area that polygon type takes up
+            temp = (obj1.vegetationData[i] / totalArea1) * 100
+            tempString = temp.toFixed(0)
             // push the data for that label onto its graph object
-            resObj.graph[1].data.push(obj1.vegetationData[i])
+            resObj.graph[1].data.push(parseInt(tempString))
             // this label wasn't in the formatted object above, so its value is 0
             resObj.graph[0].data.push(0)
           }
@@ -326,8 +353,11 @@ export function NatureCompare(props) {
         for(let i = 0; i < obj1.waterData.length; i++){
           // push that label onto the labels array
           resObj.labels.push(obj1.waterLabels[i])
+          // calculate and format the precentage of its project area that polygon type takes up
+          temp = (obj1.waterData[i] / totalArea1) * 100
+          tempString = temp.toFixed(0)
           // push the data for that label onto its graph object
-          resObj.graph[0].data.push(obj1.waterData[i])
+          resObj.graph[0].data.push(parseInt(tempString))
           // search the other format object array for the same label
           let cond = conDescSearch(obj2.waterLabels, obj1.waterLabels[i])
           // that label doesn't exist so push a 0
@@ -336,7 +366,11 @@ export function NatureCompare(props) {
           }
           // otherwise that label does exist, so push its value
           else{
-            resObj.graph[1].data.push(obj2.waterData[cond])
+            // calculate and format the precentage of its project area that polygon type takes up
+            temp = (obj2.waterData[cond] / totalArea2) * 100
+            tempString = temp.toFixed(0)
+            // push the data for that label onto its graph object
+            resObj.graph[1].data.push(parseInt(tempString))
           }
         }
         // check the other format object array for any labels not accounted for
@@ -346,8 +380,11 @@ export function NatureCompare(props) {
           if(cond === -1){
             // push that label onto the labels array
             resObj.labels.push(obj2.waterLabels[i])
+            // calculate and format the precentage of its project area that polygon type takes up
+            temp = (obj2.waterData[i] / totalArea2) * 100
+            tempString = temp.toFixed(0)
             // push the data for that label onto its graph object
-            resObj.graph[1].data.push(obj2.waterData[i])
+            resObj.graph[1].data.push(parseInt(tempString))
             // this label wasn't in the formatted object above, so its value is 0
             resObj.graph[0].data.push(0)
           }
@@ -370,8 +407,11 @@ export function NatureCompare(props) {
         for(let i = 0; i < obj2.waterData.length; i++){
           // push that label onto the labels array
           resObj.labels.push(obj2.waterLabels[i])
+          // calculate and format the precentage of its project area that polygon type takes up
+          temp = (obj2.waterData[i] / totalArea2) * 100
+          tempString = temp.toFixed(0)
           // push the data for that label onto its graph object
-          resObj.graph[0].data.push(obj2.waterData[i])
+          resObj.graph[0].data.push(parseInt(tempString))
           // search the other format object array for the same label
           let cond = conDescSearch(obj1.waterLabels, obj2.waterLabels[i])
           // that label doesn't exist so push a 0
@@ -380,7 +420,11 @@ export function NatureCompare(props) {
           }
           // otherwise that label does exist, so push its value
           else{
-            resObj.graph[1].data.push(obj1.waterData[cond])
+            // calculate and format the precentage of its project area that polygon type takes up
+            temp = (obj1.waterData[cond] / totalArea1) * 100
+            tempString = temp.toFixed(0)
+            // push the data for that label onto its graph object
+            resObj.graph[1].data.push(parseInt(tempString))
           }
         }
         // check the other format object array for any labels not accounted for
@@ -390,8 +434,11 @@ export function NatureCompare(props) {
           if(cond === -1){
             // push that label onto the labels array
             resObj.labels.push(obj1.waterLabels[i])
+            // calculate and format the precentage of its project area that polygon type takes up
+            temp = (obj1.waterData[i] / totalArea1) * 100
+            tempString = temp.toFixed(0)
             // push the data for that label onto its graph object
-            resObj.graph[1].data.push(obj1.waterData[i])
+            resObj.graph[1].data.push(parseInt(tempString))
             // this label wasn't in the formatted object above, so its value is 0
             resObj.graph[0].data.push(0)
           }
@@ -472,26 +519,11 @@ export function NatureCompare(props) {
                 </View>
            
               <View style={styles.chartSpacing} />
-
-              {animalFormat ? 
-                <CompareBarChart
-                  {...props}
-                  title={"Animal Data"}
-                  rotation={'0deg'}
-                  dataValues={animalFormat.graph}
-                  dataLabels={animalFormat.labels}
-                  barColor={color}
-                  width={chartWidth}
-                  height={chartHeight}
-                />
-              :
-                null
-              }
                         
               {vegeFormat ?
                 <CompareBarChart
                   {...props}
-                  title={"Vegetation Data"}
+                  title={"Vegetation Areas\n(percent of project area)"}
                   rotation={'0deg'}
                   dataValues={vegeFormat.graph}
                   dataLabels={vegeFormat.labels}
@@ -506,7 +538,7 @@ export function NatureCompare(props) {
               {waterFormat ? 
                 <CompareBarChart
                   {...props}
-                  title={"Water Data"}
+                  title={"Water Areas\n(percent of project area)"}
                   rotation={'0deg'}
                   dataValues={waterFormat.graph}
                   dataLabels={waterFormat.labels}
@@ -517,7 +549,22 @@ export function NatureCompare(props) {
               : 
                 null
               }
-            </View>
+              
+              {animalFormat ? 
+                <CompareBarChart
+                  {...props}
+                  title={"Animal Data"}
+                  rotation={'0deg'}
+                  dataValues={animalFormat.graph}
+                  dataLabels={animalFormat.labels}
+                  barColor={color}
+                  width={chartWidth}
+                  height={chartHeight}
+                />
+              :
+                null
+              }
+            </View> 
           :
             <View>
               <Text category={'s1'}>At least one of the result's data is blank; there is nothing to compare to</Text>

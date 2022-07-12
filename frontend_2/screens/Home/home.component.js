@@ -36,9 +36,12 @@ export const HomeScreen = ( props ) => {
     let stationaryResults = []
     let movingResults = []
     let surveyResults = []
-    let soundResults= []
-    let boundaryResults= []
-    let natureResults= []
+    let soundResults = []
+    let boundaryResults = []
+    let natureResults = []
+    let lightResults = []
+    let orderResults = []
+
     //add the new test result arrays here ^
 
     // Get selected Projects
@@ -68,6 +71,10 @@ export const HomeScreen = ( props ) => {
           boundaryResults.push(result);
         } else if (result.test_type === "nature"){
           natureResults.push(result);
+        } else if (result.test_type === "light"){
+          lightResults.push(result);
+        } else if (result.test_type === "order"){
+          orderResults.push(result);
         }
         //add the new tests here ^^
 
@@ -81,7 +88,9 @@ export const HomeScreen = ( props ) => {
       survey: [...surveyResults],
       sound: [...soundResults],
       boundary: [...boundaryResults],
-      nature: [...natureResults]
+      nature: [...natureResults],
+      light: [...lightResults],
+      order: [...orderResults]
       //add the new tests here ^^
     };
 

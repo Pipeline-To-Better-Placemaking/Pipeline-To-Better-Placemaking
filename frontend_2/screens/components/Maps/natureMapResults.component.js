@@ -10,12 +10,13 @@ import { styles } from './sharedMap.styles';
 export function NatureMapResults(props) {
 
     const [infoModal, setInfoModal] = useState(false);
+    const [title, setTitle] = useState();
     const [info, setInfo] = useState();
 
     // data pins for vegetation and animal data
     const DataPin = (props) => {
         return(
-            <View style={[ styles.natureDataPin, { backgroundColor: props.color }]}/>
+            <View style={styles.natureDataPin}/>
         )
     }
 
@@ -23,7 +24,7 @@ export function NatureMapResults(props) {
     const DataCallout = (props) => {
         let title = props.type
         // if the type is an animal marker, change its title
-        if(title === "Domesticated" || title === "Wild") title = "Animal: " + title;
+        title = "Animal: " + title;
         return (
             <View style={styles.soundDataCallOutView}>
                 <View style={styles.spacing} >
@@ -38,9 +39,10 @@ export function NatureMapResults(props) {
     }
 
     // pulls up the information modal of the body of water that was touched
-    const dataCallout = (data) =>{
+    const dataCallout = (data, name) =>{
         setInfoModal(true);
         setInfo(data);
+        setTitle(name);
     }
 
     // closes the information modal
@@ -59,13 +61,9 @@ export function NatureMapResults(props) {
             let objData = [[]];
             // loop through all the data objects and add the appropriate rendered object only if that filter is true
             for(let i = 0; i < props.dataMarkers.length; i++){
-                let pointArr = props.dataMarkers[i].points;
+                let pointArr = props.dataMarkers[i].animal;
                 // loop through the points array and plot those data points
                 for(let j = 0; j < pointArr.length; j++){
-                    // set as color for the animal type
-                    let color = "#B06A24";
-                    // only change color if its for the Vegetation type
-                    if(pointArr[j].kind === "Vegetation") color = "#00FF00"
                     // add the marker to the rendered JSX array
                     objData.push(
                         <View key={keySum}>
@@ -75,7 +73,7 @@ export function NatureMapResults(props) {
                                     longitude: pointArr[j].marker.longitude
                                 }}
                             >
-                                <DataPin color={color}/>
+                                <DataPin />
 
                                 <Callout style={styles.callout}>
                                     <DataCallout 
@@ -89,6 +87,23 @@ export function NatureMapResults(props) {
                     )
                     keySum++;
                 }
+                let vegeArr = props.dataMarkers[i].vegetation;
+                // loop through the water arrays and plot those polygons
+                for(let j = 0; j < vegeArr.length; j++){
+                    objData.push(
+                        <View key={keySum}>
+                            <MapView.Polygon
+                                    coordinates={vegeArr[j].location}
+                                    strokeWidth={2}
+                                    strokeColor={'#00FF00'}
+                                    fillColor={'rgba(0, 255, 0, .5)'}
+                                    tappable={true}
+                                    onPress={()=> dataCallout(vegeArr[j], "Vegetation")}
+                            />
+                        </View>
+                    )
+                    keySum++;
+                }
                 let waterArr = props.dataMarkers[i].water;
                 // loop through the water arrays and plot those polygons
                 for(let j = 0; j < waterArr.length; j++){
@@ -97,8 +112,10 @@ export function NatureMapResults(props) {
                             <MapView.Polygon
                                     coordinates={waterArr[j].location}
                                     strokeWidth={2}
+                                    strokeColor={'#8CFFFF'}
+                                    fillColor={'rgba(140, 255, 255, .3)'}
                                     tappable={true}
-                                    onPress={()=> dataCallout(waterArr[j])}
+                                    onPress={()=> dataCallout(waterArr[j], "Body of Water")}
                             />
                         </View>
                     )
@@ -122,6 +139,7 @@ export function NatureMapResults(props) {
                 <InfoModal
                     visible={infoModal}
                     data={info}
+                    title={title}
                     close={closeModal}
                 />
             </View>

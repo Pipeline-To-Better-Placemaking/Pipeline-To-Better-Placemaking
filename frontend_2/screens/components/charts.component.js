@@ -16,7 +16,7 @@ barColor={}
 width={}
 height={}
 */
-export function MyBarChart({children, ...props}) {
+export function MyBarChart({children, ...props}){
 
   if(props.dataLabels === null || props.dataLabels.length <= 0) {
     return null;
@@ -121,9 +121,9 @@ export function MyBarChart({children, ...props}) {
       </View>
     </View>
   );
-};
+}
 
-export function CompareBarChart({children, ...props}) {
+export function CompareBarChart({children, ...props}){
 
   if(props.dataLabels === null || props.dataLabels.length <= 0) {
     return null;
@@ -243,7 +243,7 @@ export function CompareBarChart({children, ...props}) {
       </View>
     </View>
   );
-};
+}
 
 export function MyPieChart(props){
   // if there are not any values for the passed in object, don't render anything
@@ -257,7 +257,13 @@ export function MyPieChart(props){
             <View key={i.toString()} style={styles.pieLegend}>
               <Text style={styles.whiteText}>{props.graph[i].legend}: </Text>
               <Text style={{color: props.graph[i].svg.fill}}>■</Text>
-              <Text style={styles.whiteText}> {props.graph[i].value} ft² ({props.graph[i].percent}%)</Text>
+              
+              {props.cond ?
+                <Text style={styles.whiteText}> {props.graph[i].value} ft² ({props.graph[i].percent}% of project area)</Text>
+              :
+                <Text style={styles.whiteText}> {props.graph[i].value} ft² ({props.graph[i].percent}%)</Text>
+              }
+            
             </View>
           )
         }

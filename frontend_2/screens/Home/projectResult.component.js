@@ -6,7 +6,16 @@ import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getDayStr, getTimeStr } from '../components/timeStrings.component';
 import { getAllResults, getProject } from '../components/apiCalls';
-import { formatStationaryGraphData, formatMovingGraphData, formatSoundGraphData, formatBoundaryGraphData, formatNatureGraphData, retrieveTestName } from '../components/helperFunctions';
+import { 
+  formatStationaryGraphData, 
+  formatMovingGraphData, 
+  formatSoundGraphData, 
+  formatBoundaryGraphData, 
+  formatNatureGraphData,
+  formatLightGraphData,
+  formatOrderGraphData, 
+  retrieveTestName 
+} from '../components/helperFunctions';
 
 import { styles } from './projectResult.styles';
 
@@ -65,7 +74,17 @@ export function ProjectResultPage(props) {
       await props.setSelectedResult(result);
       props.navigation.navigate("NatureResultPage");
     }
-    //add the new tests here ^^
+    else if (item.test_type === 'light') {
+      let result = await formatLightGraphData(item);
+      await props.setSelectedResult(result);
+      props.navigation.navigate("LightResultPage");
+    }
+    else if (item.test_type === 'order') {
+      let result = await formatOrderGraphData(item);
+      await props.setSelectedResult(result);
+      props.navigation.navigate("OrderResultPage");
+    }
+    //add new tests here ^
 
   };
 

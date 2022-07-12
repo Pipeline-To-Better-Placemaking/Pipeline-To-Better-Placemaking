@@ -49,7 +49,7 @@ export function TabNavigation(props) {
 
   // add new tests to this tabhiddenroutes (name is from the test's collaborateStack screen)
   // Hide Tabs for these screens within the 3 stack screens (CollaborateStack, HomeScreenStack, UserSettingsStack)
-  const tabHiddenRoutes = ["CreateActivityStack", "StationaryActivity", "SurveyActivity", "PeopleMovingActivity", "SoundTest", "BoundaryTest", "NatureTest"];
+  const tabHiddenRoutes = ["CreateActivityStack", "StationaryActivity", "SurveyActivity", "PeopleMovingActivity", "SoundTest", "BoundaryTest", "NatureTest", "LightTest", "OrderTest"];
 
   useEffect(() => {
     async function getInfo() {

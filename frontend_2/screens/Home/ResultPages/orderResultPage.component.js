@@ -5,13 +5,13 @@ import { HeaderBack, HeaderBackEdit } from '../../components/headers.component';
 import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { helperGetResult, deleteTimeSlot, getProject, getAllResults, isUserTeamOwner } from '../../components/apiCalls';
-import { formatNatureGraphData, calcArea } from '../../components/helperFunctions';
-import { MyBarChart, MyPieChart } from '../../components/charts.component';
+import { formatOrderGraphData } from '../../components/helperFunctions';
+import { MyBarChart } from '../../components/charts.component';
 
 import { styles } from './resultPage.styles';
 
-//quantitative data screen
-export function NatureResultPage(props) {
+// quantitative data screen
+export function OrderResultPage(props) {
 
   const [refreshing, setRefreshing] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
@@ -27,12 +27,12 @@ export function NatureResultPage(props) {
     if (props.selectedResult !== null && props.selectedResult.sharedData !== undefined) {
       let result = await helperGetResult(
                            props.selectedResult._id,
-                           "nature_maps/",
-                           "nature",
+                           "order_maps/",
+                           "order",
                            props.selectedResult.sharedData,
                            props.project
                          );
-      result = await formatNatureGraphData(result);
+      result = await formatOrderGraphData(result);
       await props.setSelectedResult(result);
       await refreshProjectPageDetails();
     }
@@ -50,7 +50,7 @@ export function NatureResultPage(props) {
   const deleteResult = async () => {
     let success = false;
     if (props.selectedResult !== null) {
-      success = await deleteTimeSlot("nature_maps", props.selectedResult._id);
+      success = await deleteTimeSlot("order_maps", props.selectedResult._id);
     }
     if (success) {
       await refreshProjectPageDetails();
@@ -123,7 +123,7 @@ export function NatureResultPage(props) {
   });
 
   const viewMapResults = () => {
-    props.navigation.navigate("NatureMapResultsView");
+    props.navigation.navigate("OrderMapResultsView");
   }
 
   const chartWidth = Dimensions.get('window').width*0.95;
@@ -162,7 +162,7 @@ export function NatureResultPage(props) {
           }
         >
 
-          <Text category={'h5'}>Nature Prevalence Results</Text>
+          <Text category={'h5'}>Absence of Order Locator Results</Text>
           <Divider style={styles.metaDataTitleSep} />
 
           <Text>Team: {props.team.title}</Text>
@@ -206,39 +206,17 @@ export function NatureResultPage(props) {
               </View>
           }
 
-          <View style={[styles.rowView, styles.rowSpacing]}>
-            <Text category={'s1'}>Temperature: {props.selectedResult.graph.weather.temperature} °F</Text>
-            <Text category={'s1'}>Weather: {props.selectedResult.graph.weather.description}</Text>
-          </View>
-
-          <MyPieChart
-            title={'Vegetation Areas'}
-            graph={props.selectedResult.graph.vegetation}
-            cond={true}
-            height={200}
-          />
-
-          <View style={styles.spacing}>
-            <MyPieChart
-              title={'Water Areas'}
-              graph={props.selectedResult.graph.water}
-              cond={true}
-              height={200}
-            />
-          </View>
+          <MyBarChart
+            {...props}
+            title={"Disorder Data"}
+            rotation={'0deg'}
+            dataValues={props.selectedResult.graph.data}
+            dataLabels={props.selectedResult.graph.labels}
+            barColor={color}
+            width={chartWidth}
+            height={chartHeight}
+          />          
           
-          <View style={styles.spacing}>
-            <MyBarChart
-              {...props}
-              title={"Animal Data"}
-              rotation={'0deg'}
-              dataValues={props.selectedResult.graph.animalData}
-              dataLabels={props.selectedResult.graph.animalLabels}
-              barColor={color}
-              width={chartWidth}
-              height={chartHeight}
-            />
-          </View>  
         </ScrollView>
       </ContentContainer>
     </ViewableArea>

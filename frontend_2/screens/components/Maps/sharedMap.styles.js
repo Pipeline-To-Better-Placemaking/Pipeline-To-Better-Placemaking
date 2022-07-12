@@ -5,21 +5,11 @@ const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
 
-    // dataPin style is shared between stationaryMapResults, stationaryActivityMap, and peopleMovingMap (for the datapin)
     dataPin:{
         borderRadius: 75, 
         borderWidth: 1, 
         width: 15, 
         height: 15
-    },
-    
-    // used for the other tests that require drawing boundaries (boundary test and nature test)
-    redDataPin:{
-        borderRadius: 75, 
-        borderWidth: 1, 
-        width: 15, 
-        height: 15,
-        backgroundColor: 'red'
     },
 
     soundDataPin:{
@@ -35,6 +25,39 @@ export const styles = StyleSheet.create({
         width: 15, 
         height: 15,
         borderColor: 'red',
+        backgroundColor: '#B06A24'
+    },
+
+    lightDataPinCircle:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 150, 
+        borderWidth: 1.5, 
+        width: 40, 
+        height: 40,
+    },
+
+    lightDataPin:{
+        borderRadius: 75, 
+        width: 10, 
+        height: 10,
+    },
+    
+    orderTriangle:{
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+        borderStyle: 'solid',
+    },
+
+    orderArrowUp:{
+        borderTopWidth: 0,
+        borderRightWidth: 13,
+        borderBottomWidth: 25,
+        borderLeftWidth: 13,
+        borderTopColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderLeftColor: 'transparent',
     },
 
     dataCallOutView:{
@@ -52,6 +75,7 @@ export const styles = StyleSheet.create({
     
     // used only for the soundMapResults component
     soundDataCallOutView:{
+        maxWidth: width * .85,
         flexDirection: 'column', 
         justifyContent: 'center',
         alignItems: 'center',

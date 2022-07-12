@@ -11,9 +11,9 @@ export function BoundaryMap(props) {
     // const fills = ['rgba(0, 255, 193, 0.5)', 'rgba(255, 166, 77, 0.5)']
 
     // Custom colored data pin
-    const DataPin = () =>{
+    const DataPin = (props) =>{
         return(
-            <View style={styles.redDataPin} />
+            <View style={[styles.dataPin, {backgroundColor: props.color}]} />
         )
     }
 
@@ -21,7 +21,7 @@ export function BoundaryMap(props) {
         // if the type of boundary is a construction boundary (polyline)
         if(props.type === 0){
             if(props.markers === null || props.markers.length == 0) {
-                return (null);
+                return null
             }
 
             else if (props.markers.length == 1) {
@@ -30,11 +30,11 @@ export function BoundaryMap(props) {
                         key={index}
                         coordinate={props.markers[0]}
                     >
-                        <DataPin/>
+                        <DataPin color={colors[0]}/>
                     </MapView.Marker>
-            )));
-
+                )))
             }
+
             else if (props.markers.length > 1) {
 
                 return (
@@ -43,7 +43,7 @@ export function BoundaryMap(props) {
                         strokeWidth={3}
                         strokeColor={colors[0]}
                     />
-                );
+                )
             }
         }
         // otherwise, it is a material or shelter boundary (polygon)
@@ -64,17 +64,16 @@ export function BoundaryMap(props) {
             }
 
             else if (props.markers.length == 1) {
-
                 return (props.markers.map((coord, index) => (
                     <MapView.Marker
                         key={index}
                         coordinate = {props.markers[0]}
                     >
-                        <DataPin/>
+                        <DataPin color={color}/>
                     </MapView.Marker>
-            )));
-
+                )))
             }
+
             else if (props.markers.length === 2) {
 
                 return (
@@ -83,7 +82,7 @@ export function BoundaryMap(props) {
                         strokeWidth={3}
                         strokeColor={color}
                     />
-                );
+                )
             }
             // don't render colors with polygons as they don't stay consistent (flashes between set colors and default)
             else if (props.markers.length > 2){
@@ -105,6 +104,10 @@ export function BoundaryMap(props) {
             return (null);
         }
         else {
+            let color = colors[0];
+            if(props.type === 1) color = colors[1]
+            else if(props.type === 2) color = colors[2]
+
             return (
                 props.markers.map((coord, index) => (
                 <MapView.Marker
@@ -113,7 +116,7 @@ export function BoundaryMap(props) {
                         longitude: coord.longitude
                     }}
                 >
-                    <DataPin/>
+                    <DataPin color={color}/>
                 </MapView.Marker>
              )))
          }
@@ -152,7 +155,7 @@ export function BoundaryMap(props) {
             //         />
             //     ))
             // )
-            // used to convert polygon arrays into enclosed line arrays
+            // used to convert polygon arrays into enclosed line arrays (for consistent color)
             let paths = props.matPaths;
             let linePaths = [];
             let len = props.matPaths.length;

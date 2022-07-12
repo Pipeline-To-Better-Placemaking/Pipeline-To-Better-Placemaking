@@ -1,4 +1,3 @@
-
 export async function formatStationaryGraphData(result) {
   if (result === null ||
       result.data === undefined ||
@@ -233,8 +232,29 @@ const conDescSearch = (arr, str)=>{
   return -1;
 }
 
-// nothing in it, will need to set this up when I know what the data looks like
+// searches to see if that description exists in the array (helper for formatNatureGraphData)
+const objDescSearch = (objArr, str)=>{
+  for(let i = 0; i < objArr.length; i++){
+    if(objArr[i].legend === str) return i
+  }
+  return -1;
+}
+
+const calcPercent = (value, total) =>{
+  // times 100 to convert the decimal to a percentage
+  let ret = (value / total) * 100
+  let tempString = ret.toFixed(0)
+  return parseInt(tempString)
+}
+
 export async function formatNatureGraphData(result){
+  
+  // random colors for pie chart
+  const colors = ["#2A6EA3", "#4C9F8B", "#7F62E9", "#847457"]
+
+  // total project area (in feet squared)
+  const totalArea = calcArea(result.sharedData.area.points)
+
   if (result === null ||
       result.data === undefined ||
       result.data === null ||
@@ -244,75 +264,204 @@ export async function formatNatureGraphData(result){
     return result;
   }
   // each object in data are submitted results for that test
-  console.log(result);
   let tempResult = {...result};
   let graph = {
     animalData: [],
     animalLabels: [],
-    vegetationData: [],
-    vegetationLabels: [],
-    waterData: [],
-    waterLabels: [],
+    vegetation: [],
+    water: [],
     weather: {}
   };
+
   for(let i = 0; i < result.data.length; i++){
     let data = result.data[i]
-    //console.log(data)
     let index = -1;
-    // format the points object (of each data object)
-    for(let j = 0; j < data.points.length; j++){
-      // the current data point is for vegetation
-      if(data.points[j].kind === "Vegetation"){
-        index = conDescSearch(graph.vegetationLabels, data.points[j].description)
-        // that description is already formatted, so increase its count
-        if(index !== -1){
-          graph.vegetationData[index] += 1;
-        }
-        // otherwise add that description into the labels and increase its count
-        else{
-          graph.vegetationLabels.push(data.points[j].description)
-          graph.vegetationData.push(1);
-        }
-      }
-      // otherwise, its an animal data point
-      else{
-        let type = data.points[j].kind
-        if(type === "Domesticated") type = "Domestic"
-        let string = type.concat("\n", data.points[j].description)
-        index = conDescSearch(graph.animalLabels, string)
-        // that description is already formatted, so increase its count
-        if(index !== -1){
-          graph.animalData[index] += 1;
-        }
-        // otherwise add that description into the labels and increase its count
-        else{
-          graph.animalLabels.push(string)
-          graph.animalData.push(1);
-        }
-        
-      }
-
-
-    }
-    // format the water array (of each data object)
-    for(let j = 0; j < data.water.length; j++){
-      index = conDescSearch(graph.waterLabels, data.water[j].description)
+    // format the animal object array
+    for(let j = 0; j < data.animal.length; j++){
+      let type = data.animal[j].kind
+      if(type === "Domesticated") type = "Domestic"
+      let string = type.concat("\n", data.animal[j].description)
+      index = conDescSearch(graph.animalLabels, string)
       // that description is already formatted, so increase its count
       if(index !== -1){
-        let num = graph.waterData[index] + data.water[j].area;
-        let string = num.toFixed(2)
-        graph.waterData[index] = parseFloat(string)
+        graph.animalData[index] += 1;
       }
       // otherwise add that description into the labels and increase its count
       else{
-        graph.waterLabels.push(data.water[j].description)
-        graph.waterData.push(data.water[j].area)
+        graph.animalLabels.push(string)
+        graph.animalData.push(1);
+      }
+    }
+
+    let vegetationData = []
+    let vegetationLabels = []
+    // format the vegetation array (of each data object)
+    for(let j = 0; j < data.vegetation.length; j++){
+      index = conDescSearch(vegetationLabels, data.vegetation[j].description)
+      // that description is already formatted, so increase its count
+      if(index !== -1){
+        let num = vegetationData[index] + data.vegetation[j].area;
+        let string = num.toFixed(2)
+        vegetationData[index] = parseFloat(string)
+      }
+      // otherwise add that description into labels and it's area into data
+      else{
+        vegetationLabels.push(data.vegetation[j].description)
+        vegetationData.push(data.vegetation[j].area)
+      }
+    }
+
+    // now with the arrays of vegetation area sums, format the data in the vegetation graph object
+    for(let j = 0; j < vegetationData.length; j++){
+      // check to see if this label is already formatted (from a previous data index)
+      index = objDescSearch(graph.vegetation, vegetationLabels[j])
+      // that entry already exists, so update it with the new data
+      if(index !== -1){
+        let num = graph.vegetation[index].value + vegetationData[j]
+        let string = num.toFixed(2)
+        graph.vegetation[index].value = parseFloat(string)
+        graph.vegetation[index].percent = calcPercent(graph.vegetation[index].value, totalArea)
+      }
+      // that entry did not exist so add it to the end
+      else{
+        graph.vegetation.push({
+            key: j + 1,
+            value: vegetationData[j],
+            svg: { fill: colors[j] },
+            legend: vegetationLabels[j],
+            percent: calcPercent(vegetationData[j], totalArea)
+        })
+      }
+    }
+
+    let waterData = []
+    let waterLabels = []
+    // format the water array (of each data object)
+    for(let j = 0; j < data.water.length; j++){
+      index = conDescSearch(waterLabels, data.water[j].description)
+      // that description is already formatted, so increase its count
+      if(index !== -1){
+        let num = waterData[index] + data.water[j].area;
+        let string = num.toFixed(2)
+        waterData[index] = parseFloat(string)
+      }
+      // otherwise add that description into the labels and increase its count
+      else{
+        waterLabels.push(data.water[j].description)
+        waterData.push(data.water[j].area)
+      }
+    }
+    // now with the arrays of water area sums, format the data in the water graph object
+    for(let j = 0; j < waterData.length; j++){
+      // check to see if this label is already formatted (from s previous data index)
+      index = objDescSearch(graph.water, waterLabels[j])
+      // that entry already exists, so update it with the new data
+      if(index !== -1){
+        let num = graph.water[index].value + waterData[j]
+        let string = num.toFixed(2)
+        graph.water[index].value = parseFloat(string)
+        graph.water[index].percent = calcPercent(graph.water[index].value, totalArea)
+      }
+      else{
+        graph.water.push({
+          key: j + 1,
+          value: waterData[j],
+          svg: { fill: colors[j] },
+          legend: waterLabels[j],
+          percent: calcPercent(waterData[j], totalArea)
+        })
       }
     }
   }
   // set the weather info as the 1st data's weather
   graph.weather = result.data[0].weather;
 
+  // console.log("resulting graph data: ", graph);
+  tempResult.graph = {...graph};
+  return tempResult;
+}
+
+export async function formatLightGraphData(result){
+  if (result === null ||
+      result.data === undefined ||
+      result.data === null ||
+      result.data.length <= 0 ||
+      result.graph !== undefined
+    ) {
+    return result;
+  }
+  
+  console.log(result);
+
+  // each object in data are submitted results for that test
+  let tempResult = {...result};
+  let graph = {
+    data: [],
+    labels: []
+  };
+  let index;
+  // loop through the entire data array to format each points array for the barchart
+  for(let i = 0; i < result.data.length; i++){
+    let data = result.data[i].points;
+    // loop through the entire points array and format its data into the graph object
+    for(let j = 0; j < data.length; j++){
+      index = conDescSearch(graph.labels, data[j].light_description)
+      // if that description already exists in graph's labels
+      if(index !== -1){
+        // increase the count of that index
+        graph.data[index] += 1;
+      }
+      // otherwise, that description does not exist in graph's labels
+      else{
+        // so push the description to the end of graph's labels and a 1 onto the end of data labels
+        graph.labels.push(data[j].light_description);
+        graph.data.push(1);
+      }
+      
+    }
+  }
+  // console.log("resulting graph data: ", graph);
+  tempResult.graph = {...graph};
+  return tempResult;
+}
+
+export async function formatOrderGraphData(result){
+  if (result === null ||
+      result.data === undefined ||
+      result.data === null ||
+      result.data.length <= 0 ||
+      result.graph !== undefined
+    ) {
+    return result;
+  }
+
+  // each object in data are submitted results for that test
+  let tempResult = {...result};
+  let graph = {
+    data: [],
+    labels: []
+  };
+  let index;
+  // loop through the entire data array to format each points array for the barchart
+  for(let i = 0; i < result.data.length; i++){
+    let data = result.data[i].points;
+    // loop through the entire points array and format its data into the graph object
+    for(let j = 0; j < data.length; j++){
+      index = conDescSearch(graph.labels, data[j].kind)
+      // if that description already exists in graph's labels
+      if(index !== -1){
+        // increase the count of that index
+        graph.data[index] += 1;
+      }
+      // otherwise, that description does not exist in graph's labels
+      else{
+        // so push the description to the end of graph's labels and a 1 onto the end of data labels
+        graph.labels.push(data[j].kind);
+        graph.data.push(1);
+      }
+      
+    }
+  }
   // console.log("resulting graph data: ", graph);
   tempResult.graph = {...graph};
   return tempResult;

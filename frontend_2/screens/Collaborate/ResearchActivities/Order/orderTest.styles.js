@@ -23,20 +23,6 @@ export const styles = StyleSheet.create({
         flexDirection: 'row', 
         justifyContent:'space-between', 
         alignItems:'center'
-    },
-
-    buttonView:{
-        width: width,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        marginTop: - 70
-    },
-
-    button:{
-        backgroundColor: '#006FD6',
-        height: 50, 
-        width: 140
     }
     
 });

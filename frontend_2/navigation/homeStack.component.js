@@ -22,6 +22,14 @@ import { BoundaryCompare } from '../screens/Home/Compare/boundaryCompare.compone
 import { NatureResultPage } from '../screens/Home/ResultPages/natureResultPage.component';
 import { NatureMapResultsView } from '../screens/Home/ResultPages/natureMapResults.component';
 import { NatureCompare } from '../screens/Home/Compare/natureCompare.component';
+// light test result screens
+import { LightResultPage } from '../screens/Home/ResultPages/lightResultPage.component';
+import { LightMapResultsView } from '../screens/Home/ResultPages/lightMapResults.component';
+import { LightCompare } from '../screens/Home/Compare/lightCompare.component';
+// order test result screens
+import { OrderResultPage } from '../screens/Home/ResultPages/orderResultPage.component';
+import { OrderMapResultsView } from '../screens/Home/ResultPages/orderMapResults.component';
+import { OrderCompare } from '../screens/Home/Compare/orderCompare.component';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -180,6 +188,28 @@ export function HomeScreenStack(props){
       </Screen>
 
       <Screen
+        name="LightCompare"
+      >
+      {props =>
+        <LightCompare 
+          {...props}
+          results={compareResults}
+        />
+      }
+      </Screen>
+
+      <Screen
+        name="OrderCompare"
+      >
+      {props =>
+        <OrderCompare 
+          {...props}
+          results={compareResults}
+        />
+      }
+      </Screen>
+
+      <Screen
         name='ProjectResultPage'
       >
       {props =>
@@ -297,6 +327,40 @@ export function HomeScreenStack(props){
       </Screen>
 
       <Screen
+        name='LightResultPage'
+      >
+      {props =>
+        <LightResultPage 
+          {...props}
+          token={token}
+          userId={userId}
+          project={selectedProject}
+          team={selectedTeam}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+          setResults={setResults}
+        />
+      }
+      </Screen>
+
+      <Screen
+        name='OrderResultPage'
+      >
+      {props =>
+        <OrderResultPage 
+          {...props}
+          token={token}
+          userId={userId}
+          project={selectedProject}
+          team={selectedTeam}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+          setResults={setResults}
+        />
+      }
+      </Screen>
+
+      <Screen
         name='StationaryActivityResultView'
       >
         {props =>
@@ -349,6 +413,30 @@ export function HomeScreenStack(props){
       >
       {props=>
         <NatureMapResultsView
+          {...props}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+        />
+      }
+      </Screen>
+
+      <Screen
+        name='LightMapResultsView'
+      >
+      {props=>
+        <LightMapResultsView
+          {...props}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+        />
+      }
+      </Screen>
+
+      <Screen
+        name='OrderMapResultsView'
+      >
+      {props=>
+        <OrderMapResultsView
           {...props}
           selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}

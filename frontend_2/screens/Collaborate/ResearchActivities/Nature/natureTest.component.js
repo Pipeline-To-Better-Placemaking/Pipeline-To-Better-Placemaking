@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, LogBox } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button } from '@ui-kitten/components';
@@ -8,6 +8,7 @@ import { NatureMap } from '../../../components/Maps/natureMap.component.js';
 import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.component';
 import { WeatherModal } from '../../../components/Activities/Nature/weatherModal.component';
 import { WaterModal } from '../../../components/Activities/Nature/waterModal.component';
+import { VegeModal } from '../../../components/Activities/Nature/vegeModal.component';
 import { DataModal } from '../../../components/Activities/Nature/dataModal.component';
 import { calcArea } from '../../../components/helperFunctions';
 import CountDown from 'react-native-countdown-component';
@@ -36,8 +37,12 @@ export function NatureTest(props) {
     const errorMsg = "Need at least 3 points to confirm a body of water";
     const [weatherModal, setWeatherModal] = useState(false);
     const [waterModal, setWaterModal] = useState(false);
+    const [vegeModal, setVegeModal] = useState(false);
     const [dataModal, setDataModal] = useState(false);
-
+    
+    // used to determine which type of polygon is being drawn
+    // -1 is none, 0 is body of water, 1 is vegetation
+    const [polyType, setPolyType] = useState(-1); 
     const [lineTools, setLineTools] = useState(false);
     
     // Current path being drawn and current marker being placed
@@ -47,9 +52,11 @@ export function NatureTest(props) {
 
     // Used to store all the data info
     const [totalWaterPaths] = useState([]);
+    const [totalVegePaths] = useState([]);
     const [dataPoints] = useState([]);
     const [weatherData] = useState([]);
     const [waterData] = useState([]);
+    const [vegeData] = useState([]);
 
     // End Button press or whenever the timer hits 0
     const endActivity = async () => {
@@ -59,13 +66,15 @@ export function NatureTest(props) {
         // close any of the modals that may be open when the test ends (timer hits 0 while in a modal)
         if(dataModal) setDataModal(false);
         if(waterModal) setWaterModal(false);
+        if(vegeModal) setVegeModal(false);
         if(errorModal) setErrorModal(false);
         
         // package the data; needs to be an array for multiple entries for a test
         let data =[{
             weather: weatherData[0],
             water: waterData,
-            points: dataPoints,
+            vegetation: vegeData,
+            animal: dataPoints,
             time: new Date()
         }]
 
@@ -95,7 +104,7 @@ export function NatureTest(props) {
     }
     
     // Opens the data model and stores a temporary points
-    const onPointCreate = async (marker) => {
+    const onPointCreate = async (marker) =>{
         if (start && !lineTools) {
             setDataModal(true)
             setTempMarker(marker)
@@ -132,6 +141,26 @@ export function NatureTest(props) {
 
         // reset test controls
         setLineTools(false);
+        setPolyType(-1);
+    }
+
+    const closeVege = async (inf) =>{
+        let obj = {
+            description: inf.description,
+            area: calcArea(currentPath),
+            location: currentPath
+        }
+        vegeData.push(obj)
+        setVegeModal(false);
+        totalVegePaths.push(currentPath);
+        // whenever the data is saved, clear out the current paths stuff for next enteries
+        let emptyPath = [];
+        setCurrentPath(emptyPath);
+        setCurrentPathSize(0);
+
+        // reset test controls
+        setLineTools(false);
+        setPolyType(-1);
     }
 
     // Start and Exit button
@@ -230,8 +259,11 @@ export function NatureTest(props) {
             setErrorModal(true);
             return
         }
-        // pull up the data modal
-        setWaterModal(true);
+        // pull up the water data modal if the type is 0
+        if(polyType === 0) setWaterModal(true);
+        // pull up the vegetation data modal if the type is 1
+        else if(polyType === 1) setVegeModal(true);
+        else console.log('error, polyType: ' + polyType);
     }
     
     // removes last plotted marker
@@ -268,12 +300,13 @@ export function NatureTest(props) {
         }
     }
 
-    const WaterToolBar = () =>{
+    const ButtonToolBar = () =>{
         // line toolbar is not rendered and the test has started
         if(start && !lineTools){
             return(
                 <View style={styles.buttonView}>
-                    <Button style={styles.button} onPress={() => setLineTools(true)}>Body of Water</Button>
+                    <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(0)}}>Body of Water</Button>
+                    <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(1)}}>Vegetation</Button>
                 </View>
             )
         }
@@ -296,7 +329,7 @@ export function NatureTest(props) {
     }
 
     // ignores the event emitter warnings in app (for dev. only)
-    // LogBox.ignoreAllLogs();
+    LogBox.ignoreAllLogs();
 
     // Main render
     return(
@@ -323,6 +356,12 @@ export function NatureTest(props) {
                     back={goBack}
                 />
 
+                <VegeModal
+                    visible={vegeModal}
+                    closeData={closeVege}
+                    back={goBack}
+                />
+
                 <DataModal
                     visible={dataModal}
                     closeData={closeData}
@@ -336,12 +375,14 @@ export function NatureTest(props) {
                     marker={tempMarker}
                     dataPoints={dataPoints}
                     water={totalWaterPaths}
+                    vege={totalVegePaths}
                     addMarker={onPointCreate}
                     addShape={addShape}
                     cond={lineTools}
+                    polyType={polyType}
                 />
 
-                <WaterToolBar />
+                <ButtonToolBar />
                 <LineToolBar />
 
             </ContentContainer>

@@ -43,7 +43,9 @@ export function IntialForm(props) {
       // inital timeslot for boundary, light, nature, and order tests is 20 min
       else if(
         props.activityTypes[props.selectedActivityIndex.row] === 'Boundary' ||
-        props.activityTypes[props.selectedActivityIndex.row] === 'Nature'
+        props.activityTypes[props.selectedActivityIndex.row] === 'Nature' ||
+        props.activityTypes[props.selectedActivityIndex.row] === 'Light' ||
+        props.activityTypes[props.selectedActivityIndex.row] === 'Order'
       ){
         props.setDuration('20');
         setSelect(false);
@@ -128,20 +130,21 @@ export function IntialForm(props) {
                 onPress={() => setEditDurationVisible(true)}
               >
                 { props.activityTypes[props.selectedActivityIndex.row] === 'Sound' ?
-                <Text>
-                Time per Standing Point: {props.duration} (sec)
-                </Text>
+                  <Text>
+                    Time per Standing Point: {props.duration} (sec)
+                  </Text>
                 :
-                <Text>
-                {/* will need to add the other tests (everything but sound test) for time at site */}
-                {(props.activityTypes[props.selectedActivityIndex.row] === 'Survey' || 
-                  props.activityTypes[props.selectedActivityIndex.row] === 'Boundary' || 
-                  props.activityTypes[props.selectedActivityIndex.row] === 'Nature' ?
-                  "Time at Site" 
-                  : 
-                  "Time per Standing Point"
-                )}: {props.duration} (min)
-                </Text>
+                  <Text>
+                    {(props.activityTypes[props.selectedActivityIndex.row] === 'Survey' || 
+                    props.activityTypes[props.selectedActivityIndex.row] === 'Boundary' || 
+                    props.activityTypes[props.selectedActivityIndex.row] === 'Nature' ||
+                    props.activityTypes[props.selectedActivityIndex.row] === 'Light' ||
+                    props.activityTypes[props.selectedActivityIndex.row] === 'Order' ?
+                      "Time at Site" 
+                    : 
+                      "Time per Standing Point"
+                    )}: {props.duration} (min)
+                  </Text>
                 }
               </Button>
             </View>

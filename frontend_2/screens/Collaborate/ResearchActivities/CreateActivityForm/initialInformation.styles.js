@@ -18,16 +18,7 @@ export const styles = StyleSheet.create({
         alignItems:'center',
         margin:5,
     },
-
-    buttonView:{
-        flex: 1,
-        backgroundColor: 'red',
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center',
-        //margin:5,
-    },
-
+    
     input:{
         flex: 1
     },
