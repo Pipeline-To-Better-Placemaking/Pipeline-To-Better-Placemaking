@@ -117,7 +117,7 @@ export default function MapDrawer(props) {
                     newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setBoundaries(newEntry);
                     break;
-                case 'lighting_maps':
+                case 'light_maps':
                     newEntry = lighting;
 
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
@@ -168,7 +168,7 @@ export default function MapDrawer(props) {
                     delete removeEntry[`${date}.${time}`]
                     setBoundaries(removeEntry);
                     break;
-                case 'lighting_maps':
+                case 'light_maps':
                     removeEntry = lighting;
                     delete removeEntry[`${date}.${time}`]
                     setLighting(removeEntry);

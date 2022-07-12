@@ -1163,7 +1163,7 @@ function ProjectPage(){
                     await collectionPoints(id, 'stationary', collection.date)
                 ))
             ))
-
+            console.log(results);
             setDrawer({ Results: results, Graphs: '', Data: '' })
             setLoaded(true);
             
