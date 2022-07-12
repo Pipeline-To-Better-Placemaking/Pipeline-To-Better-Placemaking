@@ -1156,7 +1156,7 @@ function ProjectPage(){
             ))
             projectInfo?.soundCollections.map((collection) => (
                 collection.maps.map((id) => (
-                    collectionPoints(id, 'moving', collection.date)
+                    collectionPoints(id, 'sound', collection.date)
                 ))
             ))
             projectInfo?.stationaryCollections.map((collection) => (
@@ -1218,7 +1218,7 @@ function ProjectPage(){
         projectData();
     });
 
-    //console.log(projectInfo)
+    console.log(projectInfo)
     //console.log(templateDrawers)
     console.log(results);
 
@@ -1230,18 +1230,18 @@ function ProjectPage(){
             { projectInfo?.title ?
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo?.title } 
-                    drawers={ results } 
+                    drawers={{ results }} 
                         area={ projectInfo?.area.points } 
                         center={ projectInfo?.standingPoints } />} />
                     <Route path='map' element={<MapPage title={ projectInfo?.title } 
-                    drawers={ results } 
+                    drawers={{ results }} 
                         area={ projectInfo?.area.points } 
                         center={ projectInfo?.standingPoints }/>} />
                     <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
-                    drawers={ results } />} />
+                    drawers={{ results }} />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
                     <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } 
-                    drawers={ results } />} />
+                    drawers={{ results }} />} />
                 </Routes> 
                 : 
                 null
