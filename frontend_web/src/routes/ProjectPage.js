@@ -189,7 +189,7 @@ function ProjectPage(){
 
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
-    area =  Object.entries(projectInfo?.areas.length).map((projectInfo?.areas))
+    area = projectInfo?.areas
 
     //console.log(projectInfo)
     //console.log(templateDrawers)
