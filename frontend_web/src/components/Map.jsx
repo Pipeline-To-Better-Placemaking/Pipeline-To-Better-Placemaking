@@ -108,7 +108,7 @@ function FullMap(props) {
                 setBoundariesCollections(newSelection);
                 setCollections({ ...collections, [category]: newSelection });
                 break;
-            case 'lighting_maps': 
+            case 'light_maps': 
                 newSelection = lightingCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -272,7 +272,7 @@ function FullMap(props) {
         Object.entries(collections).map(([title, object], index) => (
             Object.entries(object).map(([sdate, stimes])=>(
                 stimes.map(time => (title === 'nature_maps'  ?
-                    (data.Results[title][sdate][time].data).map((inst) => (
+                    !data.Results[title][sdate][time].data ? null : ((data.Results[title][sdate][time].data).map((inst) => (
                         Object.entries(inst).map(([natureType, pointArr], ind1)=>(
                             natureType === 'weather' || natureType === '_id' || natureType === 'time' ? console.log(natureType) :
                                 console.log(inst[natureType]) && pointArr.map((natureObj, ind2)=>(
@@ -297,10 +297,10 @@ function FullMap(props) {
                                     />
                             ))
                         ))
-                    ))
+                    )))
                     :
                     (title === 'light_maps' || title === 'order_maps' ? 
-                        (data.Results[title][sdate][time].data).map((inst) => (
+                        !data.Results[title][sdate][time].data ? null :(data.Results[title][sdate][time].data).map((inst) => (
                             console.log(inst)&&Object.entries(inst.points).map(([ind, point], i2) => (
                                 console.log(point)&&<Marker
                                     key={`${sdate}.${time}.${i2}`}
@@ -312,10 +312,9 @@ function FullMap(props) {
                                 />
                             ))
                         ))
-
                         : 
-                        (data.Results[title][sdate][time].data).map((point, i2) => (
-                                console.log(point)&&(point.mode || point.kind === 'Constructed' ? 
+                        !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
+                                data && point ? (console.log(point)&&(point.mode || point.kind === 'Constructed' ? 
                                     <Path 
                                         key={`${sdate}.${time}.${i2}`} 
                                         path={point.path} 
@@ -353,7 +352,7 @@ function FullMap(props) {
                                             markerSize={title === 'sound_maps' ? point.average : null} 
                                         />
                                     )
-                                )
+                                )) : null
                         ))
                     )
                 ))
