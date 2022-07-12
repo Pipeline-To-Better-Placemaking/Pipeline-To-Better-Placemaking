@@ -50,7 +50,7 @@ export default function MapDrawer(props) {
         moving_maps: false,
         order_maps: false,
         boundaries_maps: false,
-        lighting_maps: false,
+        light_maps: false,
         nature_maps: false,
         sound_maps: false
     });

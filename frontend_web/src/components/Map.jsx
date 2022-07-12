@@ -302,7 +302,7 @@ function FullMap(props) {
                     (title === 'light_maps' || title === 'order_maps' ? 
                         !data.Results[title][sdate][time].data ? null :(data.Results[title][sdate][time].data).map((inst) => (
                             console.log(inst)&&Object.entries(inst.points).map(([ind, point], i2) => (
-                                console.log(point)&&<Marker
+                                <Marker
                                     key={`${sdate}.${time}.${i2}`}
                                     shape={'title' === 'order_maps' ? 'triangle' : 'lightcircle'}
                                     info={point.light_description ?
@@ -314,7 +314,7 @@ function FullMap(props) {
                         ))
                         : 
                         !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
-                                data && point ? (console.log(point)&&(point.mode || point.kind === 'Constructed' ? 
+                                point ? (console.log(point) && (point.mode || point.kind === 'Constructed' ? 
                                     <Path 
                                         key={`${sdate}.${time}.${i2}`} 
                                         path={point.path} 

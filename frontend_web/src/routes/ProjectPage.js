@@ -1081,6 +1081,7 @@ function ProjectPage(){
 
     //loc state recieved from (project type) Display Cards on TeamHome(listing team projects)
     const loc = useLocation();
+    const [loaded, setLoaded] = React.useState(false);
     //Holds basic projects info including map ids, default data overwritten on async function
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
@@ -1199,7 +1200,7 @@ function ProjectPage(){
             //console.log(typeof (dateTime));
             map[apiCategory[cat]] = {};
             map[apiCategory[cat]][date.toLocaleDateString()] = {};
-            map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = response.data;
+            map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = await response.data;
             results = map;
             console.log(map);
 
@@ -1214,7 +1215,7 @@ function ProjectPage(){
     //projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections]
 
     React.useEffect(() => {
-        projectData();
+        projectData().then(setLoaded(true))
     }, []);
 
     //loading in center from project
@@ -1231,7 +1232,7 @@ function ProjectPage(){
             {/* data passed into drawers needs map data and to match the format drawers component above */}
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
             {
-                drawer?.Results ? 
+                loaded ? 
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo?.title } 
                         drawers={ drawer } 
