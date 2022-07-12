@@ -1201,8 +1201,8 @@ function ProjectPage(){
             map[apiCategory[cat]] = {};
             map[apiCategory[cat]][date.toLocaleDateString()] = {};
             map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = response.data;
-            setResults(map);
-            //console.log(map);
+            await setResults(map);
+            console.log(map);
 
         } catch (error) {
             //project api get error
@@ -1235,7 +1235,7 @@ function ProjectPage(){
                 drawer ? 
                 <Routes>
                     <Route index element={<MapPage title={ projectInfo?.title } 
-                    drawers={ drawer } 
+                        drawers={ drawer } 
                         area={ area } 
                         center={ center } />} />
                     <Route path='map' element={<MapPage title={ projectInfo?.title } 
