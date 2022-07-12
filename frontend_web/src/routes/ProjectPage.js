@@ -1095,7 +1095,7 @@ function ProjectPage(){
     //console.log(projectId);
 
     //load project area and location data here as well and pass to Map Page
-    const area = [
+    var area = [
         { lat: 28.60554990612719, lng: -81.20110596383721 },
         { lat: 28.606199831533385, lng: -81.19778002454426 },
         { lat: 28.603392878566126, lng: -81.19546259587324 },
@@ -1217,10 +1217,11 @@ function ProjectPage(){
 
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
+    area =  projectInfo.areas
 
     //console.log(projectInfo)
     //console.log(templateDrawers)
-    console.log(center)
+    //console.log(center)
 
     return (
         <div id='ProjectPage'>
@@ -1229,18 +1230,18 @@ function ProjectPage(){
             {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
             { projectInfo?.title ?
                 <Routes>
-                    <Route index element={<MapPage title={ projectInfo?.title } 
+                    <Route index element={<MapPage title={ projectInfo.title } 
                     drawers={{ results }} 
                         area={ area } 
-                        center={ projectInfo?.standingPoints } />} />
-                    <Route path='map' element={<MapPage title={ projectInfo?.title } 
+                        center={ center } />} />
+                    <Route path='map' element={<MapPage title={ projectInfo.title } 
                     drawers={{ results }} 
                         area={ area } 
                         center={ center }/>} />
-                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
+                    <Route path='activities' element={<ActivityPage title={ projectInfo.title }  
                     drawers={{ results }} />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
-                    <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } 
+                    <Route path='surveyors' element={<SurveyorPage title={ projectInfo.title } 
                     drawers={{ results }} />} />
                 </Routes> 
                 : 
