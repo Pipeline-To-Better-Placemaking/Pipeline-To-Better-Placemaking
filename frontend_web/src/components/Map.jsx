@@ -55,6 +55,8 @@ function FullMap(props) {
         nature_maps: natureCollections, 
         sound_maps: soundCollections
     });
+
+    //const standingPoints = (props.standingPoints ? props.standingPoints : null);
     // onSelection handles the boolean toggling from Map Drawer selections/switches
     // passes updates to specific state object and then to collections objects to register updates
     function onSelection(category, date, time, check) {
@@ -152,7 +154,6 @@ function FullMap(props) {
     //html2canvas functions --- saveAs, convertToImage -----
     function saveAs(url, filename) {
         var link = document.createElement('a');
-
         //simulated link and link click with removal
         if (typeof link.download === 'string') {
 
@@ -160,7 +161,6 @@ function FullMap(props) {
             link.download = filename;
             document.body.appendChild(link);
             link.click();
-
             //remove the link when done
             document.body.removeChild(link);
         } else {
@@ -323,7 +323,7 @@ function FullMap(props) {
                                         boundsPathWindow={boundsPathWindow}
                                     /> 
                                     :
-                                    (point.kind === 'Shelter' || point.kind === 'Material' || point.result === 'Water' || point.kind === 'Vegetation' ? 
+                                    (point.kind === 'Shelter' || point.kind === 'Material' ? 
                                         <Bounds 
                                             key={`${sdate}.${time}.${i2}`} 
                                             title={title} 
@@ -337,16 +337,15 @@ function FullMap(props) {
                                         :
                                         <Marker 
                                             key={`${sdate}.${time}.${i2}`} 
-                                            shape={title === 'order_maps' ? 'triangle' : (title === 'light_maps' ? 'lightcircle' : 'circle')}
+                                            shape={'circle'}
                                             info={ point.average ? 
                                                 (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
                                                     : (point.result ? 
                                                         (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.result}</div>`)
                                                             : (point.posture ? 
                                                                 (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
-                                                                : (point.light_description ? 
-                                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`) : null))) } 
-                                            position={point.standingPoint ? point.standingPoint : point.point} 
+                                                                : null)) } 
+                                            position={point.location ? point.location : point.standingPoint} 
                                             markerType={point.average ? 'sound_maps' 
                                                 : (point.result ? point.result : (point.posture ? point.posture : null))} 
                                             markerSize={title === 'sound_maps' ? point.average : null} 
@@ -505,7 +504,7 @@ const Marker = (options) => {
         human: ['#FF9900', '#FF9900'],
         built: ['#FFE600', '#FFD800'],
         none: ['white', 'white'],
-        Rhythmatic: ['#FFE600', '#FFD800'],
+        Rhythmic: ['#FFE600', '#FFD800'],
         Task: ['#FF9900', '#FF9900'],
         Building: ['#FF00E5', '#FF00E5'],
         New: ['rgba(255, 0, 0, 0.5)', 'rgba(255,0,0,0.5)']

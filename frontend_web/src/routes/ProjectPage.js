@@ -136,8 +136,6 @@ function ProjectPage(){
             map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = await response.data;
 
             results = map;
-            //console.log(map);
-
         } catch (error) {
             //project api get error
             console.log('ERROR: ', error);
@@ -145,20 +143,17 @@ function ProjectPage(){
         }
     }
 
-    //need to pull each collection object to pass into the drawer
-    //projectInfo?.boundariesCollections, projectInfo?.standingPoints, projectInfo?.stationaryCollections, projectInfo?.movingCollections, projectInfo?.soundCollections, projectInfo?.surveyCollections]
-
     React.useEffect(() => {
         projectData()
     }, []);
 
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
-    var standingPoints = projectInfo?.standingPoints;
+    //var standingPoints = projectInfo?.standingPoints;
     area = projectInfo?.area?.points;
 
     //console.log(projectInfo)
-    console.log(results)
+    //console.log(results)
     //console.log(templateDrawers)
     //console.log(center)
 
@@ -173,7 +168,7 @@ function ProjectPage(){
                     <Route index element={<MapPage title={ projectInfo?.title } 
                         drawers={ drawer } 
                         area={ area } 
-                        center={ center } />} />
+                        center={ center }/>} />
                     <Route path='map' element={<MapPage title={ projectInfo?.title } 
                         drawers={ drawer }  
                         area={ area } 
