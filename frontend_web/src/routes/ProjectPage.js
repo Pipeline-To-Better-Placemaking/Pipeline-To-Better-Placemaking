@@ -81,7 +81,7 @@ function ProjectPage(){
                 ))
             ))
 
-            response?.data?.standingPoints?.map((point, index) => (
+            response?.data?.standingPoints?.map((point) => (
                 sPoints[point._id] = { latitude: point.latitude, longitude: point.longitude }
             ));
             setStandingPoints(sPoints);

@@ -141,10 +141,9 @@ const subtable = (row, type, name) => (
                         ))
                     ))))
                 : Object.entries(row).map(([instance, data])=>(
-                        Object.entries(data.data).map((inst, ind) => (
-
-                            instance.split('.')[0] === 'nature_maps' ? 
-                                Object.entries(inst[1]).map(([type, pointArr])=>(
+                        Object.values(data.data).map((inst, ind) => (
+                            console.log(inst)&&instance.split('.')[0] === 'nature_maps' ? 
+                                Object.entries(inst).map(([type, pointArr])=>(
                                     type === '_id' || type === 'time' ? null : 
                                         (console.log(pointArr)&&type === 'weather' ? 
                                             <TableRow key={ind}>
@@ -170,7 +169,7 @@ const subtable = (row, type, name) => (
                                                 </TableCell>
                                                 <TableCell colSpan={1} className='value'>
                                                     {
-                                                        nature.area ? `${nature.area}sq.ft.` : nature.kind
+                                                        nature.area ? `${nature.area} sq.ft.` : nature.kind
                                                     }
                                                 </TableCell>
                                                 <TableCell>
@@ -184,7 +183,7 @@ const subtable = (row, type, name) => (
                                         )))
                                 ))
                             :
-                                instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' ? 
+                                console.log(inst)&&(instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps') ? 
                                     Object.values(inst.points).map((point, i2) => (
                                         <TableRow key={`${ind}.${i2}`}>
                                             <TableCell colSpan={2} className='category'>

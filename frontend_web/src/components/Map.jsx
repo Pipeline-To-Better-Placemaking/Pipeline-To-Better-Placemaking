@@ -24,7 +24,7 @@ const render = (status) => {
 
 function FullMap(props) {
     //const config = require('../../../utils/config');
-    const standingPoints = props.standingPoints ? props.standingPoints : null;
+    const [standingPoints, setStandingPoints] = React.useState(props.standingPoints ? props.standingPoints : null);
     console.log(standingPoints);
     const subAreas = props.subAreas ? props.subAreas: null;
     const [map, setMap] = React.useState(null);
