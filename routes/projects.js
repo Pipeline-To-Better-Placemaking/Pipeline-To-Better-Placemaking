@@ -846,10 +846,10 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     select: 'date',
                                     populate: [{
                                         path: 'data',
-                                        populate:{
-                                            path: 'standingPoint',
-                                            model: 'Standing_Points'
-                                        }
+                                        // populate:{
+                                        //     path: 'standingPoint',
+                                        //     model: 'Standing_Points'
+                                        // }
                                         },{
                                         path: 'researchers'
                                         }]
@@ -869,10 +869,10 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     select: 'date',
                                     populate: [{
                                         path: 'data',
-                                        populate:{
-                                            path: 'standingPoint',
-                                            model: 'Standing_Points'
-                                        }
+                                        // populate:{
+                                        //     path: 'standingPoint',
+                                        //     model: 'Standing_Points'
+                                        // }
                                         },{
                                         path: 'researchers'
                                         }]
@@ -892,11 +892,12 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     select: 'date',
                                     populate: [{
                                         path: 'data',
-                                        populate:{
-                                            path: 'standingPoint',
-                                            model: 'Standing_Points'
-                                        }
-                                        },{
+                                        // populate:{
+                                        //     path: 'standingPoint',
+                                        //     model: 'Standing_Points'
+                                        // }
+                                        },
+                                        {
                                         path: 'researchers'
                                         }]
                                     },{
@@ -904,7 +905,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     }]
                                 }])                            
                          
-    movingData = await Project.findById(req.params.id)
+    orderData = await Project.findById(req.params.id)
                             .populate('area')
                             .populate([
                             {
@@ -916,10 +917,10 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     select: 'date',
                                     populate: [{
                                         path: 'data',
-                                        populate:{
-                                            path: 'standingPoint',
-                                            model: 'Standing_Points'
-                                        }
+                                        // populate:{
+                                        //     path: 'standingPoint',
+                                        //     model: 'Standing_Points'
+                                        // }
                                         },{
                                         path: 'researchers'
                                         }]
