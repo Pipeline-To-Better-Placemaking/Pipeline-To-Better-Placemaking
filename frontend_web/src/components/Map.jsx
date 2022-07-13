@@ -27,6 +27,7 @@ function FullMap(props) {
     const [standingPoints, setStandingPoints] = React.useState(props.standingPoints ? props.standingPoints : null);
     console.log(standingPoints);
     const subAreas = props.subAreas ? props.subAreas: null;
+    console.log(subAreas);
     const [map, setMap] = React.useState(null);
     const [mapPlaces, setMapPlaces] = React.useState(null);
     const [placeOn, setPlaceOn] = React.useState(false);

@@ -43,8 +43,8 @@ function ProjectPage(){
             setProjectInfo(response.data);
 
             var sPoints = {};
-            response?.data?.standingPoints?.map((point) => (
-                sPoints[point._id] = { latitude: point.latitude, longitude: point.longitude }
+            response?.data?.standingPoints.map((point) => (
+                sPoints[point._id] = { latitude: point?.latitude, longitude: point.longitude }
             ));
             setStandingPoints(sPoints);
 
@@ -145,8 +145,6 @@ function ProjectPage(){
 
     //console.log(projectInfo)
     console.log(activities)
-    //console.log(templateDrawers)
-    //console.log(center)
 
     return (
         <div id='ProjectPage'>
