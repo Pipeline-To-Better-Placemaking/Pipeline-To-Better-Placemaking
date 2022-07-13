@@ -6,10 +6,6 @@ import { Link, useLocation } from 'react-router-dom';
 function Home() {
     const location = useLocation();
     const userTeams = location.state.userToken.user.teams;
-    
-    //console.log('Home');
-    //console.log(location.state.userToken);
-    //console.log(userTeams);
 
     const teamsTemplate = [
         {
@@ -34,7 +30,6 @@ function Home() {
             <DisplayCards type={ 2 } teams={ userTeams ? userTeams : teamsTemplate } user={ location.state.userToken }/>
         </div>
     );
-
 }
 
 export default Home;

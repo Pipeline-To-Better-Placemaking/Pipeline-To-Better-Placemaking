@@ -15,6 +15,8 @@ function ProjectPage(){
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
     var results = {};
+    var sPoints = {};
+    const [standingPoints, setStandingPoints] = React.useState({});
     const [drawer, setDrawer] = React.useState();
     const [activities, setActivities] = React.useState();
     const user = loc.state ? loc.state.userToken : {};
@@ -22,22 +24,8 @@ function ProjectPage(){
     // page url: path (split index)
     // can be reached at (heroku-url)/home (1)/teams (2)/ :id (3) /projects (4)/:id (5)
     const projectId = loc.pathname.split('/')[5];
-    //console.log(projectId);
-
     //load project area and location data here as well and pass to Map Page
-    var area = [
-        { lat: 28.60554990612719, lng: -81.20110596383721 },
-        { lat: 28.606199831533385, lng: -81.19778002454426 },
-        { lat: 28.603392878566126, lng: -81.19546259587324 },
-        { lat: 28.600755404733533, lng: -81.19444335642248 },
-        { lat: 28.598011890739404, lng: -81.1974018330677 },
-        { lat: 28.59642933335552, lng: -81.19959051571513 },
-        { lat: 28.59729597487453, lng: - 81.20322759118913 },
-        { lat: 28.599839338049176, lng: -81.20663936117703 },
-        { lat: 28.601506620541844, lng: -81.20608146164412 },
-        { lat: 28.604549107390945, lng: -81.2062102077004 },
-        { lat: 28.60644237514531, lng: -81.20359237160903 }
-    ];
+    var area = [];
     var subareas = [];
 
     // loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
@@ -92,6 +80,11 @@ function ProjectPage(){
                     await collectionPoints(id, 'stationary', collection.date)
                 ))
             ))
+
+            projectInfo?.standingPoints?.map((point, index) => (
+                sPoints[point._id] = { latitude: point.latitude, longitude: point.longitude }
+            ));
+            setStandingPoints(sPoints);
 
             setActivities(results);
             setDrawer({ Results: results, Graphs: '', Data: '' });
@@ -148,11 +141,11 @@ function ProjectPage(){
 
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
-    //var standingPoints = projectInfo?.standingPoints;
+
     area = projectInfo?.area?.points;
     subareas = projectInfo?.subareas;
 
-    //console.log(projectInfo)
+    console.log(projectInfo)
     //console.log(results)
     //console.log(templateDrawers)
     //console.log(center)
@@ -166,11 +159,13 @@ function ProjectPage(){
                     <Route index element={<MapPage title={ projectInfo?.title } 
                         drawers={ drawer } 
                         area={ area } 
-                        center={ center }/>} />
+                        center={ center }
+                        standingPoints={ standingPoints }/>} />
                     <Route path='map' element={<MapPage title={ projectInfo?.title } 
                         drawers={ drawer }  
                         area={ area } 
-                        center={ center }/>} />
+                        center={ center }
+                        standingPoints={ standingPoints }/>} />
                     <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
                         drawers={ activities }  />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
