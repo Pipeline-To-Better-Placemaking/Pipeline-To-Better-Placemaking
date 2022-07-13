@@ -136,7 +136,7 @@ function ProjectPage(){
             map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = await response.data;
 
             results = map;
-            console.log(map);
+            //console.log(map);
 
         } catch (error) {
             //project api get error
@@ -157,7 +157,7 @@ function ProjectPage(){
     var standingPoints = projectInfo?.standingPoints;
     area = projectInfo?.areas
 
-    //console.log(projectInfo)
+    console.log(projectInfo)
     //console.log(templateDrawers)
     //console.log(center)
 
