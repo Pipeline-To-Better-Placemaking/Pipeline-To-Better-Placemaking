@@ -15,7 +15,6 @@ function ProjectPage(){
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
     var results = {};
-    var sPoints = {};
     const [standingPoints, setStandingPoints] = React.useState();
     const [drawer, setDrawer] = React.useState();
     const [activities, setActivities] = React.useState();
@@ -42,6 +41,12 @@ function ProjectPage(){
 
             // console.log(response.data);
             setProjectInfo(response.data);
+
+            var sPoints = {};
+            response?.data?.standingPoints?.map((point) => (
+                sPoints[point._id] = { latitude: point.latitude, longitude: point.longitude }
+            ));
+            setStandingPoints(sPoints);
 
             //get Map data for activity results (needed in drawers)
             response?.data?.boundariesCollections.forEach((collection) => (
@@ -121,7 +126,6 @@ function ProjectPage(){
             map[apiCategory[cat]] = {};
             map[apiCategory[cat]][date.toLocaleDateString()] = {};
             map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = await response.data;
-
             results = map;
         } catch (error) {
             //project api get error
@@ -137,10 +141,6 @@ function ProjectPage(){
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
     area = projectInfo?.area?.points;
-    projectInfo?.standingPoints?.map((point) => (
-        sPoints[point._id] = { latitude: point.latitude, longitude: point.longitude }
-    ));
-    setStandingPoints(sPoints);
     subareas = projectInfo?.subareas;
 
     //console.log(projectInfo)
