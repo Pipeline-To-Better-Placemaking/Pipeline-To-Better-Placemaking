@@ -72,31 +72,32 @@ const subtable = (row, type, name) => (
                             Object.entries(dObj).map(([time, tObj]) => (
                                 tObj.data.map((object, index) => (
                                     Object.entries(object).map(([natureType, pointArr], i1) => (
-                                        natureType === 'weather' ? 
-                                            <TableRow key={`${index}.${i1}`}>
-                                                <TableCell colSpan={2} className='value'>
-                                                    {pointArr.temperature}
-                                                </TableCell>
-                                                <TableCell colSpan={2} className='type'>
-                                                    {`${pointArr.description}`}
-                                                </TableCell>
-                                                <TableCell>N/A</TableCell>
-                                                <TableCell>{date} {time}</TableCell>
-                                                <TableCell>{`${tObj.researchers}`}</TableCell>
-                                            </TableRow>
-                                        : pointArr.map((natureObj, i3)=>(                                        
-                                            <TableRow key={`${index}.${i1}`}>
-                                                <TableCell colSpan={2} className='value'>
-                                                    {(natureType === 'water' ? `Water ${natureObj.area}` : natureType === 'animal' ? `Animal ${natureObj.kind}` : `Vegetation ${natureObj.area}`)}
-                                                </TableCell>
-                                                <TableCell colSpan={2} className='type'>
-                                                    {natureObj.description ? `${natureObj.description}` : `${natureObj.light_description}`}
-                                                </TableCell>
-                                                <TableCell>Location {index}</TableCell>
-                                                <TableCell>{date} {time}</TableCell>
-                                                <TableCell>{`${tObj.researchers}`}</TableCell>
-                                            </TableRow>
-                                        ))
+                                        natureType === '_id' || natureType === 'time' ? null :
+                                            (natureType === 'weather' ? 
+                                                <TableRow key={`${index}.${i1}`}>
+                                                    <TableCell colSpan={2} className='value'>
+                                                        {pointArr.temperature}
+                                                    </TableCell>
+                                                    <TableCell colSpan={2} className='type'>
+                                                        {`${pointArr.description}`}
+                                                    </TableCell>
+                                                    <TableCell>N/A</TableCell>
+                                                    <TableCell>{date} {time}</TableCell>
+                                                    <TableCell>{`${tObj.researchers}`}</TableCell>
+                                                </TableRow>
+                                            : pointArr.map((natureObj, i3)=>(                                        
+                                                <TableRow key={`${index}.${i1}`}>
+                                                    <TableCell colSpan={2} className='value'>
+                                                        {(natureType === 'water' ? `Water ${natureObj.area}` : natureType === 'animal' ? `Animal ${natureObj.kind}` : `Vegetation ${natureObj.area}`)}
+                                                    </TableCell>
+                                                    <TableCell colSpan={2} className='type'>
+                                                        {natureObj.description ? `${natureObj.description}` : `${natureObj.light_description}`}
+                                                    </TableCell>
+                                                    <TableCell>Location {index}</TableCell>
+                                                    <TableCell>{date} {time}</TableCell>
+                                                    <TableCell>{`${tObj.researchers}`}</TableCell>
+                                                </TableRow>
+                                            )))
                                     ))
                                 ))
                             ))
@@ -143,42 +144,43 @@ const subtable = (row, type, name) => (
 
                             instance.split('.')[0] === 'nature_maps' ? 
                                 Object.entries(inst).map(([type, pointArr])=>(
-                                    type === 'weather' ? 
-                                        <TableRow key={ind}>
-                                            <TableCell colSpan={2} className='category'>
-                                                {testNames(instance.split('.')[0])}
-                                            </TableCell>
-                                            <TableCell colSpan={1} className='value'>
-                                                {`${pointArr.temp}`}
-                                            </TableCell>
-                                            <TableCell>
-                                                {
-                                                `Weather ${pointArr.description}`
-                                                }
-                                            </TableCell>
-                                            <TableCell>N/A</TableCell>
-                                            <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
-                                        </TableRow> 
-                                    :
-                                    pointArr.map((nature, in1)=>(
-                                        <TableRow key={ind}>
-                                            <TableCell colSpan={2} className='category'>
-                                                {testNames(instance.split('.')[0])}
-                                            </TableCell>
-                                            <TableCell colSpan={1} className='value'>
-                                                {
-                                                    nature.area ? nature.area : nature.kind
-                                                }
-                                            </TableCell>
-                                            <TableCell>
-                                                {
-                                                    nature.area ? `${nature.kind} ${nature.description}` : `${nature.description}`
-                                                }
-                                            </TableCell>
-                                            <TableCell>Location {ind + 1}</TableCell>
-                                            <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
-                                        </TableRow>
-                                    ))
+                                    type === '_id' || type === 'time' ? null : 
+                                        (type === 'weather' ? 
+                                            <TableRow key={ind}>
+                                                <TableCell colSpan={2} className='category'>
+                                                    {testNames(instance.split('.')[0])}
+                                                </TableCell>
+                                                <TableCell colSpan={1} className='value'>
+                                                    {`${pointArr.temp}`}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {
+                                                    `Weather ${pointArr.description}`
+                                                    }
+                                                </TableCell>
+                                                <TableCell>N/A</TableCell>
+                                                <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
+                                            </TableRow> 
+                                        :
+                                        pointArr.map((nature, in1)=>(
+                                            <TableRow key={ind}>
+                                                <TableCell colSpan={2} className='category'>
+                                                    {testNames(instance.split('.')[0])}
+                                                </TableCell>
+                                                <TableCell colSpan={1} className='value'>
+                                                    {
+                                                        nature.area ? nature.area : nature.kind
+                                                    }
+                                                </TableCell>
+                                                <TableCell>
+                                                    {
+                                                        nature.area ? `${nature.kind} ${nature.description}` : `${nature.description}`
+                                                    }
+                                                </TableCell>
+                                                <TableCell>Location {ind + 1}</TableCell>
+                                                <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
+                                            </TableRow>
+                                        )))
                                 ))
                             :
                                 instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' ? 
