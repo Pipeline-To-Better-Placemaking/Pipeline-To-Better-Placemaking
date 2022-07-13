@@ -10,11 +10,11 @@ function Area(points) {
     const listArea = [];
 
     // calculate segment x and y in degrees for each point
-    const latRef = points[0].lat;
-    const lngRef = points[0].lng;
+    const latRef = points[0].latitude;
+    const lngRef = points[0].longitude;
     for (let i = 1; i < points.length; i++) {
-        let lat = points[i].lat;
-        let lng = points[i].lng;
+        let lat = points[i].latitude;
+        let lng = points[i].longitude;
         listY.push(calculateYSegment(latRef, lat, circumference));
 
         listX.push(calculateXSegment(lngRef, lng, lat, circumference));

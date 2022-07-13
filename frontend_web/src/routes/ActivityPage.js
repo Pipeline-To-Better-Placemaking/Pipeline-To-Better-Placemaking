@@ -17,6 +17,7 @@ import { testNames } from '../functions/HelperFunctions';
 
 function ActivityPage(props) {
     const drawers = props.drawers;
+    console.log(props.drawers);
 
     const exportData = (e) => {
         var workbook = XLSX.utils.book_new();

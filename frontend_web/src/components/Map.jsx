@@ -493,6 +493,7 @@ const Marker = (options) => {
     const markerSize = Number(options.markerSize);
     const shape = options.shape;
     const [infoWindow, setInfoWindow] = React.useState()
+    console.log(options.position);
 
     const colors = {
         sound_maps: ['#B073FF', '#B073FF'],
@@ -568,6 +569,7 @@ const Bounds = ({boundsPathWindow, ...options}) => {
     (options.area).map((point)=>(
         tempArea.push(new google.maps.LatLng(point.latitude, point.longitude))
     ))
+    console.log(tempArea);
     const [area, setArea] = React.useState(tempArea);
 
     //if (area !== options.area && type === 'New') {
@@ -629,6 +631,7 @@ const Path = ({boundsPathWindow, ...options}) => {
     (options.path).map((point) => (
         tempPath.push(new google.maps.LatLng(point.latitude, point.longitude))
     ))
+    console.log(tempPath);
     const [path, setPath] = React.useState();
     const colors = {
         Walking: '#0000FF',
