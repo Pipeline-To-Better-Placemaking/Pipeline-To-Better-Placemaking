@@ -247,7 +247,7 @@ export function CompareBarChart({children, ...props}){
 
 export function MyPieChart(props){
   // if there are not any values for the passed in object, don't render anything
-  if(props.graph[0] !== undefined){
+  if(props.graph[0] !== undefined && props.graph[0].value !== undefined){
     const Legend = () =>{
       let obj = [];
       for(let i = 0; i < Object.keys(props.graph).length; i++){
