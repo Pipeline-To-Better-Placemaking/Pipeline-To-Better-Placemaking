@@ -144,7 +144,7 @@ const subtable = (row, type, name) => (
                         Object.entries(data.data).map((inst, ind) => (
 
                             instance.split('.')[0] === 'nature_maps' ? 
-                                Object.entries(inst).map(([type, pointArr])=>(
+                                Object.entries(inst[1]).map(([type, pointArr])=>(
                                     type === '_id' || type === 'time' ? null : 
                                         (console.log(pointArr)&&type === 'weather' ? 
                                             <TableRow key={ind}>
