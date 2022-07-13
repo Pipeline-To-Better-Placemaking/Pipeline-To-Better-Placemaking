@@ -38,15 +38,13 @@ function ProjectPage(){
                 },
                 withCredentials: true
             });
-
-            // console.log(response.data);
             setProjectInfo(response.data);
 
-            var sPoints = {};
-            response?.data?.standingPoints.map((point) => (
+            //var sPoints = {};
+            /*response?.data?.standingPoints.map((point) => (
                 sPoints[point._id] = { latitude: point?.latitude, longitude: point.longitude }
-            ));
-            setStandingPoints(sPoints);
+            ));*/
+            setStandingPoints(response?.data?.standingPoints);
 
             //get Map data for activity results (needed in drawers)
             response?.data?.boundariesCollections.forEach((collection) => (

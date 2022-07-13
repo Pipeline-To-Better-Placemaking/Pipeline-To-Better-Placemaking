@@ -317,7 +317,7 @@ function FullMap(props) {
                         ))
                         : 
                         !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
-                                point ? (point.mode || point.kind === 'Construction' ? 
+                                point ? (point.mode || point.kind === 'Constructed' || point.kind === 'Construction' ? 
                                     <Path 
                                         key={`${sdate}.${time}.${i2}`} 
                                         path={point.path} 
@@ -348,7 +348,7 @@ function FullMap(props) {
                                                             : (point.posture ? 
                                                                 (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
                                                                 : null)) } 
-                                            position={point.location ? point.location : standingPoints[point.standingPoint]} 
+                                            position={point.location ? point.location : point.standingPoint} 
                                             markerType={point.average ? 'sound_maps' 
                                                 : (point.result ? point.result : (point.posture ? point.posture : null))} 
                                             markerSize={title === 'sound_maps' ? point.average : null} 
@@ -636,13 +636,13 @@ const Path = ({boundsPathWindow, ...options}) => {
         Swimming: '#FFFF00',
         'Activity on Wheels': '#008000',
         'Handicap Assisted Wheels': '#FFA500',
-        Construction: '#FF00E5',
+        Constructed: '#FF00E5',
         New: 'rgba(255, 0, 0, 0.5)'
     }
     const lines = {
         style: {
             path: tempPath,
-            strokeColor: colors[options.mode],
+            strokeColor: colors[options.mode] ? colors[options.mode] : '000000',
             strokeOpacity: 0.9,
             strokeWeight: 4,
             clickable: true

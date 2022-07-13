@@ -128,7 +128,7 @@ const subtable = (row, type, name) => (
                             tObj.data.map((object, index) => (
                                 <TableRow key={ index }>
                                     <TableCell colSpan={ 2 } className='value'>
-                                        {object.average ? `${object.average} dB` : (object.value && object.kind === 'Construction' ? `${object.value} ft.` : (object.value && object.kind ? `${object.value} sq.ft.` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
+                                        {object.average ? `${object.average} dB` : (object.value && (object.kind === 'Construction' || object.kind === 'Constructed')? `${object.value} ft.` : (object.value && object.kind ? `${object.value} sq.ft.` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
                                     </TableCell>
                                     <TableCell colSpan={ 2 } className='type'>
                                         {object.average ? `${object.sound_type}` : (object.kind ? (`${object.kind} (${object.description})`) : (object.age ? `${object.age} ${object.gender} (${object.activity})` : 'N/A'))}
@@ -208,7 +208,7 @@ const subtable = (row, type, name) => (
                                         </TableCell>
                                         <TableCell colSpan={1} className='value'>
                                             {
-                                                instance.split('.')[0] === 'sound_maps' ? `${inst.average} dB` : (inst.value && inst.kind === 'Construction' ? `${inst.value} ft.` : (inst.value && inst.kind ? `${inst.value} sq.ft.` : (inst.posture ? inst.posture : (inst.mode ? `${inst.mode}` : 'N/A'))))
+                                                instance.split('.')[0] === 'sound_maps' ? `${inst.average} dB` : (inst.value && (inst.kind === 'Construction' || inst.kind === 'Constructed') ? `${inst.value} ft.` : (inst.value && inst.kind ? `${inst.value} sq.ft.` : (inst.posture ? inst.posture : (inst.mode ? `${inst.mode}` : 'N/A'))))
                                             }
                                         </TableCell>
                                         <TableCell>
