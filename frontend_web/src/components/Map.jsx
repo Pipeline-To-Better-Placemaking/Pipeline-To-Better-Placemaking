@@ -352,7 +352,7 @@ function FullMap(props) {
                                             markerSize={title === 'sound_maps' ? point.average : null} 
                                         />
                                     )
-                                )) : null
+                                ) : null
                         ))
                     )
                 ))
