@@ -34,7 +34,16 @@ export const styles = StyleSheet.create({
 
     titleDesc:{
         width: width * .65,
-        marginTop: height * .01
+        marginTop: height * .01,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    boldTxt:{
+        fontWeight: 'bold',
+        textDecorationLine: 'underline',
+        textDecorationColor: 'red'
     },
 
     titleDescTxt:{

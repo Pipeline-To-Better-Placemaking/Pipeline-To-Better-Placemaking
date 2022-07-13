@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Modal, Keyboard, KeyboardAvoidingView, } from 'react-native';
 import { useTheme, Text, Button, Input } from '@ui-kitten/components';
 import { TouchableWithoutFeedback } from '@ui-kitten/components/devsupport';
+import { stringCase } from '../../helperFunctions';
 
 import { styles } from './modal.styles';
 
@@ -55,7 +56,8 @@ export function SoundsModal(props) {
             let cond = otherCheck();
             // theres something in other so push it, then reset it for subsequent entries
             if(cond){
-                arr.push(other);
+                let tempOther = stringCase(other);
+                arr.push(tempOther);
                 setOther(null);
                 setSelect9(false);
             }
@@ -69,27 +71,27 @@ export function SoundsModal(props) {
         // if an option is selected push its contents onto the data array 
         // then reset that state for subsequent entries
         if(select1){
-            arr.push('water feature');
+            arr.push('Water Feature');
             setSelect1(false)
         }
         if(select2){
-            arr.push('traffic');
+            arr.push('Traffic');
             setSelect2(false)
         }
         if(select3){
-            arr.push('people sounds');
+            arr.push('People Sounds');
             setSelect3(false)
         }
         if(select4){
-            arr.push('animals');
+            arr.push('Animals');
             setSelect4(false)
         }
         if(select5){
-            arr.push('wind');
+            arr.push('Wind');
             setSelect5(false)
         }
         if(select6){
-            arr.push('music (entertainment)');
+            arr.push('Music (entertainment)');
             setSelect6(false)
         }        
         // return the array of data
@@ -157,7 +159,10 @@ export function SoundsModal(props) {
                             <View style={styles.dataView}>
                                 
                                 <View style={styles.titleDesc}>
-                                    <Text category={'s1'} style={styles.titleDescTxt}>Select all of the sounds you heard during the measurement</Text>
+                                    <Text style={styles.titleDescTxt}>
+                                        <Text category={'s1'} style={styles.boldTxt}>Select all</Text>
+                                        <Text category={'s1'}> of the sounds you heard during the measurement</Text>
+                                    </Text>
                                 </View>
 
                                 { noneSelect ?

@@ -41,6 +41,12 @@ export const styles = StyleSheet.create({
         marginTop: height * .01
     },
 
+    boldTxt:{
+        fontWeight: 'bold',
+        textDecorationLine: 'underline',
+        textDecorationColor: 'red'
+    },
+
     titleDescTxt:{
         textAlign:'center',
     },
@@ -60,7 +66,6 @@ export const styles = StyleSheet.create({
 
     otherView:{
         marginTop: height * .05,
-        
     },
 
     otherRow:{

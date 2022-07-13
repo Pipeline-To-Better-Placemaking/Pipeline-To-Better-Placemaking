@@ -97,7 +97,7 @@ export const LoginScreen = ( props ) => {
   );
 
   const BackButton = () => (
-    <Button appearance={'ghost'} onPress={navigateBack} style={styles.backButton}>
+    <Button onPress={navigateBack} style={styles.backButton}>
       <Text status={'control'} category='h5'>
            &larr; Back
       </Text>

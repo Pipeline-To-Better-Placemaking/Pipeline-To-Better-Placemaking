@@ -167,7 +167,7 @@ export const SignUpScreen = ( props ) => {
     );
 
     const BackButton = () => (
-        <Button appearance={'ghost'} onPress={navigateBack} style={styles.backButton}>
+        <Button onPress={navigateBack} style={styles.backButton}>
             <Text status={'control'} category='h5' style={styles.backText}>
                &larr; Back
             </Text>

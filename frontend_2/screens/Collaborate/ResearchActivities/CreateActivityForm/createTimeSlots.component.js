@@ -177,16 +177,30 @@ export function CreateTimeSlots(props) {
   );
 
   const NumResearchers = ({item, index}) => (
-      <View style={styles.rowView}>
-        <Button
-          style={styles.leftShift}
-          onPress={() => editResearchers(item, index)}
-          accessoryRight={ResearchersIcon}
-          appearance='ghost'
-        >
-          <Text>Number of Researchers: {item.maxResearchers}</Text>
-        </Button>
-      </View>
+    <View style={styles.rowView}>
+      {props.selectedActivity === 'Sound' ?
+        <View>
+          <Button
+            style={styles.leftShift}
+            accessoryRight={ResearchersIcon}
+            appearance='ghost'
+          >
+            <Text>Number of Researchers: 1</Text>
+          </Button>
+        </View>
+      :
+        <View>
+          <Button
+            style={styles.leftShift}
+            onPress={() => editResearchers(item, index)}
+            accessoryRight={ResearchersIcon}
+            appearance='ghost'
+          >
+            <Text>Number of Researchers: {item.maxResearchers}</Text>
+          </Button>
+        </View>
+      }
+    </View>
   );
 
   const EnterNumberModal = () => (

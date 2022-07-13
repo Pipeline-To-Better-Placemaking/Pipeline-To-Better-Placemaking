@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     },
 
     viewContainer:{
-        height: '45%',
+        height: '50%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -59,6 +59,34 @@ export const styles = StyleSheet.create({
 
     titleDescTxt:{
         textAlign:'center',
+    },
+
+    otherView:{
+        marginTop: height * .015,
+        marginBottom: height * .01
+    },
+
+    otherRow:{
+        flexDirection: 'row'
+    },
+
+    otherInputBox:{
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        width: width * .60
+    },
+
+    submitButton:{
+        width: width * .25,
+        height: 5,
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0
+    },
+
+    buttonText:{
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     buttonRow:{
@@ -138,8 +166,7 @@ export const styles = StyleSheet.create({
     },
 
     lastDataButtonView:{
-        marginTop: height * .015,
-        marginBottom: height* .02
+        marginTop: height * .015
     },
 
     backButtonView:{

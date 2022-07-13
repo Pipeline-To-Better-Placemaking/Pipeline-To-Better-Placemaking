@@ -125,7 +125,10 @@ export function DescModal(props) {
                     <View style={styles.dataView}>
                                 
                         <View style={styles.titleDesc}>
-                            <Text category={'s1'} style={styles.titleDescTxt}>Select all of the following that describes the disorder you marked</Text>
+                            <Text style={styles.titleDescTxt}>
+                                <Text category={'s1'} style={styles.boldTxt}>Select all</Text>
+                                <Text category={'s1'}> of the following that describes the disorder you marked</Text>
+                            </Text>
                         </View>
 
                         { noneSelect ?

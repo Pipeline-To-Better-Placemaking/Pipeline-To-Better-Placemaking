@@ -47,10 +47,10 @@ export const styles = StyleSheet.create({
 
     backButton: {
         marginTop: 15,
+        backgroundColor: '#DEBD07'
     },
 
     backText: {
-        color: '#f44336',
         fontSize: 20
     },
 

@@ -33,8 +33,8 @@ export function OrderTest(props) {
     const [tempMarker, setTempMarker] = useState();
     const [prompt, setPrompt] = useState([]);
 
-    const behaviorPrompts = ['Panhandling', 'Screaming', 'Dangerous Wildlife', 'Reckless Behavior', 'Unsafe Equipment', 'Living in Public'];
-    const maintenancePrompts = ['Broken Environment', 'Dirty/Unmaintained', 'Graffiti', 'Littering', 'Overfilled Trashcan', 'Overgrowth'];
+    const behaviorPrompts = ['Panhandling', 'Boisterous Voice', 'Dangerous Wildlife', 'Reckless Behavior', 'Unsafe Equipment', 'Living in Public'];
+    const maintenancePrompts = ['Broken Environment', 'Dirty/Unmaintained', 'Unwanted Graffiti', 'Littering', 'Overfilled Trashcan', 'Unkept Landscape'];
 
     // Used to store all the data info
     const [data] = useState([]);

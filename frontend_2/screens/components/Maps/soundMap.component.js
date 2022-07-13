@@ -12,7 +12,7 @@ export function SoundMap(props) {
         <View>
             <SoundMapAreaWrapper
                 area={props.area}
-                mapHeight={'100%'}
+                mapHeight={'97.5%'}
                 recenter={props.recenter}
             >
                 <MapView.Marker

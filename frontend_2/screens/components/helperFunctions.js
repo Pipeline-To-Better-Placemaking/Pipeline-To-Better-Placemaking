@@ -162,7 +162,6 @@ export async function formatSoundGraphData(result){
     graph.push({data: [], labels:[[]], predominant: [[]], average: 0});
 
     // set the predominant sound for each graph object
-
     graph[i].predominant[0] = data.decibel_1.predominant_type;
     graph[i].predominant[1] = data.decibel_2.predominant_type;
     graph[i].predominant[2] = data.decibel_3.predominant_type;
@@ -272,11 +271,16 @@ export async function formatNatureGraphData(result){
     water: [],
     weather: {}
   };
+  // used so there are no duplicate keys
+  let totalIndex = 0;
+  // used for setting colors across the data object (if more than 1 data object is submitted for the test)
+  let vegeColorIndex = 0;
+  let waterColorIndex = 0;
 
   for(let i = 0; i < result.data.length; i++){
     let data = result.data[i]
     let index = -1;
-    // format the animal object array
+    // format the animal object array (of each data object)
     for(let j = 0; j < data.animal.length; j++){
       let type = data.animal[j].kind
       if(type === "Domesticated") type = "Domestic"
@@ -325,15 +329,17 @@ export async function formatNatureGraphData(result){
       // that entry did not exist so add it to the end
       else{
         graph.vegetation.push({
-            key: j + 1,
+            key: totalIndex,
             value: vegetationData[j],
-            svg: { fill: colors[j] },
+            svg: { fill: colors[vegeColorIndex] },
             legend: vegetationLabels[j],
             percent: calcPercent(vegetationData[j], totalArea)
         })
+        totalIndex++;
+        vegeColorIndex++;
       }
     }
-
+    
     let waterData = []
     let waterLabels = []
     // format the water array (of each data object)
@@ -364,12 +370,14 @@ export async function formatNatureGraphData(result){
       }
       else{
         graph.water.push({
-          key: j + 1,
+          key: totalIndex,
           value: waterData[j],
-          svg: { fill: colors[j] },
+          svg: { fill: colors[waterColorIndex] },
           legend: waterLabels[j],
           percent: calcPercent(waterData[j], totalArea)
         })
+        totalIndex++;
+        waterColorIndex++;
       }
     }
   }
@@ -512,6 +520,17 @@ export function retrieveTestName(str){
     testType = 'N/A';
   }
   return testType;
+}
+
+// converts a string to have only the 1st character capitalized (used to format the 'Other' input fields data for consistency)
+export function stringCase(str){
+  // 1st convert the whole string to lowercase
+  let tempString = str.toLowerCase();
+  // isolate the 1st character, then capitalize it
+  let capChar = str.charAt(0);
+  capChar = capChar.toUpperCase();
+  // return the capitalized 1st character concated with the rest of the string (that doesn't include 1st character)
+  return capChar + tempString.slice(1);
 }
 
 // calculates the area of a drawn polygon (value returned is in feet squared)

@@ -55,21 +55,20 @@ export function SoundTest(props){
     
     // for a standing point's iteration measurements (each standing point has 5 iterations of measurement)
     // row === standing point, column == iteration of measurement
-    const [decArr, setDecArr] = useState([[]]);
+    const [decArr] = useState([[]]);
     // each cell is a standing point's decibel average
-    const [decAvg, setDecAvg] = useState([]);
+    const [decAvg] = useState([]);
     
     // used to store the main sound type
-    const[mainSoundArr, setMainSoundArr] = useState([[]]);
+    const[mainSoundArr] = useState([[]]);
     // used to store the sound types (multi-select)
-    const[soundsArr, setSoundsArr] = useState([[]]);
+    const[soundsArr] = useState([[]]);
 
     // ends activity, packages and sends data to the DB
     const endActivity = async () => {
-        
         setStart(false);
-
-        console.log('ending activity');
+        clearInterval(id);
+        //console.log('ending activity');
         
         // calculates average for each standing point and stores it in its array
         let standingLen = totalIter / 5;
@@ -143,9 +142,7 @@ export function SoundTest(props){
             })
 
             let info = await response.json()
-            
-            // console.log(info);
-
+            console.log(info);
         } catch (error) {
             console.log("ERROR: ", error)
         }
@@ -194,9 +191,9 @@ export function SoundTest(props){
     const closeMainData = async (inf) =>{        
         // force the main_sound_type to be lower case (mainly for the 'other' field)
         // standingIndex <= # standing points always, so if something exists at that index, push the data onto it
-        if(mainSoundArr[standingIndex]) mainSoundArr[standingIndex].push(inf.main_sound_type.toLowerCase());
+        if(mainSoundArr[standingIndex]) mainSoundArr[standingIndex].push(inf.main_sound_type);
         // if nothing existed at that index, push a new array (with the data) into the 2D array (its the 1st iteration of data at that standing point)
-        else mainSoundArr.push([inf.main_sound_type.toLowerCase()]);
+        else mainSoundArr.push([inf.main_sound_type]);
         
         setMainSoundModal(false);
         // calls resume which then restarts/ends the test
@@ -219,15 +216,9 @@ export function SoundTest(props){
     }
     
     // compares the soundsArr and passed in array for duplicate entries, only returns elements (as an array) from arr that are not in soundsArr
-    const checkDup = (ind, arr) =>{
-        // convert both arrays to lowercase to make checks case insensitive (to help deal with other field)
-        let lowerSoundsArr = soundsArr[ind].map( element => element.toLowerCase())
-        let lowerArr = arr.map( element => element.toLowerCase())
-        
-        // check to see if the stuff that is to be added to soundsArr already exists there 
-        // if so don't return it
-        let res = lowerArr.filter(element => !lowerSoundsArr.includes(element));
-        return res;
+    const checkDup = (ind, arr) =>{        
+        // returns an array that has strings that are not already in soundsArr (to be added to soundsArr) 
+        return arr.filter(element => !soundsArr[ind].includes(element));
     }
 
     // resume or restarts the test based on timer's value
