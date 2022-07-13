@@ -10,7 +10,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-
 import {testNames} from '../functions/HelperFunctions';
 
 // Collapsible Table for Activity Page
@@ -43,7 +42,7 @@ function Row(props) {
             <TableRow className='subtables'>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={ 12 }>
                     <Collapse in={ open } timeout='auto' unmountOnExit>
-                        { subtable(row, 0) }
+                        { subtable(row, 0, name) }
                     </Collapse>
                 </TableCell>
             </TableRow>
@@ -52,7 +51,7 @@ function Row(props) {
 }
 
 //Subtables for Map Page Data Drawer and Activity Page Collapsible Table
-const subtable = (row, type) => (    
+const subtable = (row, type, name) => (    
     <Box sx={{ margin: 1 }} className='subTable'>
         <Table stickyHeader size='small' aria-label='activity'>
             <TableHead sx={{ bgcolor: '#e2e2e2'}}>
@@ -68,42 +67,158 @@ const subtable = (row, type) => (
             </TableHead>
             <TableBody>
                 { type === 0 ? 
-                    Object.entries(row).map(([date, dObj])=>(
+                    name === 'nature_maps' ?  
+                        (Object.entries(row).map(([date, dObj]) => (
+                            Object.entries(dObj).map(([time, tObj]) => (
+                                tObj.data.map((object, index) => (
+                                    Object.entries(object).map(([natureType, pointArr], i1) => (
+                                        natureType === 'weather' ? 
+                                            <TableRow key={`${index}.${i1}`}>
+                                                <TableCell colSpan={2} className='value'>
+                                                    {pointArr.temperature}
+                                                </TableCell>
+                                                <TableCell colSpan={2} className='type'>
+                                                    {`${pointArr.description}`}
+                                                </TableCell>
+                                                <TableCell>N/A</TableCell>
+                                                <TableCell>{date} {time}</TableCell>
+                                                <TableCell>{`${tObj.researchers}`}</TableCell>
+                                            </TableRow>
+                                        : pointArr.map((natureObj, i3)=>(                                        
+                                            <TableRow key={`${index}.${i1}`}>
+                                                <TableCell colSpan={2} className='value'>
+                                                    {(natureType === 'water' ? `Water ${natureObj.area}` : natureType === 'animal' ? `Animal ${natureObj.kind}` : `Vegetation ${natureObj.area}`)}
+                                                </TableCell>
+                                                <TableCell colSpan={2} className='type'>
+                                                    {natureObj.description ? `${natureObj.description}` : `${natureObj.light_description}`}
+                                                </TableCell>
+                                                <TableCell>Location {index}</TableCell>
+                                                <TableCell>{date} {time}</TableCell>
+                                                <TableCell>{`${tObj.researchers}`}</TableCell>
+                                            </TableRow>
+                                        ))
+                                    ))
+                                ))
+                            ))
+                        ))) 
+                    :(name === 'light_maps' || name === 'order_maps' ? 
+                        (Object.entries(row).map(([date, dObj]) => (
+                            Object.entries(dObj).map(([time, tObj]) => (
+                                tObj.data.map((object, index) => (
+                                    Object.entries(object.points).map((point, i1)=>(
+                                    <TableRow key={`${index}.${i1}`}>
+                                        <TableCell colSpan={2} className='value'>
+                                            {point.kind}
+                                        </TableCell>
+                                        <TableCell colSpan={2} className='type'>
+                                            {point.description ? `${point.description}` : `${point.light_description}`}
+                                        </TableCell>
+                                        <TableCell>Location {index}</TableCell>
+                                        <TableCell>{date} {time}</TableCell>
+                                        <TableCell>{`${tObj.researchers}`}</TableCell>
+                                    </TableRow>
+                                   ))
+                                ))
+                            ))
+                        ))) 
+                    : (Object.entries(row).map(([date, dObj])=>(
                         Object.entries(dObj).map(([time, tObj])=>(
                             tObj.data.map((object, index) => (
                                 <TableRow key={ index }>
                                     <TableCell colSpan={ 2 } className='value'>
-                                        {object.average ? `${object.average} dB` : (object.value && object.kind === 'Constructed' ? `${object.value} ft.` : (object.value && object.kind ? `${object.value} sq.ft.` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
+                                        {object.average ? `${object.average} dB` : (object.value && object.kind === 'Construction' ? `${object.value} ft.` : (object.value && object.kind ? `${object.value} sq.ft.` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
                                     </TableCell>
                                     <TableCell colSpan={ 2 } className='type'>
                                         {object.average ? `${object.sound_type}` : (object.kind ? (`${object.kind} (${object.description})`) : (object.age ? `${object.age} ${object.gender} (${object.activity})` : 'N/A'))}
                                     </TableCell>
                                     <TableCell>Location { index }</TableCell>
                                     <TableCell>{ date } { time }</TableCell>
-                                    <TableCell>{ tObj.researcher }</TableCell>
+                                    <TableCell>{`${tObj.researchers}`}</TableCell>
                                 </TableRow>
                             ))
                         ))
-                    )) : Object.entries(row).map(([instance, data])=>(
-                        Object.entries(data.data).map(([index, point], ind)=>(
-                            <TableRow key={ ind }>
-                                <TableCell colSpan={ 2 } className='category'>
-                                    { testNames(instance.split('.')[0]) }
-                                </TableCell>
-                                <TableCell colSpan={1} className='value'>
-                                    {
-                                        instance.split('.')[0] === 'sound_maps' ? `${point.average} dB` : (point.value && point.kind === 'Constructed' ? `${point.value} ft.` : (point.value && point.kind ? `${point.value} sq.ft.` : (point.posture ? point.posture : (point.mode ? `${point.mode}` : 'N/A'))))
-                                    }
-                                </TableCell>
-                                <TableCell>
-                                    {   
-                                        point.average ? `${point.sound_type}` : (point.kind ? (`${point.kind} (${point.description})`) : (point.age ? `${point.age} ${point.gender} (${point.activity})` : 'N/A'))
-                                    }
-                                </TableCell>
-                                <TableCell>Location { ind+1 }</TableCell>
-                                <TableCell>{ `${instance.split('.')[1]} ${instance.split('.')[2]}` }</TableCell>
-                            </TableRow>
-                        ))
+                    ))))
+                : Object.entries(row).map(([instance, data])=>(
+                        Object.entries(data.data).map((inst, ind) => (
+
+                            instance.split('.')[0] === 'nature_maps' ? 
+                                Object.entries(inst).map(([type, pointArr])=>(
+                                    type === 'weather' ? 
+                                        <TableRow key={ind}>
+                                            <TableCell colSpan={2} className='category'>
+                                                {testNames(instance.split('.')[0])}
+                                            </TableCell>
+                                            <TableCell colSpan={1} className='value'>
+                                                {`${pointArr.temp}`}
+                                            </TableCell>
+                                            <TableCell>
+                                                {
+                                                `Weather ${pointArr.description}`
+                                                }
+                                            </TableCell>
+                                            <TableCell>N/A</TableCell>
+                                            <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
+                                        </TableRow> 
+                                    :
+                                    pointArr.map((nature, in1)=>(
+                                        <TableRow key={ind}>
+                                            <TableCell colSpan={2} className='category'>
+                                                {testNames(instance.split('.')[0])}
+                                            </TableCell>
+                                            <TableCell colSpan={1} className='value'>
+                                                {
+                                                    nature.area ? nature.area : nature.kind
+                                                }
+                                            </TableCell>
+                                            <TableCell>
+                                                {
+                                                    nature.area ? `${nature.kind} ${nature.description}` : `${nature.description}`
+                                                }
+                                            </TableCell>
+                                            <TableCell>Location {ind + 1}</TableCell>
+                                            <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
+                                        </TableRow>
+                                    ))
+                                ))
+                            :
+                                instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' ? 
+                                    Object.entries(inst.points).map(([i1, point], i2) => (
+                                        <TableRow key={ind}>
+                                            <TableCell colSpan={2} className='category'>
+                                                {testNames(instance.split('.')[0])}
+                                            </TableCell>
+                                            <TableCell colSpan={1} className='value'>
+                                                {point.kind ? point.kind : null}
+                                            </TableCell>
+                                            <TableCell>
+                                                {
+                                                    point.description ? `${point.description}` : point.light_description
+                                                }
+                                            </TableCell>
+                                            <TableCell>N/A</TableCell>
+                                            <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
+                                        </TableRow>
+                                    )) 
+                                :
+                                    <TableRow key={ind}>
+                                        <TableCell colSpan={2} className='category'>
+                                            {testNames(instance.split('.')[0])}
+                                        </TableCell>
+                                        <TableCell colSpan={1} className='value'>
+                                            {
+                                                instance.split('.')[0] === 'sound_maps' ? `${inst.average} dB` : (inst.value && inst.kind === 'Construction' ? `${inst.value} ft.` : (inst.value && inst.kind ? `${inst.value} sq.ft.` : (inst.posture ? inst.posture : (inst.mode ? `${inst.mode}` : 'N/A'))))
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                inst.average ? `${inst.sound_type}` : (inst.kind ? (`${inst.kind} (${inst.description})`) : (inst.age ? `${inst.age} ${inst.gender} (${inst.activity})` : 'N/A'))
+                                            }
+                                        </TableCell>
+                                        <TableCell>Location {ind + 1}</TableCell>
+                                        <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
+                                    </TableRow>
+                        )) 
+
                     ))
                 }
             </TableBody>
@@ -122,7 +237,7 @@ function ActivityTable(props) {
     return(
             props.type === 0 ? (Object.entries(activityRow).map(([type, obj]) => (
                 <Row key={ type } name={ type } row={ obj } />
-            ))) : subtable(activityRow, 1)
+            ))) : subtable(activityRow, 1, '')
     );
 }
 

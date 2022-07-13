@@ -21,7 +21,6 @@ function ProjectPage(){
 
     // page url: path (split index)
     // can be reached at (heroku-url)/home (1)/teams (2)/ :id (3) /projects (4)/:id (5)
-    // Selected Project's data will be loaded here to pass into its relevant components 
     const projectId = loc.pathname.split('/')[5];
     //console.log(projectId);
 
@@ -43,7 +42,6 @@ function ProjectPage(){
     // loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
     const projectData = async() => {
         try {
-
             const response = await axios.get(`/projects/${projectId}`, {
                 headers: {
                     // 'Content-Type': 'application/json',
@@ -151,7 +149,6 @@ function ProjectPage(){
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
     //var standingPoints = projectInfo?.standingPoints;
     area = projectInfo?.area?.points;
-
     //console.log(projectInfo)
     //console.log(results)
     //console.log(templateDrawers)
@@ -160,8 +157,6 @@ function ProjectPage(){
     return (
         <div id='ProjectPage'>
             <TabPanel state={ loc.state }/>
-            {/* data passed into drawers needs map data and to match the format drawers component above */}
-            {/* made it check for projectInfo.title before loading routes, later it will need to render on map data passed into drawers hopefully this helps */}
             {
                 loaded ? 
                 <Routes>

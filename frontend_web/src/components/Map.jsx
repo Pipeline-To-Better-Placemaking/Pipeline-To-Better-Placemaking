@@ -314,7 +314,7 @@ function FullMap(props) {
                         ))
                         : 
                         !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
-                                point ? (point.mode || point.kind === 'Constructed' ? 
+                                point ? (point.mode || point.kind === 'Construction' ? 
                                     <Path 
                                         key={`${sdate}.${time}.${i2}`} 
                                         path={point.path} 
