@@ -146,7 +146,7 @@ const subtable = (row, type, name) => (
                             instance.split('.')[0] === 'nature_maps' ? 
                                 Object.entries(inst).map(([type, pointArr])=>(
                                     type === '_id' || type === 'time' ? null : 
-                                        (type === 'weather' ? 
+                                        (console.log(pointArr)&&type === 'weather' ? 
                                             <TableRow key={ind}>
                                                 <TableCell colSpan={2} className='category'>
                                                     {testNames(instance.split('.')[0])}
