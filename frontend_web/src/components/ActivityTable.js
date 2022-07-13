@@ -163,7 +163,7 @@ const subtable = (row, type, name) => (
                                                 <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
                                             </TableRow> 
                                         :
-                                        pointArr.map((nature, in1)=>(
+                                            console.log(pointArr)&&pointArr.map((nature, in1)=>(
                                             <TableRow key={`${ind}.${in1}`}>
                                                 <TableCell colSpan={2} className='category'>
                                                     {testNames(instance.split('.')[0])}

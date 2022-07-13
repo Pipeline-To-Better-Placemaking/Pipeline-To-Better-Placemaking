@@ -24,7 +24,9 @@ const render = (status) => {
 
 function FullMap(props) {
     //const config = require('../../../utils/config');
-    const standingPoints = props.standingPoints;
+    const standingPoints = props.standingPoints ? props.standingPoints : null;
+    console.log(standingPoints);
+    const subAreas = props.subAreas ? props.subAreas: null;
     const [map, setMap] = React.useState(null);
     const [mapPlaces, setMapPlaces] = React.useState(null);
     const [placeOn, setPlaceOn] = React.useState(false);
@@ -157,7 +159,6 @@ function FullMap(props) {
         var link = document.createElement('a');
         //simulated link and link click with removal
         if (typeof link.download === 'string') {
-
             link.href = url;
             link.download = filename;
             document.body.appendChild(link);
@@ -346,7 +347,7 @@ function FullMap(props) {
                                                             : (point.posture ? 
                                                                 (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
                                                                 : null)) } 
-                                            position={point.location ? point.location : point.standingPoint} 
+                                            position={point.location ? point.location : standingPoints[point.standingPoint]} 
                                             markerType={point.average ? 'sound_maps' 
                                                 : (point.result ? point.result : (point.posture ? point.posture : null))} 
                                             markerSize={title === 'sound_maps' ? point.average : null} 

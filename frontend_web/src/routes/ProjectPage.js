@@ -81,7 +81,7 @@ function ProjectPage(){
                 ))
             ))
 
-            projectInfo?.standingPoints?.map((point, index) => (
+            response?.data?.standingPoints?.map((point, index) => (
                 sPoints[point._id] = { latitude: point.latitude, longitude: point.longitude }
             ));
             setStandingPoints(sPoints);
@@ -141,12 +141,11 @@ function ProjectPage(){
 
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
-
     area = projectInfo?.area?.points;
     subareas = projectInfo?.subareas;
 
-    console.log(projectInfo)
-    //console.log(results)
+    //console.log(projectInfo)
+    console.log(activities)
     //console.log(templateDrawers)
     //console.log(center)
 
@@ -160,11 +159,13 @@ function ProjectPage(){
                         drawers={ drawer } 
                         area={ area } 
                         center={ center }
+                        subAreas={subareas}
                         standingPoints={ standingPoints }/>} />
                     <Route path='map' element={<MapPage title={ projectInfo?.title } 
                         drawers={ drawer }  
                         area={ area } 
                         center={ center }
+                        subAreas={subareas}
                         standingPoints={ standingPoints }/>} />
                     <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
                         drawers={ activities }  />} />
