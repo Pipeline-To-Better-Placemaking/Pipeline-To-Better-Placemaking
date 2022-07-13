@@ -16,6 +16,7 @@ import {testNames} from '../functions/HelperFunctions';
 // Collapsible Table for Activity Page
 function Row(props) {
     const row = props.row;
+    console.log(props.row);
     const name = props.name;
     const [open, setOpen] = React.useState(false);
 

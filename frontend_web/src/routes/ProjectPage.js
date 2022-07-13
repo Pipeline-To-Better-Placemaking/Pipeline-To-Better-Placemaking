@@ -69,7 +69,7 @@ function ProjectPage(){
             ))
             response?.data?.movingCollections.map((collection) => (
                 collection.maps.map( async (id) => (
-                    await collectionStandingPoints(id, 'moving', collection.date)
+                    await collectionPoints(id, 'moving', collection.date)
                 ))
             ))
             response?.data?.natureCollections.map((collection) => (
@@ -84,12 +84,12 @@ function ProjectPage(){
             ))
             response?.data?.soundCollections.map((collection) => (
                 collection.maps.map( async (id) => (
-                    await collectionStandingPoints(id, 'sound', collection.date)
+                    await collectionPoints(id, 'sound', collection.date)
                 ))
             ))
             response?.data?.stationaryCollections.map((collection) => (
                 collection.maps.map( async (id) => (
-                    await collectionStandingPoints(id, 'stationary', collection.date)
+                    await collectionPoints(id, 'stationary', collection.date)
                 ))
             ))
 
@@ -108,44 +108,9 @@ function ProjectPage(){
         const apiCategory = {
             bounds: 'boundaries_maps',
             light: 'light_maps',
+            moving: 'moving_maps',
             nature: 'nature_maps',
             order: 'order_maps',
-        }
-
-        try {
-
-            const response = await axios.get(`/${apiCategory[cat]}/${id}`, {
-                headers: {
-                    // 'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Authorization': `Bearer ${user.token}`
-                },
-                withCredentials: true
-            });
-
-            // console.log(response.data);
-            var date = new Date(dateTime);
-            var data = [];
-            var map = results;
-            //console.log(typeof (dateTime));
-            map[apiCategory[cat]] = {};
-            map[apiCategory[cat]][date.toLocaleDateString()] = {};
-            map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = await response.data;
-
-            results = map;
-            console.log(map);
-
-        } catch (error) {
-            //project api get error
-            console.log('ERROR: ', error);
-            return;
-        }
-    }
-
-    //stationary moving sound
-    const collectionStandingPoints = async (id, cat, dateTime) => {
-        const apiCategory = {
-            moving: 'moving_maps',
             sound: 'sound_maps',
             stationary: 'stationary_maps'
         }
@@ -163,13 +128,12 @@ function ProjectPage(){
 
             // console.log(response.data);
             var date = new Date(dateTime);
-            var data = [];
             var map = results;
             //console.log(typeof (dateTime));
             map[apiCategory[cat]] = {};
             map[apiCategory[cat]][date.toLocaleDateString()] = {};
             map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = await response.data;
-            map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()][data] = await response.data.standingPoints;
+
             results = map;
             console.log(map);
 
@@ -189,6 +153,7 @@ function ProjectPage(){
 
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
+    var standingPoints = projectInfo?.standingPoints;
     area = projectInfo?.areas
 
     //console.log(projectInfo)

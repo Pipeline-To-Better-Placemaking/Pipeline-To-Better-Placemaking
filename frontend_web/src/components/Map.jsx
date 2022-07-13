@@ -545,7 +545,7 @@ const Marker = (options) => {
 
     React.useEffect(() => {
         if (marker) {
-            marker.setOptions({ clickable: true, map: options.map, position: options.position ? options.position : null });
+            marker.setOptions({ clickable: true, map: options.map, position: options.position ? (new google.maps.LatLng(options.position.latitude, options.position.longitude)) : null });
 
             marker.addListener('click', () => {
                 infoWindow.open({
@@ -562,8 +562,13 @@ const Marker = (options) => {
 
 const Bounds = ({boundsPathWindow, ...options}) => {
     const [paths, setPaths] = React.useState();
-    const [area, setArea] = React.useState(options.area);
     const type = options.type;
+
+    var tempArea = [];
+    (options.area).map((point)=>(
+        tempArea.push(new google.maps.LatLng(point.latitude, point.longitude))
+    ))
+    const [area, setArea] = React.useState(tempArea);
 
     //if (area !== options.area && type === 'New') {
         //setArea(options.area)
@@ -602,7 +607,7 @@ const Bounds = ({boundsPathWindow, ...options}) => {
 
     React.useEffect(() => {
         if (paths) {
-            paths.setOptions({ map: options.map, paths: options.area });
+            paths.setOptions({ map: options.map, paths: area });
 
             ['click'].forEach((eventName) =>
                 google.maps.event.clearListeners(paths, eventName)
@@ -619,8 +624,12 @@ const Bounds = ({boundsPathWindow, ...options}) => {
 };
 
 const Path = ({boundsPathWindow, ...options}) => {
-    const [path, setPath] = React.useState();
     const type = options.title;
+    var tempPath = [];
+    (options.path).map((point) => (
+        tempPath.push(new google.maps.LatLng(point.latitude, point.longitude))
+    ))
+    const [path, setPath] = React.useState();
     const colors = {
         Walking: '#0000FF',
         Running: '#FF0000',
@@ -632,7 +641,7 @@ const Path = ({boundsPathWindow, ...options}) => {
     }
     const lines = {
         style: {
-            path: options.path,
+            path: tempPath,
             strokeColor: colors[options.mode],
             strokeOpacity: 0.9,
             strokeWeight: 4,
