@@ -5,7 +5,7 @@ import { DataGroupMovement } from './dataGroupMovement.component.js';
 
 import { styles } from './dataEntryModal.styles.js';
 
-const movement = ["Walking", "Running", "Swiming", "Activity on Wheels", "Handicap Assisted Wheels"]
+const movement = ["Walking", "Running", "Swimming", "Activity on Wheels", "Handicap Assisted Wheels"]
 
 export function DataEntryModal(props) {
 
