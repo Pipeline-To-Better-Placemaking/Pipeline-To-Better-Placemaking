@@ -141,8 +141,8 @@ function ProjectPage(){
     area = projectInfo?.area?.points;
     subareas = projectInfo?.subareas;
 
-    //console.log(projectInfo)
-    console.log(activities)
+    console.log(projectInfo)
+    //console.log(activities)
 
     return (
         <div id='ProjectPage'>

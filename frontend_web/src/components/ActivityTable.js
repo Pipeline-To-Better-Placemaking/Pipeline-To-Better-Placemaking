@@ -89,7 +89,7 @@ const subtable = (row, type, name) => (
                                             : pointArr.map((natureObj, i3)=>(                                        
                                                 <TableRow key={`${index}.${i1}`}>
                                                     <TableCell colSpan={2} className='value'>
-                                                        {natureType === 'animal' ? `${natureObj.kind}` : `${natureObj.area}sq.ft.`}
+                                                        {natureType === 'animal' ? `${natureObj.kind}` : `${natureObj.area} sq.ft.`}
                                                     </TableCell>
                                                     <TableCell colSpan={2} className='type'>
                                                         {`${natureObj.description}`}

@@ -287,7 +287,8 @@ function FullMap(props) {
                                             `<div><b>${testNames(title)}</b><br/>Location ${ind2}<br/>Animal: ${natureObj.description}<br/>[${natureObj.kind}]</div>`}
                                         position={natureObj.marker}
                                         markerType={natureType}
-                                    /> :
+                                    /> 
+                                :
                                     <Bounds
                                         key={`${sdate}.${time}.${ind2}`}
                                         title={title}
