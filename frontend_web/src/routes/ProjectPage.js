@@ -155,9 +155,10 @@ function ProjectPage(){
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
     var standingPoints = projectInfo?.standingPoints;
-    area = projectInfo?.areas
+    area = projectInfo?.area?.points;
 
-    console.log(projectInfo)
+    //console.log(projectInfo)
+    console.log(results)
     //console.log(templateDrawers)
     //console.log(center)
 
