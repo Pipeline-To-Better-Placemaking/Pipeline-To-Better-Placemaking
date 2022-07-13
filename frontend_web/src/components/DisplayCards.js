@@ -12,7 +12,7 @@ import '../routes/routes.css';
 
 function DisplayCards(props) {
 
-    if(props.user) console.log(props.user);
+    //if(props.user) console.log(props.user);
 
     //Surveyor Cards have surveyor name in header
     const surveyorCards = (surveyors) => (

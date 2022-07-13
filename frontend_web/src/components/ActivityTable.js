@@ -51,6 +51,7 @@ function Row(props) {
 }
 
 //Subtables for Map Page Data Drawer and Activity Page Collapsible Table
+//type 0 is the subtable for The activity page, 1 is the Map page table
 const subtable = (row, type, name) => (    
     <Box sx={{ margin: 1 }} className='subTable'>
         <Table stickyHeader size='small' aria-label='activity'>
@@ -76,26 +77,26 @@ const subtable = (row, type, name) => (
                                             (natureType === 'weather' ? 
                                                 <TableRow key={`${index}.${i1}`}>
                                                     <TableCell colSpan={2} className='value'>
-                                                        {pointArr.temperature}
+                                                        {pointArr.temperature}&ordm;F
                                                     </TableCell>
                                                     <TableCell colSpan={2} className='type'>
-                                                        {`${pointArr.description}`}
+                                                        {`Weather ${pointArr.description}`}
                                                     </TableCell>
                                                     <TableCell>N/A</TableCell>
                                                     <TableCell>{date} {time}</TableCell>
-                                                    <TableCell>{`${tObj.researchers}`}</TableCell>
+                                                    <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
                                                 </TableRow>
                                             : pointArr.map((natureObj, i3)=>(                                        
                                                 <TableRow key={`${index}.${i1}`}>
                                                     <TableCell colSpan={2} className='value'>
-                                                        {(natureType === 'water' ? `Water ${natureObj.area}` : natureType === 'animal' ? `Animal ${natureObj.kind}` : `Vegetation ${natureObj.area}`)}
+                                                        {natureType === 'animal' ? `${natureObj.kind}` : `${natureObj.area}sq.ft.`}
                                                     </TableCell>
                                                     <TableCell colSpan={2} className='type'>
-                                                        {natureObj.description ? `${natureObj.description}` : `${natureObj.light_description}`}
+                                                        {`${natureObj.description}`}
                                                     </TableCell>
-                                                    <TableCell>Location {index}</TableCell>
+                                                    <TableCell>Location {i1}</TableCell>
                                                     <TableCell>{date} {time}</TableCell>
-                                                    <TableCell>{`${tObj.researchers}`}</TableCell>
+                                                    <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
                                                 </TableRow>
                                             )))
                                     ))
@@ -109,14 +110,14 @@ const subtable = (row, type, name) => (
                                     Object.entries(object.points).map((point, i1)=>(
                                     <TableRow key={`${index}.${i1}`}>
                                         <TableCell colSpan={2} className='value'>
-                                            {point.kind}
+                                            {point.kind ? point.kind : 'N/A'}
                                         </TableCell>
                                         <TableCell colSpan={2} className='type'>
-                                            {point.description ? `${point.description}` : `${point.light_description}`}
+                                            {console.log(point)&&point.description ? `${point.description}` : `${point.light_description}`}
                                         </TableCell>
-                                        <TableCell>Location {index}</TableCell>
+                                        <TableCell>Location {i1}</TableCell>
                                         <TableCell>{date} {time}</TableCell>
-                                        <TableCell>{`${tObj.researchers}`}</TableCell>
+                                            <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
                                     </TableRow>
                                    ))
                                 ))
@@ -134,7 +135,7 @@ const subtable = (row, type, name) => (
                                     </TableCell>
                                     <TableCell>Location { index }</TableCell>
                                     <TableCell>{ date } { time }</TableCell>
-                                    <TableCell>{`${tObj.researchers}`}</TableCell>
+                                    <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
                                 </TableRow>
                             ))
                         ))
@@ -151,7 +152,7 @@ const subtable = (row, type, name) => (
                                                     {testNames(instance.split('.')[0])}
                                                 </TableCell>
                                                 <TableCell colSpan={1} className='value'>
-                                                    {`${pointArr.temp}`}
+                                                    {`${pointArr.temperature}`}&ordm;F
                                                 </TableCell>
                                                 <TableCell>
                                                     {
@@ -163,34 +164,34 @@ const subtable = (row, type, name) => (
                                             </TableRow> 
                                         :
                                         pointArr.map((nature, in1)=>(
-                                            <TableRow key={ind}>
+                                            <TableRow key={`${ind}.${in1}`}>
                                                 <TableCell colSpan={2} className='category'>
                                                     {testNames(instance.split('.')[0])}
                                                 </TableCell>
                                                 <TableCell colSpan={1} className='value'>
                                                     {
-                                                        nature.area ? nature.area : nature.kind
+                                                        nature.area ? `${nature.area}sq.ft.` : nature.kind
                                                     }
                                                 </TableCell>
                                                 <TableCell>
                                                     {
-                                                        nature.area ? `${nature.kind} ${nature.description}` : `${nature.description}`
+                                                        nature.area ? `${nature.kind}  ${nature.description}` : `${nature.description}`
                                                     }
                                                 </TableCell>
-                                                <TableCell>Location {ind + 1}</TableCell>
+                                                <TableCell>Location {in1 + 1}</TableCell>
                                                 <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
                                             </TableRow>
                                         )))
                                 ))
                             :
                                 instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' ? 
-                                    Object.entries(inst.points).map(([i1, point], i2) => (
-                                        <TableRow key={ind}>
+                                    Object.entries(inst.points).map((point, i2) => (
+                                        <TableRow key={`${ind}.${i2}`}>
                                             <TableCell colSpan={2} className='category'>
                                                 {testNames(instance.split('.')[0])}
                                             </TableCell>
                                             <TableCell colSpan={1} className='value'>
-                                                {point.kind ? point.kind : null}
+                                                {point.kind ? point.kind : 'N/A'}
                                             </TableCell>
                                             <TableCell>
                                                 {

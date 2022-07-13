@@ -12,31 +12,9 @@ function Projects(props){
     const [teamInfo, setTeamInfo] = React.useState();
     const user = teamAndUser.state ? teamAndUser.state.userToken : {};
 
-    //console.log(user);
-
-    // Template Projects
-    const [projects, setProjects] = React.useState([
-        {
-            title: 'Lake Eola',
-            description: 'A template project',
-            _id: 'p23e32duew'
-        },
-        {
-            title: 'Lake Underhill Park',
-            description: 'Another template project',
-            _id: 'p4343rfi43f'
-        },
-        {
-            title: 'University of Central Florida',
-            description: 'The third template project, hard coded project data matches this',
-            _id: 'p984f92hdeq'
-        }
-    ]);
-
     const teamPull = async () => {
         
         try {
-            console.log("makes it to try");
             const response = await axios.get(`/teams/${teamId}`, {
                 headers: {
                     // 'Content-Type': 'application/json',
@@ -50,8 +28,6 @@ function Projects(props){
             //console.log(response.data);
 
         } catch (error) {
-            //teams api get error
-            console.log("directly to catch")
             console.log('ERROR: ', error);
             return;
         }
@@ -60,8 +36,7 @@ function Projects(props){
     React.useEffect(() => {
         teamPull();
     },[]);
-
-    console.log(teamInfo);
+    //console.log(teamInfo);
 
     return(
         <div id='teamHome'>
@@ -81,9 +56,6 @@ function Projects(props){
                 teamInfo?.projects?.map((project, index) => (
                     <DisplayCards key={(project._id + index)} type={ 1 } project={ project } user={ user } team={ teamAndUser.state.team }/>
                 ))
-                /*projects.map((project, index) => (
-                        <DisplayCards key={(project._id + index)} type={ 1 } project={ project } user={ {} } team={ {} }/>
-                )) */
             }
         </div>
     );
