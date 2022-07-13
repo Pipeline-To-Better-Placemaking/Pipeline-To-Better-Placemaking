@@ -275,7 +275,7 @@ function FullMap(props) {
                     !data.Results[title][sdate][time].data ? null : ((data.Results[title][sdate][time].data).map((inst) => (
                         Object.entries(inst).map(([natureType, pointArr], ind1)=>(
                             natureType === 'weather' || natureType === '_id' || natureType === 'time' ? console.log(natureType) :
-                                console.log(inst[natureType]) && pointArr.map((natureObj, ind2)=>(
+                                pointArr.map((natureObj, ind2)=>(
                                 natureType === 'animal' ? 
                                     <Marker
                                         key={`${sdate}.${time}.${ind2}`}
@@ -301,7 +301,7 @@ function FullMap(props) {
                     :
                     (title === 'light_maps' || title === 'order_maps' ? 
                         !data.Results[title][sdate][time].data ? null :(data.Results[title][sdate][time].data).map((inst) => (
-                            console.log(inst)&&Object.entries(inst.points).map(([ind, point], i2) => (
+                            Object.entries(inst.points).map(([ind, point], i2) => (
                                 <Marker
                                     key={`${sdate}.${time}.${i2}`}
                                     shape={'title' === 'order_maps' ? 'triangle' : 'lightcircle'}
@@ -314,7 +314,7 @@ function FullMap(props) {
                         ))
                         : 
                         !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
-                                point ? (console.log(point) && (point.mode || point.kind === 'Constructed' ? 
+                                point ? (point.mode || point.kind === 'Constructed' ? 
                                     <Path 
                                         key={`${sdate}.${time}.${i2}`} 
                                         path={point.path} 

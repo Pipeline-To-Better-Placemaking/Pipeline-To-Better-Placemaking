@@ -16,6 +16,7 @@ function ProjectPage(){
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
     var results = {};
     const [drawer, setDrawer] = React.useState();
+    const [activities, setActivities] = React.useState();
     const user = loc.state ? loc.state.userToken : {};
 
     // page url: path (split index)
@@ -93,7 +94,8 @@ function ProjectPage(){
                 ))
             ))
 
-            setDrawer({ Results: results, Graphs: '', Data: '' })
+            setActivities(results);
+            setDrawer({ Results: results, Graphs: '', Data: '' });
             setLoaded(true);
             
         } catch(error){
@@ -116,7 +118,6 @@ function ProjectPage(){
         }
 
         try {
-
             const response = await axios.get(`/${apiCategory[cat]}/${id}`, {
                 headers: {
                     // 'Content-Type': 'application/json',
@@ -177,10 +178,10 @@ function ProjectPage(){
                         area={ area } 
                         center={ center }/>} />
                     <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
-                        drawers={ results }  />} />
+                        drawers={ activities }  />} />
                     <Route path='activities/times' element={<NewActivityTimes />}/>
                     <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } 
-                        drawers={ results }  />} />
+                        drawers={ activities }  />} />
                 </Routes>
                 : null
             }
