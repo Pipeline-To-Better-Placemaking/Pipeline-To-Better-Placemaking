@@ -464,5 +464,10 @@ surveyToCSV = function(data) {
 module.exports = {
     stationaryToCSV,
     movingToCSV,
-    surveyToCSV
+    surveyToCSV,
+    soundToCSV,
+    lightToCSV,
+    orderToCSV,
+    boundariesToCSV,
+    natureToCSV
 }
