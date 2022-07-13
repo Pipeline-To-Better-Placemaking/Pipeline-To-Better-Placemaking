@@ -38,6 +38,7 @@ function ProjectPage(){
         { lat: 28.604549107390945, lng: -81.2062102077004 },
         { lat: 28.60644237514531, lng: -81.20359237160903 }
     ];
+    var subareas = [];
 
     // loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
     const projectData = async() => {
@@ -149,6 +150,8 @@ function ProjectPage(){
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
     //var standingPoints = projectInfo?.standingPoints;
     area = projectInfo?.area?.points;
+    subareas = projectInfo?.subareas;
+
     //console.log(projectInfo)
     //console.log(results)
     //console.log(templateDrawers)

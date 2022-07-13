@@ -633,7 +633,7 @@ const Path = ({boundsPathWindow, ...options}) => {
         Swimming: '#FFFF00',
         'Activity on Wheels': '#008000',
         'Handicap Assisted Wheels': '#FFA500',
-        Constructed: '#FF00E5',
+        Construction: '#FF00E5',
         New: 'rgba(255, 0, 0, 0.5)'
     }
     const lines = {

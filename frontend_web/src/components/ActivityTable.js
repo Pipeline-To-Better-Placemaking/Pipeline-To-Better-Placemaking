@@ -107,7 +107,7 @@ const subtable = (row, type, name) => (
                         (Object.entries(row).map(([date, dObj]) => (
                             Object.entries(dObj).map(([time, tObj]) => (
                                 tObj.data.map((object, index) => (
-                                    Object.entries(object.points).map((point, i1)=>(
+                                    Object.values(object.points).map((point, i1)=>(
                                     <TableRow key={`${index}.${i1}`}>
                                         <TableCell colSpan={2} className='value'>
                                             {point.kind ? point.kind : 'N/A'}
@@ -185,7 +185,7 @@ const subtable = (row, type, name) => (
                                 ))
                             :
                                 instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' ? 
-                                    Object.entries(inst.points).map((point, i2) => (
+                                    Object.values(inst.points).map((point, i2) => (
                                         <TableRow key={`${ind}.${i2}`}>
                                             <TableCell colSpan={2} className='category'>
                                                 {testNames(instance.split('.')[0])}
