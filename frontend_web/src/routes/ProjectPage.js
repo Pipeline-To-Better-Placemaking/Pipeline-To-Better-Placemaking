@@ -16,7 +16,7 @@ function ProjectPage(){
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
     var results = {};
     var sPoints = {};
-    const [standingPoints, setStandingPoints] = React.useState({});
+    const [standingPoints, setStandingPoints] = React.useState();
     const [drawer, setDrawer] = React.useState();
     const [activities, setActivities] = React.useState();
     const user = loc.state ? loc.state.userToken : {};
@@ -81,11 +81,6 @@ function ProjectPage(){
                 ))
             ))
 
-            response?.data?.standingPoints?.map((point) => (
-                sPoints[point._id] = { latitude: point.latitude, longitude: point.longitude }
-            ));
-            setStandingPoints(sPoints);
-
             setActivities(results);
             setDrawer({ Results: results, Graphs: '', Data: '' });
             setLoaded(true);
@@ -142,6 +137,10 @@ function ProjectPage(){
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
     area = projectInfo?.area?.points;
+    projectInfo?.standingPoints?.map((point) => (
+        sPoints[point._id] = { latitude: point.latitude, longitude: point.longitude }
+    ));
+    setStandingPoints(sPoints);
     subareas = projectInfo?.subareas;
 
     //console.log(projectInfo)

@@ -142,9 +142,9 @@ const subtable = (row, type, name) => (
                     ))))
                 : Object.entries(row).map(([instance, data])=>(
                         Object.values(data.data).map((inst, ind) => (
-                            console.log(inst)&&instance.split('.')[0] === 'nature_maps' ? 
+                            console.log(instance.split('.')[0])&&instance.split('.')[0] === 'nature_maps' ? 
                                 Object.entries(inst).map(([type, pointArr])=>(
-                                    type === '_id' || type === 'time' ? null : 
+                                    console.log(type)&&(type === '_id' || type === 'time') ? null : 
                                         (console.log(pointArr)&&type === 'weather' ? 
                                             <TableRow key={ind}>
                                                 <TableCell colSpan={2} className='category'>
@@ -183,8 +183,8 @@ const subtable = (row, type, name) => (
                                         )))
                                 ))
                             :
-                                console.log(inst)&&(instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps') ? 
-                                    Object.values(inst.points).map((point, i2) => (
+                                (instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps') ? 
+                                    (inst.points).map((point, i2) => (
                                         <TableRow key={`${ind}.${i2}`}>
                                             <TableCell colSpan={2} className='category'>
                                                 {testNames(instance.split('.')[0])}
