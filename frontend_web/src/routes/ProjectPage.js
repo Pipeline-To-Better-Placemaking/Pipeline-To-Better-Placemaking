@@ -15,6 +15,7 @@ function ProjectPage(){
     const [projectInfo, setProjectInfo] = React.useState();
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
     var results = {};
+    var sPoints = {};
     const [standingPoints, setStandingPoints] = React.useState();
     const [drawer, setDrawer] = React.useState();
     const [activities, setActivities] = React.useState();
@@ -40,13 +41,13 @@ function ProjectPage(){
             });
             setProjectInfo(response.data);
 
-            //var sPoints = {};
-            /*response?.data?.standingPoints.map((point) => (
-                sPoints[point._id] = { latitude: point?.latitude, longitude: point.longitude }
-            ));*/
+            response?.data?.standingPoints.map((point) => (
+                sPoints[point._id] = { latitude: point.latitude, longitude: point.longitude }
+            ));
+
             setStandingPoints(response?.data?.standingPoints);
             console.log(response?.data?.standingPoints);
-            console.log(standingPoints);
+            console.log(sPoints);
 
             //get Map data for activity results (needed in drawers)
             response?.data?.boundariesCollections.forEach((collection) => (
