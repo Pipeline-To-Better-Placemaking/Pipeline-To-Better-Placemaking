@@ -308,7 +308,7 @@ function FullMap(props) {
                             Object.entries(inst.points).map(([ind, point], i2) => (
                                 <Marker
                                     key={`${sdate}.${time}.${i2}`}
-                                    shape={'title' === 'order_maps' ? 'triangle' : 'lightcircle'}
+                                    shape={title === 'order_maps' ? 'triangle' : 'lightcircle'}
                                     info={point.light_description ?
                                         (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`) 
                                             : (point.description ? (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.kind}<br/>${point.description}</div>`) : null)}
