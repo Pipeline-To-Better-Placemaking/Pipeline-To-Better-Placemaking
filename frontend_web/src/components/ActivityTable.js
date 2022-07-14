@@ -143,7 +143,7 @@ const subtable = (row, type, name) => (
                         Object.values(data.data).map((inst, ind) => (
                             (instance.split('.')[0]) === 'nature_maps' ? 
                                 Object.entries(inst).map(([type, pointArr])=>(
-                                    console.log(inst)&&(type === '_id' || type === 'time') ? null : 
+                                    console.log(type)&&(type === '_id' || type === 'time') ? null : 
                                         (console.log(pointArr)&&type === 'weather' ? 
                                             <TableRow key={ind}>
                                                 <TableCell colSpan={2} className='category'>
