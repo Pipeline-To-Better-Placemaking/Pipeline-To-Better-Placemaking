@@ -39,16 +39,12 @@ function ProjectPage(){
                 },
                 withCredentials: true
             });
+
             setProjectInfo(response.data);
 
             response?.data?.standingPoints.map((point) => (
                 sPoints[point._id] = { latitude: point.latitude, longitude: point.longitude }
             ));
-
-            setStandingPoints(sPoints);
-            console.log(response?.data?.standingPoints);
-            console.log(sPoints);
-            console.log(standingPoints);
 
             //get Map data for activity results (needed in drawers)
             response?.data?.boundariesCollections.forEach((collection) => (
@@ -89,6 +85,7 @@ function ProjectPage(){
             ))
 
             setActivities(results);
+            setStandingPoints(sPoints);
             setDrawer({ Results: results, Graphs: '', Data: '' });
             setLoaded(true);
             
@@ -144,6 +141,9 @@ function ProjectPage(){
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
     area = projectInfo?.area?.points;
     subareas = projectInfo?.subareas;
+    
+    console.log(sPoints);
+    console.log(standingPoints);
     //console.log(projectInfo)
     //console.log(activities)
 
