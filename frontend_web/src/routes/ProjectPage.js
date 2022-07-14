@@ -45,9 +45,10 @@ function ProjectPage(){
                 sPoints[point._id] = { latitude: point.latitude, longitude: point.longitude }
             ));
 
-            setStandingPoints(response?.data?.standingPoints);
+            setStandingPoints(sPoints);
             console.log(response?.data?.standingPoints);
             console.log(sPoints);
+            console.log(standingPoints);
 
             //get Map data for activity results (needed in drawers)
             response?.data?.boundariesCollections.forEach((collection) => (
@@ -156,7 +157,7 @@ function ProjectPage(){
                         drawers={ drawer } 
                         area={ area } 
                         center={ center }
-                        subAreas={subareas}
+                        subAreas={ subareas }
                         standingPoints={ standingPoints }/>} />
                     <Route path='map' element={<MapPage title={ projectInfo?.title } 
                         drawers={ drawer }  

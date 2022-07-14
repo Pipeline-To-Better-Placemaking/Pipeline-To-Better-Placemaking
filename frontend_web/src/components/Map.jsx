@@ -24,16 +24,14 @@ const render = (status) => {
 
 function FullMap(props) {
     //const config = require('../../../utils/config');
-    const [standingPoints, setStandingPoints] = React.useState(props.standingPoints ? props.standingPoints : null);
-    console.log(standingPoints);
-    const subAreas = props.subAreas ? props.subAreas: null;
-    console.log(subAreas);
+    const [standingPoints, setStandingPoints] = React.useState(props.standingPoints);
+    const subAreas = props.subAreas ? props.subAreas : null;
     const [map, setMap] = React.useState(null);
     const [mapPlaces, setMapPlaces] = React.useState(null);
     const [placeOn, setPlaceOn] = React.useState(false);
     const [title, setTitle] = React.useState(props.type > 0 ? props.title : null);
-    const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 10); // initial zoom
-    const [center, setCenter] = React.useState(props.center.lat ? { lat: props.center.lat, lng: props.center.lng } : { lat:28.54023216523664, lng:-81.38181298263407 });
+    const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 11); // initial zoom
+    const [center, setCenter] = React.useState(props.center ? props.center : { lat:28.54023216523664, lng:-81.38181298263407 });
     const [bounds, setBounds] = React.useState();
     const [click, setClick] = React.useState(props.type === 0 || props.type === 2 ? props.center : null);
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
@@ -60,6 +58,8 @@ function FullMap(props) {
         sound_maps: soundCollections
     });
 
+    console.log(standingPoints);
+    console.log(subAreas);
     //const standingPoints = (props.standingPoints ? props.standingPoints : null);
     // onSelection handles the boolean toggling from Map Drawer selections/switches
     // passes updates to specific state object and then to collections objects to register updates
