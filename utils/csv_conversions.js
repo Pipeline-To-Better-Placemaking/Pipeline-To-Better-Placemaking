@@ -130,8 +130,8 @@ soundToCSV = function(data) {
 
     var csv = headers
 
-    for(var i = 0; i < data.movingCollections.length; i++){
-        var collection = data.movingCollections[i]
+    for(var i = 0; i < data.soundCollections.length; i++){
+        var collection = data.soundCollections[i]
         
         var area = "\"POLYGON (("
         for(var j = 0; j < collection.area.points.length; j++){
@@ -191,8 +191,8 @@ lightToCSV = function(data) {
 
     var csv = headers
 
-    for(var i = 0; i < data.movingCollections.length; i++){
-        var collection = data.movingCollections[i]
+    for(var i = 0; i < data.lightCollections.length; i++){
+        var collection = data.lightCollections[i]
         
         var area = "\"POLYGON (("
         for(var j = 0; j < collection.area.points.length; j++){
@@ -245,8 +245,8 @@ natureToCSV = function(data) {
 
     var csv = headers
 
-    for(var i = 0; i < data.movingCollections.length; i++){
-        var collection = data.movingCollections[i]
+    for(var i = 0; i < data.natureCollections.length; i++){
+        var collection = data.natureCollections[i]
         
         var area = "\"POLYGON (("
         for(var j = 0; j < collection.area.points.length; j++){
@@ -302,8 +302,8 @@ orderToCSV = function(data) {
 
     var csv = headers
 
-    for(var i = 0; i < data.movingCollections.length; i++){
-        var collection = data.movingCollections[i]
+    for(var i = 0; i < data.orderCollections.length; i++){
+        var collection = data.orderCollections[i]
         
         var area = "\"POLYGON (("
         for(var j = 0; j < collection.area.points.length; j++){
@@ -356,8 +356,8 @@ boundariesToCSV = function(data) {
 
     var csv = headers
 
-    for(var i = 0; i < data.movingCollections.length; i++){
-        var collection = data.movingCollections[i]
+    for(var i = 0; i < data.boundariesCollections.length; i++){
+        var collection = data.boundariesCollections[i]
         
         var area = "\"POLYGON (("
         for(var j = 0; j < collection.area.points.length; j++){
