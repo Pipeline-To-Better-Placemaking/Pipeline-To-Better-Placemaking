@@ -60,7 +60,7 @@ function FullMap(props) {
 
     console.log(standingPoints);
     console.log(subAreas);
-    //const standingPoints = (props.standingPoints ? props.standingPoints : null);
+    console.log(center);
     // onSelection handles the boolean toggling from Map Drawer selections/switches
     // passes updates to specific state object and then to collections objects to register updates
     function onSelection(category, date, time, check) {

@@ -152,25 +152,31 @@ function ProjectPage(){
             <TabPanel state={ loc.state }/>
             {
                 loaded ? 
-                <Routes>
-                    <Route index element={<MapPage title={ projectInfo?.title } 
-                        drawers={ drawer } 
-                        area={ area } 
-                        center={ center }
-                        subAreas={ subareas }
-                        standingPoints={ standingPoints }/>} />
-                    <Route path='map' element={<MapPage title={ projectInfo?.title } 
-                        drawers={ drawer }  
-                        area={ area } 
-                        center={ center }
-                        subAreas={subareas}
-                        standingPoints={ standingPoints }/>} />
-                    <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
-                        drawers={ activities }  />} />
-                    <Route path='activities/times' element={<NewActivityTimes />}/>
-                    <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } 
-                        drawers={ activities }  />} />
-                </Routes>
+                    <Routes>
+                        <Route index element={
+                            <MapPage title={ projectInfo?.title } 
+                                drawers={ drawer } 
+                                area={ area } 
+                                center={ center }
+                                subAreas={ subareas }
+                                standingPoints={ standingPoints }
+                            />
+                        } />
+                        <Route path='map' element={
+                            <MapPage title={ projectInfo?.title } 
+                                drawers={ drawer }  
+                                area={ area } 
+                                center={ center }
+                                subAreas={ subareas }
+                                standingPoints={ standingPoints }
+                            />
+                        } />
+                        <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
+                            drawers={ activities }  />} />
+                        <Route path='activities/times' element={<NewActivityTimes />}/>
+                        <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } 
+                            drawers={ activities }  />} />
+                    </Routes>
                 : null
             }
         </div>
