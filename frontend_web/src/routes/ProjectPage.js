@@ -45,6 +45,8 @@ function ProjectPage(){
                 sPoints[point._id] = { latitude: point?.latitude, longitude: point.longitude }
             ));*/
             setStandingPoints(response?.data?.standingPoints);
+            console.log(response?.data?.standingPoints);
+            console.log(standingPoints);
 
             //get Map data for activity results (needed in drawers)
             response?.data?.boundariesCollections.forEach((collection) => (
