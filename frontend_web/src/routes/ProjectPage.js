@@ -20,13 +20,9 @@ function ProjectPage(){
     const [drawer, setDrawer] = React.useState();
     const [activities, setActivities] = React.useState();
     const user = loc.state ? loc.state.userToken : {};
-
     // page url: path (split index)
     // can be reached at (heroku-url)/home (1)/teams (2)/ :id (3) /projects (4)/:id (5)
     const projectId = loc.pathname.split('/')[5];
-    //load project area and location data here as well and pass to Map Page
-    var area = [];
-    var subAreas = [];
 
     // loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
     const projectData = async() => {
@@ -139,8 +135,8 @@ function ProjectPage(){
 
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
-    area = projectInfo?.area?.points;
-    subAreas = projectInfo?.subareas;
+    var area = projectInfo?.area?.points;
+    var subAreas = projectInfo?.subareas;
     
     console.log(standingPoints);
     //console.log(projectInfo)
