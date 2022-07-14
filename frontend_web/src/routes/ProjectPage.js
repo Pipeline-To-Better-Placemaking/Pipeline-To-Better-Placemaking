@@ -26,7 +26,7 @@ function ProjectPage(){
     const projectId = loc.pathname.split('/')[5];
     //load project area and location data here as well and pass to Map Page
     var area = [];
-    var subareas = [];
+    var subAreas = [];
 
     // loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
     const projectData = async() => {
@@ -140,9 +140,8 @@ function ProjectPage(){
     //loading in center from project
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
     area = projectInfo?.area?.points;
-    subareas = projectInfo?.subareas;
+    subAreas = projectInfo?.subareas;
     
-    console.log(sPoints);
     console.log(standingPoints);
     //console.log(projectInfo)
     //console.log(activities)
@@ -154,28 +153,37 @@ function ProjectPage(){
                 loaded ? 
                     <Routes>
                         <Route index element={
-                            <MapPage title={ projectInfo?.title } 
+                            <MapPage 
+                                title={ projectInfo?.title } 
                                 drawers={ drawer } 
                                 area={ area } 
                                 center={ center }
-                                subAreas={ subareas }
                                 standingPoints={ standingPoints }
+                                subAreas={ subAreas }
                             />
                         } />
                         <Route path='map' element={
-                            <MapPage title={ projectInfo?.title } 
+                            <MapPage 
+                                title={ projectInfo?.title } 
                                 drawers={ drawer }  
                                 area={ area } 
                                 center={ center }
-                                subAreas={ subareas }
                                 standingPoints={ standingPoints }
+                                subAreas={ subAreas }
                             />
                         } />
-                        <Route path='activities' element={<ActivityPage title={ projectInfo?.title }  
-                            drawers={ activities }  />} />
+                        <Route path='activities' element={
+                            <ActivityPage 
+                                title={ projectInfo?.title }  
+                                drawers={ activities }  
+                            />
+                        } />
                         <Route path='activities/times' element={<NewActivityTimes />}/>
-                        <Route path='surveyors' element={<SurveyorPage title={ projectInfo?.title } 
-                            drawers={ activities }  />} />
+                        <Route path='surveyors' element={
+                            <SurveyorPage title={ projectInfo?.title } 
+                                drawers={ activities }  
+                            />
+                        } />
                     </Routes>
                 : null
             }

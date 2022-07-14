@@ -23,9 +23,6 @@ const render = (status) => {
     // 5 - new project map
 
 function FullMap(props) {
-    //const config = require('../../../utils/config');
-    const [standingPoints, setStandingPoints] = React.useState(props.standingPoints ? props.standingPoints : null);
-    const subAreas = props.subAreas ? props.subAreas : null;
     const [map, setMap] = React.useState(null);
     const [mapPlaces, setMapPlaces] = React.useState(null);
     const [placeOn, setPlaceOn] = React.useState(false);
@@ -37,6 +34,8 @@ function FullMap(props) {
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
     const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 ? props.area : null);
     const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [props.center] :[]));
+    const [standingPoints, setStandingPoints] = React.useState(props.standingPoints ? props.standingPoints : {});
+    const [subAreas, setSubAreas] = React.useState(props.subAreas ? props.subAreas : null);
 
     // hold the selections from the switch toggles
     const [stationaryCollections, setStationaryCollections] = React.useState({});
