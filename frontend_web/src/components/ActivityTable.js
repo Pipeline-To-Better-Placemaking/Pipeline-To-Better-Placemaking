@@ -10,7 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import {testNames} from '../functions/HelperFunctions';
+import { testNames } from '../functions/HelperFunctions';
 
 // Collapsible Table for Activity Page
 function Row(props) {

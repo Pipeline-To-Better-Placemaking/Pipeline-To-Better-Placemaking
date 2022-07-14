@@ -34,7 +34,7 @@ function FullMap(props) {
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
     const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 ? props.area : null);
     const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [props.center] :[]));
-    const [standingPoints, setStandingPoints] = React.useState(props.standingPoints ? props.standingPoints : null);
+    const standingPoints = props?.standingPoints;
     const [subAreas, setSubAreas] = React.useState(props.subAreas ? props.subAreas : null);
 
     // hold the selections from the switch toggles
@@ -57,9 +57,6 @@ function FullMap(props) {
         sound_maps: soundCollections
     });
 
-    console.log(standingPoints);
-    console.log(subAreas);
-    console.log(center);
     // onSelection handles the boolean toggling from Map Drawer selections/switches
     // passes updates to specific state object and then to collections objects to register updates
     function onSelection(category, date, time, check) {

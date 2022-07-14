@@ -13,9 +13,6 @@ function ProjectPage(){
     const [loaded, setLoaded] = React.useState(false);
     //Holds basic projects info including map ids, default data overwritten on async function
     const [projectInfo, setProjectInfo] = React.useState();
-    //Holds specifics like results, locations, and types of markers, boundaries, etc.
-    var results = {};
-    var sPoints = {};
     const [standingPoints, setStandingPoints] = React.useState();
     const [drawer, setDrawer] = React.useState();
     const [activities, setActivities] = React.useState();
@@ -23,6 +20,9 @@ function ProjectPage(){
     // page url: path (split index)
     // can be reached at (heroku-url)/home (1)/teams (2)/ :id (3) /projects (4)/:id (5)
     const projectId = loc.pathname.split('/')[5];
+    //Holds specifics like results, locations, and types of markers, boundaries, etc.
+    var results = {};
+    var sPoints = {};
 
     const projectData = async() => {
         try {
@@ -138,7 +138,7 @@ function ProjectPage(){
     var subAreas = projectInfo?.subareas;
     
     console.log(standingPoints);
-    //console.log(projectInfo)
+    console.log(projectInfo)
     //console.log(activities)
 
     return (
