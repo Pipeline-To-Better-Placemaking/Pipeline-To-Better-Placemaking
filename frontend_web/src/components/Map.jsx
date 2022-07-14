@@ -381,7 +381,7 @@ export default function FullMap(props) {
                     zoom={ zoom }
                 >
                     { areaData ? <Bounds area={areaData} type={'area'} /> :  null }
-                    { subAreas.length > 1 ? subAreas.map((area, index)=>( index === 0 ? null : <Bounds area={area.points} type={'area'} />)) : null}
+                    { subAreas.length > 1 ? subAreas.map((area, index)=>( index === 0 ? null : <Bounds area={area.points} type={'area'} />)) : null }
                     { props.type === 1 ? 
                         actCoords(collections) : 
                         (props.type === 2 || props.type === 4 ? 

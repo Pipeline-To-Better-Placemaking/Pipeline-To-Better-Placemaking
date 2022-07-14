@@ -68,7 +68,7 @@ function ActivityPage(props) {
                                         obj = { Category: testNames(category), Date: date, Time: time, Point: ind1, 'Weather (temp/sky)': '', 'Kind/Area (ft/sq.ft)': `${natureArea.area}`, Description: `${natureArea.description}` }
                                         nature.push(obj);
                                     })
-                                } else {
+                                } else if(type === 'animal') {
                                     pointArr.forEach((natureArea, ind1) => {
                                         obj = { Category: testNames(category), Date: date, Time: time, Point: ind1, 'Weather (temp/sky)': '', 'Kind/Area (ft/sq.ft)': `${natureArea.kind}`, Description: `${natureArea.description}` }
                                         nature.push(obj);
