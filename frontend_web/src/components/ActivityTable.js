@@ -141,10 +141,10 @@ const subtable = (row, type, name) => (
                     ))))
                 : Object.entries(row).map(([instance, data])=>(
                         Object.values(data.data).map((inst, ind) => (
-                            (instance.split('.')[0]) === 'nature_maps' ? 
+                            instance.split('.')[0] === 'nature_maps' ? 
                                 Object.entries(inst).map(([type, pointArr])=>(
-                                    console.log(type)&&(type === '_id' || type === 'time') ? null : 
-                                        (console.log(pointArr)&&type === 'weather' ? 
+                                    type === '_id' || type === 'time' ? null : 
+                                        (type === 'weather' ? 
                                             <TableRow key={ind}>
                                                 <TableCell colSpan={2} className='category'>
                                                     {testNames(instance.split('.')[0])}
@@ -160,29 +160,28 @@ const subtable = (row, type, name) => (
                                                 <TableCell>N/A</TableCell>
                                                 <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
                                             </TableRow> 
-                                        :
-                                            console.log(pointArr)&&pointArr.map((nature, in1)=>(
-                                            <TableRow key={`${ind}.${in1}`}>
-                                                <TableCell colSpan={2} className='category'>
-                                                    {testNames(instance.split('.')[0])}
-                                                </TableCell>
-                                                <TableCell colSpan={1} className='value'>
-                                                    {
-                                                        nature.area ? `${nature.area} sq.ft.` : nature.kind
-                                                    }
-                                                </TableCell>
-                                                <TableCell>
-                                                    {
-                                                        nature.area ? `${nature.kind}  ${nature.description}` : `${nature.description}`
-                                                    }
-                                                </TableCell>
-                                                <TableCell>Location {in1 + 1}</TableCell>
-                                                <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
-                                            </TableRow>
-                                        )))
+                                            : pointArr.map((nature, in1)=>(
+                                                <TableRow key={`${ind}.${in1}`}>
+                                                    <TableCell colSpan={2} className='category'>
+                                                        {testNames(instance.split('.')[0])}
+                                                    </TableCell>
+                                                    <TableCell colSpan={1} className='value'>
+                                                        {
+                                                            nature.area ? `${nature.area} sq.ft.` : nature.kind
+                                                        }
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {
+                                                            nature.area ? `${nature.kind}  ${nature.description}` : `${nature.description}`
+                                                        }
+                                                    </TableCell>
+                                                    <TableCell>Location {in1 + 1}</TableCell>
+                                                    <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
+                                                </TableRow>
+                                            )))
                                 ))
                             :
-                                (instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps') ? 
+                                instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' ? 
                                     (inst.points).map((point, i2) => (
                                         <TableRow key={`${ind}.${i2}`}>
                                             <TableCell colSpan={2} className='category'>
