@@ -15,7 +15,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios.js';
 
 import './routes.css';
-
 const registerURL = '/users'
 
 function NewUser(props) {

@@ -9,7 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
-
+import { useNavigate } from 'react-router-dom';
+import axios from '../api/axios.js';
 import './routes.css';
 
 const ITEM_HEIGHT = 48;
@@ -24,6 +25,7 @@ const MenuProps = {
 };
 
 function NewTeamForm() {
+    let nav = useNavigate();
     //Load users to add in names
     const [names, setNames] = React.useState([
         'James Man', 'Lilly Flowers', 'Some Guy'
@@ -37,6 +39,7 @@ function NewTeamForm() {
     });
 
     const [message, setMessage] = React.useState('');
+    const addTeamResponse = React.useRef(null);
     const titleRef = React.useRef(null);
     const titleMess = React.useRef(null);
 
@@ -44,13 +47,13 @@ function NewTeamForm() {
         setFormValues({ ...formValues, [e.target.name]: e.target.value });
     };
 
-    const handleMultiChange = (e) => {
+    /*const handleMultiChange = (e) => {
         const { target: { value } } = e;
         setFormValues({
             // On autofill we get a stringified value.
             ...formValues, users: typeof value === 'string' ? value.split(',') : value,
         });
-    };
+    };*/
 
     const handleChecked = (e) => {
         setFormValues({ ...formValues, [e.target.name]: e.target.checked });
@@ -69,6 +72,27 @@ function NewTeamForm() {
         }
     }
 
+    const submitNewTeam = async (e) => {
+        //add new team
+        try {
+            const response = await axios.post('/teams', JSON.stringify({ title: formValues.title, description: formValues.description, public: formValues.public }), {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            });
+            //console.log(response.data);
+            //console.log(response.accessToken);
+            //console.log(JSON.stringify(response))
+            //redirect user to url/home
+            nav('/home', { replace: true });
+        } catch (error) {
+            //console.log('ERROR: ', error);
+            //success = false;
+            setMessage(error.response.data?.message);
+            addTeamResponse.current.style.display = 'inline-block';
+            return;
+        }
+    }
+
     return(
         <div id='newTeamForm'>
             <Card id='newTeamCard'>
@@ -76,6 +100,7 @@ function NewTeamForm() {
                 <span>Create a team to create projects and begin surveying. </span>
                 <br/>
                 <Card.Body>
+                    <span ref={addTeamResponse} style={{ display: 'none', color: 'red' }}>{message}</span>
                     <span ref={titleMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                     <TextField
                         className='nonFCInput'
@@ -98,7 +123,7 @@ function NewTeamForm() {
                         value={formValues.description}
                         onChange={handleChange}
                     />
-                    <FormControl sx={{ m: 1, width: 300 }}>
+                    {/*<FormControl sx={{ m: 1, width: 300 }}>
                         <InputLabel id='demo-multiple-name-label'>Users *</InputLabel>
                         <Select
                             labelId='multiSelectUsers'
@@ -118,7 +143,7 @@ function NewTeamForm() {
                                 </MenuItem>
                             ))}
                         </Select>
-                    </FormControl>
+                            </FormControl>*/}
                     <FormControl>
                         <FormControlLabel 
                             control={<Checkbox

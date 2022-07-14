@@ -195,7 +195,7 @@ const subtable = (row, type, name) => (
                                                     point.description ? `${point.description}` : point.light_description
                                                 }
                                             </TableCell>
-                                            <TableCell>N/A</TableCell>
+                                            <TableCell>{i2}</TableCell>
                                             <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
                                         </TableRow>
                                     )) 
