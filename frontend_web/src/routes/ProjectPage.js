@@ -137,10 +137,8 @@ function ProjectPage(){
     var area = projectInfo?.area?.points;
     var subAreas = projectInfo?.subareas;
     
-    console.log(standingPoints);
-    console.log(projectInfo)
-    //console.log(activities)
-
+    //console.log(standingPoints);
+    //console.log(projectInfo);
     return (
         <div id='ProjectPage'>
             <TabPanel state={ loc.state }/>
@@ -148,7 +146,7 @@ function ProjectPage(){
                 loaded ? 
                     <Routes>
                         <Route index element={
-                            <MapPage 
+                            <MapPage
                                 title={ projectInfo?.title } 
                                 drawers={ drawer } 
                                 area={ area } 

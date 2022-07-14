@@ -6,10 +6,13 @@ import './routes.css';
 
 function MapPage(props) {
     const id = useParams();
+    //const apiKey = props.apiKey;
     const drawers = props.drawers;
     const title = props.title;
     const area = props.area;
     const center = props.center;
+    const subAreas = props.subAreas;
+    const standingPoints = props.standingPoints
 
     //console.log(id);
 
@@ -24,6 +27,8 @@ function MapPage(props) {
                 type={ 1 }
                 drawers={ drawers }
                 area={ area }
+                standingPoints={ standingPoints }
+                subAreas={ subAreas }
             />
         </div>
     );

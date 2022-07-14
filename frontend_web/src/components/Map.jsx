@@ -22,7 +22,7 @@ const render = (status) => {
     // 4 - new project area
     // 5 - new project map
 
-function FullMap(props) {
+export default function FullMap(props) {
     const [map, setMap] = React.useState(null);
     const [mapPlaces, setMapPlaces] = React.useState(null);
     const [placeOn, setPlaceOn] = React.useState(false);
@@ -360,6 +360,9 @@ function FullMap(props) {
         ))
     );
 
+    console.log(subAreas);
+    console.log(standingPoints);
+
     // Components returned on render -----
     return (
         <div id='mapDoc'>
@@ -378,7 +381,7 @@ function FullMap(props) {
                     zoom={ zoom }
                 >
                     { areaData ? <Bounds area={areaData} type={'area'} /> :  null }
-                    { subAreas ? subAreas.map((area)=>(<Bounds area={area.points} type={'area'} />)) : null}
+                    { subAreas.length > 1 ? subAreas.map((area, index)=>( index === 0 ? null : <Bounds area={area.points} type={'area'} />)) : null}
                     { props.type === 1 ? 
                         actCoords(collections) : 
                         (props.type === 2 || props.type === 4 ? 
@@ -788,5 +791,3 @@ function useDeepCompareMemoize(value) {
 function useDeepCompareEffectForMaps(callback, dependencies) {
     React.useEffect(callback, dependencies.map(useDeepCompareMemoize));
 }
-
-export default FullMap;
