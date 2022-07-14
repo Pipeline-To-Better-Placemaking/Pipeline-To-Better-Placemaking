@@ -15,7 +15,6 @@ import {testNames} from '../functions/HelperFunctions';
 // Collapsible Table for Activity Page
 function Row(props) {
     const row = props.row;
-    console.log(props.row);
     const name = props.name;
     const [open, setOpen] = React.useState(false);
 
@@ -110,10 +109,10 @@ const subtable = (row, type, name) => (
                                     Object.values(object.points).map((point, i1)=>(
                                     <TableRow key={`${index}.${i1}`}>
                                         <TableCell colSpan={2} className='value'>
-                                            {point.kind ? point.kind : 'N/A'}
+                                            { point.kind ? point.kind : 'N/A'}
                                         </TableCell>
                                         <TableCell colSpan={2} className='type'>
-                                            {console.log(point)&&point.description ? `${point.description}` : `${point.light_description}`}
+                                            { point.description ? `${point.description}` : `${point.light_description}` }
                                         </TableCell>
                                         <TableCell>Location {i1}</TableCell>
                                         <TableCell>{date} {time}</TableCell>
@@ -142,9 +141,9 @@ const subtable = (row, type, name) => (
                     ))))
                 : Object.entries(row).map(([instance, data])=>(
                         Object.values(data.data).map((inst, ind) => (
-                            console.log(instance.split('.')[0])&&instance.split('.')[0] === 'nature_maps' ? 
+                            (instance.split('.')[0]) === 'nature_maps' ? 
                                 Object.entries(inst).map(([type, pointArr])=>(
-                                    console.log(type)&&(type === '_id' || type === 'time') ? null : 
+                                    console.log(inst)&&(type === '_id' || type === 'time') ? null : 
                                         (console.log(pointArr)&&type === 'weather' ? 
                                             <TableRow key={ind}>
                                                 <TableCell colSpan={2} className='category'>
@@ -190,7 +189,7 @@ const subtable = (row, type, name) => (
                                                 {testNames(instance.split('.')[0])}
                                             </TableCell>
                                             <TableCell colSpan={1} className='value'>
-                                                {point.kind ? point.kind : 'N/A'}
+                                                { point.kind ? point.kind : 'N/A' }
                                             </TableCell>
                                             <TableCell>
                                                 {

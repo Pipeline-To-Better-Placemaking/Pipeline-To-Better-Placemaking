@@ -140,8 +140,7 @@ function ProjectPage(){
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
     area = projectInfo?.area?.points;
     subareas = projectInfo?.subareas;
-
-    console.log(projectInfo)
+    //console.log(projectInfo)
     //console.log(activities)
 
     return (
