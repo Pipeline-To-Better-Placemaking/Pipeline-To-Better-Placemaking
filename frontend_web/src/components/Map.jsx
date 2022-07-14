@@ -618,7 +618,6 @@ const Bounds = ({boundsPathWindow, ...options}) => {
                 paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : (type === 'vegetation' ? 3 : 0))));
             }
         }
-
     }, [paths, options, type, area, boundsPathWindow]);
 
     return null;
