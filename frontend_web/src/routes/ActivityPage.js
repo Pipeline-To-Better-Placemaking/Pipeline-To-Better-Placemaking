@@ -34,28 +34,32 @@ function ActivityPage(props) {
             Object.entries(catobject).forEach(([date, dateobject])=>{
                 Object.entries(dateobject).forEach(([time, timeobject])=>{
                     Object.entries(timeobject.data).forEach(([index, dataobjects])=>{
+                        console.log(drawers);
                         var obj = {}
                         // Create an object based on category and append it to its related array
                         if(category === 'stationary_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Posture: dataobjects.posture, Age: dataobjects.age, Gender: dataobjects.gender, Activity: `${dataobjects.activity}` };
                             stationary.push(obj);
+                            console.log(dataobjects)
                         } else if(category === 'moving_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Mode: dataobjects.mode }
                             moving.push(obj);
+                            console.log(dataobjects)
                         } else if (category === 'sound_maps') {
-                            obj = { Category: testNames(category), Date: date, Time: time, Point: index, 'Average (dB)': dataobjects.average, 'Sound Type': `${dataobjects.sound_type}`, Source: dataobjects.source }
+                            obj = { Category: testNames(category), Date: date, Time: time, Point: index, 'Average (dB)': dataobjects.average, 'Sound Type': `${dataobjects.sound_type}`, Source: `${dataobjects.source}` }
+                            console.log(dataobjects)
                             sound.push(obj);
                         } else if (category === 'boundaries_maps') {
-                            obj = { Category: testNames(category), Date: date, Time: time, Point: index, Kind: dataobjects.kind, Description: dataobjects.description, 'Value (ft/sq.ft)': dataobjects.value }
+                            obj = { Category: testNames(category), Date: date, Time: time, Point: index, Kind: dataobjects.kind, Description: dataobjects.description, Purpose: `${dataobjects.purpose}`, 'Value (ft/sq.ft)': dataobjects.value }
                             boundaries.push(obj);
                         } else if(category === 'order_maps') {
                             dataobjects.points.forEach((point, ind)=>{
-                                obj = { Category: testNames(category), Date: date, Time: time, Point: ind, Kind: dataobjects.kind, Description: dataobjects.description }
+                                obj = { Category: testNames(category), Date: date, Time: time, Point: ind, Kind: point.kind, Description: point.description }
                                 order.push(obj);
                             })
                         } else if(category === 'light_maps') {
                             dataobjects.points.forEach((point, ind) => {
-                                obj = { Category: testNames(category), Date: date, Time: time, Point: ind, Description: dataobjects.light_description }
+                                obj = { Category: testNames(category), Date: date, Time: time, Point: ind, Description: point.light_description }
                                 lighting.push(obj);
                             })
                         } else if (category === 'nature_maps') {
