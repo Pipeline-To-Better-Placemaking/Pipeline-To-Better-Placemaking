@@ -93,7 +93,7 @@ const subtable = (row, type, name) => (
                                                     <TableCell colSpan={2} className='type'>
                                                         {`${natureObj.description}`}
                                                     </TableCell>
-                                                    <TableCell>Location {i1}</TableCell>
+                                                    <TableCell>Location {i3 + 1}</TableCell>
                                                     <TableCell>{date} {time}</TableCell>
                                                     <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
                                                 </TableRow>
@@ -114,7 +114,7 @@ const subtable = (row, type, name) => (
                                         <TableCell colSpan={2} className='type'>
                                             { point.description ? `${point.description}` : `${point.light_description}` }
                                         </TableCell>
-                                        <TableCell>Location {i1}</TableCell>
+                                        <TableCell>Location {i1 + 1}</TableCell>
                                         <TableCell>{date} {time}</TableCell>
                                             <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
                                     </TableRow>
@@ -132,7 +132,7 @@ const subtable = (row, type, name) => (
                                     <TableCell colSpan={ 2 } className='type'>
                                         {object.average ? `${object.sound_type}` : (object.kind ? (`${object.kind} (${object.description})`) : (object.age ? `${object.age} ${object.gender} (${object.activity})` : 'N/A'))}
                                     </TableCell>
-                                    <TableCell>Location { index }</TableCell>
+                                    <TableCell>Location { index + 1 }</TableCell>
                                     <TableCell>{ date } { time }</TableCell>
                                     <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
                                 </TableRow>
@@ -195,7 +195,7 @@ const subtable = (row, type, name) => (
                                                     point.description ? `${point.description}` : point.light_description
                                                 }
                                             </TableCell>
-                                            <TableCell>{i2}</TableCell>
+                                            <TableCell>Location {i2 + 1}</TableCell>
                                             <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
                                         </TableRow>
                                     )) 

@@ -7,12 +7,12 @@ function Home() {
     const location = useLocation();
     const userTeams = location.state.userToken.user.teams;
 
-    const teamsTemplate = [
+    /*const teamsTemplate = [
         {
             _id: 'jfgn49wgnh58w9hg5uw4n859hw4g549g',
             title: 'Template Team'
         }
-    ]
+    ]*/
 
     return(
         <div id='userHome'>
@@ -21,13 +21,14 @@ function Home() {
                     id='newTeamButton'
                     variant='contained'
                     component={ Link }
+                    state={ location.state }
                     to='new'
                 >
                     New Team
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            <DisplayCards type={ 2 } teams={ userTeams ? userTeams : teamsTemplate } user={ location.state.userToken }/>
+            <DisplayCards type={ 2 } teams={ userTeams } user={ location.state.userToken }/>
         </div>
     );
 }

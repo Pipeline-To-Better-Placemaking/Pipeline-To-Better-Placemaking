@@ -9,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from '../api/axios.js';
 import './routes.css';
 
@@ -26,6 +26,7 @@ const MenuProps = {
 
 function NewTeamForm() {
     let nav = useNavigate();
+    let loc = useLocation();
     //Load users to add in names
     const [names, setNames] = React.useState([
         'James Man', 'Lilly Flowers', 'Some Guy'
@@ -69,6 +70,7 @@ function NewTeamForm() {
         } else {
             titleMess.current.style.display = 'none';
             //call API function
+            //submitNewTeam(e);
         }
     }
 
@@ -83,7 +85,7 @@ function NewTeamForm() {
             //console.log(response.accessToken);
             //console.log(JSON.stringify(response))
             //redirect user to url/home
-            nav('/home', { replace: true });
+            nav('/home', { replace: true, state: loc.state });
         } catch (error) {
             //console.log('ERROR: ', error);
             //success = false;
