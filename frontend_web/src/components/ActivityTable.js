@@ -172,7 +172,7 @@ const subtable = (row, type, name) => (
                                                     </TableCell>
                                                     <TableCell>
                                                         {
-                                                            nature.area ? `${nature.kind}  ${nature.description}` : `${nature.description}`
+                                                            `${nature.description}`
                                                         }
                                                     </TableCell>
                                                     <TableCell>Location {in1 + 1}</TableCell>
