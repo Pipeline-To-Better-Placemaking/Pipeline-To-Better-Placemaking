@@ -310,9 +310,10 @@ function FullMap(props) {
                                     key={`${sdate}.${time}.${i2}`}
                                     shape={'title' === 'order_maps' ? 'triangle' : 'lightcircle'}
                                     info={point.light_description ?
-                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`) : null}
-                                    position={point.location}
-                                    markerType={point.light_description ? point.light_description : null}
+                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`) 
+                                            : (point.description ? (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.kind}<br/>${point.description}</div>`) : null)}
+                                    position={ point.location }
+                                    markerType={point.light_description ? point.light_description : point.description }
                                 />
                             ))
                         ))
