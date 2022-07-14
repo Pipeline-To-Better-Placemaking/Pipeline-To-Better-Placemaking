@@ -34,7 +34,7 @@ function FullMap(props) {
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
     const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 ? props.area : null);
     const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [props.center] :[]));
-    const [standingPoints, setStandingPoints] = React.useState(props.standingPoints ? props.standingPoints : {});
+    const [standingPoints, setStandingPoints] = React.useState(props.standingPoints ? props.standingPoints : null);
     const [subAreas, setSubAreas] = React.useState(props.subAreas ? props.subAreas : null);
 
     // hold the selections from the switch toggles
@@ -367,10 +367,10 @@ function FullMap(props) {
     return (
         <div id='mapDoc'>
             {/* Map Drawers overlay in map.jsx to better communicate*/}
-            { props.type === 1 ? <MapDrawers drawers={ data } selection={onSelection} area={ areaData }/> : null }
-            { props.type === 1 ? <Button id='printButton' onClick={convertToImage}>Print Map</Button>: null }
+            { props.type === 1 ? <MapDrawers drawers={ data } selection={ onSelection } area={ areaData }/> : null }
+            { props.type === 1 ? <Button id='printButton' onClick={ convertToImage }>Print Map</Button>: null }
             {/* Wrapper imports Google Maps API */}
-            <Wrapper apiKey={/*config.GOOGLE_MAP_KEY*/''} render={render} id='mapContainer' libraries={['drawing', 'places']}>
+            <Wrapper apiKey={/*config.GOOGLE_MAP_KEY*/''} render={ render } id='mapContainer' libraries={['drawing', 'places']}>
                 <Map
                     center={ center }
                     onClick={ onMClick }
@@ -381,6 +381,7 @@ function FullMap(props) {
                     zoom={ zoom }
                 >
                     { areaData ? <Bounds area={areaData} type={'area'} /> :  null }
+                    { subAreas ? subAreas.map((area)=>(<Bounds area={area.points} type={'area'} />)) : null}
                     { props.type === 1 ? 
                         actCoords(collections) : 
                         (props.type === 2 || props.type === 4 ? 

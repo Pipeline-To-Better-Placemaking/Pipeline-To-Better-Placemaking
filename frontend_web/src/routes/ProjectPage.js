@@ -24,7 +24,6 @@ function ProjectPage(){
     // can be reached at (heroku-url)/home (1)/teams (2)/ :id (3) /projects (4)/:id (5)
     const projectId = loc.pathname.split('/')[5];
 
-    // loc.state will be used for maintaining project title across the project sub-pages(map, activities, and researchers)
     const projectData = async() => {
         try {
             const response = await axios.get(`/projects/${projectId}`, {
