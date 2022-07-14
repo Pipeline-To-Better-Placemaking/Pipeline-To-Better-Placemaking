@@ -35,8 +35,8 @@ export const styles = StyleSheet.create({
 
     button:{
         backgroundColor: '#006FD6',
-        height: 50, 
-        width: 140
+        height: height * .05, 
+        width: width * .33
     }
     
 });

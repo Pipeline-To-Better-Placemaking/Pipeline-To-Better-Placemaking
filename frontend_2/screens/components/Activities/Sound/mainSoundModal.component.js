@@ -39,8 +39,6 @@ export function MainSoundModal(props) {
         // if the user didn't enter any value, do not allow modal to close
         else setEmpty(true);
     }
-    
-    let music = "\t Music\n(entertainment)"; 
 
     return(
         <Modal transparent={true} animationType='slide' visible={props.visible}>
@@ -49,8 +47,7 @@ export function MainSoundModal(props) {
                     <View style={styles.modalContainer}>
                         <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                         
-                            <Text category={'h1'} style={styles.titleText}>Sound Type</Text>
-                            <Text category={'s1'} style={styles.titleLine}>__________________________</Text>
+                            <Text category={'h1'} style={styles.titleText}>Main Sound Type</Text>
                             <View style={styles.dataView}>
                                 
                                 <View style={styles.titleDesc}>
@@ -59,23 +56,35 @@ export function MainSoundModal(props) {
 
                                 <View>
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} onPress={()=> sendData('Water Feature')} >Water Feature</Button>
-                                        <Button style={styles.button} onPress={()=> sendData('Traffic')}>Traffic</Button>
+                                        <Button style={styles.button} onPress={()=> sendData('Water Feature')}>
+                                            <Text>Water Feature</Text>
+                                        </Button>
+                                        <Button style={styles.button} onPress={()=> sendData('Traffic')}>
+                                            <Text>Traffic</Text>
+                                        </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} onPress={()=> sendData('People Sounds')}>People Sounds</Button>
-                                        <Button style={styles.button} onPress={()=> sendData('Animals')}>Animals</Button>
+                                        <Button style={styles.button} onPress={()=> sendData('People Sounds')}>
+                                            <Text>People Sounds</Text>
+                                        </Button>
+                                        <Button style={styles.button} onPress={()=> sendData('Animals')}>
+                                            <Text>Animals</Text>
+                                        </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} onPress={()=> sendData('Wind')}>Wind</Button>
-                                        <Button style={styles.button} onPress={()=> sendData('Music')}>{music}</Button>
+                                        <Button style={styles.button} onPress={()=> sendData('Wind')}>
+                                            <Text>Wind</Text>
+                                        </Button>
+                                        <Button style={styles.button} onPress={()=> sendData('Music')}>
+                                            <Text>Music</Text>
+                                        </Button>
                                     </View>
                                 </View>
 
                                 <View style={styles.otherView}>
-                                    <Text category={'s1'}>Other</Text>
+                                    <Text>Other</Text>
                                     
                                     <View style={styles.otherRow}>
                                         <Input 
@@ -88,7 +97,7 @@ export function MainSoundModal(props) {
 
                                     {empty ?
                                         <View style={styles.errorView}>
-                                            <Text>Please enter a sound type to submit</Text>
+                                            <Text style={styles.redTxt}>Please enter a sound type to submit</Text>
                                         </View>
                                     :
                                         null

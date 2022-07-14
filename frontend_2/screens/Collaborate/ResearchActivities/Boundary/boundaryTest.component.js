@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button } from '@ui-kitten/components';
+import { useTheme, Button, Text } from '@ui-kitten/components';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component';
 import { BoundaryMap } from '../../../components/Maps/boundaryMap.component';
 import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.component';
@@ -417,9 +417,15 @@ export function BoundaryTest(props){
         else{
             return(
                 <View style={styles.buttonRow}>
-                    <Button style={styles.buttons} onPress={() => boundaryType(0)}>Constructed</Button>
-                    <Button style={styles.buttons} onPress={() => boundaryType(1)}>Material</Button>
-                    <Button style={styles.buttons} onPress={() => boundaryType(2)}>Shelter</Button>
+                    <Button style={styles.buttons} onPress={() => boundaryType(0)}>
+                        <Text>Constructed</Text>
+                    </Button>
+                    <Button style={styles.buttons} onPress={() => boundaryType(1)}>
+                        <Text>Material</Text>
+                    </Button>
+                    <Button style={styles.buttons} onPress={() => boundaryType(2)}>
+                        <Text>Shelter</Text>
+                    </Button>
                 </View>
             )
         }

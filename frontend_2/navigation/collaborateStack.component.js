@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { LogBox } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CreateActivityStack } from './createActivityStack.component.js';
@@ -96,6 +97,9 @@ export function CollaborateStack(props) {
       return false;
     }
   }
+  
+  // for dev purposes, hides all warnings from showing on the mobile screen
+  LogBox.ignoreAllLogs();
 
   return (
     <Navigator headerMode='none'>

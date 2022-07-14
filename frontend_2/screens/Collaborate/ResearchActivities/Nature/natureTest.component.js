@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, LogBox } from 'react-native';
+import { View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button } from '@ui-kitten/components';
+import { useTheme, Button, Text } from '@ui-kitten/components';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component';
 import { NatureMap } from '../../../components/Maps/natureMap.component.js';
 import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.component';
@@ -305,8 +305,12 @@ export function NatureTest(props) {
         if(start && !lineTools){
             return(
                 <View style={styles.buttonView}>
-                    <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(0)}}>Body of Water</Button>
-                    <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(1)}}>Vegetation</Button>
+                    <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(0)}}>
+                        <Text>Body of Water</Text>
+                    </Button>
+                    <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(1)}}>
+                        <Text>Vegetation</Text>
+                    </Button>
                 </View>
             )
         }
@@ -322,14 +326,12 @@ export function NatureTest(props) {
     // closes the modals without submitting anything
     const goBack = () =>{
         if(waterModal) setWaterModal(false);
+        else if (vegeModal) setVegeModal(false);
         else{
             setTempMarker();
             setDataModal(false);
         }
     }
-
-    // ignores the event emitter warnings in app (for dev. only)
-    LogBox.ignoreAllLogs();
 
     // Main render
     return(

@@ -16,12 +16,9 @@ export const styles = StyleSheet.create({
     },
 
     titleText:{
-        alignSelf: 'center'
-    },
-
-    titleLine:{
-        alignSelf: 'center', 
-        marginTop: -20
+        marginTop: 10,
+        alignSelf: 'center',
+        textDecorationLine: 'underline'
     },
 
     dataView:{

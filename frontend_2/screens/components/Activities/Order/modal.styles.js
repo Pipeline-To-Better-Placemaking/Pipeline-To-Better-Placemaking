@@ -10,6 +10,10 @@ export const styles = StyleSheet.create({
         backgroundColor:'rgba(0,0,0, 0.5)'
     },
 
+    avoid:{
+        flex: 1
+    },
+
     viewContainer: {
         height: '27%',
         marginTop: 'auto',
@@ -20,16 +24,12 @@ export const styles = StyleSheet.create({
 
     titleText:{
         marginTop: 10,
-        alignSelf: 'center'
-    },
-
-    titleLine:{
-        alignSelf: 'center', 
-        marginTop: -18
+        alignSelf: 'center',
+        textDecorationLine: 'underline'
     },
 
     dataView:{
-        alignItems: 'center', 
+        alignItems: 'center'
     },
 
     titleDesc:{
@@ -69,6 +69,28 @@ export const styles = StyleSheet.create({
         alignSelf:'center'
     },
 
+    otherView:{
+        marginTop: height * .015,
+        alignSelf: 'center'
+    },
+
+    otherRow:{
+        flexDirection: 'row'
+    },
+
+    inputBox:{
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        width: width * .60
+    },
+
+    selectButton:{
+        width: width * .25,
+        height: 5,
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0
+    },
+
     backButton:{
         width: width * .3,
         height: height * .04, 
@@ -89,8 +111,18 @@ export const styles = StyleSheet.create({
     
     selectError:{
         alignItems: 'center',
-        marginTop: height * .009,
+        marginTop: height * .005,
         marginBottom: -8,
+    },
+
+    redTxt:{
+        color: 'red'
+    },
+
+    errorView:{
+        marginTop: 5,
+        marginBottom: -20,
+        alignItems: 'center'
     },
 
     bottomRowView:{

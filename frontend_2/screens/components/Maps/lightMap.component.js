@@ -15,6 +15,12 @@ export function LightMap(props) {
             </View>
         )
     }
+
+    // offsets the data circle to have its center appear at the exact location of the marker
+    let offsetPoint = {
+        x: 0.5,
+        y: 0.69
+    }
     
     // renders current data point being placed
     const AddPoint = () =>{        
@@ -24,7 +30,7 @@ export function LightMap(props) {
 
         else{
             return(
-                <MapView.Marker coordinate={props.marker} >
+                <MapView.Marker coordinate={props.marker} anchor={offsetPoint}>
                     <DataPin color={'#FD0000'} colorFill={'rgba(253, 0, 0, .5)'} />
                 </MapView.Marker>
             )
@@ -56,16 +62,18 @@ export function LightMap(props) {
                     color = '#FF00FF'
                     colorFill = 'rgba(255, 0, 255, .5)'
                 }
-                obj[i] = ( 
-                    <MapView.Marker
-                        key={i.toString()}
-                        coordinate={props.dataPoints[i].location}
-                    >
-                        <DataPin
-                            color={color}
-                            colorFill={colorFill}
-                        />
-                    </MapView.Marker>
+                obj[i] = (
+                    <View key={i.toString()}>
+                        <MapView.Marker
+                            coordinate={props.dataPoints[i].location}
+                            anchor={offsetPoint}
+                        >
+                            <DataPin
+                                color={color}
+                                colorFill={colorFill}
+                            />
+                        </MapView.Marker>
+                    </View>
                 )
             }
             return(

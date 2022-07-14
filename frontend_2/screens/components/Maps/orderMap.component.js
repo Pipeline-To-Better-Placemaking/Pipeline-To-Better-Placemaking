@@ -43,15 +43,12 @@ export function OrderMap(props) {
                 let color = "#FFE371";
                 // change its color if it is for the behavior type
                 if(props.dataPoints[i].kind === "Behavior") color = "#FF9933"
-                obj[i] = ( 
-                    <MapView.Marker
-                        key={i.toString()}
-                        coordinate={props.dataPoints[i].location}
-                    >
-                        <DataPin
-                            color={color}
-                        />
-                    </MapView.Marker>
+                obj[i] = (
+                    <View key={i.toString()}>
+                        <MapView.Marker coordinate={props.dataPoints[i].location}>
+                            <DataPin color={color} />
+                        </MapView.Marker>
+                    </View>
                 )
             }
             return(

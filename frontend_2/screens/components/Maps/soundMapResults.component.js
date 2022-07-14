@@ -87,6 +87,11 @@ export function SoundMapResults(props) {
             return (null);
         }
         else {
+            // offsets the data proportion circle to have its center appear at the exact location of the marker
+            let offsetPoint = {
+                x: 0.48,
+                y: 0.625
+            }
             let objData = [[]];
             // for each standing point
             for(let i = 0; i < standingPoints.length; i++){
@@ -107,16 +112,17 @@ export function SoundMapResults(props) {
                                 latitude: props.position[i].latitude,
                                 longitude: props.position[i].longitude
                             }}
+                            anchor={offsetPoint}
                         >
-                        <DataPin value={avg}/>
+                            <DataPin value={avg}/>
                         
-                        <Callout style={styles.callout}>
-                            <DataCallout 
-                                value={avg}
-                                mainSound={mainSound}
-                                sounds={allSounds}
-                            />
-                        </Callout>
+                            <Callout style={styles.callout}>
+                                <DataCallout 
+                                    value={avg}
+                                    mainSound={mainSound}
+                                    sounds={allSounds}
+                                />
+                            </Callout>
                         
                         </MapView.Marker>
                     </View>

@@ -24,22 +24,22 @@ export const styles = StyleSheet.create({
 
     titleText:{
         marginTop: 10,
-        alignSelf: 'center'
-    },
-
-    titleLine:{
-        alignSelf: 'center', 
-        marginTop: -20,
-        marginBottom: height * .03
+        alignSelf: 'center',
+        textDecorationLine: 'underline'
     },
 
     dataView:{
         alignItems: 'center',
+        marginTop: height * .01
     },
 
     nanSpace:{
         marginBottom: height * .009,
         marginTop: -3
+    },
+
+    redTxt:{
+        color: 'red'
     },
 
     inputBox:{

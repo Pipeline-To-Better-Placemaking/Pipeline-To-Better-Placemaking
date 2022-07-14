@@ -24,15 +24,25 @@ export function DataGroupMovement(props) {
         <View style={styles.conatainer}>
         <Text category={'h6'} style={styles.textTitle}> Movement: </Text>
             {/* <View style={{flexDirection: 'row', justifyContent:'space-around'}}> */}
-                <Button style={styles.button} appearance={movementMatrix[0] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(0)}>Walking</Button>
-                <Button style={styles.button} appearance={movementMatrix[1] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(1)}>Running</Button>
+                <Button style={styles.button} appearance={movementMatrix[0] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(0)}>
+                    <Text>Walking</Text>
+                </Button>
+                <Button style={styles.button} appearance={movementMatrix[1] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(1)}>
+                    <Text>Running</Text>
+                </Button>
             {/* </View> */}
             {/* <View style={{flexDirection: 'row', marginTop: 10, justifyContent:'space-around'}}> */}
-                <Button style={styles.button} appearance={movementMatrix[2] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(2)}>Swimming</Button>
-                <Button style={styles.button} appearance={movementMatrix[3] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(3)}>Activity on Wheels</Button>
+                <Button style={styles.button} appearance={movementMatrix[2] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(2)}>
+                    <Text>Swimming</Text>
+                </Button>
+                <Button style={styles.button} appearance={movementMatrix[3] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(3)}>
+                    <Text>Activity on Wheels</Text>
+                </Button>
             {/* </View> */}
             {/* <View style={{flexDirection: 'row', marginTop: 10, justifyContent:'space-around'}}> */}
-                <Button style={styles.button} appearance={movementMatrix[4] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(4)}>Handicap Assisted Wheels</Button>
+                <Button style={styles.button} appearance={movementMatrix[4] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(4)}>
+                    <Text>Handicap Assisted Wheels</Text>
+                </Button>
             {/* </View> */}
         </View>
     )

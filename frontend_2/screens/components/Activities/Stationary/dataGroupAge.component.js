@@ -23,16 +23,28 @@ export function DataGroupAge(props) {
         <View>
         <Text category={'h6'} style={styles.title}> Age: </Text>
             <View style={styles.topRow}>
-                <Button style={styles.buttonLeft} appearance={ageMatrix[0] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(0)}>0 - 14</Button>
-                <Button style={styles.buttonRight} appearance={ageMatrix[1] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(1)}>15 - 21</Button>
+                <Button style={styles.buttonLeft} appearance={ageMatrix[0] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(0)}>
+                    <Text>0 - 14</Text>
+                </Button>
+                <Button style={styles.buttonRight} appearance={ageMatrix[1] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(1)}>
+                    <Text>15 - 21</Text>
+                </Button>
             </View>
             <View style={styles.bottomRow}>
-                <Button style={styles.buttonLeft} appearance={ageMatrix[2] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(2)}>22 - 30</Button>
-                <Button style={styles.buttonRight} appearance={ageMatrix[3] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(3)}>30 - 50</Button>
+                <Button style={styles.buttonLeft} appearance={ageMatrix[2] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(2)}>
+                    <Text>22 - 30</Text>
+                </Button>
+                <Button style={styles.buttonRight} appearance={ageMatrix[3] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(3)}>
+                    <Text>30 - 50</Text>
+                </Button>
             </View>
             <View style={styles.bottomRow}>
-                <Button style={styles.buttonLeft} appearance={ageMatrix[4] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(4)}>50 - 65</Button>
-                <Button style={styles.buttonRight} appearance={ageMatrix[5] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(5)}>65+</Button>
+                <Button style={styles.buttonLeft} appearance={ageMatrix[4] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(4)}>
+                    <Text>50 - 65</Text>
+                </Button>
+                <Button style={styles.buttonRight} appearance={ageMatrix[5] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(5)}>
+                    <Text>65+</Text>
+                </Button>
             </View>
         </View>
     )

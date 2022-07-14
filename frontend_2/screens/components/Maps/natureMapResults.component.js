@@ -30,10 +30,7 @@ export function NatureMapResults(props) {
                 <View style={styles.spacing} >
                     <Text style={styles.dataText}>{title}</Text>
                 </View>
-                
-                <View style={styles.spacing}>
-                    <Text style={styles.dataText}>Description: {props.desc}</Text>
-                </View>
+                <Text style={styles.dataText}>Description: {props.desc}</Text>
             </View>
         )
     }

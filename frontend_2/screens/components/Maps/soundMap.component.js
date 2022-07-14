@@ -3,10 +3,12 @@ import MapView from 'react-native-maps'
 import { View } from 'react-native';
 import { SoundMapAreaWrapper } from './mapPoints.component';
 
-import { styles } from './sharedMap.styles';
-
 export function SoundMap(props) {
-
+    // offsets the default marker slightly to have its point appear in a precise location
+    let offsetPoint = {
+        x: 0.5,
+        y: 1.1
+    }
     return(
         
         <View>
@@ -17,6 +19,7 @@ export function SoundMap(props) {
             >
                 <MapView.Marker
                     coordinate = {props.position}
+                    anchor={offsetPoint}
                 />
 
                 <MapView.Polygon

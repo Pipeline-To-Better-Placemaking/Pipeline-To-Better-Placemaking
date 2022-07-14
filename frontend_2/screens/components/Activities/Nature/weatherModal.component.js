@@ -38,7 +38,6 @@ export function WeatherModal(props) {
                         <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                         
                             <Text category={'h1'} style={styles.titleText}>Weather Data</Text>
-                            <Text category={'s1'} style={styles.titleLine}>_____________________________</Text>
                             <View style={styles.dataView}>
                                 
                                 <View style={styles.titleDesc}>
@@ -53,7 +52,7 @@ export function WeatherModal(props) {
                                         </View>
                                         <Input 
                                             style={styles.inputBox}
-                                            placeholder={"Tempature..."}
+                                            placeholder={"Temp..."}
                                             onChangeText={(nextValue) => setTemp(nextValue)}
                                             keyboardType={'number-pad'}
                                         />
@@ -65,7 +64,7 @@ export function WeatherModal(props) {
 
                                     {empty ?
                                         <View style={styles.errorView}>
-                                            <Text>Please enter a tempature to submit</Text>
+                                            <Text style={styles.redTxt}>Please enter a tempature to submit</Text>
                                         </View>
                                     :
                                         null
@@ -74,17 +73,27 @@ export function WeatherModal(props) {
 
                                 <View>
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} onPress={()=> handleSubmit("Sunny")} >Sunny</Button>
-                                        <Button style={styles.button} onPress={()=> handleSubmit("Cloudy")}>Cloudy</Button>
+                                        <Button style={styles.button} onPress={()=> handleSubmit("Sunny")}>
+                                            <Text>Sunny</Text>
+                                        </Button>
+                                        <Button style={styles.button} onPress={()=> handleSubmit("Cloudy")}>
+                                            <Text>Cloudy</Text>
+                                        </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} onPress={()=> handleSubmit("Rainy")}>Rainy</Button>
-                                        <Button style={styles.button} onPress={()=> handleSubmit("Windy")}>Windy</Button>
+                                        <Button style={styles.button} onPress={()=> handleSubmit("Rainy")}>
+                                            <Text>Rainy</Text>
+                                        </Button>
+                                        <Button style={styles.button} onPress={()=> handleSubmit("Windy")}>
+                                            <Text>Windy</Text>
+                                        </Button>
                                     </View>
 
                                     <View style={styles.buttonSpace}>
-                                        <Button style={styles.button} onPress={()=> handleSubmit("Stormy")}>Stormy</Button>
+                                        <Button style={styles.button} onPress={()=> handleSubmit("Stormy")}>
+                                            <Text>Stormy</Text>
+                                        </Button>
                                     </View>
                                 </View>
                                 

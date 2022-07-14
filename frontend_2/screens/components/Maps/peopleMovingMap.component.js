@@ -14,7 +14,7 @@ export function PeopleMovingMap(props) {
     const DataPin = (props) => {
 
         return(
-            <View style={[ styles.dataPin, {backgroundColor: colors[1]}]}/>
+            <View style={[styles.dataPin, {backgroundColor: colors[1]}]}/>
         )
     }
 
@@ -52,7 +52,7 @@ export function PeopleMovingMap(props) {
 
         if (props.viewAllLines) {
 
-            console.log("Drawing lines")
+            //console.log("Drawing lines")
 
             return (props.totalPaths.map((obj, index) => (
                 <MapView.Polyline
@@ -88,7 +88,11 @@ export function PeopleMovingMap(props) {
              )))
          }
     }
-
+    // offsets the default marker slightly to have its point appear in a precise location
+    let offsetPoint = {
+        x: 0.5,
+        y: 1.1
+    }
     return(
 
         <View>
@@ -99,7 +103,8 @@ export function PeopleMovingMap(props) {
                 recenter={props.recenter}
             >
                 <MapView.Marker
-                    coordinate = {props.position}
+                    coordinate={props.position}
+                    anchor={offsetPoint}
                 />
 
                 <MapView.Polygon

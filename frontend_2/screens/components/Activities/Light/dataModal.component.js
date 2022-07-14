@@ -24,7 +24,6 @@ export function DataModal(props) {
             <View style={styles.modalContainer}>
                 <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                         <Text category={'h1'} style={styles.titleText}>Light Type</Text>
-                        <Text category={'s1'} style={styles.titleLine}>_______________________</Text>
                         <View style={styles.dataView}>
                                     
                             <View style={styles.titleDesc}>
@@ -32,13 +31,21 @@ export function DataModal(props) {
                             </View>
 
                             <View style={styles.buttonRow}>
-                                <Button style={styles.button} onPress={()=> sendData("Rhythmic")}>Rhythmic</Button>
-                                <Button style={styles.button} onPress={()=> sendData("Building")}>Building</Button>
-                                <Button style={styles.button} onPress={()=> sendData("Task")}>Task</Button>
+                                <Button style={styles.button} onPress={()=> sendData("Rhythmic")}>
+                                    <Text>Rhythmic</Text>
+                                </Button>
+                                <Button style={styles.button} onPress={()=> sendData("Building")}>
+                                    <Text>Building</Text>
+                                </Button>
+                                <Button style={styles.button} onPress={()=> sendData("Task")}>
+                                    <Text>Task</Text>
+                                </Button>
                             </View>
 
                             <View style={styles.backButtonView}>
-                                <Button style={styles.backButton} onPress={() => props.back()}>Back</Button>
+                                <Button style={styles.backButton} onPress={() => props.back()}>
+                                    <Text>Back</Text>
+                                </Button>
                             </View>
                         </View>                 
                 </View>

@@ -24,12 +24,8 @@ export const styles = StyleSheet.create({
 
     titleText:{
         marginTop: 10,
-        alignSelf: 'center'
-    },
-
-    titleLine:{
-        alignSelf: 'center', 
-        marginTop: -18
+        alignSelf: 'center',
+        textDecorationLine: 'underline'
     },
 
     dataView:{
@@ -61,7 +57,7 @@ export const styles = StyleSheet.create({
     button:{
         width: width * .35,
         height: height * .065, 
-        alignSelf:'center'
+        alignSelf:'center',
     },
 
     otherView:{
@@ -88,6 +84,10 @@ export const styles = StyleSheet.create({
     errorView:{
         alignItems: 'center',
         marginTop: 5
+    },
+
+    redTxt:{
+        color: 'red'
     },
 
     buttonText:{

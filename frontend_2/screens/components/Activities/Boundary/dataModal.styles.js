@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     },
 
     viewContainer: {
-        height: '50%',
+        height: '43%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     },
 
     purposeViewContainer:{
-        height: '45%',
+        height: '38%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -28,12 +28,8 @@ export const styles = StyleSheet.create({
 
     titleText:{
         marginTop: 10,
-        alignSelf: 'center'
-    },
-
-    titleLine:{
-        alignSelf: 'center', 
-        marginTop: -18
+        alignSelf: 'center',
+        textDecorationLine: 'underline'
     },
 
     dataView:{
@@ -53,7 +49,7 @@ export const styles = StyleSheet.create({
         width: width,
         flexDirection: 'row',
         justifyContent: 'space-around',        
-        marginTop: height * .03,
+        marginTop: height * .015,
     },
 
     button:{
@@ -63,7 +59,7 @@ export const styles = StyleSheet.create({
     },
 
     lastButtonView:{
-        marginTop: height * .03,
+        marginTop: height * .015,
     },
 
     backButton:{
@@ -82,7 +78,7 @@ export const styles = StyleSheet.create({
     },
 
     multiView:{
-        marginTop: height * .04,
+        marginTop: height * .02,
         alignItems: 'center'
     },
 
@@ -96,6 +92,10 @@ export const styles = StyleSheet.create({
         marginTop: height * .009,
         marginBottom: -20,
     },
+
+    redTxt:{
+        color: 'red'
+    }
 
 });
 

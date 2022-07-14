@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
     
@@ -26,17 +29,17 @@ export const styles = StyleSheet.create({
     },
 
     buttonLeft:{
-        width:150, 
+        width: width * .35, 
         marginRight: 45
     },
 
     buttonRight:{
-        width:150, 
+        width: width * .35, 
         marginRight: 10
     },
 
     buttonBottom:{
-        width:150, 
+        width: width * .35, 
         marginTop: 10, 
         alignSelf: 'center'
     }

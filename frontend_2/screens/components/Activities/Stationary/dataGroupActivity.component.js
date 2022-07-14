@@ -43,15 +43,25 @@ export function DataGroupActivity(props) {
         <View style={styles.container}>
         <Text category={'h6'} style={styles.title}> Activity: </Text>
             <View style={styles.topRow}>
-                <Button style={styles.buttonLeft} appearance={activityMatrix[0] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(0)}>Socializing</Button>
-                <Button style={styles.buttonRight} appearance={activityMatrix[1] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(1)}>Waiting</Button>
+                <Button style={styles.buttonLeft} appearance={activityMatrix[0] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(0)}>
+                    <Text>Socializing</Text>
+                </Button>
+                <Button style={styles.buttonRight} appearance={activityMatrix[1] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(1)}>
+                    <Text>Waiting</Text>
+                </Button>
             </View>
             <View style={styles.bottomRow}>
-                <Button style={styles.buttonLeft} appearance={activityMatrix[2] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(2)}>Recreation</Button>
-                <Button style={styles.buttonRight} appearance={activityMatrix[3] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(3)}>Eating</Button>
+                <Button style={styles.buttonLeft} appearance={activityMatrix[2] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(2)}>
+                    <Text>Recreation</Text>
+                </Button>
+                <Button style={styles.buttonRight} appearance={activityMatrix[3] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(3)}>
+                    <Text>Eating</Text>
+                </Button>
             </View>
 
-            <Button style={styles.buttonBottom} appearance={activityMatrix[4] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(4)}>Solitary</Button>
+            <Button style={styles.buttonBottom} appearance={activityMatrix[4] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(4)}>
+                <Text>Solitary</Text>
+            </Button>
         </View>
     )
 }

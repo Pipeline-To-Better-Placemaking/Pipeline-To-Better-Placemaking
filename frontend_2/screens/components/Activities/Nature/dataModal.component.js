@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, Modal, Keyboard, KeyboardAvoidingView } from 'react-native';
+import { View, Modal, KeyboardAvoidingView } from 'react-native';
 import { useTheme, Text, Button, Input } from '@ui-kitten/components';
-import { TouchableWithoutFeedback } from '@ui-kitten/components/devsupport';
 import { ScrollView } from 'react-native-gesture-handler';
 import { stringCase } from '../../helperFunctions';
 
@@ -81,95 +80,110 @@ export function DataModal(props) {
     return(
         <Modal transparent={true} animationType='slide' visible={props.visible}>
             <KeyboardAvoidingView behavior='position' style={styles.avoid}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
-                    <View style={styles.modalContainer}>
-                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
-                            <ScrollView>
-                                <Text category={'h1'} style={styles.titleText}>Animal Data</Text>
-                                <Text category={'s1'} style={styles.titleLine}>__________________________</Text>
-                                <View style={styles.dataView}>
+                <View style={styles.modalContainer}>
+                    <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
+                        <ScrollView>
+                            <Text category={'h1'} style={styles.titleText}>Animal Data</Text>
+                            <View style={styles.dataView}>
                                             
-                                    <View style={styles.titleDesc}>
-                                        <Text category={'s1'} style={styles.titleDescTxt}>Select the best description for the marker you created</Text>
-                                    </View>
+                                <View style={styles.titleDesc}>
+                                    <Text category={'s1'} style={styles.titleDescTxt}>Select the best description for the marker you created</Text>
+                                </View>
 
-                                    <View style={styles.typeView}>
-                                        <View>
-                                            <Text category={'s1'}>Domesticated</Text>
-                                            <View style={styles.dataButtonRow}>
-                                                <Button style={styles.button} onPress={()=> sendData("Domesticated", "Dog")}>Dog</Button>
-                                                <Button style={styles.button} onPress={()=> sendData("Domesticated", "Cat")}>Cat</Button>
-                                            </View>
-                                            
-                                            <View style={styles.otherView}>
-                                                <Text>Other</Text>
-                                            
-                                                <View style={styles.otherRow}>
-                                                    <Input 
-                                                        style={styles.otherInputBox}
-                                                        placeholder={"Animal..."}
-                                                        onChangeText={(nextValue) => setOther1(nextValue)}
-                                                    />
-                                                    <Button style={styles.submitButton} onPress={()=> handleOther("Domesticated")}>Submit</Button>
-                                                </View>
-
-                                                {empty1 ?
-                                                    <View style={styles.errorView}>
-                                                        <Text>Please enter text to submit</Text>
-                                                    </View>
-                                                :
-                                                    null
-                                                }
-                                            </View>
+                                <View style={styles.typeView}>
+                                    <View>
+                                        <Text category={'s1'}>Domesticated</Text>
+                                        <View style={styles.dataButtonRow}>
+                                            <Button style={styles.button} onPress={()=> sendData("Domesticated", "Dog")}>
+                                                <Text>Dog</Text>
+                                            </Button>
+                                            <Button style={styles.button} onPress={()=> sendData("Domesticated", "Cat")}>
+                                                <Text>Cat</Text>
+                                            </Button>
+                                        </View>
                                         
-                                        </View>
-
-                                        <View>
-                                            <Text category={'s1'}>Wild</Text>
-                                            <View style={styles.dataButtonRow}>
-                                                <Button style={styles.button} onPress={()=> sendData("Wild", "Squirrel")}>Squirrel</Button>
-                                                <Button style={styles.button} onPress={()=> sendData("Wild", "Bird")}>Bird</Button>
+                                        <View style={styles.otherView}>
+                                            <Text>Other</Text>
+                                        
+                                            <View style={styles.otherRow}>
+                                                <Input 
+                                                    style={styles.otherInputBox}
+                                                    placeholder={"Animal..."}
+                                                    onChangeText={(nextValue) => setOther1(nextValue)}
+                                                />
+                                                <Button style={styles.submitButton} onPress={()=> handleOther("Domesticated")}>
+                                                    <Text>Submit</Text>
+                                                </Button>
                                             </View>
-                                            <View style={styles.dataButtonRow}>
-                                                <Button style={styles.button} onPress={()=> sendData("Wild", "Rabbit")}>Rabbit</Button>
-                                                <Button style={styles.button} onPress={()=> sendData("Wild", "Duck")}>Duck</Button>
-                                            </View>
-                                            <View style={styles.lastDataButtonView}>
-                                                <Button style={styles.button} onPress={()=> sendData("Wild", "Turtle")}>Turtle</Button>
-                                            </View>
-
-                                            <View style={styles.otherView}>
-                                                <Text>Other</Text>
-                                            
-                                                <View style={styles.otherRow}>
-                                                    <Input 
-                                                        style={styles.otherInputBox}
-                                                        placeholder={"Animal..."}
-                                                        onChangeText={(nextValue) => setOther2(nextValue)}
-                                                    />
-                                                    <Button style={styles.submitButton} onPress={()=> handleOther("Wild")}>Submit</Button>
+                                            {empty1 ?
+                                                <View style={styles.errorView}>
+                                                    <Text style={styles.redTxt}>Please enter text to submit</Text>
                                                 </View>
-
-                                                {empty2 ?
-                                                    <View style={styles.errorView}>
-                                                        <Text>Please enter text to submit</Text>
-                                                    </View>
-                                                :
-                                                    null
-                                                }
-                                            </View>
+                                            :
+                                                null
+                                            }
                                         </View>
-
-                                        <View style={styles.backButtonView}>
-                                            <Button style={styles.backButton} onPress={handleBack}>Back</Button>
-                                        </View>
-
+                                    
                                     </View>
-                                </View>  
-                            </ScrollView>               
-                        </View>
+
+                                    <View>
+                                        <Text category={'s1'}>Wild</Text>
+                                        <View style={styles.dataButtonRow}>
+                                            <Button style={styles.button} onPress={()=> sendData("Wild", "Squirrel")}>
+                                                <Text>Squirrel</Text>
+                                            </Button>
+                                            <Button style={styles.button} onPress={()=> sendData("Wild", "Bird")}>
+                                                <Text>Bird</Text>
+                                            </Button>
+                                        </View>
+                                        <View style={styles.dataButtonRow}>
+                                            <Button style={styles.button} onPress={()=> sendData("Wild", "Rabbit")}>
+                                                <Text>Rabbit</Text>
+                                            </Button>
+                                            <Button style={styles.button} onPress={()=> sendData("Wild", "Duck")}>
+                                                <Text>Duck</Text>
+                                            </Button>
+                                        </View>
+                                        <View style={styles.lastDataButtonView}>
+                                            <Button style={styles.button} onPress={()=> sendData("Wild", "Turtle")}>
+                                                <Text>Turtle</Text>
+                                            </Button>
+                                        </View>
+
+                                        <View style={styles.otherView}>
+                                            <Text>Other</Text>
+                                            <View style={styles.otherRow}>
+                                                <Input 
+                                                    style={styles.otherInputBox}
+                                                    placeholder={"Animal..."}
+                                                    onChangeText={(nextValue) => setOther2(nextValue)}
+                                                />
+                                                <Button style={styles.submitButton} onPress={()=> handleOther("Wild")}>
+                                                    <Text>Submit</Text>
+                                                </Button>
+                                            </View>
+
+                                            {empty2 ?
+                                                <View style={styles.errorView}>
+                                                    <Text style={styles.redTxt}>Please enter text to submit</Text>
+                                                </View>
+                                            :
+                                                null
+                                            }
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.backButtonView}>
+                                        <Button style={styles.backButton} onPress={handleBack}>
+                                            <Text>Back</Text>
+                                        </Button>
+                                    </View>
+
+                                </View>
+                            </View>  
+                        </ScrollView>               
                     </View>
-                </TouchableWithoutFeedback>
+                </View>
             </KeyboardAvoidingView>
         </Modal>
     )

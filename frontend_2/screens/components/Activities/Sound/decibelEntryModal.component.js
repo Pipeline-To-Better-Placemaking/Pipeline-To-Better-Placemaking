@@ -56,12 +56,11 @@ export function DecibelEntryModal(props) {
                         <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                     
                             <Text category={'h1'} style={styles.titleText}>Sound Decibel Level</Text>
-                            <Text category={'s1'} style={styles.titleLine}>___________________________________________</Text>
                             <View style={styles.dataView}>
                         
                                 { nan ?
                                     <View style={styles.nanSpace}>
-                                        <Text>Enter a number to submit</Text>
+                                        <Text style={styles.redTxt}>Enter a number to submit</Text>
                                     </View>
                                 :
                                     null
@@ -76,7 +75,7 @@ export function DecibelEntryModal(props) {
                                 
                                 { empty ?
                                     <View>
-                                        <Text>Please enter a value</Text>
+                                        <Text style={styles.redTxt}>Please enter a value</Text>
                                     </View>
                                 :
                                     null
@@ -84,7 +83,9 @@ export function DecibelEntryModal(props) {
 
                             </View>
 
-                            <Button style={styles.button} onPress={sendData}> Submit </Button>
+                            <Button style={styles.button} onPress={sendData}>
+                                <Text>Submit</Text>
+                            </Button>
                     
                         </View>
                     

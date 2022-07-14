@@ -23,8 +23,12 @@ export function DataGroupGender(props) {
         <View style={styles.containerSpacer}>
         <Text category={'h6'} style={styles.title}> Gender: </Text>
             <View style={styles.topRow}>
-                <Button style={styles.buttonLeft} appearance={genderMatrix[0] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(0)}>Male</Button>
-                <Button style={styles.buttonRight} appearance={genderMatrix[1] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(1)}>Female</Button>
+                <Button style={styles.buttonLeft} appearance={genderMatrix[0] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(0)}>
+                    <Text>Male</Text>
+                </Button>
+                <Button style={styles.buttonRight} appearance={genderMatrix[1] ? 'primary' : 'outline'} onPress={() => _setGenderIndex(1)}>
+                    <Text>Female</Text>
+                </Button>
             </View>
         </View>
     )

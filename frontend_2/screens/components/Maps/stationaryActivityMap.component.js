@@ -38,7 +38,11 @@ export function StationaryActivityMap(props) {
              )))
          }
     }
-
+    // offsets the default marker slightly to have its point appear in a precise location
+    let offsetPoint = {
+        x: 0.5,
+        y: 1.1
+    }
     return(
 
         <View>
@@ -49,7 +53,8 @@ export function StationaryActivityMap(props) {
                 recenter={props.recenter}
             >
                 <MapView.Marker
-                    coordinate = {props.position}
+                    coordinate={props.position}
+                    anchor={offsetPoint}
                 />
 
                 <MapView.Polygon

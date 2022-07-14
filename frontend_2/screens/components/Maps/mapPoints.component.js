@@ -363,6 +363,11 @@ export const ShowMarkers = ({markers}) => {
     return (null);
   }
   else {
+    // offsets the default marker slightly to have its point appear in exact location of its marker
+    let offsetPoint = {
+      x: 0.5,
+      y: 1.1
+    }
     return (markers.map((coord, index) => (
         <MapView.Marker
           key={coord._id}
@@ -370,6 +375,7 @@ export const ShowMarkers = ({markers}) => {
               latitude: coord.latitude,
               longitude: coord.longitude
           }}
+          anchor={offsetPoint}
         >
           <Callout>
             <Text style={styles.showMarkersText}>{coord.title}</Text>
@@ -525,7 +531,11 @@ export function MapAddOne({children, ...props}) {
 
   // This is basically a default zoom level
   let location = getRegionForCoordinates(props.areas[0].points)
-
+  // offsets the default marker slightly to have its point appear in a precise location
+  let offsetPoint = {
+    x: 0.5,
+    y: 1.1
+  }
   return(
     <View>
       <MapView
@@ -544,6 +554,7 @@ export function MapAddOne({children, ...props}) {
         <MapView.Marker
           coordinate={props.marker}
           draggable={true}
+          anchor={offsetPoint}
         />
         <ShowAreas areas={props.areas}/>
         {children}

@@ -26,6 +26,12 @@ export function LightMapResults(props) {
         )
     }
 
+    // offsets the data circle to have its center appear at the exact location of the marker
+    let offsetPoint = {
+        x: 0.5,
+        y: 0.69
+    }
+
     // renders the project data that was collected
     const ShowData = () =>{
         
@@ -65,6 +71,7 @@ export function LightMapResults(props) {
                                     latitude: pointArr[j].location.latitude,
                                     longitude: pointArr[j].location.longitude
                                 }}
+                                anchor={offsetPoint}
                             >
                                 <DataPin color={color} colorFill={colorFill}/>
 

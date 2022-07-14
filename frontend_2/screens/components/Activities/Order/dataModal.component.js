@@ -14,7 +14,7 @@ export function DataModal(props) {
             kind: desc,
         }
         
-        // closes the modal (in lightTest)
+        // closes the modal (in orderTest)
         await props.closeData(data);
     }
 
@@ -23,7 +23,6 @@ export function DataModal(props) {
             <View style={styles.modalContainer}>
                 <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                         <Text category={'h1'} style={styles.titleText}>Type of Disorder</Text>
-                        <Text category={'s1'} style={styles.titleLine}>__________________________________</Text>
                         <View style={styles.dataView}>
                                     
                             <View style={styles.titleDesc}>
@@ -31,12 +30,18 @@ export function DataModal(props) {
                             </View>
 
                             <View style={styles.buttonRow}>
-                                <Button style={styles.button} onPress={()=> sendData("Behavior")}>Behavior</Button>
-                                <Button style={styles.button} onPress={()=> sendData("Maintenance")}>Maintenance</Button>
+                                <Button style={styles.button} onPress={()=> sendData("Behavior")}>
+                                    <Text>Behavior</Text>
+                                </Button>
+                                <Button style={styles.button} onPress={()=> sendData("Maintenance")}>
+                                    <Text>Maintenance</Text>
+                                </Button>
                             </View>
 
                             <View style={styles.backButtonView}>
-                                <Button style={styles.backButton} onPress={() => props.back()}>Back</Button>
+                                <Button style={styles.backButton} onPress={() => props.back()}>
+                                    <Text>Back</Text>
+                                </Button>
                             </View>
                         </View>                 
                 </View>

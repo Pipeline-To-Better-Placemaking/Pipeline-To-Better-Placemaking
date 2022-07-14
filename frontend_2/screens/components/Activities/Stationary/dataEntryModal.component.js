@@ -16,8 +16,6 @@ const delimeter = ', '
 
 export function DataEntryModal(props) {
 
-    const [visible] = useState(props.visible)
-
     const [ageIndex, setAgeIndex] = useState(-1)
     const [genderIndex, setGenderIndex] = useState(-1)
     const [activityCount, setActivityCount] = useState(-1)
@@ -104,7 +102,6 @@ export function DataEntryModal(props) {
             >
                 <ScrollView>
                     <Text category={'h1'} style={styles.textTitle}>Data</Text>
-                    <Text category={'s1'} style={styles.lineTitle}>___________</Text>
                     <View style={styles.dataGroupView}>
 
                         <DataGroupAge setAgeData={setAgeData}/>
@@ -114,7 +111,9 @@ export function DataEntryModal(props) {
 
                     </View>
 
-                    <Button style={styles.button} onPress={sendData}> Submit </Button>
+                    <Button style={styles.button} onPress={sendData}>
+                        <Text>Submit</Text> 
+                    </Button>
 
                 </ScrollView>
             </View>
