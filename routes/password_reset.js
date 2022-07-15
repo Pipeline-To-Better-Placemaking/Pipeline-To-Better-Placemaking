@@ -14,11 +14,7 @@ router.post('/', async (req, res, next) => {
 
         if (!user){ return res.status(400).send("This email does not have a registered account") }
 
-        var shortUser = {
-            _id : user._id,
-            email : user.email
-        }
-        const token = jwt.sign(shortUser, config.PRIVATE_KEY, {
+        const token = jwt.sign({ _id: user._id, email: user.email }, config.PRIVATE_KEY, {
             expiresIn: 86400 //1 day
         })
 
@@ -26,7 +22,7 @@ router.post('/', async (req, res, next) => {
 
         const link = `${site}/password_reset.js/${user._id}/${token}`
 
-        await emailer.emailResetPassword(shortUser.email, link)
+        await emailer.emailResetPassword(user.email, link)
 
         res.send("password reset link sent to your email account");
 

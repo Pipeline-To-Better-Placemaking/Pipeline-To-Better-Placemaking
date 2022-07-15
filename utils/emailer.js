@@ -55,6 +55,7 @@ const sendEmail = async (mailOptions) => {
         console.log(`Sent email to ${mailOptions.to}`)
     } catch (error) {
         console.error(error)
+        console.log("fails try in sendEmail")
         return false
     }
 
@@ -95,16 +96,18 @@ const emailResetPassword = async (email, link) => {
         <h3>Hello from Pipeline to Better Placemaking!</h3>
         <p>Forgot your password?</p>
 
-        <p><b>Please click on the link below to change your password:</b>${link}</p>
+        <p><b>Please click on the link to change your password:</b> ${link}</p>
     `
     
     const mailOptions = {
         from: `"Pipeline to Better Placemaking" <${config.PROJECT_EMAIL}>`,
         to: email,
         subject: 'Password Reset',
-        text: `Please click on the link to change your password:${link}`,
+        text: `Please click on the link to change your password: ${link}`,
         html: emailHTML
     }
+    console.log("Email: ")
+    console.log(mailOptions)
 
     return (await sendEmail(mailOptions))
 }
