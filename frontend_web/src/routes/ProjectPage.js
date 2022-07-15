@@ -23,7 +23,6 @@ function ProjectPage(){
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
     var results = {};
     var sPoints = {};
-    var counter = 0;
 
     const projectData = async() => {
         try {
@@ -44,44 +43,38 @@ function ProjectPage(){
 
             //get Map data for activity results (needed in drawers)
             response?.data?.boundariesCollections.map((collection) => (
-                collection.maps.map( async (id) => {
-                    await collectionPoints(id, 'bounds', collection.date);
+                collection.maps.map(async (id, index) => {
+                    await collectionPoints(id, 'bounds', collection.date, index);
                 })
             ))
-            counter = 0;
             response?.data?.lightCollections.map((collection) => (
-                collection.maps.map( async (id) => (
-                    await collectionPoints(id, 'light', collection.date)
+                collection.maps.map(async (id, index) => (
+                    await collectionPoints(id, 'light', collection.date, index)
                 ))
             ))
-            counter = 0;
             response?.data?.movingCollections.map((collection) => (
-                collection.maps.map( async (id) => (
-                    await collectionPoints(id, 'moving', collection.date)
+                collection.maps.map(async (id, index) => (
+                    await collectionPoints(id, 'moving', collection.date, index)
                 ))
             ))
-            counter = 0;
             response?.data?.natureCollections.map((collection) => (
-                collection.maps.map( async (id) => (
-                    await collectionPoints(id, 'nature', collection.date)
+                collection.maps.map(async (id, index) => (
+                    await collectionPoints(id, 'nature', collection.date, index)
                 ))
             ))
-            counter = 0;
             response?.data?.orderCollections.map((collection) => (
-                collection.maps.map( async (id) => (
-                    await collectionPoints(id, 'order', collection.date)
+                collection.maps.map(async (id, index) => (
+                    await collectionPoints(id, 'order', collection.date, index)
                 ))
             ))
-            counter = 0;
             response?.data?.soundCollections.map((collection) => (
-                collection.maps.map( async (id) => (
-                    await collectionPoints(id, 'sound', collection.date)
+                collection.maps.map( async (id, index) => (
+                    await collectionPoints(id, 'sound', collection.date, index)
                 ))
             ))
-            counter = 0;
             response?.data?.stationaryCollections.map((collection) => (
-                collection.maps.map( async (id) => (
-                    await collectionPoints(id, 'stationary', collection.date)
+                collection.maps.map( async (id, index) => (
+                    await collectionPoints(id, 'stationary', collection.date, index)
                 ))
             ))
 
@@ -98,8 +91,7 @@ function ProjectPage(){
     }
 
     //light order nature boundaries
-    const collectionPoints = async (id, cat, dateTime) => {
-        counter++;
+    const collectionPoints = async (id, cat, dateTime, index) => {
         const apiCategory = {
             bounds: 'boundaries_maps',
             light: 'light_maps',
@@ -109,8 +101,6 @@ function ProjectPage(){
             sound: 'sound_maps',
             stationary: 'stationary_maps'
         }
-
-        console.log(`${cat} ${dateTime} ${counter}`);
 
         try {
             const response = await axios.get(`/${apiCategory[cat]}/${id}`, {
@@ -132,9 +122,14 @@ function ProjectPage(){
             if(!map[apiCategory[cat]][date.toLocaleDateString()]){ 
                 map[apiCategory[cat]][`${date.toLocaleDateString()}`] = {};
             }
-            map[apiCategory[cat]][date.toLocaleDateString()][`${date.toLocaleTimeString()}(${counter})`] = await response.data;
+            if(index === 0){
+                map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = await response.data;
+            }else{
+                map[apiCategory[cat]][date.toLocaleDateString()][`${date.toLocaleTimeString()}(${index})`] = await response.data;
+            }
+
             results = map;
-            console.log(counter);
+            console.log(index);
         } catch (error) {
             //project api get error
             console.log('ERROR: ', error);
