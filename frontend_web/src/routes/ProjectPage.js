@@ -23,6 +23,7 @@ function ProjectPage(){
     //Holds specifics like results, locations, and types of markers, boundaries, etc.
     var results = {};
     var sPoints = {};
+    var counter = 0;
 
     const projectData = async() => {
         try {
@@ -42,36 +43,42 @@ function ProjectPage(){
             ));
 
             //get Map data for activity results (needed in drawers)
-            response?.data?.boundariesCollections.map((collection, index) => (
+            response?.data?.boundariesCollections.map((collection) => (
                 collection.maps.map( async (id) => {
                     await collectionPoints(id, 'bounds', collection.date);
                 })
             ))
+            counter = 0;
             response?.data?.lightCollections.map((collection) => (
                 collection.maps.map( async (id) => (
                     await collectionPoints(id, 'light', collection.date)
                 ))
             ))
+            counter = 0;
             response?.data?.movingCollections.map((collection) => (
                 collection.maps.map( async (id) => (
                     await collectionPoints(id, 'moving', collection.date)
                 ))
             ))
+            counter = 0;
             response?.data?.natureCollections.map((collection) => (
                 collection.maps.map( async (id) => (
                     await collectionPoints(id, 'nature', collection.date)
                 ))
             ))
+            counter = 0;
             response?.data?.orderCollections.map((collection) => (
                 collection.maps.map( async (id) => (
                     await collectionPoints(id, 'order', collection.date)
                 ))
             ))
+            counter = 0;
             response?.data?.soundCollections.map((collection) => (
                 collection.maps.map( async (id) => (
                     await collectionPoints(id, 'sound', collection.date)
                 ))
             ))
+            counter = 0;
             response?.data?.stationaryCollections.map((collection) => (
                 collection.maps.map( async (id) => (
                     await collectionPoints(id, 'stationary', collection.date)
@@ -92,6 +99,7 @@ function ProjectPage(){
 
     //light order nature boundaries
     const collectionPoints = async (id, cat, dateTime) => {
+        counter++;
         const apiCategory = {
             bounds: 'boundaries_maps',
             light: 'light_maps',
@@ -102,7 +110,7 @@ function ProjectPage(){
             stationary: 'stationary_maps'
         }
 
-        console.log(`${cat} ${dateTime}`);
+        console.log(`${cat} ${dateTime} ${counter}`);
 
         try {
             const response = await axios.get(`/${apiCategory[cat]}/${id}`, {
@@ -118,10 +126,15 @@ function ProjectPage(){
             var date = new Date(dateTime);
             var map = results;
             //console.log(typeof (dateTime));
-            map[apiCategory[cat]] = {};
-            map[apiCategory[cat]][date.toLocaleDateString()] = {};
-            map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = await response.data;
+            if (!map[apiCategory[cat]]) {
+                map[apiCategory[cat]] = {};
+            }
+            if(!map[apiCategory[cat]][date.toLocaleDateString()]){ 
+                map[apiCategory[cat]][`${date.toLocaleDateString()}`] = {};
+            }
+            map[apiCategory[cat]][date.toLocaleDateString()][`${date.toLocaleTimeString()}(${counter})`] = await response.data;
             results = map;
+            console.log(counter);
         } catch (error) {
             //project api get error
             console.log('ERROR: ', error);
