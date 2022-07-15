@@ -24,7 +24,7 @@ router.post('/', async (req, res, next) => {
 
         site = 'http://p2bp.herokuapp.com'
 
-        const link = `${site}}/password_reset.js/${user._id}/${token}`
+        const link = `${site}/password_reset.js/${user._id}/${token}`
 
         await emailer.emailResetPassword(shortUser.email, link)
 
