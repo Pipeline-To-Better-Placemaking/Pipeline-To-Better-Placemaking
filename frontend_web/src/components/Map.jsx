@@ -273,7 +273,7 @@ export default function FullMap(props) {
                 stimes.map(time => (title === 'nature_maps'  ?
                     !data.Results[title][sdate][time].data ? null : ((data.Results[title][sdate][time].data).map((inst) => (
                         Object.entries(inst).map(([natureType, pointArr], ind1)=>(
-                            natureType === 'weather' || natureType === '_id' || natureType === 'time' ? console.log(natureType) :
+                            natureType === 'weather' || natureType === '_id' || natureType === 'time' ? null :
                                 pointArr.map((natureObj, ind2)=>(
                                 natureType === 'animal' ? 
                                     <Marker
@@ -359,9 +359,6 @@ export default function FullMap(props) {
             ))
         ))
     );
-
-    console.log(subAreas);
-    console.log(standingPoints);
 
     // Components returned on render -----
     return (

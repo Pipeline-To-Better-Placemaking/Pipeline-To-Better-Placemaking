@@ -40,14 +40,11 @@ function ActivityPage(props) {
                         if(category === 'stationary_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Posture: dataobjects.posture, Age: dataobjects.age, Gender: dataobjects.gender, Activity: `${dataobjects.activity}` };
                             stationary.push(obj);
-                            console.log(dataobjects)
                         } else if(category === 'moving_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Mode: dataobjects.mode }
                             moving.push(obj);
-                            console.log(dataobjects)
                         } else if (category === 'sound_maps') {
-                            obj = { Category: testNames(category), Date: date, Time: time, Point: index, 'Average (dB)': dataobjects.average, 'Sound Type': `${dataobjects.sound_type}`, Source: `${dataobjects.source}` }
-                            console.log(dataobjects)
+                            obj = { Category: testNames(category), Date: date, Time: time, Point: index, 'Average (dB)': dataobjects.average, 'Sound Types/Sources': `${dataobjects.sound_type}` }
                             sound.push(obj);
                         } else if (category === 'boundaries_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Kind: dataobjects.kind, Description: dataobjects.description, Purpose: `${dataobjects.purpose}`, 'Value (ft/sq.ft)': dataobjects.value }
