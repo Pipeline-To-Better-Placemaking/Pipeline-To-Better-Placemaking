@@ -21,7 +21,15 @@ export const styles = StyleSheet.create({
     buttons:{
         backgroundColor: '#006FD6',
         height: height * .05, 
-        width: width * .3
+        width: width * .3,
+        // alignItems: 'center',
+        // justifyContent: 'center'
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .0325,
+        fontWeight: 'bold'
     },
 
     buttonRow:{

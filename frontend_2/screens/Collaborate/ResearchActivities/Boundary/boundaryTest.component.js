@@ -418,10 +418,10 @@ export function BoundaryTest(props){
             return(
                 <View style={styles.buttonRow}>
                     <Button style={styles.buttons} onPress={() => boundaryType(0)}>
-                        <Text>Constructed</Text>
+                        <View><Text style={styles.buttonTxt}>Constructed</Text></View>
                     </Button>
                     <Button style={styles.buttons} onPress={() => boundaryType(1)}>
-                        <Text>Material</Text>
+                        <View><Text style={styles.buttonTxt}>Material</Text></View>
                     </Button>
                     <Button style={styles.buttons} onPress={() => boundaryType(2)}>
                         <Text>Shelter</Text>
