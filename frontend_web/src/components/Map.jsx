@@ -640,7 +640,7 @@ const Path = ({boundsPathWindow, ...options}) => {
     const lines = {
         style: {
             path: tempPath,
-            strokeColor: colors[options.mode] ? colors[options.mode] : '000000',
+            strokeColor: colors[options.mode] ? colors[options.mode] : '#000000',
             strokeOpacity: 0.9,
             strokeWeight: 4,
             clickable: true
