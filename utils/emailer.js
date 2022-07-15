@@ -69,17 +69,17 @@ const sendVerificationCode = async (email, code) => {
     }
 
     const emailHTML = `
-        <h3>Hello from 2+ Community!</h3>
-        <p>Thank you for creating a Measuring Place account. Please enter the code below in the app to verify your email address.</p>
+        <h3>Hello from Pipeline to Better Placemaking!</h3>
+        <p>Thank you for creating an account with Pipeline to Better Placemaking. Please enter the code below in the app to verify your email address.</p>
 
         <p><b>Your code is:</b> ${code}</p>
     `
     
     const mailOptions = {
-        from: `"2+ Community" <${config.PROJECT_EMAIL}>`,
+        from: `"Pipeline to Better Placemaking" <${config.PROJECT_EMAIL}>`,
         to: email,
         subject: 'Email Verification',
-        text: `Thank you for creating a Measuring Place account. 
+        text: `Thank you for creating an account with Pipeline to Better Placemaking. 
             Please enter the following code in the app to verify your email address: ${code}`,
         html: emailHTML
     }
@@ -88,25 +88,21 @@ const sendVerificationCode = async (email, code) => {
 }
 
 //sent upon registration from login route
-const sendResetPassword = async (email, code) => {
-    if (!code) {
-        const user = await User.findUserByEmail(email)
-        code = user.verification_code
-    }
+const emailResetPassword = async (email, link) => {
+
 
     const emailHTML = `
-        <h3>Hello from 2+ Community!</h3>
-        <p>Thank you for creating a Measuring Place account. Please enter the code below in the app to verify your email address.</p>
+        <h3>Hello from Pipeline to Better Placemaking!</h3>
+        <p>Forgot your password?</p>
 
-        <p><b>Your code is:</b> ${code}</p>
+        <p><b>Please click on the link below to change your password:</b>${link}</p>
     `
     
     const mailOptions = {
-        from: `"2+ Community" <${config.PROJECT_EMAIL}>`,
+        from: `"Pipeline to Better Placemaking" <${config.PROJECT_EMAIL}>`,
         to: email,
-        subject: 'Email Verification',
-        text: `Thank you for creating a Measuring Place account. 
-            Please enter the following code in the app to verify your email address: ${code}`,
+        subject: 'Password Reset',
+        text: `Please click on the link to change your password:${link}`,
         html: emailHTML
     }
 
@@ -115,5 +111,6 @@ const sendResetPassword = async (email, code) => {
 
 module.exports = {
     sendEmail,
-    sendVerificationCode
+    sendVerificationCode,
+    emailResetPassword
 }
