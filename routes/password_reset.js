@@ -10,7 +10,8 @@ const config = require('../utils/config')
 router.post('/', async (req, res, next) => {
 
     try{
-        var user = await User.find({ email:  req.body.email })
+        var user = await User.findUserByEmail(req.body.email)
+        console.log(user)
 
         if (!user){ return res.status(400).send("This email does not have a registered account") }
 
