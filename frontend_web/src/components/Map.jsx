@@ -9,7 +9,6 @@ import html2canvas from 'html2canvas';
 import MapDrawers from './MapDrawers';
 import { testNames } from '../functions/HelperFunctions';
 import './controls.css';
-import { autocompleteClasses } from '@mui/material';
 
 const render = (status) => {
     console.log(status);
@@ -378,8 +377,8 @@ export default function FullMap(props) {
                     places={ mapPlaces }
                     zoom={ zoom }
                 >
-                    { areaData ? <Bounds area={areaData} type={'area'} ver={0}/> :  null }
-                    { subAreas.length > 1 ? subAreas.map((area, index)=>( index === 0 ? null : <Bounds area={area.points} type={'area'} ver={1}/>)) : null }
+                    { areaData ? <Bounds area={areaData} type={'area'} /> :  null }
+                    { subAreas.length > 1 ? subAreas.map((area, index)=>( index === 0 ? null : <Bounds area={area.points} type={'area'} />)) : null }
                     { props.type === 1 ? 
                         actCoords(collections) : 
                         (props.type === 2 || props.type === 4 ? 
@@ -580,8 +579,7 @@ const Bounds = ({boundsPathWindow, ...options}) => {
             strokeOpacity: 0.8,
             strokeWeight: 3,
             fillColor: 'rgba(0,0,0,0.2)',     
-            clickable: false,
-            zIndex: options.ver && options.ver === 1 ? 2 : 1           
+            clickable: false                 
         },
         types: {
             paths: area,
