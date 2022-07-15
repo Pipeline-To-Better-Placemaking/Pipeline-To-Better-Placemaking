@@ -21,7 +21,7 @@ router.post('/', async (req, res, next) => {
 
         site = 'http://p2bp.herokuapp.com'
 
-        const link = `${site}/password_reset.js/${user._id}/${token}`
+        const link = `${site}/api/password_reset/${user._id}/${token}`
 
         await emailer.emailResetPassword(user.email, link)
 
@@ -38,7 +38,7 @@ router.post('/', async (req, res, next) => {
 
 })
 
-router.post('/:id/:token', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+router.post('/:id/:token', async (req, res, next) => {
     
     try{
         user = await User.findById(req.params.id)
