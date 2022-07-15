@@ -42,10 +42,9 @@ function ProjectPage(){
             ));
 
             //get Map data for activity results (needed in drawers)
-            response?.data?.boundariesCollections.forEach((collection) => (
-                collection.maps.forEach( async (id) => {
+            response?.data?.boundariesCollections.map((collection, index) => (
+                collection.maps.map( async (id) => {
                     await collectionPoints(id, 'bounds', collection.date);
-
                 })
             ))
             response?.data?.lightCollections.map((collection) => (
@@ -102,6 +101,8 @@ function ProjectPage(){
             sound: 'sound_maps',
             stationary: 'stationary_maps'
         }
+
+        console.log(`${cat} ${dateTime}`);
 
         try {
             const response = await axios.get(`/${apiCategory[cat]}/${id}`, {
