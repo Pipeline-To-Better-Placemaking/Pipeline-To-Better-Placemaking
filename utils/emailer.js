@@ -55,7 +55,6 @@ const sendEmail = async (mailOptions) => {
         console.log(`Sent email to ${mailOptions.to}`)
     } catch (error) {
         console.error(error)
-        console.log("fails try in sendEmail")
         return false
     }
 
@@ -106,8 +105,6 @@ const emailResetPassword = async (email, link) => {
         text: `Please click on the link to change your password: ${link}`,
         html: emailHTML
     }
-    console.log("Email: ")
-    console.log(mailOptions)
 
     return (await sendEmail(mailOptions))
 }

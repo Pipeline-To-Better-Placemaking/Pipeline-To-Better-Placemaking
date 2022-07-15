@@ -1,6 +1,4 @@
 const express = require('express')
-const passport = require('passport')
-const Team = require('../models/teams.js')
 const router = express.Router()
 const User = require('../models/users.js')
 const emailer = require('../utils/emailer')
@@ -20,7 +18,6 @@ router.post('/', async (req, res, next) => {
         })
 
         site = 'http://p2bp.herokuapp.com'
-
         const link = `${site}/api/password_reset/${user._id}/${token}`
 
         await emailer.emailResetPassword(user.email, link)
