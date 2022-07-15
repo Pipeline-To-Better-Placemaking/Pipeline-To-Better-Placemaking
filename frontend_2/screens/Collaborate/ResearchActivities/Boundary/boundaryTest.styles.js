@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
 
     buttonTxt:{
         color: 'white',
-        fontSize: width * .0325,
+        fontSize: width * .0315,
         fontWeight: 'bold'
     },
 
