@@ -270,7 +270,7 @@ export default function MapDrawer(props) {
             )) }
             { Object.keys(stationary)?.length > 1 ? <Charts selection='stationary_maps.Group' data={stationary} type={1} projArea={area} /> : null }
             { Object.keys(moving)?.length > 1 ? <Charts selection='moving_maps.Group' data={moving} type={1} projArea={area} /> : null }
-            { Object.keys(order)?.length > 1 ? <Charts selection='order_maps.Group' data={order} type={1} /> : null }
+            { Object.keys(order)?.length > 1 ? <Charts selection='order_maps.Group' data={order} type={1} projArea={area} /> : null }
             { Object.keys(boundaries)?.length > 1 ? <Charts selection='boundaries_maps.Group' data={boundaries} type={1} projArea={area} /> : null }
             { Object.keys(lighting)?.length > 1 ? <Charts selection='lighting_maps.Group' data={lighting} type={1} projArea={area} /> : null }
             { Object.keys(nature)?.length > 1 ? <Charts selection='nature_maps.Group' data={nature} type={1} projArea={area} /> : null }
