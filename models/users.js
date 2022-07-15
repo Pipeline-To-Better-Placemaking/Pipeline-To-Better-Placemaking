@@ -59,6 +59,18 @@ module.exports.findUserByEmail = async function(email) {
     return await Users.findOne(query)
 }
 
+module.exports.testPassword = async function (password) {
+    if (!password ||                       // Password must be given
+        password.length < 8 ||             // Length must be >= 8 characters
+        /\s/g.test(password) ||            // Must not contain any whitespace characters
+        !/\d/g.test(password) ||           // Must contain at least one digit
+        !/[!@#$%^&*]/g.test(password) ||   // Must contain at least one symbol
+        !/[A-Z]/g.test(password)) {        // Must contain at least one uppercase letter
+        return false
+    }
+    return true
+}
+
 module.exports.createPasswordHash = async function(password) {
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
@@ -177,3 +189,5 @@ module.exports.removeRefrences = async function(teamId) {
         { $pull: {teams: teamId }}
     )
 }
+
+
