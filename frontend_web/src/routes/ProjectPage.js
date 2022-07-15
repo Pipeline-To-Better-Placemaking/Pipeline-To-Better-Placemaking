@@ -137,7 +137,7 @@ function ProjectPage(){
     var area = projectInfo?.area?.points;
     var subAreas = projectInfo?.subareas;
     
-    //console.log(user);
+    console.log(drawer);
     //console.log(standingPoints);
     //console.log(projectInfo);
     return (
