@@ -11,19 +11,16 @@ router.post('/', async (req, res, next) => {
         var user = await User.findUserByEmail(req.body.email)
         console.log(user)
 
-        if (!user){ return res.status(400).send("This email does not have a registered account") }
+        if (!user){ throw new UnauthorizedError('This email does not have a registered account') }
 
         const token = jwt.sign({ _id: user._id, email: user.email }, config.PRIVATE_KEY, {
             expiresIn: 86400 //1 day
         })
 
         site = 'http://p2bp.herokuapp.com'
-        const link = `${site}/api/password_reset/${user._id}/${token}`
+        const link = `${site}/password_reset/${user._id}/${token}`
 
         await emailer.emailResetPassword(user.email, link)
-
-        res.send("password reset link sent to your email account");
-
 
     }
     catch(error){

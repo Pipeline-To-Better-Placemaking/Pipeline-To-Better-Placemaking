@@ -948,7 +948,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                 }])
 
     const emailHTML = `
-        <h3>Hello from 2+ Community!</h3>
+        <h3>Hello from Pipeline to Better Placemaking!</h3>
         <p>You have requested a copy of project data. Attached is a csv formatted file representing the data.</p>
 
     `
@@ -956,7 +956,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
 
     project = await Project.findById(req.params.id)
     const mailOptions = {
-        from: `"2+ Community" <${config.PROJECT_EMAIL}>`,
+        from: `"Pipeline to Better Placemaking" <${config.PROJECT_EMAIL}>`,
         to: req.user.email,
         subject: project.title + ' Data Export',
         text: `Attached is your data`,
