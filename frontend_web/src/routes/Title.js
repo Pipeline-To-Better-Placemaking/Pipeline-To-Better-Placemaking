@@ -162,7 +162,7 @@ function Title(props) {
                                 >
                                     Log in
                                 </Button>
-                                <Link to='/forgot' style={{fontSize: 'small'}}> Forgot Password? </Link>
+                                <Link to='/forgot_password' style={{fontSize: 'small'}}> Forgot Password? </Link>
                             </Box>
                             <div className='d-grid'>
                                 <Button component={ Link } to='/new' className='scheme secondButton' size='lg'>
