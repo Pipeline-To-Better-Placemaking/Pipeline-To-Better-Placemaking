@@ -18,7 +18,7 @@ router.post('/', async (req, res, next) => {
             expiresIn: 86400 //1 day
         })
 
-        site = 'http://p2bp.herokuapp.com'
+        site = 'https://p2bp.herokuapp.com'
         const link = `${site}/password_reset/${user._id}/${token}`
 
         await emailer.emailResetPassword(user.email, link)
