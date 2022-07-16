@@ -13,24 +13,11 @@ export default function ForgotPassword(){
     const [email, setEmail] = React.useState('');
     const [message, setMessage] = React.useState('');
     const em = React.useRef(null);
-<<<<<<< HEAD
     const emMess = React.useRef(null);
     const successMess = React.useRef(null);
     const forgotForm = React.useRef(null);
-=======
-    const registerResponse = React.useRef(null);
-
-    const emMess = React.useRef(null);
-    
-    const handleChange = (e) => {
-        setValues({
-            ...values,
-            [e.target.name]: e.target.value
-        });
-    };
 
     // Handles visibility toggle for password fields
->>>>>>> b886204d (added jwt verify to token api)
 
     const handleSubmit = (e) => {
         e.preventDefault();
