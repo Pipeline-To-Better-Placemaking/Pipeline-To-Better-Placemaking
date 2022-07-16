@@ -137,7 +137,7 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
     z-index: 3;
 }
 
-.titlePage {
+#titlePage, #forgotPass, #resetPass {
     padding: 20px;
 }
 
@@ -183,6 +183,11 @@ div#createCard > div.card-body{
 
 div#MapPage {
     overflow: hidden;
+}
+
+div#resetCard {
+    width: 40vw;
+    height: auto;
 }
 
 div#timeCardContent {
@@ -327,7 +332,6 @@ form#titleBox {
     margin-bottom: 10px;
     padding-bottom: 5px;
 }
-
 div#userSettings {
     display: flex;
     flex-direction: column;

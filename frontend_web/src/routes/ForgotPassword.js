@@ -1,127 +1,88 @@
 import * as React from 'react';
-import Card from 'react-bootstrap/Card';
 import Box from '@mui/material/Box';
+import Card from 'react-bootstrap/Card';
 import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import TextField from '@mui/material/TextField';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Back from '@mui/icons-material/ArrowBackRounded';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'; 
 import axios from '../api/axios.js';
-
 import './routes.css';
 const registerURL = '/password_reset'
 
-function ForgotPassword(props) {
-    let nav = useNavigate();
-    // to access fname lname...etc values.fname, do not access show(Confirm)Password
-    const [values, setValues] = React.useState({
-        email: '',
-    });
-
+export default function ForgotPassword(){
+    const [email, setEmail] = React.useState('');
     const [message, setMessage] = React.useState('');
-
     const em = React.useRef(null);
-    const pw = React.useRef(null);
-    const cpw = React.useRef(null);
-    const registerResponse = React.useRef(null);
-    const fnameMess = React.useRef(null);
-    const lnameMess = React.useRef(null);
     const emMess = React.useRef(null);
-    const pwMess = React.useRef(null);
-    
-    const handleChange = (e) => {
-        setValues({
-            ...values,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    // Handles visibility toggle for password fields
+    const successMess = React.useRef(null);
+    const forgotForm = React.useRef(null);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        if (values.email === '' || values.email.length <= 7) {
-            setMessage('Please provide an email (minimum length 7)');
+        if(email.length < 7){
+            setMessage('Please provide a valid email (minimum length 7)');
             emMess.current.style.display = 'inline-block';
             em.current.focus();
             return;
         } else {
             emMess.current.style.display = 'none';
-            submitNewUser(e);
+            sendForgotEmail(e);
         }
-        
     }
 
-    const submitNewUser = async (e) => {
-        //register new user instead of login, not saving data
+    const sendForgotEmail = async (e) => {
+
         try{
-            const response = await axios.post(registerURL, JSON.stringify({email: values.email}), {
+            const response = await axios.post(registerURL, JSON.stringify({email: email}), {
                 headers: { 'Content-Type': 'application/json' },
             });
             //console.log(response.data);
             //console.log(response.accessToken);
             //console.log(JSON.stringify(response))
-            let user = response.data;
-            props.onLogin(true, user);
-            //redirect user to url/home
-            nav('/', { replace: true });
+            //On successful request
+            forgotForm.current.style.display = 'none';
+            successMess.current.style.display = 'block';
         } catch (error) {
             //user login error
             //console.log('ERROR: ', error);
             //success = false;
             setMessage(error.response.data?.message);
-            registerResponse.current.style.display = 'inline-block';
+            forgotForm.current.style.display = 'block';
             return;
         }
     }
-
+ 
     return(
-        <div id='newUser'>
+        <div id='forgotPass'>
             <div className='pageTemplate'>
                 <Link className='backButton' to='/'><Back className='iconShadow' /></Link>
-                {/* tagBox - sizing for form card, on Title.js as well */}
-                <div className='tagBox'>
-                    <Card id='pageCard'>
-                        <Card.Body>
-                            <h3>Forgot Password?</h3>
-                            <br/>
-                            <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                                <span ref={ emMess } style={{ display: 'none', color: 'red' }}>{ message }</span>
-                                <TextField 
-                                    className='nonFCInput' 
-                                    id='outlined-input' 
-                                    label='Email' 
-                                    type='email' 
-                                    name='email'
-                                    value={ values.email } 
-                                    onChange={ handleChange }
-                                    required
-                                    ref={ em }
-                                />
-                                <br/>
-                                <Button 
-                                    className='scheme' 
-                                    type='submit' 
-                                    size='lg' 
-                                    id='newUserButton' 
-                                    onClick={ handleSubmit }
-                                >
-                                    Send Email
-                                </Button>
-                            </Box>
-                        </Card.Body>
-                    </Card>
-                </div>
+                <Card style={{padding: '10px'}}>
+                    <Card.Body>
+                        <h3>Forgot Password</h3>
+                        <Box id='forgotBox' ref={forgotForm} component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                            <div style={{ marginBottom: '10px' }}>Please enter the email for the account with the forgotten password.</div>
+                            <span ref={emMess} style={{ display: 'none', color: 'red' }}>{message}</span>
+                            <TextField
+                                className='nonFCInput'
+                                id='outlined-forgot'
+                                label='Email'
+                                type='email'
+                                name='email'
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                ref={em}
+                                style={{ marginBottom: '20px'}}
+                            />
+                            <Button onClick={handleSubmit} className='scheme'>Send Reset Email</Button>
+                        </Box>
+                    </Card.Body>
+                    <Card.Body ref={ successMess } style={{ display: 'none', marginBottom: '10px', backgroundColor: '#b6d7a8', outlineWidth: '1px', outlineColor: '#6aa84f' }}>
+                        <Box style={{ fontSize: 'large' }}>
+                            An email containing a link to reset your password has been sent to {email}, it may take a few minutes to appear. <div style={{fontSize: 'medium'}}> In case you do not see an email in your inbox, check your Spam or Junk Folders.</div>
+                        </Box>
+                    </Card.Body>
+                </Card>
             </div>
         </div>
     );
 }
-
-export default ForgotPassword;

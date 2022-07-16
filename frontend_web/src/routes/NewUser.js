@@ -149,7 +149,7 @@ function NewUser(props) {
                 <Link className='backButton' to='/'><Back className='iconShadow' /></Link>
                 {/* tagBox - sizing for form card, on Title.js as well */}
                 <div className='tagBox'>
-                    <Card id='pageCard'>
+                    <Card className='pageCard'>
                         <Card.Body>
                             <h3>Create an Account</h3>
                             <span>All fields ending with * are required</span>

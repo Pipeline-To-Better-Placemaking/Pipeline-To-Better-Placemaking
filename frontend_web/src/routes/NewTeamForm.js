@@ -70,7 +70,7 @@ function NewTeamForm() {
         } else {
             titleMess.current.style.display = 'none';
             //call API function
-            //submitNewTeam(e);
+            submitNewTeam(e);
         }
     }
 
@@ -81,7 +81,7 @@ function NewTeamForm() {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
-            //console.log(response.data);
+            console.log(response.data);
             //console.log(response.accessToken);
             //console.log(JSON.stringify(response))
             //redirect user to url/home
