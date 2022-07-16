@@ -14,6 +14,7 @@ import ProjectPage from './routes/ProjectPage';
 import NewProjectPoints from './routes/PointsNewProject';
 import NewProjectArea from './routes/AreaNewProject';
 import ProjectForm from './routes/NewProjectForm';
+import ForgotPassword from './routes/ForgotPassword';
 
 function App() {
     // !! token/storage of choice, verification of choice
@@ -92,6 +93,7 @@ function App() {
                 {/* pass onLogin function to handle user state pass for new user as well (?)*/}
                 <Route index element={ <Title onLogin={ handleOnLogin }/> }/>
                     <Route path='home/*' element={ <UserRoutes /> }/>
+                <Route path= 'forgot_password' element={<ForgotPassword onLogin={ handleOnLogin}/> }/>
                 <Route path='new' element={ <NewUser onLogin={ handleOnLogin }/> } />
             </Routes>
         </Router>
