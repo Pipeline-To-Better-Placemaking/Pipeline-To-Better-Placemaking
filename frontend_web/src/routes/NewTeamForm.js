@@ -50,7 +50,7 @@ function NewTeamForm() {
     const submitNewTeam = async (e) => {
         //add new team
         try {
-            const response = await axios.post('/teams', JSON.stringify(formValues), {
+            const response = await axios.post('/teams', JSON.stringify({ title: formValues.title, description: formValues.description, public: formValues.public }), {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Authorization': `Bearer ${user.token}` 
