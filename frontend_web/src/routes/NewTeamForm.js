@@ -9,29 +9,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import axios from '../api/axios.js';
 import './routes.css';
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
-
 function NewTeamForm() {
     let nav = useNavigate();
     let loc = useLocation();
-    //Load users to add in names
-    const [names, setNames] = React.useState([
-        'James Man', 'Lilly Flowers', 'Some Guy'
-    ]);
+    const user = loc.state ? loc.state.userToken : {};
 
     const [formValues, setFormValues] = React.useState({
         title: '',
         description: '',
-        users:[],
         public: false
     });
 
@@ -43,14 +28,6 @@ function NewTeamForm() {
     const handleChange = (e) => {
         setFormValues({ ...formValues, [e.target.name]: e.target.value });
     };
-
-    /*const handleMultiChange = (e) => {
-        const { target: { value } } = e;
-        setFormValues({
-            // On autofill we get a stringified value.
-            ...formValues, users: typeof value === 'string' ? value.split(',') : value,
-        });
-    };*/
 
     const handleChecked = (e) => {
         setFormValues({ ...formValues, [e.target.name]: e.target.checked });
@@ -73,8 +50,11 @@ function NewTeamForm() {
     const submitNewTeam = async (e) => {
         //add new team
         try {
-            const response = await axios.post('/teams', JSON.stringify({ title: formValues.title, description: formValues.description, public: formValues.public }), {
-                headers: { 'Content-Type': 'application/json' },
+            const response = await axios.post('/teams', JSON.stringify(formValues), {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${user.token}` 
+                },
                 withCredentials: true
             });
             console.log(response.data);
@@ -121,27 +101,6 @@ function NewTeamForm() {
                         value={formValues.description}
                         onChange={handleChange}
                     />
-                    {/*<FormControl sx={{ m: 1, width: 300 }}>
-                        <InputLabel id='demo-multiple-name-label'>Users *</InputLabel>
-                        <Select
-                            labelId='multiSelectUsers'
-                            id='multiSelectUsers'
-                            multiple
-                            value={formValues.users}
-                            onChange={handleMultiChange}
-                            input={<OutlinedInput label='Users' />}
-                            MenuProps={MenuProps}
-                        >
-                            {names.map((name) => (
-                                <MenuItem
-                                    key={name}
-                                    value={name}
-                                >
-                                    {name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                            </FormControl>*/}
                     <FormControl>
                         <FormControlLabel 
                             control={<Checkbox

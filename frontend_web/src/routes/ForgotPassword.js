@@ -17,8 +17,6 @@ export default function ForgotPassword(){
     const successMess = React.useRef(null);
     const forgotForm = React.useRef(null);
 
-    // Handles visibility toggle for password fields
-
     const handleSubmit = (e) => {
         e.preventDefault();
         if(email.length < 7){
