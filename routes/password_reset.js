@@ -28,7 +28,11 @@ router.post('/', async (req, res, next) => {
         console.log(error)
     }
 
-    res.status(200).json(user)
+    res.status(200).json({
+        success: true,
+        token: token,
+        user: user 
+    })
 
 })
 
