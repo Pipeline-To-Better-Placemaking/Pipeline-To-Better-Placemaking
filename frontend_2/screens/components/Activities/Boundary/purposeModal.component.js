@@ -99,16 +99,23 @@ export function PurposeModal(props){
                         <View>
                             <View style={styles.buttonRow}>
                                 <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
-                                    <Text>Safety</Text>
+                                    <View>
+                                        <Text style={select1 ? styles.buttonTxt : styles.offButtonTxt}>Safety</Text>
+                                    </View>
                                 </Button>
                                 <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>
-                                    <Text>Prevention</Text>
+                                    <View>
+                                        <Text style={select2 ? styles.buttonTxt : styles.offButtonTxt}>Prevention</Text>
+                                    </View>
+
                                 </Button>
                             </View>
 
                             <View style={styles.lastButtonView}>
                                 <Button style={styles.button} appearance={select3 ? 'primary' : 'outline'} onPress={()=> setSelect(3)}>
-                                    <Text>Creating Seperation</Text>
+                                    <View>
+                                        <Text style={select3 ? styles.buttonTxt : styles.offButtonTxt}>Creating Seperation</Text>
+                                    </View>
                                 </Button>
                             </View>      
                         
@@ -117,7 +124,9 @@ export function PurposeModal(props){
                                     
                         <View style={styles.multiView}>
                             <Button style={styles.multiSubmit} onPress={sendData}>
-                                <Text>Submit</Text>
+                                <View>
+                                    <Text style={styles.backButtonTxt}>Submit</Text>
+                                </View>
                             </Button>
                         </View>
 

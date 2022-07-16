@@ -28,34 +28,49 @@ export function DataModal(props) {
                         <View style={styles.titleDesc}>
                             <Text category={'s1'} style={styles.titleDescTxt}>Select the best description for the boundary you marked</Text>
                         </View>
-
+                        {/* CHECK THESE BUTTONS FOR ALL (3) MODALS TO MAKE SURE THEY WORK WELL */}
                         <View>
                             <View style={styles.buttonRow}>
                                 <Button style={styles.button} onPress={()=> sendData(props.desc[0])}>
-                                    <Text>{props.desc[0]}</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>{props.desc[0]}</Text>
+                                    </View>
                                 </Button>
                                 <Button style={styles.button} onPress={()=> sendData(props.desc[1])}>
-                                    <Text>{props.desc[1]}</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>{props.desc[1]}</Text>
+                                    </View>
                                 </Button>
                             </View>
 
                             <View style={styles.buttonRow}>
                                 <Button style={styles.button} onPress={()=> sendData(props.desc[2])}>
-                                    <Text>{props.desc[2]}</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>{props.desc[2]}</Text>
+                                    </View>
+
                                 </Button>
                                 <Button style={styles.button} onPress={()=> sendData(props.desc[3])}>
-                                    <Text>{props.desc[3]}</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>{props.desc[3]}</Text>
+                                    </View>
                                 </Button>
                             </View>
 
                             <View style={styles.lastButtonView}>
                                 <Button style={styles.button} onPress={()=> sendData(props.desc[4])}>
-                                    <Text>{props.desc[4]}</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>{props.desc[4]}</Text>
+                                    </View>
                                 </Button>
                             </View>
 
                             <View style={styles.multiView}>
-                                <Button style={styles.backButton} onPress={() => props.back()}>Back</Button>
+                                <Button style={styles.backButton} onPress={() => props.back()}>
+                                    <View>
+                                        <Text style={styles.backButtonTxt}>Back</Text>
+                                    </View>
+                                </Button>
                             </View>
 
                         </View>

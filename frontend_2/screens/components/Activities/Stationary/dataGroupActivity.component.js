@@ -44,23 +44,33 @@ export function DataGroupActivity(props) {
         <Text category={'h6'} style={styles.title}> Activity: </Text>
             <View style={styles.topRow}>
                 <Button style={styles.buttonLeft} appearance={activityMatrix[0] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(0)}>
-                    <Text>Socializing</Text>
+                    <View>
+                        <Text style={activityMatrix[0] ? styles.buttonTxt : styles.offButtonTxt}>Socializing</Text>
+                    </View>
                 </Button>
                 <Button style={styles.buttonRight} appearance={activityMatrix[1] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(1)}>
-                    <Text>Waiting</Text>
+                    <View>
+                        <Text style={activityMatrix[1] ? styles.buttonTxt : styles.offButtonTxt}>Waiting</Text>
+                    </View>
                 </Button>
             </View>
             <View style={styles.bottomRow}>
                 <Button style={styles.buttonLeft} appearance={activityMatrix[2] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(2)}>
-                    <Text>Recreation</Text>
+                    <View>
+                        <Text style={activityMatrix[2] ? styles.buttonTxt : styles.offButtonTxt}>Recreation</Text>
+                    </View>
                 </Button>
                 <Button style={styles.buttonRight} appearance={activityMatrix[3] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(3)}>
-                    <Text>Eating</Text>
+                    <View>
+                        <Text style={activityMatrix[3] ? styles.buttonTxt : styles.offButtonTxt}>Eating</Text>
+                    </View>
                 </Button>
             </View>
 
             <Button style={styles.buttonBottom} appearance={activityMatrix[4] ? 'primary' : 'outline'} onPress={() => _setActivityIndex(4)}>
-                <Text>Solitary</Text>
+                <View>
+                    <Text style={activityMatrix[4] ? styles.buttonTxt : styles.offButtonTxt}>Solitary</Text>
+                </View>
             </Button>
         </View>
     )

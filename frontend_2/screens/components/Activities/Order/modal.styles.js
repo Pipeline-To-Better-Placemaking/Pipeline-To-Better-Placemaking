@@ -59,8 +59,22 @@ export const styles = StyleSheet.create({
 
     button:{
         width: width * .35,
-        height: height * .06, 
+        height: height * .06,
         alignSelf:'center' 
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .033,
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
+
+    offButtonTxt:{
+        color: '#006FD6',
+        fontSize: width * .033,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 
     multiButton:{
@@ -91,8 +105,22 @@ export const styles = StyleSheet.create({
         borderBottomLeftRadius: 0
     },
 
+    selectButtonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    offSelectButtonTxt:{
+        color: '#006FD6',
+        fontSize: width * .031,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
     backButton:{
-        width: width * .3,
+        width: width * .275,
         height: height * .04, 
         alignSelf:'center',
         backgroundColor: '#6690FF',
@@ -100,9 +128,15 @@ export const styles = StyleSheet.create({
     },
 
     submitButton:{
-        width: width * .3,
+        width: width * .275,
         height: height * .04, 
         alignSelf:'center',
+    },
+
+    submitButtonTxt:{
+        color: 'white',
+        fontSize: width * .03,
+        fontWeight: 'bold'
     },
 
     backButtonView:{

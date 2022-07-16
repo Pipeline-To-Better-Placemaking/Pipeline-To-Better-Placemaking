@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     },
 
     viewContainer:{
-        height: '50%',
+        height: '45%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -79,10 +79,10 @@ export const styles = StyleSheet.create({
         borderBottomLeftRadius: 0
     },
 
-    buttonText:{
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
+    submitButtonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold'
     },
 
     buttonRow:{
@@ -99,23 +99,29 @@ export const styles = StyleSheet.create({
     },
 
     button:{
-        width: width * .35,
+        width: width * .3,
         height: height * .065, 
         alignSelf:'center'
     },
 
-    vegeButton:{
-        width: width * .28,
-        height: height * .062, 
-        alignSelf:'center'
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold'
     },
 
     backButton:{
-        width: width * .3,
+        width: width * .275,
         height: height * .04, 
         alignSelf:'center',
         backgroundColor: '#6690FF',
         borderColor: '#6690FF'
+    },
+
+    backButtonTxt:{
+        color: 'white',
+        fontSize: width * .03,
+        fontWeight: 'bold'
     },
 
     lastButtonView:{

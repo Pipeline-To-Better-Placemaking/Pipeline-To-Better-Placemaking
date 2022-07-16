@@ -1,9 +1,12 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
     
     modalContainer:{
-        height: '20%', 
+        height: '18%', 
         marginTop: 'auto', 
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -16,9 +19,16 @@ export const styles = StyleSheet.create({
     },
 
     button:{
-        marginTop: 30, 
-        width:200, 
+        marginTop:  height * .03, 
+        width: width * .3,
+        height: height * .055,
         alignSelf: 'center'
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .035,
+        fontWeight: 'bold'
     }
 
 });

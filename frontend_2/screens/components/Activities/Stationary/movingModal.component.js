@@ -17,7 +17,11 @@ export function MovingModal(props) {
         <Modal transparent={true} animationType='slide' visible={props.moving}>
             <View style={[ styles.modalContainer, {backgroundColor:theme['background-basic-color-1']}]}>
                 <Text category={'h4'} style={styles.title}>Move to the next position.</Text>
-                <Button style={styles.button} onPress={confirm}> Confirm </Button>
+                <Button style={styles.button} onPress={confirm}> 
+                    <View>
+                        <Text style={styles.buttonTxt}>Confirm</Text> 
+                    </View>
+                </Button>
             </View>
         </Modal>
     )

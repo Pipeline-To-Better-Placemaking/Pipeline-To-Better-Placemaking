@@ -48,7 +48,7 @@ export function StationaryActivityMap(props) {
         <View>
             <PressMapAreaWrapper
                 area={props.area}
-                mapHeight={'100%'}
+                mapHeight={'97.5%'}
                 onPress={props.addMarker}
                 recenter={props.recenter}
             >

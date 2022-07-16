@@ -45,7 +45,7 @@ export function MainSoundModal(props) {
             <KeyboardAvoidingView behavior='position' style={styles.avoid}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
                     <View style={styles.modalContainer}>
-                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
+                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1'], height: '55%'}]} >
                         
                             <Text category={'h1'} style={styles.titleText}>Main Sound Type</Text>
                             <View style={styles.dataView}>
@@ -57,42 +57,57 @@ export function MainSoundModal(props) {
                                 <View>
                                     <View style={styles.buttonRow}>
                                         <Button style={styles.button} onPress={()=> sendData('Water Feature')}>
-                                            <Text>Water Feature</Text>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Water Feature</Text>
+                                            </View>
                                         </Button>
                                         <Button style={styles.button} onPress={()=> sendData('Traffic')}>
-                                            <Text>Traffic</Text>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Traffic</Text>
+                                            </View>
                                         </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
                                         <Button style={styles.button} onPress={()=> sendData('People Sounds')}>
-                                            <Text>People Sounds</Text>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>People Sounds</Text>
+                                            </View>
                                         </Button>
                                         <Button style={styles.button} onPress={()=> sendData('Animals')}>
-                                            <Text>Animals</Text>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Animals</Text>
+                                            </View>
                                         </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
                                         <Button style={styles.button} onPress={()=> sendData('Wind')}>
-                                            <Text>Wind</Text>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Wind</Text>
+                                            </View>
                                         </Button>
                                         <Button style={styles.button} onPress={()=> sendData('Music')}>
-                                            <Text>Music</Text>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Music</Text>
+                                            </View>
                                         </Button>
                                     </View>
                                 </View>
 
                                 <View style={styles.otherView}>
                                     <Text>Other</Text>
-                                    
                                     <View style={styles.otherRow}>
                                         <Input 
                                             style={styles.inputBox}
                                             placeholder={"Sound Type..."}
                                             onChangeText={(nextValue) => setOther(nextValue)}
                                         />
-                                        <Button style={styles.submitButton} onPress={handleOther}>Submit</Button>
+                                        <Button style={styles.submitButton} onPress={handleOther}>
+                                        <View>
+                                            <Text style={styles.submitButtonTxt}>Submit</Text>
+                                        </View>
+                                        </Button>
                                     </View>
 
                                     {empty ?

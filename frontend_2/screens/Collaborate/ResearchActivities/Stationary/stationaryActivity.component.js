@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button } from '@ui-kitten/components';
+import { useTheme, Button, Text } from '@ui-kitten/components';
 import { StationaryActivityMap } from '../../../components/Maps/stationaryActivityMap.component.js';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
@@ -144,7 +144,9 @@ export function StationaryActivity(props) {
         if (initalStart) {
             return(
                 <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
+                    <View>
+                        <Text style={styles.startStopText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
@@ -155,7 +157,9 @@ export function StationaryActivity(props) {
                     style={styles.stopButton}
                     onPress={() => endActivity()}
                     >
-                        End
+                        <View>
+                            <Text style={styles.startStopText}>End</Text>
+                        </View>
                     </Button>
             )
         }

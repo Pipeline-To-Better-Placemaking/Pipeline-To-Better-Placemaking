@@ -31,16 +31,22 @@ export function DataModal(props) {
 
                             <View style={styles.buttonRow}>
                                 <Button style={styles.button} onPress={()=> sendData("Behavior")}>
-                                    <Text>Behavior</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Behavior</Text>
+                                    </View>
                                 </Button>
                                 <Button style={styles.button} onPress={()=> sendData("Maintenance")}>
-                                    <Text>Maintenance</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Maintenance</Text>
+                                    </View>
                                 </Button>
                             </View>
 
                             <View style={styles.backButtonView}>
                                 <Button style={styles.backButton} onPress={() => props.back()}>
-                                    <Text>Back</Text>
+                                    <View>
+                                        <Text style={styles.submitButtonTxt}>Back</Text>
+                                    </View>
                                 </Button>
                             </View>
                         </View>                 

@@ -186,28 +186,40 @@ export function DescModal(props) {
                                 <View>
                                     <View style={styles.buttonRow}>
                                         <Button style={styles.multiButton} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
-                                            <Text>{props.prompt[0]}</Text>
+                                            <View>
+                                                <Text style={select1 ? styles.buttonTxt : styles.offButtonTxt}>{props.prompt[0]}</Text>
+                                            </View>
                                         </Button>
                                         <Button style={styles.multiButton} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>
-                                            <Text>{props.prompt[1]}</Text>
+                                            <View>
+                                                <Text style={select2 ? styles.buttonTxt : styles.offButtonTxt}>{props.prompt[1]}</Text>
+                                            </View>
                                         </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
                                         <Button style={styles.multiButton} appearance={select3 ? 'primary' : 'outline'} onPress={()=> setSelect(3)}>
-                                            <Text>{props.prompt[2]}</Text>
+                                            <View>
+                                                <Text style={select3 ? styles.buttonTxt : styles.offButtonTxt}>{props.prompt[2]}</Text>
+                                            </View>
                                         </Button>
                                         <Button style={styles.multiButton} appearance={select4 ? 'primary' : 'outline'} onPress={()=> setSelect(4)}>
-                                            <Text>{props.prompt[3]}</Text>
+                                            <View>
+                                                <Text style={select4 ? styles.buttonTxt : styles.offButtonTxt}>{props.prompt[3]}</Text>
+                                            </View>
                                         </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
                                         <Button style={styles.multiButton} appearance={select5 ? 'primary' : 'outline'} onPress={()=> setSelect(5)}>
-                                            <Text>{props.prompt[4]}</Text>
+                                            <View>
+                                                <Text style={select5 ? styles.buttonTxt : styles.offButtonTxt}>{props.prompt[4]}</Text>
+                                            </View>
                                         </Button>
                                         <Button style={styles.multiButton} appearance={select6 ? 'primary' : 'outline'} onPress={()=> setSelect(6)}>
-                                            <Text>{props.prompt[5]}</Text>
+                                            <View>
+                                                <Text style={select6 ? styles.buttonTxt : styles.offButtonTxt}>{props.prompt[5]}</Text>
+                                            </View>
                                         </Button>
                                     </View>
                                     
@@ -221,9 +233,13 @@ export function DescModal(props) {
                                                 />
                                                 <Button style={styles.selectButton} appearance={select7 ? 'primary' : 'outline'} onPress={()=> setSelect(7)}>
                                                     { select7 ?
-                                                        <Text>Selected</Text>
+                                                        <View>
+                                                            <Text style={styles.selectButtonTxt}>Selected</Text>
+                                                        </View>
                                                     :
-                                                        <Text>Select</Text>
+                                                        <View>
+                                                            <Text style={styles.offSelectButtonTxt}>Select</Text>
+                                                        </View>
                                                     }
                                                 </Button>
                                             </View>
@@ -241,10 +257,14 @@ export function DescModal(props) {
                                         
                                 <View style={styles.bottomRowView}>
                                     <Button style={styles.backButton} onPress={handleBack}>
-                                        <Text>Back</Text>
+                                        <View>
+                                            <Text style={styles.submitButtonTxt}>Back</Text>
+                                        </View>
                                     </Button>
                                     <Button style={styles.submitButton} onPress={sendData}>
-                                        <Text>Submit</Text>
+                                        <View>
+                                            <Text style={styles.submitButtonTxt}>Submit</Text>
+                                        </View>
                                     </Button>
                                 </View>
 

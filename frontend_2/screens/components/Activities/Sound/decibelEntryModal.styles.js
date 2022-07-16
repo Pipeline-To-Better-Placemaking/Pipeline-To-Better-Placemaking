@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     },
 
     viewContainer: {
-        height: '30%',
+        height: '22.5%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -34,8 +34,12 @@ export const styles = StyleSheet.create({
     },
 
     nanSpace:{
-        marginBottom: height * .009,
-        marginTop: -3
+        marginTop: -3,
+        marginBottom: 3
+    },
+
+    emptySpace:{
+        marginBottom: -10
     },
 
     redTxt:{
@@ -47,10 +51,17 @@ export const styles = StyleSheet.create({
     },
 
     button:{
-        marginTop: height * .03, 
-        marginBottom: 20, 
-        width: 100, 
+        marginBottom: height * .6,
+        marginTop: height * .03,
+        width: width * .27,
+        height: height * .045, 
         alignSelf:'center'
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold'
     }
 
 })

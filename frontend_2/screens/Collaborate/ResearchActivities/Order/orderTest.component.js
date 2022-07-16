@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button } from '@ui-kitten/components';
+import { useTheme, Button, Text } from '@ui-kitten/components';
 import { OrderMap } from '../../../components/Maps/orderMap.component.js';
 import { DataModal } from '../../../components/Activities/Order/dataModal.component';
 import { DescModal } from '../../../components/Activities/Order/descModal.component';
@@ -124,7 +124,9 @@ export function OrderTest(props) {
         if (initalStart) {
             return(
                 <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
+                    <View>
+                        <Text style={styles.startStopText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
@@ -135,7 +137,9 @@ export function OrderTest(props) {
                     style={styles.stopButton}
                     onPress={() => endActivity()}
                     >
-                        End
+                        <View>
+                            <Text style={styles.startStopText}>End</Text>
+                        </View>
                     </Button>
             )
         }

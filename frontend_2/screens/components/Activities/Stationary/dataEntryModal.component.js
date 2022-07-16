@@ -112,7 +112,9 @@ export function DataEntryModal(props) {
                     </View>
 
                     <Button style={styles.button} onPress={sendData}>
-                        <Text>Submit</Text> 
+                        <View>
+                            <Text style={styles.buttonTxt}>Submit</Text>
+                        </View> 
                     </Button>
 
                 </ScrollView>

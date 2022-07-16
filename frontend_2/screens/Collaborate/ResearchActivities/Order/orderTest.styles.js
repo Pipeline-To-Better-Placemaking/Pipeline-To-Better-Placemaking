@@ -6,16 +6,22 @@ const height = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
 
     stopButton:{
-        height: 50, 
         marginLeft: 5, 
-        width: 90
+        height: height * .0525, 
+        width: width * .2,
     },
     
     startButton:{
         backgroundColor: '#006FD6',
-        height: 50, 
         marginLeft: 5, 
-        width: 90
+        height: height * .0525, 
+        width: width * .2,
+    },
+
+    startStopText:{
+        color: 'white',
+        fontSize: width * .035,
+        fontWeight: 'bold'
     },
 
     container:{

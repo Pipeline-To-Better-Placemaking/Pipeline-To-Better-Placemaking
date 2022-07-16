@@ -150,7 +150,7 @@ export function SoundsModal(props) {
             <KeyboardAvoidingView behavior='position' style={styles.avoid}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
                     <View style={styles.modalContainer}>
-                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1'], height:'65%'}]} >
+                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]}>
                         
                             <Text category={'h1'} style={styles.titleText}>Sound Types</Text>
                             <View style={styles.dataView}>
@@ -173,35 +173,46 @@ export function SoundsModal(props) {
                                 <View>
                                     <View style={styles.buttonRow}>
                                         <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
-                                            <Text>Water Feature</Text>
+                                            <View>
+                                                <Text style={select1 ? styles.buttonTxt : styles.offButtonTxt}>Water Feature</Text>
+                                            </View>
                                         </Button>
                                         <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>
-                                            <Text>Traffic</Text>
+                                            <View>
+                                                <Text style={select2 ? styles.buttonTxt : styles.offButtonTxt}>Traffic</Text>
+                                            </View>
                                         </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
                                         <Button style={styles.button} appearance={select3 ? 'primary' : 'outline'} onPress={()=> setSelect(3)}>
-                                            <Text>People Sounds</Text>
+                                            <View>
+                                                <Text style={select3 ? styles.buttonTxt : styles.offButtonTxt}>People Sounds</Text>
+                                            </View>
                                         </Button>
                                         <Button style={styles.button} appearance={select4 ? 'primary' : 'outline'} onPress={()=> setSelect(4)}>
-                                            <Text>Animals</Text>
+                                            <View>
+                                                <Text style={select4 ? styles.buttonTxt : styles.offButtonTxt}>Animals</Text>
+                                            </View>
                                         </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
                                         <Button style={styles.button} appearance={select5 ? 'primary' : 'outline'} onPress={()=> setSelect(5)}>
-                                            <Text>Wind</Text>
+                                            <View>
+                                                <Text style={select5 ? styles.buttonTxt : styles.offButtonTxt}>Wind</Text>
+                                            </View>
                                         </Button>
                                         <Button style={styles.button} appearance={select6 ? 'primary' : 'outline'} onPress={()=> setSelect(6)}>
-                                            <Text>Music</Text>
+                                            <View>
+                                                <Text style={select6 ? styles.buttonTxt : styles.offButtonTxt}>Music</Text>
+                                            </View>
                                         </Button>
                                     </View>
                                 </View>
 
                                 <View style={styles.otherView}>
                                     <Text>Other</Text>
-                                    
                                     <View style={styles.otherRow}>
                                         <Input 
                                             style={styles.inputBox}
@@ -210,9 +221,13 @@ export function SoundsModal(props) {
                                         />
                                         <Button style={styles.submitButton} appearance={select9 ? 'primary' : 'outline'} onPress={()=> setSelect(9)}>
                                             { select9 ?
-                                                <Text>Selected</Text>
+                                                <View>
+                                                    <Text style={styles.submitButtonTxt}>Selected</Text>
+                                                </View>
                                             :
-                                                <Text>Select</Text>
+                                                <View>
+                                                    <Text style={styles.offSubmitButtonTxt}>Select</Text>
+                                                </View>
                                             }
                                         </Button>
                                     </View>
@@ -227,7 +242,9 @@ export function SoundsModal(props) {
                                 
                                     <View style={styles.multiView}>
                                         <Button style={styles.multiSubmit} onPress={sendData}>
-                                            <Text>Submit</Text>
+                                            <View>
+                                                <Text style={styles.submitButtonTxt}>Submit</Text>
+                                            </View>
                                         </Button>
                                     </View>
 

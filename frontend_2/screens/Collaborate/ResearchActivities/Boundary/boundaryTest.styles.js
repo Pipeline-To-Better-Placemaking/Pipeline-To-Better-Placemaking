@@ -5,25 +5,29 @@ const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
 
-    stopButton:{
-        height: 50, 
-        marginLeft: 5, 
-        width: 90
+    stopButton:{ 
+        marginLeft: 5,
+        height: height * .0525, 
+        width: width * .2,
     },
     
     startButton:{
-        backgroundColor: '#006FD6',
-        height: 50, 
-        marginLeft: 5, 
-        width: 90
+        backgroundColor: '#006FD6', 
+        marginLeft: 5,
+        height: height * .0525, 
+        width: width * .2,
+    },
+
+    startStopText:{
+        color: 'white',
+        fontSize: width * .035,
+        fontWeight: 'bold'
     },
     
     buttons:{
         backgroundColor: '#006FD6',
         height: height * .05, 
         width: width * .3,
-        // alignItems: 'center',
-        // justifyContent: 'center'
     },
 
     buttonTxt:{

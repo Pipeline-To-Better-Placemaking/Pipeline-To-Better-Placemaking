@@ -95,16 +95,19 @@ export function DataModal(props) {
                                         <Text category={'s1'}>Domesticated</Text>
                                         <View style={styles.dataButtonRow}>
                                             <Button style={styles.button} onPress={()=> sendData("Domesticated", "Dog")}>
-                                                <Text>Dog</Text>
+                                                <View>
+                                                    <Text style={styles.buttonTxt}>Dog</Text>
+                                                </View>
                                             </Button>
                                             <Button style={styles.button} onPress={()=> sendData("Domesticated", "Cat")}>
-                                                <Text>Cat</Text>
+                                                <View>
+                                                    <Text style={styles.buttonTxt}>Cat</Text>
+                                                </View>
                                             </Button>
                                         </View>
                                         
                                         <View style={styles.otherView}>
                                             <Text>Other</Text>
-                                        
                                             <View style={styles.otherRow}>
                                                 <Input 
                                                     style={styles.otherInputBox}
@@ -112,7 +115,9 @@ export function DataModal(props) {
                                                     onChangeText={(nextValue) => setOther1(nextValue)}
                                                 />
                                                 <Button style={styles.submitButton} onPress={()=> handleOther("Domesticated")}>
-                                                    <Text>Submit</Text>
+                                                    <View>
+                                                        <Text style={styles.submitButtonTxt}>Submit</Text>
+                                                    </View>
                                                 </Button>
                                             </View>
                                             {empty1 ?
@@ -130,23 +135,33 @@ export function DataModal(props) {
                                         <Text category={'s1'}>Wild</Text>
                                         <View style={styles.dataButtonRow}>
                                             <Button style={styles.button} onPress={()=> sendData("Wild", "Squirrel")}>
-                                                <Text>Squirrel</Text>
+                                                <View>
+                                                    <Text style={styles.buttonTxt}>Squirrel</Text>
+                                                </View>
                                             </Button>
                                             <Button style={styles.button} onPress={()=> sendData("Wild", "Bird")}>
-                                                <Text>Bird</Text>
+                                                <View>
+                                                    <Text style={styles.buttonTxt}>Bird</Text>
+                                                </View>
                                             </Button>
                                         </View>
                                         <View style={styles.dataButtonRow}>
                                             <Button style={styles.button} onPress={()=> sendData("Wild", "Rabbit")}>
-                                                <Text>Rabbit</Text>
+                                                <View>
+                                                    <Text style={styles.buttonTxt}>Rabbit</Text>
+                                                </View>
                                             </Button>
                                             <Button style={styles.button} onPress={()=> sendData("Wild", "Duck")}>
-                                                <Text>Duck</Text>
+                                                <View>
+                                                    <Text style={styles.buttonTxt}>Duck</Text>
+                                                </View>
                                             </Button>
                                         </View>
                                         <View style={styles.lastDataButtonView}>
                                             <Button style={styles.button} onPress={()=> sendData("Wild", "Turtle")}>
-                                                <Text>Turtle</Text>
+                                                <View>
+                                                    <Text style={styles.buttonTxt}>Turtle</Text>
+                                                </View>
                                             </Button>
                                         </View>
 
@@ -159,7 +174,9 @@ export function DataModal(props) {
                                                     onChangeText={(nextValue) => setOther2(nextValue)}
                                                 />
                                                 <Button style={styles.submitButton} onPress={()=> handleOther("Wild")}>
-                                                    <Text>Submit</Text>
+                                                    <View>
+                                                        <Text style={styles.submitButtonTxt}>Submit</Text>
+                                                    </View>
                                                 </Button>
                                             </View>
 
@@ -175,7 +192,9 @@ export function DataModal(props) {
 
                                     <View style={styles.backButtonView}>
                                         <Button style={styles.backButton} onPress={handleBack}>
-                                            <Text>Back</Text>
+                                            <View>
+                                                <Text style={styles.backButtonTxt}>Back</Text>
+                                            </View>
                                         </Button>
                                     </View>
 

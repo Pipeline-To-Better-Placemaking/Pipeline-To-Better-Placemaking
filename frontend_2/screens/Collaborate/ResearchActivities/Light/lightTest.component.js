@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button } from '@ui-kitten/components';
+import { useTheme, Button, Text } from '@ui-kitten/components';
 import { LightMap } from '../../../components/Maps/lightMap.component.js';
 import { DataModal } from '../../../components/Activities/Light/dataModal.component';
 import CountDown from 'react-native-countdown-component';
@@ -98,7 +98,9 @@ export function LightTest(props) {
         if (initalStart) {
             return(
                 <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
+                    <View>
+                        <Text style={styles.startStopText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
@@ -109,7 +111,9 @@ export function LightTest(props) {
                     style={styles.stopButton}
                     onPress={() => endActivity()}
                     >
-                        End
+                        <View>
+                            <Text style={styles.startStopText}>End</Text>
+                        </View>
                     </Button>
             )
         }

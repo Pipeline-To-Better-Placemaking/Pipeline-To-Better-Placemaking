@@ -32,25 +32,35 @@ export function WaterModal(props) {
                         <View>
                             <View style={styles.buttonRow}>
                                 <Button style={styles.button} onPress={()=> sendData("Ocean")}>
-                                    <Text>Ocean</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Ocean</Text>
+                                    </View>
                                 </Button>
                                 <Button style={styles.button} onPress={()=> sendData("Lake")}>
-                                    <Text>Lake</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Lake</Text>
+                                    </View>
                                 </Button>
                             </View>
 
                             <View style={styles.buttonRow}>
                                 <Button style={styles.button} onPress={()=> sendData("River")}>
-                                    <Text>River</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>River</Text>
+                                    </View>
                                 </Button>
                                 <Button style={styles.button} onPress={()=> sendData("Swamp")}>
-                                    <Text>Swamp</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Swamp</Text>
+                                    </View>
                                 </Button>
                             </View>
 
                             <View style={styles.lastButtonView}>
                                 <Button style={styles.backButton} onPress={() => props.back()}>
-                                    <Text>Back</Text>
+                                    <View>
+                                        <Text style={styles.backButtonTxt}>Back</Text>
+                                    </View>
                                 </Button>
                             </View>
 

@@ -17,6 +17,20 @@ export const styles = StyleSheet.create({
         width: width * .7, 
         marginTop: 10, 
         alignSelf: 'center'
+    },
+
+    offButtonTxt:{
+        color: '#006FD6',
+        fontSize: width * .035,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .035,
+        fontWeight: 'bold',
+        textAlign: 'center',
     }
 
 });

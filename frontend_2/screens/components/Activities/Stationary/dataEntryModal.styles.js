@@ -31,10 +31,18 @@ export const styles = StyleSheet.create({
 
     button:{
         marginTop: 15, 
-        marginBottom: 20, 
-        width: width * .23, 
+        marginBottom: 30, 
+        height: height * .035, 
+        width: width * .3, 
         alignSelf:'center'
-    }
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
 
 });
 

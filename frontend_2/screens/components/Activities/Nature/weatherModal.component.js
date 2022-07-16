@@ -74,25 +74,35 @@ export function WeatherModal(props) {
                                 <View>
                                     <View style={styles.buttonRow}>
                                         <Button style={styles.button} onPress={()=> handleSubmit("Sunny")}>
-                                            <Text>Sunny</Text>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Sunny</Text>
+                                            </View>
                                         </Button>
                                         <Button style={styles.button} onPress={()=> handleSubmit("Cloudy")}>
-                                            <Text>Cloudy</Text>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Cloudy</Text>
+                                            </View>
                                         </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
                                         <Button style={styles.button} onPress={()=> handleSubmit("Rainy")}>
-                                            <Text>Rainy</Text>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Rainy</Text>
+                                            </View>
                                         </Button>
                                         <Button style={styles.button} onPress={()=> handleSubmit("Windy")}>
-                                            <Text>Windy</Text>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Windy</Text>
+                                            </View>
                                         </Button>
                                     </View>
 
                                     <View style={styles.buttonSpace}>
                                         <Button style={styles.button} onPress={()=> handleSubmit("Stormy")}>
-                                            <Text>Stormy</Text>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Stormy</Text>
+                                            </View>
                                         </Button>
                                     </View>
                                 </View>

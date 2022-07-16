@@ -31,21 +31,29 @@ export function VegeModal(props) {
 
                         <View>
                             <View style={styles.buttonRow}>
-                                <Button style={styles.vegeButton} onPress={()=> sendData("Native")}>
-                                    <Text>Native</Text>
+                                <Button style={styles.button} onPress={()=> sendData("Native")}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Native</Text>
+                                    </View>
                                 </Button>
-                                <Button style={styles.vegeButton} onPress={()=> sendData("Design")}>
-                                    <Text>Design</Text>
+                                <Button style={styles.button} onPress={()=> sendData("Design")}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Design</Text>
+                                    </View>
                                 </Button>
-                                <Button style={styles.vegeButton} onPress={()=> sendData("Open Field")}>
-                                    <Text>Open Field</Text>
+                                <Button style={styles.button} onPress={()=> sendData("Open Field")}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Open Field</Text>
+                                    </View>
                                 </Button>
                             </View>
                             
 
                             <View style={styles.lastButtonView}>
                                 <Button style={styles.backButton} onPress={() => props.back()}>
-                                    <Text>Back</Text>
+                                    <View>
+                                        <Text style={styles.backButtonTxt}>Back</Text>
+                                    </View>
                                 </Button>
                             </View>
 

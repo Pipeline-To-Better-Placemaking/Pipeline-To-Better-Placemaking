@@ -32,19 +32,27 @@ export function DataModal(props) {
 
                             <View style={styles.buttonRow}>
                                 <Button style={styles.button} onPress={()=> sendData("Rhythmic")}>
-                                    <Text>Rhythmic</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Rhythmic</Text>
+                                    </View>
                                 </Button>
                                 <Button style={styles.button} onPress={()=> sendData("Building")}>
-                                    <Text>Building</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Building</Text>
+                                    </View>
                                 </Button>
                                 <Button style={styles.button} onPress={()=> sendData("Task")}>
-                                    <Text>Task</Text>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Task</Text>
+                                    </View>
                                 </Button>
                             </View>
 
                             <View style={styles.backButtonView}>
                                 <Button style={styles.backButton} onPress={() => props.back()}>
-                                    <Text>Back</Text>
+                                    <View>
+                                        <Text style={styles.backButtonTxt}>Back</Text>
+                                    </View>
                                 </Button>
                             </View>
                         </View>                 

@@ -74,7 +74,7 @@ export function DecibelEntryModal(props) {
                                 />
                                 
                                 { empty ?
-                                    <View>
+                                    <View style={styles.emptySpace}>
                                         <Text style={styles.redTxt}>Please enter a value</Text>
                                     </View>
                                 :

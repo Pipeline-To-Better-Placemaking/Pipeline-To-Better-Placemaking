@@ -24,26 +24,38 @@ export function DataGroupAge(props) {
         <Text category={'h6'} style={styles.title}> Age: </Text>
             <View style={styles.topRow}>
                 <Button style={styles.buttonLeft} appearance={ageMatrix[0] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(0)}>
-                    <Text>0 - 14</Text>
+                    <View>
+                        <Text style={ageMatrix[0] ? styles.buttonTxt : styles.offButtonTxt}>0 - 14</Text>
+                    </View>
                 </Button>
                 <Button style={styles.buttonRight} appearance={ageMatrix[1] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(1)}>
-                    <Text>15 - 21</Text>
+                    <View>
+                        <Text style={ageMatrix[1] ? styles.buttonTxt : styles.offButtonTxt}>15 - 21</Text>
+                    </View>
                 </Button>
             </View>
             <View style={styles.bottomRow}>
                 <Button style={styles.buttonLeft} appearance={ageMatrix[2] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(2)}>
-                    <Text>22 - 30</Text>
+                    <View>
+                        <Text style={ageMatrix[2] ? styles.buttonTxt : styles.offButtonTxt}>22 - 30</Text>
+                    </View>
                 </Button>
                 <Button style={styles.buttonRight} appearance={ageMatrix[3] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(3)}>
-                    <Text>30 - 50</Text>
+                    <View>
+                        <Text style={ageMatrix[3] ? styles.buttonTxt : styles.offButtonTxt}>30 - 50</Text>
+                    </View>
                 </Button>
             </View>
             <View style={styles.bottomRow}>
                 <Button style={styles.buttonLeft} appearance={ageMatrix[4] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(4)}>
-                    <Text>50 - 65</Text>
+                    <View>
+                        <Text style={ageMatrix[4] ? styles.buttonTxt : styles.offButtonTxt}>50 - 65</Text>
+                    </View>
                 </Button>
                 <Button style={styles.buttonRight} appearance={ageMatrix[5] ? 'primary' : 'outline'} onPress={() => _setAgeIndex(5)}>
-                    <Text>65+</Text>
+                    <View>
+                        <Text style={ageMatrix[5] ? styles.buttonTxt : styles.offButtonTxt}>65+</Text>
+                    </View>
                 </Button>
             </View>
         </View>

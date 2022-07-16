@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component.js';
 import { PeopleMovingMap } from '../../../components/Maps/peopleMovingMap.component.js';
-import { useTheme,  Button,  Icon } from '@ui-kitten/components';
+import { useTheme,  Button,  Icon, Text } from '@ui-kitten/components';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
@@ -124,7 +124,9 @@ export function PeopleMovingActivity(props) {
         if (initalStart) {
             return(
                 <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
+                    <View>
+                        <Text style={styles.startStopText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
@@ -135,7 +137,9 @@ export function PeopleMovingActivity(props) {
                     style={styles.stopButton}
                     onPress={() => endActivity()}
                     >
-                        End
+                        <View>
+                            <Text style={styles.startStopText}>End</Text>
+                        </View>
                     </Button>
             ) 
         }

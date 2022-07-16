@@ -169,7 +169,9 @@ export function NatureTest(props) {
         if (initalStart) {
             return(
                 <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
+                    <View>
+                        <Text style={styles.startStopText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
@@ -180,7 +182,9 @@ export function NatureTest(props) {
                     style={styles.stopButton}
                     onPress={() => endActivity()}
                     >
-                        End
+                        <View>
+                            <Text style={styles.startStopText}>End</Text>
+                        </View>
                     </Button>
             )
         }
@@ -306,10 +310,14 @@ export function NatureTest(props) {
             return(
                 <View style={styles.buttonView}>
                     <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(0)}}>
-                        <Text>Body of Water</Text>
+                        <View>
+                            <Text style={styles.buttonTxt}>Body of Water</Text>
+                        </View>
                     </Button>
                     <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(1)}}>
-                        <Text>Vegetation</Text>
+                        <View>
+                            <Text style={styles.buttonTxt}>Vegetation</Text>
+                        </View>
                     </Button>
                 </View>
             )

@@ -273,14 +273,16 @@ export function SoundTest(props){
         if (initalStart) {
             return(
                 <Button style={styles.startButton} onPress={() =>{setStart(true);}} >
-                    Start
+                    <View>
+                        <Text style={styles.startButtonText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
         // else, show the progress tracker
         else{
             return(
-                <Text style={styles.trackerText} > 
+                <Text style={styles.trackerText}> 
                     {tracker}/{totalIter} 
                 </Text>
             )

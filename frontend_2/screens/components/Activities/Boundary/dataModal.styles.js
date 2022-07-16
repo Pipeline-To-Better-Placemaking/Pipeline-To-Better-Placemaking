@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     },
 
     viewContainer: {
-        height: '43%',
+        height: '45%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     },
 
     purposeViewContainer:{
-        height: '38%',
+        height: '40%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -54,12 +54,26 @@ export const styles = StyleSheet.create({
 
     button:{
         width: width * .35,
-        height: height * .065, 
-        alignSelf:'center'
+        height: height * .07
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .033,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    offButtonTxt:{
+        color: '#006FD6',
+        fontSize: width * .033,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 
     lastButtonView:{
         marginTop: height * .015,
+        alignItems: 'center'
     },
 
     backButton:{
@@ -68,6 +82,12 @@ export const styles = StyleSheet.create({
         alignSelf:'center',
         backgroundColor: '#6690FF',
         borderColor: '#6690FF'
+    },
+
+    backButtonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold'
     },
 
     submitButton:{
@@ -89,8 +109,8 @@ export const styles = StyleSheet.create({
 
     selectError:{
         alignItems: 'center',
-        marginTop: height * .009,
-        marginBottom: -20,
+        marginTop: height * .005,
+        marginBottom: -8,
     },
 
     redTxt:{

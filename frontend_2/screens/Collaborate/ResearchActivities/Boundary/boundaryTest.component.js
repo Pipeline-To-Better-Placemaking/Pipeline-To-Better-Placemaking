@@ -208,8 +208,10 @@ export function BoundaryTest(props){
         // only show the start button before the test is started (to start the test)
         if (!start) {
             return(
-                <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
+                <Button style={styles.startButton} onPress={() => setStart(true)}>
+                    <View>
+                        <Text style={styles.startStopText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
@@ -220,8 +222,10 @@ export function BoundaryTest(props){
                     status={'danger'}
                     style={styles.stopButton}
                     onPress={() => endActivity()}
-                    >
-                        End
+                >
+                    <View>
+                        <Text style={styles.startStopText}>End</Text>
+                    </View>
                 </Button>
             )
         }
@@ -418,13 +422,19 @@ export function BoundaryTest(props){
             return(
                 <View style={styles.buttonRow}>
                     <Button style={styles.buttons} onPress={() => boundaryType(0)}>
-                        <View><Text style={styles.buttonTxt}>Constructed</Text></View>
+                        <View>
+                            <Text style={styles.buttonTxt}>Constructed</Text>
+                        </View>
                     </Button>
                     <Button style={styles.buttons} onPress={() => boundaryType(1)}>
-                        <View><Text style={styles.buttonTxt}>Material</Text></View>
+                        <View>
+                            <Text style={styles.buttonTxt}>Material</Text>
+                        </View>
                     </Button>
                     <Button style={styles.buttons} onPress={() => boundaryType(2)}>
-                        <Text>Shelter</Text>
+                        <View>
+                            <Text style={styles.buttonTxt}>Shelter</Text>
+                        </View>
                     </Button>
                 </View>
             )

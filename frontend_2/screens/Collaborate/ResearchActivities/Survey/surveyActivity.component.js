@@ -60,7 +60,9 @@ export function SurveyActivity(props) {
     if (initalStart) {
       return(
         <Button style={styles.startButton} onPress={() => setStart(true)} >
-          Start
+          <View>
+            <Text style={styles.startStopText}>Start</Text>
+          </View>
         </Button>
       )
     }
@@ -71,7 +73,9 @@ export function SurveyActivity(props) {
           style={styles.stopButton}
           onPress={() => endActivity()}
         >
-          End
+          <View>
+            <Text style={styles.startStopText}>End</Text>
+          </View>
         </Button>
       )
     }

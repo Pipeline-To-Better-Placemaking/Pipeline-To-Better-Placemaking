@@ -29,19 +29,36 @@ export const styles = StyleSheet.create({
     },
 
     buttonLeft:{
-        width: width * .35, 
+        width: width * .35,
+        height: height * .05, 
         marginRight: 45
     },
 
     buttonRight:{
-        width: width * .35, 
+        width: width * .35,
+        height: height * .05,
         marginRight: 10
     },
 
     buttonBottom:{
-        width: width * .35, 
+        width: width * .35,
+        height: height * .05,
         marginTop: 10, 
         alignSelf: 'center'
+    },
+
+    offButtonTxt:{
+        color: '#006FD6',
+        fontSize: width * .031,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold',
+        textAlign: 'center',
     }
 
 });
