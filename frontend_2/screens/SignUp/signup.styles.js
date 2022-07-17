@@ -1,4 +1,7 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
     
@@ -30,45 +33,18 @@ export const styles = StyleSheet.create({
     },
 
     inputBox: {
-        width: 300
+        width: width * .7,
     },
 
     signUpButton: {
-        marginTop: 30,
-        width: 300,
+        marginTop: height * .025,
+        width: width * .7,
         backgroundColor: '#DEBD07'
-    },
-
-    signUpText: {
-        color: '#091C7A',
-        fontSize: 20,
-        fontWeight: '600',
     },
 
     backButton: {
-        marginTop: 15,
+        marginTop: height * .015,
         backgroundColor: '#DEBD07'
-    },
-
-    backText: {
-        fontSize: 20
-    },
-
-    backTextPressed: {
-        color: '#FFFFFF',
-        fontSize: 20
-    },
-
-    forgotText: {
-        color: '#FFFFFF',
-        fontSize: 18,
-        textAlign: 'center'
-    },
-
-    forgotTextPressed: {
-        color: '#000000',
-        fontSize: 18,
-        textAlign: 'center'
     },
 
     modalBackgroundStyle: {

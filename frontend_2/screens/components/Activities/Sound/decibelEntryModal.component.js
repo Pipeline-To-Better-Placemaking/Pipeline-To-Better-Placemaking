@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Modal, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { useTheme, Text, Button, Input } from '@ui-kitten/components';
 import { TouchableWithoutFeedback } from '@ui-kitten/components/devsupport';
 
 import { styles } from './decibelEntryModal.styles.js';
-import { set } from 'react-native-reanimated';
 
 export function DecibelEntryModal(props) {
 
@@ -84,7 +83,9 @@ export function DecibelEntryModal(props) {
                             </View>
 
                             <Button style={styles.button} onPress={sendData}>
-                                <Text>Submit</Text>
+                                <View>
+                                    <Text style={styles.buttonTxt}>Submit</Text>
+                                </View>
                             </Button>
                     
                         </View>

@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { View, TouchableWithoutFeedback, Modal } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TouchableWithoutFeedback, Modal, TouchableOpacity } from 'react-native';
 import { Icon, Text, Button, Input, Spinner } from '@ui-kitten/components';
 import { BlueViewableArea } from '../components/content.component';
+import { PasswordModal } from './passwordModal.component';
+import { ResetMessage } from './resetMessage.component';
+import { ErrorMessage } from './errorMessage.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 
@@ -14,6 +17,10 @@ export const LoginScreen = ( props ) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loading, setLoading] = useState(false);
   const [accessDenied, setAccessDenied] = useState(false);
+  const [passwordModal, setPasswordModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetMsg, setResetMsg] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(false);
 
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
@@ -88,19 +95,71 @@ export const LoginScreen = ( props ) => {
     setLoading(false);
   };
 
+  const resetPassword = async (inf) =>{
+    let address = inf.email;
+    setResetEmail(address);
+    try {
+      const response = await fetch('https://p2bp.herokuapp.com/api/password_reset/', {
+          method: 'POST',
+          headers: {
+            Accept: 
+              'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: address
+          })
+      })
+      let info = await response.json()
+      // console.log('Reset password response: ' + info)
+      // pulls up the success popup
+      setResetMsg(true);
+    } catch (error) {
+      // console.log('ERROR: ' + error)
+      // pulls up the error popup
+      setErrorMsg(true);
+    }
+    // close the modal
+    setPasswordModal(false);
+  }
+  
+  // closes the modals
+  const goBack = () =>{
+    if(passwordModal) setPasswordModal(false);
+    else if(resetMsg) setResetMsg(false);
+    else setErrorMsg(false);
+  };
+  
+  // used to close modals after 7.5 s (if user didn't close it manually)
+  useEffect(() =>{
+    if(resetMsg){
+      // after 5 seconds, close the popup and reset the interval (so the interval doesn't keep running)
+      let id = setInterval(()=>{
+        setResetMsg(false);
+        clearInterval(id);
+      // 7500 ms -> 7.5 s
+      }, 7500)
+    }
+    if(errorMsg){
+      // after 5 seconds, close the popup and reset the interval (so the interval doesn't keep running)
+      let id = setInterval(()=>{
+        setErrorMsg(false);
+        clearInterval(id)
+      // 7500 ms -> 7.5 s
+      }, 7500)
+    }
+  }, [resetMsg, errorMsg])
+
+
   const LoginButton = () => (
     <Button style={styles.logInButton} onPress={navigateLogin}>
-      <Text style={styles.logInText}>
-          Log In
-      </Text>
+      <Text>Log In</Text>
     </Button>
   );
 
   const BackButton = () => (
     <Button onPress={navigateBack} style={styles.backButton}>
-      <Text status={'control'} category='h5'>
-           &larr; Back
-      </Text>
+      <Text>&larr; Back</Text>
     </Button>
   );
 
@@ -113,6 +172,25 @@ export const LoginScreen = ( props ) => {
   return (
     <BlueViewableArea>
       <View style={styles.container}>
+        
+        <PasswordModal
+          visible={passwordModal}
+          closeData={resetPassword}
+          back={goBack}
+        />
+
+        <ResetMessage
+          visible={resetMsg}
+          email={resetEmail}
+          back={goBack}
+        />
+
+        <ErrorMessage
+          visible={errorMsg}
+          email={resetEmail}
+          back={goBack}
+        />
+
         <Modal
           animationType='fade'
           transparent={true}
@@ -154,6 +232,13 @@ export const LoginScreen = ( props ) => {
                 </Text>
             }
         </View>
+        
+        <View style={styles.forgotView}>
+          <TouchableOpacity onPress={() =>{ setPasswordModal(true); setAccessDenied(false)}}>
+            <Text style={styles.forgotTxt}>Forgot Password?</Text>
+          </TouchableOpacity>
+        </View>
+
         <LoginButton />
         <BackButton />
       </View>

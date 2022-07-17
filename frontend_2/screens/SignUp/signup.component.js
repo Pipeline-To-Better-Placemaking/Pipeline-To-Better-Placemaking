@@ -160,17 +160,13 @@ export const SignUpScreen = ( props ) => {
 
     const SignUpButton = () => (
         <Button style={styles.signUpButton} onPress={handleSignup}>
-            <Text style={styles.signUpText}>
-                Sign Up
-            </Text>
+            <Text>Sign Up</Text>
         </Button>
     );
 
     const BackButton = () => (
         <Button onPress={navigateBack} style={styles.backButton}>
-            <Text status={'control'} category='h5' style={styles.backText}>
-               &larr; Back
-            </Text>
+            <Text>&larr; Back</Text>
         </Button>
     );
 
