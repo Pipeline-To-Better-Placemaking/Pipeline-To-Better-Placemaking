@@ -42,7 +42,7 @@ function Projects(props){
         <div id='teamHome'>
             <div style={{display:'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
                 <h1 style={{margin: '20px 0px 20px 0px', textAlign: 'center'}}>
-                    {teamAndUser.state ? teamAndUser.state.team : null}
+                    {teamInfo ? teamInfo?.title : null}
                 </h1>
                 <Button component={Link} to={`/home/edit/${teamId}`} state={teamAndUser.state} style={{ width: '40vw' }}>Edit Team</Button>
             </div>

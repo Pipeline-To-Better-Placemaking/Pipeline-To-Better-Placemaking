@@ -52,6 +52,7 @@ function NewTeamForm() {
             const response = await axios.post('/teams', JSON.stringify({ title: formValues.title, description: formValues.description, public: formValues.public }), {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${user.token}` 
                 },
                 withCredentials: true

@@ -4,7 +4,7 @@ import { createCustomEqual } from 'fast-equals';
 import { isLatLngLiteral } from '@googlemaps/typescript-guards';
 import Button from '@mui/material/Button';
 import UndoIcon from '@mui/icons-material/Undo';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import MapDrawers from './MapDrawers';
 import { testNames } from '../functions/HelperFunctions';
@@ -37,6 +37,7 @@ export default function FullMap(props) {
     const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [props.center] :(props.type === 6 ? props.area : [])));
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreas : [];
+    const loc = useLocation();
     //console.log(areaData);
 
     // hold the selections from the switch toggles
@@ -427,7 +428,7 @@ export default function FullMap(props) {
                     id='newPointsButton'
                     className='newHoveringButtons confirm'
                     component={ Link }
-                    to='/home/teams/:id/new/area/points/form'
+                    to={`/home/teams/${loc.pathname.split[3]}/new/area/points/form`}
                     state={{
                         center: center, 
                         title: title, 
