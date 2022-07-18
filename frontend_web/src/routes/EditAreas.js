@@ -6,14 +6,14 @@ import Card from 'react-bootstrap/Card';
 export default function EditAreas(){
 
     const loc = useLocation();
-    const areas = loc?.state?.areas
+    const areas = loc.state ? loc?.state?.areas : []
 
     const areaCards = (areas) => (
         areas.map((obj, index) => (
             <Card key={index} className='areaCards'>
                 <Card.Body>
                     <h4>{obj.title}</h4>
-                    <Button component={Link} to='areamap' state={{...loc?.state, areas: obj.points}}>Edit</Button>
+                    <Button component={Link} to='area_map' state={{...loc?.state, area: obj.points}}>Edit</Button>
                     <Button onClick={deleteArea(obj._id)}>Delete</Button>
                 </Card.Body>
             </Card>
@@ -38,7 +38,7 @@ export default function EditAreas(){
                     </div>
                 </Card.Header>
                 <Card.Body id='areaCardContent'>
-                    <Button id='addNewArea'component={Link} to='areaMap' state={loc?.state}>New Area</Button>
+                    <Button id='addNewArea'component={Link} to='area_map' state={loc?.state}>New Area</Button>
                     {areaCards(areas)}
                     <Button component={Link} to=''>Cancel</Button>
                 </Card.Body>

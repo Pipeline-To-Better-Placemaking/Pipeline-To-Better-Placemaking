@@ -31,7 +31,7 @@ export default function FullMap(props) {
     const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 11); // initial zoom
     const [center, setCenter] = React.useState(props.center ? props.center : { lat:28.54023216523664, lng:-81.38181298263407 });
     const [bounds, setBounds] = React.useState();
-    const [click, setClick] = React.useState(props.type === 0 || props.type === 2 ? props.center : null);
+    const [click, setClick] = React.useState(props.type === 0 || props.type === 2 || props.type === 7 ? props.center : null);
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
     const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 ? props.area : null);
     const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [props.center] :(props.type === 6 ? props.area : [])));
@@ -389,7 +389,7 @@ export default function FullMap(props) {
                         actCoords(collections) : 
                         (props.type === 2 || props.type === 4 ? 
                             <Marker position={props.center} /> : 
-                            (props.type === 0 ? 
+                            (props.type === 0 || props.type === 7 ? 
                                 <Marker position={center} /> : null)) }
                     { props.type === 0 ? <Places map={map} onChange={placeOn ? onChange : null} on={placeOn} togglePlaces={togglePlaces} onClick={onPClick} center={center} zoom={zoom} /> : null }
                     {/* Change marker types for non center markers to show difference */}
@@ -398,8 +398,8 @@ export default function FullMap(props) {
                 </Map>
             </Wrapper>
             { props.type === 4 || props.type === 6 ?
-                <div id='newAreaBlock'>
-                    {props.type === 4 ?
+                (props.type === 4 ?
+                    <div id='newAreaBlock'>
                         <Button
                             id='newAreaButton'
                             className='newHoveringButtons confirm'
@@ -409,27 +409,51 @@ export default function FullMap(props) {
                         >
                             Set Bounds
                         </Button> 
-                        : 
+                        <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                    </div>
+                    :
+                    <div id='editAreaBlock'>
                         <Button
                             id='newAreaButton'
                             className='newHoveringButtons confirm'
-                            component={ Link }
-                            to={''}
-                            state={({ center: center, title: title, area: clicks, zoom: zoom })}
                         >
                             Update Bounds
                         </Button>
-                    }
-                    <Button className='newHoveringButtons' onClick={ removePoint }>Undo <UndoIcon /></Button>
-                </div> : null
+                        <Button
+                            className='newHoveringButtons confirm'
+                            component={Link}
+                            state={loc.state}
+                            to={`../edit/${loc.pathname.split('/')[5]}/areas`}>
+                                Cancel
+                        </Button>
+                        <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                    </div>
+                )
+                : null
+            }
+            { props.type === 7 ? 
+                <div id='newPointBlock'>
+                    <Button
+                        id='newPointButton'
+                        className='newHoveringButtons confirm'
+                    >
+                        Update Point
+                    </Button>
+                    <Button
+                        className='newHoveringButtons confirm'
+                        component={Link}
+                        state={loc.state}
+                        to={`../edit/${loc.pathname.split('/')[5]}/points`}>Cancel</Button>
+                </div>
+                : null
             }
             { props.type === 3 ? 
                 <Button
                     id='newPointsButton'
                     className='newHoveringButtons confirm'
                     component={ Link }
-                    to={`/home/teams/${loc.pathname.split[3]}/new/area/points/form`}
-                    state={{
+                    to={`/home/teams/${loc.pathname.split('/')[3]}/new/area/points/form`}
+                    state={{...loc.state,
                         center: center, 
                         title: title, 
                         area: areaData, 
@@ -438,7 +462,8 @@ export default function FullMap(props) {
                     }}
                 >
                     Set Points
-                </Button> : null
+                </Button> 
+                : null
             }
             <div id='pathBoundWindow' style={{display: 'none', position: 'fixed', flexDirection: 'row', justifyContent: 'center'}}>
                 <div id='popUpBlock'>

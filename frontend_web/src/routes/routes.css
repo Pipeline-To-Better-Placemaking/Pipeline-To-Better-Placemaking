@@ -163,8 +163,8 @@ div.nonFCInput:focus .MuiOutlinedInput-notchedOutline{
     border-color: red;
 }
 
-button#newTimeButton, button#addNewArea,
-button#addNewPoint {
+button#newTimeButton, #addNewArea,
+#addNewPoint {
     margin-bottom: 10px;
 }
 
@@ -181,7 +181,8 @@ div#createCard > div.card-body{
     justify-content: center;
 }
 
-div#editAreas > div#mapDoc, div#mapFrame{
+div#editAreaMap > div#mapDoc, div#editAreaMap div#mapFrame, div#editPointMap>div#mapDoc,
+div#editPointMap div#mapFrame{
     height: calc(100vh - 69px);
 }
 
