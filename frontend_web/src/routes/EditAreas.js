@@ -38,8 +38,9 @@ export default function EditAreas(){
                     </div>
                 </Card.Header>
                 <Card.Body id='areaCardContent'>
-                    <Button component={Link} to='areaMap' state={loc?.state}>New Area</Button>
+                    <Button id='addNewArea'component={Link} to='areaMap' state={loc?.state}>New Area</Button>
                     {areaCards(areas)}
+                    <Button component={Link} to=''>Cancel</Button>
                 </Card.Body>
             </Card>
         </div>

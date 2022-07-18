@@ -83,15 +83,14 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
     box-shadow: 0 4px 8px 0 rgba(78, 72, 254, 0.2), 0 6px 20px 0 rgba(78, 72, 254, 0.19);
 }
 
-.MuiButton-root.MuiButton-text.MuiButtonBase-root.scheme, #newTimeButton, #newTeamFormButton {
+.MuiButton-root.MuiButton-text.MuiButtonBase-root.scheme, #newTimeButton, #newTeamFormButton, #addNewArea, #addNewPoint {
     color: black;
     background-color: #fed806;
     margin: 0px 5px;
     font-size:medium;
 }
 
-.MuiButton-root.MuiButton-text.MuiButtonBase-root.scheme:hover, #newTimeButton:hover, #newTeamFormButton:hover{
-    box-shadow: 0 4px 8px 0 rgba(254, 216, 6, 0.2), 0 6px 20px 0 rgba(254, 216, 6, 0.19);
+.MuiButton-root.MuiButton-text.MuiButtonBase-root.scheme:hover, #newTimeButton:hover, #newTeamFormButton:hover, #addNewArea:hover, #addNewPoint:hover{
     font-weight: 550;
 }
 
@@ -164,7 +163,8 @@ div.nonFCInput:focus .MuiOutlinedInput-notchedOutline{
     border-color: red;
 }
 
-button#newTimeButton {
+button#newTimeButton, button#addNewArea,
+button#addNewPoint {
     margin-bottom: 10px;
 }
 
@@ -194,7 +194,7 @@ div#resetCard {
     height: auto;
 }
 
-div#timeCardContent {
+div#timeCardContent, div#areaCardContent, div#pointCardContent {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -235,7 +235,7 @@ div.displayCard:hover {
     box-shadow: 0 4px 8px 0 rgba(71, 71, 71, 0.2), 0 6px 20px 0 rgba(71, 71, 71, 0.19);
 }
 
-div.timeSlots {
+div.timeSlots, div.areaCards, div.pointCards {
     margin-bottom: 10px;
 }
 

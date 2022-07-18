@@ -39,7 +39,7 @@ export default function EditPoints(){
                     </div>
                 </Card.Header>
                 <Card.Body id='pointCardContent'>
-                    <Button component={Link} to='pointMap' state={loc.state}>New Standing Point</Button>
+                    <Button id='addNewPoint' component={Link} to='pointMap' state={loc.state}>New Standing Point</Button>
                     {pointCards(standingPoints)}
                 </Card.Body>
             </Card>
