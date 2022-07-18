@@ -18,6 +18,7 @@ import ForgotPassword from './routes/ForgotPassword';
 import ResetPassword from './routes/ResetPassword';
 import EditTeam from './routes/EditTeam';
 import EditAreas from './routes/EditAreas';
+import EditPoints from './routes/EditPoints';
 
 function App() {
     // !! token/storage of choice, verification of choice
@@ -63,6 +64,7 @@ function App() {
                     <Route path='new/area/points/form' element={ <ProjectForm />} />
                     <Route path='edit/:id' element={ <EditProject />} />
                     <Route path='edit/:id/areas' element={<EditAreas />} />
+                    <Route path='edit/:id/points' element={<EditPoints />} />
                 </Routes>
             </div>
         );

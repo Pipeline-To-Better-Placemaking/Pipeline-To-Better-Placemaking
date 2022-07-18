@@ -1,21 +1,47 @@
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
-
-import Map from '../components/Map';
+import { Link, useLocation } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import Card from 'react-bootstrap/Card';
 
 export default function EditAreas(){
-    //to a map for editing points
-    const editStandingPoints = () => {
+
+    const loc = useLocation();
+    const areas = loc?.state?.areas
+
+    const areaCards = (areas) => (
+        areas.map((obj, index) => (
+            <Card key={index} className='areaCards'>
+                <Card.Body>
+                    <h4>{obj.title}</h4>
+                    <Button component={Link} to='areamap' state={{...loc?.state, areas: obj.points}}>Edit</Button>
+                    <Button onClick={deleteArea(obj._id)}>Delete</Button>
+                </Card.Body>
+            </Card>
+        ))
+    );
+
+    const editProjectAreas = (id) => (e) => {
+        e.preventDefault();
     }
 
-    //to a map for editing areas
-    const editProjectAreas = () => {
+    const deleteArea = (id) => (e) => {
+        e.preventDefault();
     }
 
-    return(
+
+    return (
         <div id='editAreas'>
-            {/* Empty New Project page, Google map component w/ searchable locations for new projects */}
-            <Map center={''} area={''} type={6} zoom={16} />
+            <Card id='editAreaCard'>
+                <Card.Header >
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <h1>{loc?.state?.project}</h1>
+                    </div>
+                </Card.Header>
+                <Card.Body id='areaCardContent'>
+                    <Button component={Link} to='areaMap' state={loc?.state}>New Area</Button>
+                    {areaCards(areas)}
+                </Card.Body>
+            </Card>
         </div>
     );
 

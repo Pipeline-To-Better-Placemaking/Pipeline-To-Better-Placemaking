@@ -12,11 +12,11 @@ export default function EditTeam(){
     const segment = loc.pathname.split('/');
     //console.log(segment[3]);
 
-    const updateTeam = () => {
+    const updateTeam = (id) => (e) => {
 
     }
 
-    const deleteTeam = () => {
+    const deleteTeam = (id) => (e) => {
 
     }
 
@@ -39,7 +39,7 @@ export default function EditTeam(){
                             type='submit'
                             size='lg'
                             id='updateTeamButton'
-                            onClick={updateTeam}
+                            onClick={updateTeam(segment[3])}
                         >
                             Update
                         </Button>
@@ -48,7 +48,7 @@ export default function EditTeam(){
                             type='submit'
                             size='lg'
                             id='deleteButton'
-                            onClick={deleteTeam}
+                            onClick={deleteTeam(segment[3])}
                         >
                             Delete <DeleteIcon/>
                         </Button>

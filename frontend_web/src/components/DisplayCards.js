@@ -55,7 +55,7 @@ function DisplayCards(props) {
                 <CardActions>
                 <Button component={Link} to={`projects/${project._id}`} state={{ project: project.title, team: props.team, userToken: props.user }}>View</Button>
                 <Button component={Link} to={`edit/${project._id}`} state={{ project: project.title, team: props.team, userToken: props.user }}>Edit</Button>
-                <Button><DeleteIcon /></Button>
+                <Button onClick={props.open(project.title, project._id)}><DeleteIcon /></Button>
                 </CardActions>
             </Card>
     );

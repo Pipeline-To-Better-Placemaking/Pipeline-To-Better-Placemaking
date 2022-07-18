@@ -80,7 +80,7 @@ div.css-cveggr-MuiListItemIcon-root {
     color: white;
 }
 
-div#pathBoundWindow{
+div#pathBoundWindow, div#deleteWindow{
     background-color: #00000070;
     top: 0px;
     left: 0px;
@@ -95,6 +95,10 @@ div#popUpBlock, div#popUpText{
     padding: 10px;
 }
 
+div#deleteWindow div#popUpText {
+    text-align: center;
+}
+
 div#popUpText{
     padding-bottom: 20px;
 }
@@ -107,11 +111,15 @@ div#popUpBlock{
     box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
-div#pathBoundWindow, div#popUpBlock{
+div#pathBoundWindow, div#deleteWindow, div#popUpBlock{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+div#deleteWindow button#deleteButton, div#deleteWindow button#cancelButton{
+    width: 30%;
 }
 
 #projTab0 > .MuiBox-root.css-19kzrtu {
