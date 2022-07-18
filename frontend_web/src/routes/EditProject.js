@@ -14,7 +14,7 @@ function EditProject() {
     //console.log(segment[3]);
 
     const [values, setValues] = React.useState({
-        projectName: loc.state
+        projectName: loc.state.project
     });
 
     const handleChange = (prop) => (event) => {

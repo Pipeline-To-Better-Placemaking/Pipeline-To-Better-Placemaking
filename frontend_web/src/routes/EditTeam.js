@@ -53,7 +53,7 @@ export default function EditTeam(){
                             Delete <DeleteIcon/>
                         </Button>
                         <br />
-                        <Button component={Link} state={{ userToken: loc.state ? loc.state.userToken : null }} type='submit' size='lg' to={`/home/teams/${segment[3]}`}>
+                        <Button component={Link} state={loc.state ? loc.state : null} type='submit' size='lg' to={`/home/teams/${segment[3]}`}>
                             Cancel
                         </Button>
                     </Box>
