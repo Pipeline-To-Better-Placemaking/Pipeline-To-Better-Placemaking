@@ -68,10 +68,8 @@ function DisplayCards(props) {
                         { team.title }
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Button component={Link} to={`teams/${team._id}`} state={{ team: team.title, userToken: props.user }}>View Projects</Button>
-                    <Button component={Link} to={`edit/${team._id}`} state={{ team: team.title, userToken: props.user }}>Edit Team</Button>
-                    <Button><DeleteIcon /></Button>
+                <CardActions >
+                    <Button component={Link} to={`teams/${team._id}`} state={{ team: team.title, userToken: props.user }}>View Team</Button>
                 </CardActions>
             </Card>
         ))

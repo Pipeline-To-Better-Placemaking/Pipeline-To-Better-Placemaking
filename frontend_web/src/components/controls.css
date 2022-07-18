@@ -342,8 +342,8 @@ div#projectFrame>button.MuiButton-root:hover, button#printButton:hover {
     background-color: #ffffff;
 }
 
-button#deleteButton{
-    color: red;
+button#updateTeamButton{
+   margin-bottom: 5px;
 }
 
 button#printButton {

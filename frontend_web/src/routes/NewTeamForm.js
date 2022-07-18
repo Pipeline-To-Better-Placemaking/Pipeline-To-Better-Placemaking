@@ -38,7 +38,6 @@ function NewTeamForm() {
         if(!formValues.title || formValues.title === ''){
             setMessage('Please provide a team name');
             titleMess.current.style.display = 'block';
-            titleRef.current.focus();
             return;
         } else {
             titleMess.current.style.display = 'none';
@@ -58,12 +57,11 @@ function NewTeamForm() {
                 withCredentials: true
             });
             console.log(response.data);
-            //console.log(response.accessToken);
-            //console.log(JSON.stringify(response))
+
             //redirect user to url/home
             nav('/home', { replace: true, state: loc.state });
         } catch (error) {
-            //console.log('ERROR: ', error);
+            console.log('ERROR: ', error);
             //success = false;
             setMessage(error.response.data?.message);
             addTeamResponse.current.style.display = 'inline-block';

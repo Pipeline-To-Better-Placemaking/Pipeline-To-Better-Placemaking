@@ -5,9 +5,9 @@ import { Link, useLocation } from 'react-router-dom';
 
 function Home() {
     const location = useLocation();
-    const userTeams = location.state.userToken.user.teams;
+    const userTeams = location.state && location.state.userToken ? location.state.userToken.user.teams : null;
 
-    /*const teamsTemplate = [
+   /*const teamsTemplate = [
         {
             _id: 'jfgn49wgnh58w9hg5uw4n859hw4g549g',
             title: 'Template Team'
@@ -28,7 +28,7 @@ function Home() {
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            <DisplayCards type={ 2 } teams={ userTeams } user={ location.state.userToken }/>
+            <DisplayCards type={2} teams={/*teamsTemplate*/ userTeams} user={location.state ? location.state.userToken : null }/>
         </div>
     );
 }

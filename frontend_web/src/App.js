@@ -16,6 +16,8 @@ import NewProjectArea from './routes/AreaNewProject';
 import ProjectForm from './routes/NewProjectForm';
 import ForgotPassword from './routes/ForgotPassword';
 import ResetPassword from './routes/ResetPassword';
+import EditTeam from './routes/EditTeam';
+import EditAreas from './routes/EditAreas';
 
 function App() {
     // !! token/storage of choice, verification of choice
@@ -55,11 +57,12 @@ function App() {
                     {/* Find a more stable/consistent way to manage tokens instead of passing states, they can expire after a few mintues*/}
                     <Route index element={<Projects />}/>
                     <Route path='projects/:id/*' element={<ProjectPage />} />
-                    <Route path='new' element={<NewProject />} />
-                    <Route path='new/area/points' element={<NewProjectPoints />} />
-                    <Route path='new/area/points/form' element={<ProjectForm />} />
-                    <Route path='new/area' element={<NewProjectArea />} />
-                    <Route path='edit/:id' element={<EditProject />} />
+                    <Route path='new' element={ <NewProject />} />
+                    <Route path='new/area' element={ <NewProjectArea />} />
+                    <Route path='new/area/points' element={ <NewProjectPoints />} />
+                    <Route path='new/area/points/form' element={ <ProjectForm />} />
+                    <Route path='edit/:id' element={ <EditProject />} />
+                    <Route path='edit/:id/areas' element={<EditAreas />} />
                 </Routes>
             </div>
         );
@@ -79,9 +82,10 @@ function App() {
                 <AppNavBar passLogout={ passLogout } passToken={ token } />
                 <Routes>
                     <Route index element={ <Home /> }/>
-                    <Route path='teams/:id/*' element={ <TeamPages /> }/>
-                    <Route path='settings' element={ <SettingsPage /> }/>
-                    <Route path='new' element={ <NewTeamForm /> }/>
+                    <Route path='teams/:id/*' element={ <TeamPages /> } />
+                    <Route path='settings' element={ <SettingsPage /> } />
+                    <Route path='new' element={ <NewTeamForm /> } />
+                    <Route path='edit/:id' element={ <EditTeam /> } />
                 </Routes>
             </div>
         );

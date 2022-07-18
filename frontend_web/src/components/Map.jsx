@@ -21,6 +21,7 @@ const render = (status) => {
     // 3 - new project points
     // 4 - new project area
     // 5 - new project map
+    // 6 - edit existing area
 
 export default function FullMap(props) {
     const [map, setMap] = React.useState(null);
@@ -33,9 +34,10 @@ export default function FullMap(props) {
     const [click, setClick] = React.useState(props.type === 0 || props.type === 2 ? props.center : null);
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
     const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 ? props.area : null);
-    const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [props.center] :[]));
+    const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [props.center] :(props.type === 6 ? props.area : [])));
     const standingPoints = props.standingPoints ? props.standingPoints : null;
-    const subAreas = props.subAreas ? props.subAreas : null;
+    const subAreas = props.subAreas ? props.subAreas : [];
+    //console.log(areaData);
 
     // hold the selections from the switch toggles
     const [stationaryCollections, setStationaryCollections] = React.useState({});
@@ -180,7 +182,7 @@ export default function FullMap(props) {
         if(props.type === 2 || props.type === 0) {
             setClick(e.latLng);
             setCenter(e.latLng);
-        } else if(props.type === 3 || props.type === 4) {
+        } else if(props.type === 3 || props.type === 4 || props.type === 6) {
             var clickObj = {
                 lat: 0,
                 lng: 0
@@ -220,8 +222,11 @@ export default function FullMap(props) {
 
     const removePoint = (e) => {
         e.preventDefault();
-        var temp = clicks;
-        temp.splice(clicks.length-1, 1);
+        var temp = [];
+        clicks.forEach((click, index)=>(
+            index !== clicks.length-1 ?
+                temp.push(click) : null
+        ))
         setClicks(temp);
     };
 
@@ -377,7 +382,7 @@ export default function FullMap(props) {
                     places={ mapPlaces }
                     zoom={ zoom }
                 >
-                    { areaData ? <Bounds area={areaData} type={'area'} /> :  null }
+                    { areaData && (props.type >= 3 && props.type <= 5) ? <Bounds area={areaData} type={'area'} ver={true} /> : (areaData ? <Bounds area={areaData} type={'area'} /> : null )}
                     { subAreas.length > 1 ? subAreas.map((area, index)=>( index === 0 ? null : <Bounds area={area.points} type={'area'} />)) : null }
                     { props.type === 1 ? 
                         actCoords(collections) : 
@@ -388,20 +393,32 @@ export default function FullMap(props) {
                     { props.type === 0 ? <Places map={map} onChange={placeOn ? onChange : null} on={placeOn} togglePlaces={togglePlaces} onClick={onPClick} center={center} zoom={zoom} /> : null }
                     {/* Change marker types for non center markers to show difference */}
                     { props.type === 3 || props.type === 5 ? clicks.map((latLng, i) => (<Marker key={i} position={ latLng } info={`<div>Position ${i}</div>`}/>)) : null }
-                    { props.type === 4 ? NewArea(clicks) : null } {/*<DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null */}
+                    { props.type === 4 || props.type === 6 ? NewArea(clicks) : null } {/*<DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null */}
                 </Map>
             </Wrapper>
-            { props.type === 4 ?
+            { props.type === 4 || props.type === 6 ?
                 <div id='newAreaBlock'>
-                    <Button
-                        id='newAreaButton'
-                        className='newHoveringButtons confirm'
-                        component={ Link }
-                        to='points'
-                        state={({ center: center, title: title, area: [clicks], zoom: zoom })}
-                    >
-                        Set Bounds
-                    </Button>
+                    {props.type === 4 ?
+                        <Button
+                            id='newAreaButton'
+                            className='newHoveringButtons confirm'
+                            component={ Link }
+                            to='points'
+                            state={({ center: center, title: title, area: clicks, zoom: zoom })}
+                        >
+                            Set Bounds
+                        </Button> 
+                        : 
+                        <Button
+                            id='newAreaButton'
+                            className='newHoveringButtons confirm'
+                            component={ Link }
+                            to={''}
+                            state={({ center: center, title: title, area: clicks, zoom: zoom })}
+                        >
+                            Update Bounds
+                        </Button>
+                    }
                     <Button className='newHoveringButtons' onClick={ removePoint }>Undo <UndoIcon /></Button>
                 </div> : null
             }
@@ -547,7 +564,7 @@ const Marker = (options) => {
 
     React.useEffect(() => {
         if (marker) {
-            marker.setOptions({ clickable: true, map: options.map, position: options.position ? (new google.maps.LatLng(options.position.latitude, options.position.longitude)) : null });
+            marker.setOptions({ clickable: true, map: options.map, position: options.position && options.position.latitude ? (new google.maps.LatLng(options.position.latitude, options.position.longitude)) : (options.position ? options.position : null) });
 
             marker.addListener('click', () => {
                 infoWindow.open({
@@ -565,12 +582,19 @@ const Marker = (options) => {
 const Bounds = ({boundsPathWindow, ...options}) => {
     const [paths, setPaths] = React.useState();
     const type = options.type;
-
     var tempArea = [];
-    (options.area).map((point)=>(
-        tempArea.push(new google.maps.LatLng(point.latitude, point.longitude))
-    ))
-    const [area, setArea] = React.useState(tempArea);
+    //console.log(options.area);
+
+    if(!options.ver){
+        (options.area).map((point) => (
+            tempArea.push(new google.maps.LatLng(point.latitude, point.longitude))
+        ))
+    } 
+
+    const [area, setArea] = React.useState(options.ver ? options.area : tempArea);
+    if(area.length !== options.area.length){
+        setArea(options.area);
+    }
 
     const bounds = {
         area: {
@@ -639,7 +663,7 @@ const Path = ({boundsPathWindow, ...options}) => {
     }
     const lines = {
         style: {
-            path: tempPath,
+            path: !options.ver ? tempPath : options.path,
             strokeColor: colors[options.mode] ? colors[options.mode] : '#000000',
             strokeOpacity: 0.9,
             strokeWeight: 4,
@@ -689,11 +713,13 @@ const NewArea = (points) => (
                 <Path
                     path={ points }
                     mode='New'
+                    ver={true}
                 />
             :
                 <Bounds
                     area={ points }
                     type='New'
+                    ver={true}
                 />
             )
         )
