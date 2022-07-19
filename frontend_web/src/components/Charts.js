@@ -37,7 +37,18 @@ function Charts(props) {
         Running: '#FF0000',
         Swimming: '#FFFF00',
         'Activity on Wheels': '#008000',
-        'Handicap Assisted Wheels': '#FFA500',
+        'Handicap Assisted Wheels': '#FFA500'
+    }
+
+    const lightColor = {
+        Rhythmic: '#FFE600',
+        Building: '#FF9900',
+        Task: '#FF00E5'
+    }
+
+    const orderColor = {
+        Behavior: '#FF9900',
+        Maintenance: '#FFD800'
     }
 
     const cat = selection.split('.');
@@ -267,7 +278,7 @@ function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: stationaryColor['Squatting'] }}>&nbsp;&nbsp;</div>&nbsp;Squatting</div>
                 </div>
             </div>
-       )
+        );
     };
 
     const multiMoving = (data) => {
@@ -360,21 +371,180 @@ function Charts(props) {
         );
     }
 
+    const multiLight = (data) => {
+        var rhythmic = 0, building = 0, task = 0;
+
+        for (const arr of Object.values(data)) {
+            for(const arr1 of arr){
+                for (const obj of arr1) {
+                    for(const point of obj.points){
+                        if (point.light_description === 'Rhythmic') {
+                            rhythmic++;
+                        } else if (point.light_description === 'Building') {
+                            building++;
+                        } else {
+                            task++;
+                        }
+                    }
+                }
+            }
+        }
+        var lights = [{ type: 'Building', count: building }, { type: 'Rhythmic', count: rhythmic }, { type: 'Task', count: task }];
+        return (
+            <div className='Charts'>
+                <BarChart width={width} height={height} data={lights}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='type' />
+                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'count'} fill='#636262'>
+                        {lights.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={lightColor[entry.type]} fillOpacity={0.8} />
+                        ))}
+                    </Bar>
+                </BarChart>
+                <br />
+                <div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: lightColor['Building'] }}>&nbsp;&nbsp;</div>&nbsp; Building</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: lightColor['Rhythmic'] }}>&nbsp;&nbsp;</div>&nbsp; Rhythmic</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: lightColor['Task'] }}>&nbsp;&nbsp;</div>&nbsp; Task</div>
+                </div>
+            </div>
+        );
+    }
+
+    const lightingCharts = (data) => {
+        var rhythmic = 0, building = 0, task = 0;
+        //console.log(data);
+        for(const lObj of Object.values(data)){
+            console.log(lObj);
+            for(const point of lObj.points){
+                console.log(lObj.points)
+                if(point.light_description === 'Rhythmic'){
+                    rhythmic++;
+                } else if (point.light_description === 'Building'){
+                    building++;
+                } else {
+                    task++;
+                }
+            }
+        }
+
+        var lights = [{ type: 'Building', count: building }, { type: 'Rhythmic', count: rhythmic }, { type: 'Task', count: task }];
+        return(
+            <div className='Charts'>
+                <BarChart width={width} height={height} data={lights}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='type' />
+                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'count'} fill='#636262'>
+                        {lights.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={lightColor[entry.type]} fillOpacity={0.8} />
+                        ))}
+                    </Bar>
+                </BarChart>
+                <br />
+                <div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: lightColor['Building'] }}>&nbsp;&nbsp;</div>&nbsp; Building</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: lightColor['Rhythmic'] }}>&nbsp;&nbsp;</div>&nbsp; Rhythmic</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: lightColor['Task'] }}>&nbsp;&nbsp;</div>&nbsp; Task</div>
+                </div>
+            </div>
+        )
+    }
+
+    const multiOrderCharts = (data) => {
+        var behavior = 0, maintenance = 0;
+        for(const arr of Object.values(data)){
+            for(const subarr of arr){
+                for(const terArr of subarr){
+                    for(const point of terArr.points){
+                        if (point.kind === 'Maintenance') {
+                            maintenance++;
+                        } else {
+                            behavior++;
+                        }
+                    }
+                }
+            }
+        }
+        var order = [{ type: 'Maintenance', total: maintenance }, { type: 'Behavior', total: behavior }];
+        return (
+            <div className='Charts'>
+                <BarChart width={width} height={height} data={order}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='type' />
+                    <YAxis label={{ value: 'Total', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'total'} fill='#636262'>
+                        {order.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={orderColor[entry.type]} fillOpacity={0.8} />
+                        ))}
+                    </Bar>
+                </BarChart>
+                <br />
+                <div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: orderColor['Behavior'] }}>&nbsp;&nbsp;</div>&nbsp; Behavior</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: orderColor['Maintenance'] }}>&nbsp;&nbsp;</div>&nbsp; Maintenance</div>
+                </div>
+            </div>
+        )
+    }
+
+    const orderCharts = (data) => {
+        var behavior = 0, maintenance = 0;
+
+        for(const obj of data){
+            for(const point of obj.points){
+                if(point.kind === 'Maintenance'){
+                    maintenance++;
+                } else {
+                    behavior++;
+                }
+            }
+        }
+
+        var order = [{ type: 'Maintenance', count: maintenance }, { type: 'Behavior', count: behavior }];
+        return (
+            <div className='Charts'>
+                <BarChart width={width} height={height} data={order}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='type' />
+                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'count'} fill='#636262'>
+                        {order.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={orderColor[entry.type]} fillOpacity={0.8} />
+                        ))}
+                    </Bar>
+                </BarChart>
+                <br />
+                <div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: orderColor['Behavior'] }}>&nbsp;&nbsp;</div>&nbsp; Behavior</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: orderColor['Maintenance'] }}>&nbsp;&nbsp;</div>&nbsp; Maintenance</div>
+                </div>
+            </div>
+        )
+    }
+
     const multiBoundaryCharts = (data) => {
         var constructed = [];
         var shelter = 0;
         var material = 0;
 
         for (const arr of  Object.values(data)) {
-           for(const index in arr[0]) {
-                if(arr[0][index].kind === 'Shelter') {
-                    shelter += arr[0][index].value ;
-                } else if(arr[0][index].kind === 'Material') {
-                    material += arr[0][index].value;
-                } else {
-                    constructed.push(arr[0][index]);
-                }
-           };
+            for(const ind0 in arr){
+                for(const index in arr[ind0]) {
+                    if(arr[0][index].kind === 'Shelter') {
+                        shelter += arr[0][index].value ;
+                    } else if(arr[0][index].kind === 'Material') {
+                        material += arr[0][index].value;
+                    } else {
+                        constructed.push(arr[0][index]);
+                    }
+                };
+            };
         };
 
         var totalPerc = [];
@@ -542,8 +712,8 @@ function Charts(props) {
         totalPerc[5] = Math.round(totalPerc[4]);
 
         var totalArea = [{ nature: 'Water', area: totalPerc[0] }, { nature: 'Vegetation', area: totalPerc[2] }, { nature: 'None', area: totalPerc[4] }];
-        var species = [{ species: 'Domestic Dogs', count: dogs }, { species: 'Domestic Cats', count: cats }, { species: 'Wild Birds', count: birds }, { species: 'Wild Ducks', count: ducks }, { species: 'Wild Rabbits', count: rabbits }, { species: 'Wild Squirrels', count: squirrels }, { species: 'Wild Turtles', count: turtles }, { species: 'Domestic (Other)', count: otherD }, { species: 'Wild (Other)', count: otherW }];
-        var variant = [{ variant: 'Wild', count: (wild + otherW) }, { variant: 'Domesticated', count: (domestic + otherD) }]
+        var species = [{ species: 'Domestic Dogs', total: dogs }, { species: 'Domestic Cats', total: cats }, { species: 'Wild Birds', total: birds }, { species: 'Wild Ducks', total: ducks }, { species: 'Wild Rabbits', total: rabbits }, { species: 'Wild Squirrels', total: squirrels }, { species: 'Wild Turtles', total: turtles }, { species: 'Domestic (Other)', total: otherD }, { species: 'Wild (Other)', total: otherW }];
+        var variant = [{ variant: 'Wild', total: (wild + otherW) }, { variant: 'Domesticated', total: (domestic + otherD) }]
 
         return (
             <div id='natureCharts' className='Charts'>
@@ -570,21 +740,22 @@ function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: { totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : `${totalPerc[1]}%` }</div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; None: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
+                <br/>
                 <div style={{ fontSize: 'larger' }}>Species</div>
                 <BarChart width={width} height={height} data={species}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='species' />
-                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <YAxis label={{ value: 'Total', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={'count'} fill={natureColor['Animals']} stroke={natureColor['Animals']} fillOpacity={0.65} />
+                    <Bar dataKey={'total'} fill={natureColor['Animals']} stroke={natureColor['Animals']} fillOpacity={0.65} />
                 </BarChart>
                 <div style={{ fontSize: 'larger' }}>Wild vs Domesticated</div>
                 <BarChart width={width} height={height} data={variant}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='variant' />
-                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <YAxis label={{ value: 'Total', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={'count'} fill={natureColor['Animals']} stroke={natureColor['Animals']} fillOpacity={0.65} />
+                    <Bar dataKey={'total'} fill={natureColor['Animals']} stroke={natureColor['Animals']} fillOpacity={0.65} />
                 </BarChart>
                 <br />
                 <div >
@@ -612,49 +783,50 @@ function Charts(props) {
         var water = 0;
         var veg = 0;
 
-        for (const [natureType, typeArr] of Object.entries(data[0])) {
-            var adjusted;
-            for (const typePoint in typeArr){
-                //console.log(typeArr[typePoint])//
-                if (natureType === 'water'){
-                    adjusted = typeArr[typePoint];
-                    adjusted.nature = 'Water';
-                    waterAndVeg.push(adjusted);
-                    water += typeArr[typePoint].area;
-                } else if(natureType === 'vegetation'){
-                    adjusted = typeArr[typePoint];
-                    adjusted.nature = 'Vegetation';
-                    waterAndVeg.push(adjusted);
-                    veg += typeArr[typePoint].area;
-                } else {
-                    if(typeArr[typePoint].description === 'Dog'){
-                        dogs++;
-                    } else if (typeArr[typePoint].description === 'Cat'){
-                        cats++;
-                    } else if (typeArr[typePoint].description === 'Duck'){
-                        ducks++;
-                    } else if (typeArr[typePoint].description === 'Turtle'){
-                        turtles++;
-                    } else if (typeArr[typePoint].description === 'Rabbit'){
-                        rabbits++;
-                    } else if (typeArr[typePoint].description === 'Bird'){
-                        birds++;
-                    } else if (typeArr[typePoint].description === 'Squirrel'){
-                        squirrels++;
-                    } 
-
-                    if (typeArr[typePoint].kind === 'Domesticated'){
-                        domestic++;
-                        if (typeArr[typePoint].description === 'Other'){
-                            otherD++;
-                        }
+        for(const ind in data){
+            for (const [natureType, typeArr] of Object.entries(data[ind])) {
+                var adjusted;
+                for (const typePoint in typeArr){
+                    //console.log(typeArr[typePoint])//
+                    if (natureType === 'water'){
+                        adjusted = typeArr[typePoint];
+                        adjusted.nature = 'Water';
+                        waterAndVeg.push(adjusted);
+                        water += typeArr[typePoint].area;
+                    } else if(natureType === 'vegetation'){
+                        adjusted = typeArr[typePoint];
+                        adjusted.nature = 'Vegetation';
+                        waterAndVeg.push(adjusted);
+                        veg += typeArr[typePoint].area;
                     } else {
-                        wild++;
-                        if (typeArr[typePoint].description === 'Other'){
-                            otherW++;
+                        if(typeArr[typePoint].description === 'Dog'){
+                            dogs++;
+                        } else if (typeArr[typePoint].description === 'Cat'){
+                            cats++;
+                        } else if (typeArr[typePoint].description === 'Duck'){
+                            ducks++;
+                        } else if (typeArr[typePoint].description === 'Turtle'){
+                            turtles++;
+                        } else if (typeArr[typePoint].description === 'Rabbit'){
+                            rabbits++;
+                        } else if (typeArr[typePoint].description === 'Bird'){
+                            birds++;
+                        } else if (typeArr[typePoint].description === 'Squirrel'){
+                            squirrels++;
+                        } 
+
+                        if (typeArr[typePoint].kind === 'Domesticated'){
+                            domestic++;
+                            if (typeArr[typePoint].description === 'Other'){
+                                otherD++;
+                            }
+                        } else {
+                            wild++;
+                            if (typeArr[typePoint].description === 'Other'){
+                                otherW++;
+                            }
                         }
                     }
-
                 }
             }
         }
@@ -695,6 +867,7 @@ function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : `${totalPerc[1]}%`}</div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; None: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
+                <br />
                 <div style={{ fontSize: 'larger' }}>Species</div>
                 <BarChart width={width} height={height} data={species}>
                     <CartesianGrid strokeDasharray='3 3' />
@@ -723,18 +896,19 @@ function Charts(props) {
 
     return(
        type === 0 ? 
-       <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px' }}>
-            <div className='sectionName'>
-                <div style={{ fontSize: 'large' }}>{ testNames(cat[0]) }</div>
-                { cat[1] }  { cat[2] }
-            </div>
-                { cat[0] === 'sound_maps' ? soundBarChart(data) : (cat[0] === 'boundaries_maps' ? BoundaryPieChart(data) : (cat[0] === 'moving_maps' ? movingBarChart(data) : (cat[0] === 'stationary_maps' ? stationaryBarCharts(data) : (cat[0] === 'nature_maps' ? NaturePieChart(data) : null)))) }
-        </div> : 
+            <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px' }}>
+                <div className='sectionName'>
+                    <div style={{ fontSize: 'large' }}>{ testNames(cat[0]) }</div>
+                    { cat[1] }  { cat[2] }
+                </div>
+                    { cat[0] === 'sound_maps' ? soundBarChart(data) : (cat[0] === 'boundaries_maps' ? BoundaryPieChart(data) : (cat[0] === 'moving_maps' ? movingBarChart(data) : (cat[0] === 'stationary_maps' ? stationaryBarCharts(data) : (cat[0] === 'nature_maps' ? NaturePieChart(data) : (cat[0] === 'light_maps' ? lightingCharts(data) : ( cat[0] === 'order_maps' ? orderCharts(data) : null)))))) }
+            </div> 
+        : 
             <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px'}}>
                 <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
                     { testNames(cat[0]) }: Summary
                 </div>
-                { cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : ( cat[0] === 'stationary_maps' ? multiStationary(data) : ( cat[0] === 'nature_maps' ? multiNatureChart(data) : ( cat[0] === 'moving_maps' ? multiMoving(data) : null )) )}
+                {cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : (cat[0] === 'stationary_maps' ? multiStationary(data) : (cat[0] === 'nature_maps' ? multiNatureChart(data) : (cat[0] === 'moving_maps' ? multiMoving(data) : (cat[0] === 'light_maps' ? multiLight(data) : ( cat[0] === 'order_maps' ? multiOrderCharts(data) : null)) )) )}
             </div>
     );
 };

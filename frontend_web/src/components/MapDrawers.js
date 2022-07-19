@@ -272,7 +272,7 @@ export default function MapDrawer(props) {
             { Object.keys(moving)?.length > 1 ? <Charts selection='moving_maps.Group' data={moving} type={1} projArea={area} /> : null }
             { Object.keys(order)?.length > 1 ? <Charts selection='order_maps.Group' data={order} type={1} projArea={area} /> : null }
             { Object.keys(boundaries)?.length > 1 ? <Charts selection='boundaries_maps.Group' data={boundaries} type={1} projArea={area} /> : null }
-            { Object.keys(lighting)?.length > 1 ? <Charts selection='lighting_maps.Group' data={lighting} type={1} projArea={area} /> : null }
+            { Object.keys(lighting)?.length > 1 ? <Charts selection='light_maps.Group' data={lighting} type={1} projArea={area} /> : null }
             { Object.keys(nature)?.length > 1 ? <Charts selection='nature_maps.Group' data={nature} type={1} projArea={area} /> : null }
             { Object.keys(sound)?.length > 1 ? <Charts selection='sound_maps.Group' data={sound} type={1} projArea={area} /> : null }
         </>

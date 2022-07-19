@@ -7,7 +7,7 @@ import Back from '@mui/icons-material/ArrowBackRounded';
 import { Link } from 'react-router-dom'; 
 import axios from '../api/axios.js';
 import './routes.css';
-const registerURL = '/password_reset'
+const resetURL = '/password_reset'
 
 export default function ForgotPassword(){
     const [email, setEmail] = React.useState('');
@@ -33,7 +33,7 @@ export default function ForgotPassword(){
     const sendForgotEmail = async (e) => {
 
         try{
-            const response = await axios.post(registerURL, JSON.stringify({email: email}), {
+            const response = await axios.post(resetURL, JSON.stringify({email: email}), {
                 headers: { 'Content-Type': 'application/json' },
             });
             //console.log(response.data);
