@@ -60,7 +60,7 @@ function NewTeamForm() {
             console.log(response.data);
 
             //redirect user to url/home
-            nav('/home', { replace: true, state: loc.state });
+            nav('/home', { replace: true, state: { ...loc.state, userToken: { ...loc.state.userToken, user: { ...loc.state.userToken.user, teams: [...loc.state.userToken.user.teams, response.data ]}}} });
         } catch (error) {
             console.log('ERROR: ', error);
             //success = false;

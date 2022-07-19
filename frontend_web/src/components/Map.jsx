@@ -550,8 +550,8 @@ const Marker = (options) => {
         Maintenance: ['#FFE600', '#FFD800'],
         none: ['white', 'white'],
         Rhythmic: ['#FFE600', '#FFD800'],
-        Task: ['#FF9900', '#FF9900'],
-        Building: ['#FF00E5', '#FF00E5'],
+        Building: ['#FF9900', '#FF9900'],
+        Task: ['#FF00E5', '#FF00E5'],
         New: ['rgba(255, 0, 0, 0.5)', 'rgba(255,0,0,0.5)']
     };
     

@@ -9,11 +9,15 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useNavigate } from 'react-router-dom';
+import axios from '../api/axios';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function ResetPassword(){
 
     let nav = useNavigate();
+    const loc = useLocation();
+    const path = loc.pathname.split('/');
+    console.log(path);
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
     const [showPassword, setShowPassword] = React.useState(false);
@@ -26,8 +30,8 @@ export default function ResetPassword(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (password.length < 7) {
-            setMessage('*Please provide a valid password (minimum length 7)');
+        if (!password || password.length < 8 || /\s/g.test(password) || !/\d/g.test(password) || !/[!@#$%^&*]/g.test(password) || !/[A-Z]/g.test(password)) {  
+            setMessage('*Please provide a valid password, matching the requirements above');
             pwMess.current.style.display = 'inline-block';
             return;
         } else if(confirmPassword !==  password){
@@ -42,7 +46,22 @@ export default function ResetPassword(){
 
     const updatePass = async (e) => {
         //On successful request, navigate to title page for user to login
-        nav('/'); 
+        try {
+            const response = await axios.post(`/password_reset/${path[2]}/${path[3]}`, JSON.stringify({ password: password }), {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            });
+            //redirect user to url/ to log in and confirm successful password reset
+            nav('/'); 
+
+        } catch (error) {
+            //user login error
+            //console.log('ERROR: ', error);
+            setMessage(error.response.data?.message);
+            pwMess.current.style.display = 'inline-block';
+            return;
+        }
+        
     }
 
     return(
@@ -52,7 +71,7 @@ export default function ResetPassword(){
                     <Card.Body>
                         <h3>Reset Password</h3>
                         <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            <div style={{ marginBottom: '10px', fontSize: 'larger' }}>Enter your new password <br/> Minimum length of 7 characters</div>
+                            <div style={{ marginBottom: '10px', fontSize: 'larger' }}>Enter your new password <br /> <div style={{fontSize: 'smaller'}}>*Minimum password length of 8 characters, including a number, a symbol, and an uppercase letter</div></div>
                             <span ref={pwMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                             <FormControl sx={{ m: 1 }} variant='outlined'>
                                 <InputLabel htmlFor='outlined-adornment-password'>New Password *</InputLabel>
