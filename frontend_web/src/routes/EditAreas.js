@@ -13,7 +13,7 @@ export default function EditAreas(){
             <Card key={index} className='areaCards'>
                 <Card.Body>
                     <h4>{obj.title}</h4>
-                    <Button component={Link} to='area_map' state={{...loc?.state, area: obj.points}}>Edit</Button>
+                    <Button component={Link} to='area_map' state={{...loc?.state, area: obj}}>Edit</Button>
                     <Button onClick={deleteArea(obj._id)}>Delete</Button>
                 </Card.Body>
             </Card>

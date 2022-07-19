@@ -166,6 +166,11 @@ div#deleteWindow button#deleteButton, div#deleteWindow button#cancelButton{
     left: calc(50vw - 150px);
 }
 
+#newPointBlock,
+#editAreaBlock{
+    top: 130px;
+}
+
 #bottomButton{
     position: relative;
     top: calc(100vh - 190px);
