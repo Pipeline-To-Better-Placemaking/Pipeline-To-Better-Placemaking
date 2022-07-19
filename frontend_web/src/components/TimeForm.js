@@ -7,25 +7,44 @@ import DeleteIcon from '@mui/icons-material/DeleteOutline';
 function TimeForm(props) {
     const date = new Date();
     const activitySelection = useLocation();
+    const index = props.index;
+    const standingPoints = props.standingPoints;
     const [timeForm, setTimeForm] = React.useState({
+        instance: props.instance,
         index: props.index,
-        time: `${date.getHours()}:${date.getMinutes()}`,
-        surveyors: [],
-        points: []
+        time: props.time,
+        surveyors: props.surveyors,
+        points: props.points
     });
 
-    const handleChange = (key, ver) => (e) => {
+    const handleChange = (key) => (e) => {
         setTimeForm({ ...timeForm, [key]: e.target.value });
     };
+
+    const handleChecked = (event) => {
+        // updating an object instead of a Map
+        setTimeForm({ ...timeForm, points: { ...timeForm.points, [event.target.name]: event.target.checked } });
+    }
 
     const handleDelete = (index) => (e) => {
         props.deleteTime(index);
     }
 
+    React.useEffect(() => {
+        props.updateTime(index, timeForm)
+    }, [timeForm]);
+
+    React.useEffect(() => {
+        setTimeForm({
+            ...timeForm, index: props.index})
+    }, [props.index]);
+
+    console.log(index);
+
     return(
         <div className='timeForm'>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                <h5>Time Slot { timeForm.index + 1 }</h5> 
+                <h5>Time Slot</h5> 
                 <Button id='deleteButton' onClick={ handleDelete(timeForm.index) }><DeleteIcon /></Button> 
             </div>
             <div className='form-group'>
@@ -35,30 +54,24 @@ function TimeForm(props) {
             <br/>
             <div className='form-group'>
                 <Form.Label>Surveyors:</Form.Label>
-                <Form.Select id='surveyorSelect' multiple={ true } value={ timeForm.surveyors } aria-label='surveyorsSelect' onChange={ handleChange('surveyors') }>
-                    { timeForm.surveyors.map((surveyor, index) => (
-                        <option
-                            key={ surveyor }
-                            value={ surveyor }
-                        >
-                            { surveyor }
-                        </option>
-                    )) }
-                </Form.Select>
+                <Form.Control id='surveyorSelect' type='number' value={ timeForm.surveyors } aria-label='surveyorsSelect' onChange={ handleChange('surveyors') }/>
             </div>
             <br />
             <div className='form-group'>
                 <Form.Label>Points:</Form.Label>
-                <Form.Select id='pointSelect' multiple={ true } value={ timeForm.points } aria-label='pointSelect' onChange={ handleChange('points') }>
-                    { timeForm.points.map((point, index) => (
-                        <option
-                            key={ `Point ${index}` }
-                            value={ point }
-                        >
-                            { `Point ${index}` }
-                        </option>
+                <div className="mb-3">
+                    { standingPoints.map((point, index) => (
+                        <Form.Check
+                            inline
+                            key={point._id}
+                            label={`${point.title}`}
+                            name={`${point._id}`}
+                            type='checkbox'
+                            id={`inline-checkbox-${index}`}
+                            onChange={handleChecked}
+                        />
                     )) }
-                </Form.Select>
+                </div>
             </div>
         </div>
     );

@@ -110,7 +110,7 @@ function ActivityPage(props) {
 
     return(
         <div id='activityPage'>
-            <ActivityForm />
+            <ActivityForm/>
             <TableContainer component={Paper}>
                 <Table aria-label='collapsible table'>
                     <TableHead>

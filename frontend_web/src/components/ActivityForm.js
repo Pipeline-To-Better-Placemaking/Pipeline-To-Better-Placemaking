@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { Form } from 'react-bootstrap';
 import AddIcon from '@mui/icons-material/Add';
 
-function ActivityForm() {
+function ActivityForm(props) {
+    const loc = useLocation();
     const [form, setForm] = React.useState(
         {
             title: '',
@@ -47,7 +48,7 @@ function ActivityForm() {
             </div>
             <Button className='newHoveringButtons confirm' id='addButton' component={ Link }
                 to='/home/teams/:id/projects/:id/activities/times'
-                state={ form }
+                state={{...loc.state, form: form}}
             >
                 <AddIcon />
             </Button>

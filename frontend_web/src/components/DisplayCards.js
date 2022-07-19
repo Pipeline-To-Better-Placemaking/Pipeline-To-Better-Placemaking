@@ -42,19 +42,19 @@ function DisplayCards(props) {
 
     //For Better Placemaking projects listed on home page (url)/home
     const projectCards = (project) => (
-            <Card className='displayCard'>
-                <CardContent>
-                    <Typography variant='h5' component='div'>
-                        { project.title }
-                    </Typography>
-                    { project.description }
-                </CardContent>
-                <CardActions>
-                <Button component={Link} to={`projects/${project._id}`} state={{ project: project.title, team: props.team, userToken: props.user }}>View</Button>
-                <Button component={Link} to={`edit/${project._id}`} state={{ project: project.title, team: props.team, userToken: props.user }}>Edit</Button>
-                <Button onClick={props.open(project.title, project._id)}><DeleteIcon /></Button>
-                </CardActions>
-            </Card>
+        <Card className='displayCard'>
+            <CardContent>
+                <Typography variant='h5' component='div'>
+                    { project.title }
+                </Typography>
+                { project.description }
+            </CardContent>
+            <CardActions>
+            <Button component={Link} to={`projects/${project._id}`} state={{ project: project.title, team: props.team, userToken: props.user }}>View</Button>
+            <Button component={Link} to={`edit/${project._id}`} state={{ project: project.title, team: props.team, userToken: props.user }}>Edit</Button>
+            <Button onClick={props.open(project.title, project._id)}><DeleteIcon /></Button>
+            </CardActions>
+        </Card>
     );
 
     const teamCards = (teams) => (

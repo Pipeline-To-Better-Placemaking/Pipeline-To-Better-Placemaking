@@ -178,10 +178,14 @@ function ProjectPage(){
                         <Route path='activities' element={
                             <ActivityPage 
                                 title={ projectInfo?.title }  
-                                drawers={ activities }  
+                                drawers={ activities }
                             />
                         } />
-                        <Route path='activities/times' element={<NewActivityTimes />}/>
+                        <Route path='activities/times' element={
+                            <NewActivityTimes 
+                                projectInfo={projectInfo}
+                            />
+                        }/>
                         <Route path='surveyors' element={
                             <SurveyorPage title={ projectInfo?.title } 
                                 drawers={ activities }  
@@ -190,13 +194,6 @@ function ProjectPage(){
                     </Routes>
                 : null
             }
-            {/*<Routes>
-                <Route path='surveyors' element={
-                    <SurveyorPage title={'Project'}
-                        drawers={activities}
-                    />
-                } />
-            </Routes>*/}
         </div>
     );
 }
