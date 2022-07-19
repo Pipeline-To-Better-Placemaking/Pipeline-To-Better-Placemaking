@@ -9,11 +9,15 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useNavigate } from 'react-router-dom';
+import axios from '../api/axios';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function ResetPassword(){
 
     let nav = useNavigate();
+    const loc = useLocation();
+    const path = loc.pathname.split('/');
+    console.log(path);
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
     const [showPassword, setShowPassword] = React.useState(false);
@@ -42,7 +46,22 @@ export default function ResetPassword(){
 
     const updatePass = async (e) => {
         //On successful request, navigate to title page for user to login
-        nav('/'); 
+        try {
+            const response = await axios.post(`/password_reset/${path[2]}/${path[3]}`, JSON.stringify({ password: password }), {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            });
+            //redirect user to url/ to log in and confirm successful password reset
+            nav('/'); 
+
+        } catch (error) {
+            //user login error
+            //console.log('ERROR: ', error);
+            setMessage(error.response.data?.message);
+            pwMess.current.style.display = 'inline-block';
+            return;
+        }
+        
     }
 
     return(
