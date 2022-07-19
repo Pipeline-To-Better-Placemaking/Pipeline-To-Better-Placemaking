@@ -26,8 +26,8 @@ export default function ResetPassword(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (password.length < 7) {
-            setMessage('*Please provide a valid password (minimum length 7)');
+        if (!password || password.length < 8 || /\s/g.test(password) || !/\d/g.test(password) || !/[!@#$%^&*]/g.test(password) || !/[A-Z]/g.test(password)) {  
+            setMessage('*Please provide a valid password (minimum length 8 including (at least): one uppercase letter, one symbol (!@#$%^&*), and one number)');
             pwMess.current.style.display = 'inline-block';
             return;
         } else if(confirmPassword !==  password){
