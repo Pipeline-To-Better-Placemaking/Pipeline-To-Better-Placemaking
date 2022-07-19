@@ -5,10 +5,13 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Link, useLocation } from 'react-router-dom';
 import Map from '../components/Map';
+import axios from '../api/axios.js';
 
 function ProjectForm() {
     //Form for creating a NEW Project
     const loc = useLocation();
+    const registerResponse = React.useRef(null);
+    const [message, setMessage] = React.useState('');
     //recieves location data from New Project Points
 
     const [values, setValues] = React.useState({
@@ -23,7 +26,30 @@ function ProjectForm() {
         setValues({ ...values, [prop]: event.target.value });
     };
 
-    const createProject = () => { }
+    const createProject = async (e) => {
+
+        try{
+            const response = await axios.post('/projects', JSON.stringify({ 
+                title: values.title,
+                description: values.description,
+                area: values._id,
+                subareas: [values._id],
+                standingPoints: values.points,
+                team: values.team
+            }), {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            });
+
+            let project = response.data;
+
+        } catch (error) {
+
+            setMessage(error.response.data?.message);
+            registerResponse.current.style.display = 'inline-block';
+            return;
+        }
+     }
 
     return (
         <div id='projectCreate'>
