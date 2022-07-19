@@ -56,7 +56,7 @@ function Projects(props){
             });
 
             setTeamInfo(response.data);
-            console.log(response.data);
+            //console.log(response.data);
 
         } catch (error) {
             console.log('ERROR: ', error);

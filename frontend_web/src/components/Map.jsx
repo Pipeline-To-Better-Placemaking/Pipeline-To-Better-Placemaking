@@ -38,7 +38,7 @@ export default function FullMap(props) {
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreas : [];
     const loc = useLocation();
-    console.log(loc?.state);
+    //console.log(loc?.state);
 
     // hold the selections from the switch toggles
     const [stationaryCollections, setStationaryCollections] = React.useState({});
@@ -373,7 +373,7 @@ export default function FullMap(props) {
             { props.type === 1 ? <MapDrawers drawers={ data } selection={ onSelection } area={ areaData }/> : null }
             { props.type === 1 ? <Button id='printButton' onClick={ convertToImage }>Print Map</Button>: null }
             {/* Wrapper imports Google Maps API */}
-            <Wrapper apiKey={''} render={ render } id='mapContainer' libraries={['drawing', 'places']}>
+            <Wrapper apiKey={loc.state.userToken.map_key} render={ render } id='mapContainer' libraries={['drawing', 'places']}>
                 <Map
                     center={ center }
                     onClick={ onMClick }
@@ -391,7 +391,7 @@ export default function FullMap(props) {
                             <Marker position={props.center} /> : 
                             (props.type === 0 || props.type === 7 ? 
                                 <Marker position={center} /> : null)) }
-                    { props.type === 0 ? <Places map={map} onChange={placeOn ? onChange : null} on={placeOn} togglePlaces={togglePlaces} onClick={onPClick} center={center} zoom={zoom} /> : null }
+                    { props.type === 0 ? <Places map={map} onChange={placeOn ? onChange : null} on={placeOn} togglePlaces={togglePlaces} onClick={onPClick} center={center} zoom={zoom} state={loc.state}/> : null }
                     {/* Change marker types for non center markers to show difference */}
                     { props.type === 3 || props.type === 5 ? clicks.map((latLng, i) => (<Marker key={i} position={ latLng } info={`<div>Position ${i}</div>`}/>)) : null }
                     { props.type === 4 || props.type === 6 ? NewArea(clicks) : null } {/*<DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null */}
@@ -807,7 +807,7 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
                 className='newHoveringButtons' 
                 id='newLocationButton' 
                 component={ Link } to='area' 
-                state={({ 
+                state={({ ...options.state,
                     center: options.center, 
                     title: ( placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : document.getElementById('locationSearch')?.value),
                     zoom: options.zoom
