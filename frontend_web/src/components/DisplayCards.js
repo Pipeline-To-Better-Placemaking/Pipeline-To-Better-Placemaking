@@ -11,12 +11,9 @@ import { Link } from 'react-router-dom';
 import '../routes/routes.css';
 
 function DisplayCards(props) {
-
-    //if(props.user) console.log(props.user);
-
     //Surveyor Cards have surveyor name in header
     const surveyorCards = (surveyors) => (
-        surveyors.map((surveyor, index) => (
+        Object.values(surveyors).map((surveyor, index) => (
             <Card key={ 's' + index } className='displayCard'>
                 <CardHeader title={ surveyor.name } />
                 { surveyorActivities(surveyor.activities) }

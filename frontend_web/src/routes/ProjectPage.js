@@ -148,7 +148,7 @@ function ProjectPage(){
     
     //console.log(drawer);
     //console.log(standingPoints);
-    console.log(projectInfo);
+    console.log(drawer);
     return (
         <div id='ProjectPage'>
             <TabPanel state={ loc.state }/>
@@ -190,6 +190,13 @@ function ProjectPage(){
                     </Routes>
                 : null
             }
+            {/*<Routes>
+                <Route path='surveyors' element={
+                    <SurveyorPage title={'Project'}
+                        drawers={activities}
+                    />
+                } />
+            </Routes>*/}
         </div>
     );
 }
