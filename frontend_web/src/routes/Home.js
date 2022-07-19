@@ -14,6 +14,8 @@ function Home() {
         }
     ]*/
 
+    console.log(location.state);
+
     return(
         <div id='userHome'>
             <div id='newTeamButtonBox'>

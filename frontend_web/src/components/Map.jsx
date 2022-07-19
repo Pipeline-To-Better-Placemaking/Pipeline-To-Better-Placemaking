@@ -38,7 +38,7 @@ export default function FullMap(props) {
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreas : [];
     const loc = useLocation();
-    //console.log(areaData);
+    console.log(loc?.state);
 
     // hold the selections from the switch toggles
     const [stationaryCollections, setStationaryCollections] = React.useState({});
@@ -373,7 +373,7 @@ export default function FullMap(props) {
             { props.type === 1 ? <MapDrawers drawers={ data } selection={ onSelection } area={ areaData }/> : null }
             { props.type === 1 ? <Button id='printButton' onClick={ convertToImage }>Print Map</Button>: null }
             {/* Wrapper imports Google Maps API */}
-            <Wrapper apiKey={/*config.GOOGLE_MAP_KEY*/''} render={ render } id='mapContainer' libraries={['drawing', 'places']}>
+            <Wrapper apiKey={''} render={ render } id='mapContainer' libraries={['drawing', 'places']}>
                 <Map
                     center={ center }
                     onClick={ onMClick }
@@ -405,7 +405,7 @@ export default function FullMap(props) {
                             className='newHoveringButtons confirm'
                             component={ Link }
                             to='points'
-                            state={({ center: center, title: title, area: clicks, zoom: zoom })}
+                            state={({...loc.state, center: center, title: title, area: clicks, zoom: zoom })}
                         >
                             Set Bounds
                         </Button> 

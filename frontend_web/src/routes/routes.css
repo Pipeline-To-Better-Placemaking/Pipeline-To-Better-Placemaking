@@ -202,6 +202,11 @@ div#timeCardContent, div#areaCardContent, div#pointCardContent {
     align-content: center;
 }
 
+div#userHome, div#teamHome{
+    overflow-y: scroll;
+    width: 100vw;
+}
+
 div.MuiCardContent-root {
     width: 80%;
 }
@@ -366,7 +371,6 @@ div#userSettings h1 {
     from {
         transform: rotate(0deg);
     }
-
     to {
         transform: rotate(360deg);
     }

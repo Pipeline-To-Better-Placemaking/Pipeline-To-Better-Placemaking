@@ -417,9 +417,7 @@ function Charts(props) {
         var rhythmic = 0, building = 0, task = 0;
         //console.log(data);
         for(const lObj of Object.values(data)){
-            console.log(lObj);
             for(const point of lObj.points){
-                console.log(lObj.points)
                 if(point.light_description === 'Rhythmic'){
                     rhythmic++;
                 } else if (point.light_description === 'Building'){

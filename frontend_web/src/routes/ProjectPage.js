@@ -129,7 +129,6 @@ function ProjectPage(){
             }
 
             results = map;
-            console.log(index);
         } catch (error) {
             //project api get error
             console.log('ERROR: ', error);
@@ -148,7 +147,7 @@ function ProjectPage(){
     
     //console.log(drawer);
     //console.log(standingPoints);
-    console.log(drawer);
+    //console.log(drawer);
     return (
         <div id='ProjectPage'>
             <TabPanel state={ loc.state }/>
