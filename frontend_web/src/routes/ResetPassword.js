@@ -27,7 +27,7 @@ export default function ResetPassword(){
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!password || password.length < 8 || /\s/g.test(password) || !/\d/g.test(password) || !/[!@#$%^&*]/g.test(password) || !/[A-Z]/g.test(password)) {  
-            setMessage('*Please provide a valid password (minimum length 8 including (at least): one uppercase letter, one symbol (!@#$%^&*), and one number)');
+            setMessage('*Please provide a valid password, matching the requirements above');
             pwMess.current.style.display = 'inline-block';
             return;
         } else if(confirmPassword !==  password){
@@ -52,7 +52,7 @@ export default function ResetPassword(){
                     <Card.Body>
                         <h3>Reset Password</h3>
                         <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            <div style={{ marginBottom: '10px', fontSize: 'larger' }}>Enter your new password <br/> Minimum length of 7 characters</div>
+                            <div style={{ marginBottom: '10px', fontSize: 'larger' }}>Enter your new password <br /> <div style={{fontSize: 'smaller'}}>*Minimum password length of 8 characters, including a number, a symbol, and an uppercase letter</div></div>
                             <span ref={pwMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                             <FormControl sx={{ m: 1 }} variant='outlined'>
                                 <InputLabel htmlFor='outlined-adornment-password'>New Password *</InputLabel>
