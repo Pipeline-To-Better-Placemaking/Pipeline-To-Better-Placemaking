@@ -89,7 +89,7 @@ export function BoundaryMap(props) {
                 return(
                     <MapView.Polygon 
                         coordinates={props.markers}
-                        strokeWidth={0}
+                        strokeWidth={1}
                         // strokeColor={color}
                         // fillColor={fill}
                     />

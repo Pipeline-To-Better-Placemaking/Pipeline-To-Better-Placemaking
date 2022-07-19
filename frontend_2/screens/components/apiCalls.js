@@ -41,6 +41,33 @@ export async function getProject(project) {
   }
 };
 
+// merge sorts props.activities to have earliest date tests come 1st
+const mergeSortEarlyDate = (arr) =>{
+  const half = arr.length / 2
+  // base case
+  if(arr.length < 2){
+    return arr
+  }
+  const left = arr.splice(0, half)
+  const res = mergeEarly(mergeSortEarlyDate(left), mergeSortEarlyDate(arr)) 
+  // gets rid of the last element from props.activities (otherwise, it'll render a duplicate test at the end)
+  arr.shift();
+  return res
+}
+
+// helper funct of mergeSort, is where the objects are compared
+const mergeEarly = (left, right)=>{
+  let arr = [];
+  // while they are both NOT empty
+  while(left.length && right.length){
+    // we want the array to be sorted by earliest date 1st
+    if(left[0].date < right[0].date) arr.push(left.shift())
+    else arr.push(right.shift())
+  }
+  // concat the leftover elements
+  return [...arr, ...left, ...right]
+}
+
 export async function getFilteredProjectDetails(project) {
   let token = await AsyncStorage.getItem("@token");
   let projectDetails = await getProject(project);
@@ -221,6 +248,8 @@ export async function getFilteredProjectDetails(project) {
       ...pastLightCollections,
       ...pastOrderCollections
     ];
+
+    projectDetails.activities = mergeSortEarlyDate(projectDetails.activities);
     return projectDetails;
   } else {
     return null;
@@ -588,6 +617,31 @@ export async function getAllCollectionInfo(collectionDetails) {
   }
 };
 
+// This merge sort is used in getAllResults to sort all of the projects
+// To have latest date tests come 1st
+const mergeSortLateDate = (arr) =>{
+  const half = arr.length / 2
+  // base case
+  if(arr.length < 2){
+    return arr
+  }
+  const left = arr.splice(0, half)
+  return mergeLate(mergeSortLateDate(left), mergeSortLateDate(arr))
+}
+
+// helper funct of mergeSortLateDate, is where the objects are compared
+const mergeLate = (left, right)=>{
+  let arr = [];
+  // while they are both NOT empty
+  while(left.length && right.length){
+    // we want the array to be sorted by latest date 1st
+    if(left[0].sharedData.date > right[0].sharedData.date) arr.push(left.shift())
+    else arr.push(right.shift())
+  }
+  // concat the leftover elements
+  return [...arr, ...left, ...right]
+}
+
 export async function getAllResults(projectDetails) {
   if (projectDetails === null) {
     return [];
@@ -603,6 +657,8 @@ export async function getAllResults(projectDetails) {
   results = await getNatureResults(projectDetails, results);
   results = await getLightResults(projectDetails, results);
   results = await getOrderResults(projectDetails, results);
+  
+  results = mergeSortLateDate(results);
   return  results;
 }
 

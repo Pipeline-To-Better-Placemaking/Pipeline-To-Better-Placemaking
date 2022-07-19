@@ -171,7 +171,7 @@ export function DescModal(props) {
                                 <View style={styles.titleDesc}>
                                     <Text style={styles.titleDescTxt}>
                                         <Text category={'s1'} style={styles.boldTxt}>Select all</Text>
-                                        <Text category={'s1'}> of the following that describes the disorder you marked</Text>
+                                        <Text category={'s1'}> of the following that describes the misconduct you marked</Text>
                                     </Text>
                                 </View>
 

@@ -22,11 +22,11 @@ export function DataModal(props) {
         <Modal transparent={true} animationType='slide' visible={props.visible}>
             <View style={styles.modalContainer}>
                 <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
-                        <Text category={'h1'} style={styles.titleText}>Type of Disorder</Text>
+                        <Text category={'h1'} style={styles.titleText}>Type of Misconduct</Text>
                         <View style={styles.dataView}>
                                     
                             <View style={styles.titleDesc}>
-                                <Text category={'s1'} style={styles.titleDescTxt}>Select the type of disorder you marked</Text>
+                                <Text category={'s1'} style={styles.titleDescTxt}>Select the type of misconduct you marked</Text>
                             </View>
 
                             <View style={styles.buttonRow}>

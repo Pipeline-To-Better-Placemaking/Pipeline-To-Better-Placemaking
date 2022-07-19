@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     listView:{
         flexDirection:'row', 
         justifyContent:'center', 
-        maxHeight:'42%'
+        maxHeight:'42.5%'
     },
 
     list:{

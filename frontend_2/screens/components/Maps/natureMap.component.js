@@ -76,11 +76,11 @@ export function NatureMap(props) {
             if(props.polyType === 0) color = 'red'
             return (props.markers.map((coord, index) => (
                 <MapView.Marker
-                        key={index}
-                        coordinate = {props.markers[0]}
-                    >
-                        <TempDataPin color={color} />
-                    </MapView.Marker>
+                    key={index}
+                    coordinate = {props.markers[0]}
+                >
+                    <TempDataPin color={color} />
+                </MapView.Marker>
             )));
 
         }
@@ -101,7 +101,7 @@ export function NatureMap(props) {
             return(
                 <MapView.Polygon 
                     coordinates={props.markers}
-                    strokeWidth={0}
+                    strokeWidth={1}
                 />
             )
         }
@@ -140,7 +140,7 @@ export function NatureMap(props) {
                 props.water.map((obj, index) => (
                     <MapView.Polygon
                         coordinates={obj}
-                        strokeWidth={0}
+                        strokeWidth={1}
                         key={index}
                     />
                 ))
@@ -148,7 +148,6 @@ export function NatureMap(props) {
         }
         // otherwise return null
         else return null
-
     }
 
     // renders submitted vegetation

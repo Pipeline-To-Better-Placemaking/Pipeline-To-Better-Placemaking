@@ -208,7 +208,7 @@ export function OrderResultPage(props) {
 
           <MyBarChart
             {...props}
-            title={"Disorder Data"}
+            title={"Misconduct Data"}
             rotation={'0deg'}
             dataValues={props.selectedResult.graph.data}
             dataLabels={props.selectedResult.graph.labels}

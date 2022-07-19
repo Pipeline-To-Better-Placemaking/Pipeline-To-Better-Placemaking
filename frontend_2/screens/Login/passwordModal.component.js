@@ -24,7 +24,7 @@ export function PasswordModal(props) {
                     return;
                 }
                 let data = {
-                    email: email
+                    email: email.toLowerCase()
                 }
                 // reset the useStates
                 setEmail();

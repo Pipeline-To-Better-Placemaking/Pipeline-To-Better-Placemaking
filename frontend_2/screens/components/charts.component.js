@@ -131,7 +131,7 @@ export function CompareBarChart({children, ...props}){
 
   const theme = useTheme();
   const themeContext = React.useContext(ThemeContext);
-  var randomColor = require('randomcolor');
+  let randomColor = require('randomcolor');
   let textColor = (themeContext.theme === "light" ? 'black' : 'white');
   let fontSize = 10;
 

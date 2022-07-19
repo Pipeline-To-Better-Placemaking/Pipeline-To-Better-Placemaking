@@ -16,6 +16,7 @@ import {
   formatOrderGraphData, 
   retrieveTestName 
 } from '../components/helperFunctions';
+import { Pagination } from '../components/pagination.component';
 
 import { styles } from './projectResult.styles';
 
@@ -38,8 +39,8 @@ export function ProjectResultPage(props) {
   const refreshDetails = async () => {
     let proj = await getProject(props.project);
     if (proj !== null) {
-      let results = await getAllResults(proj); // sets to empty list if no results
-      await props.setResults(results);
+      let _results = await getAllResults(proj); // sets to empty list if no results
+      await props.setResults(_results);
     }
   };
 
@@ -136,6 +137,39 @@ export function ProjectResultPage(props) {
     );
   }
   
+  // pagination controls
+  const [currentPage, setCurrentPage] = useState(1);
+  const [resultsPerPage] = useState(10);
+  const [currentRange] = useState([1, 6]);
+  const rangeInc = 6;
+  const lastPage = Math.ceil(props.results.length / resultsPerPage);
+  const indexOfLastResults = currentPage * resultsPerPage;
+  const indexOfFirstResults = indexOfLastResults - resultsPerPage;
+  const currentResults = props.results.slice(indexOfFirstResults, indexOfLastResults);
+  
+  // changes the 'page'
+  const paginate = (pageNumber) =>{
+    // if we reached the end of the current range, increment it
+    if(currentRange[1] + 1 === pageNumber){
+      currentRange[0] = pageNumber
+      // checks to make sure it's not rendering extra pages (happens if results.length is not a mutiple of the rangeInc)
+      let tempMax = (pageNumber - 1) + rangeInc
+      if(tempMax <= lastPage) currentRange[1] = tempMax
+      // if it does try to, then it sets the last page as the lastPage number
+      else currentRange[1] = lastPage
+    }
+    // if we reached the start of the current range, decrement it
+    else if(currentRange[0] - 1 === pageNumber){
+      currentRange[1] = pageNumber
+      currentRange[0] = (pageNumber + 1) - rangeInc
+    }
+    // change the page number
+    setCurrentPage(pageNumber)
+  }
+  // if the max range is larger than the last page number, set the max as the last page number
+  if(currentRange[1] > lastPage) currentRange[1] = lastPage
+  
+  
   return (
     <ViewableArea>
       <HeaderBack {...props} text={props.project.title}/>
@@ -187,11 +221,20 @@ export function ProjectResultPage(props) {
             </Button>
         </View>
         <Divider style={styles.dividerMargin} />
-
+        
+        <Pagination
+          totalResults={props.results.length}
+          resultsPerPage={resultsPerPage}
+          currentPage={currentPage}
+          lastPage={lastPage}
+          currentRange={currentRange}
+          paginate={paginate}
+        />
+        
         <View style={styles.listView}>
           <List
             style={styles.listElements}
-            data={props.results}
+            data={currentResults}
             ItemSeparatorComponent={Divider}
             renderItem={activityItem}
             refreshControl={
@@ -202,7 +245,6 @@ export function ProjectResultPage(props) {
             }
           />
         </View>
-
       </ContentContainer>
     </ViewableArea>
   );

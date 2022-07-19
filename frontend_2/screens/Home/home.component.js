@@ -11,7 +11,7 @@ import { styles } from './home.styles';
 
 export const HomeScreen = ( props ) => {
 
-  var location = props.location
+  let location = props.location
   const [compare, setCompare] = useState(false)
   const [refreshing, setRefreshing] = useState(false);
 

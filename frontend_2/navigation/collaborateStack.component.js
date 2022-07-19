@@ -20,7 +20,7 @@ import { OrderTest } from '../screens/Collaborate/ResearchActivities/Order/order
 const { Navigator, Screen } = createStackNavigator();
 
 export function CollaborateStack(props) {
-  var location = props.location;
+  let location = props.location;
   let addProject= props.addProject;
   let removeProject= props.removeProject;
 

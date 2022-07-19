@@ -150,7 +150,6 @@ export const LoginScreen = ( props ) => {
     }
   }, [resetMsg, errorMsg])
 
-
   const LoginButton = () => (
     <Button style={styles.logInButton} onPress={navigateLogin}>
       <Text>Log In</Text>

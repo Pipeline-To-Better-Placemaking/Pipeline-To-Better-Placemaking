@@ -243,9 +243,17 @@ export function CreateActivityStack(props) {
       // get the area
       let areaIndex = props.project.subareas.findIndex(element => element._id === collectionDetails.area);
       collectionDetails.area = props.project.subareas[areaIndex];
-
-      // add the collection to the list
-      await props.setActivities(values => [...values, collectionDetails]);
+      
+      // adds the new test to the sorted array
+      let activities = props.activities
+      for(let i = 0; i < activities.length; i++){
+        if(activities[i].date > collectionDetails.date){
+          activities.splice(i, 0, collectionDetails)
+          break
+        }
+      }
+      // add the collection to the sorted array
+      await props.setActivities(activities);
     }
   }
 

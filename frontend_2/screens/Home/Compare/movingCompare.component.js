@@ -41,7 +41,7 @@ export function MovingCompare(props) {
   const chartWidth = Dimensions.get('window').width*0.95;
   const chartHeight = 210;
 
-  var randomColor = require('randomcolor');
+  let randomColor = require('randomcolor');
 
   // format moving data
   let labels = [];
