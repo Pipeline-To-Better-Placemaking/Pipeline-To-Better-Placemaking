@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
-
+import { testNames } from '../functions/HelperFunctions';
 import '../routes/routes.css';
 
 function DisplayCards(props) {
@@ -27,7 +27,7 @@ function DisplayCards(props) {
             { activities.map((activity, index) => (
                 <div key={ 'a' + index } className='cardRow'>
                     <Typography variant='text' component='div'>
-                        { activity.activity }
+                        { testNames(activity.activity) }
                     </Typography>
                     <Typography variant='text' component='div'>
                         { activity.date }

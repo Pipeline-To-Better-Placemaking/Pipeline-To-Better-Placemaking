@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import DisplayCards from '../components/DisplayCards';
 import './routes.css';
 
