@@ -138,7 +138,7 @@ function ProjectForm() {
                         >
                             Create
                         </Button>
-                        <Button className='cancelButton' component={Link} size='lg' to='../'>
+                        <Button className='cancelButton' component={Link} size='lg' to='../' state={{userToken:loc.state.userToken, team: loc.state.team}}>
                             Cancel
                         </Button>
                     </Box>
