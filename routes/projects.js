@@ -20,7 +20,7 @@ const jwt = require('jsonwebtoken')
 const emailer = require('../utils/emailer')
 
 const { models } = require('mongoose')
-// const { projectExport } = require('../utils/xlsx_exports')
+const { projectExport } = require('../utils/xlsx_exports')
 
 
 const { BadRequestError, InternalServerError, UnauthorizedError } = require('../utils/errors')
@@ -1011,4 +1011,4 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
     })
 })
 
-module.exports = router
+export default router
