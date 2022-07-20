@@ -298,7 +298,7 @@ orderToCSV = function(data) {
                   "Collection_Date,"  +
                   "Area_Title,Area,Duration,Activity_Time," +
                   "Researchers" +
-                  "Location,Points"
+                  "Location,Kind,Description"
 
     var csv = headers
 
@@ -336,7 +336,8 @@ orderToCSV = function(data) {
                         csv += map.date + ','
                         csv += researchers + ','
                         // csv += "\"POINT( " + entry.location.latitude + " " + entry.location.longitude + ")\","
-                        csv += entry.points 
+                        csv += entry.points.kind + ','
+                        csv += entry.points.description 
                     }
                 }
             }
@@ -352,7 +353,7 @@ boundariesToCSV = function(data) {
                   "Collection_Date,"  +
                   "Area_Title,Area,Duration,Activity_Time," +
                   "Researchers," +
-                  "Path,Kind,Description,Value,Purpose"
+                  "Kind,Description,Value,Purpose"
 
     var csv = headers
 
@@ -389,13 +390,13 @@ boundariesToCSV = function(data) {
                         csv += collection.duration + ','
                         csv += map.date + ','
                         csv += researchers + ','
-                        path = "\"LINESTRING ( "
-                        for(var l = 0; l < entry.path.length; l++){
-                           if (l != 0) path += ", "
-                           path += entry.path[l].latitude + " " + entry.path[l].longitude
-                        }
-                        path += ")\""
-                        csv += path
+                        // path = "\"LINESTRING ( "
+                        // for(var l = 0; l < entry.path.length; l++){
+                        //    if (l != 0) path += ", "
+                        //    path += entry.path[l].latitude + " " + entry.path[l].longitude
+                        // }
+                        // path += ")\""
+                        // csv += path
                         csv += entry.kind + ','
                         csv += entry.description + ','
                         csv += entry.value + ',' 

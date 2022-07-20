@@ -20,8 +20,7 @@ const jwt = require('jsonwebtoken')
 const emailer = require('../utils/emailer')
 
 const { models } = require('mongoose')
-const { stationaryToCSV, movingToCSV, soundToCSV, boundariesToCSV, lightToCSV, natureToCSV, orderToCSV, 
-surveyToCSV } = require('../utils/csv_conversions')
+const { projectExport } = require('../utils/csv_conversions')
 
 const { BadRequestError, InternalServerError, UnauthorizedError } = require('../utils/errors')
 
@@ -963,39 +962,43 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
         html: emailHTML,
         attachments: [
             {
-                filename: stationaryData.title + '_stationary.csv',
-                content: stationaryToCSV(stationaryData)
-            },
-            {
-                filename: movingData.title + '_moving.csv',
-                content:movingToCSV(movingData)
-            },
-            {
-                filename: soundData.title + '_sound.csv',
-                content:soundToCSV(soundData)
-            },
-            {
-                filename: natureData.title + '_nature.csv',
-                content:natureToCSV(natureData)
-            },
-            {
-                filename: lightData.title + '_light.csv',
-                content:lightToCSV(lightData)
-            },
-            {
-                filename: orderData.title + '_order.csv',
-                content:orderToCSV(orderData)
-            },
-            {
-                filename: boundariesData.title + '_boundaries.csv',
-                content:boundariesToCSV(boundariesData)
-            },
-            {
-                filename: surveyData.title + '_survey.csv',
-                content:surveyToCSV(surveyData)
+                filename: 'PlaceProject.xlsx',
+                content: projectExport(stationaryData, movingData, soundData, 
+                                    natureData, lightData, orderData, boundariesData)
             }
+            // {
+            //     filename: movingData.title + '_moving.csv',
+            //     content:movingToCSV(movingData)
+            // },
+            // {
+            //     filename: soundData.title + '_sound.csv',
+            //     content:soundToCSV(soundData)
+            // },
+            // {
+            //     filename: natureData.title + '_nature.csv',
+            //     content:natureToCSV(natureData)
+            // },
+            // {
+            //     filename: lightData.title + '_light.csv',
+            //     content:lightToCSV(lightData)
+            // },
+            // {
+            //     filename: orderData.title + '_order.csv',
+            //     content:orderToCSV(orderData)
+            // },
+            // {
+            //     filename: boundariesData.title + '_boundaries.csv',
+            //     content:boundariesToCSV(boundariesData)
+            // },
+            // {
+            //     filename: surveyData.title + '_survey.csv',
+            //     content:surveyToCSV(surveyData)
+            // }
         ]
     }
+    console.log(mailOptions)
+    console.log("works")
+
 
     if (!await emailer.sendEmail(mailOptions)) {
         throw new InternalServerError('The server encountered a problem')
