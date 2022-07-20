@@ -1,4 +1,4 @@
-import * as XLSX from 'xlsx';
+// import * as XLSX from 'xlsx';
 
 
 export function projectExport(stationaryData, movingData, soundData, natureData, orderData,

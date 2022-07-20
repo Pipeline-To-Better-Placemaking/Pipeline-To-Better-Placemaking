@@ -21,6 +21,8 @@ const emailer = require('../utils/emailer')
 
 const { models } = require('mongoose')
 const { projectExport } = require('../utils/xlsx_exports')
+import * as XLSX from 'xlsx';
+
 
 const { BadRequestError, InternalServerError, UnauthorizedError } = require('../utils/errors')
 

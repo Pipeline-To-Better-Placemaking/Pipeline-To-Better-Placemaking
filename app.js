@@ -8,6 +8,8 @@ const config = require('./utils/config')
 const errorHandler = require('./middlewares/error_handler')
 const log = require('./utils/log')
 require('express-async-errors')
+import * as XLSX from 'xlsx';
+
 
 log.info('Connecting to ', config.DB_URI)
 const connect = async () => {

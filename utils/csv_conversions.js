@@ -1,3 +1,4 @@
+
 stationaryToCSV = function(data) {
 
     var headers = "Collection_Title," +
@@ -11,13 +12,6 @@ stationaryToCSV = function(data) {
     for(var i = 0; i < data.stationaryCollections.length; i++){
         var collection = data.stationaryCollections[i]
         
-        var area = "\"POLYGON (("
-        for(var j = 0; j < collection.area.points.length; j++){
-            if (j != 0) area += ','
-            area += collection.area.points[j].latitude + " "
-            area += collection.area.points[j].longitude
-        }
-        area += "))\""
         
         if(collection.maps){
             for (var j = 0; j < collection.maps.length; j++){
