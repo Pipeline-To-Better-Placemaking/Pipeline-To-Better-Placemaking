@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "homepage": "https://p2bp.herokuapp.com/",
+  "type": "module",
   "scripts": {
     "start": "node app.js",
     "dev": "cross-env NODE_ENV=dev node app.js",

@@ -1,7 +1,7 @@
-// import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx';
 
 
-export function projectExport(stationaryData, movingData, soundData, natureData, orderData,
+projectExport= function(stationaryData, movingData, soundData, natureData, orderData,
                         boundariesData){
 
     var workbook = XLSX.utils.book_new();
@@ -315,3 +315,5 @@ function orderToXLSX(data){
     console.log("order fails " + error)
     }
 }
+
+module.exports = {projectExport}
