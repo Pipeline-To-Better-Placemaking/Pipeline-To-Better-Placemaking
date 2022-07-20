@@ -22,6 +22,7 @@ const render = (status) => {
     // 4 - new project area
     // 5 - new project map
     // 6 - edit existing area
+    // 7 -  edit existing point
 
 export default function FullMap(props) {
     const [map, setMap] = React.useState(null);
@@ -34,7 +35,7 @@ export default function FullMap(props) {
     const [click, setClick] = React.useState(props.type === 0 || props.type === 2 || props.type === 7 ? props.center : null);
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
     const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 ? props.area : null);
-    const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [props.center] :(props.type === 6 ? props.area : [])));
+    const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [] :(props.type === 6 ? props.area : [])));
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreas : [];
     const loc = useLocation();
@@ -432,7 +433,7 @@ export default function FullMap(props) {
                 : null
             }
             { props.type === 7 ? 
-                <div id='newPointBlock'>
+                <div className='newPointBlock'>
                     <Button
                         id='newPointButton'
                         className='newHoveringButtons confirm'
@@ -448,21 +449,24 @@ export default function FullMap(props) {
                 : null
             }
             { props.type === 3 ? 
-                <Button
-                    id='newPointsButton'
-                    className='newHoveringButtons confirm'
-                    component={ Link }
-                    to={`/home/teams/${loc.pathname.split('/')[3]}/new/area/points/form`}
-                    state={{...loc.state,
-                        center: center, 
-                        title: title, 
-                        area: areaData, 
-                        points: clicks, 
-                        zoom: zoom
-                    }}
-                >
-                    Set Points
-                </Button> 
+                <div className='newPointBlock' >
+                    <Button
+                        id='newPointsButton'
+                        className='newHoveringButtons confirm'
+                        component={ Link }
+                        to={`/home/teams/${loc.pathname.split('/')[3]}/new/area/points/form`}
+                        state={{...loc.state,
+                            center: center, 
+                            title: title, 
+                            area: areaData, 
+                            points: clicks, 
+                            zoom: zoom
+                        }}
+                    >
+                        Set Points
+                    </Button> 
+                    <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                </div>
                 : null
             }
             <div id='pathBoundWindow' style={{display: 'none', position: 'fixed', flexDirection: 'row', justifyContent: 'center'}}>
@@ -809,11 +813,11 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
                 component={ Link } to='area' 
                 state={({ ...options.state,
                     center: options.center, 
-                    title: ( placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : document.getElementById('locationSearch')?.value),
+                    title: ( options.on && placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : document.getElementById('locationSearch')?.value),
                     zoom: options.zoom
                 })}
             >
-                Set Project
+                Set Project Location
             </Button>
         </div>
     );

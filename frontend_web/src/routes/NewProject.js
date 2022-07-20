@@ -6,8 +6,7 @@ import Map from '../components/Map';
 function NewProject() {
     const location = useLocation();
     const center = { lat:28.537215742007234, lng:-81.38455963599586 };
-    
-    //console.log(location.state);
+
     return(
         <div id='newProject'>
             {/* Empty New Project page, Google map component w/ searchable locations for new projects */}
