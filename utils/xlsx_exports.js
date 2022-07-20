@@ -1,4 +1,4 @@
-import * as XLSX from 'xlsx/xlsx.mjs';
+import * as XLSX from 'xlsx';
 
 
 export function projectExport(stationaryData, movingData, soundData, natureData, orderData,
