@@ -21,6 +21,7 @@ import EditAreas from './routes/EditAreas';
 import EditPoints from './routes/EditPoints';
 import EditAreaMap from './routes/EditAreaMap';
 import EditPointMap from './routes/EditPointMap';
+import FAQ from './routes/FAQ';
 
 function App() {
     // !! token/storage of choice, verification of choice
@@ -107,6 +108,7 @@ function App() {
                 <Route path='new' element={ <NewUser onLogin={ handleOnLogin }/> } />
                 <Route path='forgot_password' element={ <ForgotPassword/> } />
                 <Route path='password_reset/:id/:token' element={<ResetPassword/>} />
+                <Route path='faq' element={<FAQ />} />
             </Routes>
         </Router>
     );
