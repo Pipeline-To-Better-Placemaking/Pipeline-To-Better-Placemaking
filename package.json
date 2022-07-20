@@ -35,7 +35,10 @@
     "passport-json": "^1.2.0",
     "passport-jwt": "^4.0.0",
     "passport-local-mongoose": "^6.0.1",
-    "xoauth2": "^1.2.0"
+    "xoauth2": "^1.2.0",
+    "xlsx": "^0.18.5"
   },
-  "cacheDirectories": ["frontend_web/node_modules"]
+  "cacheDirectories": [
+    "frontend_web/node_modules"
+  ]
 }
