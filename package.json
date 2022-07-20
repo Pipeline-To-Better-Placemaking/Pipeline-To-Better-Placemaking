@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "homepage": "https://p2bp.herokuapp.com/",
-    "scripts": {
+  "scripts": {
     "start": "node app.js",
     "dev": "cross-env NODE_ENV=dev node app.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
@@ -13,6 +13,7 @@
   "author": "Bautista Bertolami, Madison Dishman, Joshua Howell, Mason Proco, Mike Triana",
   "license": "ISC",
   "devDependencies": {
+    "@types/xlsx": "0.0.36",
     "cross-env": "^7.0.3",
     "jest": "^26.5.3",
     "supertest": "^5.0.0"
