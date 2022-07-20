@@ -202,7 +202,7 @@ div#timeCardContent, div#areaCardContent, div#pointCardContent {
     align-content: center;
 }
 
-div#userHome, div#teamHome{
+div#userHome, div#teamHome div#cardFlexBox{
     overflow-y: scroll;
     width: 100vw;
 }
