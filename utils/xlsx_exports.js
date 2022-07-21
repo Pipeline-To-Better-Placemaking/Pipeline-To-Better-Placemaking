@@ -14,40 +14,40 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
     // }
     // if(movingData.length){
         moving = movingToXLSX(movingData)
+        var worksheetmov = XLSX.utils.json_to_sheet(moving)
         console.log("moving writes: " + worksheetmov)
-        var worksheetmov = XLSX.utils.json_to_sheet(moving);
         XLSX.utils.book_append_sheet(workbook, worksheetmov, 'PeopleInMotion');
     // }
     // if(soundData.length){
         sound = soundToXLSX(soundData)
+        var worksheetsound = XLSX.utils.json_to_sheet(sound)
         console.log("sound writes: " + worksheetsound)
-        var worksheetsound = XLSX.utils.json_to_sheet(sound);
         XLSX.utils.book_append_sheet(workbook, worksheetsound, 'AcousticalProfile');
 
     // }
     // if(natureData.length){
         nature = natureToXLSX(natureData)
+        var worksheetnat = XLSX.utils.json_to_sheet(nature)
         console.log("nature writes: " + worksheetnat)
-        var worksheetnat = XLSX.utils.json_to_sheet(nature);
         XLSX.utils.book_append_sheet(workbook, worksheetnat, 'NaturePrevalence');
     // }
     // if(lightData.length){
         lighting = lightToXLSX(lightData)
+        var worksheetlight = XLSX.utils.json_to_sheet(lighting)
         console.log("light writes: " + worksheetlight)
-        var worksheetlight = XLSX.utils.json_to_sheet(lighting);
         XLSX.utils.book_append_sheet(workbook, worksheetlight, 'LightingProfile');
     // }
     // if(orderData.length){
         order = orderToXLSX(orderData)
+        var worksheetord = XLSX.utils.json_to_sheet(order)
         console.log("order writes: " + worksheetord)
-        var worksheetord = XLSX.utils.json_to_sheet(order);
         XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
 
     // }
     // if(boundariesData.length){
         boundaries = boundToXLSX(boundariesData)
-        console.log("boundaries writes: " + worksheetbounds)
         var worksheetbounds = XLSX.utils.json_to_sheet(boundaries);
+        console.log("boundaries writes: " + worksheetbounds)
         XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
     // }
 
@@ -148,8 +148,8 @@ function soundToXLSX(data){
                                     Point: k, 
                                     'Average (dB)': entry.average,
                                     'Sound Types/Sources': entry.sound_type
-                        }
-                        sound.push(obj)
+                            }
+                            sound.push(obj)
                         }
                     }
                 }
@@ -193,7 +193,7 @@ function natureToXLSX(data){
                                 obj = { Category: map.title, 
                                         Date: map.date, 
                                         Time: entry.time, 
-                                        Point: k,
+                                        Point: l,
                                         'Weather (temp/sky)': '', 
                                         'Kind/Area (ft/sq.ft)': animal.kind,
                                         Description: animal.description 
@@ -205,11 +205,11 @@ function natureToXLSX(data){
                                 obj = { Category: map.title, 
                                         Date: map.date, 
                                         Time: entry.time, 
-                                        Point: k,
+                                        Point: m,
                                         'Weather (temp/sky)': '', 
-                                        'Kind/Area (ft/sq.ft)': water.kind,
+                                        'Kind/Area (ft/sq.ft)': water.area,
                                         Description: water.description 
-                                        //
+                                        
                                 }
                                 nature.push(obj)
                             }
@@ -241,14 +241,17 @@ function lightToXLSX(data){
 
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
-                            var entry = map.data[k]
-                            obj = { Category: map.title, 
-                                    Date: map.date, 
-                                    Time: entry.time, 
-                                    Point: k, 
-                                    Description: entry.light_description
-                        }
-                        light.push(obj)
+                                var entry = map.data[k]
+                                for (var l = 0; l < entry.points.length; l++){
+                                    var points = entry.points[l]
+                                    obj = { Category: map.title, 
+                                            Date: map.date, 
+                                            Time: entry.time, 
+                                            Point: l, 
+                                            Description: points.light_description
+                                }
+                                light.push(obj)
+                            }
                         }
                     }
                 }
@@ -284,8 +287,8 @@ function boundToXLSX(data){
                                     Description: entry.description, 
                                     Purpose: entry.purpose, 
                                     'Value (ft/sq.ft)': entry.value
-                        }
-                        order.push(obj)
+                            }
+                            order.push(obj)
                         }
                     }
                 }
@@ -312,13 +315,17 @@ function orderToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
-                            obj = { Category: map.title, 
-                                    Date: map.date, 
-                                    Time: entry.time, 
-                                    Point: k, 
-                                    Description: entry.description
-                        }
-                        order.push(obj)
+
+                            for (var l = 0; l < entry.points.length; l++){
+                                var points = entry.points[l]
+                                obj = { Category: map.title, 
+                                        Date: map.date, 
+                                        Time: entry.time, 
+                                        Point: l, 
+                                        Description: points.description
+                                }
+                                order.push(obj)
+                            }
                         }
                     }
                 }
