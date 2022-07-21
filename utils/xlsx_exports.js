@@ -13,73 +13,43 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
     var sound = []
     var workbook = XLSX.utils.book_new();
 
-    // if(stationaryData.length){
         stationary = stationToXLSX(stationaryData)
-        // console.log("stationary writes: " + stationary)
         var worksheetstat = XLSX.utils.json_to_sheet(stationary);
         console.log("stationary writes: ")
         console.log(worksheetstat)
         XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
-    // }
-    // if(movingData.length){
+
         moving = movingToXLSX(movingData)
-        // console.log("moving writes: " + moving)
         var worksheetmov = XLSX.utils.json_to_sheet(moving)
-        console.log("moving writes: " )
-        console.log(worksheetmov)
         XLSX.utils.book_append_sheet(workbook, worksheetmov, 'PeopleInMotion');
-    // }
-    // if(soundData.length){
+
         sound = soundToXLSX(soundData)
-        // console.log("sound writes: " + sound)
         var worksheetsound = XLSX.utils.json_to_sheet(sound)
-        console.log("sound writes: ")
-        console.log(worksheetsound)
         XLSX.utils.book_append_sheet(workbook, worksheetsound, 'AcousticalProfile');
 
-    // }
-    // if(natureData.length){
         nature = natureToXLSX(natureData)
-        // console.log("nature writes: " + nature)
         var worksheetnat = XLSX.utils.json_to_sheet(nature)
-        console.log("nature writes: ")
-        console.log(worksheetnat)
         XLSX.utils.book_append_sheet(workbook, worksheetnat, 'NaturePrevalence');
-    // }
-    // if(lightData.length){
+
         lighting = lightToXLSX(lightData)
-        // console.log("light writes: " + lighting)
         var worksheetlight = XLSX.utils.json_to_sheet(lighting)
-        console.log("light writes: ")
-        console.log(worksheetlight)
         XLSX.utils.book_append_sheet(workbook, worksheetlight, 'LightingProfile');
-    // }
-    // if(orderData.length){
+
         order = orderToXLSX(orderData)
-        // console.log("order writes: " + order)
         var worksheetord = XLSX.utils.json_to_sheet(order)
         console.log("order writes: ")
         console.log(worksheetord)
         XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
 
-    // }
-    // if(boundariesData.length){
         boundaries = boundToXLSX(boundariesData)
-        // console.log("boundaries writes: " + boundaries)
         var worksheetbounds = XLSX.utils.json_to_sheet(boundaries);
         console.log("boundaries writes: ")
         console.log(worksheetbounds)
         XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
-    // }
+
 
     // Excel Format
-    console.log("fails after this?: ")
     const xlsx_file = XLSX.write(workbook,{ bookType: "xlsx", type: "buffer" });
-    console.log("type of file: ")
-    console.log(typeof xlsx_file)
-
-    console.log("file contents? ")
-    console.log(xlsx_file)
 
     return xlsx_file
 
@@ -102,27 +72,24 @@ function stationToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
-                            // console.log("Stationary data before assigning to object")
-                            // console.log(entry)
-                            obj = { Category: `${collection.title}(${k})`, 
+
+                            obj = { Category: `${collection.title}(${j})`, 
                                     Date: map.date, 
-                                    Time: entry.time, 
+                                    Time: getDigitalTime(entry.time), 
                                     Point: k, 
                                     Posture: entry.posture, 
                                     Age: entry.age, 
                                     Gender: entry.gender, 
                                     Activity: entry.activity
                         }
-                        // console.log('stationary objects: ' + obj)
-                        // stationary.push(obj)
+                        console.log(obj.Time)
+                        stationary.push(obj)
 
                         }
                     }
                 }
             }
         }
-        // console.log("stationary writes: ")
-        // console.log(JSON.stringify(stationary))
 
         return stationary
     }catch(error){
@@ -146,16 +113,14 @@ function movingToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
-                            // console.log("Moving data before assigning to object")
-                            // console.log(entry)
-                            obj = { Category: `${collection.title}(${k})`, 
+
+                            obj = { Category: `${collection.title}(${j})`, 
                                     Date: map.date, 
-                                    Time: entry.time, 
+                                    Time: getDigitalTime(entry.time), 
                                     Point: k, 
                                     Mode: entry.mode
                         }
-                        // console.log('moving objects: ')
-                        // console.log(obj)
+                        console.log(obj.Time)
 
                         moving.push(obj)
                         }
@@ -163,8 +128,7 @@ function movingToXLSX(data){
                 }
             }
         }
-        // console.log("moving writes: " )
-        // console.log(JSON.stringify(moving))
+
 
         return moving
     }catch(error){
@@ -189,17 +153,15 @@ function soundToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
-                            // console.log("Sound data before assigning to object")
-                            // console.log(entry)
-                            obj = { Category: `${collection.title}(${k})`, 
+
+                            obj = { Category: `${collection.title}(${j})`, 
                                     Date: map.date, 
-                                    Time: entry.time, 
+                                    Time: getDigitalTime(entry.time), 
                                     Point: k, 
                                     'Average (dB)': entry.average,
-                                    'Sound Types/Sources': entry.sound_type
+                                    'Sound Types/Sources': [entry.sound_type]
                             }
-                            // console.log('sound objects: ')
-                            // console.log(obj)
+
 
 
                             sound.push(obj)
@@ -208,11 +170,7 @@ function soundToXLSX(data){
                 }
             }
         }
-        // console.log("sound writes: ")
-        // console.log(JSON.stringify(sound))
-
-
-    return sound
+        return sound
     }
     catch(error){
         console.log("sound fails " + error)
@@ -236,9 +194,9 @@ function natureToXLSX(data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
 
-                            obj = { Category: `${collection.title}(${k})`, 
+                            obj = { Category: `${collection.title}(${j})`, 
                                     Date: map.date, 
-                                    Time: entry.time, 
+                                    Time: getDigitalTime(entry.time), 
                                     Point: k,
                                     'Weather (temp/sky)': entry.weather.temperature, 
                                     'Kind/Area (ft/sq.ft)': '',
@@ -252,33 +210,26 @@ function natureToXLSX(data){
 
                             for (var l = 0; l < entry.animal.length; l++){
                                 var animal = entry.animal[l]
-                                // console.log("NATURE")
-                                // console.log("animal data before assigning to object:")
-                                // console.log(animal)
 
-                                obj = { Category: `${collection.title}(${k})`, 
+                                obj = { Category: `${collection.title}(${j})`, 
                                         Date: map.date, 
-                                        Time: entry.time, 
-                                        Point: l,
+                                        Time: getDigitalTime(entry.time), 
+                                        Point: `${k} a(${l})`,
                                         'Weather (temp/sky)': '', 
                                         'Kind/Area (ft/sq.ft)': animal.kind,
                                         Description: animal.description 
                                 }
-                                // console.log('nature animal objects: ')
-                                // console.log(obj)
 
 
                                 nature.push(obj)
                             }
                             for (var m = 0; m < entry.water.length; m++){
                                 var water = entry.water[m]
-                                // console.log("NATURE")
-                                // console.log("water data before assigning to object:")
-                                // console.log(water)
-                                obj = { Category: `${collection.title}(${k})`, 
+
+                                obj = { Category: `${collection.title}(${j})`, 
                                         Date: map.date, 
-                                        Time: entry.time, 
-                                        Point: m,
+                                        Time: getDigitalTime(entry.time), 
+                                        Point: `${k} w(${m})`,
                                         'Weather (temp/sky)': '', 
                                         'Kind/Area (ft/sq.ft)': water.area,
                                         Description: water.description 
@@ -294,8 +245,6 @@ function natureToXLSX(data){
                 }
             }
         }
-        // console.log("nature writes: " )
-        // console.log(JSON.stringify(nature))
 
         return nature
     }
@@ -326,14 +275,14 @@ function lightToXLSX(data){
                                 for (var l = 0; l < entry.points.length; l++){
                                     var points = entry.points[l]
 
-                                    obj = { Category: `${collection.title}(${k})`, 
+                                    obj = { Category: `${collection.title}(${j})`, 
                                             Date: map.date, 
-                                            Time: entry.time, 
+                                            Time: getDigitalTime(entry.time), 
                                             Point: l, 
                                             Description: points.light_description
                                 }
-                                // console.log('light objects: ' )
-                                // console.log(obj)
+                                console.log('light objects: ' )
+                                console.log(obj.Time)
 
 
                                 light.push(obj)
@@ -343,8 +292,6 @@ function lightToXLSX(data){
                 }
             }
         }
-        // console.log("light writes: ")
-        // console.log(JSON.stringify(light))
 
         return light
     }
@@ -370,18 +317,15 @@ function boundToXLSX(data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
 
-                            obj = { Category: `${collection.title}(${k})`, 
+                            obj = { Category: `${collection.title}(${j})`, 
                                     Date: map.date, 
-                                    Time: entry.time, 
+                                    Time: getDigitalTime(entry.time), 
                                     Point: k, 
                                     Kind: entry.kind, 
                                     Description: entry.description, 
-                                    Purpose: entry.purpose, 
+                                    Purpose: [entry.purpose], 
                                     'Value (ft/sq.ft)': entry.value
                             }
-                            // console.log('bound objects: ' )
-                            // console.log(obj)
-
 
                             boundaries.push(obj)
                         }
@@ -389,8 +333,6 @@ function boundToXLSX(data){
                 }
             }
         }
-        // console.log("boundaries writes: ")
-        // console.log(JSON.stringify(boundaries))
 
         return boundaries
     }catch(error){
@@ -417,11 +359,11 @@ function orderToXLSX(data){
 
                             for (var l = 0; l < entry.points.length; l++){
                                 var points = entry.points[l]
-                                obj = { Category: `${collection.title}(${k})`, 
+                                obj = { Category: `${collection.title}(${j})`, 
                                         Date: map.date, 
-                                        Time: entry.time, 
+                                        Time: getDigitalTime(entry.time), 
                                         Point: l, 
-                                        Description: points.description
+                                        Description: [points.description]
                                 }
                                 // console.log('order objects: ' )
                                 // console.log(obj)
@@ -434,14 +376,27 @@ function orderToXLSX(data){
                 }
             }
         }
-        // console.log("order writes: " )
-        // console.log(JSON.stringify(order))
 
-
-    return order
+        return order
     }catch(error){
     console.log("order fails " + error)
     }
+}
+
+function getDigitalTime(time){
+    
+    var midday = 'AM'
+    var min = time.getMinutes()
+    var hour = time.getHours()
+    var sec = time.getSeconds()
+
+    if (min > 12){
+      min = min - 12
+      midday = 'PM'
+    }
+    var timeString = [hour, min, sec].join(':')
+    timeString = timeString + '' + midday
+    return timeString
 }
 
 module.exports = {projectExport}
