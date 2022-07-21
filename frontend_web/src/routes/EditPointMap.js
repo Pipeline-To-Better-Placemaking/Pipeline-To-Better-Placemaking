@@ -21,7 +21,7 @@ export default function EditPointMap(){
         console.log(updatedPoint);
 
         try {
-            const response = axios.put(`/${loc.pathname.split('/')[5]}/standing_points/${conv._id}`, JSON.stringify(updatedPoint), {
+            const response = axios.put(`/projects/${loc.pathname.split('/')[5]}/standing_points/${conv._id}`, JSON.stringify(updatedPoint), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',

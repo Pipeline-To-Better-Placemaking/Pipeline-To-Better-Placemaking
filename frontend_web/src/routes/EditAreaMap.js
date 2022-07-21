@@ -27,7 +27,7 @@ export default function EditAreaMap() {
         console.log(updatedArea);
 
         try {
-            const response = await axios.put(`/${loc.pathname.split('/')[5]}/areas/${area._id}`, JSON.stringify(updatedArea), {
+            const response = await axios.put(`/projects/${loc.pathname.split('/')[5]}/areas/${area._id}`, JSON.stringify(updatedArea), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',

@@ -2,21 +2,22 @@ import * as React from 'react';
 import axios from '../api/axios.js';
 import Button from '@mui/material/Button';
 import DisplayCards from '../components/DisplayCards';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import './routes.css';
 
 function Projects(props){
     const teamAndUser = useLocation();
+    const nav = useNavigate();
     const teamId = teamAndUser.pathname.split('/')[3];
     const [teamInfo, setTeamInfo] = React.useState();
-    const [selected, setSelected] = React.useState();
+    var selected = '';
     const user = teamAndUser.state ? teamAndUser.state.userToken : {};
 
     const openConfirmation = (title, id) => (e) => {
         const popup = document.getElementById('deleteWindow');
         const inner = document.getElementById('popUpText');
-        setSelected(id);
+        selected = id;
         // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
         inner.innerHTML = '';
         inner.innerHTML = `<h6>Are you sure you would like to delete '${title}' project?<br/> This cannot be undone.</h6>`
@@ -38,6 +39,7 @@ function Projects(props){
 
             //on success  
             closeWindow(e);
+            nav(`../teams/${teamId}`, { replace: true, state: { team: teamAndUser.state.team, userToken: user } });
         } catch (error) {
             console.log('ERROR: ', error);
             return;
@@ -51,7 +53,7 @@ function Projects(props){
         const inner = document.getElementById('popUpText');
         popup.style.display = 'none';
         inner.innerHTML = '';
-        setSelected();
+        selected = '';
     }
 
     const teamPull = async () => {
