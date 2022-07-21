@@ -41,22 +41,20 @@ function DisplayCards(props) {
     );
 
     //For Better Placemaking projects listed on home page (url)/home
-    const projectCards = (projects) => (
-        projects.map((project)=>(
-            <Card className='displayCard'>
-                <CardContent>
-                    <Typography variant='h5' component='div'>
-                        { project.title }
-                    </Typography>
-                    { project.description }
-                </CardContent>
-                <CardActions>
-                <Button component={Link} to={`projects/${project._id}`} state={{ project: project.title, team: props.team, userToken: props.user }}>View</Button>
-                <Button component={Link} to={`edit/${project._id}`} state={{ project: project.title, team: props.team, userToken: props.user }}>Edit</Button>
-                <Button onClick={props.open(project.title, project._id)}><DeleteIcon /></Button>
-                </CardActions>
-            </Card>
-        ))
+    const projectCards = (project) => (
+        <Card className='displayCard'>
+            <CardContent>
+                <Typography variant='h5' component='div'>
+                    { project.title }
+                </Typography>
+                { project.description }
+            </CardContent>
+            <CardActions>
+            <Button component={Link} to={`projects/${project._id}`} state={{ project: project.title, team: props.team, userToken: props.user }}>View</Button>
+            <Button component={Link} to={`edit/${project._id}`} state={{ project: project.title, team: props.team, userToken: props.user }}>Edit</Button>
+            <Button onClick={props.open(project.title, project._id)}><DeleteIcon /></Button>
+            </CardActions>
+        </Card>
     );
 
     const teamCards = (teams) => (
@@ -75,9 +73,19 @@ function DisplayCards(props) {
     );
 
     return(
-        <div id='cardFlexBox'>
-            { props.type === 0 ? surveyorCards(props.surveyors) : (props.type === 1 ? projectCards(props.projects) : teamCards(props.teams))}
-        </div>
+            props.type === 0 ? 
+                <div id='cardFlexBox'>
+                    {surveyorCards(props.surveyors)}
+                </div> 
+            : 
+            (props.type === 1 ? 
+                projectCards(props.project) 
+            : 
+                <div id='cardFlexBox'>
+                    {teamCards(props.teams)}
+                </div>
+            )
+        
     );
 
 }
