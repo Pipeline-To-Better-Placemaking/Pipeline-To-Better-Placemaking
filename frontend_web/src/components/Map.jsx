@@ -34,7 +34,7 @@ export default function FullMap(props) {
     const [bounds, setBounds] = React.useState();
     const [click, setClick] = React.useState(props.type === 0 || props.type === 2 || props.type === 7 ? props.center : null);
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
-    const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 ? props.area : null);
+    const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 || props.type === 2 ? props.area : null);
     const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [] :(props.type === 6 ? props.area : [])));
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreas : [];

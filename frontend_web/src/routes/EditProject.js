@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Map from '../components/Map';
 import axios from '../api/axios.js';
 
@@ -14,6 +14,7 @@ function EditProject() {
     const [loaded, setLoaded] = React.useState(false);
     //const center = { lat: 28.602846550128262, lng: -81.20006526689143 };
     const loc = useLocation();
+    const nav = useNavigate();
     const segment = loc.pathname.split('/');
     //console.log(segment[3]);
 
@@ -49,6 +50,25 @@ function EditProject() {
     //update submission (title) function (delete ?), redirect to TeamHome (project listings)
     const updateProject = (e) => {
         e.preventDefault();
+    }
+
+    const deleteProject = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.delete(`/projects/${projectInfo._id}`, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                withCredentials: true
+            });
+            
+            nav('../', { replace: true, state: { team: loc.state.team, userToken: loc.state.userToken } });
+        } catch (error) {
+            console.log('ERROR: ', error);
+            return;
+        }
     }
 
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
@@ -108,6 +128,15 @@ function EditProject() {
                                 Update
                             </Button>
                             <br/>
+                            <Button
+                                className='scheme'
+                                type='submit'
+                                size='lg'
+                                id='deleteButton'
+                                onClick={deleteProject}
+                            >
+                                Delete
+                            </Button>
                             <Button component={Link} state={{ team: loc.state && loc.state.team ? loc.state.team : '', userToken: loc.state && loc.state.userToken ? loc.state.userToken : '' }} type='submit' size='lg' to={`/home/teams/${segment[3]}`}>
                                 Cancel
                             </Button>

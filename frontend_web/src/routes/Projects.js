@@ -24,12 +24,23 @@ function Projects(props){
     }
 
     //Called from pop up window below
-    const deleteProject = (id) => (e) => {
+    const deleteProject = async (e) => {
         e.preventDefault();
-        console.log('delete');
+        try {
+            const response =  await axios.delete(`/projects/${selected}`, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${user.token}`
+                },
+                withCredentials: true
+            });
 
-        //on success  
-        closeWindow(e);
+            //on success  
+            closeWindow(e);
+        } catch (error) {
+            console.log('ERROR: ', error);
+            return;
+        }
     }
 
     const closeWindow = (e) => {
@@ -41,7 +52,6 @@ function Projects(props){
         inner.innerHTML = '';
         setSelected();
     }
-    //const temp = [{title: 'Lake', description: 'test', _id: 'Dnui438q94qh73f8h7f43q'}]
 
     const teamPull = async () => {
         
@@ -99,7 +109,7 @@ function Projects(props){
             <div id='deleteWindow' style={{ display: 'none', position: 'fixed', justifyContent: 'center', alignItems: 'center' }}>
                 <div id='popUpBlock'>
                     <div id='popUpText'></div>
-                    <Button id='deleteButton' onClick={deleteProject(selected)}>Confirm</Button>
+                    <Button id='deleteButton' onClick={deleteProject}>Confirm</Button>
                     <Button id='cancelButton' onClick={closeWindow}>Cancel</Button>
                 </div>
             </div>
