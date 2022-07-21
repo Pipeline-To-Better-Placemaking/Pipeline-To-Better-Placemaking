@@ -6,7 +6,6 @@ export default function FAQ(){
     return(
         <div id='faqPage'>
             <h1>FAQ <QuizIcon/></h1>
-
         </div>
     );
 }

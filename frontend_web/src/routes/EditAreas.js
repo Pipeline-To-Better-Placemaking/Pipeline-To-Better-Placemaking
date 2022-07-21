@@ -45,7 +45,7 @@ export default function EditAreas(){
     const deleteArea = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`/projects/${loc.pathname.split('/')[5]}/areas/${currId}`, {
+            const response = await axios.delete(`/projects/${loc.pathname.split('/')[5]}/areas/${currId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
