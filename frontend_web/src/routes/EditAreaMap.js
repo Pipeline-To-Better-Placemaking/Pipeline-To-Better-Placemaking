@@ -1,22 +1,47 @@
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
+import axios from '../api/axios';
 import Map from '../components/Map';
 
 export default function EditAreaMap() {
     const loc = useLocation();
-    var temp = [];
+    const nav = useNavigate();
     const area = loc?.state?.area ? loc.state.area : {}
     const [name, setName] = React.useState(area.title);
+    var temp = [];
+    var updatedPoints = [];
+    var updatedArea = {};
 
     area.points.forEach((point, index)=>(
-        temp.push({'_id': point._id, lat: point.latitude, lng: point.longitude})
+        temp.push({ lat: point.latitude, lng: point.longitude})
     ))
 
-    const updateArea = (area) => (e) => {
+    const updateArea = (newarea) => async (e) => {
         e.preventDefault();
-        //area id = area._id
-        //new name = name
+        newarea.forEach((point, index) => (
+            updatedPoints.push({ latitude: point.lat, longitude: point.lng })
+        ))
+
+        updatedArea = {title: name, points: updatedPoints}
+        console.log(updatedArea);
+
+        try {
+            const response = await axios.put(`/${loc.pathname.split('/')[5]}/areas/${area._id}`, JSON.stringify(updatedArea), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                withCredentials: true
+            });
+
+            nav(`../edit/${loc.pathname.split('/')[5]}`, { replace: true, state: { project: loc.state.project, team: loc.state.team, userToken: loc.state.userToken } })
+
+        } catch (error) {
+            console.log('ERROR: ', error);
+            return;
+        }
     }
 
     // Return area point values need to be reconverted to objects with latitude longitude keys 

@@ -16,7 +16,6 @@ function EditProject() {
     const loc = useLocation();
     const nav = useNavigate();
     const segment = loc.pathname.split('/');
-    //console.log(segment[3]);
 
     const [projectName, setProjectName] = React.useState('');
 

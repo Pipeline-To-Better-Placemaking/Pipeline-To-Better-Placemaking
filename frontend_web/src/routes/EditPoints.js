@@ -12,7 +12,7 @@ export default function EditPoints(){
             <Card key={index} className='pointCards'>
                 <Card.Body>
                     <h4>{value.title}</h4>
-                    <Button component={Link} to='point_map' state={{ ...loc?.state, point: value }}>Edit</Button>
+                    <Button component={Link} to='point_map' state={{ ...loc?.state, point: value}}>Edit</Button>
                     <Button onClick={deletePoint}>Delete</Button>
                 </Card.Body>
             </Card>
@@ -41,6 +41,7 @@ export default function EditPoints(){
                 <Card.Body id='pointCardContent'>
                     <Button id='addNewPoint' component={Link} to='point_map' state={loc.state}>New Standing Point</Button>
                     {pointCards(standingPoints)}
+                    <Button component={Link} to={`../edit/${loc.pathname.split('/')[5]}`} state={{project: loc.state.project, team: loc.state.team, userToken: loc.state.useToken}}>Cancel</Button>
                 </Card.Body>
             </Card>
         </div>

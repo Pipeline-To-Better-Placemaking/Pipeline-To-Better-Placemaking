@@ -20,10 +20,6 @@ export default function EditAreas(){
         ))
     );
 
-    const editProjectAreas = (id) => (e) => {
-        e.preventDefault();
-    }
-
     const deleteArea = (id) => (e) => {
         e.preventDefault();
     }
@@ -40,7 +36,7 @@ export default function EditAreas(){
                 <Card.Body id='areaCardContent'>
                     <Button id='addNewArea'component={Link} to='area_map' state={loc?.state}>New Area</Button>
                     {areaCards(areas)}
-                    <Button component={Link} to=''>Cancel</Button>
+                    <Button component={Link} to={`../edit/${loc.pathname.split('/')[5]}`} state={{ project: loc.state.project, team: loc.state.team, userToken: loc.state.useToken }}>Cancel</Button>
                 </Card.Body>
             </Card>
         </div>

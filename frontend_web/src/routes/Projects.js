@@ -26,6 +26,7 @@ function Projects(props){
     //Called from pop up window below
     const deleteProject = async (e) => {
         e.preventDefault();
+        console.log(selected);
         try {
             const response =  await axios.delete(`/projects/${selected}`, {
                 headers: {
@@ -77,7 +78,7 @@ function Projects(props){
     React.useEffect(() => {
         teamPull();
     },[]);
-    console.log(teamInfo);
+    //console.log(teamInfo);
 
     return(
         <div id='teamHome'>

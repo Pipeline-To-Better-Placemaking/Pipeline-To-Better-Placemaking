@@ -401,7 +401,7 @@ export default function FullMap(props) {
             { props.type === 4 || props.type === 6 ?
                 (props.type === 4 ?
                     <div id='newAreaBlock'>
-                        <div style={{textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '5px', borderRadius: '5px', width: '30vw'}}> Click on the map to set points for the project perimeter<div style={{fontSize: 'small'}}> *3 points minimum</div> When the perimeter is done click 'Set Bounds' </div>
+                        <div style={{ textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '5px', borderRadius: '5px', width: '30vw', border: '2px solid black' }}> Click on the map to set points for the project perimeter<div style={{fontSize: 'small'}}> *3 points minimum</div> When the perimeter is done click 'Set Bounds' </div>
                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                             {clicks.length < 3 ? null : <Button
                                 id='newAreaButton'
@@ -420,6 +420,7 @@ export default function FullMap(props) {
                         <Button
                             id='newAreaButton'
                             className='newHoveringButtons confirm'
+                            onClick={props.update(clicks)}
                         >
                             Update Bounds
                         </Button>
@@ -440,6 +441,7 @@ export default function FullMap(props) {
                     <Button
                         id='newPointButton'
                         className='newHoveringButtons confirm'
+                        onClick={props.update(center)}
                     >
                         Update Point
                     </Button>
@@ -453,7 +455,7 @@ export default function FullMap(props) {
             }
             { props.type === 3 ? 
                 <div id='newProjPoints' className='newPointBlock' >
-                    <div style={{ textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '5px', borderRadius: '5px', width: '30vw' }}> Click on the map to set additional standing points for recording certain activity results <div style={{ fontSize: 'small'}}> *The location specified earlier is the center and a default standing point</div></div>
+                    <div style={{ textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '5px', borderRadius: '5px', width: '30vw', border: '2px solid black' }}> Click on the map to set additional standing points for recording certain activity results <div style={{ fontSize: 'small'}}> *The location specified earlier is the center and a default standing point</div></div>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                         <Button
                             id='newPointsButton'
