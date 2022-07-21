@@ -100,12 +100,17 @@ function stationToXLSX(data){
                         }
                         console.log('stationary objects: ' + obj)
                         stationary.push(obj)
+                        console.log(JSON.stringify(obj))
+
                         }
                     }
                 }
             }
         }
-        console.log("stationary writes: " + stationary)
+        console.log("stationary writes: ")
+        console.log(stationary)
+        console.log(JSON.stringify(stationary))
+
         return stationary
     }catch(error){
         console.log("stationary fails " + error)
@@ -136,14 +141,20 @@ function movingToXLSX(data){
                                     Point: k, 
                                     Mode: entry.mode
                         }
-                        console.log('moving objects: ' + obj)
+                        console.log('moving objects: ')
+                        console.log(obj)
+                        console.log(JSON.stringify(obj))
+
                         moving.push(obj)
                         }
                     }
                 }
             }
         }
-        console.log("moving writes: " + moving)
+        console.log("moving writes: " )
+        console.log(moving)
+        console.log(JSON.stringify(moving))
+
         return moving
     }catch(error){
         console.log("moving fails " + error)
@@ -176,14 +187,22 @@ function soundToXLSX(data){
                                     'Average (dB)': entry.average,
                                     'Sound Types/Sources': entry.sound_type
                             }
-                            console.log('sound objects: ' + obj)
+                            console.log('sound objects: ')
+                            console.log(obj)
+                            console.log("Stringified")
+                            console.log(JSON.stringify(obj))
+
                             sound.push(obj)
                         }
                     }
                 }
             }
         }
-        console.log("sound writes: " + sound)
+        console.log("sound writes: ")
+        console.log(sound)
+        console.log("Stringified")
+        console.log(JSON.stringify(sound))
+
 
     return sound
     }
@@ -219,7 +238,11 @@ function natureToXLSX(data){
                                     'Kind/Area (ft/sq.ft)': '',
                                     Description: ''
                             }
-                            console.log('nature weather objects: ' + obj)
+                            console.log('nature weather objects: ')
+                            console.log(obj)
+                            console.log("Stringified")
+                            console.log(JSON.stringify(obj))
+
                             nature.push(obj)
 
                             for (var l = 0; l < entry.animal.length; l++){
@@ -236,7 +259,11 @@ function natureToXLSX(data){
                                         'Kind/Area (ft/sq.ft)': animal.kind,
                                         Description: animal.description 
                                 }
-                                console.log('nature animal objects: ' + obj)
+                                console.log('nature animal objects: ')
+                                console.log(obj)
+                                console.log("Stringified")
+                                console.log(JSON.stringify(obj))
+
                                 nature.push(obj)
                             }
                             for (var m = 0; m < entry.water.length; m++){
@@ -253,7 +280,11 @@ function natureToXLSX(data){
                                         Description: water.description 
                                         
                                 }
-                                console.log('nature water objects: ' + obj)
+                                console.log('nature water objects: ')
+                                console.log(obj)
+                                console.log("Stringified")
+                                console.log(JSON.stringify(obj))
+
                                 nature.push(obj)
                             }
                         }
@@ -261,7 +292,11 @@ function natureToXLSX(data){
                 }
             }
         }
-        console.log("nature writes: " + nature)
+        console.log("nature writes: " )
+        console.log(nature)
+        console.log("Stringified")
+        console.log(JSON.stringify(nature))
+
         return nature
     }
     catch(error){
@@ -302,7 +337,11 @@ function lightToXLSX(data){
                                             Point: l, 
                                             Description: points.light_description
                                 }
-                                console.log('light objects: ' + obj)
+                                console.log('light objects: ' )
+                                console.log(obj)
+                                console.log("Stringified")
+                                console.log(JSON.stringify(obj))
+
                                 light.push(obj)
                             }
                         }
@@ -310,7 +349,10 @@ function lightToXLSX(data){
                 }
             }
         }
-        console.log("light writes: " + light)
+        console.log("light writes: ")
+        console.log(light)
+        console.log("Stringified")
+        console.log(JSON.stringify(light))
 
         return light
     }
@@ -347,14 +389,22 @@ function boundToXLSX(data){
                                     Purpose: entry.purpose, 
                                     'Value (ft/sq.ft)': entry.value
                             }
-                            console.log('bound objects: ' + obj)
+                            console.log('bound objects: ' )
+                            console.log(obj)
+                            console.log("Stringified")
+                            console.log(JSON.stringify(obj))
+
                             boundaries.push(obj)
                         }
                     }
                 }
             }
         }
-        console.log("boundaries writes: " + boundaries)
+        console.log("boundaries writes: ")
+        console.log(boundaries)
+        console.log("Stringified")
+        console.log(JSON.stringify(boundaries))
+
         return boundaries
     }catch(error){
     console.log("boundaries fails " + error)
@@ -388,7 +438,11 @@ function orderToXLSX(data){
                                         Point: l, 
                                         Description: points.description
                                 }
-                                console.log('order objects: ' + obj)
+                                console.log('order objects: ' )
+                                console.log(obj)
+                                console.log("Stringified")
+                                console.log(JSON.stringify(obj))
+
                                 order.push(obj)
                             }
                         }
@@ -396,7 +450,11 @@ function orderToXLSX(data){
                 }
             }
         }
-        console.log("order writes: " + order)
+        console.log("order writes: " )
+        console.log(order)
+        console.log("Stringified")
+        console.log(JSON.stringify(order))
+
 
     return order
     }catch(error){
