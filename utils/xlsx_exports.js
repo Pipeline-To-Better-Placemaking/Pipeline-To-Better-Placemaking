@@ -4,6 +4,13 @@ const XLSX = require('xlsx')
 projectExport = function(stationaryData, movingData, soundData, natureData, lightData, orderData,
                         boundariesData){
 
+    var stationary = []
+    var moving = []
+    var order = []
+    var boundaries = []
+    var lighting = []
+    var nature = []
+    var sound = []
     var workbook = XLSX.utils.book_new();
 
     // if(stationaryData.length){
