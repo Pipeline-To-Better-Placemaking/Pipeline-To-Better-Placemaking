@@ -1,62 +1,62 @@
 const XLSX = require('xlsx')
 
 
-projectExport= function(stationaryData, movingData, soundData, natureData, lightData, orderData,
+projectExport = function(stationaryData, movingData, soundData, natureData, lightData, orderData,
                         boundariesData){
 
     var workbook = XLSX.utils.book_new();
 
-    if(stationaryData.length){
+    // if(stationaryData.length){
         console.log(stationaryData.length)
         stationary = stationToXLSX(stationaryData)
         var worksheetstat = XLSX.utils.json_to_sheet(stationary);
         console.log("stationary writes")
         XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
-    }
-    if(movingData.length){
+    // }
+    // if(movingData.length){
         console.log(movingData.length)
         moving = movingToXLSX(movingData)
         console.log("moving writes")
         var worksheetmov = XLSX.utils.json_to_sheet(moving);
         XLSX.utils.book_append_sheet(workbook, worksheetmov, 'PeopleInMotion');
-    }
-    if(soundData.length){
+    // }
+    // if(soundData.length){
         console.log(soundData.length)
         sound = soundToXLSX(soundData)
         console.log("sound writes")
         var worksheetsound = XLSX.utils.json_to_sheet(sound);
         XLSX.utils.book_append_sheet(workbook, worksheetsound, 'AcousticalProfile');
 
-    }
-    if(natureData.length){
+    // }
+    // if(natureData.length){
         console.log(natureData.length)
         nature = natureToXLSX(natureData)
         console.log("nature writes")
         var worksheetnat = XLSX.utils.json_to_sheet(nature);
         XLSX.utils.book_append_sheet(workbook, worksheetnat, 'NaturePrevalence');
-    }
-    if(lightData.length){
+    // }
+    // if(lightData.length){
         console.log(lightData.length)
         lighting = lightToXLSX(lightData)
         console.log("light writes")
         var worksheetlight = XLSX.utils.json_to_sheet(lighting);
         XLSX.utils.book_append_sheet(workbook, worksheetlight, 'LightingProfile');
-    }
-    if(orderData.length){
+    // }
+    // if(orderData.length){
         console.log(orderData.length)
         order = orderToXLSX(orderData)
         console.log("order writes")
         var worksheetord = XLSX.utils.json_to_sheet(order);
         XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
 
-    }
-    if(boundariesData.length){
+    // }
+    // if(boundariesData.length){
         console.log(boundariesData.length)
         boundaries = boundToXLSX(boundariesData)
         console.log("boundaries writes")
         var worksheetbounds = XLSX.utils.json_to_sheet(boundaries);
         XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
-    }
+    // }
 
     // Excel Format
     return XLSX.write(workbook, 'PlaceProject.xlsx');
