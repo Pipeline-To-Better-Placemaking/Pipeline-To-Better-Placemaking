@@ -75,6 +75,7 @@ function stationToXLSX(data){
     try{
 
         var stationary = []
+        var obj = {}
 
         for(var i = 0; i < data.stationaryCollections.length; i++){
             var collection = data.stationaryCollections[i]
@@ -115,6 +116,7 @@ function movingToXLSX(data){
 
     try{
         var moving = []
+        var obj = {}
 
         for(var i = 0; i < data.movingCollections.length; i++){
             var collection = data.movingCollections[i]
@@ -152,6 +154,8 @@ function soundToXLSX(data){
 
     try{
         var sound = []
+        var obj = {}
+
 
         for(var i = 0; i < data.soundCollections.length; i++){
             var collection = data.soundCollections[i]
@@ -192,6 +196,7 @@ function natureToXLSX(data){
 
     try{
         var nature = []
+        var obj = {}
 
         for(var i = 0; i < data.natureCollections.length; i++){
             var collection = data.natureCollections[i]
@@ -270,6 +275,7 @@ function lightToXLSX(data){
 
     try{
         var light = []
+        var obj = {}
 
         for(var i = 0; i < data.lightCollections.length; i++){
             var collection = data.lightCollections[i]
@@ -317,6 +323,7 @@ function boundToXLSX(data){
 
     try{
         var boundaries = []
+        var obj = {}
 
         for(var i = 0; i < data.boundariesCollections.length; i++){
             var collection = data.boundariesCollections[i]
@@ -358,6 +365,7 @@ function orderToXLSX(data){
 
     try{
         var order = []
+        var obj = {}
 
         for(var i = 0; i < data.orderCollections.length; i++){
             var collection = data.orderCollections[i]
