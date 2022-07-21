@@ -3,6 +3,7 @@ import Map from '../components/Map';
 import { useLocation } from 'react-router-dom';
 
 function NewProjectPoints() {
+    
     const loc = useLocation();
     //recieves location data from New Project Area
 

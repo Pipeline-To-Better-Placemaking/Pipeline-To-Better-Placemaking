@@ -152,7 +152,12 @@ div#deleteWindow button#deleteButton, div#deleteWindow button#cancelButton{
     z-index: 999;
 }
 
-#newAreaBlock, div.newPointBlock{
+#newAreaBlock, #newProjPoints {
+    flex-direction: column;
+    left: calc(50vw - 15vw);
+}
+
+div.newPointBlock{
     left: calc(50vw - 97px);
 }
 

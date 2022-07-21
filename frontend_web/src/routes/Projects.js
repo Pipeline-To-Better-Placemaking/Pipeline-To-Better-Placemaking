@@ -67,7 +67,6 @@ function Projects(props){
     React.useEffect(() => {
         teamPull();
     },[]);
-
     //console.log(teamInfo);
 
     return(

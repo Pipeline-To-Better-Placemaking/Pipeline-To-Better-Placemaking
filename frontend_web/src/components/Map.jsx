@@ -401,16 +401,19 @@ export default function FullMap(props) {
             { props.type === 4 || props.type === 6 ?
                 (props.type === 4 ?
                     <div id='newAreaBlock'>
-                        <Button
-                            id='newAreaButton'
-                            className='newHoveringButtons confirm'
-                            component={ Link }
-                            to='points'
-                            state={({...loc.state, center: center, title: title, area: clicks, zoom: zoom })}
-                        >
-                            Set Bounds
-                        </Button> 
-                        <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                        <div style={{textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '5px', borderRadius: '5px', width: '30vw'}}> Click on the map to set points for the project perimeter<div style={{fontSize: 'small'}}> *3 points minimum</div> When the perimeter is done click 'Set Bounds' </div>
+                        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                            {clicks.length < 3 ? null : <Button
+                                id='newAreaButton'
+                                className='newHoveringButtons confirm'
+                                component={ Link }
+                                to='points'
+                                state={({...loc.state, center: center, title: title, area: clicks, zoom: zoom })}
+                            >
+                                Set Bounds
+                            </Button> }
+                            <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                        </div>
                     </div>
                     :
                     <div id='editAreaBlock'>
@@ -449,23 +452,26 @@ export default function FullMap(props) {
                 : null
             }
             { props.type === 3 ? 
-                <div className='newPointBlock' >
-                    <Button
-                        id='newPointsButton'
-                        className='newHoveringButtons confirm'
-                        component={ Link }
-                        to={`/home/teams/${loc.pathname.split('/')[3]}/new/area/points/form`}
-                        state={{...loc.state,
-                            center: center, 
-                            title: title, 
-                            area: areaData, 
-                            points: clicks, 
-                            zoom: zoom
-                        }}
-                    >
-                        Set Points
-                    </Button> 
-                    <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                <div id='newProjPoints' className='newPointBlock' >
+                    <div style={{ textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '5px', borderRadius: '5px', width: '30vw' }}> Click on the map to set additional standing points for recording certain activity results <div style={{ fontSize: 'small'}}> *The location specified earlier is the center and a default standing point</div></div>
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                        <Button
+                            id='newPointsButton'
+                            className='newHoveringButtons confirm'
+                            component={ Link }
+                            to={`/home/teams/${loc.pathname.split('/')[3]}/new/area/points/form`}
+                            state={{...loc.state,
+                                center: center, 
+                                title: title, 
+                                area: areaData, 
+                                points: clicks, 
+                                zoom: zoom
+                            }}
+                        >
+                            Set Points
+                        </Button> 
+                        <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                    </div>
                 </div>
                 : null
             }
@@ -813,7 +819,7 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
                 component={ Link } to='area' 
                 state={({ ...options.state,
                     center: options.center, 
-                    title: ( options.on && placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : document.getElementById('locationSearch')?.value),
+                    title: ( options.on && placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : ref?.current?.value),
                     zoom: options.zoom
                 })}
             >

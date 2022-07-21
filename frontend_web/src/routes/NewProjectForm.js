@@ -3,15 +3,17 @@ import Card from 'react-bootstrap/Card';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Map from '../components/Map';
 import axios from '../api/axios.js';
 
 function ProjectForm() {
     //Form for creating a NEW Project
     const loc = useLocation();
+    let nav = useNavigate();
     const [message, setMessage] = React.useState('');
     const response = React.useRef(null);
+
     //receives location data from New Project Points, add center to point array
     const pointTitles = [];
     pointTitles.push({ ...loc.state.center, title: 'Center'})
@@ -24,7 +26,7 @@ function ProjectForm() {
     const [values, setValues] = React.useState({
         center: (loc && loc.state ? loc.state.center : {}),
         title: (loc && loc.state ? loc.state.title : ''),
-        area: (loc && loc.state ? {title: 'Project Perimeter', points: loc.state.area}: []),
+        area: (loc && loc.state ? loc.state.area: []),
         points: (loc && loc.state ? pointTitles : []),
         zoom: (loc && loc.state ? loc.state.zoom : []),
         description: ''
@@ -47,7 +49,7 @@ function ProjectForm() {
             response.current.style.display = 'inline-block';
             return;
         } 
-        // Clear any messages and Move points to obj with latitude and longitude
+        // Clear any messages and Move points to objects with latitude and longitude
         response.current.style.display = 'none';
         var temp = [];
         // Cant change values.points from .lat and lng because state and google maps js
@@ -65,17 +67,21 @@ function ProjectForm() {
             const response = await axios.post('/projects', JSON.stringify({ 
                 title: values.title,
                 description: values.description,
-                area: values._id,
-                subareas: [values._id],
+                points: values.area,
                 //DB points also contains center point and all points above
                 standingPoints: dBPoints,
-                team: values.team
+                team: loc.pathname.split('/')[3]
             }), {
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
                 withCredentials: true
             });
 
             let project = response.data;
+            nav('../', { replace: true, state: { team: loc.state.team, userToken: loc.state.userToken } });
 
         } catch (error) {
 
@@ -108,14 +114,7 @@ function ProjectForm() {
                             multiline={true}
                             value={values.description}
                             maxRows={2}
-                            onChange={e => setValues({ ...values, description: e.target.value })}/>
-                        <TextField 
-                            className='nonFCInput'
-                            id='outlined-input'
-                            label='Area Title'
-                            type='text'
-                            value={values.area.title}
-                            onChange={ e => setValues({...values, area: {...values.area, title: e.target.value}})}
+                            onChange={e => setValues({ ...values, description: e.target.value })}
                         />
                         { values.points.map((obj, index)=>(
                             <TextField
@@ -128,7 +127,7 @@ function ProjectForm() {
                                 onChange={handleChange(index)}
                             />
                         ))}
-                        <Map center={values.center} area={values.area.points} points={values.points} zoom={values.zoom} type={5} />
+                        <Map center={values.center} area={values.area} points={values.points} zoom={values.zoom} type={5} />
                         <Button
                             className='scheme'
                             type='submit'

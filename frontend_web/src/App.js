@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 
 import AppNavBar from './components/AppNavBar';
 import Home from './routes/Home';
@@ -25,13 +25,12 @@ import FAQ from './routes/FAQ';
 
 function App() {
     // !! token/storage of choice, verification of choice
-    const [token, setToken] = React.useState({});
+    const [token, setToken] = React.useState();
 
     // true == active user (logged in)
     // check token in place with more persistant storage
-    const [state, setState] = React.useState(/*token !== null && token !== '' ? true : */false);
+    const [state, setState] = React.useState(token && token !== {} ? true : false);
     
-
     // Set user vars to access the user home page
     function handleOnLogin(active, token) {
         // Will be used to block users from user pages unless logged in
@@ -41,16 +40,9 @@ function App() {
 
     // clear all fields on logout
     function handleOnLogout(active) {
-        // setUser({});
-        // setEmail('');
-        // setPassword('');
-        // localStorage.clear();
         setState(active);
+        setToken();
     }
-
-    /*if (!token) {
-        return <Title onLogin={handleOnLogin} />
-    }*/
 
     function TeamPages(){
         // User Pages
@@ -87,13 +79,17 @@ function App() {
         return (
             <div id='userRoutes'>
                 <AppNavBar passLogout={ passLogout } passToken={ token } />
-                <Routes>
-                    <Route index element={ <Home /> }/>
-                    <Route path='teams/:id/*' element={ <TeamPages /> } />
-                    <Route path='settings' element={ <SettingsPage /> } />
-                    <Route path='new' element={ <NewTeamForm /> } />
-                    <Route path='edit/:id' element={ <EditTeam /> } />
-                </Routes>
+                { state ? 
+                    <Routes>
+                        <Route index element={ <Home /> }/>
+                        <Route path='teams/:id/*' element={ <TeamPages /> } />
+                        <Route path='settings' element={ <SettingsPage /> } />
+                        <Route path='new' element={ <NewTeamForm /> } />
+                        <Route path='edit/:id' element={ <EditTeam /> } />
+                    </Routes> 
+                : 
+                    <Navigate to="/" replace /> 
+                }
             </div>
         );
     } 
@@ -104,11 +100,13 @@ function App() {
             <Routes>
                 {/* pass onLogin function to handle user state pass for new user as well (?)*/}
                 <Route index element={ <Title onLogin={ handleOnLogin }/> }/>
-                    <Route path='home/*' element={ <UserRoutes /> }/>
+                <Route path='home/*' element={<UserRoutes />} />
                 <Route path='new' element={ <NewUser onLogin={ handleOnLogin }/> } />
                 <Route path='forgot_password' element={ <ForgotPassword/> } />
-                <Route path='password_reset/:id/:token' element={<ResetPassword/>} />
+                <Route path='password_reset/:id/:token' element={<ResetPassword/>} exact/>
                 <Route path='faq' element={<FAQ />} />
+                <Route path="*" element={<Navigate to="/" replace />}
+                />
             </Routes>
         </Router>
     );
