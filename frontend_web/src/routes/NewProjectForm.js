@@ -32,8 +32,8 @@ function ProjectForm() {
         description: ''
     });
 
-    const [dBPoints, setDBPoints] = React.useState([]);
-    const [dBArea, setDBArea] = React.useState([]);
+    var tempP = [];
+    var tempA = [];
 
     const handleChange = (index) => (e) => {
         var points = values.points;
@@ -52,8 +52,8 @@ function ProjectForm() {
         } 
         // Clear any messages and Move points to objects with latitude and longitude
         response.current.style.display = 'none';
-        var tempP = [];
-        var tempA = [];
+        tempP = [];
+        tempA = [];
         // Cant change values.points from .lat and lng because state and google maps js
         // So put it in a new variable for submission to DB
         values.points.forEach((point, index)=>(
@@ -64,13 +64,12 @@ function ProjectForm() {
         ))
         //set DBPoints and then call create Project
         //console.log(tempA);
-        setDBPoints(tempP);
-        setDBArea(tempA, createProject(e));
+        createProject(e);
     }
 
     const createProject = async (e) => {
         console.log(values);
-        console.log(dBArea);
+        console.log(tempA);
         console.log(loc.state.userToken);
         console.log(loc.pathname.split('/')[3]);
 
@@ -78,8 +77,8 @@ function ProjectForm() {
             const response = await axios.post('/projects', JSON.stringify({ 
                 title: values.title,
                 description: values.description,
-                points: dBArea,
-                standingPoints: dBPoints,
+                points: tempA,
+                standingPoints: tempP,
                 team: loc.pathname.split('/')[3]
             }), {
                 headers: { 
