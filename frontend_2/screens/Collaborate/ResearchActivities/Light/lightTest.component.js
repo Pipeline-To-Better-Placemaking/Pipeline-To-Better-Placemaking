@@ -5,6 +5,7 @@ import { Header } from '../../../components/headers.component';
 import { useTheme, Button, Text } from '@ui-kitten/components';
 import { LightMap } from '../../../components/Maps/lightMap.component.js';
 import { DataModal } from '../../../components/Activities/Light/dataModal.component';
+import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import CountDown from 'react-native-countdown-component';
 
 import { styles } from './lightTest.styles';
@@ -28,7 +29,9 @@ export function LightTest(props) {
 
     // Modal controls
     const [dataModal, setDataModal] = useState(false);
-    
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState(-1);
+    const [deleteDesc, setDeleteDesc] = useState('');
     const [tempMarker, setTempMarker] = useState();
 
     // Used to store all the data info
@@ -85,11 +88,30 @@ export function LightTest(props) {
 
     // Closes the modal and saves the data point
     const closeData = async (inf) => {
-        console.log(inf)
+        // console.log(inf)
         // save the data point to be rendered
         dataPoints.push(inf);
         setDataModal(false);
         setTempMarker();
+    }
+    
+    // pulls up the delete modal
+    const handleDelete = (index) =>{
+        // sets the description and index, then pulls up the modal
+        setDeleteDesc(dataPoints[index].light_description.toLowerCase() + " data point")
+        setDeleteIndex(index)
+        setDeleteModal(true);
+    }
+    
+    // deletes the point from the data array
+    const deletePoint = async () =>{
+        // removes the data point from the array
+        dataPoints.splice(deleteIndex, 1)
+        
+        //reset delete controls
+        setDeleteIndex(-1);
+        setDeleteDesc('');
+        setDeleteModal(false);
     }
     
     // Start and Exit button
@@ -195,14 +217,29 @@ export function LightTest(props) {
                     back={goBack}
                 />
 
+                <DeleteModal
+                    visible={deleteModal}
+                    setVisible={setDeleteModal}
+                    dataType={deleteDesc}
+                    deleteFunction={deletePoint}
+                />
+
                 <LightMap
                     area={area}
                     marker={tempMarker}
                     dataPoints={dataPoints}
                     addMarker={onPointCreate}
+                    deleteMarker={handleDelete}
                 />
-
+                
             </ContentContainer>
+            {start ?
+                <View style={styles.descriptionView}>
+                    <Text category={'s1'}>Tap on the map to plot light data points</Text>
+                </View>
+            :
+                null
+            }
         </ViewableArea>
-    );
+    )
 }

@@ -98,7 +98,7 @@ export function PeopleMovingMap(props) {
         <View>
             <PressMapAreaWrapper
                 area={props.area}
-                mapHeight={props.lineTools ? '93%' : '97.5%'}
+                mapHeight={props.lineTools ? '93%' : '96%'}
                 onPress={props.addMarker}
                 recenter={props.recenter}
             >

@@ -5,6 +5,7 @@ import { Header } from '../../../components/headers.component';
 import { useTheme, Button, Text } from '@ui-kitten/components';
 import { OrderMap } from '../../../components/Maps/orderMap.component.js';
 import { DataModal } from '../../../components/Activities/Order/dataModal.component';
+import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import { DescModal } from '../../../components/Activities/Order/descModal.component';
 import CountDown from 'react-native-countdown-component';
 
@@ -31,6 +32,10 @@ export function OrderTest(props) {
     const [dataModal, setDataModal] = useState(false);
     const [descModal, setDescModal] = useState(false);
     const [tempMarker, setTempMarker] = useState();
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState(-1);
+    const [deleteDesc, setDeleteDesc] = useState('');
+    const [deleteExtraDesc, setDeleteExtraDesc] = useState();
     const [prompt, setPrompt] = useState([]);
 
     const behaviorPrompts = ['Panhandling', 'Boisterous Voice', 'Dangerous Wildlife', 'Reckless Behavior', 'Unsafe Equipment', 'Living in Public'];
@@ -54,8 +59,6 @@ export function OrderTest(props) {
             points: data,
             time: new Date()
         }]
-
-        console.log(packageData[0].points);
 
         // Sends the collected data to DB
         try {
@@ -116,6 +119,37 @@ export function OrderTest(props) {
         setTempMarker();
         setTempKind();
         setDescModal(false);
+    }
+
+    // pulls up the delete modal
+    const handleDelete = (index) =>{
+        let descriptionFormat = []; 
+
+        // formats the description array for a cleaner display
+        data[index].description.forEach(element =>{
+            // if we are not at the last element, concat with comma and a whitespace
+            if(element.localeCompare(data[index].description[data[index].description.length - 1]) !== 0) descriptionFormat.push(element.concat(", "));
+            // when we are at the last element, concat with nothing
+            else descriptionFormat.push(element.concat(''));
+        })
+
+        // sets the description and index, then pulls up the modal
+        setDeleteDesc(data[index].kind + " data point");
+        setDeleteExtraDesc(descriptionFormat);
+        setDeleteIndex(index);
+        setDeleteModal(true);
+    }
+    
+    // deletes the point from the data array
+    const deletePoint = async () =>{
+        // removes the data point from the array
+        data.splice(deleteIndex, 1)
+        
+        //reset delete controls
+        setDeleteIndex(-1);
+        setDeleteDesc('');
+        setDeleteExtraDesc('');
+        setDeleteModal(false);
     }
     
     // Start and Exit button
@@ -234,14 +268,30 @@ export function OrderTest(props) {
                     back={goBack}
                 />
 
+                <DeleteModal
+                    visible={deleteModal}
+                    setVisible={setDeleteModal}
+                    dataType={deleteDesc}
+                    extraInfo={deleteExtraDesc}
+                    deleteFunction={deletePoint}
+                />
+
                 <OrderMap
                     area={area}
                     marker={tempMarker}
                     dataPoints={data}
                     addMarker={onPointCreate}
+                    deleteMarker={handleDelete}
                 />
 
             </ContentContainer>
+            {start ?
+                <View style={styles.descriptionView}>
+                    <Text category={'s1'}>Tap on the map to plot misconduct data points</Text>
+                </View>
+            :
+                null
+            }
         </ViewableArea>
     );
 }

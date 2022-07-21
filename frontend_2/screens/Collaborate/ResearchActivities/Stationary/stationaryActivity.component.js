@@ -6,6 +6,7 @@ import { useTheme, Button, Text } from '@ui-kitten/components';
 import { StationaryActivityMap } from '../../../components/Maps/stationaryActivityMap.component.js';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
+import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import CountDown from 'react-native-countdown-component';
 
 import { styles } from '../activity.style';
@@ -43,6 +44,12 @@ export function StationaryActivity(props) {
     const [tempMarker, setTempMarker] = useState([])
     const [data] = useState([])
     const [markers] = useState([])
+    
+    // delete data point controls
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState(-1);
+    const [deleteDesc, setDeleteDesc] = useState('');
+    const [deleteExtraDesc, setDeleteExtraDesc] = useState('');
 
     // Opens the data model and stores a temporary points
     const onPointCreate = async (marker) => {
@@ -79,6 +86,33 @@ export function StationaryActivity(props) {
 
             setDataModal(false)
         }
+    }
+
+    // pulls up the delete modal
+    const handleDelete = (index) =>{
+        let descriptionFormat = "Posture: " + data[index].posture
+        descriptionFormat = descriptionFormat.concat(', Age: ', data[index].age)
+        descriptionFormat = descriptionFormat.concat(', Gender: ', data[index].gender)
+        descriptionFormat = descriptionFormat.concat(', Activity: ', data[index].activity, '.')
+
+        // sets the description and index, then pulls up the modal
+        setDeleteDesc("data point");
+        setDeleteExtraDesc(descriptionFormat);
+        setDeleteIndex(index)
+        setDeleteModal(true);
+    }
+    
+    // deletes the point from the arrays
+    const deletePoint = async () =>{
+        // removes the data point from both arrays
+        data.splice(deleteIndex, 1)
+        markers.splice(deleteIndex, 1)
+        
+        //reset delete controls
+        setDeleteIndex(-1);
+        setDeleteDesc('');
+        setDeleteExtraDesc('');
+        setDeleteModal(false);
     }
 
     // End Button press
@@ -239,16 +273,32 @@ export function StationaryActivity(props) {
                         confirm={rebegin}
                     />
 
+                    <DeleteModal
+                        visible={deleteModal}
+                        setVisible={setDeleteModal}
+                        dataType={deleteDesc}
+                        extraInfo={deleteExtraDesc}
+                        deleteFunction={deletePoint}
+                    />
+
                     <StationaryActivityMap
                         location={location}
                         area={area}
                         position={position[standingIndex]}
                         markers={markers}
                         addMarker={onPointCreate}
+                        deleteMarker={handleDelete}
                         recenter={recenter}
                     />
 
             </ContentContainer>
+            {start ?
+                <View style={styles.descriptionViewNoMargin}>
+                    <Text category={'s1'}>Tap on the map to plot data points</Text>
+                </View>
+            :
+                null
+            }
         </ViewableArea>
     );
 }

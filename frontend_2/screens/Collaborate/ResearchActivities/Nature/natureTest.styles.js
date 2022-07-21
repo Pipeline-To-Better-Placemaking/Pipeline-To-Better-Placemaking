@@ -31,12 +31,16 @@ export const styles = StyleSheet.create({
         alignItems:'center'
     },
 
-    buttonView:{
+    toolBarView:{
         width: width,
+        marginTop: -90
+    },
+
+    buttonView:{
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
-        marginTop: - 70
+        marginTop: 10
     },
 
     button:{
@@ -49,6 +53,10 @@ export const styles = StyleSheet.create({
         color: 'white',
         fontSize: width * .032,
         fontWeight: 'bold'
+    },
+
+    descriptionView:{
+        alignItems: 'center',
     }
     
 });

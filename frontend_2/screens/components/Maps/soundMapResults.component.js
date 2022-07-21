@@ -26,12 +26,12 @@ export function SoundMapResults(props) {
         let val = 0;
         // iterate over the dictonary looking for the highest frequency, then return that string
         for(const [word, value] of Object.entries(hm)){
-        // if the value of the word in hm is larger than our current value
-        if(value > val){
-            // update the current value and the string
-            val = value;
-            ret = word;
-        }
+            // if the value of the word in hm is larger than our current value
+            if(value > val){
+                // update the current value and the string
+                val = value;
+                ret = word;
+            }
         }
         return ret;
     }

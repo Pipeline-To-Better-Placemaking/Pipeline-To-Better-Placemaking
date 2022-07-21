@@ -136,6 +136,8 @@ export function BoundaryMap(props) {
                         strokeWidth={3}
                         strokeColor={colors[0]}
                         key={index}
+                        tappable={props.lineTools ? false : true}
+                        onPress={() => props.deleteMarker(0, index, obj)}
                     />
                 ))
             )
@@ -170,6 +172,8 @@ export function BoundaryMap(props) {
                         strokeWidth={3}
                         strokeColor={colors[1]}
                         key={index}
+                        tappable={props.lineTools ? false : true}
+                        onPress={() => props.deleteMarker(1, index, obj)}
                     />
                 ))
             )
@@ -204,6 +208,8 @@ export function BoundaryMap(props) {
                         strokeWidth={3}
                         strokeColor={colors[2]}
                         key={index}
+                        tappable={props.lineTools ? false : true}
+                        onPress={() => props.deleteMarker(2, index, obj)}
                     />
                 ))
             )

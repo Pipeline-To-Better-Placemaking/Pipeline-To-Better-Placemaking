@@ -10,6 +10,7 @@ import { WeatherModal } from '../../../components/Activities/Nature/weatherModal
 import { WaterModal } from '../../../components/Activities/Nature/waterModal.component';
 import { VegeModal } from '../../../components/Activities/Nature/vegeModal.component';
 import { DataModal } from '../../../components/Activities/Nature/dataModal.component';
+import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import { calcArea } from '../../../components/helperFunctions';
 import CountDown from 'react-native-countdown-component';
 
@@ -49,6 +50,12 @@ export function NatureTest(props) {
     const [currentPath, setCurrentPath] = useState([]);
     const [currentPathSize, setCurrentPathSize] = useState(0);
     const [tempMarker, setTempMarker] = useState();
+    
+    // delete animal data controls
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState(-1);
+    const [deleteDesc, setDeleteDesc] = useState('');
+    const [deleteExtraDesc, setDeleteExtraDesc] = useState('');
 
     // Used to store all the data info
     const [totalWaterPaths] = useState([]);
@@ -117,6 +124,27 @@ export function NatureTest(props) {
         dataPoints.push(inf);
         setDataModal(false);
         setTempMarker();
+    }
+
+    // pulls up the delete modal
+    const handleDelete = (index) =>{
+        // sets the description and index, then pulls up the modal
+        setDeleteDesc(dataPoints[index].kind.toLowerCase() + " animal data point")
+        setDeleteExtraDesc(dataPoints[index].description)
+        setDeleteIndex(index)
+        setDeleteModal(true);
+    }
+    
+    // deletes the point from the data array
+    const deletePoint = async () =>{
+        // removes the data point from the array
+        dataPoints.splice(deleteIndex, 1)
+        
+        //reset delete controls
+        setDeleteIndex(-1);
+        setDeleteDesc('');
+        setDeleteExtraDesc('');
+        setDeleteModal(false);
     }
     
     // Closes the weather modal and saves the data
@@ -308,17 +336,23 @@ export function NatureTest(props) {
         // line toolbar is not rendered and the test has started
         if(start && !lineTools){
             return(
-                <View style={styles.buttonView}>
-                    <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(0)}}>
-                        <View>
-                            <Text style={styles.buttonTxt}>Body of Water</Text>
-                        </View>
-                    </Button>
-                    <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(1)}}>
-                        <View>
-                            <Text style={styles.buttonTxt}>Vegetation</Text>
-                        </View>
-                    </Button>
+                <View style={styles.toolBarView}>
+                    <View style={styles.descriptionView}>
+                        <Text category={'s1'}>Tap on the map to plot animal data points</Text>
+                    </View>
+                    
+                    <View style={styles.buttonView}>
+                        <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(0)}}>
+                            <View>
+                                <Text style={styles.buttonTxt}>Body of Water</Text>
+                            </View>
+                        </Button>
+                        <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(1)}}>
+                            <View>
+                                <Text style={styles.buttonTxt}>Vegetation</Text>
+                            </View>
+                        </Button>
+                    </View>
                 </View>
             )
         }
@@ -379,6 +413,14 @@ export function NatureTest(props) {
                     back={goBack}
                 />
 
+                <DeleteModal
+                    visible={deleteModal}
+                    setVisible={setDeleteModal}
+                    dataType={deleteDesc}
+                    extraInfo={deleteExtraDesc}
+                    deleteFunction={deletePoint}
+                />
+
                 <NatureMap
                     area={area}
                     markers={currentPath}
@@ -387,6 +429,7 @@ export function NatureTest(props) {
                     water={totalWaterPaths}
                     vege={totalVegePaths}
                     addMarker={onPointCreate}
+                    deleteMarker={handleDelete}
                     addShape={addShape}
                     cond={lineTools}
                     polyType={polyType}

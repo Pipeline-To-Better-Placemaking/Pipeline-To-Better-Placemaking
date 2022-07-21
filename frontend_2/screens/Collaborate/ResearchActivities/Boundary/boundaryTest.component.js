@@ -8,6 +8,7 @@ import { BoundaryMap } from '../../../components/Maps/boundaryMap.component';
 import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.component';
 import { DataModal } from '../../../components/Activities/Boundary/dataModal.component';
 import { PurposeModal } from '../../../components/Activities/Boundary/purposeModal.component';
+import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import { calcArea, haverSine } from '../../../components/helperFunctions';
 import CountDown from 'react-native-countdown-component';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -68,6 +69,11 @@ export function BoundaryTest(props){
     const [dataModal, setDataModal] = useState(false);
     const [prompts, setPrompts] = useState([]);
     const [purposeModal, setPurposeModal] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState(-1);
+    const [deleteCoords, setDeleteCoords] = useState();
+    const [deleteDesc, setDeleteDesc] = useState('');
+    const [deleteType, setDeleteType] = useState(-1);
 
     const constructPrompt = ["Curbs", "Building Wall", "Fences", "Planter", "Partial Wall"]
     const matPrompt = ["Bricks (pavers)", "Concrete", "Tile", "Natural (grass)", "Wood (deck)"]
@@ -328,6 +334,82 @@ export function BoundaryTest(props){
         }
     }
 
+    // pulls up the delete modal
+    const handleDelete = (type, index, coords) =>{
+        // constructed boundary
+        if(type === 0){
+            setDeleteDesc("constructed boundary")
+            setDeleteType(type);
+        }
+        // material boundary
+        else if(type === 1){
+            setDeleteDesc("material boundary")
+            setDeleteType(type);
+        }
+        // shelter boundary
+        else{
+            setDeleteDesc("shelter boundary")
+            setDeleteType(type);
+        }
+        // sets the description and index, then pulls up the modal
+        setDeleteIndex(index);
+        setDeleteCoords(coords);
+        setDeleteModal(true);
+    }
+    
+    // deletes the boundary from the total paths and data arrays
+    const deleteBoundary = async () =>{
+        // constructed boundary
+        if(deleteType === 0){
+            constructTotalPaths.splice(deleteIndex, 1);
+        }
+        // material boundary
+        else if(deleteType === 1){
+            materialTotalPaths.splice(deleteIndex, 1);
+        }
+        // shelter boundary
+        else{
+            shelterTotalPaths.splice(deleteIndex, 1);
+        }
+        let tempIndex = -1;
+        let tempFilter;
+        // loop through the data array looking for the boundary to be deleted
+        for(let i = 0; i < data.length; i++){
+            // searches each data's path to see if those coordinates match the coordinates of the boundary that is being deleted 
+            tempFilter = data[i].path.filter((coord) => deleteCoords.find((dCoord) => coord.latitude === dCoord.latitude && coord.longitude === dCoord.longitude))
+            // coordinate path of constructed is the same as the deleteCoord path
+            if(deleteType === 0){
+                if(tempFilter.length === deleteCoords.length){
+                    // save the index and break from the loop
+                    tempIndex = i
+                    break
+                }
+            }
+            // coordinate path of material/shelter has an extra coord at the end of the path (on the deleteCoords array which forms the enclosed line polygons)
+            else{
+                // once tempFilter's length matches the deleteCoords - 1 length, we've found the index of the boundary to be deleted from the data array
+                if(tempFilter.length === deleteCoords.length - 1){
+                    // save the index and break from the loop
+                    tempIndex = i
+                    break
+                }
+            }
+        }
+        // should never really go into this if statement; it should always find the boundary
+        // but just in case it doesn't it displays this error
+        // last entry is deleted due to how splice deals with -1 as the starting index
+        if(tempIndex === -1) console.log('ERROR, boundary not found... Deleting last entry in the data array')
+        
+        // removes the boundary from the data array
+        data.splice(tempIndex, 1);
+        // since we removed a boundary object, decrement the dataIndex
+        setDataIndex(dataIndex - 1);
+        //reset delete controls
+        setDeleteIndex(-1);
+        setDeleteDesc('');
+        setDeleteModal(false);
+    }
+
     // checks the boundary and sets the buttons to collect data
     const confirm = () => {
         // constructed boundary
@@ -475,6 +557,13 @@ export function BoundaryTest(props){
                         visible={purposeModal}
                         closePurpose={closePurpose}
                     />
+
+                    <DeleteModal
+                        visible={deleteModal}
+                        setVisible={setDeleteModal}
+                        dataType={deleteDesc}
+                        deleteFunction={deleteBoundary}
+                    />
                     
                     {/* this zIndex enables the dropdown menu to render over the map */}
                     <View style={{zIndex: -1}}>
@@ -483,6 +572,7 @@ export function BoundaryTest(props){
                             type={boundIndex}
                             markers={currentPath}
                             addMarker={addMarker}
+                            deleteMarker={handleDelete}
                             lineBool={constructBool}
                             linePaths={constructTotalPaths}
                             matBool={materialBool}

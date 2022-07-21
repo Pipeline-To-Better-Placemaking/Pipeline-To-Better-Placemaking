@@ -32,8 +32,8 @@ export const BlueViewableArea = ({ children }) => {
         {children}
       </SafeAreaView>
     </View>
- );
-};
+ )
+}
 
 export const ContentContainer = ({ children }) => {
 
@@ -43,8 +43,8 @@ export const ContentContainer = ({ children }) => {
     <View style={[ styles.contentContainer, {backgroundColor:theme['background-basic-color-1']}]}>
       {children}
     </View>
- );
-};
+ )
+}
 
 export const ModalContainer = ({ children, ...props }) => {
 
@@ -67,8 +67,8 @@ export const ModalContainer = ({ children, ...props }) => {
         </SafeAreaView>
       </View>
     </Modal>
- );
-};
+ )
+}
 
 export const PopUpContainer = ({ children, ...props }) => {
 
@@ -92,8 +92,8 @@ export const PopUpContainer = ({ children, ...props }) => {
       </TouchableOpacity>
 
     </Modal>
- );
-};
+ )
+}
 
 export const EnterNumber = ({ children, ...props }) => {
   return (
@@ -113,8 +113,8 @@ export const EnterNumber = ({ children, ...props }) => {
         Confirm
       </Button>
     </PopUpContainer>
- );
-};
+ )
+}
 
 export const ConfirmDelete = ({ children, ...props }) => {
   return(
@@ -148,5 +148,5 @@ export const ConfirmDelete = ({ children, ...props }) => {
           </Card>
       </TouchableOpacity>
     </Modal>
-  );
+  )
 }

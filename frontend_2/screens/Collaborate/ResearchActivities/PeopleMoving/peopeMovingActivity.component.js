@@ -281,14 +281,21 @@ export function PeopleMovingActivity(props) {
     }
 
     const LineToolBar = () => {
-        if (start && lineTools) {
-            return (
-                <LineTools confirm={confirmLine} cancel={cancelLine} removeLastPoint={removeLastLinePoint}/>
-            )
+        if (start) {
+            if(lineTools){
+                return (
+                    <LineTools confirm={confirmLine} cancel={cancelLine} removeLastPoint={removeLastLinePoint}/>
+                )
+            }
+            else{
+                return(
+                    <View style={styles.descriptionView}>
+                        <Text category={'s1'}>Tap on the map to start drawing moving data</Text>
+                    </View>
+                )
+            }
         }
-        else{
-            return null;
-        }
+        else return null;
     }
 
     return(
