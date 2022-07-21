@@ -74,7 +74,7 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
 
     // Excel Format
     console.log("fails after this?: ")
-    const xlsx_file = XLSX.write(workbook, 'PlaceProject.xlsx');
+    const xlsx_file = XLSX.writeFile(workbook, 'PlaceProject.xlsx');
     console.log("type of file: ")
     console.log(typeof xlsx_file)
 
