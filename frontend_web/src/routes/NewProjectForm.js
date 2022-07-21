@@ -56,15 +56,17 @@ function ProjectForm() {
         var tempA = []
         // Cant change values.points from .lat and lng because state and google maps js
         // So put it in a new variable for submission to DB
-        values.points.map((point, index)=>(
-            tempP.push({title: point.title, latitude: point.lat, longitude: point.lng})
+        values.points.forEach((point, index)=>(
+            tempP.push({ title: point.title, latitude: point.lat, longitude: point.lng })
         ))
-        values.area.map((point, index) => (
+        values.area.forEach((point, index) => (
             tempA.push({ latitude: point.lat, longitude: point.lng })
         ))
         //set DBPoints and then call create Project
+        console.log(values.area);
+        console.log(tempA);
         setDBPoints(tempP);
-        setDBArea(tempA, createProject(e));
+        setDBArea(tempA, ()=> { console.log(dBArea); createProject(e);});
     }
 
     const createProject = async (e) => {
