@@ -63,11 +63,9 @@ function ProjectForm() {
             tempA.push({ latitude: apoint.lat, longitude: apoint.lng })
         ))
         //set DBPoints and then call create Project
-        //console.log(values.area);
         //console.log(tempA);
-        e.persist()
         setDBPoints(tempP);
-        setDBArea((tempA), () => {createProject(e)});
+        setDBArea(tempA, createProject(e));
     }
 
     const createProject = async (e) => {
@@ -81,7 +79,6 @@ function ProjectForm() {
                 title: values.title,
                 description: values.description,
                 points: dBArea,
-                //DB points also contains center point and all points above
                 standingPoints: dBPoints,
                 team: loc.pathname.split('/')[3]
             }), {
