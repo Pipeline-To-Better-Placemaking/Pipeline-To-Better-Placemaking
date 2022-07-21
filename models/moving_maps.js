@@ -97,8 +97,6 @@ module.exports.deleteMap = async function(mapId) {
     const map = await Maps.findById(mapId)
 
     for(var i = 0; i < map.standingPoints.length; i++){
-        console.log("deleting form deleteMap in MOVING maps model")
-        console.log(map.standingPoints[i])
         await Points.removeRefrence(map.standingPoints[i])
     }
         
@@ -117,8 +115,6 @@ module.exports.addEntry = async function(mapId, newEntry) {
         standingPoint: newEntry.standingPoint,
         path: newEntry.path
     })
-    console.log("standing point passed to addEntry from MOVING")
-    console.log(newEntry.standingPoint)
     const debugPoint = await Points.addRefrence(newEntry.standingPoint)
     console.log(debugPoint)
     return await Maps.updateOne(
@@ -177,8 +173,6 @@ module.exports.updateData = async function(mapId, dataId, newEntry){
         },
         { $set: { "data.$": newEntry}}
     )
-    console.log("standing point passed into update entry from MOVING")
-    console.log(updatedDataVal)
     return updatedDataVal
 }
 
@@ -191,10 +185,7 @@ module.exports.deleteEntry = async function(mapId, entryId) {
         }
     )
 
-    console.log("standing point passed into delete entry MOVING")
-    console.log(doc.data[0].standingPoint)
-    const debugPoint = await Points.removeRefrence(doc.data[0].standingPoint)
-    console.log(debugPoint)
+    await Points.removeRefrence(doc.data[0].standingPoint)
     
     return await Maps.updateOne(
         { _id: mapId },

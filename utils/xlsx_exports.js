@@ -67,20 +67,18 @@ function stationToXLSX(data){
                     var map = collection.maps[j]
 
                         if(map.data){
-                        for(var k = 0; k < map.data.length; k++){
-                            var entry = map.data[k]
+                            for(var k = 0; k < map.data.length; k++){
+                                var entry = map.data[k]
 
-                            obj = { Category: `${collection.title}(${j})`, 
-                                    Date: map.date, 
-                                    Time: getDigitalTime(entry.time), 
-                                    Point: k, 
-                                    Posture: entry.posture, 
-                                    Age: entry.age, 
-                                    Gender: entry.gender, 
-                                    Activity: entry.activity
-                        }
-                        console.log(obj.Time)
-                        stationary.push(obj)
+                                obj = { Category: `${collection.title}(${j})`, 
+                                        Date: map.date, 
+                                        Time: getDigitalTime(entry.time), 
+                                        Point: k, 
+                                        Posture: entry.posture, 
+                                        Age: entry.age, 
+                                        Gender: entry.gender, 
+                                        Activity: entry.activity
+                            }
 
                         }
                     }
@@ -118,7 +116,6 @@ function movingToXLSX(data){
                                     Point: k, 
                                     Mode: entry.mode
                         }
-                        console.log(obj.Time)
                     }
 
                         moving.push(obj)
@@ -160,8 +157,6 @@ function soundToXLSX(data){
                                     'Sound Types/Sources': parseArrAsString(entry.sound_type)
                             }
 
-
-
                             sound.push(obj)
                         }
                     }
@@ -175,6 +170,11 @@ function soundToXLSX(data){
     }
 }
 
+
+//we are iterating through a data which contains array elements and printing them out individually
+//in order to better identify these points, we will use the entry index alongside their individual 
+//array index.  e.g. the first index in the water array will have which belongs to the second data
+//index will be written as "1 w(0)"
 function natureToXLSX(data){
 
     try{
@@ -200,9 +200,6 @@ function natureToXLSX(data){
                                     'Kind/Area (ft/sq.ft)': '',
                                     Description: ''
                             }
-                            // console.log('nature weather objects: ')
-                            // console.log(obj)
-
 
                             nature.push(obj)
 
@@ -233,9 +230,6 @@ function natureToXLSX(data){
                                         Description: water.description 
                                         
                                 }
-                                // console.log('nature water objects: ')
-                                // console.log(obj)
-
                                 nature.push(obj)
                             }
                         }
@@ -279,9 +273,6 @@ function lightToXLSX(data){
                                             Point: l, 
                                             Description: points.light_description
                                 }
-                                console.log('light objects: ' )
-                                console.log(obj.Time)
-
 
                                 light.push(obj)
                             }
@@ -363,9 +354,6 @@ function orderToXLSX(data){
                                         Point: `${k} p(${l})`, 
                                         Description: parseArrAsString(points.description)
                                 }
-                                // console.log('order objects: ' )
-                                // console.log(obj)
-
 
                                 order.push(obj)
                             }
@@ -381,7 +369,7 @@ function orderToXLSX(data){
     }
 }
 
-//created a function that gets hour:min:sec AM/PM format as none is available in js
+//created a function that gets "hour:min:sec AM/PM" format from new Date() as no default function is available
 function getDigitalTime(time){
     
     var midday = 'AM'
@@ -394,7 +382,7 @@ function getDigitalTime(time){
       midday = 'PM'
     }
     var timeString = [hour, min, sec].join(':')
-    timeString = timeString + '' + midday
+    timeString = timeString + ' ' + midday
     return timeString
 }
 
@@ -402,7 +390,10 @@ function getDigitalTime(time){
 function parseArrAsString(arr){
     var newString = ''
     for(var i = 0; i < arr.length; i++){
-        newString += arr[i] + ','
+        newString += arr[i]
+        if(i < arr.length-1){
+            newString += ','
+        }
     }
     return newString
 }

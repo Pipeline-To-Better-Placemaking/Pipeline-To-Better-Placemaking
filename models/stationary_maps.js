@@ -108,8 +108,6 @@ module.exports.deleteMap = async function(mapId) {
     const map = await Maps.findById(mapId)
 
     for(var i = 0; i < map.standingPoints.length; i++){
-        console.log("deleting form deleteMap in STATIONARY maps model")
-        console.log(map.standingPoints[i])
         await Points.removeRefrence(map.standingPoints[i])
     }
     
@@ -130,10 +128,8 @@ module.exports.addEntry = async function(mapId, newEntry) {
         location: newEntry.location,
         standingPoint: newEntry.standingPoint
     })
-    console.log("standing point passed to addEntry from STATIONARY")
-    console.log(newEntry.standingPoint)
-    const debugPoint = await Points.addRefrence(newEntry.standingPoint)
-    console.log(debugPoint)
+
+    await Points.addRefrence(newEntry.standingPoint)
     return await Maps.updateOne(
         { _id: mapId },
         { $push: { data: entry}}
@@ -190,8 +186,6 @@ module.exports.updateData = async function(mapId, dataId, newEntry){
         { $set: { "data.$": newEntry}}
     )
 
-    console.log("standing point passed into update entry from STATIONARY")
-    console.log(updatedDataVal)
     return updatedDataVal
 }
 
@@ -203,10 +197,8 @@ module.exports.deleteEntry = async function(mapId, entryId) {
                 data: { $elemMatch:  {_id:entryId }}
             }
         )
-        console.log("standing point passed into delete entry STATIONARY")
-        console.log(doc.data[0].standingPoint)
-        const debugPoint = await Points.removeRefrence(doc.data[0].standingPoint)
-        console.log(debugPoint)
+
+        await Points.removeRefrence(doc.data[0].standingPoint)
 
         return await Maps.updateOne(
             { _id: mapId },

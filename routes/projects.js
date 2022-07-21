@@ -970,9 +970,6 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
             }
         ]
     }
-    console.log(mailOptions)
-    console.log("works")
-
 
     if (!await emailer.sendEmail(mailOptions)) {
         throw new InternalServerError('The server encountered a problem')
