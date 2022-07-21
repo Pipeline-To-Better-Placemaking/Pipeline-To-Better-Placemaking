@@ -1,6 +1,8 @@
 const XLSX = require('xlsx')
 
 
+//takes in data from projects route and receives objects from helper functions.  
+//converts those into xlsx and returns them to projects
 projectExport = function(stationaryData, movingData, soundData, natureData, lightData, orderData,
                         boundariesData){
 
@@ -13,10 +15,10 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
     var sound = []
     var workbook = XLSX.utils.book_new();
 
+
+        
         stationary = stationToXLSX(stationaryData)
         var worksheetstat = XLSX.utils.json_to_sheet(stationary);
-        console.log("stationary writes: ")
-        console.log(worksheetstat)
         XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
 
         moving = movingToXLSX(movingData)
@@ -37,20 +39,15 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
 
         order = orderToXLSX(orderData)
         var worksheetord = XLSX.utils.json_to_sheet(order)
-        console.log("order writes: ")
-        console.log(worksheetord)
         XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
 
         boundaries = boundToXLSX(boundariesData)
         var worksheetbounds = XLSX.utils.json_to_sheet(boundaries);
-        console.log("boundaries writes: ")
-        console.log(worksheetbounds)
         XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
 
 
     // Excel Format
     const xlsx_file = XLSX.write(workbook,{ bookType: "xlsx", type: "buffer" });
-
     return xlsx_file
 
 }
@@ -96,6 +93,7 @@ function stationToXLSX(data){
         console.log("stationary fails " + error)
     }
 }
+
 
 function movingToXLSX(data){
 
@@ -383,6 +381,7 @@ function orderToXLSX(data){
     }
 }
 
+//created a function that gets hour:min:sec AM/PM format as none is available in js
 function getDigitalTime(time){
     
     var midday = 'AM'
@@ -399,8 +398,9 @@ function getDigitalTime(time){
     return timeString
 }
 
+//parses array as a string
 function parseArrAsString(arr){
-    var newString
+    var newString = ''
     for(var i = 0; i < arr.length; i++){
         newString += arr[i] + ','
     }

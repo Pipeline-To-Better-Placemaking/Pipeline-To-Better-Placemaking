@@ -952,7 +952,8 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
         <p>You have requested a copy of project data. Attached is a csv formatted file representing the data.</p>
 
     `
-    //added missing tests to csv and changed code so that subject is the project title, and filename properly reflects the collections
+    //data gets sent to xlsx exports in utils, which returns an xlsx spreadsheet with all the tests
+    //in a type: buffer
 
     project = await Project.findById(req.params.id)
     const mailOptions = {
@@ -967,34 +968,6 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                 content: projectExport(stationaryData, movingData, soundData, 
                                     natureData, lightData, orderData, boundariesData)
             }
-            // {
-            //     filename: movingData.title + '_moving.csv',
-            //     content:movingToCSV(movingData)
-            // },
-            // {
-            //     filename: soundData.title + '_sound.csv',
-            //     content:soundToCSV(soundData)
-            // },
-            // {
-            //     filename: natureData.title + '_nature.csv',
-            //     content:natureToCSV(natureData)
-            // },
-            // {
-            //     filename: lightData.title + '_light.csv',
-            //     content:lightToCSV(lightData)
-            // },
-            // {
-            //     filename: orderData.title + '_order.csv',
-            //     content:orderToCSV(orderData)
-            // },
-            // {
-            //     filename: boundariesData.title + '_boundaries.csv',
-            //     content:boundariesToCSV(boundariesData)
-            // },
-            // {
-            //     filename: surveyData.title + '_survey.csv',
-            //     content:surveyToCSV(surveyData)
-            // }
         ]
     }
     console.log(mailOptions)
