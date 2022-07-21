@@ -63,14 +63,18 @@ function ProjectForm() {
             tempA.push({ latitude: apoint.lat, longitude: apoint.lng })
         ))
         //set DBPoints and then call create Project
-        console.log(values.area);
+        //console.log(values.area);
         //console.log(tempA);
+        e.persist()
         setDBPoints(tempP);
-        setDBArea(tempA, createProject(e));
+        setDBArea((tempA), () => {createProject(e)});
     }
 
     const createProject = async (e) => {
+        console.log(values);
         console.log(dBArea);
+        console.log(loc.state.userToken);
+        console.log(loc.pathname.split('/')[3]);
 
         try{
             const response = await axios.post('/projects', JSON.stringify({ 
