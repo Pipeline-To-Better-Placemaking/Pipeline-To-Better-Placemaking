@@ -15,21 +15,21 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
 
     // if(stationaryData.length){
         stationary = stationToXLSX(stationaryData)
-        console.log("stationary writes: " + stationary)
+        // console.log("stationary writes: " + stationary)
         var worksheetstat = XLSX.utils.json_to_sheet(stationary);
         console.log("stationary writes: " + worksheetstat)
         XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
     // }
     // if(movingData.length){
         moving = movingToXLSX(movingData)
-        console.log("moving writes: " + moving)
+        // console.log("moving writes: " + moving)
         var worksheetmov = XLSX.utils.json_to_sheet(moving)
         console.log("moving writes: " + worksheetmov)
         XLSX.utils.book_append_sheet(workbook, worksheetmov, 'PeopleInMotion');
     // }
     // if(soundData.length){
         sound = soundToXLSX(soundData)
-        console.log("sound writes: " + sound)
+        // console.log("sound writes: " + sound)
         var worksheetsound = XLSX.utils.json_to_sheet(sound)
         console.log("sound writes: " + worksheetsound)
         XLSX.utils.book_append_sheet(workbook, worksheetsound, 'AcousticalProfile');
@@ -37,21 +37,21 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
     // }
     // if(natureData.length){
         nature = natureToXLSX(natureData)
-        console.log("nature writes: " + nature)
+        // console.log("nature writes: " + nature)
         var worksheetnat = XLSX.utils.json_to_sheet(nature)
         console.log("nature writes: " + worksheetnat)
         XLSX.utils.book_append_sheet(workbook, worksheetnat, 'NaturePrevalence');
     // }
     // if(lightData.length){
         lighting = lightToXLSX(lightData)
-        console.log("light writes: " + lighting)
+        // console.log("light writes: " + lighting)
         var worksheetlight = XLSX.utils.json_to_sheet(lighting)
         console.log("light writes: " + worksheetlight)
         XLSX.utils.book_append_sheet(workbook, worksheetlight, 'LightingProfile');
     // }
     // if(orderData.length){
         order = orderToXLSX(orderData)
-        console.log("order writes: " + order)
+        // console.log("order writes: " + order)
         var worksheetord = XLSX.utils.json_to_sheet(order)
         console.log("order writes: " + worksheetord)
         XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
@@ -59,7 +59,7 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
     // }
     // if(boundariesData.length){
         boundaries = boundToXLSX(boundariesData)
-        console.log("boundaries writes: " + boundaries)
+        // console.log("boundaries writes: " + boundaries)
         var worksheetbounds = XLSX.utils.json_to_sheet(boundaries);
         console.log("boundaries writes: " + worksheetbounds)
         XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
@@ -101,6 +101,7 @@ function stationToXLSX(data){
                 }
             }
         }
+        console.log("stationary writes: " + stationary)
         return stationary
     }catch(error){
         console.log("stationary fails " + error)
@@ -134,7 +135,7 @@ function movingToXLSX(data){
                 }
             }
         }
-
+        console.log("moving writes: " + moving)
         return moving
     }catch(error){
         console.log("moving fails " + error)
@@ -169,6 +170,8 @@ function soundToXLSX(data){
                 }
             }
         }
+        console.log("sound writes: " + sound)
+
     return sound
     }
     catch(error){
@@ -232,6 +235,7 @@ function natureToXLSX(data){
                 }
             }
         }
+        console.log("nature writes: " + nature)
         return nature
     }
     catch(error){
@@ -271,6 +275,8 @@ function lightToXLSX(data){
                 }
             }
         }
+        console.log("light writes: " + lighting)
+
         return light
     }
     catch(error){
@@ -281,7 +287,7 @@ function lightToXLSX(data){
 function boundToXLSX(data){
 
     try{
-        var order = []
+        var boundaries = []
 
         for(var i = 0; i < data.boundariesCollections.length; i++){
             var collection = data.boundariesCollections[i]
@@ -302,13 +308,14 @@ function boundToXLSX(data){
                                     Purpose: entry.purpose, 
                                     'Value (ft/sq.ft)': entry.value
                             }
-                            order.push(obj)
+                            boundaries.push(obj)
                         }
                     }
                 }
             }
         }
-        return order
+        console.log("boundaries writes: " + boundaries)
+        return boundaries
     }catch(error){
     console.log("boundaries fails " + error)
     }
@@ -345,6 +352,8 @@ function orderToXLSX(data){
                 }
             }
         }
+        console.log("order writes: " + order)
+
     return order
     }catch(error){
     console.log("order fails " + error)
