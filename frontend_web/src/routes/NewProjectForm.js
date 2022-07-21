@@ -64,9 +64,9 @@ function ProjectForm() {
         ))
         //set DBPoints and then call create Project
         console.log(values.area);
-        console.log(tempA);
+        //console.log(tempA);
         setDBPoints(tempP);
-        setDBArea(tempA, ()=> { console.log(dBArea); createProject(e);});
+        setDBArea(tempA, (e)=> { console.log(dBArea); createProject(e);});
     }
 
     const createProject = async (e) => {
