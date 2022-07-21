@@ -8,18 +8,21 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
 
     // if(stationaryData.length){
         stationary = stationToXLSX(stationaryData)
+        console.log("stationary writes: " + stationary)
         var worksheetstat = XLSX.utils.json_to_sheet(stationary);
         console.log("stationary writes: " + worksheetstat)
         XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
     // }
     // if(movingData.length){
         moving = movingToXLSX(movingData)
+        console.log("moving writes: " + moving)
         var worksheetmov = XLSX.utils.json_to_sheet(moving)
         console.log("moving writes: " + worksheetmov)
         XLSX.utils.book_append_sheet(workbook, worksheetmov, 'PeopleInMotion');
     // }
     // if(soundData.length){
         sound = soundToXLSX(soundData)
+        console.log("sound writes: " + sound)
         var worksheetsound = XLSX.utils.json_to_sheet(sound)
         console.log("sound writes: " + worksheetsound)
         XLSX.utils.book_append_sheet(workbook, worksheetsound, 'AcousticalProfile');
@@ -27,18 +30,21 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
     // }
     // if(natureData.length){
         nature = natureToXLSX(natureData)
+        console.log("nature writes: " + nature)
         var worksheetnat = XLSX.utils.json_to_sheet(nature)
         console.log("nature writes: " + worksheetnat)
         XLSX.utils.book_append_sheet(workbook, worksheetnat, 'NaturePrevalence');
     // }
     // if(lightData.length){
         lighting = lightToXLSX(lightData)
+        console.log("light writes: " + lighting)
         var worksheetlight = XLSX.utils.json_to_sheet(lighting)
         console.log("light writes: " + worksheetlight)
         XLSX.utils.book_append_sheet(workbook, worksheetlight, 'LightingProfile');
     // }
     // if(orderData.length){
         order = orderToXLSX(orderData)
+        console.log("order writes: " + order)
         var worksheetord = XLSX.utils.json_to_sheet(order)
         console.log("order writes: " + worksheetord)
         XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
@@ -46,6 +52,7 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
     // }
     // if(boundariesData.length){
         boundaries = boundToXLSX(boundariesData)
+        console.log("boundaries writes: " + boundaries)
         var worksheetbounds = XLSX.utils.json_to_sheet(boundaries);
         console.log("boundaries writes: " + worksheetbounds)
         XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
