@@ -38,7 +38,7 @@ function ProjectForm() {
     const handleChange = (index) => (e) => {
         var points = values.points;
         points[index].title = e.target.value;
-       setValues({ ...values, points: points }, console.log(values));
+       setValues({ ...values, points: points });
     };
 
     const handleCreate = (e) => {
@@ -68,10 +68,6 @@ function ProjectForm() {
     }
 
     const createProject = async (e) => {
-        console.log(values);
-        console.log(tempA);
-        console.log(loc.state.userToken);
-        console.log(loc.pathname.split('/')[3]);
 
         try{
             const response = await axios.post('/projects', JSON.stringify({ 

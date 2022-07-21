@@ -89,11 +89,7 @@ function Projects(props){
                 </Button>
             </div>
             {/* type = 1 implies the project style cards */}
-            {
-                teamInfo?.projects?.map((project, index) => (
-                    <DisplayCards key={(project._id + index)} type={1} project={project} user={user} team={teamAndUser.state ? teamAndUser.state.team : null} open={openConfirmation}/>
-                ))
-            }
+            <DisplayCards type={1} projects={teamInfo?.projects} user={user} team={teamAndUser.state ? teamAndUser.state.team : null} open={openConfirmation}/>
             <div id='deleteWindow' style={{ display: 'none', position: 'fixed', justifyContent: 'center', alignItems: 'center' }}>
                 <div id='popUpBlock'>
                     <div id='popUpText'></div>
