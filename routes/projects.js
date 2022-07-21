@@ -1011,4 +1011,4 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
     })
 })
 
-export default router
+module.exports = router;
