@@ -86,6 +86,8 @@ function stationToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
+                            console.log("Stationary data before assigning to object")
+                            console.log(entry)
                             obj = { Category: map.title, 
                                     Date: map.date, 
                                     Time: entry.time, 
@@ -95,6 +97,7 @@ function stationToXLSX(data){
                                     Gender: entry.gender, 
                                     Activity: entry.activity
                         }
+                        console.log('stationary objects: ' + obj)
                         stationary.push(obj)
                         }
                     }
@@ -123,12 +126,15 @@ function movingToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
+                            console.log("Moving data before assigning to object")
+                            console.log(entry)
                             obj = { Category: map.title, 
                                     Date: map.date, 
                                     Time: entry.time, 
                                     Point: k, 
                                     Mode: entry.mode
                         }
+                        console.log('moving objects: ' + obj)
                         moving.push(obj)
                         }
                     }
@@ -157,6 +163,8 @@ function soundToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
+                            console.log("Sound data before assigning to object")
+                            console.log(entry)
                             obj = { Category: map.title, 
                                     Date: map.date, 
                                     Time: entry.time, 
@@ -164,6 +172,7 @@ function soundToXLSX(data){
                                     'Average (dB)': entry.average,
                                     'Sound Types/Sources': entry.sound_type
                             }
+                            console.log('sound objects: ' + obj)
                             sound.push(obj)
                         }
                     }
@@ -194,6 +203,8 @@ function natureToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
+                            console.log("Nature data before assigning to object")
+                            console.log(entry)
 
                             obj = { Category: map.title, 
                                     Date: map.date, 
@@ -203,10 +214,15 @@ function natureToXLSX(data){
                                     'Kind/Area (ft/sq.ft)': '',
                                     Description: ''
                             }
+                            console.log('nature weather objects: ' + obj)
                             nature.push(obj)
 
                             for (var l = 0; l < entry.animal.length; l++){
                                 var animal = entry.animal[l]
+                                console.log("NATURE")
+                                console.log("animal data before assigning to object:")
+                                console.log(animal)
+
                                 obj = { Category: map.title, 
                                         Date: map.date, 
                                         Time: entry.time, 
@@ -215,10 +231,14 @@ function natureToXLSX(data){
                                         'Kind/Area (ft/sq.ft)': animal.kind,
                                         Description: animal.description 
                                 }
+                                console.log('nature animal objects: ' + obj)
                                 nature.push(obj)
                             }
                             for (var m = 0; m < entry.water.length; m++){
                                 var water = entry.water[m]
+                                console.log("NATURE")
+                                console.log("water data before assigning to object:")
+                                console.log(water)
                                 obj = { Category: map.title, 
                                         Date: map.date, 
                                         Time: entry.time, 
@@ -228,6 +248,7 @@ function natureToXLSX(data){
                                         Description: water.description 
                                         
                                 }
+                                console.log('nature water objects: ' + obj)
                                 nature.push(obj)
                             }
                         }
@@ -260,14 +281,22 @@ function lightToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                                 var entry = map.data[k]
+
+                                console.log("Light data before assigning to object")
+                                console.log(entry)
+
                                 for (var l = 0; l < entry.points.length; l++){
                                     var points = entry.points[l]
+                                        console.log("Light Points data before assigning to object")
+                                        console.log(points)
+
                                     obj = { Category: map.title, 
                                             Date: map.date, 
                                             Time: entry.time, 
                                             Point: l, 
                                             Description: points.light_description
                                 }
+                                console.log('light objects: ' + obj)
                                 light.push(obj)
                             }
                         }
@@ -275,7 +304,7 @@ function lightToXLSX(data){
                 }
             }
         }
-        console.log("light writes: " + lighting)
+        console.log("light writes: " + light)
 
         return light
     }
@@ -299,6 +328,9 @@ function boundToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
+                            console.log("Boundaries data before assigning to object")
+                            console.log(entry)
+
                             obj = { Category: map.title, 
                                     Date: map.date, 
                                     Time: entry.time, 
@@ -308,6 +340,7 @@ function boundToXLSX(data){
                                     Purpose: entry.purpose, 
                                     'Value (ft/sq.ft)': entry.value
                             }
+                            console.log('bound objects: ' + obj)
                             boundaries.push(obj)
                         }
                     }
@@ -336,6 +369,8 @@ function orderToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
+                            console.log("Order data before assigning to object")
+                            console.log(entry)
 
                             for (var l = 0; l < entry.points.length; l++){
                                 var points = entry.points[l]
@@ -345,6 +380,7 @@ function orderToXLSX(data){
                                         Point: l, 
                                         Description: points.description
                                 }
+                                console.log('order objects: ' + obj)
                                 order.push(obj)
                             }
                         }
