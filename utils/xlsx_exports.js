@@ -87,9 +87,9 @@ function stationToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
-                            console.log("Stationary data before assigning to object")
-                            console.log(entry)
-                            obj = { Category: map.title, 
+                            // console.log("Stationary data before assigning to object")
+                            // console.log(entry)
+                            obj = { Category: `${collection.title}(${k})`, 
                                     Date: map.date, 
                                     Time: entry.time, 
                                     Point: k, 
@@ -100,7 +100,6 @@ function stationToXLSX(data){
                         }
                         console.log('stationary objects: ' + obj)
                         stationary.push(obj)
-                        console.log(JSON.stringify(obj))
 
                         }
                     }
@@ -108,7 +107,6 @@ function stationToXLSX(data){
             }
         }
         console.log("stationary writes: ")
-        console.log(stationary)
         console.log(JSON.stringify(stationary))
 
         return stationary
@@ -133,9 +131,9 @@ function movingToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
-                            console.log("Moving data before assigning to object")
-                            console.log(entry)
-                            obj = { Category: map.title, 
+                            // console.log("Moving data before assigning to object")
+                            // console.log(entry)
+                            obj = { Category: `${collection.title}(${k})`, 
                                     Date: map.date, 
                                     Time: entry.time, 
                                     Point: k, 
@@ -143,7 +141,6 @@ function movingToXLSX(data){
                         }
                         console.log('moving objects: ')
                         console.log(obj)
-                        console.log(JSON.stringify(obj))
 
                         moving.push(obj)
                         }
@@ -152,7 +149,6 @@ function movingToXLSX(data){
             }
         }
         console.log("moving writes: " )
-        console.log(moving)
         console.log(JSON.stringify(moving))
 
         return moving
@@ -178,9 +174,9 @@ function soundToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
-                            console.log("Sound data before assigning to object")
-                            console.log(entry)
-                            obj = { Category: map.title, 
+                            // console.log("Sound data before assigning to object")
+                            // console.log(entry)
+                            obj = { Category: `${collection.title}(${k})`, 
                                     Date: map.date, 
                                     Time: entry.time, 
                                     Point: k, 
@@ -189,8 +185,7 @@ function soundToXLSX(data){
                             }
                             console.log('sound objects: ')
                             console.log(obj)
-                            console.log("Stringified")
-                            console.log(JSON.stringify(obj))
+
 
                             sound.push(obj)
                         }
@@ -199,8 +194,6 @@ function soundToXLSX(data){
             }
         }
         console.log("sound writes: ")
-        console.log(sound)
-        console.log("Stringified")
         console.log(JSON.stringify(sound))
 
 
@@ -227,10 +220,8 @@ function natureToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
-                            console.log("Nature data before assigning to object")
-                            console.log(entry)
 
-                            obj = { Category: map.title, 
+                            obj = { Category: `${collection.title}(${k})`, 
                                     Date: map.date, 
                                     Time: entry.time, 
                                     Point: k,
@@ -240,18 +231,17 @@ function natureToXLSX(data){
                             }
                             console.log('nature weather objects: ')
                             console.log(obj)
-                            console.log("Stringified")
-                            console.log(JSON.stringify(obj))
+
 
                             nature.push(obj)
 
                             for (var l = 0; l < entry.animal.length; l++){
                                 var animal = entry.animal[l]
-                                console.log("NATURE")
-                                console.log("animal data before assigning to object:")
-                                console.log(animal)
+                                // console.log("NATURE")
+                                // console.log("animal data before assigning to object:")
+                                // console.log(animal)
 
-                                obj = { Category: map.title, 
+                                obj = { Category: `${collection.title}(${k})`, 
                                         Date: map.date, 
                                         Time: entry.time, 
                                         Point: l,
@@ -261,17 +251,16 @@ function natureToXLSX(data){
                                 }
                                 console.log('nature animal objects: ')
                                 console.log(obj)
-                                console.log("Stringified")
-                                console.log(JSON.stringify(obj))
+
 
                                 nature.push(obj)
                             }
                             for (var m = 0; m < entry.water.length; m++){
                                 var water = entry.water[m]
-                                console.log("NATURE")
-                                console.log("water data before assigning to object:")
-                                console.log(water)
-                                obj = { Category: map.title, 
+                                // console.log("NATURE")
+                                // console.log("water data before assigning to object:")
+                                // console.log(water)
+                                obj = { Category: `${collection.title}(${k})`, 
                                         Date: map.date, 
                                         Time: entry.time, 
                                         Point: m,
@@ -282,8 +271,6 @@ function natureToXLSX(data){
                                 }
                                 console.log('nature water objects: ')
                                 console.log(obj)
-                                console.log("Stringified")
-                                console.log(JSON.stringify(obj))
 
                                 nature.push(obj)
                             }
@@ -293,8 +280,6 @@ function natureToXLSX(data){
             }
         }
         console.log("nature writes: " )
-        console.log(nature)
-        console.log("Stringified")
         console.log(JSON.stringify(nature))
 
         return nature
@@ -323,15 +308,10 @@ function lightToXLSX(data){
                         for(var k = 0; k < map.data.length; k++){
                                 var entry = map.data[k]
 
-                                console.log("Light data before assigning to object")
-                                console.log(entry)
-
                                 for (var l = 0; l < entry.points.length; l++){
                                     var points = entry.points[l]
-                                        console.log("Light Points data before assigning to object")
-                                        console.log(points)
 
-                                    obj = { Category: map.title, 
+                                    obj = { Category: `${collection.title}(${k})`, 
                                             Date: map.date, 
                                             Time: entry.time, 
                                             Point: l, 
@@ -339,8 +319,7 @@ function lightToXLSX(data){
                                 }
                                 console.log('light objects: ' )
                                 console.log(obj)
-                                console.log("Stringified")
-                                console.log(JSON.stringify(obj))
+
 
                                 light.push(obj)
                             }
@@ -350,8 +329,6 @@ function lightToXLSX(data){
             }
         }
         console.log("light writes: ")
-        console.log(light)
-        console.log("Stringified")
         console.log(JSON.stringify(light))
 
         return light
@@ -377,10 +354,8 @@ function boundToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
-                            console.log("Boundaries data before assigning to object")
-                            console.log(entry)
 
-                            obj = { Category: map.title, 
+                            obj = { Category: `${collection.title}(${k})`, 
                                     Date: map.date, 
                                     Time: entry.time, 
                                     Point: k, 
@@ -391,8 +366,7 @@ function boundToXLSX(data){
                             }
                             console.log('bound objects: ' )
                             console.log(obj)
-                            console.log("Stringified")
-                            console.log(JSON.stringify(obj))
+
 
                             boundaries.push(obj)
                         }
@@ -401,8 +375,6 @@ function boundToXLSX(data){
             }
         }
         console.log("boundaries writes: ")
-        console.log(boundaries)
-        console.log("Stringified")
         console.log(JSON.stringify(boundaries))
 
         return boundaries
@@ -427,12 +399,10 @@ function orderToXLSX(data){
                         if(map.data){
                         for(var k = 0; k < map.data.length; k++){
                             var entry = map.data[k]
-                            console.log("Order data before assigning to object")
-                            console.log(entry)
 
                             for (var l = 0; l < entry.points.length; l++){
                                 var points = entry.points[l]
-                                obj = { Category: map.title, 
+                                obj = { Category: `${collection.title}(${k})`, 
                                         Date: map.date, 
                                         Time: entry.time, 
                                         Point: l, 
@@ -440,8 +410,7 @@ function orderToXLSX(data){
                                 }
                                 console.log('order objects: ' )
                                 console.log(obj)
-                                console.log("Stringified")
-                                console.log(JSON.stringify(obj))
+
 
                                 order.push(obj)
                             }
@@ -451,8 +420,6 @@ function orderToXLSX(data){
             }
         }
         console.log("order writes: " )
-        console.log(order)
-        console.log("Stringified")
         console.log(JSON.stringify(order))
 
 
