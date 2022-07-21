@@ -33,6 +33,7 @@ function ProjectForm() {
     });
 
     const [dBPoints, setDBPoints] = React.useState([]);
+    const [dBArea, setDBArea] = React.useState([]);
 
     const handleChange = (index) => (e) => {
         var points = values.points;
@@ -51,14 +52,19 @@ function ProjectForm() {
         } 
         // Clear any messages and Move points to objects with latitude and longitude
         response.current.style.display = 'none';
-        var temp = [];
+        var tempP = [];
+        var tempA = []
         // Cant change values.points from .lat and lng because state and google maps js
         // So put it in a new variable for submission to DB
         values.points.map((point, index)=>(
-            temp.push({title: point.title, latitude: point.lat, longitude: point.lng})
+            tempP.push({title: point.title, latitude: point.lat, longitude: point.lng})
+        ))
+        values.area.map((point, index) => (
+            tempA.push({ latitude: point.lat, longitude: point.lng })
         ))
         //set DBPoints and then call create Project
-        setDBPoints(temp, createProject(e));
+        setDBPoints(tempP);
+        setDBArea(tempA, createProject(e));
     }
 
     const createProject = async (e) => {
@@ -67,7 +73,7 @@ function ProjectForm() {
             const response = await axios.post('/projects', JSON.stringify({ 
                 title: values.title,
                 description: values.description,
-                points: values.area,
+                points: dBArea,
                 //DB points also contains center point and all points above
                 standingPoints: dBPoints,
                 team: loc.pathname.split('/')[3]
@@ -87,6 +93,7 @@ function ProjectForm() {
 
             setMessage(error.response.data?.message);
             response.current.style.display = 'inline-block';
+            response.current.style.width = '30vw';
             return;
         }
     }
