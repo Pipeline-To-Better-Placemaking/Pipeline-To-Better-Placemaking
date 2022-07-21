@@ -1,41 +1,62 @@
 const XLSX = require('xlsx')
 
 
-projectExport= function(stationaryData, movingData, soundData, natureData, orderData,
+projectExport= function(stationaryData, movingData, soundData, natureData, lightData, orderData,
                         boundariesData){
 
     var workbook = XLSX.utils.book_new();
 
-    stationary = stationToXLSX(stationaryData)
-    console.log("stationary writes")
-    moving = movingToXLSX(movingData)
-    console.log("moving writes")
-    sound = soundToXLSX(soundData)
-    console.log("sound writes")
-    nature = natureToXLSX(natureData)
-    console.log("nature writes")
-    lighting = lightToXLSX(lightData)
-    console.log("light writes")
-    order = orderToXLSX(orderData)
-    console.log("order writes")
-    boundaries = boundToXLSX(boundariesData)
-    console.log("boundaries writes")
+    if(stationaryData.length){
+        console.log(stationaryData.length)
+        stationary = stationToXLSX(stationaryData)
+        var worksheetstat = XLSX.utils.json_to_sheet(stationary);
+        console.log("stationary writes")
+        XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
+    }
+    if(movingData.length){
+        console.log(movingData.length)
+        moving = movingToXLSX(movingData)
+        console.log("moving writes")
+        var worksheetmov = XLSX.utils.json_to_sheet(moving);
+        XLSX.utils.book_append_sheet(workbook, worksheetmov, 'PeopleInMotion');
+    }
+    if(soundData.length){
+        console.log(soundData.length)
+        sound = soundToXLSX(soundData)
+        console.log("sound writes")
+        var worksheetsound = XLSX.utils.json_to_sheet(sound);
+        XLSX.utils.book_append_sheet(workbook, worksheetsound, 'AcousticalProfile');
 
-    var worksheetstat = XLSX.utils.json_to_sheet(stationary);
-    var worksheetmov = XLSX.utils.json_to_sheet(moving);
-    var worksheetord = XLSX.utils.json_to_sheet(order);
-    var worksheetbounds = XLSX.utils.json_to_sheet(boundaries);
-    var worksheetlight = XLSX.utils.json_to_sheet(lighting);
-    var worksheetnat = XLSX.utils.json_to_sheet(nature);
-    var worksheetsound = XLSX.utils.json_to_sheet(sound);
+    }
+    if(natureData.length){
+        console.log(natureData.length)
+        nature = natureToXLSX(natureData)
+        console.log("nature writes")
+        var worksheetnat = XLSX.utils.json_to_sheet(nature);
+        XLSX.utils.book_append_sheet(workbook, worksheetnat, 'NaturePrevalence');
+    }
+    if(lightData.length){
+        console.log(lightData.length)
+        lighting = lightToXLSX(lightData)
+        console.log("light writes")
+        var worksheetlight = XLSX.utils.json_to_sheet(lighting);
+        XLSX.utils.book_append_sheet(workbook, worksheetlight, 'LightingProfile');
+    }
+    if(orderData.length){
+        console.log(orderData.length)
+        order = orderToXLSX(orderData)
+        console.log("order writes")
+        var worksheetord = XLSX.utils.json_to_sheet(order);
+        XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
 
-    XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
-    XLSX.utils.book_append_sheet(workbook, worksheetsound, 'AcousticalProfile');
-    XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
-    XLSX.utils.book_append_sheet(workbook, worksheetlight, 'LightingProfile');
-    XLSX.utils.book_append_sheet(workbook, worksheetnat, 'NaturePrevalence');
-    XLSX.utils.book_append_sheet(workbook, worksheetmov, 'PeopleInMotion');
-    XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
+    }
+    if(boundariesData.length){
+        console.log(boundariesData.length)
+        boundaries = boundToXLSX(boundariesData)
+        console.log("boundaries writes")
+        var worksheetbounds = XLSX.utils.json_to_sheet(boundaries);
+        XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
+    }
 
     // Excel Format
     return XLSX.write(workbook, 'PlaceProject.xlsx');
