@@ -7,53 +7,46 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
     var workbook = XLSX.utils.book_new();
 
     // if(stationaryData.length){
-        console.log(stationaryData.length)
         stationary = stationToXLSX(stationaryData)
         var worksheetstat = XLSX.utils.json_to_sheet(stationary);
-        console.log("stationary writes")
+        console.log("stationary writes: " + worksheetstat)
         XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
     // }
     // if(movingData.length){
-        console.log(movingData.length)
         moving = movingToXLSX(movingData)
-        console.log("moving writes")
+        console.log("moving writes: " + worksheetmov)
         var worksheetmov = XLSX.utils.json_to_sheet(moving);
         XLSX.utils.book_append_sheet(workbook, worksheetmov, 'PeopleInMotion');
     // }
     // if(soundData.length){
-        console.log(soundData.length)
         sound = soundToXLSX(soundData)
-        console.log("sound writes")
+        console.log("sound writes: " + worksheetsound)
         var worksheetsound = XLSX.utils.json_to_sheet(sound);
         XLSX.utils.book_append_sheet(workbook, worksheetsound, 'AcousticalProfile');
 
     // }
     // if(natureData.length){
-        console.log(natureData.length)
         nature = natureToXLSX(natureData)
-        console.log("nature writes")
+        console.log("nature writes: " + worksheetnat)
         var worksheetnat = XLSX.utils.json_to_sheet(nature);
         XLSX.utils.book_append_sheet(workbook, worksheetnat, 'NaturePrevalence');
     // }
     // if(lightData.length){
-        console.log(lightData.length)
         lighting = lightToXLSX(lightData)
-        console.log("light writes")
+        console.log("light writes: " + worksheetlight)
         var worksheetlight = XLSX.utils.json_to_sheet(lighting);
         XLSX.utils.book_append_sheet(workbook, worksheetlight, 'LightingProfile');
     // }
     // if(orderData.length){
-        console.log(orderData.length)
         order = orderToXLSX(orderData)
-        console.log("order writes")
+        console.log("order writes: " + worksheetord)
         var worksheetord = XLSX.utils.json_to_sheet(order);
         XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
 
     // }
     // if(boundariesData.length){
-        console.log(boundariesData.length)
         boundaries = boundToXLSX(boundariesData)
-        console.log("boundaries writes")
+        console.log("boundaries writes: " + worksheetbounds)
         var worksheetbounds = XLSX.utils.json_to_sheet(boundaries);
         XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
     // }
