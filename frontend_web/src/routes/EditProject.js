@@ -18,6 +18,9 @@ function EditProject() {
     const segment = loc.pathname.split('/');
 
     const [projectName, setProjectName] = React.useState('');
+    const [projectDesc, setProjectDesc] = React.useState('');
+
+    var updatedProj = {};
 
     const projectData = async () => {
         try {
@@ -32,6 +35,7 @@ function EditProject() {
 
             setProjectInfo(response.data);
             setProjectName(response?.data?.title);
+            setProjectDesc(response?.data?.description);
             setStandingPoints(response?.data?.standingPoints);
             setLoaded(true);
 
@@ -47,8 +51,28 @@ function EditProject() {
     }, []);
 
     //update submission (title) function (delete ?), redirect to TeamHome (project listings)
-    const updateProject = (e) => {
+    const updateProject = async (e) => {
         e.preventDefault();
+
+        updatedProj = { title: projectName, description: projectDesc }
+        console.log(updatedProj);
+
+        try {
+            const response = await axios.put(`/projects/${projectInfo._id}`, JSON.stringify(updatedProj), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                withCredentials: true
+            });
+
+            nav(`../`, { replace: true, state: { team: loc.state.team, userToken: loc.state.userToken } });
+
+        } catch (error) {
+            console.log('ERROR: ', error);
+            return;
+        }
     }
 
     const deleteProject = async (e) => {
@@ -64,6 +88,7 @@ function EditProject() {
             });
             
             nav('../', { replace: true, state: { team: loc.state.team, userToken: loc.state.userToken } });
+
         } catch (error) {
             console.log('ERROR: ', error);
             return;
@@ -88,6 +113,14 @@ function EditProject() {
                                 type='text' 
                                 value={ projectName } 
                                 onChange={ e => setProjectName(e.target.value) } 
+                            />
+                            <TextField
+                                className='nonFCInput'
+                                id='outlined-input'
+                                label='Project Description'
+                                type='text'
+                                value={projectDesc}
+                                onChange={e => setProjectDesc(e.target.value)}
                             />
                             <div style={{ display: 'flex', flexDirection: 'column', margin: '10px', padding: '5px', border: '1px solid #BEBEBE', borderRadius: '5px', justifyContent: 'center'}}>
                                 <h6 style={{alignSelf: 'center'}}>Project Map</h6>
