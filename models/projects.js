@@ -100,7 +100,7 @@ module.exports.updateProject = async function (projectId, newProject) {
 //collections will always be attached to only one project
 module.exports.deleteProject = async function(projectId) {
 
-    project = await Projects.findById(projectId)
+    const project = await Projects.findById(projectId)
 
     await Stationary_Map.projectCleanup(project._id)
 
@@ -137,7 +137,7 @@ module.exports.deleteProject = async function(projectId) {
     if(project.orderCollections.length){
         for(var i = 0; i < project.orderCollections.length; i++)   
             await Order_Collection.deleteCollection(project.orderCollections[i])
-    }s
+    }
     if(project.surveyCollections.length){    
         for(var i = 0; i < project.surveyCollections.length; i++)   
             await Survey_Collection.deleteCollection(project.surveyCollections[i])
