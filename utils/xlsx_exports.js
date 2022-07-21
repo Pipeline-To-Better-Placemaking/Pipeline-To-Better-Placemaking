@@ -17,21 +17,24 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
         stationary = stationToXLSX(stationaryData)
         // console.log("stationary writes: " + stationary)
         var worksheetstat = XLSX.utils.json_to_sheet(stationary);
-        console.log("stationary writes: " + worksheetstat)
+        console.log("stationary writes: ")
+        console.log(worksheetstat)
         XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
     // }
     // if(movingData.length){
         moving = movingToXLSX(movingData)
         // console.log("moving writes: " + moving)
         var worksheetmov = XLSX.utils.json_to_sheet(moving)
-        console.log("moving writes: " + worksheetmov)
+        console.log("moving writes: " )
+        console.log(worksheetmov)
         XLSX.utils.book_append_sheet(workbook, worksheetmov, 'PeopleInMotion');
     // }
     // if(soundData.length){
         sound = soundToXLSX(soundData)
         // console.log("sound writes: " + sound)
         var worksheetsound = XLSX.utils.json_to_sheet(sound)
-        console.log("sound writes: " + worksheetsound)
+        console.log("sound writes: ")
+        console.log(worksheetsound)
         XLSX.utils.book_append_sheet(workbook, worksheetsound, 'AcousticalProfile');
 
     // }
@@ -39,21 +42,24 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
         nature = natureToXLSX(natureData)
         // console.log("nature writes: " + nature)
         var worksheetnat = XLSX.utils.json_to_sheet(nature)
-        console.log("nature writes: " + worksheetnat)
+        console.log("nature writes: ")
+        console.log(worksheetnat)
         XLSX.utils.book_append_sheet(workbook, worksheetnat, 'NaturePrevalence');
     // }
     // if(lightData.length){
         lighting = lightToXLSX(lightData)
         // console.log("light writes: " + lighting)
         var worksheetlight = XLSX.utils.json_to_sheet(lighting)
-        console.log("light writes: " + worksheetlight)
+        console.log("light writes: ")
+        console.log(worksheetlight)
         XLSX.utils.book_append_sheet(workbook, worksheetlight, 'LightingProfile');
     // }
     // if(orderData.length){
         order = orderToXLSX(orderData)
         // console.log("order writes: " + order)
         var worksheetord = XLSX.utils.json_to_sheet(order)
-        console.log("order writes: " + worksheetord)
+        console.log("order writes: ")
+        console.log(worksheetord)
         XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
 
     // }
@@ -61,12 +67,21 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
         boundaries = boundToXLSX(boundariesData)
         // console.log("boundaries writes: " + boundaries)
         var worksheetbounds = XLSX.utils.json_to_sheet(boundaries);
-        console.log("boundaries writes: " + worksheetbounds)
+        console.log("boundaries writes: ")
+        console.log(worksheetbounds)
         XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
     // }
 
     // Excel Format
-    return XLSX.write(workbook, 'PlaceProject.xlsx');
+    console.log("fails after this?: ")
+    const xlsx_file = XLSX.write(workbook, 'PlaceProject.xlsx');
+    console.log("type of file: ")
+    console.log(typeof xlsx_file)
+
+    console.log("file contents? ")
+    console.log(xlsx_file)
+
+    return xlsx_file
 
 }
 
@@ -98,16 +113,16 @@ function stationToXLSX(data){
                                     Gender: entry.gender, 
                                     Activity: entry.activity
                         }
-                        console.log('stationary objects: ' + obj)
-                        stationary.push(obj)
+                        // console.log('stationary objects: ' + obj)
+                        // stationary.push(obj)
 
                         }
                     }
                 }
             }
         }
-        console.log("stationary writes: ")
-        console.log(JSON.stringify(stationary))
+        // console.log("stationary writes: ")
+        // console.log(JSON.stringify(stationary))
 
         return stationary
     }catch(error){
@@ -139,8 +154,8 @@ function movingToXLSX(data){
                                     Point: k, 
                                     Mode: entry.mode
                         }
-                        console.log('moving objects: ')
-                        console.log(obj)
+                        // console.log('moving objects: ')
+                        // console.log(obj)
 
                         moving.push(obj)
                         }
@@ -148,8 +163,8 @@ function movingToXLSX(data){
                 }
             }
         }
-        console.log("moving writes: " )
-        console.log(JSON.stringify(moving))
+        // console.log("moving writes: " )
+        // console.log(JSON.stringify(moving))
 
         return moving
     }catch(error){
@@ -183,8 +198,8 @@ function soundToXLSX(data){
                                     'Average (dB)': entry.average,
                                     'Sound Types/Sources': entry.sound_type
                             }
-                            console.log('sound objects: ')
-                            console.log(obj)
+                            // console.log('sound objects: ')
+                            // console.log(obj)
 
 
                             sound.push(obj)
@@ -193,8 +208,8 @@ function soundToXLSX(data){
                 }
             }
         }
-        console.log("sound writes: ")
-        console.log(JSON.stringify(sound))
+        // console.log("sound writes: ")
+        // console.log(JSON.stringify(sound))
 
 
     return sound
@@ -229,8 +244,8 @@ function natureToXLSX(data){
                                     'Kind/Area (ft/sq.ft)': '',
                                     Description: ''
                             }
-                            console.log('nature weather objects: ')
-                            console.log(obj)
+                            // console.log('nature weather objects: ')
+                            // console.log(obj)
 
 
                             nature.push(obj)
@@ -249,8 +264,8 @@ function natureToXLSX(data){
                                         'Kind/Area (ft/sq.ft)': animal.kind,
                                         Description: animal.description 
                                 }
-                                console.log('nature animal objects: ')
-                                console.log(obj)
+                                // console.log('nature animal objects: ')
+                                // console.log(obj)
 
 
                                 nature.push(obj)
@@ -269,8 +284,8 @@ function natureToXLSX(data){
                                         Description: water.description 
                                         
                                 }
-                                console.log('nature water objects: ')
-                                console.log(obj)
+                                // console.log('nature water objects: ')
+                                // console.log(obj)
 
                                 nature.push(obj)
                             }
@@ -279,8 +294,8 @@ function natureToXLSX(data){
                 }
             }
         }
-        console.log("nature writes: " )
-        console.log(JSON.stringify(nature))
+        // console.log("nature writes: " )
+        // console.log(JSON.stringify(nature))
 
         return nature
     }
@@ -317,8 +332,8 @@ function lightToXLSX(data){
                                             Point: l, 
                                             Description: points.light_description
                                 }
-                                console.log('light objects: ' )
-                                console.log(obj)
+                                // console.log('light objects: ' )
+                                // console.log(obj)
 
 
                                 light.push(obj)
@@ -328,8 +343,8 @@ function lightToXLSX(data){
                 }
             }
         }
-        console.log("light writes: ")
-        console.log(JSON.stringify(light))
+        // console.log("light writes: ")
+        // console.log(JSON.stringify(light))
 
         return light
     }
@@ -364,8 +379,8 @@ function boundToXLSX(data){
                                     Purpose: entry.purpose, 
                                     'Value (ft/sq.ft)': entry.value
                             }
-                            console.log('bound objects: ' )
-                            console.log(obj)
+                            // console.log('bound objects: ' )
+                            // console.log(obj)
 
 
                             boundaries.push(obj)
@@ -374,8 +389,8 @@ function boundToXLSX(data){
                 }
             }
         }
-        console.log("boundaries writes: ")
-        console.log(JSON.stringify(boundaries))
+        // console.log("boundaries writes: ")
+        // console.log(JSON.stringify(boundaries))
 
         return boundaries
     }catch(error){
@@ -408,8 +423,8 @@ function orderToXLSX(data){
                                         Point: l, 
                                         Description: points.description
                                 }
-                                console.log('order objects: ' )
-                                console.log(obj)
+                                // console.log('order objects: ' )
+                                // console.log(obj)
 
 
                                 order.push(obj)
@@ -419,8 +434,8 @@ function orderToXLSX(data){
                 }
             }
         }
-        console.log("order writes: " )
-        console.log(JSON.stringify(order))
+        // console.log("order writes: " )
+        // console.log(JSON.stringify(order))
 
 
     return order
