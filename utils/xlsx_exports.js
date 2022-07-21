@@ -121,10 +121,10 @@ function movingToXLSX(data){
                                     Mode: entry.mode
                         }
                         console.log(obj.Time)
+                    }
 
                         moving.push(obj)
                         }
-                    }
                 }
             }
         }
@@ -159,7 +159,7 @@ function soundToXLSX(data){
                                     Time: getDigitalTime(entry.time), 
                                     Point: k, 
                                     'Average (dB)': entry.average,
-                                    'Sound Types/Sources': [entry.sound_type]
+                                    'Sound Types/Sources': parseArrAsString(entry.sound_type)
                             }
 
 
@@ -214,7 +214,7 @@ function natureToXLSX(data){
                                 obj = { Category: `${collection.title}(${j})`, 
                                         Date: map.date, 
                                         Time: getDigitalTime(entry.time), 
-                                        Point: `${k} a(${l})`,
+                                        Point: `a(${l})`,
                                         'Weather (temp/sky)': '', 
                                         'Kind/Area (ft/sq.ft)': animal.kind,
                                         Description: animal.description 
@@ -229,7 +229,7 @@ function natureToXLSX(data){
                                 obj = { Category: `${collection.title}(${j})`, 
                                         Date: map.date, 
                                         Time: getDigitalTime(entry.time), 
-                                        Point: `${k} w(${m})`,
+                                        Point: `w(${m})`,
                                         'Weather (temp/sky)': '', 
                                         'Kind/Area (ft/sq.ft)': water.area,
                                         Description: water.description 
@@ -323,7 +323,7 @@ function boundToXLSX(data){
                                     Point: k, 
                                     Kind: entry.kind, 
                                     Description: entry.description, 
-                                    Purpose: [entry.purpose], 
+                                    Purpose: parseArrAsString(entry.purpose), 
                                     'Value (ft/sq.ft)': entry.value
                             }
 
@@ -362,8 +362,8 @@ function orderToXLSX(data){
                                 obj = { Category: `${collection.title}(${j})`, 
                                         Date: map.date, 
                                         Time: getDigitalTime(entry.time), 
-                                        Point: l, 
-                                        Description: [points.description]
+                                        Point: `${k} p(${l})`, 
+                                        Description: parseArrAsString(points.description)
                                 }
                                 // console.log('order objects: ' )
                                 // console.log(obj)
@@ -390,13 +390,21 @@ function getDigitalTime(time){
     var hour = time.getHours()
     var sec = time.getSeconds()
 
-    if (min > 12){
-      min = min - 12
+    if (hour > 12){
+      hour = hour - 12
       midday = 'PM'
     }
     var timeString = [hour, min, sec].join(':')
     timeString = timeString + '' + midday
     return timeString
+}
+
+function parseArrAsString(arr){
+    var newString
+    for(var i = 0; i < arr.length; i++){
+        newString += arr[i] + ','
+    }
+    return newString
 }
 
 module.exports = {projectExport}
