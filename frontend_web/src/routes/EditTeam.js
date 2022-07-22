@@ -18,19 +18,17 @@ export default function EditTeam(){
     const updateTeam = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`/teams/${segment[3]}`, {
+            const response = await axios.put(`/teams/${segment[3]}`, JSON.stringify({title: name}) ,{
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
                     'Authorization': `Bearer ${loc.state.userToken.token}`
                 },
-                body: {
-                    title: name
-                },
                 withCredentials: true
             });
-            loc.state.userToken.team.forEach((obj)=> (obj._id === segment[3] ? obj.title = name : null))
-            nav(`../teams/${segment[3]}`, { replace: true, state: {  team: loc.state.team, userToken: loc.state.userToken } });
+
+            loc.state.userToken.user.teams.forEach((obj)=> (obj._id === segment[3] ? obj.title = name : null))
+            nav(`../teams/${segment[3]}`, { replace: true, state: {  team: name, userToken: loc.state.userToken } });
         } catch (error) {
             console.log('ERROR: ', error);
             return;
@@ -49,7 +47,13 @@ export default function EditTeam(){
                 
                 withCredentials: true
             });
-            nav(`../`, { replace: true, state: { userToken: loc.state.userToken } });
+
+            var index = 0;
+            loc.state.userToken.user.teams.forEach((obj, ind) => (obj._id === segment[3] ? index = ind : null))
+            var tempToken = loc.state.userToken.user.teams;
+            tempToken.splice(index, 1)
+            loc.state.userToken.user.teams = tempToken
+            nav(`../`, { replace: true, state: { userToken: loc.state.userToken} });
         } catch (error) {
             console.log('ERROR: ', error);
             return;

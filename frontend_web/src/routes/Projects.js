@@ -39,7 +39,7 @@ function Projects(props){
 
             //on success  
             closeWindow(e);
-            nav(`../teams/${teamId}`, { replace: true, state: { team: teamAndUser.state.team, userToken: user } });
+            teamPull();
         } catch (error) {
             console.log('ERROR: ', error);
             return;
