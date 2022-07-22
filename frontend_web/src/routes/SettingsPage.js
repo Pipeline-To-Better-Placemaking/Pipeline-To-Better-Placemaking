@@ -103,7 +103,7 @@ function SettingsPage() {
             loc.state.userToken.user.firstname = response.data.firstname;
             loc.state.userToken.user.lastname = response.data.lastname;
             loc.state.userToken.user.email = response.data.email;
-            
+
             nav(loc.state?.from, { replace: true, state: loc.state });
 
         } catch (error) {
@@ -206,13 +206,13 @@ function SettingsPage() {
                         <Button
                             className='scheme'
                             component={Link}
-                            to='../'
+                            to={loc.state.from}
                             state={loc.state}
                             type='submit'
                             size='lg'
-                            id='updateUserButton'
+                            id='deleteButton'
                         >
-                            Update
+                            Cancel
                         </Button>
                     </Box>
                 </Card.Body>
