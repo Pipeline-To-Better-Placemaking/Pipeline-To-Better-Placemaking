@@ -12,11 +12,47 @@ export default function EditTeam(){
     const segment = loc.pathname.split('/');
     //console.log(segment[3]);
 
-    const updateTeam = (id) => (e) => {
-
+    const updateTeam = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.put(`/teams/${segment[3]}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                body: {
+                    title: name
+                },
+                withCredentials: true
+            });
+            loc.state.userToken.team.forEach((obj)=> (obj._id === segment[3] ? obj.title = name : null))
+            closeWindow(e);
+            nav(`../teams/${segment[3]}`, { replace: true, state: {  team: loc.state.team, userToken: loc.state.userToken } });
+        } catch (error) {
+            console.log('ERROR: ', error);
+            return;
+        }
     }
 
-    const deleteTeam = (id) => (e) => {
+    const deleteTeam = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.delete(`/teams/${segment[3]}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                
+                withCredentials: true
+            });
+            closeWindow(e);
+            nav(`../`, { replace: true, state: { userToken: loc.state.userToken } });
+        } catch (error) {
+            console.log('ERROR: ', error);
+            return;
+        }
 
     }
 
@@ -39,7 +75,7 @@ export default function EditTeam(){
                             type='submit'
                             size='lg'
                             id='updateTeamButton'
-                            onClick={updateTeam(segment[3])}
+                            onClick={updateTeam}
                         >
                             Update
                         </Button>
@@ -48,7 +84,7 @@ export default function EditTeam(){
                             type='submit'
                             size='lg'
                             id='deleteButton'
-                            onClick={deleteTeam(segment[3])}
+                            onClick={deleteTeam}
                         >
                             Delete <DeleteIcon/>
                         </Button>
