@@ -160,7 +160,8 @@ module.exports.deleteMap = async function(mapId) {
 
 module.exports.projectCleanup = async function(projectId) {
 
-    if (!await Maps.find({project: projectId})){
+    const data = await Maps.find({project: projectId})
+    if (data === null){
         return
     }
     

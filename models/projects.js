@@ -98,11 +98,19 @@ module.exports.updateProject = async function (projectId, newProject) {
 
 //when deleting a project, ensure that all of the references are deleted as well as the collections
 //collections will always be attached to only one project
+
 module.exports.deleteProject = async function(projectId) {
 
-    const project = await Projects.findById(projectId)
+    project = await Projects.findById(projectId)
 
-    
+    await Stationary_Map.projectCleanup(project._id)
+
+    for(var i = 0; i < project.subareas.length; i++){   
+        await Area.findByIdAndDelete(project.subareas[i])
+    }
+    for(var i = 0; i < project.standingPoints.length; i++){  
+        await Standing_Point.removeRefrence(project.standingPoints[i])
+    }
     if(project.stationaryCollections.length){    
         for(var i = 0; i < project.stationaryCollections.length; i++)   
             await Stationary_Collection.deleteCollection(project.stationaryCollections[i])
@@ -135,13 +143,11 @@ module.exports.deleteProject = async function(projectId) {
         for(var i = 0; i < project.surveyCollections.length; i++)   
             await Survey_Collection.deleteCollection(project.surveyCollections[i])
     }
+          
+    return await Projects.findByIdAndDelete(projectId)
+}
 
-    for(var i = 0; i < project.subareas.length; i++){   
-        await Area.findByIdAndDelete(project.subareas[i])
-    }
-    for(var i = 0; i < project.standingPoints.length; i++){  
-        await Standing_Point.findByIdAndDelete(project.standingPoints[i])
-    }
+module.exports.deleteTeamProjects = async function(projectId) {
           
     return await Projects.findByIdAndDelete(projectId)
 }
@@ -151,7 +157,7 @@ module.exports.teamCleanup = async function(teamId) {
     const doc =  await Projects.find({ team: teamId })
 
     for(var i = 0; i < doc.length; i++){
-        await Projects.deleteProject(doc[i]._id)
+        await Projects.deleteTeamProjects(doc[i]._id)
     }
 }
 
