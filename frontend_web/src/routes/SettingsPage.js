@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useLocation, useNavigate} from 'react-router-dom'
 import Card from 'react-bootstrap/Card';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -10,17 +11,23 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import axios from '../api/axios';
 
 function SettingsPage() {
+    const loc = useLocation();
+    const nav = useNavigate();
     const [values, setValues] = React.useState({
-        updateFName: '',
-        updateLName: '',
-        updateEmail: '',
+        updateFName: loc.state ? loc.state?.userToken?.user?.firstname : '',
+        updateLName: loc.state ? loc.state?.userToken?.user?.lastname : '',
+        updateEmail: loc.state ? loc.state?.userToken?.user?.email : '',
         updatePassword: '',
         confirmUpdatePassword: '',
         showPassword: false,
         showConfirmPassword: false
     });
+
+    const [message, setMessage] = React.useState('');
+    const infoMess = React.useRef(null);
 
     const handleChange = (prop) => (event) => {
         setValues({ 
@@ -47,7 +54,78 @@ function SettingsPage() {
         event.preventDefault();
     };
 
-    const updateUser = () => { }
+    const handleUpdate = (e) => {
+        e.preventDefault();
+        if (values.updatePassword === '' && values.confirmUpdatePassword === '') {
+            updateUser(false, e);
+        } else if ((values.updatePassword !== '' && values.updatePassword !== values.confirmUpdatePassword) || (values.updatePassword === '' && values.updatePassword !== values.confirmUpdatePassword)) {
+            setMessage(`Passwords do not match`);
+            infoMess.current.style.display = 'inline-block';
+            return;
+        } else if (values.updatePassword !== '' && values.updatePassword === values.confirmUpdatePassword ){
+            if (values.updatePassword.length < 8 || /\s/g.test(values.updatePassword) || !/\d/g.test(values.updatePassword) || !/[!@#$%^&*]/g.test(values.updatePassword) || !/[A-Z]/g.test(values.updatePassword)) {  
+                setMessage(`*Please provide a valid password <br/><div style={{fontSize: 'smaller'}}> *Minimum password length of 8 characters, including a number, a symbol, and an uppercase letter</div>`);
+                infoMess.current.style.display = 'inline-block';
+                return;
+            }
+            updateUser(true, e);
+        }
+    }
+     
+    const updateUser = (pw) => async (e) => {
+
+        var user = {}
+        if (values.updateFName !== loc.state?.userToken?.user?.firstname || values.updateFName !== ''){
+            user.firstname = values.updateFName;
+        }
+        if (values.updateLName !== loc.state?.userToken?.user?.lastname || values.updateLName !== '') {
+            user.lastname = values.updateLName;
+        }
+        if (values.updateEmail !== loc.state?.userToken?.user?.email || values.updateEmail !== '') {
+            user.email = values.updateEmail;
+        }
+        if(pw){
+            user.password = values.updatePassword;
+        }
+        console.log(user);
+
+        try {
+            const response = await axios.put('/users', JSON.stringify(user), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                withCredentials: true
+            });
+
+            var updatedUser = loc.state.userToken.user;
+
+            if(user.email){
+                updatedUser.email = values.email;
+            }
+            if(user.firstname){
+                updatedUser.firstname = values.firstname;
+            }
+            if (user.lastname) {
+                updatedUser.lastname = values.lastname;
+            }
+
+            loc.state.userToken.user = updatedUser;
+            console.log(loc.state.userToken.user);
+
+            nav('../', { replace: true, state: loc.state });
+
+        } catch (error) {
+
+            setMessage(error.response.data?.message);
+            infoMess.current.style.display = 'inline-block';
+            infoMess.current.style.width = '30vw';
+            return;
+        }
+
+    }
+
     const verify = () => { }
     const userLogout = () => { }
 
@@ -56,6 +134,7 @@ function SettingsPage() {
             <h1>Settings</h1>
             <Card id='settingsCard'>
                 <Card.Body>
+                    <span ref={infoMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                     <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
                         <TextField 
                             className='nonFCInput' 
@@ -130,7 +209,7 @@ function SettingsPage() {
                             type='submit' 
                             size='lg' 
                             id='updateUserButton' 
-                            onClick={ updateUser }
+                            onClick={ handleUpdate }
                         >
                             Update
                         </Button>

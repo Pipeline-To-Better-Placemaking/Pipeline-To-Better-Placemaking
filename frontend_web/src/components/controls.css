@@ -165,7 +165,6 @@ div.newPointBlock{
     left: calc(50vw - 150px);
 }
 
-div.newPointBlock,
 #editAreaBlock{
     top: 130px;
 }
@@ -176,6 +175,7 @@ div.newPointBlock,
     margin: 0px calc(50vw - 32px);
     bottom: 0;
 }
+
 button#bottomCloseButton, button#closeButton{
     width: 100%;
     z-index: 1000;
@@ -400,8 +400,6 @@ select#activitySelect, input.dateTimePickers{
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     appearance: none;
 }
-
-
 
 span.MuiTabs-indicator{
     display: flex;

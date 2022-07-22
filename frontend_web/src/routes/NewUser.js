@@ -126,9 +126,7 @@ function NewUser(props) {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
-            //console.log(response.data);
-            //console.log(response.accessToken);
-            //console.log(JSON.stringify(response))
+            
             let user = response.data;
             props.onLogin(true, user);
             //redirect user to url/home
