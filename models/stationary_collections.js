@@ -53,7 +53,7 @@ module.exports.deleteCollection = async function(collectionId){
     for(var i = 0; i < collection.maps.length; i++){
         console.log("deleting from deleteCollection STAT")
         console.log(collection.maps[i])
-        await Stationary_Map.deleteMap(collection.maps[i])
+        await Stationary_Map.findByIdAndDelete(collection.maps[i])
     }
 
     return await Collection.findByIdAndDelete(collectionId)

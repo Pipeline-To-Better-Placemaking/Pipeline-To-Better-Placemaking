@@ -102,14 +102,7 @@ module.exports.deleteProject = async function(projectId) {
 
     const project = await Projects.findById(projectId)
 
-    await Stationary_Map.projectCleanup(project._id)
-
-    for(var i = 0; i < project.subareas.length; i++){   
-        await Area.findByIdAndDelete(project.subareas[i])
-    }
-    for(var i = 0; i < project.standingPoints.length; i++){  
-        await Standing_Point.removeRefrence(project.standingPoints[i])
-    }
+    
     if(project.stationaryCollections.length){    
         for(var i = 0; i < project.stationaryCollections.length; i++)   
             await Stationary_Collection.deleteCollection(project.stationaryCollections[i])
@@ -141,6 +134,13 @@ module.exports.deleteProject = async function(projectId) {
     if(project.surveyCollections.length){    
         for(var i = 0; i < project.surveyCollections.length; i++)   
             await Survey_Collection.deleteCollection(project.surveyCollections[i])
+    }
+
+    for(var i = 0; i < project.subareas.length; i++){   
+        await Area.findByIdAndDelete(project.subareas[i])
+    }
+    for(var i = 0; i < project.standingPoints.length; i++){  
+        await Standing_Point.findByIdAndDelete(project.standingPoints[i])
     }
           
     return await Projects.findByIdAndDelete(projectId)
