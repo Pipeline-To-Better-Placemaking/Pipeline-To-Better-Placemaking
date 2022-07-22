@@ -16,6 +16,7 @@ import axios from '../api/axios';
 function SettingsPage() {
     const loc = useLocation();
     const nav = useNavigate();
+
     const [values, setValues] = React.useState({
         updateFName: loc.state ? loc.state?.userToken?.user?.firstname : '',
         updateLName: loc.state ? loc.state?.userToken?.user?.lastname : '',
@@ -25,9 +26,6 @@ function SettingsPage() {
         showPassword: false,
         showConfirmPassword: false
     });
-
-    console.log(loc.state);
-
     const [message, setMessage] = React.useState('');
     const infoMess = React.useRef(null);
 
@@ -58,7 +56,7 @@ function SettingsPage() {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        console.log(values);
+        //console.log(values);
         if (values.updatePassword === '' && values.confirmUpdatePassword === '') {
             updateUser(false);
         } else if ((values.updatePassword !== '' && values.updatePassword !== values.confirmUpdatePassword) || (values.updatePassword === '' && values.updatePassword !== values.confirmUpdatePassword)) {
@@ -90,7 +88,7 @@ function SettingsPage() {
         if(pw){
             user.password = values.updatePassword;
         }
-        console.log(user);
+        //console.log(user);
 
         try {
             const response = await axios.put('/users', JSON.stringify(user), {
@@ -102,8 +100,10 @@ function SettingsPage() {
                 withCredentials: true
             });
 
-            loc.state.userToken.user = response.data
-            console.log(loc.state.userToken.user);
+            loc.state.userToken.user.firstname = response.data.firstname;
+            loc.state.userToken.user.lastname = response.data.lastname;
+            loc.state.userToken.user.email = response.data.email;
+            
             nav(loc.state?.from, { replace: true, state: loc.state });
 
         } catch (error) {
