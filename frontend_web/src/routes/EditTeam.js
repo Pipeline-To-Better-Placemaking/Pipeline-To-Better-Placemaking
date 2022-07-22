@@ -4,10 +4,13 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import axios from '../api/axios.js';
+
 
 export default function EditTeam(){
     const loc = useLocation();
+    const nav = useNavigate();
     const [name, setName] = React.useState(loc.state ? loc.state.team : '')
     const segment = loc.pathname.split('/');
     //console.log(segment[3]);
