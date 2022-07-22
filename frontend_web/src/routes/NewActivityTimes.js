@@ -1,15 +1,20 @@
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate , Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Card from 'react-bootstrap/Card';
 import DoneIcon from '@mui/icons-material/Done';
+import axios from '../api/axios';
 
 import TimeForm from '../components/TimeForm';
 import { testNames } from '../functions/HelperFunctions';
 import '../components/controls.css';
 
 function NewActivityTimes(props) {
+    const nav = useNavigate();
     const loc = useLocation();
+    const [message, setMessage] = React.useState('');
+    const response = React.useRef(null);
+
     const date = new Date();
     const [activity, setActivity] = React.useState({
         title: loc.state.form.title,
@@ -22,13 +27,13 @@ function NewActivityTimes(props) {
     const [timeSlots, setTimeSlots] = React.useState([]);
 
     const collections = {
-        boundaries_maps: 'boundariesCollections',
-        light_maps: 'lightCollections',
-        moving_maps: 'movingCollections',
-        nature_maps: 'natureCollections',
-        order_maps: 'orderCollections',
-        sound_maps: 'soundCollections',
-        stationary_maps: 'stationaryCollections'
+        boundaries_maps: ['boundaries_collections', 'boundary'],
+        light_maps: ['light_collections', 'light'],
+        moving_maps: ['moving_collections', 'moving'],
+        nature_maps: ['nature_collections', 'nature'],
+        order_maps: ['order_collections', 'order'],
+        sound_maps: ['sound_collections', 'sound'],
+        stationary_maps: ['stationary_collections', 'stationary']
     }
 
     //dynamically adds removes timeSlot cards for the activity
@@ -40,10 +45,10 @@ function NewActivityTimes(props) {
                         instance={value.instance}
                         index={value.index !== index ? index : value.index} 
                         time={value.time} 
-                        surveyors={value.surveyors} 
+                        surveyors={value.maxResearchers} 
                         points={value.points} 
                         deleteTime={ deleteTimeSlot } 
-                        updateTime={updateTimeSlot} 
+                        updateTime={ updateTimeSlot } 
                         standingPoints={props.projectInfo.standingPoints}
                     />
                 </Card.Body>
@@ -57,8 +62,9 @@ function NewActivityTimes(props) {
             instance: activity.number,
             index: temp.length,
             time: `${date.getHours()}:${date.getMinutes() > 10 ? date.getMinutes() : `0${date.getMinutes()}`}`,
-            surveyors: 0,
-            points: {}
+            maxResearchers: 0,
+            points: {},
+            researchers: []
         });
         setTimeSlots(temp);
         //shallow comparison for React to recognize for update
@@ -79,12 +85,35 @@ function NewActivityTimes(props) {
         setTimeSlots(temp);
     }
 
-    const addNewActivity = (e) => {
-        // timeSlots hold an array of objects with (index, instance) time, surveyors, and points (standingPoints)
-        // props.projectInfo._id <-- gets projectId
-    
+    const addNewActivity = async (e) => {
+        try {
+            const response = await axios.post(`/projects/${props.projectInfo._id}/${collections[activity.activity][0]}`, JSON.stringify({ 
+                title: activity.title,
+                date: activity.date
+            }), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${loc.state.userToken.token}` 
+                },
+                withCredentials: true
+            });
+            //console.log(JSON.stringify(response));
+            let user = response.data;
+            // user login confirmation and navigation handling in App.js
+            // retrieve user's name or name and token to verify status
+            props.onLogin(true, user);
 
-        //API call to add activity, with time slots (there can be multiple)
+            //redirect user to url/home
+            nav('/home', { state: { userToken: user } });
+
+        } catch (error) {
+            //user login error
+            //console.log('ERROR: ', error);
+            setMessage(error.response.data?.message);
+            response.current.style.display = 'inline-block';
+            return;
+        }
     }
 
     console.log(timeSlots);
@@ -106,9 +135,11 @@ function NewActivityTimes(props) {
                     Time per Location: { activity.timer }
                 </Card.Header>
                 <Card.Body id='timeCardContent'>
+                    <span ref={response} style={{ display: 'none', color: 'red' }}>{message}</span>
                     <Button id='newTimeButton' onClick={ newTime } className='scheme'>New Time Slot</Button>
                     { timeCards(timeSlots) }
                 </Card.Body>
+                <Button component={Link} to='../activities' state={{team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken}}>Cancel</Button>
             </Card>
         </div>
     );

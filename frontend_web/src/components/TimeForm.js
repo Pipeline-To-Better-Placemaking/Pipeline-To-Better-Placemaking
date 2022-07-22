@@ -53,7 +53,7 @@ function TimeForm(props) {
             </div>
             <br/>
             <div className='form-group'>
-                <Form.Label>Surveyors:</Form.Label>
+                <Form.Label>Maximum Number of Researchers:</Form.Label>
                 <Form.Control id='surveyorSelect' type='number' value={ timeForm.surveyors } aria-label='surveyorsSelect' onChange={ handleChange('surveyors') }/>
             </div>
             <br />

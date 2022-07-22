@@ -203,8 +203,8 @@ function SettingsPage() {
                         >
                             Update
                         </Button>
+                        <br />
                         <Button
-                            className='scheme'
                             component={Link}
                             to={loc.state.from}
                             state={loc.state}

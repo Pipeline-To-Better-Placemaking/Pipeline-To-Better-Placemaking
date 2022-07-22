@@ -146,8 +146,9 @@ function ProjectPage(){
     var subAreas = projectInfo?.subareas;
     
     //console.log(drawer);
+    console.log(projectInfo);
     //console.log(standingPoints);
-    //console.log(drawer);
+    console.log(drawer);
     return (
         <div id='ProjectPage'>
             <TabPanel state={ loc.state }/>
