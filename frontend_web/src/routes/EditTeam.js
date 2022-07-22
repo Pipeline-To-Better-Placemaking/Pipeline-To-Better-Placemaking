@@ -30,7 +30,6 @@ export default function EditTeam(){
                 withCredentials: true
             });
             loc.state.userToken.team.forEach((obj)=> (obj._id === segment[3] ? obj.title = name : null))
-            closeWindow(e);
             nav(`../teams/${segment[3]}`, { replace: true, state: {  team: loc.state.team, userToken: loc.state.userToken } });
         } catch (error) {
             console.log('ERROR: ', error);
@@ -50,7 +49,6 @@ export default function EditTeam(){
                 
                 withCredentials: true
             });
-            closeWindow(e);
             nav(`../`, { replace: true, state: { userToken: loc.state.userToken } });
         } catch (error) {
             console.log('ERROR: ', error);
