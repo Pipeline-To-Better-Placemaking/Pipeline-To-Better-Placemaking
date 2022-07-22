@@ -182,7 +182,7 @@ const AppNavBar = (props) => {
                             { settings.map((setting) => (
                                 <MenuItem 
                                     component={ Link } 
-                                    state={ setting.page === 'Account' ? location.state : null }
+                                    state={ setting.page === 'Account' ? {...location.state, from: location.pathname} : null }
                                     to={ setting.route } 
                                     key={ setting.page } 
                                     onClick={ setting.page === 'Account' ? handleCloseUserMenu : handleLogOut }

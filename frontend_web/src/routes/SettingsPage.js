@@ -26,6 +26,8 @@ function SettingsPage() {
         showConfirmPassword: false
     });
 
+    console.log(loc.state);
+
     const [message, setMessage] = React.useState('');
     const infoMess = React.useRef(null);
 
@@ -100,10 +102,9 @@ function SettingsPage() {
                 withCredentials: true
             });
 
-            console.log(response.data);
+            loc.state.userToken.user = response.data
             console.log(loc.state.userToken.user);
-
-            nav('../', { replace: true, state: loc.state });
+            nav(loc.state?.from, { replace: true, state: loc.state });
 
         } catch (error) {
 
