@@ -56,8 +56,9 @@ function SettingsPage() {
 
     const handleUpdate = (e) => {
         e.preventDefault();
+        console.log(values);
         if (values.updatePassword === '' && values.confirmUpdatePassword === '') {
-            updateUser(false, e);
+            updateUser(false);
         } else if ((values.updatePassword !== '' && values.updatePassword !== values.confirmUpdatePassword) || (values.updatePassword === '' && values.updatePassword !== values.confirmUpdatePassword)) {
             setMessage(`Passwords do not match`);
             infoMess.current.style.display = 'inline-block';
@@ -68,11 +69,11 @@ function SettingsPage() {
                 infoMess.current.style.display = 'inline-block';
                 return;
             }
-            updateUser(true, e);
+            updateUser(true);
         }
     }
      
-    const updateUser = (pw) => async (e) => {
+    const updateUser = async (pw) => {
 
         var user = {}
         if (values.updateFName !== loc.state?.userToken?.user?.firstname || values.updateFName !== ''){
@@ -166,7 +167,7 @@ function SettingsPage() {
                                 id='outlined-adornment-password'
                                 type={ values.showPassword ? 'text' : 'password' }
                                 value={ values.updatePassword }
-                                onChange={ handleChange('password') }
+                                onChange={ handleChange('updatePassword') }
                                 endAdornment={
                                     <InputAdornment position='end'>
                                         <IconButton
@@ -188,7 +189,7 @@ function SettingsPage() {
                                 id='outlined-adornment-password'
                                 type={ values.showConfirmPassword ? 'text' : 'password' }
                                 value={ values.confirmUpdatePassword }
-                                onChange={ handleChange('confirmPassword') }
+                                onChange={ handleChange('confirmUpdatePassword') }
                                 endAdornment={
                                     <InputAdornment position='end'>
                                         <IconButton
