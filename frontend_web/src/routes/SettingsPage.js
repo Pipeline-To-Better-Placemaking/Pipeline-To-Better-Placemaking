@@ -76,13 +76,13 @@ function SettingsPage() {
     const updateUser = async (pw) => {
 
         var user = {}
-        if (values.updateFName !== loc.state?.userToken?.user?.firstname || values.updateFName !== ''){
+        if (values.updateFName !== loc.state?.userToken?.user?.firstname && values.updateFName !== ''){
             user.firstname = values.updateFName;
         }
-        if (values.updateLName !== loc.state?.userToken?.user?.lastname || values.updateLName !== '') {
+        if (values.updateLName !== loc.state?.userToken?.user?.lastname && values.updateLName !== '') {
             user.lastname = values.updateLName;
         }
-        if (values.updateEmail !== loc.state?.userToken?.user?.email || values.updateEmail !== '') {
+        if (values.updateEmail !== loc.state?.userToken?.user?.email && values.updateEmail !== '') {
             user.email = values.updateEmail;
         }
         if(pw){
@@ -100,19 +100,9 @@ function SettingsPage() {
                 withCredentials: true
             });
 
-            var updatedUser = loc.state.userToken.user;
-
-            if(user.email){
-                updatedUser.email = values.email;
-            }
-            if(user.firstname){
-                updatedUser.firstname = values.firstname;
-            }
-            if (user.lastname) {
-                updatedUser.lastname = values.lastname;
-            }
-
-            loc.state.userToken.user = updatedUser;
+            loc.state.userToken.user = response?.data?.user
+            
+            console.log(response?.data?.user);
             console.log(loc.state.userToken.user);
 
             nav('../', { replace: true, state: loc.state });
