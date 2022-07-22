@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useLocation, useNavigate} from 'react-router-dom'
+import { Link, useLocation, useNavigate} from 'react-router-dom'
 import Card from 'react-bootstrap/Card';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -100,9 +100,7 @@ function SettingsPage() {
                 withCredentials: true
             });
 
-            loc.state.userToken.user = response?.data?.user
-            
-            console.log(response?.data?.user);
+            console.log(response.data);
             console.log(loc.state.userToken.user);
 
             nav('../', { replace: true, state: loc.state });
@@ -201,6 +199,17 @@ function SettingsPage() {
                             size='lg' 
                             id='updateUserButton' 
                             onClick={ handleUpdate }
+                        >
+                            Update
+                        </Button>
+                        <Button
+                            className='scheme'
+                            component={Link}
+                            to='../'
+                            state={loc.state}
+                            type='submit'
+                            size='lg'
+                            id='updateUserButton'
                         >
                             Update
                         </Button>
