@@ -102,6 +102,10 @@ module.exports.deleteMap = async function(mapId) {
 }
 
 module.exports.projectCleanup = async function(projectId) {
+    if (!await Maps.find({project: projectId})){
+        return
+    }
+
     return await Maps.deleteMany({ project: projectId })
 }
 

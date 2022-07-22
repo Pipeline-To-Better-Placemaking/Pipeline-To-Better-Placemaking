@@ -81,17 +81,20 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
     if(await Team.isOwner(team._id,user._id)){
     
         //delete ALL of the map collections which contain a projectId which belongs to the team
-        for(var i = 0; i < team.projects.length; i++ ){
-            proj = team.projects[0]
-            await Stationary_Map.projectCleanup(proj)
-            await Moving_Map.projectCleanup(proj)
-            await Sound_Map.projectCleanup(proj)
-            await Nature_Map.projectCleanup(proj)
-            await Light_Map.projectCleanup(proj)
-            await Order_Map.projectCleanup(proj)
-            await Boundaries_Map.projectCleanup(proj)
+        if(team.projects.length){
+            for(var i = 0; i < team.projects.length; i++ ){
+                proj = team.projects[i]
+                await Stationary_Map.projectCleanup(proj)
+                await Moving_Map.projectCleanup(proj)
+                await Sound_Map.projectCleanup(proj)
+                await Nature_Map.projectCleanup(proj)
+                await Light_Map.projectCleanup(proj)
+                await Order_Map.projectCleanup(proj)
+                await Boundaries_Map.projectCleanup(proj)
+            }
+    
+            await Project.teamCleanup(team._id)
         }
-        await Project.teamCleanup(team._id)
         res.json(await Team.deleteTeam(team._id))
 
     }
