@@ -112,7 +112,7 @@ function ProjectPage(){
                 withCredentials: true
             });
 
-            // console.log(response.data);
+            console.log(response.data);
             var date = new Date(dateTime);
             var map = results;
             //console.log(typeof (dateTime));
