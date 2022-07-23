@@ -493,8 +493,8 @@ router.delete('/:id/nature_collections/:collectionId', passport.authenticate('jw
     collection = await Nature_Collection.findById(req.params.collectionId)
 
     if(await Team.isAdmin(project.team,user._id)){
-        Area.removeRefrence(collection.area)
-        res.status(201).json(await Project.deleteSoundCollection(project._id,req.params.collectionId))
+        await Area.removeRefrence(collection.area)
+        res.status(201).json(await Project.deleteNatureCollection(project._id,req.params.collectionId))
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
@@ -559,7 +559,7 @@ router.delete('/:id/light_collections/:collectionId', passport.authenticate('jwt
     collection = await Light_Collection.findById(req.params.collectionId)
 
     if(await Team.isAdmin(project.team,user._id)){
-        Area.removeRefrence(collection.area)
+        await Area.removeRefrence(collection.area)
         res.status(201).json(await Project.deleteLightCollection(project._id,req.params.collectionId))
     }
     else{
@@ -625,7 +625,7 @@ router.delete('/:id/boundaries_collections/:collectionId', passport.authenticate
     collection = await Boundaries_Collection.findById(req.params.collectionId)
 
     if(await Team.isAdmin(project.team,user._id)){
-        Area.removeRefrence(collection.area)
+        await Area.removeRefrence(collection.area)
         res.status(201).json(await Project.deleteBoundariesCollection(project._id,req.params.collectionId))
     }
     else{
@@ -691,7 +691,7 @@ router.delete('/:id/order_collections/:collectionId', passport.authenticate('jwt
     collection = await Order_Collection.findById(req.params.collectionId)
 
     if(await Team.isAdmin(project.team,user._id)){
-        Area.removeRefrence(collection.area)
+        await Area.removeRefrence(collection.area)
         res.status(201).json(await Project.deleteOrderCollection(project._id,req.params.collectionId))
     }
     else{
