@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableWithoutFeedback, Modal, TouchableOpacity } from 'react-native';
 import { Icon, Text, Button, Input, Spinner } from '@ui-kitten/components';
-import { BlueViewableArea } from '../components/content.component';
+import { BlueViewableArea, LoadingSpinner } from '../components/content.component';
 import { PasswordModal } from './passwordModal.component';
 import { ResetMessage } from './resetMessage.component';
 import { ErrorMessage } from './errorMessage.component';
@@ -190,15 +190,8 @@ export const LoginScreen = ( props ) => {
           back={goBack}
         />
 
-        <Modal
-          animationType='fade'
-          transparent={true}
-          visible={loading}
-        >
-          <View style={styles.modalBackgroundStyle}>
-            <Spinner />
-          </View>
-        </Modal>
+        <LoadingSpinner loading={loading} />
+        
         <Text style={styles.title} category='h1' status='control'>Login</Text>
         <View>
           <Text category='label' style={styles.inputText}> Email Address: </Text>

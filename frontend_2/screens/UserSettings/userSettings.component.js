@@ -36,10 +36,6 @@ export function UserSettings(props) {
 
   const themeContext = React.useContext(ThemeContext);
 
-  const UserIcon = (props) => (
-    <Icon {...props} fill='grey' style={styles.iconSize} name='person'/>
-  );
-
   const editIcon = (props) => (
     <Icon {...props} fill='white' name='edit'/>
   );
@@ -52,8 +48,8 @@ export function UserSettings(props) {
     <Icon {...props} fill='white' name='checkmark'/>
   );
 
-  const mailIcon = (props) => (
-    <Icon {...props} fill='white' name='email'/>
+  const faqIcon = (props) => (
+    <Icon {...props} fill='white' name='globe'/>
   );
 
   const themeIcon = (props) => {
@@ -224,6 +220,10 @@ export function UserSettings(props) {
     if (!/.+\@.+\..+/g.test(emailText)) return false;
     if (/\s/g.test(emailText)) return false;
     return true;
+  }
+
+  const launchFaq = ()=>{
+    console.log('going to faq page (website)');
   }
 
   const isValidEmail = checkEmail();
@@ -407,6 +407,10 @@ export function UserSettings(props) {
                 VERIFY EMAIL
               </Button>
           }
+
+          <Button style={styles.button} onPress={launchFaq} accessoryRight={faqIcon}>
+            FAQ
+          </Button>
 
           <MapConfigButtonGroup/>
 

@@ -105,7 +105,7 @@ export function LightMap(props) {
             {/* main mapview container */}
             <PressMapAreaWrapper
                 area={props.area}
-                mapHeight={'97.5%'}
+                mapHeight={'97%'}
                 onPress={checkPoint}
             >
                 {/* shows the project area on the map */}

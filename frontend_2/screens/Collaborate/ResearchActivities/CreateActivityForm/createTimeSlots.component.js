@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Select, SelectItem, Modal, Text, Button, Input, Icon, Divider, List, Card } from '@ui-kitten/components';
 import { DateTimePickerModal } from "react-native-modal-datetime-picker";
-import { ViewableArea, ContentContainer } from '../../../components/content.component';
+import { ViewableArea, ContentContainer, LoadingSpinner } from '../../../components/content.component';
 import { HeaderExit } from '../../../components/headers.component';
 
 import { styles } from './createTimeSlots.styles';
@@ -309,6 +309,9 @@ export function CreateTimeSlots(props) {
       <SelectPointsModal />
 
       <ContentContainer>
+        
+        <LoadingSpinner loading={props.loading} />
+        
         <View style={styles.container}>
 
           <View style={styles.btnView}>

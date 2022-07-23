@@ -6,8 +6,9 @@ import { useTheme,  Button,  Icon, Text } from '@ui-kitten/components';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
-import CountDown from 'react-native-countdown-component';
 import { DataEntryModal } from '../../../components/Activities/PeopleMoving/dataEntryModal.component.js';
+import { PopupMessage } from '../../../components/Activities/popupMessage.component.js';
+import CountDown from 'react-native-countdown-component';
 
 import { styles } from '../activity.style';
 
@@ -37,6 +38,7 @@ export function PeopleMovingActivity(props) {
     const [dataModal, setDataModal] = useState(false)
     const [lineTools, setLineTools] = useState(false)
     const [viewAllLines, setViewAllLines] = useState(false)
+    const [popupMsg, setPopupMsg] = useState(true);
 
     // The index of the standing points
     const [standingIndex, setStandingIndex] = useState(0)
@@ -223,6 +225,7 @@ export function PeopleMovingActivity(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
+            setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
         }
@@ -304,6 +307,10 @@ export function PeopleMovingActivity(props) {
             <ContentContainer>
 
                 <TimeBar/>
+
+                <PopupMessage
+                    visible={popupMsg}
+                />
 
                 <DataEntryModal
                     visible={dataModal}

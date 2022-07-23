@@ -7,6 +7,7 @@ import { StationaryActivityMap } from '../../../components/Maps/stationaryActivi
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
 import { DeleteModal } from '../../../components/Activities/deleteModal.component';
+import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import CountDown from 'react-native-countdown-component';
 
 import { styles } from '../activity.style';
@@ -32,6 +33,8 @@ export function StationaryActivity(props) {
     const [timer, setTimer] = useState(initalTime);
     // controls timer interval instance
     let id;
+
+    const [popupMsg, setPopupMsg] = useState(true);
 
     // Shows the moving and data input modal
     const [moving, setMoving] = useState(false)
@@ -204,6 +207,7 @@ export function StationaryActivity(props) {
         // only start the timer when we start the test
         if(start){
             // console.log('useEffect start');
+            setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
         }
@@ -261,6 +265,10 @@ export function StationaryActivity(props) {
             <ContentContainer>
 
                     <TimeBar/>
+
+                    <PopupMessage
+                        visible={popupMsg}
+                    />
 
                     <DataEntryModal
                         visible={dataModal}

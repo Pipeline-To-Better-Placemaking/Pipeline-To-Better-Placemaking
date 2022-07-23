@@ -7,6 +7,7 @@ import { MovingModal } from '../../../components/Activities/Stationary/movingMod
 import { SoundMap } from '../../../components/Maps/soundMap.component';
 import CountDown from 'react-native-countdown-component';
 
+import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import { DecibelEntryModal } from '../../../components/Activities/Sound/decibelEntryModal.component';
 import { MainSoundModal } from '../../../components/Activities/Sound/mainSoundModal.component';
 import { SoundsModal } from '../../../components/Activities/Sound/soundsModal.component';
@@ -46,6 +47,7 @@ export function SoundTest(props){
     
 
     // control modals
+    const [popupMsg, setPopupMsg] = useState(true);
     const [decibelModal, setDecibelModal] = useState(false);
     const [mainSoundModal, setMainSoundModal] = useState(false);
     const [soundsModal, setSoundsModal] = useState(false);
@@ -294,6 +296,7 @@ export function SoundTest(props){
         // only start the timer when we start the test
         if(start){
             // console.log('useEffect start');
+            setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
         }
@@ -356,6 +359,10 @@ export function SoundTest(props){
             <ContentContainer>
                     
                     <TimeBar/>
+
+                    <PopupMessage
+                        visible={popupMsg}
+                    />
                     
                     <DecibelEntryModal
                         visible={decibelModal}

@@ -9,6 +9,7 @@ import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.c
 import { DataModal } from '../../../components/Activities/Boundary/dataModal.component';
 import { PurposeModal } from '../../../components/Activities/Boundary/purposeModal.component';
 import { DeleteModal } from '../../../components/Activities/deleteModal.component';
+import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import { calcArea, haverSine } from '../../../components/helperFunctions';
 import CountDown from 'react-native-countdown-component';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -66,6 +67,7 @@ export function BoundaryTest(props){
     // Modal controls/tools
     const [errorModal, setErrorModal] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
+    const [popupMsg, setPopupMsg] = useState(true);
     const [dataModal, setDataModal] = useState(false);
     const [prompts, setPrompts] = useState([]);
     const [purposeModal, setPurposeModal] = useState(false);
@@ -184,6 +186,7 @@ export function BoundaryTest(props){
         // only start the timer when we start the test
         if(start){
             //console.log('useEffect start');
+            setPopupMsg(false);
             startTime(timer);
         }
     }, [start]);
@@ -291,6 +294,7 @@ export function BoundaryTest(props){
                         <View>
                             <DropDownPicker
                                 style={styles.filterSelect}
+                                disabled={!start}
                                 open={open}
                                 setOpen={setOpen}
                                 value={value}
@@ -501,25 +505,29 @@ export function BoundaryTest(props){
         }
         // otherwise the button toolbar is rendered
         else{
-            return(
-                <View style={styles.buttonRow}>
-                    <Button style={styles.buttons} onPress={() => boundaryType(0)}>
-                        <View>
-                            <Text style={styles.buttonTxt}>Constructed</Text>
-                        </View>
-                    </Button>
-                    <Button style={styles.buttons} onPress={() => boundaryType(1)}>
-                        <View>
-                            <Text style={styles.buttonTxt}>Material</Text>
-                        </View>
-                    </Button>
-                    <Button style={styles.buttons} onPress={() => boundaryType(2)}>
-                        <View>
-                            <Text style={styles.buttonTxt}>Shelter</Text>
-                        </View>
-                    </Button>
-                </View>
-            )
+            // only if the test has started
+            if(start){
+                return(
+                    <View style={styles.buttonRow}>
+                        <Button style={styles.buttons} onPress={() => boundaryType(0)}>
+                            <View>
+                                <Text style={styles.buttonTxt}>Constructed</Text>
+                            </View>
+                        </Button>
+                        <Button style={styles.buttons} onPress={() => boundaryType(1)}>
+                            <View>
+                                <Text style={styles.buttonTxt}>Material</Text>
+                            </View>
+                        </Button>
+                        <Button style={styles.buttons} onPress={() => boundaryType(2)}>
+                            <View>
+                                <Text style={styles.buttonTxt}>Shelter</Text>
+                            </View>
+                        </Button>
+                    </View>
+                )
+            }
+            else return null
         }
     }
     
@@ -537,14 +545,18 @@ export function BoundaryTest(props){
         <ViewableArea>
             <Header text={'Spatial Boundaries'}/>
             <ContentContainer>
-                    
+                                        
+                    <TimeBar/>
+
                     <ErrorModal 
                         errorModal={errorModal}
                         errorMessage={errorMsg}
                         dismiss={dismiss}
                     />
-                    
-                    <TimeBar/>
+
+                    <PopupMessage
+                        visible={popupMsg}
+                    />
 
                     <DataModal
                         visible={dataModal}

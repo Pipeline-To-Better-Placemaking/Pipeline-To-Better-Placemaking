@@ -16,6 +16,13 @@ export const styles = StyleSheet.create({
 
     viewContainer:{
         height: '45%',
+        marginTop: '50%',
+        borderRadius: 35,
+        borderWidth: 1
+    },
+
+    animalViewContainer:{
+        height: '40%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,

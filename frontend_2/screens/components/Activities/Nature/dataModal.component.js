@@ -81,7 +81,7 @@ export function DataModal(props) {
         <Modal transparent={true} animationType='slide' visible={props.visible}>
             <KeyboardAvoidingView behavior='position' style={styles.avoid}>
                 <View style={styles.modalContainer}>
-                    <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
+                    <View style={[styles.animalViewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                         <ScrollView>
                             <Text category={'h1'} style={styles.titleText}>Animal Data</Text>
                             <View style={styles.dataView}>

@@ -6,6 +6,7 @@ import { useTheme, Button, Text } from '@ui-kitten/components';
 import { LightMap } from '../../../components/Maps/lightMap.component.js';
 import { DataModal } from '../../../components/Activities/Light/dataModal.component';
 import { DeleteModal } from '../../../components/Activities/deleteModal.component';
+import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import CountDown from 'react-native-countdown-component';
 
 import { styles } from './lightTest.styles';
@@ -32,6 +33,7 @@ export function LightTest(props) {
     const [deleteModal, setDeleteModal] = useState(false);
     const [deleteIndex, setDeleteIndex] = useState(-1);
     const [deleteDesc, setDeleteDesc] = useState('');
+    const [popupMsg, setPopupMsg] = useState(true);
     const [tempMarker, setTempMarker] = useState();
 
     // Used to store all the data info
@@ -145,6 +147,7 @@ export function LightTest(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
+            setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
         }
@@ -209,6 +212,10 @@ export function LightTest(props) {
             <ContentContainer>
 
                 <TimeBar/>
+
+                <PopupMessage
+                    visible={popupMsg}
+                />
 
                 <DataModal
                     visible={dataModal}

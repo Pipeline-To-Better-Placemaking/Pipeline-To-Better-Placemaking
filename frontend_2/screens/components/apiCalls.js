@@ -39,7 +39,7 @@ export async function getProject(project) {
   } else {
     return null;
   }
-};
+}
 
 // merge sorts props.activities to have earliest date tests come 1st
 const mergeSortEarlyDate = (arr) =>{
@@ -254,7 +254,7 @@ export async function getFilteredProjectDetails(project) {
   } else {
     return null;
   }
-};
+}
 
 export async function getTeam(team) {
   let token = await AsyncStorage.getItem("@token");
@@ -284,7 +284,7 @@ export async function getTeam(team) {
   } else {
     return null;
   }
-};
+}
 
 export async function getAllUserProjects() {
   let projectList = [];
@@ -351,7 +351,7 @@ export async function postInvite(id, claim) {
   } else {
     return false;
   }
-};
+}
 
 export async function getUserInfo() {
   let token = await AsyncStorage.getItem("@token");
@@ -389,7 +389,7 @@ export async function getUserInfo() {
   } else {
     return null;
   }
-};
+}
 
 export async function getTimeSlot(route, id) {
   let token = await AsyncStorage.getItem("@token");
@@ -419,7 +419,7 @@ export async function getTimeSlot(route, id) {
   } else {
     return null;
   }
-};
+}
 
 export async function deleteTimeSlot(route, id) {
   let token = await AsyncStorage.getItem("@token");
@@ -477,7 +477,7 @@ export async function getCollection(route, collection) {
   } else {
     return null;
   }
-};
+}
 
 export async function getAllCollectionInfo(collectionDetails) {
   let token = await AsyncStorage.getItem("@token");
@@ -615,7 +615,7 @@ export async function getAllCollectionInfo(collectionDetails) {
   } else {
     return null;
   }
-};
+}
 
 // This merge sort is used in getAllResults to sort all of the projects
 // To have latest date tests come 1st

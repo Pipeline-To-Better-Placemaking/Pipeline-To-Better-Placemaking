@@ -7,6 +7,7 @@ import { OrderMap } from '../../../components/Maps/orderMap.component.js';
 import { DataModal } from '../../../components/Activities/Order/dataModal.component';
 import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import { DescModal } from '../../../components/Activities/Order/descModal.component';
+import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import CountDown from 'react-native-countdown-component';
 
 import { styles } from './orderTest.styles';
@@ -32,6 +33,7 @@ export function OrderTest(props) {
     const [dataModal, setDataModal] = useState(false);
     const [descModal, setDescModal] = useState(false);
     const [tempMarker, setTempMarker] = useState();
+    const [popupMsg, setPopupMsg] = useState(true);
     const [deleteModal, setDeleteModal] = useState(false);
     const [deleteIndex, setDeleteIndex] = useState(-1);
     const [deleteDesc, setDeleteDesc] = useState('');
@@ -134,7 +136,7 @@ export function OrderTest(props) {
         })
 
         // sets the description and index, then pulls up the modal
-        setDeleteDesc(data[index].kind + " data point");
+        setDeleteDesc(data[index].kind.toLowerCase() + " data point");
         setDeleteExtraDesc(descriptionFormat);
         setDeleteIndex(index);
         setDeleteModal(true);
@@ -183,6 +185,7 @@ export function OrderTest(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
+            setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
         }
@@ -254,6 +257,10 @@ export function OrderTest(props) {
             <ContentContainer>
 
                 <TimeBar/>
+
+                <PopupMessage
+                    visible={popupMsg}
+                />
 
                 <DataModal
                     visible={dataModal}

@@ -4,6 +4,7 @@ import { ViewableArea, ContentContainer } from '../../../components/content.comp
 import { Header } from '../../../components/headers.component';
 import { useTheme, Text, Button } from '@ui-kitten/components';
 import { MapAreaWrapper, ShowArea } from '../../../components/Maps/mapPoints.component.js';
+import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import CountDown from 'react-native-countdown-component';
 
 import { styles } from './surveyActivity.styles';
@@ -24,6 +25,8 @@ export function SurveyActivity(props) {
   // controls timer interval instance
   const [id, setId] = useState();
 
+  const [popupMsg, setPopupMsg] = useState(true);
+
   const endActivity = () => {
     setStart(false);
     clearInterval(id);
@@ -34,6 +37,7 @@ export function SurveyActivity(props) {
   useEffect(() =>{
     // only start the timer when we start the test
     if(start){
+        setPopupMsg(false);
         startTime(timer);
         setInitalStart(false);
     }
@@ -117,6 +121,11 @@ export function SurveyActivity(props) {
       <Header text={'Community Survey'}/>
       <ContentContainer>
         <TimeBar/>
+
+        <PopupMessage
+          visible={popupMsg}
+        />
+
         <View style={styles.mainView}>
             <View style={styles.mapWrapper}>
               <MapAreaWrapper area={area} mapHeight={'100%'}>

@@ -11,6 +11,7 @@ import { WaterModal } from '../../../components/Activities/Nature/waterModal.com
 import { VegeModal } from '../../../components/Activities/Nature/vegeModal.component';
 import { DataModal } from '../../../components/Activities/Nature/dataModal.component';
 import { DeleteModal } from '../../../components/Activities/deleteModal.component';
+import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import { calcArea } from '../../../components/helperFunctions';
 import CountDown from 'react-native-countdown-component';
 
@@ -36,7 +37,9 @@ export function NatureTest(props) {
     // Modal controls
     const [errorModal, setErrorModal] = useState(false);
     const errorMsg = "Need at least 3 points to confirm a body of water";
-    const [weatherModal, setWeatherModal] = useState(false);
+    const [popupMsg, setPopupMsg] = useState(false);
+    // set to true so the user can leave the app to check the weather before starting the test (avoiding the timer/responsiveness issue)
+    const [weatherModal, setWeatherModal] = useState(true);
     const [waterModal, setWaterModal] = useState(false);
     const [vegeModal, setVegeModal] = useState(false);
     const [dataModal, setDataModal] = useState(false);
@@ -149,8 +152,9 @@ export function NatureTest(props) {
     
     // Closes the weather modal and saves the data
     const closeWeather = async (inf) =>{
-        weatherData.push(inf)
-        setWeatherModal(false)
+        weatherData.push(inf);
+        setWeatherModal(false);
+        setPopupMsg(true);
     }
 
     const closeWater = async (inf) =>{
@@ -222,12 +226,23 @@ export function NatureTest(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
-            // pull up the weather modal when the test 1st starts
-            if(initalStart) setWeatherModal(true);
+            setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
         }
     }, [start]);
+
+    // used to close popup message after 5 s
+    // useEffect(() =>{
+    //     if(popupMsg){
+    //     // after 5 seconds, close the popup and reset the interval (so the interval doesn't keep running)
+    //     let tempID = setInterval(()=>{
+    //         setPopupMsg(false);
+    //         clearInterval(tempID);
+    //     // 5000 ms -> 5 s
+    //     }, 5000)
+    //     }
+    // }, [popupMsg]);
 
     // begins/updates the timer
     function startTime(current){
@@ -387,6 +402,10 @@ export function NatureTest(props) {
                     errorModal={errorModal}
                     errorMessage={errorMsg}
                     dismiss={dismiss}
+                />
+
+                <PopupMessage
+                    visible={popupMsg}
                 />
 
                 <WeatherModal
