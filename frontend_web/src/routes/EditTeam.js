@@ -50,9 +50,11 @@ export default function EditTeam(){
 
             var index = 0;
             loc.state.userToken.user.teams.forEach((obj, ind) => (obj._id === segment[3] ? index = ind : null))
+            
             var tempToken = loc.state.userToken.user.teams;
             tempToken.splice(index, 1)
             loc.state.userToken.user.teams = tempToken
+
             nav(`../`, { replace: true, state: { userToken: loc.state.userToken} });
         } catch (error) {
             console.log('ERROR: ', error);

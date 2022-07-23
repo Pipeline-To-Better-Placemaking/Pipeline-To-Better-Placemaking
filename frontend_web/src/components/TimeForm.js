@@ -9,12 +9,19 @@ function TimeForm(props) {
     const activitySelection = useLocation();
     const index = props.index;
     const standingPoints = props.standingPoints;
-    const [timeForm, setTimeForm] = React.useState({
+    const [timeForm, setTimeForm] = React.useState(props.points ? {
+        type: props.type,
         instance: props.instance,
         index: props.index,
         time: props.time,
         surveyors: props.surveyors,
         points: props.points
+    } : {
+        type: props.type,
+        instance: props.instance,
+        index: props.index,
+        time: props.time,
+        surveyors: props.surveyors
     });
 
     const handleChange = (key) => (e) => {
@@ -39,8 +46,6 @@ function TimeForm(props) {
             ...timeForm, index: props.index})
     }, [props.index]);
 
-    console.log(index);
-
     return(
         <div className='timeForm'>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -49,7 +54,7 @@ function TimeForm(props) {
             </div>
             <div className='form-group'>
                 <Form.Label>Start Time:</Form.Label>
-                <Form.Control id='timeSelect' type='time' placeholder='Select an activity type' value={ timeForm.time } aria-label='timeSelect' onChange={ handleChange('time') }/>
+                <Form.Control id='timeSelect' type='time' placeholder='Select a starting time' value={ timeForm.time } aria-label='timeSelect' onChange={ handleChange('time') }/>
             </div>
             <br/>
             <div className='form-group'>
@@ -57,22 +62,26 @@ function TimeForm(props) {
                 <Form.Control id='surveyorSelect' type='number' value={ timeForm.surveyors } aria-label='surveyorsSelect' onChange={ handleChange('surveyors') }/>
             </div>
             <br />
-            <div className='form-group'>
-                <Form.Label>Points:</Form.Label>
-                <div className="mb-3">
-                    { standingPoints.map((point, index) => (
-                        <Form.Check
-                            inline
-                            key={point._id}
-                            label={`${point.title}`}
-                            name={`${point._id}`}
-                            type='checkbox'
-                            id={`inline-checkbox-${index}`}
-                            onChange={handleChecked}
-                        />
-                    )) }
+            {
+                props.points ?
+                <div className='form-group'>
+                    <Form.Label>Points:</Form.Label>
+                    <div className="mb-3">
+                        { standingPoints.map((point, index) => (
+                            <Form.Check
+                                inline
+                                key={point._id}
+                                label={point.title}
+                                name={index}
+                                type='checkbox'
+                                id={`inline-checkbox-${index}`}
+                                onChange={handleChecked}
+                            />
+                        )) }
+                    </div>
                 </div>
-            </div>
+                : null
+            }
         </div>
     );
 }

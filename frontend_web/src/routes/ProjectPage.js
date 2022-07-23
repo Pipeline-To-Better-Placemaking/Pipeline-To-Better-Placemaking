@@ -113,6 +113,7 @@ function ProjectPage(){
             });
 
             console.log(response.data);
+            
             var date = new Date(dateTime);
             var map = results;
             //console.log(typeof (dateTime));
