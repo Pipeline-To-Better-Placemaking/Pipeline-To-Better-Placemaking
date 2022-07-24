@@ -124,9 +124,9 @@ function ProjectPage(){
                 map[apiCategory[cat]][`${date.toLocaleDateString()}`] = {};
             }
             if(index === 0){
-                map[apiCategory[cat]][date.toLocaleDateString()][date.toLocaleTimeString()] = await response.data;
+                map[apiCategory[cat]][date.toLocaleDateString()][response?.data.date.toLocaleTimeString()] = await response.data;
             }else{
-                map[apiCategory[cat]][date.toLocaleDateString()][`${date.toLocaleTimeString()}(${index})`] = await response.data;
+                map[apiCategory[cat]][date.toLocaleDateString()][`${response?.data.date.toLocaleTimeString()}(${index})`] = await response.data;
             }
 
             results = map;
