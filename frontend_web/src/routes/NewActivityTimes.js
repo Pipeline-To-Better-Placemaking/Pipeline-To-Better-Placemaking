@@ -111,8 +111,8 @@ function NewActivityTimes(props) {
     }
 
     const addNewActivity = async (e) => {
-        console.log(props.projectInfo._id);
-        console.log(collections[activity.activity][0]);
+        //console.log(props.projectInfo._id);
+        //console.log(collections[activity.activity][0]);
 
         try {
             const response = await axios.post(`/projects/${props.projectInfo._id}/${collections[activity.activity][0]}`, JSON.stringify({ 
@@ -131,21 +131,21 @@ function NewActivityTimes(props) {
             });
 
             let collectionDetails = await response.data;
-            console.log(collectionDetails);
+            //console.log(collectionDetails);
 
             for(let i = 0; i < timeSlots.length; i++){
                 await addNewTimeSlots(timeSlots[i], activity.title, collectionDetails._id, `${activity.activity}/`, timeSlots[i].type)
             }
 
-            console.log('After add new time slots');
+            //console.log('After add new time slots');
             collectionDetails.test_type = collections[activity.activity][1];
-            console.log(collectionDetails.test_type);
+            //console.log(collectionDetails.test_type);
             collectionDetails.date = new Date(collectionDetails.date);
-            console.log(collectionDetails.date);
+            //console.log(collectionDetails.date);
 
             let area = props.projectInfo.subareas.findIndex((element) => element._id === collectionDetails.area);
             collectionDetails.area = props.projectInfo.subareas[area];
-            console.log('After add new time slots');
+            //console.log('After add new time slots');
             nav('../', { replace: true, state: {team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken} });
             
         } catch (error) {
@@ -168,9 +168,9 @@ function NewActivityTimes(props) {
             selectedPoints = props.projectInfo.standingPoints;
         }
 
-        console.log(selectedPoints);
-        console.log(timeSlot);
-        console.log((new Date(`${activity.date} ${timeSlot.time}`)).toISOString())
+        //console.log(selectedPoints);
+        //console.log(timeSlot);
+        //console.log((new Date(`${activity.date} ${timeSlot.time}`)).toISOString())
 
         try {
             const response = await axios.post(`/${timeSlotName}`, JSON.stringify({
@@ -200,8 +200,6 @@ function NewActivityTimes(props) {
         }
 
     }
-
-    /*console.log(timeSlots);*/
 
     return(
         <div id='newActivityTimes'>

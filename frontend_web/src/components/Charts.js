@@ -10,7 +10,6 @@ function Charts(props) {
     const type = props.type;
     const projectArea = Area(props.projArea);
 
-
     const boundsColor = {
         Constructed: '#FF00E5',
         Shelter: '#FFA64D',
@@ -643,7 +642,8 @@ function Charts(props) {
 
     const multiNatureChart = (data) => {
         var waterAndVeg = [{nature: 'Water', area: 0}, {nature: 'Vegetation', area: 0}];
-        var domestic = 0, wild = 0;
+        var domestic = 0;
+        var wild = 0;
         var dogs = 0, cats = 0, otherD = 0;
         var otherW = 0;
         var ducks = 0;
@@ -815,13 +815,17 @@ function Charts(props) {
 
                         if (typeArr[typePoint].kind === 'Domesticated'){
                             domestic++;
+                            console.log(domestic);
                             if (typeArr[typePoint].description === 'Other'){
                                 otherD++;
+                                console.log(otherD);
                             }
                         } else {
                             wild++;
+                            console.log(wild);
                             if (typeArr[typePoint].description === 'Other'){
                                 otherW++;
+                                console.log(otherW);
                             }
                         }
                     }
