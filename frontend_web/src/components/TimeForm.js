@@ -14,14 +14,14 @@ function TimeForm(props) {
         instance: props.instance,
         index: props.index,
         time: props.time,
-        surveyors: props.surveyors,
+        maxResearchers: props.maxResearchers,
         points: props.points
     } : {
         type: props.type,
         instance: props.instance,
         index: props.index,
         time: props.time,
-        surveyors: props.surveyors
+        maxResearchers: props.maxResearchers
     });
 
     const handleChange = (key) => (e) => {
@@ -59,7 +59,7 @@ function TimeForm(props) {
             <br/>
             <div className='form-group'>
                 <Form.Label>Maximum Number of Researchers:</Form.Label>
-                <Form.Control id='surveyorSelect' type='number' value={ timeForm.surveyors } aria-label='surveyorsSelect' onChange={ handleChange('surveyors') }/>
+                <Form.Control id='surveyorSelect' type='number' value={ timeForm.maxResearchers } aria-label='surveyorsSelect' onChange={ handleChange('maxResearchers') }/>
             </div>
             <br />
             {

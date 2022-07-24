@@ -8,7 +8,6 @@ import axios from '../api/axios';
 import TimeForm from '../components/TimeForm';
 import { testNames } from '../functions/HelperFunctions';
 import '../components/controls.css';
-import { act } from 'react-dom/test-utils';
 
 function NewActivityTimes(props) {
     const nav = useNavigate();
@@ -18,7 +17,7 @@ function NewActivityTimes(props) {
 
     const date = new Date();
     const [activity, setActivity] = React.useState({
-        title: loc.state.form.title,
+        title: loc.state.form.title && loc.state.form.title !== '' ? loc.state.form.title : testNames(loc.state.form.activity),
         activity: loc.state.form.activity,
         date: loc.state.form.date,
         timer: loc.state.form.timer,
@@ -48,7 +47,7 @@ function NewActivityTimes(props) {
                             instance={value.instance}
                             index={value.index !== index ? index : value.index} 
                             time={value.time} 
-                            surveyors={value.maxResearchers} 
+                            maxResearchers={value.maxResearchers} 
                             points={value.points} 
                             deleteTime={ deleteTimeSlot } 
                             updateTime={ updateTimeSlot } 
@@ -59,7 +58,7 @@ function NewActivityTimes(props) {
                             instance={value.instance}
                             index={value.index !== index ? index : value.index}
                             time={value.time}
-                            surveyors={value.maxResearchers}
+                            maxResearchers={value.maxResearchers}
                             deleteTime={deleteTimeSlot}
                             updateTime={updateTimeSlot}
                             standingPoints={props.projectInfo.standingPoints}
@@ -171,6 +170,7 @@ function NewActivityTimes(props) {
 
         console.log(selectedPoints);
         console.log(timeSlot);
+        console.log((new Date(`${activity.date} ${timeSlot.time}`)).toISOString())
 
         try {
             const response = await axios.post(`/${timeSlotName}`, JSON.stringify({
@@ -179,7 +179,7 @@ function NewActivityTimes(props) {
                 researchers: [],
                 project: props.projectInfo._id, 
                 collection: id,
-                date: timeSlot.time,
+                date: (new Date(`${activity.date} ${timeSlot.time}`)).toISOString(),
                 maxResearchers: `${timeSlot.maxResearchers}`
             }), {
                 headers: {
