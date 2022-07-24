@@ -249,14 +249,14 @@ export default function FullMap(props) {
             console.log(index);
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Water<br/>Location ${index[1] + 1}<br/>Description: ${data.Results[title][date][time].data[index[0]].water[index[1]].description}<br/>Area: ${data.Results[title][date][time].data[0].vegetation[index].area} sq.ft.`
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Water<br/>Location ${index[1] + 1}<br/>Description: ${data.Results[title][date][time].data[index[0]].water[index[1]].description}<br/>Area: ${data.Results[title][date][time].data[index[0]].water[index[1]].area} sq.ft.`
             popup.style.display = 'flex';
         } else if(ver === 3){
             // version 3 == vegetation nature collection
             console.log(index);
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Vegetation<br/>Location ${index[1] + 1}<br/>Description: ${data.Results[title][date][time].data[index[0]].vegetation[index[1]].description}<br/>Area: ${data.Results[title][date][time].data[0].vegetation[index].area} sq.ft.`
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Vegetation<br/>Location ${index[1] + 1}<br/>Description: ${data.Results[title][date][time].data[index[0]].vegetation[index[1]].description}<br/>Area: ${data.Results[title][date][time].data[index[0]].vegetation[index[1]].area} sq.ft.`
             popup.style.display = 'flex';
         } else {
             // version 4 moving collections
@@ -288,7 +288,7 @@ export default function FullMap(props) {
                                         key={`${sdate}.${time}.${ind2}`}
                                         shape='circle'
                                         info={
-                                            `<div><b>${testNames(title)}</b><br/>Location ${ind2}<br/>Animal: ${natureObj.description}<br/>[${natureObj.kind}]</div>`}
+                                            `<div><b>${testNames(title)}</b><br/>Location ${ind2+1}<br/>Animal: ${natureObj.description}<br/>[${natureObj.kind}]</div>`}
                                         position={natureObj.marker}
                                         markerType={natureType}
                                     /> 
@@ -315,7 +315,7 @@ export default function FullMap(props) {
                                     shape={ title === 'order_maps' ? 'triangle' : 'lightcircle'}
                                     info={ point.light_description ?
                                         (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`) 
-                                            : (point.description ? (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.kind}<br/>${point.description}</div>`) : null)}
+                                            : (point.description ? (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.kind}<br/>${point.description}</div>`) : null)}
                                     position={ point.location }
                                     markerType={point.light_description ? point.light_description : point.kind }
                                 />
@@ -348,11 +348,11 @@ export default function FullMap(props) {
                                             key={`${sdate}.${time}.${i2}`} 
                                             shape={'circle'}
                                             info={ point.average ? 
-                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.average} dB</div>`) 
+                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.average} dB</div>`) 
                                                     : (point.result ? 
-                                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.result}</div>`)
+                                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.result}</div>`)
                                                             : (point.posture ? 
-                                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.posture}</div>`) 
+                                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.posture}</div>`) 
                                                                 : null)) } 
                                             position={point.location ? point.location : standingPoints[point.standingPoint]} 
                                             markerType={point.average ? 'sound_maps' 
