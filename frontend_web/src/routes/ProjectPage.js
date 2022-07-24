@@ -123,10 +123,11 @@ function ProjectPage(){
             if(!map[apiCategory[cat]][date.toLocaleDateString()]){ 
                 map[apiCategory[cat]][`${date.toLocaleDateString()}`] = {};
             }
-            if(index === 0){
-                map[apiCategory[cat]][date.toLocaleDateString()][new Date(response?.data.date).toLocaleTimeString()] = await response.data;
+            var time = new Date(response?.data.date).toLocaleTimeString();
+            if (map[apiCategory[cat]][date.toLocaleDateString()][time]){
+                map[apiCategory[cat]][date.toLocaleDateString()][`${time} (${index})`] = await response.data;
             }else{
-                map[apiCategory[cat]][date.toLocaleDateString()][`${new Date(response?.data.date).toLocaleTimeString()} (${index})`] = await response.data;
+                map[apiCategory[cat]][date.toLocaleDateString()][time] = await response.data;
             }
 
             results = map;
