@@ -102,7 +102,7 @@ function ActivityPage(props) {
         XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
         
         // Excel Format
-        XLSX.writeFileXLSX(workbook, 'PlaceProject.xlsx');
+        XLSX.writeFileXLSX(workbook, `${props.title}.xlsx`);
 
         // CSV universal Format
         //XLSX.writeFileXLSX(workbook, 'PlaceProject.csv');

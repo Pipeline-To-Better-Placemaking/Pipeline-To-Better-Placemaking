@@ -248,15 +248,16 @@ export default function FullMap(props) {
             // version 1 == water nature collection
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Water<br/>Location ${index + 1}<br/>Description: ${data.Results[title][date][time].data[0].water[index].description}<br/>Area: ${data.Results[title][date][time].data[0].vegetation[index].area} sq.ft.`
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Water<br/>Location ${index[1] + 1}<br/>Description: ${data.Results[title][date][time].data[index[0]].water[index[1]].description}<br/>Area: ${data.Results[title][date][time].data[0].vegetation[index].area} sq.ft.`
             popup.style.display = 'flex';
+            console.log(index);
         } else if(ver === 3){
             // version 3 == vegetation nature collection
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Vegetation<br/>Location ${index + 1}<br/>Description: ${data.Results[title][date][time].data[0].vegetation[index].description}<br/>Area: ${data.Results[title][date][time].data[0].vegetation[index].area} sq.ft.`
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Vegetation<br/>Location ${index[1] + 1}<br/>Description: ${data.Results[title][date][time].data[index[0]].vegetation[index[1]].description}<br/>Area: ${data.Results[title][date][time].data[0].vegetation[index].area} sq.ft.`
             popup.style.display = 'flex';
-
+            console.log(index);
         } else {
             // version 4 moving collections
             const popup = document.getElementById('pathBoundWindow');
@@ -297,7 +298,7 @@ export default function FullMap(props) {
                                         title={title}
                                         date={sdate}
                                         time={time}
-                                        index={ind2}
+                                        index={[ind1, ind2]}
                                         area={natureObj.location}
                                         type={natureType}
                                         boundsPathWindow={boundsPathWindow}
