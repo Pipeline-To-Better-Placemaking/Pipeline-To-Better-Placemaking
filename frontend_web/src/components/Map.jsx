@@ -246,15 +246,12 @@ export default function FullMap(props) {
             popup.style.display = 'flex';
         } else if(ver === 1) {
             // version 1 == water nature collection
-            console.log(index);
-            console.log(data.Results[title][date][time].data[index[0]]);
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
             inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Water<br/>Location ${index[1] + 1}<br/>Description: ${data.Results[title][date][time].data[index[0]].water[index[1]].description}<br/>Area: ${data.Results[title][date][time].data[index[0]].water[index[1]].area} sq.ft.`
             popup.style.display = 'flex';
         } else if(ver === 3){
             // version 3 == vegetation nature collection
-            console.log(index);
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
             inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Vegetation<br/>Location ${index[1] + 1}<br/>Description: ${data.Results[title][date][time].data[index[0]].vegetation[index[1]].description}<br/>Area: ${data.Results[title][date][time].data[index[0]].vegetation[index[1]].area} sq.ft.`
@@ -284,27 +281,26 @@ export default function FullMap(props) {
                         Object.entries(inst).map(([natureType, pointArr], ind1)=>(
                             natureType === 'weather' || natureType === '_id' || natureType === 'time' ? null :
                                 pointArr.map((natureObj, ind2)=>(
-                                natureType === 'animal' ? 
-                                    <Marker
-                                        key={`${sdate}.${time}.${ind2}`}
-                                        shape='circle'
-                                        info={
-                                            `<div><b>${testNames(title)}</b><br/>Location ${ind2+1}<br/>Animal: ${natureObj.description}<br/>[${natureObj.kind}]</div>`}
-                                        position={natureObj.marker}
-                                        markerType={natureType}
-                                    /> 
-                                :
-                                    <Bounds
-                                        key={`${sdate}.${time}.${ind2}`}
-                                        title={title}
-                                        date={sdate}
-                                        time={time}
-                                        index={[ind0, ind2]}
-                                        area={natureObj.location}
-                                        type={natureType}
-                                        boundsPathWindow={boundsPathWindow}
-                                    />
-                            ))
+                                    natureType === 'animal' ? 
+                                        <Marker
+                                            key={`${sdate}.${time}.${ind2}`}
+                                            shape='circle'
+                                            info={
+                                                `<div><b>${testNames(title)}</b><br/>Location ${ind2+1}<br/>Animal: ${natureObj.description}<br/>[${natureObj.kind}]</div>`}
+                                            position={natureObj.marker}
+                                            markerType={natureType}
+                                        /> 
+                                    : <Bounds
+                                            key={`${sdate}.${time}.${ind2}`}
+                                            title={title}
+                                            date={sdate}
+                                            time={time}
+                                            index={[ind0, ind2]}
+                                            area={natureObj.location}
+                                            type={natureType}
+                                            boundsPathWindow={boundsPathWindow}
+                                        />
+                                ))
                         ))
                     )))
                     :
@@ -385,6 +381,7 @@ export default function FullMap(props) {
                     mapObj={ setMap }
                     places={ mapPlaces }
                     zoom={ zoom }
+                    mapTypeId='satellite'
                 >
                     { areaData && (props.type >= 3 && props.type <= 5) ? <Bounds area={areaData} type={'area'} ver={true} /> : (areaData ? <Bounds area={areaData} type={'area'} /> : null )}
                     { subAreas.length > 1 ? subAreas.map((area, index)=>( index === 0 ? null : <Bounds area={area.points} type={'area'} />)) : null }
