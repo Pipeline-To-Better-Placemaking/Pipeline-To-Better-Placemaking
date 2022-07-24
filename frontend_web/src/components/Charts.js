@@ -688,8 +688,9 @@ function Charts(props) {
                                     if (typeArr[typePoint].description === 'Other') {
                                         otherD++;
                                     }
-                                } else {
+                                } else if (typeArr[typePoint].kind === 'Wild') {
                                     wild++;
+                                    console.log(wild);
                                     if (typeArr[typePoint].description === 'Other') {
                                         otherW++;
                                     }
@@ -820,12 +821,11 @@ function Charts(props) {
                                 otherD++;
                                 console.log(otherD);
                             }
-                        } else {
+                        } else if (typeArr[typePoint].kind === 'Wild'){
                             wild++;
                             console.log(wild);
                             if (typeArr[typePoint].description === 'Other'){
                                 otherW++;
-                                console.log(otherW);
                             }
                         }
                     }
