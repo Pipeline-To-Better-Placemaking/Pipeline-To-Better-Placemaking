@@ -639,7 +639,7 @@ const Bounds = ({boundsPathWindow, ...options}) => {
             strokeColor: 'rgba(255,0,0,0.5)',
             strokeOpacity: 0.8,
             strokeWeight: 3,
-            fillColor: 'rgba(0,0,0,0.2)',     
+            fillColor: 'rgba(0,0,0,0.3)',     
             clickable: false                 
         },
         types: {
