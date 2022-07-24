@@ -57,11 +57,11 @@ function ActivityForm(props) {
 }
 
 const testNames = [
-    { label: 'Humans in Place', type: 'stationary_maps' },
-    { label: 'Humans in Motion', type: 'moving_maps' },
+    { label: 'People in Place', type: 'stationary_maps' },
+    { label: 'People in Motion', type: 'moving_maps' },
     { label: 'Absence of Order Locator', type: 'order_maps' },
     { label: 'Spatial Boundaries', type: 'boundaries_maps' },
-    { label: 'Lighting Profile', type: 'lighting_maps' },
+    { label: 'Lighting Profile', type: 'light_maps' },
     { label: 'Nature Prevalence', type: 'nature_maps' },
     { label: 'Acoustical Profile', type: 'sound_maps' },
 ];
