@@ -16,13 +16,14 @@ export default function SurveyorPage(props) {
                         surveyors[researcher._id].name = `${researcher.firstname} ${researcher.lastname}`;
                         surveyors[researcher._id].activities = [];
                     }
-                    surveyors[researcher._id].activities.push({activity: cat, date: date, time: time});
+                    surveyors[researcher._id].activities.push({activity: cat, date: date, time: time, id: tObj._id});
                 })
             ))
         ))
     ))
 
-    /* ex: surveyors = {
+    /* organized by id in case of common names
+    ex: surveyors = {
         'idnumber' : {
             name: 'John Smith',
             activities: [

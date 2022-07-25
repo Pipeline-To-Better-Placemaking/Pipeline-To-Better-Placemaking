@@ -74,17 +74,30 @@ const subtable = (row, type, name) => (
                                     Object.entries(object).map(([natureType, pointArr], i1) => (
                                         natureType === '_id' || natureType === 'time' ? null :
                                             (natureType === 'weather' ? 
-                                                <TableRow key={`${index}.${i1}`}>
-                                                    <TableCell colSpan={2} className='value'>
-                                                        {pointArr.temperature}&ordm;F
-                                                    </TableCell>
-                                                    <TableCell colSpan={2} className='type'>
-                                                        {`Weather ${pointArr.description}`}
-                                                    </TableCell>
-                                                    <TableCell>N/A</TableCell>
-                                                    <TableCell>{date} {time}</TableCell>
-                                                    <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
-                                                </TableRow>
+                                                <>
+                                                    <TableRow>
+                                                        <TableCell colSpan={3} className='value'>
+                                                            {tObj.title}
+                                                        </TableCell>
+                                                        <TableCell colSpan={3} className='value'>
+                                                            {testNames(name)}
+                                                        </TableCell>
+                                                        <TableCell colSpan={3} className='value'>
+                                                            {date} {time}
+                                                        </TableCell>
+                                                    </TableRow>    
+                                                    <TableRow key={`${index}.${i1}`}>
+                                                        <TableCell colSpan={2} className='value'>
+                                                            {pointArr.temperature}&ordm;F
+                                                        </TableCell>
+                                                        <TableCell colSpan={2} className='type'>
+                                                            {`Weather ${pointArr.description}`}
+                                                        </TableCell>
+                                                        <TableCell>N/A</TableCell>
+                                                        <TableCell>{date} {time}</TableCell>
+                                                        <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
+                                                    </TableRow>
+                                                </>
                                             : pointArr.map((natureObj, i3)=>(                                        
                                                 <TableRow key={`${index}.${i1}`}>
                                                     <TableCell colSpan={2} className='value'>
@@ -107,17 +120,43 @@ const subtable = (row, type, name) => (
                             Object.entries(dObj).map(([time, tObj]) => (
                                 tObj.data.map((object, index) => (
                                     Object.values(object.points).map((point, i1)=>(
-                                    <TableRow key={`${index}.${i1}`}>
-                                        <TableCell colSpan={2} className='value'>
-                                            { point.kind ? point.kind : 'N/A'}
-                                        </TableCell>
-                                        <TableCell colSpan={2} className='type'>
-                                            { point.description ? `${point.description}` : `${point.light_description}` }
-                                        </TableCell>
-                                        <TableCell>Location {i1 + 1}</TableCell>
-                                        <TableCell>{date} {time}</TableCell>
-                                            <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
-                                    </TableRow>
+                                        i1 === 0 ? 
+                                            <>
+                                                <TableRow>  
+                                                    <TableCell colSpan={3} className='value'>
+                                                        {tObj.title}
+                                                    </TableCell>
+                                                    <TableCell colSpan={3} className='value'>
+                                                        {testNames(name)}
+                                                    </TableCell>
+                                                    <TableCell colSpan={3} className='value'>
+                                                        { date } { time }
+                                                    </TableCell>
+                                                </TableRow>                                    
+                                                <TableRow key={`${index}.${i1}`}>
+                                                    <TableCell colSpan={2} className='value'>
+                                                        {point.kind ? point.kind : 'N/A'}
+                                                    </TableCell>
+                                                    <TableCell colSpan={2} className='type'>
+                                                        {point.description ? `${point.description}` : `${point.light_description}`}
+                                                    </TableCell>
+                                                    <TableCell>Location {i1 + 1}</TableCell>
+                                                    <TableCell>{date} {time}</TableCell>
+                                                    <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
+                                                </TableRow>
+                                            </> 
+                                        : 
+                                        <TableRow key={`${index}.${i1}`}>
+                                            <TableCell colSpan={2} className='value'>
+                                                { point.kind ? point.kind : 'N/A'}
+                                            </TableCell>
+                                            <TableCell colSpan={2} className='type'>
+                                                { point.description ? `${point.description}` : `${point.light_description}` }
+                                            </TableCell>
+                                            <TableCell>Location {i1 + 1}</TableCell>
+                                            <TableCell>{date} {time}</TableCell>
+                                                <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
+                                        </TableRow>
                                    ))
                                 ))
                             ))
@@ -125,17 +164,43 @@ const subtable = (row, type, name) => (
                     : (Object.entries(row).map(([date, dObj])=>(
                         Object.entries(dObj).map(([time, tObj])=>(
                             tObj.data.map((object, index) => (
-                                <TableRow key={ index }>
-                                    <TableCell colSpan={ 2 } className='value'>
-                                        {object.average ? `${object.average} dB` : (object.value && (object.kind === 'Construction' || object.kind === 'Constructed')? `${object.value} ft.` : (object.value && object.kind ? `${object.value} sq.ft.` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
-                                    </TableCell>
-                                    <TableCell colSpan={ 2 } className='type'>
-                                        {object.average ? `${object.sound_type}` : (object.kind ? (`${object.kind} (${object.description})`) : (object.age ? `${object.age} ${object.gender} (${object.activity})` : 'N/A'))}
-                                    </TableCell>
-                                    <TableCell>Location { index + 1 }</TableCell>
-                                    <TableCell>{ date } { time }</TableCell>
-                                    <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
-                                </TableRow>
+                                index === 0 ? 
+                                    <>
+                                        <TableRow>
+                                            <TableCell colSpan={3} className='value'>
+                                                {tObj.title}
+                                            </TableCell>
+                                            <TableCell colSpan={3} className='value'>
+                                                {testNames(name)}
+                                            </TableCell>
+                                            <TableCell colSpan={3} className='value'>
+                                                {date} {time}
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow key={ index }>
+                                            <TableCell colSpan={ 2 } className='value'>
+                                                {object.average ? `${object.average} dB` : (object.value && (object.kind === 'Construction' || object.kind === 'Constructed')? `${object.value} ft.` : (object.value && object.kind ? `${object.value} sq.ft.` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
+                                            </TableCell>
+                                            <TableCell colSpan={ 2 } className='type'>
+                                                {object.average ? `${object.sound_type}` : (object.kind ? (`${object.kind} (${object.description})`) : (object.age ? `${object.age} ${object.gender} (${object.activity})` : 'N/A'))}
+                                            </TableCell>
+                                            <TableCell>Location { index + 1 }</TableCell>
+                                            <TableCell>{ date } { time }</TableCell>
+                                            <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
+                                        </TableRow>
+                                    </>
+                                :
+                                    <TableRow key={ index }>
+                                        <TableCell colSpan={ 2 } className='value'>
+                                            {object.average ? `${object.average} dB` : (object.value && (object.kind === 'Construction' || object.kind === 'Constructed')? `${object.value} ft.` : (object.value && object.kind ? `${object.value} sq.ft.` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
+                                        </TableCell>
+                                        <TableCell colSpan={ 2 } className='type'>
+                                            {object.average ? `${object.sound_type}` : (object.kind ? (`${object.kind} (${object.description})`) : (object.age ? `${object.age} ${object.gender} (${object.activity})` : 'N/A'))}
+                                        </TableCell>
+                                        <TableCell>Location { index + 1 }</TableCell>
+                                        <TableCell>{ date } { time }</TableCell>
+                                        <TableCell>{tObj.researchers.map((researcher) => (`${researcher.firstname} ${researcher.lastname}`))}</TableCell>
+                                    </TableRow>
                             ))
                         ))
                     ))))

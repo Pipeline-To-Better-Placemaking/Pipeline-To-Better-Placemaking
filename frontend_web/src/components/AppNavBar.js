@@ -25,12 +25,8 @@ const settings = [
     {
         page: 'Logout',
         route: '/'
-
     }
 ];
-
-//SVG Home icon link button
-const home = <Link className='homeButton' to='/home'><Image src={logo1} className='icon-shadow' alt='logo' height='50px'/></Link>;
 
 const AppNavBar = (props) => {
     const location = useLocation();
@@ -73,6 +69,9 @@ const AppNavBar = (props) => {
         }
         return(path);
     }
+
+    //SVG Home icon link button
+    const home = <Link className='homeButton' to='/home' state={location.state}><Image src={logo1} className='icon-shadow' alt='logo' height='50px' /></Link>;
 
     return (
         <AppBar position='static'>
