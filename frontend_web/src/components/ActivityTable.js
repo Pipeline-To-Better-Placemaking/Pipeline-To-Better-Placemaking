@@ -78,13 +78,13 @@ const subtable = (row, type, name) => (
                                             (natureType === 'weather' ? 
                                                 <>
                                                     <TableRow style={{ backgroundColor: '#aed5fa' }}>
-                                                        <TableCell align="center" colSpan={3} className='value'>
+                                                        <TableCell align="center" colSpan={4} className='value'>
                                                             {tObj.title}
                                                         </TableCell>
-                                                        <TableCell align="right">
+                                                        <TableCell align="right" colSpan={2}>
                                                             {date} {time}
                                                         </TableCell>
-                                                        <TableCell align="right">
+                                                        <TableCell align="right" colSpan={1}>
                                                             <Button><DeleteIcon /></Button>
                                                         </TableCell>
                                                     </TableRow>
@@ -125,13 +125,13 @@ const subtable = (row, type, name) => (
                                         i1 === 0 ? 
                                             <>
                                                 <TableRow style={{ backgroundColor: '#aed5fa' }}>
-                                                    <TableCell align="center" colSpan={3} className='value'>
+                                                    <TableCell align="center" colSpan={4} className='value'>
                                                         {tObj.title}
                                                     </TableCell>
-                                                    <TableCell align="right">
+                                                    <TableCell align="right" colSpan={2}>
                                                         {date} {time}
                                                     </TableCell>
-                                                    <TableCell align="right">
+                                                    <TableCell align="right" colSpan={1}>
                                                         <Button><DeleteIcon /></Button>
                                                     </TableCell>
                                                 </TableRow>
@@ -169,13 +169,13 @@ const subtable = (row, type, name) => (
                                 index === 0 ? 
                                     <>
                                         <TableRow style={{ backgroundColor: '#aed5fa' }}>
-                                            <TableCell align="center" colSpan={3} className='value'>
+                                            <TableCell align="center" colSpan={4} className='value'>
                                                 {tObj.title}
                                             </TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="right" colSpan={2}>
                                                 {date} {time}
                                             </TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="right" colSpan={1}>
                                                 <Button><DeleteIcon /></Button>
                                             </TableCell>
                                         </TableRow>
