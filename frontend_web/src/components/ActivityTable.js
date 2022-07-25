@@ -75,15 +75,9 @@ const subtable = (row, type, name) => (
                                         natureType === '_id' || natureType === 'time' ? null :
                                             (natureType === 'weather' ? 
                                                 <>
-                                                    <TableRow>
-                                                        <TableCell colSpan={3} className='value'>
+                                                    <TableRow style={{ backgroundColor: '#aed5fa' }}>
+                                                        <TableCell colSpan={12} className='value'>
                                                             {tObj.title}
-                                                        </TableCell>
-                                                        <TableCell colSpan={3} className='value'>
-                                                            {testNames(name)}
-                                                        </TableCell>
-                                                        <TableCell colSpan={3} className='value'>
-                                                            {date} {time}
                                                         </TableCell>
                                                     </TableRow>    
                                                     <TableRow key={`${index}.${i1}`}>
@@ -122,15 +116,9 @@ const subtable = (row, type, name) => (
                                     Object.values(object.points).map((point, i1)=>(
                                         i1 === 0 ? 
                                             <>
-                                                <TableRow>  
-                                                    <TableCell colSpan={3} className='value'>
+                                                <TableRow style={{ backgroundColor: '#aed5fa' }}>  
+                                                    <TableCell colSpan={12} className='value'>
                                                         {tObj.title}
-                                                    </TableCell>
-                                                    <TableCell colSpan={3} className='value'>
-                                                        {testNames(name)}
-                                                    </TableCell>
-                                                    <TableCell colSpan={3} className='value'>
-                                                        { date } { time }
                                                     </TableCell>
                                                 </TableRow>                                    
                                                 <TableRow key={`${index}.${i1}`}>
@@ -166,15 +154,9 @@ const subtable = (row, type, name) => (
                             tObj.data.map((object, index) => (
                                 index === 0 ? 
                                     <>
-                                        <TableRow>
-                                            <TableCell colSpan={3} className='value'>
+                                        <TableRow style={{ backgroundColor: '#aed5fa' }}>
+                                            <TableCell colSpan={12} className='value'>
                                                 {tObj.title}
-                                            </TableCell>
-                                            <TableCell colSpan={3} className='value'>
-                                                {testNames(name)}
-                                            </TableCell>
-                                            <TableCell colSpan={3} className='value'>
-                                                {date} {time}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow key={ index }>
