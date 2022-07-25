@@ -62,13 +62,7 @@ router.post(
         await Sound_Collection.addActivity(req.body.collection, map._id);
 
         for (i = 0; i < map.standingPoints.length; i++) {
-          console.log(
-            "point" +
-              map.standingPoints[i] +
-              "referenced on sounds map creation: "
-          );
           let tempPoint = await Points.addRefrence(map.standingPoints[i]);
-          console.log(tempPoint);
         }
       }
       res.status(201).json(map);

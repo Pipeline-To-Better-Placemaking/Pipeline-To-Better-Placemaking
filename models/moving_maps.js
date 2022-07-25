@@ -122,7 +122,6 @@ module.exports.addEntry = async function(mapId, newEntry) {
         path: newEntry.path
     })
     const debugPoint = await Points.addRefrence(newEntry.standingPoint)
-    console.log(debugPoint)
     return await Maps.updateOne(
         { _id: mapId },
         { $push: { data: entry}}

@@ -10,8 +10,7 @@ router.post('/', async (req, res, next) => {
 
     try{
         var user = await User.findUserByEmail(req.body.email)
-        console.log(user)
-
+        
         if (!user){ throw new UnauthorizedError('This email does not have a registered account') }
 
         const token = jwt.sign({ _id: user._id, email: user.email }, config.PRIVATE_KEY, {
