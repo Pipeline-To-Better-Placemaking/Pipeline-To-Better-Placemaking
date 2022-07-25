@@ -78,7 +78,7 @@ const subtable = (row, type, name) => (
                                             (natureType === 'weather' ? 
                                                 <>
                                                     <TableRow style={{ backgroundColor: '#aed5fa' }}>
-                                                        <TableCell align="center" colSpan={6} className='value'>
+                                                        <TableCell align="center" colSpan={3} className='value'>
                                                             {tObj.title}
                                                         </TableCell>
                                                         <TableCell align="right">
@@ -125,7 +125,7 @@ const subtable = (row, type, name) => (
                                         i1 === 0 ? 
                                             <>
                                                 <TableRow style={{ backgroundColor: '#aed5fa' }}>
-                                                    <TableCell align="center" colSpan={6} className='value'>
+                                                    <TableCell align="center" colSpan={3} className='value'>
                                                         {tObj.title}
                                                     </TableCell>
                                                     <TableCell align="right">
@@ -169,7 +169,7 @@ const subtable = (row, type, name) => (
                                 index === 0 ? 
                                     <>
                                         <TableRow style={{ backgroundColor: '#aed5fa' }}>
-                                            <TableCell align="center" colSpan={6} className='value'>
+                                            <TableCell align="center" colSpan={3} className='value'>
                                                 {tObj.title}
                                             </TableCell>
                                             <TableCell align="right">
