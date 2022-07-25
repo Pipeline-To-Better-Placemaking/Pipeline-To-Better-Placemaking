@@ -9,21 +9,20 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import axios from '../api/axios.js';
 import './routes.css';
 
-function NewTeamForm() {
+export default function NewTeamForm() {
     let nav = useNavigate();
     let loc = useLocation();
     const user = loc.state ? loc.state.userToken : {};
+    const [message, setMessage] = React.useState('');
+    const addTeamResponse = React.useRef(null);
+    const titleRef = React.useRef(null);
+    const titleMess = React.useRef(null);
 
     const [formValues, setFormValues] = React.useState({
         title: '',
         description: '',
         public: false
     });
-
-    const [message, setMessage] = React.useState('');
-    const addTeamResponse = React.useRef(null);
-    const titleRef = React.useRef(null);
-    const titleMess = React.useRef(null);
 
     const handleChange = (e) => {
         setFormValues({ ...formValues, [e.target.name]: e.target.value });
@@ -57,7 +56,6 @@ function NewTeamForm() {
                 },
                 withCredentials: true
             });
-            console.log(response.data);
 
             //redirect user to url/home
             nav('/home', { replace: true, state: { ...loc.state, userToken: { ...loc.state.userToken, user: { ...loc.state.userToken.user, teams: [...loc.state.userToken.user.teams, response.data ]}}} });
@@ -129,5 +127,3 @@ function NewTeamForm() {
         </div>
     );
 }
-
-export default NewTeamForm;

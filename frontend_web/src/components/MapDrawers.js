@@ -87,7 +87,6 @@ export default function MapDrawer(props) {
             var newEntry;
             newSelections[`${category}.${date}.${time}`] = drawers.Results[category][date][time];
             setSelections(newSelections);
-            //console.log(`${category}.${date}.${time}`);
             switch (category) {
                 case 'stationary_maps':
                     newEntry = stationary;

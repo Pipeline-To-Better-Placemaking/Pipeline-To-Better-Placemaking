@@ -2,29 +2,30 @@ import * as React from 'react';
 import axios from '../api/axios.js';
 import Button from '@mui/material/Button';
 import DisplayCards from '../components/DisplayCards';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import './routes.css';
 
-function Projects(props){
-    const teamAndUser = useLocation();
-    const nav = useNavigate();
-    const teamId = teamAndUser.pathname.split('/')[3];
+export default function Projects(props){
     const [teamInfo, setTeamInfo] = React.useState();
-    var selected = '';
+    const teamAndUser = useLocation();
+    // Team id is in URL
+    const teamId = teamAndUser.pathname.split('/')[3];
+    // State is passed through Links accessed via useLocation
     const user = teamAndUser.state ? teamAndUser.state.userToken : {};
+    var selected = '';
 
     const openConfirmation = (title, id) => (e) => {
+        // Opens confirmation window for deleting a project
         const popup = document.getElementById('deleteWindow');
         const inner = document.getElementById('popUpText');
         selected = id;
-        // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
         inner.innerHTML = '';
         inner.innerHTML = `<h6>Are you sure you would like to delete '${title}' project?<br/> This cannot be undone.</h6>`
         popup.style.display = 'flex';
     }
 
-    //Called from pop up window below
+    //Called from pop up (confirmation) window below
     const deleteProject = async (e) => {
         e.preventDefault();
         console.log(selected);
@@ -39,6 +40,7 @@ function Projects(props){
 
             //on success  
             closeWindow(e);
+            // reload team projects
             teamPull();
         } catch (error) {
             console.log('ERROR: ', error);
@@ -77,10 +79,10 @@ function Projects(props){
         }
     }
 
+    // Used to load projects from team ID
     React.useEffect(() => {
         teamPull();
     },[]);
-    //console.log(teamInfo);
 
     return(
         <div id='teamHome'>
@@ -101,7 +103,7 @@ function Projects(props){
                     New Project
                 </Button>
             </div>
-            {/* type = 1 implies the project style cards */}
+            {/* type = 1 implies the project style cards, need to be loaded in one by one without loading conditional */}
             <div id='cardFlexBox'>
                 {
                     teamInfo?.projects?.map((project, index) => (
@@ -119,5 +121,3 @@ function Projects(props){
         </div>
     );
 }
-
-export default Projects;

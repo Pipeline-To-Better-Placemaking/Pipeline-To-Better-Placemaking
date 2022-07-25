@@ -39,7 +39,6 @@ export default function FullMap(props) {
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreas : [];
     const loc = useLocation();
-    //console.log(loc?.state);
 
     // hold the selections from the switch toggles
     const [stationaryCollections, setStationaryCollections] = React.useState({});
@@ -192,7 +191,6 @@ export default function FullMap(props) {
             clickObj.lat = e.latLng.lat();
             clickObj.lng = e.latLng.lng();
             setClicks([...clicks, clickObj]);
-            //console.log(clicks);
         } else {
             setCenter(e.latLng);
         }
@@ -320,44 +318,44 @@ export default function FullMap(props) {
                         ))
                         : 
                         !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
-                                point ? (point.mode || point.kind === 'Constructed' || point.kind === 'Construction' ? 
-                                    <Path 
+                            point ? (point.mode || point.kind === 'Constructed' || point.kind === 'Construction' ? 
+                                <Path 
+                                    key={`${sdate}.${time}.${i2}`} 
+                                    path={point.path} 
+                                    mode={point.mode ? point.mode : point.kind}
+                                    title={title} date={sdate} time={time} index={i2}
+                                    boundsPathWindow={boundsPathWindow}
+                                /> 
+                                :
+                                (point.kind === 'Shelter' || point.kind === 'Material' ? 
+                                    <Bounds 
                                         key={`${sdate}.${time}.${i2}`} 
-                                        path={point.path} 
-                                        mode={point.mode ? point.mode : point.kind}
-                                        title={title} date={sdate} time={time} index={i2}
+                                        title={title} 
+                                        date={sdate} 
+                                        time={time} 
+                                        index={i2} 
+                                        area={point.path} 
+                                        type={point.kind ? point.kind : point.result} 
                                         boundsPathWindow={boundsPathWindow}
                                     /> 
                                     :
-                                    (point.kind === 'Shelter' || point.kind === 'Material' ? 
-                                        <Bounds 
-                                            key={`${sdate}.${time}.${i2}`} 
-                                            title={title} 
-                                            date={sdate} 
-                                            time={time} 
-                                            index={i2} 
-                                            area={point.path} 
-                                            type={point.kind ? point.kind : point.result} 
-                                            boundsPathWindow={boundsPathWindow}
-                                        /> 
-                                        :
-                                        <Marker 
-                                            key={`${sdate}.${time}.${i2}`} 
-                                            shape={'circle'}
-                                            info={ point.average ? 
-                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.average} dB</div>`) 
-                                                    : (point.result ? 
-                                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.result}</div>`)
-                                                            : (point.posture ? 
-                                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.posture}</div>`) 
-                                                                : null)) } 
-                                            position={point.location ? point.location : standingPoints[point.standingPoint]} 
-                                            markerType={point.average ? 'sound_maps' 
-                                                : (point.result ? point.result : (point.posture ? point.posture : null))} 
-                                            markerSize={title === 'sound_maps' ? point.average : null} 
-                                        />
-                                    )
-                                ) : null
+                                    <Marker 
+                                        key={`${sdate}.${time}.${i2}`} 
+                                        shape={'circle'}
+                                        info={ point.average ? 
+                                            (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.average} dB</div>`) 
+                                                : (point.result ? 
+                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.result}</div>`)
+                                                        : (point.posture ? 
+                                                            (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.posture}</div>`) 
+                                                            : null)) } 
+                                        position={point.location ? point.location : standingPoints[point.standingPoint]} 
+                                        markerType={point.average ? 'sound_maps' 
+                                            : (point.result ? point.result : (point.posture ? point.posture : null))} 
+                                        markerSize={title === 'sound_maps' ? point.average : null} 
+                                    />
+                                )
+                            ) : null
                         ))
                     )
                 ))
@@ -620,7 +618,6 @@ const Bounds = ({boundsPathWindow, ...options}) => {
     const [paths, setPaths] = React.useState();
     const type = options.type;
     var tempArea = [];
-    //console.log(options.area);
 
     if(!options.ver){
         (options.area).map((point) => (

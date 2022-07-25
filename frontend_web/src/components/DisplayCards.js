@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { testNames } from '../functions/HelperFunctions';
 import '../routes/routes.css';
 
-function DisplayCards(props) {
+export default function DisplayCards(props) {
     //Surveyor Cards have surveyor name in header
     const surveyorCards = (surveyors) => (
         Object.values(surveyors).map((surveyor, index) => (
@@ -85,8 +85,5 @@ function DisplayCards(props) {
                     {teamCards(props.teams)}
                 </div>
             )
-        
     );
-
 }
-export default DisplayCards;

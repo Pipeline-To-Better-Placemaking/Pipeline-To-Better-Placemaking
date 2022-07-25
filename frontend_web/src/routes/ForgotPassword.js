@@ -33,19 +33,13 @@ export default function ForgotPassword(){
     const sendForgotEmail = async (e) => {
 
         try{
-            const response = await axios.post(resetURL, JSON.stringify({email: email}), {
+            const response = await axios.post(resetURL, JSON.stringify({ email: email }), {
                 headers: { 'Content-Type': 'application/json' },
             });
-            //console.log(response.data);
-            //console.log(response.accessToken);
-            //console.log(JSON.stringify(response))
-            //On successful request
+
             forgotForm.current.style.display = 'none';
             successMess.current.style.display = 'block';
         } catch (error) {
-            //user login error
-            //console.log('ERROR: ', error);
-            //success = false;
             setMessage(error.response.data?.message);
             forgotForm.current.style.display = 'block';
             return;

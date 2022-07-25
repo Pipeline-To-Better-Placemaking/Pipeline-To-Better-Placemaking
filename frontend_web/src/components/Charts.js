@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, Tooltip, Legend, PieChart, Pie } from 'recharts';
 import { Area, testNames } from '../functions/HelperFunctions';
 
-function Charts(props) {
+export default function Charts(props) {
     const width = 300;
     const height = 200;
     const data = props.data;
@@ -414,7 +414,7 @@ function Charts(props) {
 
     const lightingCharts = (data) => {
         var rhythmic = 0, building = 0, task = 0;
-        //console.log(data);
+
         for(const lObj of Object.values(data)){
             for(const point of lObj.points){
                 if(point.light_description === 'Rhythmic'){
@@ -466,6 +466,7 @@ function Charts(props) {
                 }
             }
         }
+
         var order = [{ type: 'Maintenance', total: maintenance }, { type: 'Behavior', total: behavior }];
         return (
             <div className='Charts'>
@@ -659,7 +660,6 @@ function Charts(props) {
                 for (const obj of index1) {
                     for (const [natureType, typeArr] of Object.entries(obj)){
                         for(const typePoint in typeArr){
-                            //console.log(typePoint);
                             if (natureType === 'water') {
                                 waterAndVeg[0].area += typeArr[typePoint].area;
                                 water += typeArr[typePoint].area;
@@ -914,5 +914,3 @@ function Charts(props) {
             </div>
     );
 };
-
-export default Charts;

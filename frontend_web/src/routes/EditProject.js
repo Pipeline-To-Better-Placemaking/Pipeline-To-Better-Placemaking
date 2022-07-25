@@ -7,19 +7,16 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Map from '../components/Map';
 import axios from '../api/axios.js';
 
-function EditProject() {
+export default function EditProject() {
     //load project coords and area(?)
     const [projectInfo, setProjectInfo] = React.useState();
     const [standingPoints, setStandingPoints] = React.useState();
     const [loaded, setLoaded] = React.useState(false);
-    //const center = { lat: 28.602846550128262, lng: -81.20006526689143 };
+    const [projectName, setProjectName] = React.useState('');
+    const [projectDesc, setProjectDesc] = React.useState('');
     const loc = useLocation();
     const nav = useNavigate();
     const segment = loc.pathname.split('/');
-
-    const [projectName, setProjectName] = React.useState('');
-    const [projectDesc, setProjectDesc] = React.useState('');
-
     var updatedProj = {};
 
     const projectData = async () => {
@@ -33,6 +30,7 @@ function EditProject() {
                 withCredentials: true
             });
 
+            // set editable states
             setProjectInfo(response.data);
             setProjectName(response?.data?.title);
             setProjectDesc(response?.data?.description);
@@ -53,9 +51,7 @@ function EditProject() {
     //update submission (title) function (delete ?), redirect to TeamHome (project listings)
     const updateProject = async (e) => {
         e.preventDefault();
-
         updatedProj = { title: projectName, description: projectDesc }
-        console.log(updatedProj);
 
         try {
             const response = await axios.put(`/projects/${projectInfo._id}`, JSON.stringify(updatedProj), {
@@ -180,4 +176,3 @@ function EditProject() {
         </div>
     );
 }
-export default EditProject;

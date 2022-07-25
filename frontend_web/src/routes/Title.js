@@ -12,13 +12,13 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
 import { Link, useNavigate } from 'react-router-dom';
 
 import './routes.css';
 import logo1 from '../images/PtBPLogo.png';
 
-function Title(props) {
+export default function Title(props) {
+    // Props from App.js, login function to pass user/token info to AppNavBar
     let nav = useNavigate();
     // Access email, password like values.email, do not mutate or modify
     const [values, setValues] = React.useState({
@@ -82,7 +82,6 @@ function Title(props) {
                headers: { 'Content-Type': 'application/json' },
                withCredentials: true
             });
-            //console.log(JSON.stringify(response));
             let user = response.data;
             // user login confirmation and navigation handling in App.js
             // retrieve user's name or name and token to verify status
@@ -176,5 +175,3 @@ function Title(props) {
         </div>
     );
 }
-
-export default Title;

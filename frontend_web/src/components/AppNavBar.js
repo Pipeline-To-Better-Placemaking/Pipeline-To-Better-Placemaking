@@ -35,9 +35,6 @@ const home = <Link className='homeButton' to='/home'><Image src={logo1} classNam
 const AppNavBar = (props) => {
     const location = useLocation();
     const segment = location.pathname.split('/');
-
-    //console.log('AppNavBar');
-    //console.log(location.state.userToken.user);
     
     const userName = {
         fN: location.state?.userToken?.user.firstname ? location.state?.userToken?.user.firstname : 'Abc',
@@ -73,9 +70,7 @@ const AppNavBar = (props) => {
         var path = '';
         for (i = 1; i <= index; i++){
             path = `${path}/${segment[i]}`;
-            //console.log(segment[i]+' '+index);
         }
-        //console.log(path);
         return(path);
     }
 

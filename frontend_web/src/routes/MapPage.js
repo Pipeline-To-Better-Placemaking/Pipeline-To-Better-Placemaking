@@ -1,22 +1,18 @@
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
 
 import Map from '../components/Map';
 import './routes.css';
 
-function MapPage(props) {
-    const id = useParams();
-    //const apiKey = props.apiKey;
+export default function MapPage(props) {
+    //props from ProjectPage.js
     const drawers = props.drawers;
     const title = props.title;
     const area = props.area;
     const center = props.center;
     const subAreas = props.subAreas;
-    const standingPoints = props.standingPoints
+    const standingPoints = props.standingPoints;
 
-    //console.log(id);
-
-    //Map Drawers moved inside Map component for more direct data Passing
+    //Map Drawers moved inside Maps, serves as selection menu
     return (
         <div id='MapPage'>
             {/* Map type 1 implies viewing project map and activity results */}
@@ -33,5 +29,3 @@ function MapPage(props) {
         </div>
     );
 }
-
-export default MapPage;

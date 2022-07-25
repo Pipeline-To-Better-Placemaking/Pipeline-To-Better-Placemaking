@@ -2,10 +2,11 @@ import * as React from 'react';
 import DisplayCards from '../components/DisplayCards';
 import './routes.css';
 
-function SurveyorPage(props) {
+export default function SurveyorPage(props) {
+    // Props from ProjectPage.js
     const results = props.drawers;
-    const surveyors = {}
-    //default hardcoded Surveyor sample array for website
+    const surveyors = {};
+
     Object.entries(results).forEach(([cat, obj])=>(
         Object.entries(obj).forEach(([date, dObj])=>(
             Object.entries(dObj).forEach(([time, tObj])=>(
@@ -21,38 +22,38 @@ function SurveyorPage(props) {
         ))
     ))
 
-    const sampleS = [
-        {
+    /* ex: surveyors = {
+        'idnumber' : {
             name: 'John Smith',
             activities: [
                 {
-                    activity: 'Boundary',
+                    activity: 'nature_maps',
                     date: '2/2/22',
                     time: '2pm'
                 },
                 {
-                    activity: 'Lighting',
+                    activity: 'sound_maps',
                     date: '3/1/22',
                     time: '4pm'
                 }
             ]
         },
-        {
+        'idnumber2': {
             name: 'Anne Doe',
             activities: [
                 {
-                    activity: 'Boundary',
+                    activity: 'boundaries_maps',
                     date: '2/2/22',
                     time: '12pm'
                 },
                 {
-                    activity: 'Lighting',
+                    activity: 'light_maps',
                     date: '3/1/22',
                     time: '10am'
                 }
             ]
         }
-    ];
+    ]; */
 
     return(
         <div id='SurveyorPage'>
@@ -63,4 +64,3 @@ function SurveyorPage(props) {
         </div>
     );
 }
-export default SurveyorPage;

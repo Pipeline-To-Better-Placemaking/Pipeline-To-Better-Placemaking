@@ -7,7 +7,7 @@ function NewProjectPoints() {
     const loc = useLocation();
     //recieves location data from New Project Area
 
-    const [values, setValues] = React.useState({
+    const values = React.useState({
         center: loc.state.center,
         title: loc.state.title,
         area: loc.state.area,

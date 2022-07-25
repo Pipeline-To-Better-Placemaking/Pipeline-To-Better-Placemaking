@@ -19,12 +19,11 @@ export default function EditAreaMap() {
 
     const updateArea = (newarea) => async (e) => {
         e.preventDefault();
+
         newarea.forEach((point, index) => (
             updatedPoints.push({ latitude: point.lat, longitude: point.lng })
-        ))
-
-        updatedArea = {title: name, points: updatedPoints}
-        console.log(updatedArea);
+        ));
+        updatedArea = {title: name, points: updatedPoints};
 
         try {
             const response = await axios.put(`/projects/${loc.pathname.split('/')[5]}/areas/${area._id}`, JSON.stringify(updatedArea), {

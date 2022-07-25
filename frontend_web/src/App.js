@@ -23,12 +23,11 @@ import EditAreaMap from './routes/EditAreaMap';
 import EditPointMap from './routes/EditPointMap';
 import FAQ from './routes/FAQ';
 
-function App() {
-    // !! token/storage of choice, verification of choice
+export default function App() {
+    // token is currently stored in app state
     const [token, setToken] = React.useState();
 
     // true == active user (logged in)
-    // check token in place with more persistant storage
     const [state, setState] = React.useState(token && token !== {} ? true : false);
     
     // Set user vars to access the user home page
@@ -111,5 +110,3 @@ function App() {
         </Router>
     );
 }
-
-export default App;

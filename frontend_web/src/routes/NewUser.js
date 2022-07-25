@@ -17,7 +17,8 @@ import axios from '../api/axios.js';
 import './routes.css';
 const registerURL = '/users'
 
-function NewUser(props) {
+export default function NewUser(props) {
+    //Props from App.js will log user in after success
     let nav = useNavigate();
     // to access fname lname...etc values.fname, do not access show(Confirm)Password
     const [values, setValues] = React.useState({
@@ -71,6 +72,7 @@ function NewUser(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        // Check all inputs for valid input
         if (values.fname === '' || values.fname.length <= 3 ) {
             lnameMess.current.style.display = 'none';
             pwMess.current.style.display = 'none';
@@ -95,11 +97,11 @@ function NewUser(props) {
             emMess.current.style.display = 'inline-block';
             em.current.focus();
             return;
-        } else if (values.password === '' || values.password.length < 8) {
+        } else if (values.password === '' || values.password.length < 8 || /\s/g.test(values.password) || !/\d/g.test(values.password) || !/[!@#$%^&*]/g.test(values.password) || !/[A-Z]/g.test(values.password)) {
             fnameMess.current.style.display = 'none';
             lnameMess.current.style.display = 'none';
             emMess.current.style.display = 'none';
-            setMessage('Please provide a password (minimum length 8)');
+            setMessage('Please provide a password (minimum length 8 including a number, a symbol, and an uppercase letter)');
             pwMess.current.style.display = 'inline-block';
             pw.current.focus();
             return;
@@ -133,8 +135,6 @@ function NewUser(props) {
             nav('/home', { replace: true });
         } catch (error) {
             //user login error
-            //console.log('ERROR: ', error);
-            //success = false;
             setMessage(error.response.data?.message);
             registerResponse.current.style.display = 'inline-block';
             return;
@@ -262,5 +262,3 @@ function NewUser(props) {
         </div>
     );
 }
-
-export default NewUser;

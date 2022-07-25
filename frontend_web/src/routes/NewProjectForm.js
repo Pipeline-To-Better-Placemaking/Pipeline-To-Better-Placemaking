@@ -7,12 +7,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Map from '../components/Map';
 import axios from '../api/axios.js';
 
-function ProjectForm() {
+export default function ProjectForm() {
     //Form for creating a NEW Project
     const loc = useLocation();
     let nav = useNavigate();
     const [message, setMessage] = React.useState('');
     const response = React.useRef(null);
+    var tempP = [];
+    var tempA = [];
 
     //receives location data from New Project Points, add center to point array
     const pointTitles = [];
@@ -31,9 +33,6 @@ function ProjectForm() {
         zoom: (loc && loc.state ? loc.state.zoom : []),
         description: ''
     });
-
-    var tempP = [];
-    var tempA = [];
 
     const handleChange = (index) => (e) => {
         var points = values.points;
@@ -54,16 +53,13 @@ function ProjectForm() {
         response.current.style.display = 'none';
         tempP = [];
         tempA = [];
-        // Cant change values.points from .lat and lng because state and google maps js
-        // So put it in a new variable for submission to DB
         values.points.forEach((point, index)=>(
             tempP.push({ title: point.title, latitude: point.lat, longitude: point.lng })
         ))
         values.area.forEach((apoint, index) => (
             tempA.push({ latitude: apoint.lat, longitude: apoint.lng })
         ))
-        //set DBPoints and then call create Project
-        //console.log(tempA);
+        
         createProject(e);
     }
 
@@ -153,4 +149,3 @@ function ProjectForm() {
         </div>
     );
 }
-export default ProjectForm;

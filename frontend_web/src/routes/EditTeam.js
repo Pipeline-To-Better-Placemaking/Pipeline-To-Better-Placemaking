@@ -7,13 +7,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from '../api/axios.js';
 
-
 export default function EditTeam(){
     const loc = useLocation();
     const nav = useNavigate();
     const [name, setName] = React.useState(loc.state ? loc.state.team : '')
     const segment = loc.pathname.split('/');
-    //console.log(segment[3]);
 
     const updateTeam = async (e) => {
         e.preventDefault();
@@ -50,7 +48,6 @@ export default function EditTeam(){
 
             var index = 0;
             loc.state.userToken.user.teams.forEach((obj, ind) => (obj._id === segment[3] ? index = ind : null))
-            
             var tempToken = loc.state.userToken.user.teams;
             tempToken.splice(index, 1)
             loc.state.userToken.user.teams = tempToken
@@ -60,7 +57,6 @@ export default function EditTeam(){
             console.log('ERROR: ', error);
             return;
         }
-
     }
 
     return(
@@ -105,5 +101,4 @@ export default function EditTeam(){
             <br />
         </div>
     );
-
 }

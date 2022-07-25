@@ -9,16 +9,13 @@ export default function EditPointMap(){
     const nav = useNavigate();
     const point = loc?.state?.point ? loc.state.point : {}
     const [name, setName] = React.useState(point.title);
+    // reformatted from DB where mobile uses latitude and longitude, and Google Maps JS uses lat and lng
     var conv = { '_id': point._id, lat: point.latitude, lng: point.longitude }
     var updatedPoint = {};
 
     const updatePoint = (point) => async (e) => {
         e.preventDefault();
         updatedPoint = {title: name, latitude: point.lat, longitude: point.lng};
-        //console.log(point);
-        //console.log(conv._id);
-        //console.log(loc.pathname.split('/')[5]);
-        console.log(updatedPoint);
 
         try {
             const response = axios.put(`/projects/${loc.pathname.split('/')[5]}/standing_points/${conv._id}`, JSON.stringify(updatedPoint), {
@@ -36,10 +33,8 @@ export default function EditPointMap(){
             console.log('ERROR: ', error);
             return;
         }
-        //name
     }
 
-    // Return value needs to be reconverted to an obj with latitude longitude
     return(
         <div id='editPointMap'>
             {/* Empty New Project page, Google map component w/ searchable locations for new projects */}
@@ -48,6 +43,7 @@ export default function EditPointMap(){
                 value={name}
                 onChange={e => setName(e.target.value)}
             />
+            {/* 7 is for editing points */}
             <Map center={conv} type={7} zoom={16} update={updatePoint}/>
         </div>
     );

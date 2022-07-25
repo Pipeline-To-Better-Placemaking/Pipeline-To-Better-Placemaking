@@ -230,7 +230,7 @@ Row.propTypes = {
     row: PropTypes.shape({}).isRequired,
 };
 
-function ActivityTable(props) {
+export default function ActivityTable(props) {
     /* Nested Expandable Tables */
     const activityRow = props.activity;
 
@@ -240,5 +240,3 @@ function ActivityTable(props) {
             ))) : subtable(activityRow, 1, '')
     );
 }
-
-export default ActivityTable;

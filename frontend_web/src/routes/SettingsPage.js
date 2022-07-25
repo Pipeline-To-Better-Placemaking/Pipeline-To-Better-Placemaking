@@ -116,7 +116,6 @@ function SettingsPage() {
 
     }
 
-    const verify = () => { }
     const userLogout = () => { }
 
     return(
@@ -217,9 +216,6 @@ function SettingsPage() {
                     </Box>
                 </Card.Body>
             </Card>
-            <Button id='verifyButton' type='submit' size='lg' onClick={ verify }>
-                Verify Email
-            </Button>
             <Button id='logoutSingle' type='submit' size='lg' onClick={ userLogout }>
                 Log Out
             </Button>

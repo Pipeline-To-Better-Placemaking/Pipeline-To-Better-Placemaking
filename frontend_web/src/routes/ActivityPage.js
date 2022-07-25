@@ -15,10 +15,11 @@ import ActivityTable from '../components/ActivityTable';
 import ActivityForm from '../components/ActivityForm';
 import { testNames } from '../functions/HelperFunctions';
 
-function ActivityPage(props) {
+export default function ActivityPage(props) {
+    // Props from MapPage.js
     const drawers = props.drawers;
-    //console.log(props.drawers);
 
+    // Called to export a workbook with all activity data
     const exportData = (e) => {
         var workbook = XLSX.utils.book_new();
         var stationary = [];
@@ -34,7 +35,6 @@ function ActivityPage(props) {
             Object.entries(catobject).forEach(([date, dateobject])=>{
                 Object.entries(dateobject).forEach(([time, timeobject])=>{
                     Object.entries(timeobject.data).forEach(([index, dataobjects])=>{
-                        console.log(drawers);
                         var obj = {}
                         // Create an object based on category and append it to its related array
                         if(category === 'stationary_maps') {
@@ -77,7 +77,6 @@ function ActivityPage(props) {
                                 }
                             })
                         }
-                        // console.log(arr);
                     })
                 })
             })
@@ -104,7 +103,7 @@ function ActivityPage(props) {
         // Excel Format
         XLSX.writeFileXLSX(workbook, `${props.title}.xlsx`);
 
-        // CSV universal Format
+        // CSV universal Format, in case this is preferred
         //XLSX.writeFileXLSX(workbook, 'PlaceProject.csv');
     }
 
@@ -132,5 +131,4 @@ function ActivityPage(props) {
             </TableContainer>
         </div>
     );
-} 
-export default ActivityPage;
+}

@@ -61,7 +61,6 @@ export default function ResetPassword(){
             pwMess.current.style.display = 'inline-block';
             return;
         }
-        
     }
 
     return(
