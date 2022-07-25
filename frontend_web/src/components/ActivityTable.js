@@ -1,6 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
@@ -8,6 +9,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import DeleteIcon from '@mui/icons-material/Delete';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { testNames } from '../functions/HelperFunctions';
@@ -76,10 +78,16 @@ const subtable = (row, type, name) => (
                                             (natureType === 'weather' ? 
                                                 <>
                                                     <TableRow style={{ backgroundColor: '#aed5fa' }}>
-                                                        <TableCell colSpan={12} className='value'>
+                                                        <TableCell align="center" colSpan={6} className='value'>
                                                             {tObj.title}
                                                         </TableCell>
-                                                    </TableRow>    
+                                                        <TableCell align="right">
+                                                            {date} {time}
+                                                        </TableCell>
+                                                        <TableCell align="right">
+                                                            <Button><DeleteIcon /></Button>
+                                                        </TableCell>
+                                                    </TableRow>
                                                     <TableRow key={`${index}.${i1}`}>
                                                         <TableCell colSpan={2} className='value'>
                                                             {pointArr.temperature}&ordm;F
@@ -116,11 +124,17 @@ const subtable = (row, type, name) => (
                                     Object.values(object.points).map((point, i1)=>(
                                         i1 === 0 ? 
                                             <>
-                                                <TableRow style={{ backgroundColor: '#aed5fa' }}>  
-                                                    <TableCell colSpan={12} className='value'>
+                                                <TableRow style={{ backgroundColor: '#aed5fa' }}>
+                                                    <TableCell align="center" colSpan={6} className='value'>
                                                         {tObj.title}
                                                     </TableCell>
-                                                </TableRow>                                    
+                                                    <TableCell align="right">
+                                                        {date} {time}
+                                                    </TableCell>
+                                                    <TableCell align="right">
+                                                        <Button><DeleteIcon /></Button>
+                                                    </TableCell>
+                                                </TableRow>
                                                 <TableRow key={`${index}.${i1}`}>
                                                     <TableCell colSpan={2} className='value'>
                                                         {point.kind ? point.kind : 'N/A'}
@@ -155,8 +169,14 @@ const subtable = (row, type, name) => (
                                 index === 0 ? 
                                     <>
                                         <TableRow style={{ backgroundColor: '#aed5fa' }}>
-                                            <TableCell colSpan={12} className='value'>
+                                            <TableCell align="center" colSpan={6} className='value'>
                                                 {tObj.title}
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                {date} {time}
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <Button><DeleteIcon /></Button>
                                             </TableCell>
                                         </TableRow>
                                         <TableRow key={ index }>
