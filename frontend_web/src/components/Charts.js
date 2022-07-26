@@ -137,17 +137,19 @@ export default function Charts(props) {
         console.log(measurements);
         return(
             <div className='Charts'>
-                <div style={{ fontSize: 'larger' }}>High and Low</div>
-                Highest Recorded Volume: {high.recording} dB
-                <br />
-                Predominant Source:<br />
-                {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}<br /> {high.predominant_type}<br />
-                Lowest Recorded Volume: {low.recording} dB
-                <br />
-                Predominant Source:<br />
-                {soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other}<br /> {low.predominant_type}
-                <div style={{ fontSize: 'larger' }}>Most Frequent Reported Source(s)</div>
-                {indexes.map((value) => (`${indexing[value]}`))}
+                <div style={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                    <div style={{ fontSize: 'larger' }}>High and Low</div>
+                    <b>Highest Recorded Volume:</b> {high.recording} dB
+                    <br />
+                    <div style={{textAlign: 'left'}}><b>Predominant Source:</b></div><br />
+                    {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}<br />{high.predominant_type}<br />
+                    <b>Lowest Recorded Volume:</b>{low.recording} dB
+                    <br />
+                    <div style={{ textAlign: 'left' }}><b>Predominant Source:</b></div><br />
+                    {soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other}<br />{low.predominant_type}
+                    <div style={{ fontSize: 'larger' }}>Most Frequent Reported Source(s)</div>
+                    {indexes.map((value) => (`${indexing[value]} `))}
+                </div>
                 <br />
                 <BarChart width={width} height={height} data={measurements}>
                     <CartesianGrid strokeDasharray='3 3' />
@@ -222,17 +224,19 @@ export default function Charts(props) {
 
         return(
             <div className='Charts'>
-                <div style={{ fontSize: 'larger' }}>High and Low</div>
-                Highest Recorded Volume: {high.recording} dB
-                <br/>
-                Predominant Source:<br/>
-                {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}<br/>{high.predominant_type}<br/>
-                Lowest Recorded Volume: {low.recording} dB
-                <br />
-                Predominant Source:<br/>
-                {soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other}<br/>{low.predominant_type}
-                <div style={{ fontSize: 'larger' }}>Most Frequent Reported Source(s)</div>
-                {indexes.map((value)=>(`${indexing[value]}`))}
+                <div style={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                    <div style={{ fontSize: 'larger' }}>High and Low</div>
+                    <b>Highest Recorded Volume:</b> {high.recording} dB
+                    <br />
+                    <div style={{ textAlign: 'left' }}><b>Predominant Source:</b></div><br />
+                    {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}<br />{high.predominant_type}<br />
+                    <b>Lowest Recorded Volume:</b>{low.recording} dB
+                    <br />
+                    <div style={{ textAlign: 'left' }}><b>Predominant Source:</b></div><br />
+                    {soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other}<br />{low.predominant_type}
+                    <div style={{ fontSize: 'larger' }}>Most Frequent Reported Source(s)</div>
+                    {indexes.map((value) => (`${indexing[value]} `))}
+                </div>
                 <br/>
                 <BarChart width={ width } height={ height } data={ data }>
                     <CartesianGrid strokeDasharray='3 3' />

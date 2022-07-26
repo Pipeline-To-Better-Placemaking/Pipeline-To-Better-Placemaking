@@ -29,7 +29,7 @@ export default function FullMap(props) {
     const [mapPlaces, setMapPlaces] = React.useState(null);
     const [placeOn, setPlaceOn] = React.useState(false);
     const [title, setTitle] = React.useState(props.type > 0 ? props.title : null);
-    const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 11); // initial zoom
+    const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 16); // initial zoom
     const [center, setCenter] = React.useState(props.center ? props.center : { lat:28.54023216523664, lng:-81.38181298263407 });
     const [bounds, setBounds] = React.useState();
     const [click, setClick] = React.useState(props.type === 0 || props.type === 2 || props.type === 7 ? props.center : null);
@@ -39,6 +39,7 @@ export default function FullMap(props) {
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreas : [];
     const loc = useLocation();
+    console.log(loc.state);
 
     // hold the selections from the switch toggles
     const [stationaryCollections, setStationaryCollections] = React.useState({});
@@ -212,6 +213,7 @@ export default function FullMap(props) {
 
     const onBounds = (m, p) => (event) => {
         setBounds(p.setBounds(m.getBounds()));
+        setZoom(m.getZoom())
     };
 
     const onChange = (p) => (event) => {
@@ -388,7 +390,7 @@ export default function FullMap(props) {
                         (props.type === 2 || props.type === 4 ? 
                             <Marker position={props.center} /> : 
                             (props.type === 0 || props.type === 7 ? 
-                                <Marker position={center} /> : null)) }
+                                <Marker position={click} /> : null)) }
                     { props.type === 0 ? <Places map={map} onChange={placeOn ? onChange : null} on={placeOn} togglePlaces={togglePlaces} onClick={onPClick} center={center} zoom={zoom} state={loc.state}/> : null }
                     {/* Change marker types for non center markers to show difference */}
                     { props.type === 3 || props.type === 5 ? clicks.map((latLng, i) => (<Marker key={i} position={ latLng } info={`<div>Position ${i}</div>`}/>)) : null }
@@ -405,7 +407,7 @@ export default function FullMap(props) {
                                 className='newHoveringButtons confirm'
                                 component={ Link }
                                 to='points'
-                                state={({...loc.state, center: center, title: title, area: clicks, zoom: zoom })}
+                                state={{...loc.state, center: center, title: title, area: clicks, zoom: zoom }}
                             >
                                 Set Bounds
                             </Button> }
@@ -545,8 +547,7 @@ const Marker = (options) => {
     const info = options.info;
     const markerSize = Number(options.markerSize);
     const shape = options.shape;
-    const [infoWindow, setInfoWindow] = React.useState()
-    //console.log(options.position);
+    const [infoWindow, setInfoWindow] = React.useState();
 
     const colors = {
         sound_maps: ['#B073FF', '#B073FF'],
@@ -815,11 +816,11 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
                 className='newHoveringButtons' 
                 id='newLocationButton' 
                 component={ Link } to='area' 
-                state={({ ...options.state,
+                state={{ ...options.state,
                     center: options.center, 
                     title: ( options.on && placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : ref?.current?.value),
                     zoom: options.zoom
-                })}
+                }}
             >
                 Set Project Location
             </Button>
