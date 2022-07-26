@@ -164,7 +164,7 @@ export function DescModal(props) {
             <KeyboardAvoidingView behavior='position' style={styles.avoid}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                     <View style={styles.modalContainer}>
-                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1'], height:'53%'}]} >
+                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1'], height:'58%'}]} >
                             <Text category={'h1'} style={styles.titleText}>Description</Text>
                             <View style={styles.dataView}>
                                         
