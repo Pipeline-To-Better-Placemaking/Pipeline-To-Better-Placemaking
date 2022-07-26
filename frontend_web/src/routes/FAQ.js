@@ -5,7 +5,6 @@ export default function FAQ(){
     //Put All html Code within the <div id='faqPage> in func. return
     return(
         <div id='faqPage' classname='pageTemplate'>
-              <body style="color: white;">
 
     <h1> Table of Contents </h1>
       <ul>
