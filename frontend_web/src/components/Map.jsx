@@ -241,7 +241,7 @@ export default function FullMap(props) {
         if(ver === 0 || ver === 2) {
             // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index + 1}<br/>kind: ${data.Results[title][date][time].data[index].kind}<br/>description: ${data.Results[title][date][time].data[index].description}<br/>value: ${data.Results[title][date][time].data[index].value}`
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index + 1}<br/>kind: ${data.Results[title][date][time].data[index].kind}<br/>description: ${data.Results[title][date][time].data[index].description}<br/>${data.Results[title][date][time].data[index].kind === 'Constructed' || data.Results[title][date][time].data[index].kind === 'Construction' ? 'Length' : 'Area'}: ${data.Results[title][date][time].data[index].value} ${data.Results[title][date][time].data[index].kind === 'Constructed' || data.Results[title][date][time].data[index].kind === 'Construction' ? 'ft.' : 'sq.ft.'}`
             popup.style.display = 'flex';
         } else if(ver === 1) {
             // version 1 == water nature collection
@@ -259,7 +259,7 @@ export default function FullMap(props) {
             // version 4 moving collections
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index + 1}<br/>mode: ${data.Results[title][date][time].data[index].mode}`
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index + 1}<br/>Mode: ${data.Results[title][date][time].data[index].mode}`
             popup.style.display = 'flex';
         }
     }

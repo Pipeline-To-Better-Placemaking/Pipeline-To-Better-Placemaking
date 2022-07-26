@@ -132,7 +132,7 @@ export default function Charts(props) {
                 indexes.push(index);
             }
         })
-        
+
         return(
             <div className='Charts'>
                 <div style={{ textAlign: 'center' }}>
@@ -145,7 +145,7 @@ export default function Charts(props) {
                     <br />
                     {high.predominant_type}
                     <br />
-                    <b>Lowest Recorded Volume:</b>{low.recording} dB
+                    <b>Lowest Recorded Volume:</b> {low.recording} dB
                     <br />
                     <b>Predominant Source:</b>
                     <br />
@@ -241,7 +241,7 @@ export default function Charts(props) {
                     <br />
                     {high.predominant_type}
                     <br />
-                    <b>Lowest Recorded Volume:</b>{low.recording} dB
+                    <b>Lowest Recorded Volume:</b> {low.recording} dB
                     <br />
                     <b>Predominant Source:</b>
                     <br />
@@ -591,7 +591,9 @@ export default function Charts(props) {
                 }
             }
         }
+
         var lights = [{ type: 'Building', count: building }, { type: 'Rhythmic', count: rhythmic }, { type: 'Task', count: task }];
+
         return (
             <div className='Charts'>
                 <BarChart width={width} height={height} data={lights}>
@@ -928,6 +930,11 @@ export default function Charts(props) {
                     </Pie>
                     <Tooltip />
                 </PieChart>
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Vegetation'] }}>&nbsp;&nbsp;</div>&nbsp; Vegetation </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water</div>
+                </div>
+                <br/>
                 <div style={{ fontSize: 'larger' }}>Portion of All Nature in Total Area</div>
                 <PieChart width={width} height={height}>
                     <Pie data={totalArea} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
@@ -1045,7 +1052,7 @@ export default function Charts(props) {
 
         var totalArea = [{ nature: 'Water', area: totalPerc[0] }, { nature: 'Vegetation', area: totalPerc[2] }, { nature: 'None', area: totalPerc[4] }];
         var species = [{ species: 'Domestic Dogs', count: dogs }, { species: 'Domestic Cats', count: cats }, { species: 'Wild Birds', count: birds }, {species: 'Wild Ducks', count: ducks }, { species: 'Wild Rabbits', count: rabbits }, { species: 'Wild Squirrels', count: squirrels }, { species: 'Wild Turtles', count: turtles}, {species: 'Domestic (Other)', count: otherD}, {species: 'Wild (Other)', count: otherW}];
-        var variant = [{ variant: 'Wild', count: (wild+otherW)}, {variant: 'Domesticated', count: (domestic+otherD)}]
+        var variant = [{ variant: 'Wild', count: (wild+otherW)}, { variant: 'Domesticated', count: (domestic+otherD) }]
 
         return (
             <div id='natureCharts' className='Charts'>
@@ -1100,20 +1107,22 @@ export default function Charts(props) {
     };
 
     return(
-       type === 0 ? 
-            <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px' }}>
-                <div className='sectionName'>
-                    <div style={{ fontSize: 'large' }}>{ testNames(cat[0]) }</div>
-                    { cat[1] }  { cat[2] }
-                </div>
-                    { cat[0] === 'sound_maps' ? soundBarChart(data) : (cat[0] === 'boundaries_maps' ? BoundaryPieChart(data) : (cat[0] === 'moving_maps' ? movingBarChart(data) : (cat[0] === 'stationary_maps' ? stationaryBarCharts(data) : (cat[0] === 'nature_maps' ? NaturePieChart(data) : (cat[0] === 'light_maps' ? lightingCharts(data) : ( cat[0] === 'order_maps' ? orderCharts(data) : null)))))) }
-            </div> 
-        : 
-            <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px'}}>
-                <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
-                    { testNames(cat[0]) }: Summary
-                </div>
-                {cat[0] === 'sound_maps' ? multiSoundCharts(data) : (cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : (cat[0] === 'stationary_maps' ? multiStationary(data) : (cat[0] === 'nature_maps' ? multiNatureChart(data) : (cat[0] === 'moving_maps' ? multiMoving(data) : (cat[0] === 'light_maps' ? multiLight(data) : ( cat[0] === 'order_maps' ? multiOrderCharts(data) : null)) )) ))}
-            </div>
+       data !== [] ? 
+            (type === 0 ? 
+                    <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px' }}>
+                        <div className='sectionName'>
+                            <div style={{ fontSize: 'large' }}>{ testNames(cat[0]) }</div>
+                            { cat[1] }  { cat[2] }
+                        </div>
+                            { cat[0] === 'sound_maps' ? soundBarChart(data) : (cat[0] === 'boundaries_maps' ? BoundaryPieChart(data) : (cat[0] === 'moving_maps' ? movingBarChart(data) : (cat[0] === 'stationary_maps' ? stationaryBarCharts(data) : (cat[0] === 'nature_maps' ? NaturePieChart(data) : (cat[0] === 'light_maps' ? lightingCharts(data) : ( cat[0] === 'order_maps' ? orderCharts(data) : null)))))) }
+                    </div> 
+                : 
+                    <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px'}}>
+                        <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
+                            { testNames(cat[0]) }: Summary
+                        </div>
+                        {cat[0] === 'sound_maps' ? multiSoundCharts(data) : (cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : (cat[0] === 'stationary_maps' ? multiStationary(data) : (cat[0] === 'nature_maps' ? multiNatureChart(data) : (cat[0] === 'moving_maps' ? multiMoving(data) : (cat[0] === 'light_maps' ? multiLight(data) : ( cat[0] === 'order_maps' ? multiOrderCharts(data) : null)) )) ))}
+                    </div>) 
+        : null
     );
 };
