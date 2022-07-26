@@ -129,17 +129,17 @@ export default function ProjectPage(){
             }
             var time = response?.data.date;
             var timeSplit = ((response?.data.date).split('T'));
-            var sansSeconds = timeSplit[1].split['.'];
+            var sansSeconds = (timeSplit[1]).split['.'];
 
             console.log(time);
             console.log(response?.data.date);
-            console.log(timeSplit);
-            console.log(sansSeconds);
+            console.log((timeSplit[1]).split['.']);
+            console.log(sansSeconds[0]);
 
-            if (map[apiCategory[cat]][date[0]][sansSeconds]){
-                map[apiCategory[cat]][date[0]][`${sansSeconds} (${index})`] = await response.data;
+            if (map[apiCategory[cat]][date[0]][sansSeconds[0]]){
+                map[apiCategory[cat]][date[0]][`${sansSeconds[0]} (${index})`] = await response.data;
             }else{
-                map[apiCategory[cat]][date[0]][sansSeconds] = await response.data;
+                map[apiCategory[cat]][date[0]][sansSeconds[0]] = await response.data;
             }
 
             /* Structure reformatted for info and access ex: 
