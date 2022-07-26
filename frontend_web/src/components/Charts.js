@@ -69,8 +69,123 @@ export default function Charts(props) {
     }
 
     const multiSoundCharts = (data) => {
+        var animals = 0;
+        var music = 0;
+        var traffic = 0;
+        var people = 0;
+        var water = 0;
+        var wind = 0;
+        var other = 0;
+        var frequent = [];
+        var high = {};
+        var low = {};
+        var measurements = [];
         console.log(data)
+        Object.entries(data).map(([dateTime, arr])=>(
+            arr.forEach((obj, index)=>{
+                measurements.push(obj);
+                Object.entries(obj).forEach(([key, dataVal])=>{
+                    if (key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5') {
+                        if (key === 'decibel_1') {
+                            high = dataVal
+                            low = dataVal
+                            frequent.push(dataVal);
+                        } else {
+                            if (dataVal.recording > high.recording) {
+                                high = dataVal;
+                            } else if (dataVal.recording < high.recording) {
+                                low = dataVal;
+                            }
 
+                        }
+
+                        if (dataVal.predominant_type === 'Animals') {
+                            animals++;
+                            if ((dataVal.recording > frequent[0].recording) || frequent === []) {
+                                frequent = [];
+                                frequent[0] = dataVal
+                            } else if (dataVal.recording === frequent[0].recording) {
+                                frequent.push(dataVal);
+                            }
+                        } else if (dataVal.predominant_type === 'Music') {
+                            music++;
+                            if (dataVal.recording > frequent[0].recording || frequent === []) {
+                                frequent = [];
+                                frequent[0] = dataVal
+                            } else if (dataVal.recording === frequent[0].recording) {
+                                frequent.push(dataVal);
+                            }
+                        } else if (dataVal.predominant_type === 'Traffic') {
+                            traffic++;
+                            if (dataVal.recording > frequent[0].recording || frequent === []) {
+                                frequent = [];
+                                frequent[0] = dataVal
+                            } else if (dataVal.recording === frequent[0].recording) {
+                                frequent.push(dataVal);
+                            }
+                        } else if (dataVal.predominant_type === 'People Sounds') {
+                            people++;
+                            if (dataVal.recording > frequent[0].recording || frequent === []) {
+                                frequent = [];
+                                frequent[0] = dataVal
+                            } else if (dataVal.recording === frequent[0].recording) {
+                                frequent.push(dataVal);
+                            }
+                        } else if (dataVal.predominant_type === 'Water Feature') {
+                            water++;
+                            if (dataVal.recording > frequent[0].recording || frequent === []) {
+                                frequent = [];
+                                frequent[0] = dataVal
+                            } else if (dataVal.recording === frequent[0].recording) {
+                                frequent.push(dataVal);
+                            }
+                        } else if (dataVal.predominant_type === 'Wind') {
+                            wind++;
+                            if (dataVal.recording > frequent[0].recording || frequent === []) {
+                                frequent = [];
+                                frequent[0] = dataVal
+                            }
+                        } else {
+                            other++;
+                            if (dataVal.recording > frequent[0].recording || frequent === []) {
+                                frequent = [];
+                                frequent[0] = dataVal
+                            } else if (dataVal.recording === frequent[0].recording) {
+                                frequent.push(dataVal);
+                            }
+                        }
+                    } else if(key === 'average'){
+
+
+                    }
+                })
+            })
+        ))
+        console.log(measurements);
+        return(
+            <div className='Charts'>
+                <div style={{ fontSize: 'larger' }}>High and Low</div>
+                Highest Recorded Volume: {high.recording} dB
+                <br />
+                Predominant Source:<br />
+                {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}<br /> {high.predominant_type}
+                Lowest Recorded Volume: {low.recording} dB
+                <br />
+                Predominant Source:<br />
+                {soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other}<br /> {low.predominant_type}
+                <div style={{ fontSize: 'larger' }}>Most Frequent Reported Source(s)</div>
+                {frequent.map((obj, index) => (`${obj.predominant_type}`))}
+                <br />
+                <BarChart width={width} height={height} data={measurements}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='name' />
+                    <YAxis label={{ value: 'Decibels', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey={'average'} fill='#B073FF' />
+                </BarChart>
+            </div>
+        );
     }
 
     const soundBarChart = (data) => {
@@ -98,7 +213,6 @@ export default function Charts(props) {
                         } else if (dataVal.recording < high.recording){
                             low = dataVal;
                         }
-
                     }
 
                     if (dataVal.predominant_type === 'Animals') {
@@ -157,26 +271,23 @@ export default function Charts(props) {
                         }
                     }
                 }
-
-
             })
         ))
-
-
 
         return(
             <div className='Charts'>
                 <div style={{ fontSize: 'larger' }}>High and Low</div>
                 Highest Recorded Volume: {high.recording} dB
                 <br/>
-                &nbsp;&nbsp;Predominant Source: 
-                &nbsp;&nbsp;{soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other} {high.predominant_type}
+                Predominant Source:<br/>
+                {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}<br/> {high.predominant_type}
                 Lowest Recorded Volume: {low.recording} dB
                 <br />
-                &nbsp;&nbsp;Predominant Source:
-                &nbsp;&nbsp;{soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other} {low.predominant_type}
-                <div style={{ fontSize: 'larger' }}>Most Frequent Source</div>
-                &nbsp;&nbsp;{frequent.map((obj, index)=>(`${obj.predominant_type}`))}
+                Predominant Source:<br/>
+                {soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other}<br/> {low.predominant_type}
+                <div style={{ fontSize: 'larger' }}>Most Frequent Reported Source(s)</div>
+                {frequent.map((obj, index)=>(`${obj.predominant_type}`))}
+                <br/>
                 <BarChart width={ width } height={ height } data={ data }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='name' />
