@@ -159,6 +159,8 @@ export default function NewActivityTimes(props) {
             selectedPoints = props.projectInfo.standingPoints;
         }
 
+        console.log(`${activity.date}T${timeSlot.time}:00.000+00:00`);
+
         try {
             const response = await axios.post(`/${timeSlotName}`, JSON.stringify({
                 title: title,
@@ -166,7 +168,7 @@ export default function NewActivityTimes(props) {
                 researchers: [],
                 project: props.projectInfo._id, 
                 collection: id,
-                date: (new Date(`${activity.date} ${timeSlot.time}`)).toISOString(),
+                date: `${activity.date}T${timeSlot.time}:00.000+00:00`,
                 maxResearchers: `${timeSlot.maxResearchers}`
             }), {
                 headers: {

@@ -117,6 +117,8 @@ export default function ProjectPage(){
             });
 
             var date = new Date(dateTime);
+            console.log(dateTime);
+            console.log(date);
             var map = results;
 
             if (!map[apiCategory[cat]]) {

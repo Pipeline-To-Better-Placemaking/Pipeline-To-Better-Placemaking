@@ -27,6 +27,7 @@ export default function ActivityForm(props) {
 
     const handleChange = (key, ver) => (e) => {
         setForm({ ...form, [key]: e.target.value });
+        console.log(form);
     };
 
     return(
@@ -53,7 +54,7 @@ export default function ActivityForm(props) {
                 <Form.Control type='date' className='dateTimePickers' value={form.date} onChange={handleChange('date')} />
             </div>
             <div className='form-group'>
-                <Form.Label>Time per Location</Form.Label>
+                <Form.Label>Time per Location (minutes)</Form.Label>
                 <Form.Control type='number' id='timerSelect' name='timerSelect' className='dateTimePickers' value={form.timer} min='5' max='100' onChange={handleChange('timer')} />
             </div>
             <Button className='newHoveringButtons confirm' id='addButton' component={ Link }

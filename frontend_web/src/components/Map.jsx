@@ -39,7 +39,6 @@ export default function FullMap(props) {
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreas : [];
     const loc = useLocation();
-    console.log(loc.state);
 
     // hold the selections from the switch toggles
     const [stationaryCollections, setStationaryCollections] = React.useState({});
