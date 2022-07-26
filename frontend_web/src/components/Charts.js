@@ -124,10 +124,10 @@ export default function Charts(props) {
         ))
 
         frequent.forEach((value, index) => {
-            if (value > frequent(indexes[0])) {
+            if (value > frequent[indexes[0]]) {
                 indexes = []
                 indexes = [index];
-            } else if (value === frequent(indexes[0])) {
+            } else if (value === frequent[indexes[0]] && index !== indexes[0]) {
                 indexes.push(index);
             }
         })
@@ -210,10 +210,10 @@ export default function Charts(props) {
         ))
 
         frequent.forEach((value, index)=>{
-            if(value > frequent(indexes[0])){
+            if(value > frequent[indexes[0]]){
                 indexes = []
                 indexes = [index];
-            } else if (value === frequent(indexes[0])){
+            } else if (value === frequent[indexes[0]] && index !== indexes[0]){
                indexes.push(index);
             }
         })
