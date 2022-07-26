@@ -5,7 +5,7 @@ export default function FAQ(){
     //Put All html Code within the <div id='faqPage> in func. return
     return(
         <div id='faqPage'>
-            <h1>FAQ <QuizIcon/></h1>
+            <h1>FAQ123 <QuizIcon/></h1>
         </div>
     );
 }
