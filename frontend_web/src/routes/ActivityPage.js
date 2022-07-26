@@ -76,7 +76,17 @@ export default function ActivityPage(props) {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Mode: dataobjects.mode }
                             moving.push(obj);
                         } else if (category === 'sound_maps') {
-                            obj = { Category: testNames(category), Date: date, Time: time, Point: index, 'Average (dB)': dataobjects.average, 'Sound Types/Sources': `${dataobjects.sound_type}` }
+                            obj = { 
+                                Category: testNames(category), 
+                                Date: date, Time: time, Point: index, 
+                                'Average (dB)': dataobjects.average, 
+                                'Sound Types/Sources': `${dataobjects.sound_type}`,
+                                'Reading 1': `${dataobjects.decibel_1.recording} ${dataobjects.decibel_1.predominant_type}`,
+                                'Reading 2': `${dataobjects.decibel_2.recording} ${dataobjects.decibel_2.predominant_type}`,
+                                'Reading 3': `${dataobjects.decibel_3.recording} ${dataobjects.decibel_3.predominant_type}`,
+                                'Reading 4': `${dataobjects.decibel_4.recording} ${dataobjects.decibel_4.predominant_type}`,
+                                'Reading 5': `${dataobjects.decibel_5.recording} ${dataobjects.decibel_5.predominant_type}`
+                            }
                             sound.push(obj);
                         } else if (category === 'boundaries_maps') {
                             obj = { Category: testNames(category), Date: date, Time: time, Point: index, Kind: dataobjects.kind, Description: dataobjects.description, Purpose: `${dataobjects.purpose}`, 'Value (ft/sq.ft)': dataobjects.value }

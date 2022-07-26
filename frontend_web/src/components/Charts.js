@@ -1,9 +1,15 @@
 import * as React from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, Tooltip, Legend, PieChart, Pie } from 'recharts';
+import PetsIcon from '@mui/icons-material/Pets';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import CommuteIcon from '@mui/icons-material/Commute';
+import PeopleIcon from '@mui/icons-material/People';
+import WavesIcon from '@mui/icons-material/Waves';
+import AirIcon from '@mui/icons-material/Air';
 import { Area, testNames } from '../functions/HelperFunctions';
 
 export default function Charts(props) {
-    const width = 300;
+    const width = 280;
     const height = 200;
     const data = props.data;
     const selection = props.selection;
@@ -52,16 +58,136 @@ export default function Charts(props) {
 
     const cat = selection.split('.');
 
-    const soundBarChart = (data) => (
-        <BarChart width={ width } height={ height } data={ data }>
-            <CartesianGrid strokeDasharray='3 3' />
-            <XAxis dataKey='name' />
-            <YAxis label={{ value: 'Decibels', angle: -90, position: 'insideLeft' }} />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey={'average'} fill='#B073FF' />
-        </BarChart>
-    );
+    const soundIcons ={
+        Animals: <PetsIcon/>,
+        Music: <MusicNoteIcon/>,
+        Traffic: <CommuteIcon/>,
+        'People Sounds': <PeopleIcon/>,
+        'Water Feature': <WavesIcon/>,
+        Wind: <AirIcon/>,
+        Other: null
+    }
+
+    const multiSoundCharts = (data) => {
+        console.log(data)
+
+    }
+
+    const soundBarChart = (data) => {
+        var animals = 0;
+        var music = 0;
+        var traffic = 0;
+        var people = 0;
+        var water = 0;
+        var wind = 0;
+        var other = 0;
+        var frequent = [];
+        var high = {};
+        var low = {};
+
+        data.map((obj)=>(
+            Object.entries(obj).forEach(([key, dataVal], index)=>{
+                if(key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5'){
+                    if(key === 'decibel_1'){
+                        high = dataVal
+                        low = dataVal
+                        frequent.push(dataVal);
+                    } else {
+                        if(dataVal.recording > high.recording){
+                            high = dataVal;
+                        } else if (dataVal.recording < high.recording){
+                            low = dataVal;
+                        }
+
+                    }
+
+                    if (dataVal.predominant_type === 'Animals') {
+                        animals++;
+                        if ((dataVal.recording > frequent[0].recording) || frequent === []){
+                            frequent = [];
+                            frequent[0] = dataVal
+                        } else if (dataVal.recording === frequent[0].recording){
+                            frequent.push(dataVal);
+                        }
+                    } else if (dataVal.predominant_type === 'Music') {
+                        music++;
+                        if (dataVal.recording > frequent[0].recording || frequent === []) {
+                            frequent = [];
+                            frequent[0] = dataVal
+                        } else if (dataVal.recording === frequent[0].recording) {
+                            frequent.push(dataVal);
+                        }
+                    } else if (dataVal.predominant_type === 'Traffic') {
+                        traffic++;
+                        if (dataVal.recording > frequent[0].recording || frequent === []) {
+                            frequent = [];
+                            frequent[0] = dataVal
+                        } else if (dataVal.recording === frequent[0].recording) {
+                            frequent.push(dataVal);
+                        }
+                    } else if (dataVal.predominant_type === 'People Sounds') {
+                        people++;
+                        if (dataVal.recording > frequent[0].recording || frequent === []) {
+                            frequent = [];
+                            frequent[0] = dataVal
+                        } else if (dataVal.recording === frequent[0].recording) {
+                            frequent.push(dataVal);
+                        }
+                    } else if (dataVal.predominant_type === 'Water Feature') {
+                        water++;
+                        if (dataVal.recording > frequent[0].recording || frequent === []) {
+                            frequent = [];
+                            frequent[0] = dataVal
+                        } else if (dataVal.recording === frequent[0].recording) {
+                            frequent.push(dataVal);
+                        }
+                    } else if (dataVal.predominant_type === 'Wind') {
+                        wind++;
+                        if (dataVal.recording > frequent[0].recording || frequent === []) {
+                            frequent = [];
+                            frequent[0] = dataVal
+                        }
+                    } else {
+                        other++;
+                        if (dataVal.recording > frequent[0].recording || frequent === []) {
+                            frequent = [];
+                            frequent[0] = dataVal
+                        } else if (dataVal.recording === frequent[0].recording) {
+                            frequent.push(dataVal);
+                        }
+                    }
+                }
+
+
+            })
+        ))
+
+
+
+        return(
+            <div className='Charts'>
+                <div style={{ fontSize: 'larger' }}>High and Low</div>
+                Highest Recorded Volume: {high.recording} dB
+                <br/>
+                &nbsp;&nbsp;Predominant Source: 
+                &nbsp;&nbsp;{soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other} {high.predominant_type}
+                Lowest Recorded Volume: {low.recording} dB
+                <br />
+                &nbsp;&nbsp;Predominant Source:
+                &nbsp;&nbsp;{soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other} {low.predominant_type}
+                <div style={{ fontSize: 'larger' }}>Most Frequent Source</div>
+                &nbsp;&nbsp;{frequent.map((obj, index)=>(`${obj.predominant_type}`))}
+                <BarChart width={ width } height={ height } data={ data }>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='name' />
+                    <YAxis label={{ value: 'Decibels', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey={'average'} fill='#B073FF' />
+                </BarChart>
+            </div>
+        );
+    };
 
     const multiStationary = (data) => {
         var standing = 0, laying = 0, squatting = 0, sitting = 0;
@@ -910,7 +1036,7 @@ export default function Charts(props) {
                 <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
                     { testNames(cat[0]) }: Summary
                 </div>
-                {cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : (cat[0] === 'stationary_maps' ? multiStationary(data) : (cat[0] === 'nature_maps' ? multiNatureChart(data) : (cat[0] === 'moving_maps' ? multiMoving(data) : (cat[0] === 'light_maps' ? multiLight(data) : ( cat[0] === 'order_maps' ? multiOrderCharts(data) : null)) )) )}
+                {cat[0] === 'sound_maps' ? multiSoundCharts(data) : (cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : (cat[0] === 'stationary_maps' ? multiStationary(data) : (cat[0] === 'nature_maps' ? multiNatureChart(data) : (cat[0] === 'moving_maps' ? multiMoving(data) : (cat[0] === 'light_maps' ? multiLight(data) : ( cat[0] === 'order_maps' ? multiOrderCharts(data) : null)) )) ))}
             </div>
     );
 };
