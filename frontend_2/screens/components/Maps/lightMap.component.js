@@ -67,6 +67,8 @@ export function LightMap(props) {
                         <MapView.Marker
                             coordinate={props.dataPoints[i].location}
                             anchor={offsetPoint}
+                            // sloves problem of not being able to delete points for android
+                            onPress={(e) => checkPoint(e.nativeEvent.coordinate)}
                         >
                             <DataPin
                                 color={color}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Platform } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
@@ -18,6 +18,7 @@ import { styles } from './boundaryTest.styles';
 
 export function BoundaryTest(props){
     const theme = useTheme();
+    const plat = Platform.OS;
 
     const [area] = useState(props.timeSlot.area);
     const [recenter] = useState(false); // not used
@@ -424,13 +425,23 @@ export function BoundaryTest(props){
                     break
                 }
             }
-            // coordinate path of material/shelter has an extra coord at the end of the path (on the deleteCoords array which forms the enclosed line polygons)
+            // coordinate path of material/shelter
             else{
-                // once tempFilter's length matches the deleteCoords - 1 length, we've found the index of the boundary to be deleted from the data array
-                if(tempFilter.length === deleteCoords.length - 1){
-                    // save the index and break from the loop
-                    tempIndex = i
-                    break
+                // android device
+                if(plat === 'android'){
+                    if(tempFilter.length === deleteCoords.length){
+                        tempIndex = i;
+                        break
+                    }
+                }
+                // ios device
+                else{
+                    // if its an ios device, there is an extra coord at the end of the path (on the deleteCoords array which forms the enclosed line polygons)
+                    if(tempFilter.length === deleteCoords.length - 1){
+                        // save the index and break from the loop
+                        tempIndex = i
+                        break
+                    }
                 }
             }
         }

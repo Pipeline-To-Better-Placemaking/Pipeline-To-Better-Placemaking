@@ -32,6 +32,8 @@ export function StationaryActivityMap(props) {
                         latitude: coord.marker.latitude,
                         longitude: coord.marker.longitude
                     }}
+                    // sloves problem of not being able to delete points for android
+                    onPress={(e) => checkPoint(e.nativeEvent.coordinate)}
                 >
                     <DataPin index={coord.colorIndex}/>
                 </MapView.Marker>

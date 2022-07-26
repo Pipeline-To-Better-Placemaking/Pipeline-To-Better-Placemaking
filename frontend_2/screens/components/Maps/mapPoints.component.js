@@ -243,6 +243,7 @@ export const SoundMapAreaWrapper = ({children, area, mapHeight, recenter }) => {
         zoomEnabled
         initialRegion={defaultRegion}
         mapType={mapConfig}
+        toolbarEnabled={false}
       >
         {children}
       </MapView>

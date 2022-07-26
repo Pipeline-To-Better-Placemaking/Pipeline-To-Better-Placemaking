@@ -45,7 +45,11 @@ export function OrderMap(props) {
                 if(props.dataPoints[i].kind === "Behavior") color = "#FF9933"
                 obj[i] = (
                     <View key={i.toString()}>
-                        <MapView.Marker coordinate={props.dataPoints[i].location}>
+                        <MapView.Marker 
+                            coordinate={props.dataPoints[i].location} 
+                            // sloves problem of not being able to delete points for android
+                            onPress={(e) => checkPoint(e.nativeEvent.coordinate)}
+                        >
                             <DataPin color={color} />
                         </MapView.Marker>
                     </View>

@@ -185,14 +185,12 @@ export function OrderTest(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
-            console.log('starting timer useEffect')
             setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
         }
         // test gets pasued
         else if(start === false){
-            console.log('stopping timer useEffect')
             clearInterval(id);
         }
     }, [start]);
@@ -204,7 +202,7 @@ export function OrderTest(props) {
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            console.log(count);
+            // console.log(count);
             // when the timer reaches 0, call restart
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
