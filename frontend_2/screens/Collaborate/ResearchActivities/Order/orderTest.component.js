@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button, Text } from '@ui-kitten/components';
+import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
 import { OrderMap } from '../../../components/Maps/orderMap.component.js';
 import { DataModal } from '../../../components/Activities/Order/dataModal.component';
 import { DeleteModal } from '../../../components/Activities/deleteModal.component';
@@ -185,9 +185,15 @@ export function OrderTest(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
+            console.log('starting timer useEffect')
             setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
+        }
+        // test gets pasued
+        else if(start === false){
+            console.log('stopping timer useEffect')
+            clearInterval(id);
         }
     }, [start]);
 
@@ -198,7 +204,7 @@ export function OrderTest(props) {
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            //console.log(count);
+            console.log(count);
             // when the timer reaches 0, call restart
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
@@ -207,6 +213,28 @@ export function OrderTest(props) {
             }
         // 1000 ms == 1 s
         }, 1000));
+    }
+
+    const PlayPauseButton = () =>{
+        const Play = () => <Icon name='play-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+        const Pause = () => <Icon name='pause-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+      
+        // timer is active
+        if(start){
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(false)}>
+              <Pause />
+            </TouchableOpacity>
+          )
+        }
+        // timer is paused
+        else{
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(true)}>
+              <Play />
+            </TouchableOpacity>
+          )
+        }
     }
 
     // Count Down Timer and the Start/Exit button
@@ -218,7 +246,14 @@ export function OrderTest(props) {
 
                     <StartStopButton/>
 
-                    <View>
+                    <View style={styles.timerRow}>
+                        
+                        {initalStart ?
+                            null
+                        :
+                            <PlayPauseButton />
+                        }
+
                         <CountDown
                             running={start}
                             until={timer}
@@ -297,7 +332,13 @@ export function OrderTest(props) {
                     <Text category={'s1'}>Tap on the map to plot misconduct data points</Text>
                 </View>
             :
-                null
+                <View style={styles.descriptionView}>
+                    {initalStart ?
+                        null
+                    :
+                        <Text category={'s1'}>Press the play button to resume the test</Text>
+                    }
+                </View>
             }
         </ViewableArea>
     );

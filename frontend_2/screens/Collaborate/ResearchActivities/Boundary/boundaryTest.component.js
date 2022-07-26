@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button, Text } from '@ui-kitten/components';
+import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component';
 import { BoundaryMap } from '../../../components/Maps/boundaryMap.component';
 import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.component';
@@ -24,7 +24,7 @@ export function BoundaryTest(props){
 
     // Begins the test
     const [start, setStart] = useState(false);
-
+    const [initalStart, setInitalStart] = useState(true);
     // timer stuff
     const initalTime = props.timeSlot.timeLeft
     // controls the rendered countdown timer
@@ -185,9 +185,15 @@ export function BoundaryTest(props){
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
-            //console.log('useEffect start');
+            // console.log('starting timer useEffect');
             setPopupMsg(false);
             startTime(timer);
+            setInitalStart(false);
+        }
+        // timer is paused
+        else if(start === false){
+            // console.log('stopping timer useEffect')
+            clearInterval(id);
         }
     }, [start]);
 
@@ -200,7 +206,7 @@ export function BoundaryTest(props){
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            //console.log(count);
+            // console.log(count);
             // when timer hits 0, end the test (is a time at site test)
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
@@ -215,7 +221,7 @@ export function BoundaryTest(props){
     // Start button and progress tracker component
     const StartEndButton = () => {
         // only show the start button before the test is started (to start the test)
-        if (!start) {
+        if (initalStart){
             return(
                 <Button style={styles.startButton} onPress={() => setStart(true)}>
                     <View>
@@ -281,7 +287,29 @@ export function BoundaryTest(props){
         }
     }
 
-     // CountDown Timer and the StartEnd buttons
+    const PlayPauseButton = () =>{
+        const Play = () => <Icon name='play-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+        const Pause = () => <Icon name='pause-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+      
+        // timer is active
+        if(start){
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(false)}>
+              <Pause />
+            </TouchableOpacity>
+          )
+        }
+        // timer is paused
+        else{
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(true)}>
+              <Play />
+            </TouchableOpacity>
+          )
+        }
+    }
+
+    // CountDown Timer and the StartEnd buttons
     const TimeBar = () => {
         return(
             <View>
@@ -294,7 +322,7 @@ export function BoundaryTest(props){
                         <View>
                             <DropDownPicker
                                 style={styles.filterSelect}
-                                disabled={!start}
+                                disabled={initalStart}
                                 open={open}
                                 setOpen={setOpen}
                                 value={value}
@@ -307,7 +335,14 @@ export function BoundaryTest(props){
 
                     </View>
 
-                    <View>
+                    <View style={styles.timerRow}>
+                        
+                        {initalStart ?
+                            null
+                        :
+                            <PlayPauseButton />
+                        }
+
                         <CountDown
                             running={start}
                             until={timer}
@@ -503,9 +538,8 @@ export function BoundaryTest(props){
         if(lineTools){
             return null
         }
-        // otherwise the button toolbar is rendered
         else{
-            // only if the test has started
+            // render the button toolbar only if the test has started
             if(start){
                 return(
                     <View style={styles.buttonRow}>
@@ -527,6 +561,15 @@ export function BoundaryTest(props){
                     </View>
                 )
             }
+            // if the test has been started, but then paused at some point, render this message
+            else if(!initalStart){
+                return(
+                    <View style={styles.descriptionView}>
+                        <Text category={'s1'}>Press the play button to resume the test</Text>
+                    </View>
+                )
+            }
+            // initally renders this (test has not yet started)
             else return null
         }
     }

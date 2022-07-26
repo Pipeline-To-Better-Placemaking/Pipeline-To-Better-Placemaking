@@ -29,6 +29,28 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: width * .045,
         marginLeft: 10
+    },
+
+    playPauseIcon:{
+        width: width * .065,
+        height: height * .03,
+    },
+
+    playPauseButton:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 100,
+        backgroundColor: '#006FD6',
+    },
+    
+    timerRow:{
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
+    descriptionView:{
+        alignItems: 'center',
+        backgroundColor: 'white'
     }
 
 });

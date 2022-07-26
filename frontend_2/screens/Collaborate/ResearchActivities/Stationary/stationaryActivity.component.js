@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button, Text } from '@ui-kitten/components';
+import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
 import { StationaryActivityMap } from '../../../components/Maps/stationaryActivityMap.component.js';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import { DataEntryModal } from '../../../components/Activities/Stationary/dataEntryModal.component.js';
@@ -26,13 +26,14 @@ export function StationaryActivity(props) {
     // Begins the test
     const [start, setStart] = useState(false)
     const [initalStart, setInitalStart] = useState(true);
+    const [disabled, setDisabled] = useState(true);
 
     // timer stuff
     const initalTime = props.timeSlot.timeLeft
     // controls the rendered countdown timer
     const [timer, setTimer] = useState(initalTime);
     // controls timer interval instance
-    let id;
+    const [id, setId] = useState();
 
     const [popupMsg, setPopupMsg] = useState(true);
 
@@ -153,6 +154,8 @@ export function StationaryActivity(props) {
         // clear the interval whenever we restart/end
         clearInterval(id);
         setDataModal(false);
+        // don't allow the play/pause button to show when the timer has hit 0
+        setDisabled(true);
 
         if (standingIndex < standingPointLength-1){            
             setStandingIndex(standingIndex+1)
@@ -206,17 +209,21 @@ export function StationaryActivity(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
-            // console.log('useEffect start');
             setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
+            setDisabled(false);
+        }
+        // timer gets pasued
+        else if(start === false){
+            clearInterval(id);
         }
     }, [start]);
 
     // begins/updates the timer
     function startTime(current){
         let count = current;
-        id = setInterval(() =>{            
+        setId(setInterval(() =>{            
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
@@ -228,7 +235,29 @@ export function StationaryActivity(props) {
                 restart();
             }
         // 1000 ms == 1 s
-        }, 1000);
+        }, 1000));
+    }
+
+    const PlayPauseButton = () =>{
+        const Play = () => <Icon name='play-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+        const Pause = () => <Icon name='pause-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+      
+        // timer is active
+        if(start){
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(false)}>
+              <Pause />
+            </TouchableOpacity>
+          )
+        }
+        // timer is paused
+        else{
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(true)}>
+              <Play />
+            </TouchableOpacity>
+          )
+        }
     }
 
     // Count Down Timer and the Start/Exit button
@@ -240,7 +269,14 @@ export function StationaryActivity(props) {
 
                     <StartStopButton/>
 
-                    <View>
+                    <View style={styles.timerRow}>
+                            
+                        {disabled ?
+                            null
+                        :
+                            <PlayPauseButton />
+                        }
+
                         <CountDown
                             running={start}
                             until={timer}
@@ -305,7 +341,13 @@ export function StationaryActivity(props) {
                     <Text category={'s1'}>Tap on the map to plot data points</Text>
                 </View>
             :
-                null
+                <View style={styles.descriptionViewNoMargin}>
+                    {disabled ?
+                        null
+                    :
+                        <Text category={'s1'}>Press the play button to resume the test</Text>
+                    }
+                </View>
             }
         </ViewableArea>
     );

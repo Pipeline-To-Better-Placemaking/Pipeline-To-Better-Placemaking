@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button, Text } from '@ui-kitten/components';
+import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component';
 import { NatureMap } from '../../../components/Maps/natureMap.component.js';
 import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.component';
@@ -226,23 +226,17 @@ export function NatureTest(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
+            // console.log('starting timer useEffect')
             setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
         }
+        // timer is paused
+        else if(start === false){
+            // console.log('stopping timer useEffect')
+            clearInterval(id);
+        }
     }, [start]);
-
-    // used to close popup message after 5 s
-    // useEffect(() =>{
-    //     if(popupMsg){
-    //     // after 5 seconds, close the popup and reset the interval (so the interval doesn't keep running)
-    //     let tempID = setInterval(()=>{
-    //         setPopupMsg(false);
-    //         clearInterval(tempID);
-    //     // 5000 ms -> 5 s
-    //     }, 5000)
-    //     }
-    // }, [popupMsg]);
 
     // begins/updates the timer
     function startTime(current){
@@ -251,7 +245,7 @@ export function NatureTest(props) {
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            //console.log(count);
+            // console.log(count);
             // when the timer reaches 0, call restart
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
@@ -260,6 +254,28 @@ export function NatureTest(props) {
             }
         // 1000 ms == 1 s
         }, 1000));
+    }
+
+    const PlayPauseButton = () =>{
+        const Play = () => <Icon name='play-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+        const Pause = () => <Icon name='pause-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+      
+        // timer is active
+        if(start){
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(false)}>
+              <Pause />
+            </TouchableOpacity>
+          )
+        }
+        // timer is paused
+        else{
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(true)}>
+              <Play />
+            </TouchableOpacity>
+          )
+        }
     }
 
     // Count Down Timer and the Start/Exit button
@@ -271,7 +287,14 @@ export function NatureTest(props) {
 
                     <StartStopButton/>
 
-                    <View>
+                    <View style={styles.timerRow}>
+
+                        {initalStart ?
+                            null
+                        :
+                            <PlayPauseButton />
+                        }
+
                         <CountDown
                             running={start}
                             until={timer}
@@ -348,31 +371,44 @@ export function NatureTest(props) {
     }
 
     const ButtonToolBar = () =>{
-        // line toolbar is not rendered and the test has started
-        if(start && !lineTools){
-            return(
-                <View style={styles.toolBarView}>
-                    <View style={styles.descriptionView}>
-                        <Text category={'s1'}>Tap on the map to plot animal data points</Text>
+        // line toolbar is rendered
+        if(lineTools) return null
+        
+        else{
+            // render the button toolbar only if the test has started
+            if(start){
+                return(
+                    <View style={styles.toolBarView}>
+                        <View style={styles.descriptionView}>
+                            <Text category={'s1'}>Tap on the map to plot animal data points</Text>
+                        </View>
+                        
+                        <View style={styles.buttonView}>
+                            <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(0)}}>
+                                <View>
+                                    <Text style={styles.buttonTxt}>Body of Water</Text>
+                                </View>
+                            </Button>
+                            <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(1)}}>
+                                <View>
+                                    <Text style={styles.buttonTxt}>Vegetation</Text>
+                                </View>
+                            </Button>
+                        </View>
                     </View>
-                    
-                    <View style={styles.buttonView}>
-                        <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(0)}}>
-                            <View>
-                                <Text style={styles.buttonTxt}>Body of Water</Text>
-                            </View>
-                        </Button>
-                        <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(1)}}>
-                            <View>
-                                <Text style={styles.buttonTxt}>Vegetation</Text>
-                            </View>
-                        </Button>
+                )
+            }
+            // test has started, but then gets pasued
+            else if(!initalStart){
+                return(
+                    <View style={styles.pausedDescriptionView}>
+                        <Text category={'s1'}>Press the play button to resume the test</Text>
                     </View>
-                </View>
-            )
+                )
+            }
+            // initally renders this (test has not yet started)
+            else return null
         }
-        // otherwise return nothing (linetool bar is up or test hasn't started)
-        return null
     }
 
     // closes the error modal

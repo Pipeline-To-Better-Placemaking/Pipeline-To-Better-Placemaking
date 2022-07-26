@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button } from '@ui-kitten/components';
+import { useTheme, Button, Icon, Text } from '@ui-kitten/components';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import { SoundMap } from '../../../components/Maps/soundMap.component';
 import CountDown from 'react-native-countdown-component';
@@ -27,6 +27,7 @@ export function SoundTest(props){
     // Begins the test
     const [start, setStart] = useState(false);
     const [initalStart, setInitalStart] = useState(true);
+    const [disabled, setDisabled] = useState(true);
 
     // Controls the modal telling you to go to the next standing point
     const [moving, setMoving] = useState(false);
@@ -43,7 +44,7 @@ export function SoundTest(props){
     // controls the rendered countdown timer
     const [timer, setTimer] = useState(initalTime);
     // controls timer interval instance
-    let id;
+    const [id, setId] = useState();
     
 
     // control modals
@@ -236,7 +237,6 @@ export function SoundTest(props){
     const restart = () => {
         // clear the interval whenever we restart/end
         clearInterval(id);
-        
         // have not yet reached the last iteration
         if (tracker < totalIter){
             // cycle through the standing points
@@ -269,8 +269,8 @@ export function SoundTest(props){
         setRecenter(false)
     }
 
-     // Start button and progress tracker component
-     const StartTracker = () => {
+    // Start button and progress tracker component
+    const StartTracker = () => {
         // only show the start button before the test is started (to start the test)
         if (initalStart) {
             return(
@@ -295,21 +295,25 @@ export function SoundTest(props){
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
-            // console.log('useEffect start');
             setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
+            setDisabled(false);
+        }
+        // timer gets paused
+        else if(start === false){
+            clearInterval(id);
         }
     }, [start]);
 
     // begins/updates the timer
     function startTime(current){
         let count = current;
-        id = setInterval(() =>{            
+        setId(setInterval(() =>{            
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            //console.log(count);
+            // console.log(count);
             // every 5 seconds or when the timer hits 0, pause the timer and render the modal(s) for data collection
             if(count % 5 == 0){
                 // clear the interval to avoid resuming timer issues
@@ -317,24 +321,54 @@ export function SoundTest(props){
                 handleModal();
             }
         // 1000 ms == 1 s
-        }, 1000);
+        }, 1000));
     }
     
     // pulls up the 1st modal (decibel level modal)
     function handleModal(){
+        // disable the play/pause timer button to avoid allowing users to try to press it between modal transitions (to the next modal)
+        // whenever the timer resumes/rebegins, disabled becomes false (in the useEffect)
+        setDisabled(true);
         setStart(false);
         setDecibelModal(true);
     }
 
-     // CountDown Timer and the StartTracker component
-     const TimeBar = () => {
+    const PlayPauseButton = () =>{
+        const Play = () => <Icon name='play-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+        const Pause = () => <Icon name='pause-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+      
+        // timer is active
+        if(start){
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(false)}>
+              <Pause />
+            </TouchableOpacity>
+          )
+        }
+        // timer is paused
+        else{
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(true)}>
+              <Play />
+            </TouchableOpacity>
+          )
+        }
+    }
+
+    // CountDown Timer and the StartTracker component
+    const TimeBar = () => {
         return(
             <View>
                 <View style={styles.container}>
-
                     <StartTracker/>
-
-                    <View>
+                    <View style={styles.timerRow}>
+                        
+                        {disabled ?
+                            null
+                        :
+                            <PlayPauseButton />
+                        }
+                        
                         <CountDown
                             running={start}
                             until={timer}
@@ -347,7 +381,6 @@ export function SoundTest(props){
                             showSeparator
                         />
                     </View>
-
                 </View>
             </View>
         )
@@ -392,6 +425,17 @@ export function SoundTest(props){
                     />
 
             </ContentContainer>
+            {start ?
+                null
+            :
+                <View style={styles.descriptionView}>
+                    {disabled ?
+                        null
+                    :
+                        <Text category={'s1'}>Press the play button to resume the test</Text>
+                    }
+                </View>
+            }
         </ViewableArea>
     );
 }

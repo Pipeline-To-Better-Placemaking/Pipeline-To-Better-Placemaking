@@ -12,7 +12,7 @@ export function Pagination(props){
     }
     
     const ForwardIcon = () => (
-        <Icon name='arrow-ios-forward' fill="#006FD6"  style={styles.arrow}/>
+        <Icon name='arrow-ios-forward' fill="#006FD6" style={styles.arrow}/>
     )
 
     const BackwardIcon = () =>(
