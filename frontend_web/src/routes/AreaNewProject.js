@@ -6,11 +6,11 @@ function NewArea() {
     //recieves location data from NewProject.js
     const loc = useLocation();
 
-    const [values, setValues] = React.useState({
+    const values = {
         center: loc.state.center,
         title: loc.state.title, 
         zoom: loc.state.zoom
-    });
+    };
 
     return (
         <div id='newArea'>

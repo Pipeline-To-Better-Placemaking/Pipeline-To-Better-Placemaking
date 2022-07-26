@@ -89,7 +89,6 @@ export default function Charts(props) {
             arr.forEach((arr1, index)=>{
                 arr1.forEach((obj, index)=>{
                     measurements.push(obj);
-                    console.log(obj);
                     Object.entries(obj).forEach(([key, dataVal])=>{
                         if (key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5') {
                             if (key === 'decibel_1') {
@@ -133,21 +132,28 @@ export default function Charts(props) {
                 indexes.push(index);
             }
         })
-
-        console.log(measurements);
+        
         return(
             <div className='Charts'>
-                <div style={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                    <div style={{ fontSize: 'larger' }}>High and Low</div>
+                <div style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: 'larger' }}>Volume Range and Sources</div>
                     <b>Highest Recorded Volume:</b> {high.recording} dB
                     <br />
-                    <div style={{textAlign: 'left'}}><b>Predominant Source:</b></div><br />
-                    {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}<br />{high.predominant_type}<br />
+                    <b>Predominant Source:</b>
+                    {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}
+                    <br />
+                    {high.predominant_type}
+                    <br />
                     <b>Lowest Recorded Volume:</b>{low.recording} dB
                     <br />
-                    <div style={{ textAlign: 'left' }}><b>Predominant Source:</b></div><br />
-                    {soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other}<br />{low.predominant_type}
-                    <div style={{ fontSize: 'larger' }}>Most Frequent Reported Source(s)</div>
+                    <b>Predominant Source:</b>
+                    <br />
+                    {soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other}
+                    <br />
+                    {low.predominant_type}
+                    <br />
+                    <b>Most Frequent Reported Source(s):</b>
+                    <br />
                     {indexes.map((value) => (`${indexing[value]} `))}
                 </div>
                 <br />
@@ -224,17 +230,25 @@ export default function Charts(props) {
 
         return(
             <div className='Charts'>
-                <div style={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                    <div style={{ fontSize: 'larger' }}>High and Low</div>
+                <div style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: 'larger' }}>Volume Range and Sources</div>
                     <b>Highest Recorded Volume:</b> {high.recording} dB
                     <br />
-                    <div style={{ textAlign: 'left' }}><b>Predominant Source:</b></div><br />
-                    {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}<br />{high.predominant_type}<br />
+                    <b>Predominant Source:</b>
+                    {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}
+                    <br />
+                    {high.predominant_type}
+                    <br />
                     <b>Lowest Recorded Volume:</b>{low.recording} dB
                     <br />
-                    <div style={{ textAlign: 'left' }}><b>Predominant Source:</b></div><br />
-                    {soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other}<br />{low.predominant_type}
-                    <div style={{ fontSize: 'larger' }}>Most Frequent Reported Source(s)</div>
+                    <b>Predominant Source:</b>
+                    <br />
+                    {soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other}
+                    <br />
+                    {low.predominant_type}
+                    <br />
+                    <b>Most Frequent Reported Source(s):</b>
+                    <br />
                     {indexes.map((value) => (`${indexing[value]} `))}
                 </div>
                 <br/>
