@@ -124,18 +124,22 @@ export default function ProjectPage(){
             if (!map[apiCategory[cat]]) {
                 map[apiCategory[cat]] = {};
             }
-            if(!map[apiCategory[cat]][date]){ 
-                map[apiCategory[cat]][date] = {};
+            if(!map[apiCategory[cat]][date[0]]){ 
+                map[apiCategory[cat]][date[0]] = {};
             }
-            var time = (response?.data.date).split('T')[1].split['.'];
+            var time = response?.data.date;
+            var timeSplit = ((response?.data.date).split('T'));
+            var sansSeconds = timeSplit[1].split['.'];
 
             console.log(time);
             console.log(response?.data.date);
+            console.log(timeSplit);
+            console.log(sansSeconds);
 
-            if (map[apiCategory[cat]][date][time]){
-                map[apiCategory[cat]][date][`${time} (${index})`] = await response.data;
+            if (map[apiCategory[cat]][date[0]][sansSeconds]){
+                map[apiCategory[cat]][date[0]][`${sansSeconds} (${index})`] = await response.data;
             }else{
-                map[apiCategory[cat]][date][time] = await response.data;
+                map[apiCategory[cat]][date[0]][sansSeconds] = await response.data;
             }
 
             /* Structure reformatted for info and access ex: 
