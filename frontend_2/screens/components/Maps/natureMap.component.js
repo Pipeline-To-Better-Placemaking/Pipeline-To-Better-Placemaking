@@ -193,6 +193,7 @@ export function NatureMap(props) {
     const Vegetation = () =>{
         // if there is a truthy value in the 1st vege path then render the vegetation paths
         if(props.vege[0]){
+            // android device
             if(plat === 'android'){
                 return(
                     props.vege.map((obj, index) => (
