@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     },
 
     viewContainer: {
-        height: '27%',
+        height: '30%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
