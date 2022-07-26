@@ -132,7 +132,7 @@ export default function ProjectPage(){
             var timeSplit = (time.split(/[T.]+/));
 
             console.log(time);
-            console.log(timeSplit);
+            console.log(new Date(`${timeSplit[1]} GMT-04:00`));
 
             if (map[apiCategory[cat]][date[0]][timeSplit[1]]){
                 map[apiCategory[cat]][date[0]][`${timeSplit[1]} (${index})`] = await response.data;
