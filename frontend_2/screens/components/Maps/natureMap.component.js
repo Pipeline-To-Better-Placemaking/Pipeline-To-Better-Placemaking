@@ -238,7 +238,6 @@ export function NatureMap(props) {
         let index = -1;
         // loops through all the data points checking to see if its lat and long values are the same
         for(let i = 0; i < props.dataPoints.length; i++){
-            console.log(props.dataPoints[i])
             if(props.dataPoints[i].marker.latitude === marker.latitude && props.dataPoints[i].marker.longitude === marker.longitude){
                 // if so set the index to its index in the data array
                 index = i
