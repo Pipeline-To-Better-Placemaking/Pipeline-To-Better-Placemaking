@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,7 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import * as XLSX from 'xlsx/xlsx.mjs';
-
+import axios from '../api/axios';
 import './routes.css';
 import ActivityTable from '../components/ActivityTable';
 import ActivityForm from '../components/ActivityForm';
@@ -18,6 +19,37 @@ import { testNames } from '../functions/HelperFunctions';
 export default function ActivityPage(props) {
     // Props from MapPage.js
     const drawers = props.drawers;
+    const loc = useLocation();
+    const nav = useNavigate();
+
+    const [message, setMessage] = React.useState('');
+    const deleteResp = React.useRef(null);
+    var selectedID = '';
+    var selectedType = '';
+
+    const openConfirmation = (cat, title, id) => (e) => {
+        // Opens confirmation window for deleting a project
+        const popup = document.getElementById('deleteWindow');
+        const inner = document.getElementById('popUpText');
+        selectedID = id;
+        selectedType = cat;
+        inner.innerHTML = '';
+        inner.innerHTML = `<h6>Are you sure you would like to delete '${title}' activity?<br/> This cannot be undone.</h6>`
+        popup.style.display = 'flex';
+    }
+
+    const closeWindow = (e) => {
+        e.preventDefault();
+        console.log('close');
+        const popup = document.getElementById('deleteWindow');
+        const inner = document.getElementById('popUpText');
+        popup.style.display = 'none';
+        inner.innerHTML = '';
+        selectedID = '';
+        selectedType = '';
+        setMessage('');
+        deleteResp.current.style.display = 'none';
+    }
 
     // Called to export a workbook with all activity data
     const exportData = (e) => {
@@ -107,6 +139,28 @@ export default function ActivityPage(props) {
         //XLSX.writeFileXLSX(workbook, 'PlaceProject.csv');
     }
 
+    const deleteActivity = async (e) => {
+        try {
+            const response = await axios.delete(`/${selectedType}/${selectedID}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                withCredentials: true
+            });
+
+            nav('../', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken } });
+            closeWindow(e);
+
+        } catch (error) {
+            console.log('ERROR: ', error);
+            setMessage(error.response.data?.message);
+            deleteResp.current.style.display = 'inline-block';
+            return;
+        }
+    }
+
     return(
         <div id='activityPage'>
             <ActivityForm/>
@@ -125,10 +179,18 @@ export default function ActivityPage(props) {
                     </TableHead>
                     <TableBody>
                         {/* type 0 is the expandable/nested tables for the Activity Project Page */}
-                        <ActivityTable type={ 0 } activity={ drawers }/>
+                        <ActivityTable type={ 0 } activity={ drawers } open={openConfirmation}/>
                     </TableBody>
                 </Table>
             </TableContainer>
+            <div id='deleteWindow' style={{ display: 'none', position: 'fixed', justifyContent: 'center', alignItems: 'center' }}>
+                <div id='popUpBlock'>
+                    <span ref={deleteResp} style={{ display: 'none', color: 'red' }}>{message}</span>
+                    <div id='popUpText'></div>
+                    <Button id='deleteButton' onClick={deleteActivity}>Confirm</Button>
+                    <Button id='cancelButton' onClick={closeWindow}>Cancel</Button>
+                </div>
+            </div>
         </div>
     );
 }

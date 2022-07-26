@@ -117,6 +117,25 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
     padding: 5vh 5vw;
     z-index: -2;
 }
+div#faqPage div.pageTemplate{
+    text-align: left;
+    flex-direction: column;
+    color: white;
+}
+
+div#tOC{
+    background-color: #FFFFFF;
+    padding: 10px;
+    border-radius: 10px;
+    color: black;
+    width: 60vw;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+div.pageTemplate > h2{
+    margin-top: 10px;
+}
 
 .secondButton {
     align-content: stretch;
@@ -136,7 +155,7 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
     z-index: 3;
 }
 
-#titlePage, #forgotPass, #resetPass {
+#titlePage, #forgotPass, #resetPass, #faqPage {
     padding: 20px;
 }
 

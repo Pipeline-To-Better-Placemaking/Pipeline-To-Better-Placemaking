@@ -43,7 +43,7 @@ function Row(props) {
             <TableRow className='subtables'>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={ 12 }>
                     <Collapse in={ open } timeout='auto' unmountOnExit>
-                        { subtable(row, 0, name) }
+                        { subtable(row, 0, name, props.open) }
                     </Collapse>
                 </TableCell>
             </TableRow>
@@ -53,7 +53,7 @@ function Row(props) {
 
 //Subtables for Map Page Data Drawer and Activity Page Collapsible Table
 //type 0 is the subtable for The activity page, 1 is the Map page table
-const subtable = (row, type, name) => (    
+const subtable = (row, type, name, open) => (    
     <Box sx={{ margin: 1 }} className='subTable'>
         <Table stickyHeader size='small' aria-label='activity'>
             <TableHead sx={{ bgcolor: '#e2e2e2'}}>
@@ -85,7 +85,7 @@ const subtable = (row, type, name) => (
                                                             {date} {time}
                                                         </TableCell>
                                                         <TableCell align="right" colSpan={1}>
-                                                            <Button><DeleteIcon /></Button>
+                                                            <Button onClick={open(name, tObj.title, tObj._id)}><DeleteIcon /></Button>
                                                         </TableCell>
                                                     </TableRow>
                                                     <TableRow key={`${index}.${i1}`}>
@@ -132,7 +132,7 @@ const subtable = (row, type, name) => (
                                                         {date} {time}
                                                     </TableCell>
                                                     <TableCell align="right" colSpan={1}>
-                                                        <Button><DeleteIcon /></Button>
+                                                        <Button onClick={open(name, tObj.title, tObj._id)}><DeleteIcon /></Button>
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow key={`${index}.${i1}`}>
@@ -176,7 +176,7 @@ const subtable = (row, type, name) => (
                                                 {date} {time}
                                             </TableCell>
                                             <TableCell align="right" colSpan={1}>
-                                                <Button><DeleteIcon /></Button>
+                                                <Button onClick={open(name, tObj.title, tObj._id)}><DeleteIcon /></Button>
                                             </TableCell>
                                         </TableRow>
                                         <TableRow key={ index }>
@@ -303,7 +303,7 @@ export default function ActivityTable(props) {
 
     return(
             props.type === 0 ? (Object.entries(activityRow).map(([type, obj]) => (
-                <Row key={ type } name={ type } row={ obj } />
-            ))) : subtable(activityRow, 1, '')
+                <Row key={ type } name={ type } row={ obj } open={props.open}/>
+            ))) : subtable(activityRow, 1, '', '')
     );
 }

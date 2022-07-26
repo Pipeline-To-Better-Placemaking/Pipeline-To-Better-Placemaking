@@ -3,12 +3,13 @@ import axios from '../api/axios.js';
 import Button from '@mui/material/Button';
 import DisplayCards from '../components/DisplayCards';
 import { Link, useLocation } from 'react-router-dom';
-
 import './routes.css';
 
 export default function Projects(props){
     const [teamInfo, setTeamInfo] = React.useState();
     const teamAndUser = useLocation();
+    const [message, setMessage] = React.useState('');
+    const deleteResp = React.useRef(null);
     // Team id is in URL
     const teamId = teamAndUser.pathname.split('/')[3];
     // State is passed through Links accessed via useLocation
@@ -44,6 +45,8 @@ export default function Projects(props){
             teamPull();
         } catch (error) {
             console.log('ERROR: ', error);
+            setMessage(error.response.data?.message);
+            deleteResp.current.style.display = 'inline-block';
             return;
         }
     }
@@ -56,6 +59,8 @@ export default function Projects(props){
         popup.style.display = 'none';
         inner.innerHTML = '';
         selected = '';
+        setMessage('');
+        deleteResp.current.style.display = 'none';
     }
 
     const teamPull = async () => {
@@ -113,6 +118,7 @@ export default function Projects(props){
             </div>
             <div id='deleteWindow' style={{ display: 'none', position: 'fixed', justifyContent: 'center', alignItems: 'center' }}>
                 <div id='popUpBlock'>
+                    <span ref={deleteResp} style={{ display: 'none', color: 'red' }}>{message}</span>
                     <div id='popUpText'></div>
                     <Button id='deleteButton' onClick={deleteProject}>Confirm</Button>
                     <Button id='cancelButton' onClick={closeWindow}>Cancel</Button>
