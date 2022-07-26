@@ -86,39 +86,41 @@ export default function Charts(props) {
         ];
 
         Object.entries(data).map(([dateTime, arr])=>(
-            arr.forEach((obj, index)=>{
-                measurements.push(obj);
-                Object.entries(obj).forEach(([key, dataVal])=>{
+            arr.forEach((arr1, index)=>{
+                arr1.forEach((obj, index)=>{
+                    measurements.push(obj);
                     console.log(obj);
-                    if (key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5') {
-                        if (key === 'decibel_1') {
-                            high = dataVal
-                            low = dataVal
-                            frequent.push(dataVal);
-                        } else {
-                            if (dataVal.recording > high.recording) {
-                                high = dataVal;
-                            } else if (dataVal.recording < high.recording) {
-                                low = dataVal;
+                    Object.entries(obj).forEach(([key, dataVal])=>{
+                        if (key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5') {
+                            if (key === 'decibel_1') {
+                                high = dataVal
+                                low = dataVal
+                                frequent.push(dataVal);
+                            } else {
+                                if (dataVal.recording > high.recording) {
+                                    high = dataVal;
+                                } else if (dataVal.recording < high.recording) {
+                                    low = dataVal;
+                                }
+                            }
+
+                            if (dataVal.predominant_type === 'Animals') {
+                                frequent[0] += 1;
+                            } else if (dataVal.predominant_type === 'Music') {
+                                frequent[1] += 1;
+                            } else if (dataVal.predominant_type === 'Traffic') {
+                                frequent[2] += 1;
+                            } else if (dataVal.predominant_type === 'People Sounds') {
+                                frequent[3] += 1;
+                            } else if (dataVal.predominant_type === 'Water Feature') {
+                                frequent[4] += 1;
+                            } else if (dataVal.predominant_type === 'Wind') {
+                                frequent[5] += 1;
+                            } else {
+                                frequent[6] += 1;
                             }
                         }
-
-                        if (dataVal.predominant_type === 'Animals') {
-                            frequent[0] += 1;
-                        } else if (dataVal.predominant_type === 'Music') {
-                            frequent[1] += 1;
-                        } else if (dataVal.predominant_type === 'Traffic') {
-                            frequent[2] += 1;
-                        } else if (dataVal.predominant_type === 'People Sounds') {
-                            frequent[3] += 1;
-                        } else if (dataVal.predominant_type === 'Water Feature') {
-                            frequent[4] += 1;
-                        } else if (dataVal.predominant_type === 'Wind') {
-                            frequent[5] += 1;
-                        } else {
-                            frequent[6] += 1;
-                        }
-                    }
+                    })
                 })
             })
         ))
@@ -224,11 +226,11 @@ export default function Charts(props) {
                 Highest Recorded Volume: {high.recording} dB
                 <br/>
                 Predominant Source:<br/>
-                {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}<br/> {high.predominant_type}<br/>
+                {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}<br/>{high.predominant_type}<br/>
                 Lowest Recorded Volume: {low.recording} dB
                 <br />
                 Predominant Source:<br/>
-                {soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other}<br/> {low.predominant_type}
+                {soundIcons[low.predominant_type] ? soundIcons[low.predominant_type] : soundIcons.Other}<br/>{low.predominant_type}
                 <div style={{ fontSize: 'larger' }}>Most Frequent Reported Source(s)</div>
                 {indexes.map((value)=>(`${indexing[value]}`))}
                 <br/>
