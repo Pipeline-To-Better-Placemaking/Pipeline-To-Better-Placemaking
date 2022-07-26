@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Modal, ScrollView } from 'react-native';
+import { View, Modal, ScrollView, Linking } from 'react-native';
 import { Icon, Input, Text, Button } from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
 import { Header } from '../components/headers.component';
@@ -222,8 +222,10 @@ export function UserSettings(props) {
     return true;
   }
 
-  const launchFaq = ()=>{
-    console.log('going to faq page (website)');
+  const launchFaq = async () =>{
+    const url = 'http://p2bp.herokuapp.com/faq'
+    await Linking.canOpenURL(url);
+    Linking.openURL(url);
   }
 
   const isValidEmail = checkEmail();
