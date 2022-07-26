@@ -247,6 +247,10 @@ a.newHoveringButtons:hover, button.newHoveringButtons:hover {
     background-color: #daebff;
 }
 
+a#addButton.newHoveringButtons{
+    z-index: 10;
+}
+
 button#placesButton{
     margin-right: 5px;
     margin-bottom: 0px;

@@ -132,7 +132,7 @@ export default function Charts(props) {
                 indexes.push(index);
             }
         })
-        
+
         return(
             <div className='Charts'>
                 <div style={{ textAlign: 'center' }}>
@@ -140,6 +140,7 @@ export default function Charts(props) {
                     <b>Highest Recorded Volume:</b> {high.recording} dB
                     <br />
                     <b>Predominant Source:</b>
+                    <br />
                     {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}
                     <br />
                     {high.predominant_type}
@@ -235,6 +236,7 @@ export default function Charts(props) {
                     <b>Highest Recorded Volume:</b> {high.recording} dB
                     <br />
                     <b>Predominant Source:</b>
+                    <br/>
                     {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}
                     <br />
                     {high.predominant_type}

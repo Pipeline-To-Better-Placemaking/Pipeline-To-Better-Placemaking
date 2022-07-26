@@ -158,7 +158,7 @@ const AppNavBar = (props) => {
                             </IconButton>
                         </Tooltip>
                         <Menu
-                            sx={{ mt: '45px' }}
+                            sx={{ mt: '45px', zIndex: 'tooltip' }}
                             id='menu-appbar'
                             anchorEl={ anchorElUser }
                             anchorOrigin={{

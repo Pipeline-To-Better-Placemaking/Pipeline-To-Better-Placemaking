@@ -116,7 +116,7 @@ export default function ProjectPage(){
                 withCredentials: true
             });
 
-            var date = new Date(dateTime);
+            var date = dateTime.split('T');
             console.log(dateTime);
             console.log(date);
             var map = results;
@@ -124,10 +124,14 @@ export default function ProjectPage(){
             if (!map[apiCategory[cat]]) {
                 map[apiCategory[cat]] = {};
             }
-            if(!map[apiCategory[cat]][date.toLocaleDateString()]){ 
-                map[apiCategory[cat]][`${date.toLocaleDateString()}`] = {};
+            if(!map[apiCategory[cat]][date]){ 
+                map[apiCategory[cat]][date] = {};
             }
-            var time = new Date(response?.data.date).toLocaleTimeString();
+            var time = response?.data.date.split('T')[1].split['.'];
+
+            console.log(time);
+            console.log(response?.data.date);
+            
             if (map[apiCategory[cat]][date.toLocaleDateString()][time]){
                 map[apiCategory[cat]][date.toLocaleDateString()][`${time} (${index})`] = await response.data;
             }else{
