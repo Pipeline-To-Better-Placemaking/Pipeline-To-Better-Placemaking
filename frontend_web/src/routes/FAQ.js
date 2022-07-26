@@ -6,7 +6,7 @@ export default function FAQ(){
     return(
         <div id='faqPage' classname='pageTemplate'>
 
-            <body style="color: white;">
+           
     <h1> Table of Contents </h1>
       <ul>
         <li><a href="#aptlink"> Acoustical Profile Tutorial </a></li>
