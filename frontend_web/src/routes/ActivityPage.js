@@ -150,8 +150,8 @@ export default function ActivityPage(props) {
                 withCredentials: true
             });
 
-            nav('../', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken } });
             closeWindow(e);
+            nav('../activities', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken } });
 
         } catch (error) {
             console.log('ERROR: ', error);
