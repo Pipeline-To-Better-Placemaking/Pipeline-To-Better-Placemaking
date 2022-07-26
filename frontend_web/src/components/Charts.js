@@ -69,7 +69,7 @@ export default function Charts(props) {
     }
 
     const multiSoundCharts = (data) => {
-        var frequent = [];
+        var frequent = [0, 0, 0, 0, 0, 0, 0];
         var high = {};
         var low = {};
         var measurements = [];
@@ -132,7 +132,7 @@ export default function Charts(props) {
                 indexes.push(index);
             }
         })
-
+        
         return(
             <div className='Charts'>
                 <div style={{ textAlign: 'center' }}>
