@@ -117,27 +117,27 @@ export default function ProjectPage(){
             });
 
             var date = dateTime.split('T');
-            console.log(dateTime);
-            console.log(date);
+            var format = (date[0]).split('-').join('/');
             var map = results;
+            console.log(format);
 
             if (!map[apiCategory[cat]]) {
                 map[apiCategory[cat]] = {};
             }
-            if(!map[apiCategory[cat]][date[0]]){ 
-                map[apiCategory[cat]][date[0]] = {};
+            if(!map[apiCategory[cat]][format]){ 
+                map[apiCategory[cat]][format] = {};
             }
 
             var time = response?.data.date;
             var timeSplit = (time.split(/[T.]+/));
-
+            var set = new Date(`${(timeSplit[0]).split('-').join('/')} ${timeSplit[1]} GMT-04:00`);
             console.log(time);
-            console.log(new Date(`${timeSplit[1]} GMT-04:00`));
+            console.log(set);
 
-            if (map[apiCategory[cat]][date[0]][timeSplit[1]]){
-                map[apiCategory[cat]][date[0]][`${timeSplit[1]} (${index})`] = await response.data;
+            if (map[apiCategory[cat]][format][set.toLocaleTimeString()]){
+                map[apiCategory[cat]][format][`${set.toLocaleTimeString()} (${index})`] = await response.data;
             }else{
-                map[apiCategory[cat]][date[0]][timeSplit[1]] = await response.data;
+                map[apiCategory[cat]][format][set.toLocaleTimeString()] = await response.data;
             }
 
             /* Structure reformatted for info and access ex: 
