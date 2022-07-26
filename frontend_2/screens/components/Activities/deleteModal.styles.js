@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     margin:5
   },
 
-  modalBackgroundStyle: {
+  modalBackgroundStyle:{
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',

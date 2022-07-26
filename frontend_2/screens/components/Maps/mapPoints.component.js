@@ -277,6 +277,7 @@ export const PressMapAreaWrapper = ({children, area, mapHeight, onPress, recente
         initialRegion={defaultRegion}
         mapType={mapConfig}
         onPress={event => onPress(event.nativeEvent.coordinate)}
+        toolbarEnabled={false}
       >
         {children}
       </MapView>
