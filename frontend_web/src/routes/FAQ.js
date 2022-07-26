@@ -6,6 +6,7 @@ export default function FAQ(){
     return(
         <div id='faqPage' classname='pageTemplate'>
 
+            <body style="color: white;">
     <h1> Table of Contents </h1>
       <ul>
         <li><a href="#aptlink"> Acoustical Profile Tutorial </a></li>
@@ -14,7 +15,7 @@ export default function FAQ(){
         <li><a href="#lptlink"> Lighting Profile Tutorial </a></li>
         <li><a href="#aooltlink"> Absence of Order Locator Tutorial </a></li>
       </ul>
-<!-- Acoustical Profile Test -->
+
     <h1><a id="aptlink"> Acoustical Profile Tutorial </a></h1>
       <h2><u> Creating the Test </u></h2>
         <p> Step 1: Go to the create/signup for a test page that can be accessed by going to the
@@ -75,7 +76,7 @@ export default function FAQ(){
             see data on the results that were collected for that test.
         </p>
 
-<!-- Spatial Boundaries Test -->
+
     <h1><a id="sbtlink"> Spatial Boundaries Tutorial </a></h1>
       <h2><u> Creating the Test </u></h2>
         <p> Step 1: Go to the create/signup for a test page that can be accessed by going to the
@@ -137,7 +138,7 @@ export default function FAQ(){
             see data on the results that were collected for that test.
         </p>
 
-<!-- Nature Test -->
+
       <h1><a id="nptlink">  Nature Prevalance Tutorial </a></h1>
         <h2><u> Creating the Test </u></h2>
           <p> Step 1: Go to the create/signup for a test page that can be accessed by going to the
@@ -195,7 +196,7 @@ export default function FAQ(){
               see data on the results that were collected for that test.
           </p>
 
-<!-- Lighting Test -->
+
       <h1><a id="lptlink">  Lighting Profile Tutorial </a></h1>
         <h2><u> Creating the Test </u></h2>
           <p> Step 1: Go to the create/signup for a test page that can be accessed by going to the
@@ -247,7 +248,7 @@ export default function FAQ(){
               see data on the results that were collected for that test.
           </p>
 
-<!-- Absence of Order Test -->
+
       <h1><a id="aooltlink">  Absence of Order Locator Tutorial </a></h1>
         <h2><u> Creating the Test </u></h2>
           <p> Step 1: Go to the create/signup for a test page that can be accessed by going to the
