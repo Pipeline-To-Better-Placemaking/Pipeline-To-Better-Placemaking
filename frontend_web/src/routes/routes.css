@@ -62,16 +62,16 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
     margin-bottom: 5vh;
     z-index: 0;
 }
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle, .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#verifyButton, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton, button#deleteButton {
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle, .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#verifyButton, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton, button#deleteButton, .cancelButton {
     color: rgb(255, 255, 255);
     margin-top: 10px;
     width: auto;
 }
 
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton, button#deleteButton {
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton, button#deleteButton, .cancelButton {
     background-color: #ff4258;
 }
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle:hover, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton:hover, button#deleteButton:hover {
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle:hover, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton:hover, button#deleteButton:hover, .cancelButton:hover {
     box-shadow: 0 4px 8px 0 rgba(255, 66, 88, 0.2), 0 6px 20px 0 rgba(255, 66, 88, 0.19);
 }
 

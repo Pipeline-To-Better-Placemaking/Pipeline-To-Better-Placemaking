@@ -143,9 +143,10 @@ function SettingsPage() {
             invites.map((invite)=>(
                 invitations.push(invite)
             ))
-            console.log(invitations)
+            console.log(response.data);
+            console.log(invitations);
             invitations.splice(index, 1);
-            console.log(invitations)
+            console.log(invitations);
             loc.state.userToken.user.invites = invitations;
             setInvites(invitations);
 
@@ -168,12 +169,12 @@ function SettingsPage() {
                 <Card.Body style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
                     <span ref={invMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                     {invites.length > 0 ? (invites.map((invite, index)=>(
-                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', textAlign: 'center', border: '1px solid rgba(0,0,0,.125)', borderRadius: '5px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', textAlign: 'center', border: '1px solid rgba(0,0,0,.125)', borderRadius: '5px', padding: '10px' }}>
                             {invite.title}
                             <br/>
                             {`From: ${invite.firstname} ${invite.lastname}`}
                             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center', textAlign: 'center' }}>
-                                <Button onClick={(e) => answerInvite(e, invite._id, true, index)}>Accept</Button><Button onClick={(e) => answerInvite(e, invite._id, false, index)}>Decline</Button>
+                                <Button className='confirm' onClick={(e) => answerInvite(e, invite._id, true, index)}>Accept</Button><Button className='cancelButton' onClick={(e) => answerInvite(e, invite._id, false, index)}>Decline</Button>
                             </div>
                         </div>
                     ))) : 'You currently have no pending invites.'}
