@@ -131,7 +131,7 @@ export default function ProjectPage(){
 
             var time = new Date(response?.data.date);
             console.log(time);
-            var set = `${time.getHours()}:${time.getMinutes()}`;
+            var set = time.toLocaleTimeString();
             console.log(set);
 
             if (map[apiCategory[cat]][format][set]){

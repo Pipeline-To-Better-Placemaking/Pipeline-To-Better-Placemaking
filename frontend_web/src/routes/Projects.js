@@ -98,7 +98,7 @@ export default function Projects(props){
                 <div>
                     {teamInfo?.users.map((user, index)=>(
                         index !== (teamInfo?.users.length - 1) && teamInfo?.users[index].role !== 'owner' ? 
-                            <span>{user.firstname} {user.lastname},</span>
+                            <span>{user.firstname} {user.lastname},&nbsp;</span>
                         : 
                             (index !== (teamInfo?.users.length - 1) && teamInfo?.users[index].role === 'owner' ? 
                                 (<div>{user.firstname} {user.lastname}</div>) : <span>{user.firstname} {user.lastname}</span>)
