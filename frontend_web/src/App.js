@@ -8,7 +8,7 @@ import Title from './routes/Title';
 import Projects from './routes/Projects';
 import NewProject from './routes/NewProject';
 import NewUser from './routes/NewUser';
-import SettingsPage from './routes/SettingsPage';
+import AccountPage from './routes/AccountPage';
 import EditProject from './routes/EditProject';
 import ProjectPage from './routes/ProjectPage';
 import NewProjectPoints from './routes/PointsNewProject';
@@ -28,13 +28,15 @@ export default function App() {
     const [token, setToken] = React.useState();
 
     // true == active user (logged in)
-    const [state, setState] = React.useState(token && token !== {} ? true : false);
+    const [state, setState] = React.useState(token && token !== {} ? true : /*(sessionStorage.getItem("userToken") !== '' ? : false)*/ false);
     
     // Set user vars to access the user home page
     function handleOnLogin(active, token) {
         // Will be used to block users from user pages unless logged in
         setState(active);
         setToken(token);
+        sessionStorage.setItem("userToken", token);
+        console.log(sessionStorage.getItem("userToken"));
     }
 
     // clear all fields on logout
@@ -82,7 +84,7 @@ export default function App() {
                     <Routes>
                         <Route index element={ <Home /> }/>
                         <Route path='teams/:id/*' element={ <TeamPages /> } />
-                        <Route path='settings' element={<SettingsPage /> } />
+                        <Route path='account' element={<AccountPage /> } />
                         <Route path='new' element={ <NewTeamForm /> } />
                         <Route path='edit/:id' element={ <EditTeam /> } />
                     </Routes> 

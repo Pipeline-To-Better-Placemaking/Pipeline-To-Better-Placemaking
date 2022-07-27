@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -172,7 +172,7 @@ export default function ActivityPage(props) {
     }
 
     return(
-        <div id='activityPage'>
+        <div id='activityPage' className='pages'>
             <ActivityForm/>
             <TableContainer component={Paper}>
                 <Table aria-label='collapsible table'>

@@ -45,7 +45,7 @@ export default function EditAreaMap() {
 
     // Return area point values need to be reconverted to objects with latitude longitude keys 
     return (
-        <div id='editAreaMap'>
+        <div id='editAreaMap' className='pages'>
             {/* Empty New Project page, Google map component w/ searchable locations for new projects */}
             <TextField 
                 style={{ position: 'fixed', top: '70px', zIndex: '9999', backgroundColor: 'white', width: '30vw', margin: '5px', alignSelf: 'center', borderRadius: '5px', left: '35vw'}}

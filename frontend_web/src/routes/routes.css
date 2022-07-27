@@ -62,16 +62,16 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
     margin-bottom: 5vh;
     z-index: 0;
 }
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle, .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#verifyButton, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton, button#deleteButton, .cancelButton {
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle, .MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#verifyButton, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton, button#deleteButton, a#deleteButton,.cancelButton {
     color: rgb(255, 255, 255);
     margin-top: 10px;
     width: auto;
 }
 
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton, button#deleteButton, .cancelButton {
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton, button#deleteButton, a#deleteButton, .cancelButton {
     background-color: #ff4258;
 }
-.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle:hover, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton:hover, button#deleteButton:hover, .cancelButton:hover {
+.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root#logoutSingle:hover, a.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeLg.MuiButton-textSizeLg.MuiButtonBase-root.cancelButton:hover, button#deleteButton:hover, a#deleteButton, .cancelButton:hover {
     box-shadow: 0 4px 8px 0 rgba(255, 66, 88, 0.2), 0 6px 20px 0 rgba(255, 66, 88, 0.19);
 }
 
@@ -203,6 +203,8 @@ div#createCard > div.card-body{
 div#editAreaMap > div#mapDoc, div#editAreaMap div#mapFrame, div#editPointMap>div#mapDoc,
 div#editPointMap div#mapFrame{
     height: calc(100vh - 69px);
+    width: 99vw;
+    overflow-x: hidden;
 }
 
 div#MapPage {
@@ -287,7 +289,7 @@ form.MuiBox-root {
 #MapPage {
     height: calc(100vh - 113px);
     background-color: rgb(56, 56, 56);
-    width: 100vw;
+    width: 99vw;
 }
 
 #newProjectButton, a#newTeamButton {
@@ -372,7 +374,7 @@ form#titleBox {
     margin-bottom: 10px;
     padding-bottom: 5px;
 }
-div#userSettings {
+div#accountPage {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -382,7 +384,7 @@ div#userSettings {
     margin: 10px;
 }
 
-div#userSettings h1 {
+div#accountPage h1 {
     margin: 20px 0px;
 }
 

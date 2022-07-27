@@ -21,7 +21,7 @@ import logo1 from '../images/PtBPLogo.png';
 const settings = [
     {
         page: 'Account',
-        route: 'settings'
+        route: 'account'
     },
     {
         page: 'Logout',
