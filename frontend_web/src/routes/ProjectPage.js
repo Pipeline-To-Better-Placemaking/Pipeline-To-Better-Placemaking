@@ -116,8 +116,10 @@ export default function ProjectPage(){
                 withCredentials: true
             });
 
-            var date = dateTime.split('T');
-            var format = (date[0]).split('-').join('/');
+            var date = new Date(dateTime);
+            var format = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
+            console.log(date);
+            console.log(format);
             var map = results;
 
             if (!map[apiCategory[cat]]) {
@@ -127,14 +129,15 @@ export default function ProjectPage(){
                 map[apiCategory[cat]][format] = {};
             }
 
-            var time = response?.data.date;
-            var timeSplit = (time.split(/[T.]+/));
-            var set = new Date(`${(timeSplit[0]).split('-').join('/')} ${timeSplit[1]} GMT-04:00`);
+            var time = new Date(response?.data.date);
+            console.log(time);
+            var set = `${time.getHours()}:${time.getMinutes()}`;
+            console.log(set);
 
-            if (map[apiCategory[cat]][format][set.toLocaleTimeString()]){
-                map[apiCategory[cat]][format][`${set.toLocaleTimeString()} (${index})`] = await response.data;
+            if (map[apiCategory[cat]][format][set]){
+                map[apiCategory[cat]][format][`${set} (${index})`] = await response.data;
             }else{
-                map[apiCategory[cat]][format][set.toLocaleTimeString()] = await response.data;
+                map[apiCategory[cat]][format][set] = await response.data;
             }
 
             /* Structure reformatted for info and access ex: 
