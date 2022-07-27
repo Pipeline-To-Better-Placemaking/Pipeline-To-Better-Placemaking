@@ -12,6 +12,7 @@ import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from '../api/axios';
+import '../routes/routes.css';
 
 function SettingsPage() {
     const loc = useLocation();
@@ -118,13 +119,13 @@ function SettingsPage() {
 
     }
 
-    const answerInvite = async (e, id, claim, index) => {
+    const answerInvite = async (e, id, claim, title, index) => {
         e.preventDefault();
         setMessage('');
         invMess.current.style.display = 'none';
 
         try {
-            const response = await axios.put('/users/invites', JSON.stringify({
+            const response = await axios.post('/users/invites', JSON.stringify({
                 responses:
                     [{
                         team: id,
@@ -140,14 +141,19 @@ function SettingsPage() {
             });
 
             var invitations = [];
+
             invites.map((invite)=>(
                 invitations.push(invite)
             ))
+
             console.log(response.data);
             console.log(invitations);
             invitations.splice(index, 1);
             console.log(invitations);
             loc.state.userToken.user.invites = invitations;
+            if(claim){
+                loc.state.userToken.user.teams.push({'_id': id, title: title})
+            }
             setInvites(invitations);
 
         } catch (error) {
@@ -173,8 +179,9 @@ function SettingsPage() {
                             {invite.title}
                             <br/>
                             {`From: ${invite.firstname} ${invite.lastname}`}
+                            <br/>
                             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center', textAlign: 'center' }}>
-                                <Button className='confirm' onClick={(e) => answerInvite(e, invite._id, true, index)}>Accept</Button><Button className='cancelButton' onClick={(e) => answerInvite(e, invite._id, false, index)}>Decline</Button>
+                                <Button className='confirm' onClick={(e) => answerInvite(e, invite._id, true, invite.title, index)}>Accept</Button><Button className='cancelButton' onClick={(e) => answerInvite(e, invite._id, false, invite.title, index)}>Decline</Button>
                             </div>
                         </div>
                     ))) : 'You currently have no pending invites.'}
