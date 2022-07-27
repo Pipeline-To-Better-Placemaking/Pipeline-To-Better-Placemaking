@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 150, 
         borderWidth: 1.5, 
-        width: 40, 
+        width: 40,
         height: 40,
     },
 
@@ -70,7 +70,7 @@ export const styles = StyleSheet.create({
     },
 
     callout:{
-        position: 'relative'
+        width: width * .4
     },
     
     // used only for the soundMapResults component

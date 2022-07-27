@@ -1,4 +1,7 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
 
@@ -84,8 +87,8 @@ export const styles = StyleSheet.create({
     
     listView:{
       flexDirection:'row', 
-      justifyContent:'center', 
-      maxHeight:'45%'
+      justifyContent:'center',
+      maxHeight: height * .38
     },
 
     listElements:{
