@@ -82,7 +82,7 @@ export default function App() {
                     <Routes>
                         <Route index element={ <Home /> }/>
                         <Route path='teams/:id/*' element={ <TeamPages /> } />
-                        <Route path='settings' element={ <SettingsPage /> } />
+                        <Route path='settings' element={<SettingsPage /> } />
                         <Route path='new' element={ <NewTeamForm /> } />
                         <Route path='edit/:id' element={ <EditTeam /> } />
                     </Routes> 

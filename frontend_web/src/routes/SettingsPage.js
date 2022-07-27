@@ -91,7 +91,6 @@ function SettingsPage() {
         if(pw){
             user.password = values.updatePassword;
         }
-        //console.log(user);
 
         try {
             const response = await axios.put('/users', JSON.stringify(user), {
@@ -145,11 +144,7 @@ function SettingsPage() {
             invites.map((invite)=>(
                 invitations.push(invite)
             ))
-
-            console.log(response.data);
-            console.log(invitations);
             invitations.splice(index, 1);
-            console.log(invitations);
             loc.state.userToken.user.invites = invitations;
             if(claim){
                 loc.state.userToken.user.teams.push({'_id': id, title: title})
@@ -283,9 +278,6 @@ function SettingsPage() {
                     </Box>
                 </Card.Body>
             </Card>
-            <Button id='logoutSingle' type='submit' size='lg' onClick={ userLogout }>
-                Log Out
-            </Button>
         </div>
     );
 }

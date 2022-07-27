@@ -7,8 +7,6 @@ export default function Home() {
     const location = useLocation();
     const userTeams = location.state && location.state.userToken ? location.state.userToken.user.teams : null;
 
-    console.log(location.state);
-
     return(
         <div id='userHome'>
             <div id='newTeamButtonBox'>

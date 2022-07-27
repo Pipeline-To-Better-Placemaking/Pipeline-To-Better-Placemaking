@@ -59,7 +59,6 @@ export default function ProjectForm() {
         values.area.forEach((apoint, index) => (
             tempA.push({ latitude: apoint.lat, longitude: apoint.lng })
         ))
-        
         createProject(e);
     }
 
