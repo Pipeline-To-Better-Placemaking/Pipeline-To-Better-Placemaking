@@ -274,7 +274,7 @@ div.Charts{
 }
 
 div#MapPage div#mapFrame{
-    width:99vw;
+    width:calc(100vw - 1px);
     top: -73px;
 }
 
