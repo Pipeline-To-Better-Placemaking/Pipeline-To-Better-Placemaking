@@ -63,7 +63,7 @@ function TimeForm(props) {
                 props.points ?
                 <div className='form-group'>
                     <Form.Label>Points:</Form.Label>
-                    <div className="mb-3">
+                    <div className='mb-3'>
                         { standingPoints.map((point, index) => (
                             <Form.Check
                                 inline

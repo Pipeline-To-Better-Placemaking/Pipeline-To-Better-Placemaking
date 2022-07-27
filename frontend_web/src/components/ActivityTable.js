@@ -78,13 +78,13 @@ const subtable = (row, type, name, open) => (
                                             (natureType === 'weather' ? 
                                                 <>
                                                     <TableRow style={{ backgroundColor: '#aed5fa' }}>
-                                                        <TableCell align="center" colSpan={4} className='value'>
+                                                        <TableCell align='center' colSpan={4} className='value'>
                                                             {tObj.title}
                                                         </TableCell>
-                                                        <TableCell align="right" colSpan={2}>
+                                                        <TableCell align='right' colSpan={2}>
                                                             {date} {time}
                                                         </TableCell>
-                                                        <TableCell align="right" colSpan={1}>
+                                                        <TableCell align='right' colSpan={1}>
                                                             <Button onClick={open(name, tObj.title, tObj._id)}><DeleteIcon /></Button>
                                                         </TableCell>
                                                     </TableRow>
@@ -125,13 +125,13 @@ const subtable = (row, type, name, open) => (
                                         i1 === 0 ? 
                                             <>
                                                 <TableRow style={{ backgroundColor: '#aed5fa' }}>
-                                                    <TableCell align="center" colSpan={4} className='value'>
+                                                    <TableCell align='center' colSpan={4} className='value'>
                                                         {tObj.title}
                                                     </TableCell>
-                                                    <TableCell align="right" colSpan={2}>
+                                                    <TableCell align='right' colSpan={2}>
                                                         {date} {time}
                                                     </TableCell>
-                                                    <TableCell align="right" colSpan={1}>
+                                                    <TableCell align='right' colSpan={1}>
                                                         <Button onClick={open(name, tObj.title, tObj._id)}><DeleteIcon /></Button>
                                                     </TableCell>
                                                 </TableRow>
@@ -169,13 +169,13 @@ const subtable = (row, type, name, open) => (
                                 index === 0 ? 
                                     <>
                                         <TableRow style={{ backgroundColor: '#aed5fa' }}>
-                                            <TableCell align="center" colSpan={4} className='value'>
+                                            <TableCell align='center' colSpan={4} className='value'>
                                                 {tObj.title}
                                             </TableCell>
-                                            <TableCell align="right" colSpan={2}>
+                                            <TableCell align='right' colSpan={2}>
                                                 {date} {time}
                                             </TableCell>
-                                            <TableCell align="right" colSpan={1}>
+                                            <TableCell align='right' colSpan={1}>
                                                 <Button onClick={open(name, tObj.title, tObj._id)}><DeleteIcon /></Button>
                                             </TableCell>
                                         </TableRow>

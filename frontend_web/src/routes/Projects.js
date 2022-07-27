@@ -91,7 +91,7 @@ export default function Projects(props){
 
     return(
         <div id='teamHome'>
-            <div style={{display:'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center', maxWidth: '90vw'}}>
+            <div style={{display:'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
                 <h1 style={{margin: '20px 0px 20px 0px', textAlign: 'center'}}>
                     {teamInfo?.title}
                 </h1>

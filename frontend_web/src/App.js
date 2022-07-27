@@ -87,7 +87,7 @@ export default function App() {
                         <Route path='edit/:id' element={ <EditTeam /> } />
                     </Routes> 
                 : 
-                    <Navigate to="/" replace /> 
+                    <Navigate to='/' replace /> 
                 }
             </div>
         );
@@ -104,7 +104,7 @@ export default function App() {
                 <Route path='forgot_password' element={ <ForgotPassword/> } />
                 <Route path='password_reset/:id/:token' element={<ResetPassword/>} exact/>
                 <Route path='faq' element={<FAQ />} />
-                <Route path="*" element={<Navigate to="/" replace />}
+                <Route path='*' element={<Navigate to='/' replace />}
                 />
             </Routes>
         </Router>

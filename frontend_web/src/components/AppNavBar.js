@@ -157,7 +157,7 @@ const AppNavBar = (props) => {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title='Open Menu'>
                             {invites > 0 ?
-                                <Badge badgeContent={invites} color="primary">
+                                <Badge badgeContent={invites} color='success'>
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                         <Avatar>{`${userName.fN[0]}${userName.lN[0]}`}</Avatar>
                                     </IconButton>

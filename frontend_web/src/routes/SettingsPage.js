@@ -158,9 +158,6 @@ function SettingsPage() {
         }
 
     }
-    const declineInvite = (e) => {
-        e.preventDefault();
-    }
 
     const userLogout = () => { }
 
@@ -171,8 +168,9 @@ function SettingsPage() {
                 <Card.Body style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
                     <span ref={invMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                     {invites.length > 0 ? (invites.map((invite, index)=>(
-                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', textAlign: 'center' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', textAlign: 'center', border: '1px solid rgba(0,0,0,.125)', borderRadius: '5px' }}>
                             {invite.title}
+                            <br/>
                             {`From: ${invite.firstname} ${invite.lastname}`}
                             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center', textAlign: 'center' }}>
                                 <Button onClick={(e) => answerInvite(e, invite._id, true, index)}>Accept</Button><Button onClick={(e) => answerInvite(e, invite._id, false, index)}>Decline</Button>
