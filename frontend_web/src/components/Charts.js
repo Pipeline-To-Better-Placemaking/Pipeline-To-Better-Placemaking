@@ -895,7 +895,6 @@ export default function Charts(props) {
                                     }
                                 } else if (typeArr[typePoint].kind === 'Wild') {
                                     wild++;
-                                    console.log(wild);
                                     if (typeArr[typePoint].description === 'Other') {
                                         otherW++;
                                     }
@@ -996,7 +995,6 @@ export default function Charts(props) {
             for (const [natureType, typeArr] of Object.entries(data[ind])) {
                 var adjusted;
                 for (const typePoint in typeArr){
-                    //console.log(typeArr[typePoint])//
                     if (natureType === 'water'){
                         adjusted = typeArr[typePoint];
                         adjusted.nature = 'Water';
@@ -1026,14 +1024,11 @@ export default function Charts(props) {
 
                         if (typeArr[typePoint].kind === 'Domesticated'){
                             domestic++;
-                            console.log(domestic);
                             if (typeArr[typePoint].description === 'Other'){
                                 otherD++;
-                                console.log(otherD);
                             }
                         } else if (typeArr[typePoint].kind === 'Wild'){
                             wild++;
-                            console.log(wild);
                             if (typeArr[typePoint].description === 'Other'){
                                 otherW++;
                             }

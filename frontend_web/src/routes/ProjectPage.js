@@ -119,7 +119,6 @@ export default function ProjectPage(){
             var date = dateTime.split('T');
             var format = (date[0]).split('-').join('/');
             var map = results;
-            console.log(format);
 
             if (!map[apiCategory[cat]]) {
                 map[apiCategory[cat]] = {};
@@ -131,8 +130,6 @@ export default function ProjectPage(){
             var time = response?.data.date;
             var timeSplit = (time.split(/[T.]+/));
             var set = new Date(`${(timeSplit[0]).split('-').join('/')} ${timeSplit[1]} GMT-04:00`);
-            console.log(time);
-            console.log(set);
 
             if (map[apiCategory[cat]][format][set.toLocaleTimeString()]){
                 map[apiCategory[cat]][format][`${set.toLocaleTimeString()} (${index})`] = await response.data;

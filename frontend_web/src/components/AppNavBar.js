@@ -1,5 +1,6 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
+import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
@@ -31,6 +32,7 @@ const settings = [
 const AppNavBar = (props) => {
     const location = useLocation();
     const segment = location.pathname.split('/');
+    const invites = location.state?.userToken?.user.invites.length;
     
     const userName = {
         fN: location.state?.userToken?.user.firstname ? location.state?.userToken?.user.firstname : 'Abc',
@@ -152,10 +154,18 @@ const AppNavBar = (props) => {
                         )) }
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title='Open settings'>
-                            <IconButton onClick={ handleOpenUserMenu } sx={{ p: 0 }}>
-                                <Avatar>{`${userName.fN[0]}${userName.lN[0]}`}</Avatar>
-                            </IconButton>
+                        <Tooltip title='Open Menu'>
+                            {invites.length > 0 ?
+                                <Badge badgeContent={invites} color="primary">
+                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                        <Avatar>{`${userName.fN[0]}${userName.lN[0]}`}</Avatar>
+                                    </IconButton>
+                                </Badge>
+                                : 
+                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                    <Avatar>{`${userName.fN[0]}${userName.lN[0]}`}</Avatar>
+                                </IconButton>
+                            }
                         </Tooltip>
                         <Menu
                             sx={{ mt: '45px', zIndex: 'tooltip' }}

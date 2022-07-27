@@ -120,8 +120,18 @@ function SettingsPage() {
 
     return(
         <div id='userSettings'>
-            <h1>Settings</h1>
+            <Card>
+                <h1>Invites</h1>
+                <Card.Body style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+                    {loc.state?.userToken?.user?.invites.length > 0 ? (loc.state?.userToken?.user?.invites.map((invite, index)=>(
+                        <div>
+                            {index}
+                        </div>
+                    ))) : 'You currently have no pending invites.'}
+                </Card.Body>
+            </Card>
             <Card id='settingsCard'>
+                <h1>Settings</h1>
                 <Card.Body>
                     <span ref={infoMess} style={{ display: 'none', color: 'red' }}>{message}</span>
                     <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>

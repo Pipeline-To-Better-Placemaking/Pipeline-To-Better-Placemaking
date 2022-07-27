@@ -91,10 +91,17 @@ export default function Projects(props){
 
     return(
         <div id='teamHome'>
-            <div style={{display:'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
+            <div style={{display:'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center', maxWidth: '90vw'}}>
                 <h1 style={{margin: '20px 0px 20px 0px', textAlign: 'center'}}>
                     {teamInfo ? teamInfo?.title : null}
                 </h1>
+                {teamInfo?.users.map((user, index)=>(
+                    index !== (teamInfo?.users.length - 1) && teamInfo?.users[index].role !== 'owner' ? 
+                        `${user.firstname} ${user.lastname},` 
+                    : 
+                        (index !== (teamInfo?.users.length - 1) && teamInfo?.users[index].role === 'owner' ? 
+                            `${user.firstname} ${user.lastname}<br/>` : `${user.firstname} ${user.lastname}`)
+                ))}
                 <Button component={Link} to={`/home/edit/${teamId}`} state={teamAndUser.state ? teamAndUser.state : null} style={{ width: '40vw' }}>Edit Team</Button>
             </div>
             <div id='newProjectButtonBox'>

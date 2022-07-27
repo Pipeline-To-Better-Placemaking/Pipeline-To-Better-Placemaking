@@ -223,7 +223,8 @@ div#timeCardContent, div#areaCardContent, div#pointCardContent {
 
 div#userHome, div#teamHome div#cardFlexBox{
     overflow-y: scroll;
-    width: 100vw;
+    overflow-x: hidden;
+    width: 99vw;
 }
 
 div.MuiCardContent-root {
@@ -323,8 +324,13 @@ form.MuiBox-root {
     margin-top: 10px;
 }
 
-#settingsCard{
+#settingsCard, #inviteCard{
     width: 50vw;
+}
+
+#inviteCard{
+    flex-wrap: nowrap;
+    overflow-x: scroll;
 }
 
 #tagText {
