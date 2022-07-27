@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Modal, Keyboard, KeyboardAvoidingView, } from 'react-native';
+import { View, Modal, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { useTheme, Text, Button, Input } from '@ui-kitten/components';
 import { TouchableWithoutFeedback } from '@ui-kitten/components/devsupport';
+import { stringCase } from '../../helperFunctions';
 
 import { styles } from './modal.styles';
 
@@ -25,9 +26,9 @@ export function MainSoundModal(props) {
     const handleOther = async () =>{
         // only if there is a value in other, allow the modal to close
         if(other){
-            // how should we denote this as an 'other' description ?
+            let tempString = stringCase(other)
             let data = {
-                main_sound_type: other
+                main_sound_type: tempString
             }
             // reset modal controls for subsequent enteries
             setOther(null);
@@ -38,18 +39,15 @@ export function MainSoundModal(props) {
         // if the user didn't enter any value, do not allow modal to close
         else setEmpty(true);
     }
-    
-    let music = "\t Music\n(entertainment)"; 
 
     return(
         <Modal transparent={true} animationType='slide' visible={props.visible}>
             <KeyboardAvoidingView behavior='position' style={styles.avoid}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
                     <View style={styles.modalContainer}>
-                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
+                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1'], height: '55%'}]} >
                         
-                            <Text category={'h1'} style={styles.titleText}>Sound Type</Text>
-                            <Text category={'s1'} style={styles.titleLine}>__________________________</Text>
+                            <Text category={'h1'} style={styles.titleText}>Main Sound Type</Text>
                             <View style={styles.dataView}>
                                 
                                 <View style={styles.titleDesc}>
@@ -58,36 +56,63 @@ export function MainSoundModal(props) {
 
                                 <View>
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} onPress={()=> sendData('water feature')} >Water Feature</Button>
-                                        <Button style={styles.button} onPress={()=> sendData('traffic')}>Traffic</Button>
+                                        <Button style={styles.button} onPress={()=> sendData('Water Feature')}>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Water Feature</Text>
+                                            </View>
+                                        </Button>
+                                        <Button style={styles.button} onPress={()=> sendData('Traffic')}>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Traffic</Text>
+                                            </View>
+                                        </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} onPress={()=> sendData('people sounds')}>People Sounds</Button>
-                                        <Button style={styles.button} onPress={()=> sendData('animals')}>Animals</Button>
+                                        <Button style={styles.button} onPress={()=> sendData('People Sounds')}>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>People Sounds</Text>
+                                            </View>
+                                        </Button>
+                                        <Button style={styles.button} onPress={()=> sendData('Animals')}>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Animals</Text>
+                                            </View>
+                                        </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} onPress={()=> sendData('wind')}>Wind</Button>
-                                        <Button style={styles.button} onPress={()=> sendData('music')}>{music}</Button>
+                                        <Button style={styles.button} onPress={()=> sendData('Wind')}>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Wind</Text>
+                                            </View>
+                                        </Button>
+                                        <Button style={styles.button} onPress={()=> sendData('Music')}>
+                                            <View>
+                                                <Text style={styles.buttonTxt}>Music</Text>
+                                            </View>
+                                        </Button>
                                     </View>
                                 </View>
 
                                 <View style={styles.otherView}>
-                                    <Text category={'s1'}>Other</Text>
-                                    
+                                    <Text>Other</Text>
                                     <View style={styles.otherRow}>
                                         <Input 
                                             style={styles.inputBox}
                                             placeholder={"Sound Type..."}
                                             onChangeText={(nextValue) => setOther(nextValue)}
                                         />
-                                        <Button style={styles.submitButton} onPress={handleOther}> Submit </Button>
+                                        <Button style={styles.submitButton} onPress={handleOther}>
+                                        <View>
+                                            <Text style={styles.submitButtonTxt}>Submit</Text>
+                                        </View>
+                                        </Button>
                                     </View>
 
                                     {empty ?
                                         <View style={styles.errorView}>
-                                            <Text>Please enter a sound type to submit</Text>
+                                            <Text style={styles.redTxt}>Please enter a sound type to submit</Text>
                                         </View>
                                     :
                                         null

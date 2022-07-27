@@ -1,24 +1,39 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
 
-    stopButton:{
-        height: 50, 
-        marginLeft: 5, 
-        width: 90
+    stopButton:{ 
+        marginLeft: 5,
+        height: height * .0525, 
+        width: width * .2,
     },
     
     startButton:{
-        backgroundColor: '#006FD6',
-        height: 50, 
-        marginLeft: 5, 
-        width: 90
+        backgroundColor: '#006FD6', 
+        marginLeft: 5,
+        height: height * .0525, 
+        width: width * .2,
+    },
+
+    startStopText:{
+        color: 'white',
+        fontSize: width * .035,
+        fontWeight: 'bold'
     },
     
     buttons:{
         backgroundColor: '#006FD6',
-        height: 50, 
-        width: 131
+        height: height * .05, 
+        width: width * .3,
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold'
     },
 
     buttonRow:{
@@ -46,6 +61,29 @@ export const styles = StyleSheet.create({
         flexDirection: 'row', 
         justifyContent:'space-between', 
         alignItems:'center'
+    },
+
+    playPauseIcon:{
+        width: width * .065,
+        height: height * .03,
+    },
+
+    playPauseButton:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 100,
+        backgroundColor: '#006FD6',
+    },
+    
+    timerRow:{
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
+    descriptionView:{
+        alignItems: 'center',
+        backgroundColor: 'white',
+        marginTop: -90
     }
     
 });

@@ -5,7 +5,7 @@ import { DataGroupMovement } from './dataGroupMovement.component.js';
 
 import { styles } from './dataEntryModal.styles.js';
 
-const movement = ["Walking", "Running", "Swiming", "Activity on Wheels", "Handicap Assisted Wheels"]
+const movement = ["Walking", "Running", "Swimming", "Activity on Wheels", "Handicap Assisted Wheels"]
 
 export function DataEntryModal(props) {
 
@@ -36,14 +36,17 @@ export function DataEntryModal(props) {
             <View style={[ styles.scrollViewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                 <ScrollView>
                     <Text category={'h1'} style={styles.titleText}>Data</Text>
-                    <Text category={'s1'} style={styles.titleLine}>___________</Text>
                     <View style={styles.dataView}>
 
                         <DataGroupMovement setMovementData={setMovementData}/>
 
                     </View>
 
-                    <Button style={styles.button} onPress={sendData}> Submit </Button>
+                    <Button style={styles.button} onPress={sendData}>
+                        <View>
+                            <Text style={styles.buttonTxt}>Submit</Text>
+                        </View>
+                    </Button>
 
                 </ScrollView>
             </View>

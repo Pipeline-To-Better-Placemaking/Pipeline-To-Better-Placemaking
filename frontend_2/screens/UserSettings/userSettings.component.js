@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Modal, ScrollView } from 'react-native';
+import { View, Modal, ScrollView, Linking } from 'react-native';
 import { Icon, Input, Text, Button } from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
 import { Header } from '../components/headers.component';
@@ -36,10 +36,6 @@ export function UserSettings(props) {
 
   const themeContext = React.useContext(ThemeContext);
 
-  const UserIcon = (props) => (
-    <Icon {...props} fill='grey' style={styles.iconSize} name='person'/>
-  );
-
   const editIcon = (props) => (
     <Icon {...props} fill='white' name='edit'/>
   );
@@ -52,8 +48,8 @@ export function UserSettings(props) {
     <Icon {...props} fill='white' name='checkmark'/>
   );
 
-  const mailIcon = (props) => (
-    <Icon {...props} fill='white' name='email'/>
+  const faqIcon = (props) => (
+    <Icon {...props} fill='white' name='globe'/>
   );
 
   const themeIcon = (props) => {
@@ -224,6 +220,12 @@ export function UserSettings(props) {
     if (!/.+\@.+\..+/g.test(emailText)) return false;
     if (/\s/g.test(emailText)) return false;
     return true;
+  }
+
+  const launchFaq = async () =>{
+    const url = 'http://p2bp.herokuapp.com/faq'
+    await Linking.canOpenURL(url);
+    Linking.openURL(url);
   }
 
   const isValidEmail = checkEmail();
@@ -407,6 +409,10 @@ export function UserSettings(props) {
                 VERIFY EMAIL
               </Button>
           }
+
+          <Button style={styles.button} onPress={launchFaq} accessoryRight={faqIcon}>
+            FAQ
+          </Button>
 
           <MapConfigButtonGroup/>
 

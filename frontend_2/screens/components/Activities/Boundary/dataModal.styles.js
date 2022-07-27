@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     },
 
     viewContainer: {
-        height: '50%',
+        height: '45%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     },
 
     purposeViewContainer:{
-        height: '45%',
+        height: '40%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -28,12 +28,8 @@ export const styles = StyleSheet.create({
 
     titleText:{
         marginTop: 10,
-        alignSelf: 'center'
-    },
-
-    titleLine:{
-        alignSelf: 'center', 
-        marginTop: -18
+        alignSelf: 'center',
+        textDecorationLine: 'underline'
     },
 
     dataView:{
@@ -53,17 +49,31 @@ export const styles = StyleSheet.create({
         width: width,
         flexDirection: 'row',
         justifyContent: 'space-around',        
-        marginTop: height * .03,
+        marginTop: height * .015,
     },
 
     button:{
         width: width * .35,
-        height: height * .065, 
-        alignSelf:'center'
+        height: height * .07
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .033,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    offButtonTxt:{
+        color: '#006FD6',
+        fontSize: width * .033,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 
     lastButtonView:{
-        marginTop: height * .03,
+        marginTop: height * .015,
+        alignItems: 'center'
     },
 
     backButton:{
@@ -74,6 +84,12 @@ export const styles = StyleSheet.create({
         borderColor: '#6690FF'
     },
 
+    backButtonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold'
+    },
+
     submitButton:{
         width: width * .25,
         height: 5,
@@ -82,7 +98,7 @@ export const styles = StyleSheet.create({
     },
 
     multiView:{
-        marginTop: height * .04,
+        marginTop: height * .02,
         alignItems: 'center'
     },
 
@@ -93,9 +109,13 @@ export const styles = StyleSheet.create({
 
     selectError:{
         alignItems: 'center',
-        marginTop: height * .009,
-        marginBottom: -20,
+        marginTop: height * .005,
+        marginBottom: -8,
     },
+
+    redTxt:{
+        color: 'red'
+    }
 
 });
 

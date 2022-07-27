@@ -40,7 +40,7 @@ function BottomTabBar({ state, descriptors, navigation }) {
 
 export function TabNavigation(props) {
   // user's location when they login
-  var location = props.location;
+  let location = props.location;
   // boolean value used for navigation so the user can't log out by swiping back
   let setSignedIn = props.setSignedIn;
 

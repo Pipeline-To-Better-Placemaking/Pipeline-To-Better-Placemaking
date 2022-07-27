@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity, Platform } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button } from '@ui-kitten/components';
+import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component';
 import { BoundaryMap } from '../../../components/Maps/boundaryMap.component';
 import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.component';
 import { DataModal } from '../../../components/Activities/Boundary/dataModal.component';
 import { PurposeModal } from '../../../components/Activities/Boundary/purposeModal.component';
+import { DeleteModal } from '../../../components/Activities/deleteModal.component';
+import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import { calcArea, haverSine } from '../../../components/helperFunctions';
 import CountDown from 'react-native-countdown-component';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -16,13 +18,14 @@ import { styles } from './boundaryTest.styles';
 
 export function BoundaryTest(props){
     const theme = useTheme();
+    const plat = Platform.OS;
 
     const [area] = useState(props.timeSlot.area);
     const [recenter] = useState(false); // not used
 
     // Begins the test
     const [start, setStart] = useState(false);
-
+    const [initalStart, setInitalStart] = useState(true);
     // timer stuff
     const initalTime = props.timeSlot.timeLeft
     // controls the rendered countdown timer
@@ -65,9 +68,15 @@ export function BoundaryTest(props){
     // Modal controls/tools
     const [errorModal, setErrorModal] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
+    const [popupMsg, setPopupMsg] = useState(true);
     const [dataModal, setDataModal] = useState(false);
     const [prompts, setPrompts] = useState([]);
     const [purposeModal, setPurposeModal] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState(-1);
+    const [deleteCoords, setDeleteCoords] = useState();
+    const [deleteDesc, setDeleteDesc] = useState('');
+    const [deleteType, setDeleteType] = useState(-1);
 
     const constructPrompt = ["Curbs", "Building Wall", "Fences", "Planter", "Partial Wall"]
     const matPrompt = ["Bricks (pavers)", "Concrete", "Tile", "Natural (grass)", "Wood (deck)"]
@@ -177,8 +186,15 @@ export function BoundaryTest(props){
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
-            //console.log('useEffect start');
+            // console.log('starting timer useEffect');
+            setPopupMsg(false);
             startTime(timer);
+            setInitalStart(false);
+        }
+        // timer is paused
+        else if(start === false){
+            // console.log('stopping timer useEffect')
+            clearInterval(id);
         }
     }, [start]);
 
@@ -191,7 +207,7 @@ export function BoundaryTest(props){
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            //console.log(count);
+            // console.log(count);
             // when timer hits 0, end the test (is a time at site test)
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
@@ -206,10 +222,12 @@ export function BoundaryTest(props){
     // Start button and progress tracker component
     const StartEndButton = () => {
         // only show the start button before the test is started (to start the test)
-        if (!start) {
+        if (initalStart){
             return(
-                <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
+                <Button style={styles.startButton} onPress={() => setStart(true)}>
+                    <View>
+                        <Text style={styles.startStopText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
@@ -220,8 +238,10 @@ export function BoundaryTest(props){
                     status={'danger'}
                     style={styles.stopButton}
                     onPress={() => endActivity()}
-                    >
-                        End
+                >
+                    <View>
+                        <Text style={styles.startStopText}>End</Text>
+                    </View>
                 </Button>
             )
         }
@@ -268,7 +288,29 @@ export function BoundaryTest(props){
         }
     }
 
-     // CountDown Timer and the StartEnd buttons
+    const PlayPauseButton = () =>{
+        const Play = () => <Icon name='play-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+        const Pause = () => <Icon name='pause-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+      
+        // timer is active
+        if(start){
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(false)}>
+              <Pause />
+            </TouchableOpacity>
+          )
+        }
+        // timer is paused
+        else{
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(true)}>
+              <Play />
+            </TouchableOpacity>
+          )
+        }
+    }
+
+    // CountDown Timer and the StartEnd buttons
     const TimeBar = () => {
         return(
             <View>
@@ -281,6 +323,7 @@ export function BoundaryTest(props){
                         <View>
                             <DropDownPicker
                                 style={styles.filterSelect}
+                                disabled={initalStart}
                                 open={open}
                                 setOpen={setOpen}
                                 value={value}
@@ -293,7 +336,14 @@ export function BoundaryTest(props){
 
                     </View>
 
-                    <View>
+                    <View style={styles.timerRow}>
+                        
+                        {initalStart ?
+                            null
+                        :
+                            <PlayPauseButton />
+                        }
+
                         <CountDown
                             running={start}
                             until={timer}
@@ -322,6 +372,92 @@ export function BoundaryTest(props){
             setCurrentPath(currentPath.concat(marker));
             setCurrentPathSize(currentPathSize+1);
         }
+    }
+
+    // pulls up the delete modal
+    const handleDelete = (type, index, coords) =>{
+        // constructed boundary
+        if(type === 0){
+            setDeleteDesc("constructed boundary")
+            setDeleteType(type);
+        }
+        // material boundary
+        else if(type === 1){
+            setDeleteDesc("material boundary")
+            setDeleteType(type);
+        }
+        // shelter boundary
+        else{
+            setDeleteDesc("shelter boundary")
+            setDeleteType(type);
+        }
+        // sets the description and index, then pulls up the modal
+        setDeleteIndex(index);
+        setDeleteCoords(coords);
+        setDeleteModal(true);
+    }
+    
+    // deletes the boundary from the total paths and data arrays
+    const deleteBoundary = async () =>{
+        // constructed boundary
+        if(deleteType === 0){
+            constructTotalPaths.splice(deleteIndex, 1);
+        }
+        // material boundary
+        else if(deleteType === 1){
+            materialTotalPaths.splice(deleteIndex, 1);
+        }
+        // shelter boundary
+        else{
+            shelterTotalPaths.splice(deleteIndex, 1);
+        }
+        let tempIndex = -1;
+        let tempFilter;
+        // loop through the data array looking for the boundary to be deleted
+        for(let i = 0; i < data.length; i++){
+            // searches each data's path to see if those coordinates match the coordinates of the boundary that is being deleted 
+            tempFilter = data[i].path.filter((coord) => deleteCoords.find((dCoord) => coord.latitude === dCoord.latitude && coord.longitude === dCoord.longitude))
+            // coordinate path of constructed is the same as the deleteCoord path
+            if(deleteType === 0){
+                if(tempFilter.length === deleteCoords.length){
+                    // save the index and break from the loop
+                    tempIndex = i
+                    break
+                }
+            }
+            // coordinate path of material/shelter
+            else{
+                // android device
+                if(plat === 'android'){
+                    if(tempFilter.length === deleteCoords.length){
+                        tempIndex = i;
+                        break
+                    }
+                }
+                // ios device
+                else{
+                    // if its an ios device, there is an extra coord at the end of the path (on the deleteCoords array which forms the enclosed line polygons)
+                    if(tempFilter.length === deleteCoords.length - 1){
+                        // save the index and break from the loop
+                        tempIndex = i
+                        break
+                    }
+                }
+            }
+        }
+        // should never really go into this if statement; it should always find the boundary
+        // but just in case it doesn't it displays this error
+        // last entry is deleted due to how splice deals with -1 as the starting index
+        if(tempIndex === -1) console.log('ERROR, boundary not found... Deleting last entry in the data array')
+        
+        // removes the boundary from the data array
+        data.splice(tempIndex, 1);
+        // since we removed a boundary object, decrement the dataIndex
+        setDataIndex(dataIndex - 1);
+        //reset delete controls
+        setDeleteIndex(-1);
+        setDeleteDesc('');
+        setDeleteModal(false);
     }
 
     // checks the boundary and sets the buttons to collect data
@@ -413,15 +549,39 @@ export function BoundaryTest(props){
         if(lineTools){
             return null
         }
-        // otherwise the button toolbar is rendered
         else{
-            return(
-                <View style={styles.buttonRow}>
-                    <Button style={styles.buttons} onPress={() => boundaryType(0)}>Constructed</Button>
-                    <Button style={styles.buttons} onPress={() => boundaryType(1)}>Material</Button>
-                    <Button style={styles.buttons} onPress={() => boundaryType(2)}>Shelter</Button>
-                </View>
-            )
+            // render the button toolbar only if the test has started
+            if(start){
+                return(
+                    <View style={styles.buttonRow}>
+                        <Button style={styles.buttons} onPress={() => boundaryType(0)}>
+                            <View>
+                                <Text style={styles.buttonTxt}>Constructed</Text>
+                            </View>
+                        </Button>
+                        <Button style={styles.buttons} onPress={() => boundaryType(1)}>
+                            <View>
+                                <Text style={styles.buttonTxt}>Material</Text>
+                            </View>
+                        </Button>
+                        <Button style={styles.buttons} onPress={() => boundaryType(2)}>
+                            <View>
+                                <Text style={styles.buttonTxt}>Shelter</Text>
+                            </View>
+                        </Button>
+                    </View>
+                )
+            }
+            // if the test has been started, but then paused at some point, render this message
+            else if(!initalStart){
+                return(
+                    <View style={styles.descriptionView}>
+                        <Text category={'s1'}>Press the play button to resume the test</Text>
+                    </View>
+                )
+            }
+            // initally renders this (test has not yet started)
+            else return null
         }
     }
     
@@ -439,14 +599,18 @@ export function BoundaryTest(props){
         <ViewableArea>
             <Header text={'Spatial Boundaries'}/>
             <ContentContainer>
-                    
+                                        
+                    <TimeBar/>
+
                     <ErrorModal 
                         errorModal={errorModal}
                         errorMessage={errorMsg}
                         dismiss={dismiss}
                     />
-                    
-                    <TimeBar/>
+
+                    <PopupMessage
+                        visible={popupMsg}
+                    />
 
                     <DataModal
                         visible={dataModal}
@@ -459,6 +623,13 @@ export function BoundaryTest(props){
                         visible={purposeModal}
                         closePurpose={closePurpose}
                     />
+
+                    <DeleteModal
+                        visible={deleteModal}
+                        setVisible={setDeleteModal}
+                        dataType={deleteDesc}
+                        deleteFunction={deleteBoundary}
+                    />
                     
                     {/* this zIndex enables the dropdown menu to render over the map */}
                     <View style={{zIndex: -1}}>
@@ -467,6 +638,7 @@ export function BoundaryTest(props){
                             type={boundIndex}
                             markers={currentPath}
                             addMarker={addMarker}
+                            deleteMarker={handleDelete}
                             lineBool={constructBool}
                             linePaths={constructTotalPaths}
                             matBool={materialBool}

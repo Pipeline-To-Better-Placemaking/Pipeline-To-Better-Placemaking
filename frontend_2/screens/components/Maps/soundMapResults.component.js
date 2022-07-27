@@ -26,12 +26,12 @@ export function SoundMapResults(props) {
         let val = 0;
         // iterate over the dictonary looking for the highest frequency, then return that string
         for(const [word, value] of Object.entries(hm)){
-        // if the value of the word in hm is larger than our current value
-        if(value > val){
-            // update the current value and the string
-            val = value;
-            ret = word;
-        }
+            // if the value of the word in hm is larger than our current value
+            if(value > val){
+                // update the current value and the string
+                val = value;
+                ret = word;
+            }
         }
         return ret;
     }
@@ -87,6 +87,11 @@ export function SoundMapResults(props) {
             return (null);
         }
         else {
+            // offsets the data proportion circle to have its center appear at the exact location of the marker
+            let offsetPoint = {
+                x: 0.48,
+                y: 0.625
+            }
             let objData = [[]];
             // for each standing point
             for(let i = 0; i < standingPoints.length; i++){
@@ -107,16 +112,17 @@ export function SoundMapResults(props) {
                                 latitude: props.position[i].latitude,
                                 longitude: props.position[i].longitude
                             }}
+                            anchor={offsetPoint}
                         >
-                        <DataPin value={avg}/>
+                            <DataPin value={avg}/>
                         
-                        <Callout style={styles.callout}>
-                            <DataCallout 
-                                value={avg}
-                                mainSound={mainSound}
-                                sounds={allSounds}
-                            />
-                        </Callout>
+                            <Callout style={styles.callout}>
+                                <DataCallout 
+                                    value={avg}
+                                    mainSound={mainSound}
+                                    sounds={allSounds}
+                                />
+                            </Callout>
                         
                         </MapView.Marker>
                     </View>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, LogBox } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button } from '@ui-kitten/components';
+import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component';
 import { NatureMap } from '../../../components/Maps/natureMap.component.js';
 import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.component';
@@ -10,6 +10,8 @@ import { WeatherModal } from '../../../components/Activities/Nature/weatherModal
 import { WaterModal } from '../../../components/Activities/Nature/waterModal.component';
 import { VegeModal } from '../../../components/Activities/Nature/vegeModal.component';
 import { DataModal } from '../../../components/Activities/Nature/dataModal.component';
+import { DeleteModal } from '../../../components/Activities/deleteModal.component';
+import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import { calcArea } from '../../../components/helperFunctions';
 import CountDown from 'react-native-countdown-component';
 
@@ -35,7 +37,9 @@ export function NatureTest(props) {
     // Modal controls
     const [errorModal, setErrorModal] = useState(false);
     const errorMsg = "Need at least 3 points to confirm a body of water";
-    const [weatherModal, setWeatherModal] = useState(false);
+    const [popupMsg, setPopupMsg] = useState(false);
+    // set to true so the user can leave the app to check the weather before starting the test (avoiding the timer/responsiveness issue)
+    const [weatherModal, setWeatherModal] = useState(true);
     const [waterModal, setWaterModal] = useState(false);
     const [vegeModal, setVegeModal] = useState(false);
     const [dataModal, setDataModal] = useState(false);
@@ -49,6 +53,12 @@ export function NatureTest(props) {
     const [currentPath, setCurrentPath] = useState([]);
     const [currentPathSize, setCurrentPathSize] = useState(0);
     const [tempMarker, setTempMarker] = useState();
+    
+    // delete animal data controls
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState(-1);
+    const [deleteDesc, setDeleteDesc] = useState('');
+    const [deleteExtraDesc, setDeleteExtraDesc] = useState('');
 
     // Used to store all the data info
     const [totalWaterPaths] = useState([]);
@@ -118,11 +128,33 @@ export function NatureTest(props) {
         setDataModal(false);
         setTempMarker();
     }
+
+    // pulls up the delete modal
+    const handleDelete = (index) =>{
+        // sets the description and index, then pulls up the modal
+        setDeleteDesc(dataPoints[index].kind.toLowerCase() + " animal data point")
+        setDeleteExtraDesc(dataPoints[index].description)
+        setDeleteIndex(index)
+        setDeleteModal(true);
+    }
+    
+    // deletes the point from the data array
+    const deletePoint = async () =>{
+        // removes the data point from the array
+        dataPoints.splice(deleteIndex, 1)
+        
+        //reset delete controls
+        setDeleteIndex(-1);
+        setDeleteDesc('');
+        setDeleteExtraDesc('');
+        setDeleteModal(false);
+    }
     
     // Closes the weather modal and saves the data
     const closeWeather = async (inf) =>{
-        weatherData.push(inf)
-        setWeatherModal(false)
+        weatherData.push(inf);
+        setWeatherModal(false);
+        setPopupMsg(true);
     }
 
     const closeWater = async (inf) =>{
@@ -169,7 +201,9 @@ export function NatureTest(props) {
         if (initalStart) {
             return(
                 <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
+                    <View>
+                        <Text style={styles.startStopText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
@@ -180,7 +214,9 @@ export function NatureTest(props) {
                     style={styles.stopButton}
                     onPress={() => endActivity()}
                     >
-                        End
+                        <View>
+                            <Text style={styles.startStopText}>End</Text>
+                        </View>
                     </Button>
             )
         }
@@ -190,10 +226,15 @@ export function NatureTest(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
-            // pull up the weather modal when the test 1st starts
-            if(initalStart) setWeatherModal(true);
+            // console.log('starting timer useEffect')
+            setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
+        }
+        // timer is paused
+        else if(start === false){
+            // console.log('stopping timer useEffect')
+            clearInterval(id);
         }
     }, [start]);
 
@@ -204,7 +245,7 @@ export function NatureTest(props) {
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            //console.log(count);
+            // console.log(count);
             // when the timer reaches 0, call restart
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
@@ -213,6 +254,28 @@ export function NatureTest(props) {
             }
         // 1000 ms == 1 s
         }, 1000));
+    }
+
+    const PlayPauseButton = () =>{
+        const Play = () => <Icon name='play-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+        const Pause = () => <Icon name='pause-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+      
+        // timer is active
+        if(start){
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(false)}>
+              <Pause />
+            </TouchableOpacity>
+          )
+        }
+        // timer is paused
+        else{
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(true)}>
+              <Play />
+            </TouchableOpacity>
+          )
+        }
     }
 
     // Count Down Timer and the Start/Exit button
@@ -224,7 +287,14 @@ export function NatureTest(props) {
 
                     <StartStopButton/>
 
-                    <View>
+                    <View style={styles.timerRow}>
+
+                        {initalStart ?
+                            null
+                        :
+                            <PlayPauseButton />
+                        }
+
                         <CountDown
                             running={start}
                             until={timer}
@@ -301,17 +371,44 @@ export function NatureTest(props) {
     }
 
     const ButtonToolBar = () =>{
-        // line toolbar is not rendered and the test has started
-        if(start && !lineTools){
-            return(
-                <View style={styles.buttonView}>
-                    <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(0)}}>Body of Water</Button>
-                    <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(1)}}>Vegetation</Button>
-                </View>
-            )
+        // line toolbar is rendered
+        if(lineTools) return null
+        
+        else{
+            // render the button toolbar only if the test has started
+            if(start){
+                return(
+                    <View style={styles.toolBarView}>
+                        <View style={styles.descriptionView}>
+                            <Text category={'s1'}>Tap on the map to plot animal data points</Text>
+                        </View>
+                        
+                        <View style={styles.buttonView}>
+                            <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(0)}}>
+                                <View>
+                                    <Text style={styles.buttonTxt}>Body of Water</Text>
+                                </View>
+                            </Button>
+                            <Button style={styles.button} onPress={() => {setLineTools(true); setPolyType(1)}}>
+                                <View>
+                                    <Text style={styles.buttonTxt}>Vegetation</Text>
+                                </View>
+                            </Button>
+                        </View>
+                    </View>
+                )
+            }
+            // test has started, but then gets pasued
+            else if(!initalStart){
+                return(
+                    <View style={styles.pausedDescriptionView}>
+                        <Text category={'s1'}>Press the play button to resume the test</Text>
+                    </View>
+                )
+            }
+            // initally renders this (test has not yet started)
+            else return null
         }
-        // otherwise return nothing (linetool bar is up or test hasn't started)
-        return null
     }
 
     // closes the error modal
@@ -322,14 +419,12 @@ export function NatureTest(props) {
     // closes the modals without submitting anything
     const goBack = () =>{
         if(waterModal) setWaterModal(false);
+        else if (vegeModal) setVegeModal(false);
         else{
             setTempMarker();
             setDataModal(false);
         }
     }
-
-    // ignores the event emitter warnings in app (for dev. only)
-    LogBox.ignoreAllLogs();
 
     // Main render
     return(
@@ -343,6 +438,10 @@ export function NatureTest(props) {
                     errorModal={errorModal}
                     errorMessage={errorMsg}
                     dismiss={dismiss}
+                />
+
+                <PopupMessage
+                    visible={popupMsg}
                 />
 
                 <WeatherModal
@@ -369,6 +468,14 @@ export function NatureTest(props) {
                     back={goBack}
                 />
 
+                <DeleteModal
+                    visible={deleteModal}
+                    setVisible={setDeleteModal}
+                    dataType={deleteDesc}
+                    extraInfo={deleteExtraDesc}
+                    deleteFunction={deletePoint}
+                />
+
                 <NatureMap
                     area={area}
                     markers={currentPath}
@@ -377,6 +484,7 @@ export function NatureTest(props) {
                     water={totalWaterPaths}
                     vege={totalVegePaths}
                     addMarker={onPointCreate}
+                    deleteMarker={handleDelete}
                     addShape={addShape}
                     cond={lineTools}
                     polyType={polyType}

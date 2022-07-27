@@ -23,7 +23,6 @@ export function VegeModal(props) {
                 <View style={[ styles.vegeViewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                         
                     <Text category={'h1'} style={styles.titleText}>Vegetation Data</Text>
-                    <Text category={'s1'} style={styles.titleLine}>__________________________________</Text>
                     <View style={styles.dataView}>
                                 
                         <View style={styles.titleDesc}>
@@ -32,14 +31,30 @@ export function VegeModal(props) {
 
                         <View>
                             <View style={styles.buttonRow}>
-                                <Button style={styles.vegeButton} onPress={()=> sendData("Native")}>Native</Button>
-                                <Button style={styles.vegeButton} onPress={()=> sendData("Design")}>Design</Button>
-                                <Button style={styles.vegeButton} onPress={()=> sendData("Open Field")}>Open Field</Button>
+                                <Button style={styles.button} onPress={()=> sendData("Native")}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Native</Text>
+                                    </View>
+                                </Button>
+                                <Button style={styles.button} onPress={()=> sendData("Design")}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Design</Text>
+                                    </View>
+                                </Button>
+                                <Button style={styles.button} onPress={()=> sendData("Open Field")}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Open Field</Text>
+                                    </View>
+                                </Button>
                             </View>
                             
 
                             <View style={styles.lastButtonView}>
-                                <Button style={styles.backButton} onPress={() => props.back()}>Back</Button>
+                                <Button style={styles.backButton} onPress={() => props.back()}>
+                                    <View>
+                                        <Text style={styles.backButtonTxt}>Back</Text>
+                                    </View>
+                                </Button>
                             </View>
 
                         </View>

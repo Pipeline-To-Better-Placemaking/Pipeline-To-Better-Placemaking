@@ -23,7 +23,11 @@ export function HomeMapView(props) {
     }]
 
     let location = getRegionForCoordinates(point)
-
+    // offsets the default marker slightly to have its point appear in a precise location
+    let offsetPoint = {
+        x: 0.5,
+        y: 1.1
+    }
     return (
             <View>
             <MapView
@@ -37,6 +41,7 @@ export function HomeMapView(props) {
                         latitude: props.location.latitude,
                         longitude: props.location.longitude
                     }}
+                    anchor={offsetPoint}
                 />
 
             </MapView>

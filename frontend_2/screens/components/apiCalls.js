@@ -39,7 +39,34 @@ export async function getProject(project) {
   } else {
     return null;
   }
-};
+}
+
+// merge sorts props.activities to have earliest date tests come 1st
+const mergeSortEarlyDate = (arr) =>{
+  const half = arr.length / 2
+  // base case
+  if(arr.length < 2){
+    return arr
+  }
+  const left = arr.splice(0, half)
+  const res = mergeEarly(mergeSortEarlyDate(left), mergeSortEarlyDate(arr)) 
+  // gets rid of the last element from props.activities (otherwise, it'll render a duplicate test at the end)
+  arr.shift();
+  return res
+}
+
+// helper funct of mergeSort, is where the objects are compared
+const mergeEarly = (left, right)=>{
+  let arr = [];
+  // while they are both NOT empty
+  while(left.length && right.length){
+    // we want the array to be sorted by earliest date 1st
+    if(left[0].date < right[0].date) arr.push(left.shift())
+    else arr.push(right.shift())
+  }
+  // concat the leftover elements
+  return [...arr, ...left, ...right]
+}
 
 export async function getFilteredProjectDetails(project) {
   let token = await AsyncStorage.getItem("@token");
@@ -221,11 +248,13 @@ export async function getFilteredProjectDetails(project) {
       ...pastLightCollections,
       ...pastOrderCollections
     ];
+
+    projectDetails.activities = mergeSortEarlyDate(projectDetails.activities);
     return projectDetails;
   } else {
     return null;
   }
-};
+}
 
 export async function getTeam(team) {
   let token = await AsyncStorage.getItem("@token");
@@ -255,7 +284,7 @@ export async function getTeam(team) {
   } else {
     return null;
   }
-};
+}
 
 export async function getAllUserProjects() {
   let projectList = [];
@@ -322,7 +351,7 @@ export async function postInvite(id, claim) {
   } else {
     return false;
   }
-};
+}
 
 export async function getUserInfo() {
   let token = await AsyncStorage.getItem("@token");
@@ -360,7 +389,7 @@ export async function getUserInfo() {
   } else {
     return null;
   }
-};
+}
 
 export async function getTimeSlot(route, id) {
   let token = await AsyncStorage.getItem("@token");
@@ -390,7 +419,7 @@ export async function getTimeSlot(route, id) {
   } else {
     return null;
   }
-};
+}
 
 export async function deleteTimeSlot(route, id) {
   let token = await AsyncStorage.getItem("@token");
@@ -448,7 +477,7 @@ export async function getCollection(route, collection) {
   } else {
     return null;
   }
-};
+}
 
 export async function getAllCollectionInfo(collectionDetails) {
   let token = await AsyncStorage.getItem("@token");
@@ -586,7 +615,32 @@ export async function getAllCollectionInfo(collectionDetails) {
   } else {
     return null;
   }
-};
+}
+
+// This merge sort is used in getAllResults to sort all of the projects
+// To have latest date tests come 1st
+const mergeSortLateDate = (arr) =>{
+  const half = arr.length / 2
+  // base case
+  if(arr.length < 2){
+    return arr
+  }
+  const left = arr.splice(0, half)
+  return mergeLate(mergeSortLateDate(left), mergeSortLateDate(arr))
+}
+
+// helper funct of mergeSortLateDate, is where the objects are compared
+const mergeLate = (left, right)=>{
+  let arr = [];
+  // while they are both NOT empty
+  while(left.length && right.length){
+    // we want the array to be sorted by latest date 1st
+    if(left[0].sharedData.date > right[0].sharedData.date) arr.push(left.shift())
+    else arr.push(right.shift())
+  }
+  // concat the leftover elements
+  return [...arr, ...left, ...right]
+}
 
 export async function getAllResults(projectDetails) {
   if (projectDetails === null) {
@@ -603,16 +657,25 @@ export async function getAllResults(projectDetails) {
   results = await getNatureResults(projectDetails, results);
   results = await getLightResults(projectDetails, results);
   results = await getOrderResults(projectDetails, results);
+  
+  results = mergeSortLateDate(results);
   return  results;
 }
 
 export async function getStationaryResults(projectDetails, results) {
+  let today = new Date();
   // loop through all Stationary collections and get all of the maps
   for (let i = 0; i < projectDetails.stationaryCollections.length; i++) {
     let collection = projectDetails.stationaryCollections[i];
-    for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
+    for (let j = 0; collection.maps !== null && j < collection.maps.length; j++) {
       let id = collection.maps[j];
       let tempObj = await helperGetResult(id, 'stationary_maps/', "stationary", collection, projectDetails);
+      // check if the result object's start date is after today's date
+      if(moment(tempObj.sharedData.date).isAfter(today)){
+        // if so check if its data is empty, if so continue (so it doesn't show in the project results)
+        if(tempObj.data.length === 0) continue
+      }
+      // this will still have project results that are empty, but only if its start date has passed
       results.push(tempObj);
     }
   }
@@ -620,12 +683,19 @@ export async function getStationaryResults(projectDetails, results) {
 }
 
 export async function getMovingResults(projectDetails, results) {
+  let today = new Date();
   // loop through all People Moving collections and get all of the maps
   for (let i = 0; i < projectDetails.movingCollections.length; i++) {
     let collection = projectDetails.movingCollections[i];
     for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
       let id = collection.maps[j];
       let tempObj = await helperGetResult(id, 'moving_maps/', "moving", collection, projectDetails);
+       // check if the result object's start date is after today's date
+       if(moment(tempObj.sharedData.date).isAfter(today)){
+        // if so check if its data is empty, if so continue (so it doesn't show in the project results)
+        if(tempObj.data.length === 0) continue
+      }
+      // this will still have project results that are empty, but only if its start date has passed
       results.push(tempObj);
     }
   }
@@ -633,12 +703,16 @@ export async function getMovingResults(projectDetails, results) {
 }
 
 export async function getSurveyResults(projectDetails, results) {
+  let today = new Date();
   // loop through all survey collections and get all of the surveys
   for (let i = 0; i < projectDetails.surveyCollections.length; i++) {
     let collection = projectDetails.surveyCollections[i];
     for (let j=0; collection.surveys !== null && j < collection.surveys.length; j++) {
       let id = collection.surveys[j];
       let tempObj = await helperGetResult(id, 'surveys/', "survey", collection, projectDetails);
+      // check if the result object's start date is after today's date
+      // since there is no way to tell if a survey has been done, just continue if the survey start date is later than today
+      if(moment(tempObj.sharedData.date).isAfter(today)) continue
       results.push(tempObj);
     }
   }
@@ -646,12 +720,19 @@ export async function getSurveyResults(projectDetails, results) {
 }
 
 export async function getSoundResults(projectDetails, results) {
+  let today = new Date();
   // loop through all Sound Test collections and get all of the maps
   for (let i = 0; i < projectDetails.soundCollections.length; i++) {
     let collection = projectDetails.soundCollections[i];
     for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
       let id = collection.maps[j];
       let tempObj = await helperGetResult(id, 'sound_maps/', "sound", collection, projectDetails);
+      // check if the result object's start date is after today's date
+      if(moment(tempObj.sharedData.date).isAfter(today)){
+        // if so check if its data is empty, if so continue (so it doesn't show in the project results)
+        if(tempObj.data.length === 0) continue
+      }
+      // this will still have project results that are empty, but only if its start date has passed
       results.push(tempObj);
     }  
   }
@@ -659,12 +740,19 @@ export async function getSoundResults(projectDetails, results) {
 }
 
 export async function getBoundaryResults(projectDetails, results) {
+  let today = new Date();
   // loop through all Boundary Test collections and get all of the maps
   for (let i = 0; i < projectDetails.boundariesCollections.length; i++) {
     let collection = projectDetails.boundariesCollections[i];
     for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
       let id = collection.maps[j];
       let tempObj = await helperGetResult(id, 'boundaries_maps/', "boundary", collection, projectDetails);
+      // check if the result object's start date is after today's date
+      if(moment(tempObj.sharedData.date).isAfter(today)){
+        // if so check if its data is empty, if so continue (so it doesn't show in the project results)
+        if(tempObj.data.length === 0) continue
+      }
+      // this will still have project results that are empty, but only if its start date has passed
       results.push(tempObj);
     }
   }
@@ -672,12 +760,19 @@ export async function getBoundaryResults(projectDetails, results) {
 }
 
 export async function getNatureResults(projectDetails, results) {
+  let today = new Date();
   // loop through all Nature Test collections and get all of the maps
   for (let i = 0; i < projectDetails.natureCollections.length; i++) {
     let collection = projectDetails.natureCollections[i];
     for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
       let id = collection.maps[j];
       let tempObj = await helperGetResult(id, 'nature_maps/', "nature", collection, projectDetails);
+      // check if the result object's start date is after today's date
+      if(moment(tempObj.sharedData.date).isAfter(today)){
+        // if so check if its data is empty, if so continue (so it doesn't show in the project results)
+        if(tempObj.data.length === 0) continue
+      }
+      // this will still have project results that are empty, but only if its start date has passed
       results.push(tempObj);
     }
   }
@@ -685,12 +780,19 @@ export async function getNatureResults(projectDetails, results) {
 }
 
 export async function getLightResults(projectDetails, results) {
+  let today = new Date();
   // loop through all Light Test collections and get all of the maps
   for (let i = 0; i < projectDetails.lightCollections.length; i++) {
     let collection = projectDetails.lightCollections[i];
     for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
       let id = collection.maps[j];
       let tempObj = await helperGetResult(id, 'light_maps/', "light", collection, projectDetails);
+      // check if the result object's start date is after today's date
+      if(moment(tempObj.sharedData.date).isAfter(today)){
+        // if so check if its data is empty, if so continue (so it doesn't show in the project results)
+        if(tempObj.data.length === 0) continue
+      }
+      // this will still have project results that are empty, but only if its start date has passed
       results.push(tempObj);
     }
   }
@@ -698,12 +800,19 @@ export async function getLightResults(projectDetails, results) {
 }
 
 export async function getOrderResults(projectDetails, results) {
+  let today = new Date();
   // loop through all Order Test collections and get all of the maps
   for (let i = 0; i < projectDetails.orderCollections.length; i++) {
     let collection = projectDetails.orderCollections[i];
     for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
       let id = collection.maps[j];
       let tempObj = await helperGetResult(id, 'order_maps/', "order", collection, projectDetails);
+      // check if the result object's start date is after today's date
+      if(moment(tempObj.sharedData.date).isAfter(today)){
+        // if so check if its data is empty, if so continue (so it doesn't show in the project results)
+        if(tempObj.data.length === 0) continue
+      }
+      // this will still have project results that are empty, but only if its start date has passed
       results.push(tempObj);
     }
   }

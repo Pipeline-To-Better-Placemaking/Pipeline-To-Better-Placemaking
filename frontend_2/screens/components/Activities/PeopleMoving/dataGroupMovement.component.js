@@ -24,15 +24,35 @@ export function DataGroupMovement(props) {
         <View style={styles.conatainer}>
         <Text category={'h6'} style={styles.textTitle}> Movement: </Text>
             {/* <View style={{flexDirection: 'row', justifyContent:'space-around'}}> */}
-                <Button style={styles.button} appearance={movementMatrix[0] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(0)}>Walking</Button>
-                <Button style={styles.button} appearance={movementMatrix[1] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(1)}>Running</Button>
+                <Button style={styles.button} appearance={movementMatrix[0] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(0)}>
+                    <View>
+                        <Text style={movementMatrix[0] ? styles.buttonTxt : styles.offButtonTxt}>Walking</Text>
+                    </View>
+                </Button>
+                <Button style={styles.button} appearance={movementMatrix[1] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(1)}>
+                    <View>
+                        <Text style={movementMatrix[1] ? styles.buttonTxt : styles.offButtonTxt}>Running</Text>
+                    </View>
+                </Button>
             {/* </View> */}
             {/* <View style={{flexDirection: 'row', marginTop: 10, justifyContent:'space-around'}}> */}
-                <Button style={styles.button} appearance={movementMatrix[2] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(2)}>Swimming</Button>
-                <Button style={styles.button} appearance={movementMatrix[3] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(3)}>Activity on Wheels</Button>
+                <Button style={styles.button} appearance={movementMatrix[2] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(2)}>
+                    <View>
+                        <Text style={movementMatrix[2] ? styles.buttonTxt : styles.offButtonTxt}>Swimming</Text>
+                    </View>
+                </Button>
+                <Button style={styles.button} appearance={movementMatrix[3] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(3)}>
+                    <View>
+                        <Text style={movementMatrix[3] ? styles.buttonTxt : styles.offButtonTxt}>Activity on Wheels</Text>
+                    </View>
+                </Button>
             {/* </View> */}
             {/* <View style={{flexDirection: 'row', marginTop: 10, justifyContent:'space-around'}}> */}
-                <Button style={styles.button} appearance={movementMatrix[4] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(4)}>Handicap Assisted Wheels</Button>
+                <Button style={styles.button} appearance={movementMatrix[4] ? 'primary' : 'outline'} onPress={() => _setMovementIndex(4)}>
+                    <View>
+                        <Text style={movementMatrix[4] ? styles.buttonTxt : styles.offButtonTxt}>Handicap Assisted Wheels</Text>
+                    </View>
+                </Button>
             {/* </View> */}
         </View>
     )

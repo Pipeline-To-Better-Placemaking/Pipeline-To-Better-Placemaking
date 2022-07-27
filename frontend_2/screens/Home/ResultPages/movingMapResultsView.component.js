@@ -37,13 +37,12 @@ export function MovingMapResultsView(props) {
     let startTime = new Date(props.selectedResult.date);
     let day = new Date(props.selectedResult.sharedData.date);
 
-    const movement = ["Walking", "Running", "Swiming", "Activity on Wheels", "Handicap Assisted Wheels"]
+    const movement = ["Walking", "Running", "Swimming", "Activity on Wheels", "Handicap Assisted Wheels"]
     const [titleIndex, setTitleIndex] = useState(-1)
 
     useEffect(() => {
 
         if (totalPaths.length == 0) {
-
             setTotal()
             setWalking()
             setRunning()
@@ -80,7 +79,7 @@ export function MovingMapResultsView(props) {
 
             if (props.selectedResult.data[i].mode == movement[0]){
 
-                console.log("Setting walking")
+                //console.log("Setting walking")
 
                 let colorIndex = getColorIndex(props.selectedResult.data[i].mode)
 
@@ -93,7 +92,7 @@ export function MovingMapResultsView(props) {
             }
         }
 
-        console.log("WP: " + JSON.stringify(wp , null, 1))
+        //console.log("WP: " + JSON.stringify(wp , null, 1))
 
         setWalkingPaths(wp)
     }
@@ -124,7 +123,7 @@ export function MovingMapResultsView(props) {
             }
         }
 
-        console.log("RP: " + JSON.stringify(rp , null, 1))
+        //console.log("RP: " + JSON.stringify(rp , null, 1))
 
         setRunningPaths(rp)
     }
@@ -212,7 +211,7 @@ export function MovingMapResultsView(props) {
 
     const getFilteredPath = () => {
 
-        console.log("TitleIndex: " + titleIndex)
+        //console.log("TitleIndex: " + titleIndex)
 
         if (titleIndex == -1){
             return totalPaths

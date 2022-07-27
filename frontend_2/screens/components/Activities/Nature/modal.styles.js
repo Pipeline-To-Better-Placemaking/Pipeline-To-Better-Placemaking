@@ -15,7 +15,14 @@ export const styles = StyleSheet.create({
     },
 
     viewContainer:{
-        height: '45%',
+        height: '50%',
+        marginTop: '50%',
+        borderRadius: 35,
+        borderWidth: 1
+    },
+
+    animalViewContainer:{
+        height: '40%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -40,12 +47,8 @@ export const styles = StyleSheet.create({
 
     titleText:{
         marginTop: 10,
-        alignSelf: 'center'
-    },
-
-    titleLine:{
-        alignSelf: 'center', 
-        marginTop: -18
+        alignSelf: 'center',
+        textDecorationLine: 'underline'
     },
 
     dataView:{
@@ -59,6 +62,34 @@ export const styles = StyleSheet.create({
 
     titleDescTxt:{
         textAlign:'center',
+    },
+
+    otherView:{
+        marginTop: height * .015,
+        marginBottom: height * .01
+    },
+
+    otherRow:{
+        flexDirection: 'row'
+    },
+
+    otherInputBox:{
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        width: width * .60
+    },
+
+    submitButton:{
+        width: width * .25,
+        height: 5,
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0
+    },
+
+    submitButtonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold'
     },
 
     buttonRow:{
@@ -75,23 +106,29 @@ export const styles = StyleSheet.create({
     },
 
     button:{
-        width: width * .35,
+        width: width * .3,
         height: height * .065, 
         alignSelf:'center'
     },
 
-    vegeButton:{
-        width: width * .28,
-        height: height * .062, 
-        alignSelf:'center'
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold'
     },
 
     backButton:{
-        width: width * .3,
+        width: width * .275,
         height: height * .04, 
         alignSelf:'center',
         backgroundColor: '#6690FF',
         borderColor: '#6690FF'
+    },
+
+    backButtonTxt:{
+        color: 'white',
+        fontSize: width * .03,
+        fontWeight: 'bold'
     },
 
     lastButtonView:{
@@ -121,6 +158,10 @@ export const styles = StyleSheet.create({
         marginTop: 5
     },
 
+    redTxt:{
+        color: 'red'
+    },
+
     typeView:{
         height: '100%',
         width: '90%',
@@ -138,8 +179,7 @@ export const styles = StyleSheet.create({
     },
 
     lastDataButtonView:{
-        marginTop: height * .015,
-        marginBottom: height* .02
+        marginTop: height * .015
     },
 
     backButtonView:{

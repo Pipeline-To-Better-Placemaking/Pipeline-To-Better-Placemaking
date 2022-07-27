@@ -37,7 +37,7 @@ const { Navigator, Screen } = createStackNavigator();
 
 export function HomeScreenStack(props){
   // user location
-  var location = props.location
+  let location = props.location
 
   // These are used for api calls
   const [token, setToken] = useState('');
@@ -85,8 +85,8 @@ export function HomeScreenStack(props){
   }
 
   const removeFromSelectedProjects = async (project) => {
-    var selectedProjectsArray = [...selectedProjects];
-    var index = selectedProjectsArray.findIndex(element => element._id === project._id);
+    let selectedProjectsArray = [...selectedProjects];
+    let index = selectedProjectsArray.findIndex(element => element._id === project._id);
     selectedProjectsArray.splice(index, 1)
     await setSelectedProjects(selectedProjectsArray)
   }

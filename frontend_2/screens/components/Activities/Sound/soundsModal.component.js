@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Modal, Keyboard, KeyboardAvoidingView, } from 'react-native';
+import { View, Modal, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { useTheme, Text, Button, Input } from '@ui-kitten/components';
 import { TouchableWithoutFeedback } from '@ui-kitten/components/devsupport';
+import { stringCase } from '../../helperFunctions';
 
 import { styles } from './modal.styles';
 
@@ -55,7 +56,8 @@ export function SoundsModal(props) {
             let cond = otherCheck();
             // theres something in other so push it, then reset it for subsequent entries
             if(cond){
-                arr.push(other);
+                let tempOther = stringCase(other);
+                arr.push(tempOther);
                 setOther(null);
                 setSelect9(false);
             }
@@ -69,27 +71,27 @@ export function SoundsModal(props) {
         // if an option is selected push its contents onto the data array 
         // then reset that state for subsequent entries
         if(select1){
-            arr.push('water feature');
+            arr.push('Water Feature');
             setSelect1(false)
         }
         if(select2){
-            arr.push('traffic');
+            arr.push('Traffic');
             setSelect2(false)
         }
         if(select3){
-            arr.push('people sounds');
+            arr.push('People Sounds');
             setSelect3(false)
         }
         if(select4){
-            arr.push('animals');
+            arr.push('Animals');
             setSelect4(false)
         }
         if(select5){
-            arr.push('wind');
+            arr.push('Wind');
             setSelect5(false)
         }
         if(select6){
-            arr.push('music (entertainment)');
+            arr.push('Music');
             setSelect6(false)
         }        
         // return the array of data
@@ -142,27 +144,27 @@ export function SoundsModal(props) {
                 console.log("switch's default; ERROR should never enter here");        
         }
     }
-    
-    let music = "\t Music\n(entertainment)"; 
 
     return(
         <Modal transparent={true} animationType='slide' visible={props.visible}>
             <KeyboardAvoidingView behavior='position' style={styles.avoid}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
                     <View style={styles.modalContainer}>
-                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1'], height:'65%'}]} >
+                        <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]}>
                         
                             <Text category={'h1'} style={styles.titleText}>Sound Types</Text>
-                            <Text category={'s1'} style={styles.titleLine}>____________________________</Text>
                             <View style={styles.dataView}>
                                 
                                 <View style={styles.titleDesc}>
-                                    <Text category={'s1'} style={styles.titleDescTxt}>Select all of the sounds you heard during the measurement</Text>
+                                    <Text style={styles.titleDescTxt}>
+                                        <Text category={'s1'} style={styles.boldTxt}>Select all</Text>
+                                        <Text category={'s1'}> of the sounds you heard during the measurement</Text>
+                                    </Text>
                                 </View>
 
                                 { noneSelect ?
                                     <View style={styles.selectError}>
-                                        <Text>Please select at least one option to submit</Text>
+                                        <Text style={styles.redTxt}>Please select at least one option to submit</Text>
                                     </View>
                                 :
                                     null
@@ -170,24 +172,47 @@ export function SoundsModal(props) {
 
                                 <View>
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)} >Water Feature</Button>
-                                        <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>Traffic</Button>
+                                        <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
+                                            <View>
+                                                <Text style={select1 ? styles.buttonTxt : styles.offButtonTxt}>Water Feature</Text>
+                                            </View>
+                                        </Button>
+                                        <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>
+                                            <View>
+                                                <Text style={select2 ? styles.buttonTxt : styles.offButtonTxt}>Traffic</Text>
+                                            </View>
+                                        </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} appearance={select3 ? 'primary' : 'outline'} onPress={()=> setSelect(3)}>People Sounds</Button>
-                                        <Button style={styles.button} appearance={select4 ? 'primary' : 'outline'} onPress={()=> setSelect(4)}>Animals</Button>
+                                        <Button style={styles.button} appearance={select3 ? 'primary' : 'outline'} onPress={()=> setSelect(3)}>
+                                            <View>
+                                                <Text style={select3 ? styles.buttonTxt : styles.offButtonTxt}>People Sounds</Text>
+                                            </View>
+                                        </Button>
+                                        <Button style={styles.button} appearance={select4 ? 'primary' : 'outline'} onPress={()=> setSelect(4)}>
+                                            <View>
+                                                <Text style={select4 ? styles.buttonTxt : styles.offButtonTxt}>Animals</Text>
+                                            </View>
+                                        </Button>
                                     </View>
 
                                     <View style={styles.buttonRow}>
-                                        <Button style={styles.button} appearance={select5 ? 'primary' : 'outline'} onPress={()=> setSelect(5)}>Wind</Button>
-                                        <Button style={styles.button} appearance={select6 ? 'primary' : 'outline'} onPress={()=> setSelect(6)}>{music}</Button>
+                                        <Button style={styles.button} appearance={select5 ? 'primary' : 'outline'} onPress={()=> setSelect(5)}>
+                                            <View>
+                                                <Text style={select5 ? styles.buttonTxt : styles.offButtonTxt}>Wind</Text>
+                                            </View>
+                                        </Button>
+                                        <Button style={styles.button} appearance={select6 ? 'primary' : 'outline'} onPress={()=> setSelect(6)}>
+                                            <View>
+                                                <Text style={select6 ? styles.buttonTxt : styles.offButtonTxt}>Music</Text>
+                                            </View>
+                                        </Button>
                                     </View>
                                 </View>
 
                                 <View style={styles.otherView}>
-                                    <Text category={'s1'}>Other</Text>
-                                    
+                                    <Text>Other</Text>
                                     <View style={styles.otherRow}>
                                         <Input 
                                             style={styles.inputBox}
@@ -196,23 +221,31 @@ export function SoundsModal(props) {
                                         />
                                         <Button style={styles.submitButton} appearance={select9 ? 'primary' : 'outline'} onPress={()=> setSelect(9)}>
                                             { select9 ?
-                                                <Text>Selected</Text>
+                                                <View>
+                                                    <Text style={styles.submitButtonTxt}>Selected</Text>
+                                                </View>
                                             :
-                                                <Text>Select</Text>
+                                                <View>
+                                                    <Text style={styles.offSubmitButtonTxt}>Select</Text>
+                                                </View>
                                             }
                                         </Button>
                                     </View>
 
                                     {empty ?
                                         <View style={styles.multiErrorView}>
-                                            <Text>Please enter a sound type to submit</Text>
+                                            <Text style={styles.redTxt}>Please enter a sound type to submit</Text>
                                         </View>
                                     :
                                         null
                                     }
                                 
                                     <View style={styles.multiView}>
-                                        <Button style={styles.multiSubmit} onPress={sendData}>Submit</Button>
+                                        <Button style={styles.multiSubmit} onPress={sendData}>
+                                            <View>
+                                                <Text style={styles.submitButtonTxt}>Submit</Text>
+                                            </View>
+                                        </Button>
                                     </View>
 
                                 </View>

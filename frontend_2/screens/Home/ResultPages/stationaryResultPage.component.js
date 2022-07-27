@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, RefreshControl, Dimensions } from 'react-native';
 import { Text, Button, Icon, Divider, MenuItem } from '@ui-kitten/components';
 import { HeaderBack, HeaderBackEdit } from '../../components/headers.component';
-import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/content.component';
+import { ViewableArea, ContentContainer, ConfirmDelete, LoadingSpinner } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { helperGetResult, deleteTimeSlot, getProject, getAllResults, isUserTeamOwner } from '../../components/apiCalls';
 import { formatStationaryGraphData } from '../../components/helperFunctions';
@@ -13,6 +13,7 @@ import { styles } from './resultPage.styles';
 export function StationaryResultPage(props) {
 
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
 
@@ -47,13 +48,14 @@ export function StationaryResultPage(props) {
   };
 
   const deleteResult = async () => {
+    setLoading(true);
     let success = false;
     if (props.selectedResult !== null) {
       success = await deleteTimeSlot("stationary_maps", props.selectedResult._id);
     }
     if (success) {
       await refreshProjectPageDetails();
-      await setConfirmDeleteVisible(false);
+      setLoading(false);
       props.navigation.goBack();
     }
   }
@@ -79,6 +81,9 @@ export function StationaryResultPage(props) {
           deleteFunction={deleteResult}
         />
         <ContentContainer>
+
+          <LoadingSpinner loading={loading} />
+
           <ScrollView
             style={styles.margins}
             refreshControl={
@@ -165,6 +170,9 @@ export function StationaryResultPage(props) {
         deleteFunction={deleteResult}
       />
       <ContentContainer>
+
+        <LoadingSpinner loading={loading} />
+
         <ScrollView
           style={styles.margins}
           refreshControl={

@@ -82,7 +82,6 @@ export function PurposeModal(props){
                 <View style={[ styles.purposeViewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                         
                     <Text category={'h1'} style={styles.titleText}>Purpose</Text>
-                    <Text category={'s1'} style={styles.titleLine}>___________________</Text>
                     <View style={styles.dataView}>
                                 
                         <View style={styles.titleDesc}>
@@ -91,7 +90,7 @@ export function PurposeModal(props){
 
                         { noneSelect ?
                             <View style={styles.selectError}>
-                                <Text>Please select at least one purpose to submit</Text>
+                                <Text style={styles.redTxt}>Please select at least one purpose to submit</Text>
                             </View>
                         :
                             null
@@ -99,19 +98,36 @@ export function PurposeModal(props){
 
                         <View>
                             <View style={styles.buttonRow}>
-                                <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)} >Safety</Button>
-                                <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>Prevention</Button>
+                                <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
+                                    <View>
+                                        <Text style={select1 ? styles.buttonTxt : styles.offButtonTxt}>Safety</Text>
+                                    </View>
+                                </Button>
+                                <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>
+                                    <View>
+                                        <Text style={select2 ? styles.buttonTxt : styles.offButtonTxt}>Prevention</Text>
+                                    </View>
+
+                                </Button>
                             </View>
 
                             <View style={styles.lastButtonView}>
-                                <Button style={styles.button} appearance={select3 ? 'primary' : 'outline'} onPress={()=> setSelect(3)}>Creating Seperation</Button>
+                                <Button style={styles.button} appearance={select3 ? 'primary' : 'outline'} onPress={()=> setSelect(3)}>
+                                    <View>
+                                        <Text style={select3 ? styles.buttonTxt : styles.offButtonTxt}>Creating Seperation</Text>
+                                    </View>
+                                </Button>
                             </View>      
                         
                         </View>
 
                                     
                         <View style={styles.multiView}>
-                            <Button style={styles.multiSubmit} onPress={sendData}>Submit</Button>
+                            <Button style={styles.multiSubmit} onPress={sendData}>
+                                <View>
+                                    <Text style={styles.backButtonTxt}>Submit</Text>
+                                </View>
+                            </Button>
                         </View>
 
                     </View>

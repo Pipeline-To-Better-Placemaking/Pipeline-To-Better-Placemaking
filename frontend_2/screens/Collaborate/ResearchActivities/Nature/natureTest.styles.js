@@ -6,16 +6,22 @@ const height = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
 
     stopButton:{
-        height: 50, 
         marginLeft: 5, 
-        width: 90
+        height: height * .0525, 
+        width: width * .2,
     },
     
     startButton:{
-        backgroundColor: '#006FD6',
-        height: 50, 
+        backgroundColor: '#006FD6', 
         marginLeft: 5, 
-        width: 90
+        height: height * .0525, 
+        width: width * .2,
+    },
+
+    startStopText:{
+        color: 'white',
+        fontSize: width * .035,
+        fontWeight: 'bold'
     },
 
     container:{
@@ -25,18 +31,55 @@ export const styles = StyleSheet.create({
         alignItems:'center'
     },
 
-    buttonView:{
+    toolBarView:{
         width: width,
+        marginTop: -90
+    },
+
+    buttonView:{
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
-        marginTop: - 70
+        marginTop: 10
     },
 
     button:{
         backgroundColor: '#006FD6',
-        height: 50, 
-        width: 140
+        height: height * .05, 
+        width: width * .33
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .032,
+        fontWeight: 'bold'
+    },
+
+    descriptionView:{
+        alignItems: 'center',
+    },
+
+    playPauseIcon:{
+        width: width * .065,
+        height: height * .03,
+    },
+
+    playPauseButton:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 100,
+        backgroundColor: '#006FD6',
+    },
+    
+    timerRow:{
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
+    pausedDescriptionView:{
+        alignItems: 'center',
+        backgroundColor: 'white',
+        marginTop: -90
     }
     
 });

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button } from '@ui-kitten/components';
+import { useTheme, Button, Icon, Text } from '@ui-kitten/components';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import { SoundMap } from '../../../components/Maps/soundMap.component';
 import CountDown from 'react-native-countdown-component';
 
+import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import { DecibelEntryModal } from '../../../components/Activities/Sound/decibelEntryModal.component';
 import { MainSoundModal } from '../../../components/Activities/Sound/mainSoundModal.component';
 import { SoundsModal } from '../../../components/Activities/Sound/soundsModal.component';
@@ -26,6 +27,7 @@ export function SoundTest(props){
     // Begins the test
     const [start, setStart] = useState(false);
     const [initalStart, setInitalStart] = useState(true);
+    const [disabled, setDisabled] = useState(true);
 
     // Controls the modal telling you to go to the next standing point
     const [moving, setMoving] = useState(false);
@@ -42,10 +44,11 @@ export function SoundTest(props){
     // controls the rendered countdown timer
     const [timer, setTimer] = useState(initalTime);
     // controls timer interval instance
-    let id;
+    const [id, setId] = useState();
     
 
     // control modals
+    const [popupMsg, setPopupMsg] = useState(true);
     const [decibelModal, setDecibelModal] = useState(false);
     const [mainSoundModal, setMainSoundModal] = useState(false);
     const [soundsModal, setSoundsModal] = useState(false);
@@ -55,21 +58,20 @@ export function SoundTest(props){
     
     // for a standing point's iteration measurements (each standing point has 5 iterations of measurement)
     // row === standing point, column == iteration of measurement
-    const [decArr, setDecArr] = useState([[]]);
+    const [decArr] = useState([[]]);
     // each cell is a standing point's decibel average
-    const [decAvg, setDecAvg] = useState([]);
+    const [decAvg] = useState([]);
     
     // used to store the main sound type
-    const[mainSoundArr, setMainSoundArr] = useState([[]]);
+    const[mainSoundArr] = useState([[]]);
     // used to store the sound types (multi-select)
-    const[soundsArr, setSoundsArr] = useState([[]]);
+    const[soundsArr] = useState([[]]);
 
     // ends activity, packages and sends data to the DB
     const endActivity = async () => {
-        
         setStart(false);
-
-        console.log('ending activity');
+        clearInterval(id);
+        //console.log('ending activity');
         
         // calculates average for each standing point and stores it in its array
         let standingLen = totalIter / 5;
@@ -143,9 +145,7 @@ export function SoundTest(props){
             })
 
             let info = await response.json()
-            
-            // console.log(info);
-
+            console.log(info);
         } catch (error) {
             console.log("ERROR: ", error)
         }
@@ -194,9 +194,9 @@ export function SoundTest(props){
     const closeMainData = async (inf) =>{        
         // force the main_sound_type to be lower case (mainly for the 'other' field)
         // standingIndex <= # standing points always, so if something exists at that index, push the data onto it
-        if(mainSoundArr[standingIndex]) mainSoundArr[standingIndex].push(inf.main_sound_type.toLowerCase());
+        if(mainSoundArr[standingIndex]) mainSoundArr[standingIndex].push(inf.main_sound_type);
         // if nothing existed at that index, push a new array (with the data) into the 2D array (its the 1st iteration of data at that standing point)
-        else mainSoundArr.push([inf.main_sound_type.toLowerCase()]);
+        else mainSoundArr.push([inf.main_sound_type]);
         
         setMainSoundModal(false);
         // calls resume which then restarts/ends the test
@@ -219,15 +219,9 @@ export function SoundTest(props){
     }
     
     // compares the soundsArr and passed in array for duplicate entries, only returns elements (as an array) from arr that are not in soundsArr
-    const checkDup = (ind, arr) =>{
-        // convert both arrays to lowercase to make checks case insensitive (to help deal with other field)
-        let lowerSoundsArr = soundsArr[ind].map( element => element.toLowerCase())
-        let lowerArr = arr.map( element => element.toLowerCase())
-        
-        // check to see if the stuff that is to be added to soundsArr already exists there 
-        // if so don't return it
-        let res = lowerArr.filter(element => !lowerSoundsArr.includes(element));
-        return res;
+    const checkDup = (ind, arr) =>{        
+        // returns an array that has strings that are not already in soundsArr (to be added to soundsArr) 
+        return arr.filter(element => !soundsArr[ind].includes(element));
     }
 
     // resume or restarts the test based on timer's value
@@ -243,7 +237,6 @@ export function SoundTest(props){
     const restart = () => {
         // clear the interval whenever we restart/end
         clearInterval(id);
-        
         // have not yet reached the last iteration
         if (tracker < totalIter){
             // cycle through the standing points
@@ -276,20 +269,22 @@ export function SoundTest(props){
         setRecenter(false)
     }
 
-     // Start button and progress tracker component
-     const StartTracker = () => {
+    // Start button and progress tracker component
+    const StartTracker = () => {
         // only show the start button before the test is started (to start the test)
         if (initalStart) {
             return(
                 <Button style={styles.startButton} onPress={() =>{setStart(true);}} >
-                    Start
+                    <View>
+                        <Text style={styles.startButtonText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
         // else, show the progress tracker
         else{
             return(
-                <Text style={styles.trackerText} > 
+                <Text style={styles.trackerText}> 
                     {tracker}/{totalIter} 
                 </Text>
             )
@@ -300,20 +295,25 @@ export function SoundTest(props){
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
-            // console.log('useEffect start');
+            setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
+            setDisabled(false);
+        }
+        // timer gets paused
+        else if(start === false){
+            clearInterval(id);
         }
     }, [start]);
 
     // begins/updates the timer
     function startTime(current){
         let count = current;
-        id = setInterval(() =>{            
+        setId(setInterval(() =>{            
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            //console.log(count);
+            // console.log(count);
             // every 5 seconds or when the timer hits 0, pause the timer and render the modal(s) for data collection
             if(count % 5 == 0){
                 // clear the interval to avoid resuming timer issues
@@ -321,24 +321,54 @@ export function SoundTest(props){
                 handleModal();
             }
         // 1000 ms == 1 s
-        }, 1000);
+        }, 1000));
     }
     
     // pulls up the 1st modal (decibel level modal)
     function handleModal(){
+        // disable the play/pause timer button to avoid allowing users to try to press it between modal transitions (to the next modal)
+        // whenever the timer resumes/rebegins, disabled becomes false (in the useEffect)
+        setDisabled(true);
         setStart(false);
         setDecibelModal(true);
     }
 
-     // CountDown Timer and the StartTracker component
-     const TimeBar = () => {
+    const PlayPauseButton = () =>{
+        const Play = () => <Icon name='play-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+        const Pause = () => <Icon name='pause-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+      
+        // timer is active
+        if(start){
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(false)}>
+              <Pause />
+            </TouchableOpacity>
+          )
+        }
+        // timer is paused
+        else{
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(true)}>
+              <Play />
+            </TouchableOpacity>
+          )
+        }
+    }
+
+    // CountDown Timer and the StartTracker component
+    const TimeBar = () => {
         return(
             <View>
                 <View style={styles.container}>
-
                     <StartTracker/>
-
-                    <View>
+                    <View style={styles.timerRow}>
+                        
+                        {disabled ?
+                            null
+                        :
+                            <PlayPauseButton />
+                        }
+                        
                         <CountDown
                             running={start}
                             until={timer}
@@ -351,7 +381,6 @@ export function SoundTest(props){
                             showSeparator
                         />
                     </View>
-
                 </View>
             </View>
         )
@@ -363,6 +392,10 @@ export function SoundTest(props){
             <ContentContainer>
                     
                     <TimeBar/>
+
+                    <PopupMessage
+                        visible={popupMsg}
+                    />
                     
                     <DecibelEntryModal
                         visible={decibelModal}
@@ -392,6 +425,17 @@ export function SoundTest(props){
                     />
 
             </ContentContainer>
+            {start ?
+                null
+            :
+                <View style={styles.descriptionView}>
+                    {disabled ?
+                        null
+                    :
+                        <Text category={'s1'}>Press the play button to resume the test</Text>
+                    }
+                </View>
+            }
         </ViewableArea>
     );
 }

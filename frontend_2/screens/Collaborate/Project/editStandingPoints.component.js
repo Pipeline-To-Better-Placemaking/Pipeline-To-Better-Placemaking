@@ -209,8 +209,7 @@ export function EditPoints(props) {
             areas={props.project.subareas}
             marker={props.pointInfo}
             setMarker={setMarker}
-          >
-          </MapAddOne>
+          />
         </View>
       </View>
 

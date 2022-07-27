@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
 
@@ -16,12 +19,9 @@ export const styles = StyleSheet.create({
     },
 
     textTitle:{
-        alignSelf: 'center'
-    },
-
-    lineTitle:{
-        alignSelf: 'center', 
-        marginTop: -20
+        marginTop: 10,
+        alignSelf: 'center',
+        textDecorationLine: 'underline'
     },
 
     dataGroupView:{
@@ -31,10 +31,18 @@ export const styles = StyleSheet.create({
 
     button:{
         marginTop: 15, 
-        marginBottom: 20, 
-        width: 100, 
+        marginBottom: 30, 
+        height: height * .035, 
+        width: width * .3, 
         alignSelf:'center'
-    }
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
 
 });
 

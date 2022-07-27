@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, RefreshControl, Dimensions } from 'react-native';
 import { Text, Button, Icon, Divider, MenuItem } from '@ui-kitten/components';
 import { HeaderBack, HeaderBackEdit } from '../../components/headers.component';
-import { ViewableArea, ContentContainer, ConfirmDelete } from '../../components/content.component';
+import { ViewableArea, ContentContainer, ConfirmDelete, LoadingSpinner } from '../../components/content.component';
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { helperGetResult, deleteTimeSlot, getProject, getAllResults, isUserTeamOwner } from '../../components/apiCalls';
 import { formatOrderGraphData } from '../../components/helperFunctions';
@@ -14,6 +14,7 @@ import { styles } from './resultPage.styles';
 export function OrderResultPage(props) {
 
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
 
@@ -48,13 +49,14 @@ export function OrderResultPage(props) {
   };
 
   const deleteResult = async () => {
+    setLoading(true);
     let success = false;
     if (props.selectedResult !== null) {
       success = await deleteTimeSlot("order_maps", props.selectedResult._id);
     }
     if (success) {
       await refreshProjectPageDetails();
-      await setConfirmDeleteVisible(false);
+      setLoading(false);
       props.navigation.goBack();
     }
   }
@@ -79,6 +81,9 @@ export function OrderResultPage(props) {
           deleteFunction={deleteResult}
         />
         <ContentContainer>
+
+          <LoadingSpinner loading={loading} />
+
           <ScrollView
             style={styles.margins}
             refreshControl={
@@ -152,6 +157,9 @@ export function OrderResultPage(props) {
         deleteFunction={deleteResult}
       />
       <ContentContainer>
+
+        <LoadingSpinner loading={loading} />
+
         <ScrollView
           style={styles.margins}
           refreshControl={
@@ -208,7 +216,7 @@ export function OrderResultPage(props) {
 
           <MyBarChart
             {...props}
-            title={"Disorder Data"}
+            title={"Misconduct Data"}
             rotation={'0deg'}
             dataValues={props.selectedResult.graph.data}
             dataLabels={props.selectedResult.graph.labels}

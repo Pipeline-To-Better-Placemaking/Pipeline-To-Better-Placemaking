@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Select, SelectItem, Modal, Text, Button, Input, Icon, Divider, List, Card } from '@ui-kitten/components';
 import { DateTimePickerModal } from "react-native-modal-datetime-picker";
-import { ViewableArea, ContentContainer } from '../../../components/content.component';
+import { ViewableArea, ContentContainer, LoadingSpinner } from '../../../components/content.component';
 import { HeaderExit } from '../../../components/headers.component';
 
 import { styles } from './createTimeSlots.styles';
@@ -177,16 +177,30 @@ export function CreateTimeSlots(props) {
   );
 
   const NumResearchers = ({item, index}) => (
-      <View style={styles.rowView}>
-        <Button
-          style={styles.leftShift}
-          onPress={() => editResearchers(item, index)}
-          accessoryRight={ResearchersIcon}
-          appearance='ghost'
-        >
-          <Text>Number of Researchers: {item.maxResearchers}</Text>
-        </Button>
-      </View>
+    <View style={styles.rowView}>
+      {props.selectedActivity === 'Sound' ?
+        <View>
+          <Button
+            style={styles.leftShift}
+            accessoryRight={ResearchersIcon}
+            appearance='ghost'
+          >
+            <Text>Number of Researchers: 1</Text>
+          </Button>
+        </View>
+      :
+        <View>
+          <Button
+            style={styles.leftShift}
+            onPress={() => editResearchers(item, index)}
+            accessoryRight={ResearchersIcon}
+            appearance='ghost'
+          >
+            <Text>Number of Researchers: {item.maxResearchers}</Text>
+          </Button>
+        </View>
+      }
+    </View>
   );
 
   const EnterNumberModal = () => (
@@ -295,6 +309,9 @@ export function CreateTimeSlots(props) {
       <SelectPointsModal />
 
       <ContentContainer>
+        
+        <LoadingSpinner loading={props.loading} />
+        
         <View style={styles.container}>
 
           <View style={styles.btnView}>

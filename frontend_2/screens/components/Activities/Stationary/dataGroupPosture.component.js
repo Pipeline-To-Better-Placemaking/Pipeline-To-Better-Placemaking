@@ -23,12 +23,28 @@ export function DataGroupPosture(props) {
         <View style={styles.container}>
         <Text category={'h6'} style={styles.title}> Posture: </Text>
             <View style={styles.topRow}>
-                <Button style={styles.buttonLeft} appearance={postureMatrix[0] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(0)}>Standing</Button>
-                <Button style={styles.buttonRight} appearance={postureMatrix[1] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(1)}>Sitting</Button>
+                <Button style={styles.buttonLeft} appearance={postureMatrix[0] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(0)}>
+                    <View>
+                        <Text style={postureMatrix[0] ? styles.buttonTxt : styles.offButtonTxt}>Standing</Text>
+                    </View>
+                </Button>
+                <Button style={styles.buttonRight} appearance={postureMatrix[1] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(1)}>
+                    <View>
+                        <Text style={postureMatrix[1] ? styles.buttonTxt : styles.offButtonTxt}>Sitting</Text>
+                    </View>
+                </Button>
             </View>
             <View style={styles.bottomRow}>
-                <Button style={styles.buttonLeft} appearance={postureMatrix[2] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(2)}>Laying Down</Button>
-                <Button style={styles.buttonRight} appearance={postureMatrix[3] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(3)}>Squating</Button>
+                <Button style={styles.buttonLeft} appearance={postureMatrix[2] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(2)}>
+                    <View>
+                        <Text style={postureMatrix[2] ? styles.buttonTxt : styles.offButtonTxt}>Laying Down</Text>
+                    </View>
+                </Button>
+                <Button style={styles.buttonRight} appearance={postureMatrix[3] ? 'primary' : 'outline'} onPress={() => _setPostureIndex(3)}>
+                    <View>
+                        <Text style={postureMatrix[3] ? styles.buttonTxt : styles.offButtonTxt}>Squating</Text>
+                    </View>
+                </Button>
             </View>
         </View>
     )

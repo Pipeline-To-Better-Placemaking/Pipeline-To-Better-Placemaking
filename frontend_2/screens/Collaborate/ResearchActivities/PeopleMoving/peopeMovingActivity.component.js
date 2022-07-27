@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component.js';
 import { PeopleMovingMap } from '../../../components/Maps/peopleMovingMap.component.js';
-import { useTheme,  Button,  Icon } from '@ui-kitten/components';
+import { useTheme,  Button,  Icon, Text } from '@ui-kitten/components';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
-import CountDown from 'react-native-countdown-component';
 import { DataEntryModal } from '../../../components/Activities/PeopleMoving/dataEntryModal.component.js';
+import { PopupMessage } from '../../../components/Activities/popupMessage.component.js';
+import CountDown from 'react-native-countdown-component';
 
 import { styles } from '../activity.style';
 
@@ -24,19 +25,21 @@ export function PeopleMovingActivity(props) {
     // Begins the test
     const [start, setStart] = useState(false)
     const [initalStart, setInitalStart] = useState(true);
+    const [disabled, setDisabled] = useState(true);
 
     // timer stuff
     const initalTime = props.timeSlot.timeLeft
     // controls the rendered countdown timer
     const [timer, setTimer] = useState(initalTime);
     // controls timer interval instance
-    let id;
+    const [id, setId] = useState();
 
     // Shows the moving and data input modal
     const [moving, setMoving] = useState(false)
     const [dataModal, setDataModal] = useState(false)
     const [lineTools, setLineTools] = useState(false)
     const [viewAllLines, setViewAllLines] = useState(false)
+    const [popupMsg, setPopupMsg] = useState(true);
 
     // The index of the standing points
     const [standingIndex, setStandingIndex] = useState(0)
@@ -96,6 +99,8 @@ export function PeopleMovingActivity(props) {
         // closes the modal/line toolbar if they were opened
         setDataModal(false);
         setLineTools(false);
+        // disable the play/pause button on restarts
+        setDisabled(true);
 
         if (standingIndex < standingPointLength-1){
 
@@ -124,7 +129,9 @@ export function PeopleMovingActivity(props) {
         if (initalStart) {
             return(
                 <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
+                    <View>
+                        <Text style={styles.startStopText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
@@ -135,7 +142,9 @@ export function PeopleMovingActivity(props) {
                     style={styles.stopButton}
                     onPress={() => endActivity()}
                     >
-                        End
+                        <View>
+                            <Text style={styles.startStopText}>End</Text>
+                        </View>
                     </Button>
             ) 
         }
@@ -219,19 +228,26 @@ export function PeopleMovingActivity(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
+            console.log('starting timer useEffect')
+            setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
+            setDisabled(false);
+        }
+        else if(start === false){
+            console.log('stopping timer useEffect');
+            clearInterval(id);
         }
     }, [start]);
 
     // begins/updates the timer
     function startTime(current){
         let count = current;
-        id = setInterval(() =>{            
+        setId(setInterval(() =>{            
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            //console.log(count);
+            console.log(count);
             // when the timer hits 0, call restart
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
@@ -239,7 +255,29 @@ export function PeopleMovingActivity(props) {
                 restart();
             }
         // 1000 ms == 1 s
-        }, 1000);
+        }, 1000));
+    }
+
+    const PlayPauseButton = () =>{
+        const Play = () => <Icon name='play-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+        const Pause = () => <Icon name='pause-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+      
+        // timer is active
+        if(start){
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(false)}>
+              <Pause />
+            </TouchableOpacity>
+          )
+        }
+        // timer is paused
+        else{
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(true)}>
+              <Play />
+            </TouchableOpacity>
+          )
+        }
     }
 
     // Count Down Timer and the Start/Exit button
@@ -258,7 +296,14 @@ export function PeopleMovingActivity(props) {
                         onPress={viewAllDrawnLines}
                     />
 
-                    <View>
+                    <View style={styles.timerRow}>
+                        
+                        {disabled ?
+                            null
+                        :
+                            <PlayPauseButton />
+                        }
+
                         <CountDown
                             running={start}
                             until={timer}
@@ -277,14 +322,30 @@ export function PeopleMovingActivity(props) {
     }
 
     const LineToolBar = () => {
-        if (start && lineTools) {
-            return (
-                <LineTools confirm={confirmLine} cancel={cancelLine} removeLastPoint={removeLastLinePoint}/>
+        if (start) {
+            if(lineTools){
+                return (
+                    <LineTools confirm={confirmLine} cancel={cancelLine} removeLastPoint={removeLastLinePoint}/>
+                )
+            }
+            else{                
+                return(
+                    <View style={styles.descriptionView}>
+                        <Text category={'s1'}>Tap on the map to start drawing moving data</Text>
+                    </View>
+                )
+            }
+        }
+        // disabled must be false for this message to appear
+        else if(!disabled){
+            return(
+                <View style={styles.descriptionView}>
+                     <Text category={'s1'}>Press the play button to resume the test</Text>
+                </View>
             )
         }
-        else{
-            return null;
-        }
+        // initally renders this (before starting the test/transitioning to next standing point)
+        else return null
     }
 
     return(
@@ -293,6 +354,10 @@ export function PeopleMovingActivity(props) {
             <ContentContainer>
 
                 <TimeBar/>
+
+                <PopupMessage
+                    visible={popupMsg}
+                />
 
                 <DataEntryModal
                     visible={dataModal}

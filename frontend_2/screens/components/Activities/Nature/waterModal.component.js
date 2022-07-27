@@ -23,7 +23,6 @@ export function WaterModal(props) {
                 <View style={[ styles.waterViewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                         
                     <Text category={'h1'} style={styles.titleText}>Body of Water</Text>
-                    <Text category={'s1'} style={styles.titleLine}>______________________________</Text>
                     <View style={styles.dataView}>
                                 
                         <View style={styles.titleDesc}>
@@ -32,17 +31,37 @@ export function WaterModal(props) {
 
                         <View>
                             <View style={styles.buttonRow}>
-                                <Button style={styles.button} onPress={()=> sendData("Ocean")}>Ocean</Button>
-                                <Button style={styles.button} onPress={()=> sendData("Lake")}>Lake</Button>
+                                <Button style={styles.button} onPress={()=> sendData("Ocean")}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Ocean</Text>
+                                    </View>
+                                </Button>
+                                <Button style={styles.button} onPress={()=> sendData("Lake")}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Lake</Text>
+                                    </View>
+                                </Button>
                             </View>
 
                             <View style={styles.buttonRow}>
-                                <Button style={styles.button} onPress={()=> sendData("River")}>River</Button>
-                                <Button style={styles.button} onPress={()=> sendData("Swamp")}>Swamp</Button>
+                                <Button style={styles.button} onPress={()=> sendData("River")}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>River</Text>
+                                    </View>
+                                </Button>
+                                <Button style={styles.button} onPress={()=> sendData("Swamp")}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>Swamp</Text>
+                                    </View>
+                                </Button>
                             </View>
 
                             <View style={styles.lastButtonView}>
-                                <Button style={styles.backButton} onPress={() => props.back()}>Back</Button>
+                                <Button style={styles.backButton} onPress={() => props.back()}>
+                                    <View>
+                                        <Text style={styles.backButtonTxt}>Back</Text>
+                                    </View>
+                                </Button>
                             </View>
 
                         </View>

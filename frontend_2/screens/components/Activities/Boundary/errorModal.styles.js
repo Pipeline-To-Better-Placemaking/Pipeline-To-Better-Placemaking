@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
 
@@ -10,7 +13,7 @@ export const styles = StyleSheet.create({
     modalContainer:{
         height: '20%',
         justifyContent: 'center',
-        marginTop: '80%',
+        marginTop: height * .325,
         borderRadius: 35,
         borderWidth: 1
     },

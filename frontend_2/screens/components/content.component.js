@@ -1,7 +1,7 @@
 import React from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { SafeAreaView, View, TouchableOpacity, Modal } from 'react-native';
-import { useTheme, Card, Text, Button, Input, Icon } from '@ui-kitten/components';
+import { useTheme, Card, Text, Button, Input, Icon, Spinner } from '@ui-kitten/components';
 
 import { styles } from './content.styles';
 
@@ -32,8 +32,8 @@ export const BlueViewableArea = ({ children }) => {
         {children}
       </SafeAreaView>
     </View>
- );
-};
+ )
+}
 
 export const ContentContainer = ({ children }) => {
 
@@ -43,8 +43,8 @@ export const ContentContainer = ({ children }) => {
     <View style={[ styles.contentContainer, {backgroundColor:theme['background-basic-color-1']}]}>
       {children}
     </View>
- );
-};
+ )
+}
 
 export const ModalContainer = ({ children, ...props }) => {
 
@@ -67,8 +67,8 @@ export const ModalContainer = ({ children, ...props }) => {
         </SafeAreaView>
       </View>
     </Modal>
- );
-};
+ )
+}
 
 export const PopUpContainer = ({ children, ...props }) => {
 
@@ -92,8 +92,8 @@ export const PopUpContainer = ({ children, ...props }) => {
       </TouchableOpacity>
 
     </Modal>
- );
-};
+ )
+}
 
 export const EnterNumber = ({ children, ...props }) => {
   return (
@@ -113,8 +113,8 @@ export const EnterNumber = ({ children, ...props }) => {
         Confirm
       </Button>
     </PopUpContainer>
- );
-};
+ )
+}
 
 export const ConfirmDelete = ({ children, ...props }) => {
   return(
@@ -143,10 +143,24 @@ export const ConfirmDelete = ({ children, ...props }) => {
             </View>
             <View style={styles.buttonRow}>
               <Button status='info' appearance={'outline'} onPress={()=>{props.setVisible(false)}}>Cancel</Button>
-              <Button status='danger' onPress={props.deleteFunction}>Delete</Button>
+              <Button status='danger' onPress={() =>{props.deleteFunction(); props.setVisible(false);}}>Delete</Button>
             </View>
           </Card>
       </TouchableOpacity>
     </Modal>
-  );
+  )
+}
+
+export const LoadingSpinner = (props) =>{
+  return(
+    <Modal
+      animationType='fade'
+      transparent={true}
+      visible={props.loading}
+    >
+      <View style={styles.modalBackgroundStyle}>
+        <Spinner />
+      </View>
+    </Modal>
+  )
 }

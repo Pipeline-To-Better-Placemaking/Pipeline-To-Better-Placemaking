@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, LogBox } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button } from '@ui-kitten/components';
+import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
 import { LightMap } from '../../../components/Maps/lightMap.component.js';
 import { DataModal } from '../../../components/Activities/Light/dataModal.component';
+import { DeleteModal } from '../../../components/Activities/deleteModal.component';
+import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import CountDown from 'react-native-countdown-component';
 
 import { styles } from './lightTest.styles';
@@ -28,7 +30,10 @@ export function LightTest(props) {
 
     // Modal controls
     const [dataModal, setDataModal] = useState(false);
-    
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState(-1);
+    const [deleteDesc, setDeleteDesc] = useState('');
+    const [popupMsg, setPopupMsg] = useState(true);
     const [tempMarker, setTempMarker] = useState();
 
     // Used to store all the data info
@@ -85,11 +90,30 @@ export function LightTest(props) {
 
     // Closes the modal and saves the data point
     const closeData = async (inf) => {
-        console.log(inf)
+        // console.log(inf)
         // save the data point to be rendered
         dataPoints.push(inf);
         setDataModal(false);
         setTempMarker();
+    }
+    
+    // pulls up the delete modal
+    const handleDelete = (index) =>{
+        // sets the description and index, then pulls up the modal
+        setDeleteDesc(dataPoints[index].light_description.toLowerCase() + " data point")
+        setDeleteIndex(index)
+        setDeleteModal(true);
+    }
+    
+    // deletes the point from the data array
+    const deletePoint = async () =>{
+        // removes the data point from the array
+        dataPoints.splice(deleteIndex, 1)
+        
+        //reset delete controls
+        setDeleteIndex(-1);
+        setDeleteDesc('');
+        setDeleteModal(false);
     }
     
     // Start and Exit button
@@ -98,7 +122,9 @@ export function LightTest(props) {
         if (initalStart) {
             return(
                 <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
+                    <View>
+                        <Text style={styles.startStopText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
@@ -109,7 +135,9 @@ export function LightTest(props) {
                     style={styles.stopButton}
                     onPress={() => endActivity()}
                     >
-                        End
+                        <View>
+                            <Text style={styles.startStopText}>End</Text>
+                        </View>
                     </Button>
             )
         }
@@ -119,8 +147,14 @@ export function LightTest(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
+            // console.log('starting timer useEffect')
+            setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
+        }
+        else if (start === false){
+            // console.log('stopping timer useEffect')
+            clearInterval(id);
         }
     }, [start]);
 
@@ -131,7 +165,7 @@ export function LightTest(props) {
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            //console.log(count);
+            // console.log(count);
             // when the timer reaches 0, call restart
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
@@ -140,6 +174,28 @@ export function LightTest(props) {
             }
         // 1000 ms == 1 s
         }, 1000));
+    }
+
+    const PlayPauseButton = () =>{
+        const Play = () => <Icon name='play-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+        const Pause = () => <Icon name='pause-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+      
+        // timer is active
+        if(start){
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(false)}>
+              <Pause />
+            </TouchableOpacity>
+          )
+        }
+        // timer is paused
+        else{
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(true)}>
+              <Play />
+            </TouchableOpacity>
+          )
+        }
     }
 
     // Count Down Timer and the Start/Exit button
@@ -151,7 +207,14 @@ export function LightTest(props) {
 
                     <StartStopButton/>
 
-                    <View>
+                    <View style={styles.timerRow}>
+                        
+                        {initalStart ?
+                            null
+                        :
+                            <PlayPauseButton />
+                        }
+                        
                         <CountDown
                             running={start}
                             until={timer}
@@ -176,9 +239,6 @@ export function LightTest(props) {
         setDataModal(false);
     }
 
-    // ignores the event emitter warnings in app (for dev. only)
-    // LogBox.ignoreAllLogs();
-
     // Main render
     return(
         <ViewableArea>
@@ -187,6 +247,10 @@ export function LightTest(props) {
 
                 <TimeBar/>
 
+                <PopupMessage
+                    visible={popupMsg}
+                />
+
                 <DataModal
                     visible={dataModal}
                     closeData={closeData}
@@ -194,14 +258,35 @@ export function LightTest(props) {
                     back={goBack}
                 />
 
+                <DeleteModal
+                    visible={deleteModal}
+                    setVisible={setDeleteModal}
+                    dataType={deleteDesc}
+                    deleteFunction={deletePoint}
+                />
+
                 <LightMap
                     area={area}
                     marker={tempMarker}
                     dataPoints={dataPoints}
                     addMarker={onPointCreate}
+                    deleteMarker={handleDelete}
                 />
-
+                
             </ContentContainer>
+            {start ?
+                <View style={styles.descriptionView}>
+                    <Text category={'s1'}>Tap on the map to plot light data points</Text>
+                </View>
+            :
+                <View style={styles.descriptionView}>
+                    {initalStart ?
+                        null
+                    :
+                        <Text category={'s1'}>Press the play button to resume the test</Text>
+                    }
+                </View>
+            }
         </ViewableArea>
-    );
+    )
 }

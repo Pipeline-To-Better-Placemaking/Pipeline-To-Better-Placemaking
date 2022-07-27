@@ -41,7 +41,7 @@ export function StationaryCompare(props) {
   const chartWidth = Dimensions.get('window').width*0.95;
   const chartHeight = 210;
 
-  var randomColor = require('randomcolor');
+  let randomColor = require('randomcolor');
 
   // format Stationary data
   let labels = {

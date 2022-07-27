@@ -32,7 +32,7 @@ export function MovingMapResults(props) {
         <View>
             <PressMapAreaWrapper
                 area={props.area}
-                mapHeight={'100%'}
+                mapHeight={'97.2%'}
                 onPress={() => null}
             >
                 <MapView.Marker

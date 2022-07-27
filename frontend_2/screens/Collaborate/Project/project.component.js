@@ -9,6 +9,7 @@ import { EditSubAreas } from './viewSubareas.component';
 import { EditStandingPoints } from './viewStandingPoints.component';
 import { EditProjectPage } from './editProjectPage.component';
 import { getFilteredProjectDetails, getAllCollectionInfo } from '../../components/apiCalls';
+import { Pagination } from '../../components/pagination.component';
 
 import { styles } from './project.styles';
 
@@ -18,7 +19,6 @@ const ForwardIcon = (props) => (
 
 export function ProjectPage(props) {
 
-  //const [createNewActivityVisible, setCreateNewActivityVisible] = useState(false);
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [editProjectVisible, setEditProjectVisible] = useState(false);
   const [editAreasVisible, setEditAreasVisible] = useState(false);
@@ -62,7 +62,7 @@ export function ProjectPage(props) {
   };
 
   const activityItem = ({ item, index }) => {
-      return(
+    return(
       <ListItem
         title={
           <Text style={styles.textTitle}>
@@ -73,8 +73,40 @@ export function ProjectPage(props) {
         accessoryRight={ForwardIcon}
         onPress={() => openActivityPage(item)}
       />
-      )
-      };
+    )
+  };
+
+  // pagination controls
+  const [currentPage, setCurrentPage] = useState(1);
+  const [resultsPerPage] = useState(10);
+  const [currentRange] = useState([1, 6]);
+  const rangeInc = 6;
+  const lastPage = Math.ceil(props.activities.length / resultsPerPage);
+  const indexOfLastResults = currentPage * resultsPerPage;
+  const indexOfFirstResults = indexOfLastResults - resultsPerPage;
+  const currentResults = props.activities.slice(indexOfFirstResults, indexOfLastResults);
+  
+  // changes the 'page' and pagination button range
+  const paginate = (pageNumber) =>{
+    // if we reached the end of the current range, increment it
+    if(currentRange[1] + 1 === pageNumber){
+      currentRange[0] = pageNumber
+      // checks to make sure it's not rendering extra pages (happens if results.length is not a mutiple of the rangeInc)
+      let tempMax = (pageNumber - 1) + rangeInc
+      if(tempMax <= lastPage) currentRange[1] = tempMax
+      // if it does try to, then it sets the last page as the lastPage number
+      else currentRange[1] = lastPage
+    }
+    // if we reached the start of the current range, decrement it
+    else if(currentRange[0] - 1 === pageNumber){
+      currentRange[1] = pageNumber
+      currentRange[0] = (pageNumber + 1) - rangeInc
+    }
+    // change the page number
+    setCurrentPage(pageNumber)
+  }
+  // if the max range is larger than the last page number, set the max as the last page number
+  if(currentRange[1] > lastPage) currentRange[1] = lastPage
 
   return (
     <ViewableArea>
@@ -129,11 +161,19 @@ export function ProjectPage(props) {
             </View>
         </View>
         <Divider style={styles.divider} />
+        <Pagination
+          totalResults={props.activities.length}
+          resultsPerPage={resultsPerPage}
+          currentPage={currentPage}
+          lastPage={lastPage}
+          currentRange={currentRange}
+          paginate={paginate}
+        />
 
         <View style={styles.listView}>
           <List
             style={styles.list}
-            data={props.activities}
+            data={currentResults}
             ItemSeparatorComponent={Divider}
             renderItem={activityItem}
             refreshControl={

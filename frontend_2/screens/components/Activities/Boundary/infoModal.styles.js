@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
 
     viewContainer: {
         width: '80%',
-        marginTop: height * .75,
+        marginTop: height * .725,
         borderRadius: 35,
         borderWidth: 1,
         alignSelf: 'center',

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, RefreshControl } from 'react-native';
 import { Divider, Text, Button, List, ListItem } from '@ui-kitten/components';
 import { Header } from '../components/headers.component';
-import { ViewableArea, ContentContainer } from '../components/content.component';
+import { ViewableArea, ContentContainer, LoadingSpinner } from '../components/content.component';
 import { DummyResult } from '../components/dummyResult.component.js';
 import { HomeMapView } from '../components/Maps/home.map.component.js';
 import { getProject, getAllUserProjects, getAllResults } from '../components/apiCalls';
@@ -11,9 +11,10 @@ import { styles } from './home.styles';
 
 export const HomeScreen = ( props ) => {
 
-  var location = props.location
+  let location = props.location
   const [compare, setCompare] = useState(false)
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -104,13 +105,15 @@ export const HomeScreen = ( props ) => {
   }
 
   const openResultPage = async(item) => {
+    setLoading(true);
     let project = await getProject(item);
     if (project !== null) {
       await props.setSelectedProject(project);
       await props.setSelectedTeam(project.team);
       let results = await getAllResults(project); // sets to empty list if no results
       await props.setResults(results);
-      // open results page
+      // open results page and turns off the spinner
+      setLoading(false);
       props.navigation.navigate('ProjectResultPage');
     }
   }
@@ -162,6 +165,8 @@ export const HomeScreen = ( props ) => {
     <ViewableArea>
       <Header text={'Home Page'}/>
       <ContentContainer>
+
+        <LoadingSpinner loading={loading} />
 
         <View style={styles.mapSpace}>
           <HomeMapView location={location}/>

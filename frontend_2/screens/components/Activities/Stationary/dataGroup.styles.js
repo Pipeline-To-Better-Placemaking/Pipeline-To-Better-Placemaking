@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
     
@@ -26,19 +29,36 @@ export const styles = StyleSheet.create({
     },
 
     buttonLeft:{
-        width:150, 
+        width: width * .35,
+        height: height * .05, 
         marginRight: 45
     },
 
     buttonRight:{
-        width:150, 
+        width: width * .35,
+        height: height * .05,
         marginRight: 10
     },
 
     buttonBottom:{
-        width:150, 
+        width: width * .35,
+        height: height * .05,
         marginTop: 10, 
         alignSelf: 'center'
+    },
+
+    offButtonTxt:{
+        color: '#006FD6',
+        fontSize: width * .031,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold',
+        textAlign: 'center',
     }
 
 });

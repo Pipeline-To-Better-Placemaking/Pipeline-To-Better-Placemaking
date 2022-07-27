@@ -48,6 +48,8 @@ export function CreateActivityStack(props) {
   const selectArea = (props.project.subareas.length > 1);
   const [subareas, setSubareas] = useState(props.project.subareas);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (props.updateActivity) {
       setInitialValues();
@@ -128,6 +130,7 @@ export function CreateActivityStack(props) {
   }
 
   const create = async () => {
+    setLoading(true);
     // some error checking if they don't fill everything out
     let name = activityName;
     let row = selectedActivityIndex.row;
@@ -165,6 +168,7 @@ export function CreateActivityStack(props) {
         await putCollection(name, 'order', '/order_collections', 'order_maps/');
       }
       await props.setUpdateActivity(false);
+      setLoading(false);
       props.navigation.navigate('ProjectPage')
     }
     // create new activity(collection)
@@ -194,6 +198,7 @@ export function CreateActivityStack(props) {
         await postCollection(name, 'order', '/order_collections', 'order_maps/');
       }
       // Navigate back to Project page
+      setLoading(false);
       props.navigation.navigate('ProjectPage')
     }
   };
@@ -243,9 +248,17 @@ export function CreateActivityStack(props) {
       // get the area
       let areaIndex = props.project.subareas.findIndex(element => element._id === collectionDetails.area);
       collectionDetails.area = props.project.subareas[areaIndex];
-
-      // add the collection to the list
-      await props.setActivities(values => [...values, collectionDetails]);
+      
+      // adds the new test to the sorted array
+      let activities = props.activities
+      for(let i = 0; i < activities.length; i++){
+        if(activities[i].date > collectionDetails.date){
+          activities.splice(i, 0, collectionDetails)
+          break
+        }
+      }
+      // add the collection to the sorted array
+      await props.setActivities(activities);
     }
   }
 
@@ -546,6 +559,7 @@ export function CreateActivityStack(props) {
             standingPoints={standingPoints}
             selectedActivity={selectedActivity}
             create={create}
+            loading={loading}
             headerText={headerText}
             exit={exit}
           />

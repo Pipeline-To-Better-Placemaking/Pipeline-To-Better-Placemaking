@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     },
 
     viewContainer: {
-        height: '27%',
+        height: '28%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -20,12 +20,8 @@ export const styles = StyleSheet.create({
 
     titleText:{
         marginTop: 10,
-        alignSelf: 'center'
-    },
-
-    titleLine:{
-        alignSelf: 'center', 
-        marginTop: -18
+        alignSelf: 'center',
+        textDecorationLine: 'underline'
     },
 
     dataView:{
@@ -54,12 +50,24 @@ export const styles = StyleSheet.create({
         alignSelf:'center'
     },
 
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold'
+    },
+
     backButton:{
-        width: width * .3,
+        width: width * .275,
         height: height * .04, 
         alignSelf:'center',
         backgroundColor: '#6690FF',
         borderColor: '#6690FF'
+    },
+
+    backButtonTxt:{
+        color: 'white',
+        fontSize: width * .03,
+        fontWeight: 'bold'
     },
 
     backButtonView:{

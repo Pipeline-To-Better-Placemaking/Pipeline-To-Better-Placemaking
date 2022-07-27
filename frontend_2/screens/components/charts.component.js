@@ -131,7 +131,7 @@ export function CompareBarChart({children, ...props}){
 
   const theme = useTheme();
   const themeContext = React.useContext(ThemeContext);
-  var randomColor = require('randomcolor');
+  let randomColor = require('randomcolor');
   let textColor = (themeContext.theme === "light" ? 'black' : 'white');
   let fontSize = 10;
 
@@ -247,7 +247,7 @@ export function CompareBarChart({children, ...props}){
 
 export function MyPieChart(props){
   // if there are not any values for the passed in object, don't render anything
-  if(props.graph[0].value !== undefined){
+  if(props.graph[0] !== undefined && props.graph[0].value !== undefined){
     const Legend = () =>{
       let obj = [];
       for(let i = 0; i < Object.keys(props.graph).length; i++){

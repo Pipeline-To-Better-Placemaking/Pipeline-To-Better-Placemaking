@@ -30,10 +30,7 @@ export function NatureMapResults(props) {
                 <View style={styles.spacing} >
                     <Text style={styles.dataText}>{title}</Text>
                 </View>
-                
-                <View style={styles.spacing}>
-                    <Text style={styles.dataText}>Description: {props.desc}</Text>
-                </View>
+                <Text style={styles.dataText}>Description: {props.desc}</Text>
             </View>
         )
     }
@@ -93,12 +90,12 @@ export function NatureMapResults(props) {
                     objData.push(
                         <View key={keySum}>
                             <MapView.Polygon
-                                    coordinates={vegeArr[j].location}
-                                    strokeWidth={2}
-                                    strokeColor={'#00FF00'}
-                                    fillColor={'rgba(0, 255, 0, .5)'}
-                                    tappable={true}
-                                    onPress={()=> dataCallout(vegeArr[j], "Vegetation")}
+                                coordinates={vegeArr[j].location}
+                                strokeWidth={2}
+                                strokeColor={'#00FF00'}
+                                fillColor={'rgba(0, 255, 0, .5)'}
+                                tappable={true}
+                                onPress={()=> dataCallout(vegeArr[j], "Vegetation")}
                             />
                         </View>
                     )
@@ -110,12 +107,12 @@ export function NatureMapResults(props) {
                     objData.push(
                         <View key={keySum}>
                             <MapView.Polygon
-                                    coordinates={waterArr[j].location}
-                                    strokeWidth={2}
-                                    strokeColor={'#8CFFFF'}
-                                    fillColor={'rgba(140, 255, 255, .3)'}
-                                    tappable={true}
-                                    onPress={()=> dataCallout(waterArr[j], "Body of Water")}
+                                coordinates={waterArr[j].location}
+                                strokeWidth={2}
+                                strokeColor={'#8CFFFF'}
+                                fillColor={'rgba(140, 255, 255, .3)'}
+                                tappable={true}
+                                onPress={()=> dataCallout(waterArr[j], "Body of Water")}
                             />
                         </View>
                     )

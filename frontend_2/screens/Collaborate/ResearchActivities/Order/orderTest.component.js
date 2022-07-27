@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
-import { useTheme, Button } from '@ui-kitten/components';
+import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
 import { OrderMap } from '../../../components/Maps/orderMap.component.js';
 import { DataModal } from '../../../components/Activities/Order/dataModal.component';
+import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import { DescModal } from '../../../components/Activities/Order/descModal.component';
+import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import CountDown from 'react-native-countdown-component';
 
 import { styles } from './orderTest.styles';
@@ -31,10 +33,15 @@ export function OrderTest(props) {
     const [dataModal, setDataModal] = useState(false);
     const [descModal, setDescModal] = useState(false);
     const [tempMarker, setTempMarker] = useState();
+    const [popupMsg, setPopupMsg] = useState(true);
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState(-1);
+    const [deleteDesc, setDeleteDesc] = useState('');
+    const [deleteExtraDesc, setDeleteExtraDesc] = useState();
     const [prompt, setPrompt] = useState([]);
 
-    const behaviorPrompts = ['Panhandling', 'Screaming', 'Dangerous Wildlife', 'Reckless Behavior', 'Unsafe Equipment', 'Living in Public'];
-    const maintenancePrompts = ['Broken Environment', 'Dirty/Unmaintained', 'Graffiti', 'Littering', 'Overfilled Trashcan', 'Overgrowth'];
+    const behaviorPrompts = ['Panhandling', 'Boisterous Voice', 'Dangerous Wildlife', 'Reckless Behavior', 'Unsafe Equipment', 'Living in Public'];
+    const maintenancePrompts = ['Broken Environment', 'Dirty/Unmaintained', 'Unwanted Graffiti', 'Littering', 'Overfilled Trashcan', 'Unkept Landscape'];
 
     // Used to store all the data info
     const [data] = useState([]);
@@ -54,8 +61,6 @@ export function OrderTest(props) {
             points: data,
             time: new Date()
         }]
-
-        console.log(packageData[0].points);
 
         // Sends the collected data to DB
         try {
@@ -117,6 +122,37 @@ export function OrderTest(props) {
         setTempKind();
         setDescModal(false);
     }
+
+    // pulls up the delete modal
+    const handleDelete = (index) =>{
+        let descriptionFormat = []; 
+
+        // formats the description array for a cleaner display
+        data[index].description.forEach(element =>{
+            // if we are not at the last element, concat with comma and a whitespace
+            if(element.localeCompare(data[index].description[data[index].description.length - 1]) !== 0) descriptionFormat.push(element.concat(", "));
+            // when we are at the last element, concat with nothing
+            else descriptionFormat.push(element.concat(''));
+        })
+
+        // sets the description and index, then pulls up the modal
+        setDeleteDesc(data[index].kind.toLowerCase() + " data point");
+        setDeleteExtraDesc(descriptionFormat);
+        setDeleteIndex(index);
+        setDeleteModal(true);
+    }
+    
+    // deletes the point from the data array
+    const deletePoint = async () =>{
+        // removes the data point from the array
+        data.splice(deleteIndex, 1)
+        
+        //reset delete controls
+        setDeleteIndex(-1);
+        setDeleteDesc('');
+        setDeleteExtraDesc('');
+        setDeleteModal(false);
+    }
     
     // Start and Exit button
     const StartStopButton = () => {
@@ -124,7 +160,9 @@ export function OrderTest(props) {
         if (initalStart) {
             return(
                 <Button style={styles.startButton} onPress={() => setStart(true)} >
-                    Start
+                    <View>
+                        <Text style={styles.startStopText}>Start</Text>
+                    </View>
                 </Button>
             )
         }
@@ -135,7 +173,9 @@ export function OrderTest(props) {
                     style={styles.stopButton}
                     onPress={() => endActivity()}
                     >
-                        End
+                        <View>
+                            <Text style={styles.startStopText}>End</Text>
+                        </View>
                     </Button>
             )
         }
@@ -145,8 +185,13 @@ export function OrderTest(props) {
     useEffect(() =>{
         // only start the timer when we start the test
         if(start){
+            setPopupMsg(false);
             startTime(timer);
             setInitalStart(false);
+        }
+        // test gets pasued
+        else if(start === false){
+            clearInterval(id);
         }
     }, [start]);
 
@@ -157,7 +202,7 @@ export function OrderTest(props) {
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
-            //console.log(count);
+            // console.log(count);
             // when the timer reaches 0, call restart
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
@@ -166,6 +211,28 @@ export function OrderTest(props) {
             }
         // 1000 ms == 1 s
         }, 1000));
+    }
+
+    const PlayPauseButton = () =>{
+        const Play = () => <Icon name='play-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+        const Pause = () => <Icon name='pause-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
+      
+        // timer is active
+        if(start){
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(false)}>
+              <Pause />
+            </TouchableOpacity>
+          )
+        }
+        // timer is paused
+        else{
+          return(
+            <TouchableOpacity style={styles.playPauseButton} onPress={() => setStart(true)}>
+              <Play />
+            </TouchableOpacity>
+          )
+        }
     }
 
     // Count Down Timer and the Start/Exit button
@@ -177,7 +244,14 @@ export function OrderTest(props) {
 
                     <StartStopButton/>
 
-                    <View>
+                    <View style={styles.timerRow}>
+                        
+                        {initalStart ?
+                            null
+                        :
+                            <PlayPauseButton />
+                        }
+
                         <CountDown
                             running={start}
                             until={timer}
@@ -217,6 +291,10 @@ export function OrderTest(props) {
 
                 <TimeBar/>
 
+                <PopupMessage
+                    visible={popupMsg}
+                />
+
                 <DataModal
                     visible={dataModal}
                     closeData={closeData}
@@ -230,14 +308,36 @@ export function OrderTest(props) {
                     back={goBack}
                 />
 
+                <DeleteModal
+                    visible={deleteModal}
+                    setVisible={setDeleteModal}
+                    dataType={deleteDesc}
+                    extraInfo={deleteExtraDesc}
+                    deleteFunction={deletePoint}
+                />
+
                 <OrderMap
                     area={area}
                     marker={tempMarker}
                     dataPoints={data}
                     addMarker={onPointCreate}
+                    deleteMarker={handleDelete}
                 />
 
             </ContentContainer>
+            {start ?
+                <View style={styles.descriptionView}>
+                    <Text category={'s1'}>Tap on the map to plot misconduct data points</Text>
+                </View>
+            :
+                <View style={styles.descriptionView}>
+                    {initalStart ?
+                        null
+                    :
+                        <Text category={'s1'}>Press the play button to resume the test</Text>
+                    }
+                </View>
+            }
         </ViewableArea>
     );
 }

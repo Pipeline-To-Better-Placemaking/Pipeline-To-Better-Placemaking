@@ -24,12 +24,8 @@ export const styles = StyleSheet.create({
 
     titleText:{
         marginTop: 10,
-        alignSelf: 'center'
-    },
-
-    titleLine:{
-        alignSelf: 'center', 
-        marginTop: -18
+        alignSelf: 'center',
+        textDecorationLine: 'underline'
     },
 
     dataView:{
@@ -39,6 +35,12 @@ export const styles = StyleSheet.create({
     titleDesc:{
         width: width * .65,
         marginTop: height * .01
+    },
+
+    boldTxt:{
+        fontWeight: 'bold',
+        textDecorationLine: 'underline',
+        textDecorationColor: 'red'
     },
 
     titleDescTxt:{
@@ -53,14 +55,26 @@ export const styles = StyleSheet.create({
     },
 
     button:{
-        width: width * .35,
-        height: height * .065, 
-        alignSelf:'center'
+        width: width * .45,
+        height: height * .06, 
+        alignSelf:'center',
+    },
+
+    offButtonTxt:{
+        color: '#006FD6',
+        fontSize: width * .033,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    buttonTxt:{
+        color: 'white',
+        fontSize: width * .033,
+        fontWeight: 'bold'
     },
 
     otherView:{
         marginTop: height * .05,
-        
     },
 
     otherRow:{
@@ -70,7 +84,7 @@ export const styles = StyleSheet.create({
     inputBox:{
         borderTopRightRadius: 0,
         borderBottomRightRadius: 0,
-        width: width * .60
+        width: width * .6
     },
 
     submitButton:{
@@ -80,26 +94,35 @@ export const styles = StyleSheet.create({
         borderBottomLeftRadius: 0
     },
 
+    offSubmitButtonTxt:{
+        color: '#006FD6',
+        fontSize: width * .031,
+        fontWeight: 'bold'
+    },
+
+    submitButtonTxt:{
+        color: 'white',
+        fontSize: width * .031,
+        fontWeight: 'bold'
+    },
+
     errorView:{
         alignItems: 'center',
         marginTop: 5
     },
 
-    buttonText:{
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
+    redTxt:{
+        color: 'red'
     },
 
-    // styles used only on soundsModal
     multiView:{
         marginTop: height * .04,
         alignItems: 'center'
     },
 
     multiSubmit:{
-        width: width * .3,
-        height: height * .065
+        width: width * .27,
+        height: height * .05
     },
 
     selectError:{
