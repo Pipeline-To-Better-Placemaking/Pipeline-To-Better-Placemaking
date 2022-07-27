@@ -1,2 +1,2 @@
-# Fall2020-Group09
-A tool for measuring the quality of a place
+# Fall2022-Group02
+Creating a Pipeline to Better Placemaking.
