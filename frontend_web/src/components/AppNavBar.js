@@ -32,8 +32,9 @@ const settings = [
 const AppNavBar = (props) => {
     const location = useLocation();
     const segment = location.pathname.split('/');
-    const invites = location.state?.userToken?.user.invites.length;
+    const invites = location?.state?.userToken?.user?.invites.length;
     
+    console.log(invites);
     const userName = {
         fN: location.state?.userToken?.user.firstname ? location.state?.userToken?.user.firstname : 'Abc',
         lN: location.state?.userToken?.user.lastname ? location.state?.userToken?.user.lastname : 'Bcd',
@@ -155,7 +156,7 @@ const AppNavBar = (props) => {
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title='Open Menu'>
-                            {invites.length > 0 ?
+                            {invites > 0 ?
                                 <Badge badgeContent={invites} color="primary">
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                         <Avatar>{`${userName.fN[0]}${userName.lN[0]}`}</Avatar>

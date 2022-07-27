@@ -16,6 +16,7 @@ import axios from '../api/axios';
 function SettingsPage() {
     const loc = useLocation();
     const nav = useNavigate();
+    const [invites, setInvites] = React.useState(loc.state?.userToken?.user?.invites);
 
     const [values, setValues] = React.useState({
         updateFName: loc.state ? loc.state?.userToken?.user?.firstname : '',
@@ -27,6 +28,7 @@ function SettingsPage() {
         showConfirmPassword: false
     });
     const [message, setMessage] = React.useState('');
+    const invMess = React.useRef(null);
     const infoMess = React.useRef(null);
 
     const handleChange = (prop) => (event) => {
@@ -116,16 +118,65 @@ function SettingsPage() {
 
     }
 
+    const answerInvite = async (e, id, claim, index) => {
+        e.preventDefault();
+        setMessage('');
+        invMess.current.style.display = 'none';
+
+        try {
+            const response = await axios.put('/users/invites', JSON.stringify({
+                responses:
+                    [{
+                        team: id,
+                        accept: claim
+                    }]
+            }), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                withCredentials: true
+            });
+
+            var invitations = [];
+            invites.map((invite)=>(
+                invitations.push(invite)
+            ))
+            console.log(invitations)
+            invitations.splice(index, 1);
+            console.log(invitations)
+            loc.state.userToken.user.invites = invitations;
+            setInvites(invitations);
+
+        } catch (error) {
+
+            setMessage(error.response.data?.message);
+            invMess.current.style.display = 'inline-block';
+            invMess.current.style.width = '30vw';
+            return;
+        }
+
+    }
+    const declineInvite = (e) => {
+        e.preventDefault();
+    }
+
     const userLogout = () => { }
 
     return(
         <div id='userSettings'>
-            <Card>
+            <Card id='inviteCard'>
                 <h1>Invites</h1>
                 <Card.Body style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
-                    {loc.state?.userToken?.user?.invites.length > 0 ? (loc.state?.userToken?.user?.invites.map((invite, index)=>(
-                        <div>
-                            {index}
+                    <span ref={invMess} style={{ display: 'none', color: 'red' }}>{message}</span>
+                    {invites.length > 0 ? (invites.map((invite, index)=>(
+                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', textAlign: 'center' }}>
+                            {invite.title}
+                            {`From: ${invite.firstname} ${invite.lastname}`}
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center', textAlign: 'center' }}>
+                                <Button onClick={(e) => answerInvite(e, invite._id, true, index)}>Accept</Button><Button onClick={(e) => answerInvite(e, invite._id, false, index)}>Decline</Button>
+                            </div>
                         </div>
                     ))) : 'You currently have no pending invites.'}
                 </Card.Body>
