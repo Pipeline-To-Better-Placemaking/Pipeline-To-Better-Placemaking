@@ -73,9 +73,8 @@ export const styles = StyleSheet.create({
         width: width * .4
     },
     
-    // used only for the soundMapResults component
     soundDataCallOutView:{
-        maxWidth: width * .85,
+        maxWidth: width * .4,
         flexDirection: 'column', 
         justifyContent: 'center',
         alignItems: 'center',
@@ -83,7 +82,7 @@ export const styles = StyleSheet.create({
     },
 
     restrict:{
-        width: width * .65,
+        width: width * .4,
         alignItems: 'center'
     },
 
