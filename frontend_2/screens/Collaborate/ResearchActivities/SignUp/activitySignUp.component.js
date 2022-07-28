@@ -509,14 +509,14 @@ export function ActivitySignUpPage(props) {
         <View style={styles.infoColumn}>
           <Text>Start Time: {getTimeStr(item.date)}</Text>
           {/* if the test doesn't have standing points, don't render anything*/}
-          {(props.activity.test_type === activityList[2] || 
+          {props.activity.test_type === activityList[2] || 
           props.activity.test_type === activityList[4] ||
           props.activity.test_type === activityList[5] ||
           props.activity.test_type === activityList[6] ||
           props.activity.test_type === activityList[7] ? 
             null 
           : 
-            <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>)
+            <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>
           }
           <Text>Researchers:</Text>
           <Text>{getResearchers(item)}</Text>

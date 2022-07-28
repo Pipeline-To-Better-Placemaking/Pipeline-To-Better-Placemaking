@@ -217,7 +217,9 @@ export function CollaborateStack(props) {
         }
       </Screen>
       <Screen
-        name="StationaryActivity">
+        name="StationaryActivity"
+        options={{gestureEnabled: false}}
+      >
         {props => <StationaryActivity
                         {...props}
                         getSelectedActivity={activities}
@@ -229,7 +231,9 @@ export function CollaborateStack(props) {
         }
       </Screen>
       <Screen
-        name="PeopleMovingActivity">
+        name="PeopleMovingActivity"
+        options={{gestureEnabled: false}}
+      >
         {props => <PeopleMovingActivity
                     {...props}
                     getSelectedActivity={activities}
@@ -242,7 +246,9 @@ export function CollaborateStack(props) {
         }
       </Screen>
       <Screen
-        name="SurveyActivity">
+        name="SurveyActivity"
+        options={{gestureEnabled: false}}
+      >
         {props =>
           <SurveyActivity
             {...props}
@@ -255,7 +261,9 @@ export function CollaborateStack(props) {
       
       {/* security activities */}
       <Screen
-        name="SoundTest">
+        name="SoundTest"
+        options={{gestureEnabled: false}}
+      >
         {props =>
           <SoundTest
             {...props}
@@ -269,7 +277,9 @@ export function CollaborateStack(props) {
       </Screen>
 
       <Screen
-        name="BoundaryTest">
+        name="BoundaryTest"
+        options={{gestureEnabled: false}}
+      >
         {props =>
           <BoundaryTest
             {...props}
@@ -283,7 +293,9 @@ export function CollaborateStack(props) {
       </Screen>
 
       <Screen
-        name="NatureTest">
+        name="NatureTest" 
+        options={{gestureEnabled: false}}
+      >
         {props =>
           <NatureTest
             {...props}
@@ -297,7 +309,9 @@ export function CollaborateStack(props) {
       </Screen>
 
       <Screen
-        name="LightTest">
+        name="LightTest"
+        options={{gestureEnabled: false}}
+      >
         {props =>
           <LightTest
             {...props}
@@ -311,7 +325,9 @@ export function CollaborateStack(props) {
       </Screen>
 
       <Screen
-        name="OrderTest">
+        name="OrderTest"
+        options={{gestureEnabled: false}}
+      >
         {props =>
           <OrderTest
             {...props}
