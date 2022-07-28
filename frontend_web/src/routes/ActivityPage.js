@@ -108,12 +108,12 @@ export default function ActivityPage(props) {
                                     nature.push(obj);
                                 } else if(type === 'water' || type === 'vegetation'){
                                     pointArr.forEach((natureArea, ind1)=>{
-                                        obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind1, 'Category': 'Weather', Temperature: '', 'Kind/Area (ft/sq.ft)': `${natureArea.area}`, Description: `${natureArea.description}` }
+                                        obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind1, 'Category': type === 'water' ? 'Water' : 'Vegetation', Temperature: '', 'Kind/Area (ft/sq.ft)': `${natureArea.area}`, Description: `${natureArea.description}` }
                                         nature.push(obj);
                                     })
                                 } else if(type === 'animal') {
                                     pointArr.forEach((natureArea, ind1) => {
-                                        obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind1, 'Category': 'Weather', Temperature: '', 'Kind/Area (ft/sq.ft)': `${natureArea.kind}`, Description: `${natureArea.description}` }
+                                        obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind1, 'Category': 'Animal', Temperature: '', 'Kind/Area (ft/sq.ft)': `${natureArea.kind}`, Description: `${natureArea.description}` }
                                         nature.push(obj);
                                     })
                                 }

@@ -32,6 +32,12 @@ const settings = [
 const AppNavBar = (props) => {
     const location = useLocation();
     const segment = location.pathname.split('/');
+    
+    if(!location.state){
+        location.state = {}
+        location.state.userToken = props.passToken;
+    }
+
     const invites = location?.state?.userToken?.user?.invites.length;
     
     //console.log(invites);

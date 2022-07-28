@@ -14,7 +14,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from '../api/axios';
 import '../routes/routes.css';
 
-export default function AccountPage() {
+export default function AccountPage(props) {
     const loc = useLocation();
     const nav = useNavigate();
     const [invites, setInvites] = React.useState(loc.state?.userToken?.user?.invites);
@@ -105,6 +105,7 @@ export default function AccountPage() {
             loc.state.userToken.user.firstname = response.data.firstname;
             loc.state.userToken.user.lastname = response.data.lastname;
             loc.state.userToken.user.email = response.data.email;
+            props.updateToken(loc.state.userToken);
 
             nav(loc.state?.from, { replace: true, state: loc.state });
 
@@ -149,6 +150,7 @@ export default function AccountPage() {
             if(claim){
                 loc.state.userToken.user.teams.push({'_id': id, title: title})
             }
+            props.updateToken(loc.state.userToken);
             setInvites(invitations);
 
         } catch (error) {

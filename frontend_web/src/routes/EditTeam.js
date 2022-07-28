@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from '../api/axios.js';
 
-export default function EditTeam(){
+export default function EditTeam(props){
     const loc = useLocation();
     const nav = useNavigate();
     const [name, setName] = React.useState(loc.state ? loc.state.team : '')
@@ -26,6 +26,7 @@ export default function EditTeam(){
             });
 
             loc.state.userToken.user.teams.forEach((obj)=> (obj._id === segment[3] ? obj.title = name : null))
+            props.updateToken(loc.state.userToken);
             nav(`../teams/${segment[3]}`, { replace: true, state: {  team: name, userToken: loc.state.userToken } });
         } catch (error) {
             console.log('ERROR: ', error);
@@ -51,7 +52,7 @@ export default function EditTeam(){
             var tempToken = loc.state.userToken.user.teams;
             tempToken.splice(index, 1)
             loc.state.userToken.user.teams = tempToken
-
+            props.updateToken(loc.state.userToken);
             nav(`../`, { replace: true, state: { userToken: loc.state.userToken} });
         } catch (error) {
             console.log('ERROR: ', error);

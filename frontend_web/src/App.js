@@ -25,7 +25,7 @@ import FAQ from './routes/FAQ';
 
 export default function App() {
     // token is currently stored in app state
-    const [token, setToken] = React.useState();
+    const [token, setToken] = React.useState(sessionStorage.userToken ? JSON.parse(sessionStorage.userToken) : null);
 
     // true == active user (logged in)
     const [state, setState] = React.useState(token && token !== {} ? true : false);
@@ -49,6 +49,7 @@ export default function App() {
     function handleOnLogout(active) {
         setState(active);
         setToken();
+        sessionStorage.clear();
     }
 
     function TeamPages(){
@@ -90,9 +91,9 @@ export default function App() {
                     <Routes>
                         <Route index element={ <Home /> }/>
                         <Route path='teams/:id/*' element={ <TeamPages /> } />
-                        <Route path='account' element={<AccountPage /> } />
+                        <Route path='account' element={<AccountPage updateToken={updateToken} /> } />
                         <Route path='new' element={ <NewTeamForm /> } />
-                        <Route path='edit/:id' element={ <EditTeam /> } />
+                        <Route path='edit/:id' element={<EditTeam updateToken={updateToken} /> } />
                     </Routes> 
                 : 
                     <Navigate to='/' replace /> 
