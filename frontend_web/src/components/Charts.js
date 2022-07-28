@@ -87,13 +87,15 @@ export default function Charts(props) {
 
         Object.entries(data).map(([dateTime, arr])=>(
             arr.forEach((arr1, index)=>{
-                arr1.forEach((obj, index)=>{
+                arr1.forEach((obj, ind)=>{
+                    obj.instance = `S${ind}`;
                     measurements.push(obj);
                     Object.entries(obj).forEach(([key, dataVal])=>{
                         if (key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5') {
                             if (key === 'decibel_1') {
                                 high = dataVal
                                 low = dataVal
+
                                 frequent.push(dataVal);
                             } else {
                                 if (dataVal.recording > high.recording) {
@@ -133,6 +135,8 @@ export default function Charts(props) {
             }
         })
 
+        console.log(data);
+
         return(
             <div className='Charts'>
                 <div style={{ textAlign: 'center' }}>
@@ -160,7 +164,7 @@ export default function Charts(props) {
                 <br />
                 <BarChart width={width} height={height} data={measurements}>
                     <CartesianGrid strokeDasharray='3 3' />
-                    <XAxis dataKey='name' />
+                    <XAxis dataKey='instance' />
                     <YAxis label={{ value: 'Decibels', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
@@ -186,7 +190,8 @@ export default function Charts(props) {
             'Other'
         ]
 
-        data.map((obj)=>(
+        data.forEach((obj, ind)=>{
+            obj.instance = `S${ind}`;
             Object.entries(obj).forEach(([key, dataVal], index)=>{
                 if(key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5'){
                     if(key === 'decibel_1'){
@@ -218,7 +223,7 @@ export default function Charts(props) {
                     }
                 }
             })
-        ))
+        })
 
         frequent.forEach((value, index)=>{
             if(value > frequent[indexes[0]]){
@@ -256,7 +261,7 @@ export default function Charts(props) {
                 <br/>
                 <BarChart width={ width } height={ height } data={ data }>
                     <CartesianGrid strokeDasharray='3 3' />
-                    <XAxis dataKey='name' />
+                    <XAxis dataKey='instance' />
                     <YAxis label={{ value: 'Decibels', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
@@ -735,6 +740,7 @@ export default function Charts(props) {
         var constructed = [];
         var shelter = 0;
         var material = 0;
+        var ind = 0;
 
         for (const arr of  Object.values(data)) {
             for(const ind0 in arr){
@@ -744,11 +750,14 @@ export default function Charts(props) {
                     } else if(arr[0][index].kind === 'Material') {
                         material += arr[0][index].value;
                     } else {
+                        arr[0][index].instance = `B${ind}`;
                         constructed.push(arr[0][index]);
+                        ind++;
                     }
                 };
             };
         };
+        console.log(constructed);
 
         var totalPerc = [];
         totalPerc[0] = (shelter / projectArea) * 100;
@@ -790,7 +799,7 @@ export default function Charts(props) {
                 <div style={{ fontSize: 'larger' }}>Constructed Distances</div>
                 <BarChart width={ width } height={ height } data={ constructed }>
                     <CartesianGrid strokeDasharray='3 3' />
-                    <XAxis dataKey='kind' />
+                    <XAxis dataKey='instance' />
                     <YAxis label={{ value: 'Distance', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
@@ -808,14 +817,19 @@ export default function Charts(props) {
     const BoundaryPieChart = (data) => {
         var constructed = [];
         var horizontal = [];
+        var ind = 0;
 
         for (const obj of Object.values(data)) {
             if (obj.kind === 'Shelter' || obj.kind === 'Material') {
                 horizontal.push(obj);
             } else {
+                obj.instance = `C${ind}`;
                 constructed.push(obj);
+                ind++;
             }
         };
+
+        console.log(constructed);
 
         return(
             <div id='boundCharts' className='Charts'>
@@ -831,7 +845,7 @@ export default function Charts(props) {
                 <div style={{ fontSize: 'larger' }}>Constructed Distances</div>
                 <BarChart width={ width } height={ height } data={ constructed }>
                     <CartesianGrid strokeDasharray='3 3' />
-                    <XAxis dataKey='kind' />
+                    <XAxis dataKey='instance' />
                     <YAxis label={{ value: 'Distance', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
