@@ -111,6 +111,12 @@ export default function Title(props) {
                 </div>
                 <div className='tagBox'>
                     <Card className='formCard'>
+                        <div className='tag tag1' >
+                            <div className='logo logo1'>
+                                <Image src={logo1} className='App-logo' alt='logo' id='logo2' />
+                            </div>
+                            <div id='tagText'>Pipeline to Better Placemaking</div>
+                        </div>
                         <Card.Body>
                             <Box id='titleBox' component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
                                 <span ref={loginResponse} style={{ display: 'none', color: 'red' }}>{message}</span>

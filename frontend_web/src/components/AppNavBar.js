@@ -122,10 +122,10 @@ const AppNavBar = (props) => {
                                     <MenuItem 
                                         key={ page } 
                                         component={ Link }
-                                        to={ segmentLink(page === 'teams' || page === 'projects' ? index + 1 : index)}
+                                        to={ segmentLink(page === 'teams' || page === 'projects' || page === 'edit' ? index + 1 : index)}
                                         state={ location.state }
                                         onClick={ handleCloseNavMenu }>
-                                        <Typography textAlign='center'> {page === 'teams' ? 'Projects' : (page === 'projects' ? 'Project Page' : (`${page.charAt(0).toUpperCase()}${page.slice(1)}`))} </Typography>
+                                        <Typography textAlign='center'> {page === 'teams' ? 'Projects' : (page === 'projects' ? 'Project Page' : `${page.charAt(0).toUpperCase()}${page.slice(1)}`)} </Typography>
                                     </MenuItem>
                                 : null
                             )) }
@@ -143,7 +143,7 @@ const AppNavBar = (props) => {
                             !/\d/.test(page) && page !== 'form' && page !== 'area' && page !== 'points' && page !== ':id' && index > 0 ? 
                             <Button
                                 component={ Link }
-                                to={ segmentLink(page === 'teams'  || page === 'projects' ? index+1 : index) }
+                                to={segmentLink(page === 'teams' || page === 'projects' || page === 'edit' ? index+1 : index) }
                                 state={ location.state }
                                 key={ page }
                                 onClick={ handleCloseNavMenu }
