@@ -108,11 +108,13 @@ export default function NewActivityTimes(props) {
     }
 
     const addNewActivity = async (e) => {
+        var isoDate = new Date(`${activity.date}T00:00:00`)
+        console.log(isoDate.toISOString());
 
         try {
             const response = await axios.post(`/projects/${props.projectInfo._id}/${collections[activity.activity][0]}`, JSON.stringify({ 
                 title: activity.title,
-                date: `${activity.date}T00:00:00.000-04:00`,
+                date: isoDate.toISOString(),
                 area: props.projectInfo.subareas[0]._id,
                 duration: `${activity.timer}`
 
@@ -159,7 +161,9 @@ export default function NewActivityTimes(props) {
             selectedPoints = props.projectInfo.standingPoints;
         }
 
-        console.log(`${activity.date}T${timeSlot.time}:00.000-04:00`);
+        var adjusted = new Date(`${activity.date}T${timeSlot.time}`);
+        console.log(adjusted);
+        console.log(adjusted.toISOString())
 
         try {
             const response = await axios.post(`/${timeSlotName}`, JSON.stringify({
@@ -168,7 +172,7 @@ export default function NewActivityTimes(props) {
                 researchers: [],
                 project: props.projectInfo._id, 
                 collection: id,
-                date: `${activity.date}T${timeSlot.time}:00.000-04:00`,
+                date: (adjusted.toISOString()),
                 maxResearchers: `${timeSlot.maxResearchers}`
             }), {
                 headers: {

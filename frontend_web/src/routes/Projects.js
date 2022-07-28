@@ -101,7 +101,7 @@ export default function Projects(props){
                             <span>{user.firstname} {user.lastname},&nbsp;</span>
                         : 
                             (index !== (teamInfo?.users.length - 1) && teamInfo?.users[index].role === 'owner' ? 
-                                (<div>{user.firstname} {user.lastname}</div>) : <span>{user.firstname} {user.lastname}</span>)
+                                (<div style={{alignSelf: 'center'}}>{user.firstname} {user.lastname}</div>) : <span>{user.firstname} {user.lastname}</span>)
                     ))}
                 </div>
                 <Button component={Link} to={`/home/edit/${teamId}`} state={teamAndUser.state ? teamAndUser.state : null} style={{ width: '40vw' }}>Edit Team</Button>
