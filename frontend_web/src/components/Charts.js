@@ -88,7 +88,7 @@ export default function Charts(props) {
         Object.entries(data).map(([dateTime, arr])=>(
             arr.forEach((arr1, index)=>{
                 arr1.forEach((obj, ind)=>{
-                    obj.instance = `S${ind+1}`;
+                    obj.instance = `Location ${ind+1}`;
                     measurements.push(obj);
                     Object.entries(obj).forEach(([key, dataVal])=>{
                         if (key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5') {
@@ -189,7 +189,7 @@ export default function Charts(props) {
         ]
 
         data.forEach((obj, ind)=>{
-            obj.instance = `S${ind+1}`;
+            obj.instance = `Location ${ind+1}`;
             Object.entries(obj).forEach(([key, dataVal], index)=>{
                 if(key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5'){
                     if(key === 'decibel_1'){
@@ -750,7 +750,7 @@ export default function Charts(props) {
                         material += arr[0][index].value;
                         ind++;
                     } else {
-                        arr[0][index].instance = `C${ind+1}`;
+                        arr[0][index].instance = `Location ${ind+1}`;
                         constructed.push(arr[0][index]);
                         ind++;
                     }
@@ -770,7 +770,7 @@ export default function Charts(props) {
         var marked = [{ kind: 'Shelter', value: shelter }, { kind: 'Material', value: material }];
         return(
             <div className='Charts'>
-                <div style={{ fontSize: 'larger' }}> Marked Areas </div>
+                <div style={{ fontSize: 'larger' }}> Marked Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={marked} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {marked.map((entry, index) => (
@@ -779,7 +779,7 @@ export default function Charts(props) {
                     </Pie>
                     <Tooltip />
                 </PieChart>
-                <div style={{ fontSize: 'larger' }}> Portion of Total Area </div>
+                <div style={{ fontSize: 'larger' }}> Portion of Total Area (%)</div>
                 <PieChart width={ width } height={ height }>
                         <Pie data={ array } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
                             { array.map((entry, index) => (
@@ -799,7 +799,7 @@ export default function Charts(props) {
                 <BarChart width={ width } height={ height } data={ constructed }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='instance' />
-                    <YAxis label={{ value: 'Distance', angle: -90, position: 'insideLeft' }} />
+                    <YAxis label={{ value: 'Distance (ft.)', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
                 </BarChart>
@@ -823,7 +823,7 @@ export default function Charts(props) {
                 horizontal.push(obj);
                 ind++;
             } else {
-                obj.instance = `C${ind+1}`;
+                obj.instance = `Location ${ind+1}`;
                 constructed.push(obj);
                 ind++;
             }
@@ -831,7 +831,7 @@ export default function Charts(props) {
 
         return(
             <div id='boundCharts' className='Charts'>
-                <div style={{ fontSize: 'larger' }}>Boundary Areas</div>
+                <div style={{ fontSize: 'larger' }}>Boundary Areas (ft<sup>2</sup>)</div>
                 <PieChart width={ width } height={ height }>
                     <Pie data={ horizontal } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
                         { horizontal.map((entry, index) => (
@@ -844,7 +844,7 @@ export default function Charts(props) {
                 <BarChart width={ width } height={ height } data={ constructed }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='instance' />
-                    <YAxis label={{ value: 'Distance', angle: -90, position: 'insideLeft' }} />
+                    <YAxis label={{ value: 'Distance (ft.)', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
                 </BarChart>
@@ -932,7 +932,7 @@ export default function Charts(props) {
 
         return (
             <div id='natureCharts' className='Charts'>
-                <div style={{ fontSize: 'larger' }}>Vegetation and Water Areas</div>
+                <div style={{ fontSize: 'larger' }}> Vegetation and Water Areas(ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={waterAndVeg} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {waterAndVeg.map((entry, index) => (
@@ -946,7 +946,7 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water</div>
                 </div>
                 <br/>
-                <div style={{ fontSize: 'larger' }}>Portion of All Nature in Total Area</div>
+                <div style={{ fontSize: 'larger' }}>Portion of All Nature in Total Area (%)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={totalArea} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {totalArea.map((entry, index) => (
@@ -1063,7 +1063,7 @@ export default function Charts(props) {
 
         return (
             <div id='natureCharts' className='Charts'>
-                <div style={{ fontSize: 'larger' }}>Vegetation and Water</div>
+                <div style={{ fontSize: 'larger' }}>Vegetation and Water (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={waterAndVeg} dataKey='area' nameKey='description' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {waterAndVeg.map((entry, index) => (
@@ -1072,7 +1072,7 @@ export default function Charts(props) {
                     </Pie>
                     <Tooltip />
                 </PieChart>
-                <div style={{ fontSize: 'larger' }}>Portion of Nature in Total Area</div>
+                <div style={{ fontSize: 'larger' }}>Portion of Nature in Total Area (%)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={totalArea} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {totalArea.map((entry, index) => (
