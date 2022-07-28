@@ -7,7 +7,7 @@ import Map from '../components/Map';
 export default function EditAreaMap() {
     const loc = useLocation();
     const nav = useNavigate();
-    const area = loc?.state?.area ? loc.state.area : {}
+    const area = loc.state.area ? loc.state.area : {}
     const [name, setName] = React.useState(area.title);
     var temp = [];
     var updatedPoints = [];
@@ -43,6 +43,33 @@ export default function EditAreaMap() {
         }
     }
 
+    const addArea = (newarea) => async (e) => {
+        e.preventDefault();
+
+        newarea.forEach((point, index) => (
+            updatedPoints.push({ latitude: point.lat, longitude: point.lng })
+        ));
+        updatedArea = { title: name, points: updatedPoints };
+        console.log(updatedArea)
+
+        try {
+            const response = await axios.post(`/projects/${loc.pathname.split('/')[5]}/areas`, JSON.stringify(updatedArea), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                withCredentials: true
+            });
+
+            nav(`../edit/${loc.pathname.split('/')[5]}`, { replace: true, state: { project: loc.state.project, team: loc.state.team, userToken: loc.state.userToken } })
+
+        } catch (error) {
+            console.log('ERROR: ', error);
+            return;
+        }
+    }
+
     // Return area point values need to be reconverted to objects with latitude longitude keys 
     return (
         <div id='editAreaMap' className='pages'>
@@ -52,7 +79,7 @@ export default function EditAreaMap() {
                 value={name}
                 onChange={e => setName(e.target.value)}
             />
-            <Map center={temp[0]} area={temp} type={6} zoom={16} update={updateArea}/>
+            <Map center={temp[0]} area={temp} type={6} zoom={16} update={loc.state.area ? updateArea : addArea}/>
         </div>
     );
 }

@@ -95,14 +95,17 @@ export default function Projects(props){
                 <h1 style={{margin: '20px 0px 20px 0px', textAlign: 'center'}}>
                     {teamInfo?.title}
                 </h1>
-                <div>
-                    {teamInfo?.users.map((user, index)=>(
-                        index !== (teamInfo?.users.length - 1) && teamInfo?.users[index].role !== 'owner' ? 
-                            <span>{user.firstname} {user.lastname},&nbsp;</span>
-                        : 
-                            (index !== (teamInfo?.users.length - 1) && teamInfo?.users[index].role === 'owner' ? 
-                                (<div style={{alignSelf: 'center'}}>{user.firstname} {user.lastname}</div>) : <span>{user.firstname} {user.lastname}</span>)
-                    ))}
+                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+                    <div style={{ alignSelf: 'center' }}>{teamInfo?.users[0].firstname} {teamInfo?.users[0].lastname}</div>
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+                        {teamInfo?.users.map((user, index)=>(
+                            index !== (teamInfo?.users.length - 1) && teamInfo?.users[index].role !== 'owner' ? 
+                                <span>{user.firstname} {user.lastname},&nbsp;</span>
+                            : 
+                                (index === (teamInfo?.users.length - 1) && teamInfo?.users[index].role !== 'owner' ? 
+                                    <span>{user.firstname} {user.lastname}</span> : null )
+                        ))}
+                    </div>
                 </div>
                 <Button component={Link} to={`/home/edit/${teamId}`} state={teamAndUser.state ? teamAndUser.state : null} style={{ width: '40vw' }}>Edit Team</Button>
             </div>

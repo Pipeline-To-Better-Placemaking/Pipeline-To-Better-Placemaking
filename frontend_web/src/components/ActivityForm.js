@@ -27,7 +27,7 @@ export default function ActivityForm(props) {
 
     const handleChange = (key, ver) => (e) => {
         setForm({ ...form, [key]: e.target.value });
-        console.log(form);
+        //console.log(form);
     };
 
     return(

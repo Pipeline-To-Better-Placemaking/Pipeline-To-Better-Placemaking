@@ -40,7 +40,7 @@ export default function ActivityPage(props) {
 
     const closeWindow = (e) => {
         e.preventDefault();
-        console.log('close');
+        //console.log('close');
         const popup = document.getElementById('deleteWindow');
         const inner = document.getElementById('popUpText');
         popup.style.display = 'none';

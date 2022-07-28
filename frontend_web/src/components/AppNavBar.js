@@ -34,7 +34,7 @@ const AppNavBar = (props) => {
     const segment = location.pathname.split('/');
     const invites = location?.state?.userToken?.user?.invites.length;
     
-    console.log(invites);
+    //console.log(invites);
     const userName = {
         fN: location.state?.userToken?.user.firstname ? location.state?.userToken?.user.firstname : 'Abc',
         lN: location.state?.userToken?.user.lastname ? location.state?.userToken?.user.lastname : 'Bcd',
