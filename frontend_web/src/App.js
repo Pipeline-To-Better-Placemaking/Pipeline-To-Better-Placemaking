@@ -36,13 +36,11 @@ export default function App() {
         setState(active);
         setToken(token);
         sessionStorage.setItem('userToken', JSON.stringify(token));
-        console.log(JSON.parse(sessionStorage.userToken));
     }
 
     function updateToken(token){
         setToken(token);
         sessionStorage.setItem('userToken', JSON.stringify(token));
-        console.log(JSON.parse(sessionStorage.userToken));
     }
 
     // clear all fields on logout

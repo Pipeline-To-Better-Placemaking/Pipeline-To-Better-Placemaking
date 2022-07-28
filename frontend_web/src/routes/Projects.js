@@ -87,8 +87,6 @@ export default function Projects(props){
         teamPull();
     },[]);
 
-    console.log(teamInfo);
-
     return(
         <div id='teamHome'>
             <div style={{display:'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
