@@ -21,8 +21,8 @@ const render = (status) => {
     // 3 - new project points
     // 4 - new project area
     // 5 - new project map
-    // 6 - edit existing area
-    // 7 -  edit existing point
+    // 6 - edit existing area/add area
+    // 7 -  edit existing point/add point
 
 export default function FullMap(props) {
     const [map, setMap] = React.useState(null);
@@ -180,7 +180,7 @@ export default function FullMap(props) {
 
     // Event handling functions ------
     const onMClick = (e) => {
-        if(props.type === 2 || props.type === 0) {
+        if(props.type === 2 || props.type === 0 || props.type === 7 ) {
             setClick(e.latLng);
             setCenter(e.latLng);
         } else if(props.type === 3 || props.type === 4 || props.type === 6) {

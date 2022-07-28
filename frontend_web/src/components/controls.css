@@ -165,7 +165,7 @@ div.newPointBlock{
     left: calc(50vw - 150px);
 }
 
-#editAreaBlock{
+#editAreaBlock, div.newPointBlock{
     top: 130px;
 }
 
