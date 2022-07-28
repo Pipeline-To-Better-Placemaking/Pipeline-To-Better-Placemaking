@@ -70,14 +70,14 @@ export default function ActivityPage(props) {
                         var obj = {}
                         // Create an object based on category and append it to its related array
                         if(category === 'stationary_maps') {
-                            obj = { Category: testNames(category), Date: date, Time: time, Point: index, Posture: dataobjects.posture, Age: dataobjects.age, Gender: dataobjects.gender, Activity: `${dataobjects.activity}` };
+                            obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: index, Posture: dataobjects.posture, Age: dataobjects.age, Gender: dataobjects.gender, Activity: `${dataobjects.activity}` };
                             stationary.push(obj);
                         } else if(category === 'moving_maps') {
-                            obj = { Category: testNames(category), Date: date, Time: time, Point: index, Mode: dataobjects.mode }
+                            obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: index, Mode: dataobjects.mode }
                             moving.push(obj);
                         } else if (category === 'sound_maps') {
                             obj = { 
-                                Category: testNames(category), 
+                                'Activity Type': testNames(category), 
                                 Date: date, Time: time, Point: index, 
                                 'Average (dB)': dataobjects.average, 
                                 'Sound Types/Sources': `${dataobjects.sound_type}`,
@@ -89,31 +89,31 @@ export default function ActivityPage(props) {
                             }
                             sound.push(obj);
                         } else if (category === 'boundaries_maps') {
-                            obj = { Category: testNames(category), Date: date, Time: time, Point: index, Kind: dataobjects.kind, Description: dataobjects.description, Purpose: `${dataobjects.purpose}`, 'Value (ft/sq.ft)': dataobjects.value }
+                            obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: index, Kind: dataobjects.kind, Description: dataobjects.description, Purpose: `${dataobjects.purpose}`, 'Value (ft/sq.ft)': dataobjects.value }
                             boundaries.push(obj);
                         } else if(category === 'order_maps') {
                             dataobjects.points.forEach((point, ind)=>{
-                                obj = { Category: testNames(category), Date: date, Time: time, Point: ind, Kind: point.kind, Description: point.description }
+                                obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, Kind: point.kind, Description: `${point.description}` }
                                 order.push(obj);
                             })
                         } else if(category === 'light_maps') {
                             dataobjects.points.forEach((point, ind) => {
-                                obj = { Category: testNames(category), Date: date, Time: time, Point: ind, Description: point.light_description }
+                                obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, Description: point.light_description }
                                 lighting.push(obj);
                             })
                         } else if (category === 'nature_maps') {
                             Object.entries(dataobjects).forEach(([type, pointArr], ind0)=>{
                                 if(type === 'weather'){
-                                    obj = { Category: testNames(category), Date: date, Time: time, Point: 'N/A', 'Weather (temp/sky)': `${pointArr.temperature}\u00B0F`, 'Kind/Value (ft/sq.ft)': '', Description: `${pointArr.description}` }
+                                    obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: 'N/A', 'Category': 'Weather', Temperature: `${pointArr.temperature}\u00B0F`, 'Kind/Area (ft/sq.ft)': '', Description: `${pointArr.description}` }
                                     nature.push(obj);
                                 } else if(type === 'water' || type === 'vegetation'){
                                     pointArr.forEach((natureArea, ind1)=>{
-                                        obj = { Category: testNames(category), Date: date, Time: time, Point: ind1, 'Weather (temp/sky)': '', 'Kind/Area (ft/sq.ft)': `${natureArea.area}`, Description: `${natureArea.description}` }
+                                        obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind1, 'Category': 'Weather', Temperature: '', 'Kind/Area (ft/sq.ft)': `${natureArea.area}`, Description: `${natureArea.description}` }
                                         nature.push(obj);
                                     })
                                 } else if(type === 'animal') {
                                     pointArr.forEach((natureArea, ind1) => {
-                                        obj = { Category: testNames(category), Date: date, Time: time, Point: ind1, 'Weather (temp/sky)': '', 'Kind/Area (ft/sq.ft)': `${natureArea.kind}`, Description: `${natureArea.description}` }
+                                        obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind1, 'Category': 'Weather', Temperature: '', 'Kind/Area (ft/sq.ft)': `${natureArea.kind}`, Description: `${natureArea.description}` }
                                         nature.push(obj);
                                     })
                                 }
