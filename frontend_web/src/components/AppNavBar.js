@@ -29,18 +29,19 @@ const settings = [
     }
 ];
 
+// Updates state for token in session on refresh, back, 
 const AppNavBar = (props) => {
     const location = useLocation();
     const segment = location.pathname.split('/');
-    
+
     if(!location.state){
         location.state = {}
         location.state.userToken = props.passToken;
     }
 
+
     const invites = location?.state?.userToken?.user?.invites.length;
     
-    //console.log(invites);
     const userName = {
         fN: location.state?.userToken?.user.firstname ? location.state?.userToken?.user.firstname : 'Abc',
         lN: location.state?.userToken?.user.lastname ? location.state?.userToken?.user.lastname : 'Bcd',
@@ -82,6 +83,7 @@ const AppNavBar = (props) => {
     //SVG Home icon link button
     const home = <Link className='homeButton' to='/home' state={location.state}><Image src={logo1} className='icon-shadow' alt='logo' height='50px' /></Link>;
 
+    // Alternate versions for different screen widths
     return (
         <AppBar position='static'>
             <Container maxWidth='xl'>

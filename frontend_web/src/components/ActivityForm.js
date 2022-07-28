@@ -27,9 +27,9 @@ export default function ActivityForm(props) {
 
     const handleChange = (key, ver) => (e) => {
         setForm({ ...form, [key]: e.target.value });
-        //console.log(form);
     };
 
+    // Form info is sent to NewActivityTimes.js for time slots
     return(
         <div id='ActivityForm'>
             <div className='form-group'>

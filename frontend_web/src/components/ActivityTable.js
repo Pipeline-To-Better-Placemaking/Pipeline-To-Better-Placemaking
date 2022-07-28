@@ -14,7 +14,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { testNames } from '../functions/HelperFunctions';
 
-// Collapsible Table for Activity Page
+// Collapsible Table for Activity Page, Activity Titles
 function Row(props) {
     const row = props.row;
     const name = props.name;
@@ -53,6 +53,7 @@ function Row(props) {
 
 //Subtables for Map Page Data Drawer and Activity Page Collapsible Table
 //type 0 is the subtable for The activity page, 1 is the Map page table
+// handles alternate structures for different activities
 const subtable = (row, type, name, open) => (    
     <Box sx={{ margin: 1 }} className='subTable'>
         <Table stickyHeader size='small' aria-label='activity'>
@@ -239,13 +240,14 @@ const subtable = (row, type, name, open) => (
                                                     </TableCell>
                                                     <TableCell>
                                                         {
-                                                            `${nature.description}`
+                                                            type === 'animal' ? `Animal: ${nature.description}` : (type === 'water' ? `Water: ${nature.description}` : `Vegetation: ${nature.description}`)
                                                         }
                                                     </TableCell>
                                                     <TableCell>Location {in1 + 1}</TableCell>
                                                     <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
                                                 </TableRow>
-                                            )))
+                                            ))
+                                        )
                                 ))
                             :
                                 instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' ? 

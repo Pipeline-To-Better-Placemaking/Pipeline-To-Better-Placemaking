@@ -38,9 +38,10 @@ export default function FullMap(props) {
     const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [] :(props.type === 6 ? props.area : [])));
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreas : [];
+    // Access Universal Data passed around including the key for maps
     const loc = useLocation();
 
-    // hold the selections from the switch toggles
+    // Hold the selections from the switch toggles (from Map Drawers)
     const [stationaryCollections, setStationaryCollections] = React.useState({});
     const [movingCollections, setMovingCollections] = React.useState({});
     const [orderCollections, setOrderCollections] = React.useState({});
@@ -154,7 +155,8 @@ export default function FullMap(props) {
         }
     };
 
-    //html2canvas functions --- saveAs, convertToImage -----
+    // html2canvas functions --- saveAs, convertToImage -----
+    // Renders and image of the map
     function saveAs(url, filename) {
         var link = document.createElement('a');
         //simulated link and link click with removal
@@ -235,6 +237,7 @@ export default function FullMap(props) {
         setPlaceOn(!placeOn);
     }
 
+    // Info Window/Modal for Boundaries and Paths which do no have Google Maps Info Windows
     const boundsPathWindow = (title, date, time, index, ver) => (e) => {
         const popup = document.getElementById('pathBoundWindow');
         const inner = document.getElementById('popUpText');
@@ -271,7 +274,8 @@ export default function FullMap(props) {
         inner.innerHTML = '';
     }
 
-    //Renders all selected activity options to the corresponding markers, polylines and boundaries -----
+    // Renders all selected activity options to the corresponding markers, polylines and boundaries -----
+    // Conditionals handle alternate object structures
     const actCoords = (collections) => (
         Object.entries(collections).map(([title, object], index) => (
             Object.entries(object).map(([sdate, stimes])=>(
@@ -597,6 +601,7 @@ const Marker = (options) => {
         };
     }, [marker, icon, info, infoWindow, markerType]);
 
+    // handles any coordinates from DB with latitude and longitude
     React.useEffect(() => {
         if (marker) {
             marker.setOptions({ clickable: true, map: options.map, position: options.position && options.position.latitude ? (new google.maps.LatLng(options.position.latitude, options.position.longitude)) : (options.position ? options.position : null) });
@@ -619,6 +624,7 @@ const Bounds = ({boundsPathWindow, ...options}) => {
     const type = options.type;
     var tempArea = [];
 
+    // Handles any DB coordinates with latitude and longitude, which Google Maps does not accept
     if(!options.ver){
         (options.area).map((point) => (
             tempArea.push(new google.maps.LatLng(point.latitude, point.longitude))
@@ -633,11 +639,11 @@ const Bounds = ({boundsPathWindow, ...options}) => {
     const bounds = {
         area: {
             paths: area,
-            strokeColor: 'rgba(255,0,0,0.5)',
+            strokeColor: 'rgba(255,0,0,0.7)',
             strokeOpacity: 0.8,
             strokeWeight: 3,
-            fillColor: 'rgba(0,0,0,0.3)',     
-            clickable: false                 
+            fillColor: 'rgba(0,0,0,0.4)',
+            clickable: false
         },
         types: {
             paths: area,
@@ -681,10 +687,12 @@ const Bounds = ({boundsPathWindow, ...options}) => {
 const Path = ({boundsPathWindow, ...options}) => {
     const type = options.title;
     var tempPath = [];
+
+    // Handling any arrays from DB that have latitude, longitude
     (options.path).map((point) => (
         tempPath.push(new google.maps.LatLng(point.latitude, point.longitude))
     ))
-    //console.log(tempPath);
+    
     const [path, setPath] = React.useState();
     const colors = {
         Walking: '#0000FF',
@@ -717,6 +725,7 @@ const Path = ({boundsPathWindow, ...options}) => {
         };
     }, [path, lines.style]);
 
+    // Updates changes in path (drawing a new project area)
     React.useEffect(() => {
         if (path) {
             path.setOptions({ map: options.map });
@@ -734,6 +743,7 @@ const Path = ({boundsPathWindow, ...options}) => {
     return null;
 }
 
+// Function for drawing a new project Area
 const NewArea = (points) => (
     !points ? null : 
         (points.length <= 1 ?
@@ -759,6 +769,7 @@ const NewArea = (points) => (
         )
 );
 
+// Toggleable Places Widget for a New Project
 interface PlaceProps extends google.maps.places.AutocompleteOptions {
     onChange?: (place: google.maps.places.Autocomplete) => void;
 }
