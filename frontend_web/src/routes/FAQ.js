@@ -15,6 +15,9 @@ export default function FAQ(){
                     <li><a href="#nptlink"> Nature Prevalence Tutorial </a></li>
                     <li><a href="#lptlink"> Lighting Profile Tutorial </a></li>
                     <li><a href="#aooltlink"> Absence of Order Locator Tutorial </a></li>
+                    <li><a href="#piptlink"> People in Place Tutorial </a></li>
+                    <li><a href="#pimtlink"> People in Motion Tutorial </a></li>
+                    <li><a href="#cstlink"> Community Survey Tutorial </a></li>
                   </ul>
           </div>
               <h2><a id="aptlink"> Acoustical Profile Tutorial </a></h2>
@@ -300,6 +303,125 @@ export default function FAQ(){
                         all the administrative information for that test. Below that you will have the option to view the test
                         results on a map by clicking on the ‘View Map’ button. Below the view map button you will also
                         see data on the results that were collected for that test.
+                    </p>
+
+                  <h2><a id="piptlink">  People in Place Tutorial </a></h2>
+                  <h3><u> Creating the Test </u></h3>
+                    <p> Step 1: Go to the create/signup for a test page that can be accessed by going to the
+                        collaboration page, then selecting Team -> Project <br /><br />
+                        Step 2: Press ‘Create Research Activity’ <br /><br />
+                        Step 3: Enter the information required for the test. You can select which test you want to create
+                        using the dropdown menu. Depending on which test you have selected, the name of the test will
+                        automatically default to that test’s name. We recommend inputting your own name as leaving the
+                        default name can be confusing when you have multiple tests of the same name. Then you will
+                        select the date in which you want the test to be completed. <br /><br />
+                        Step 4: For the People in Place Test, you will have to set the time that you would like the
+                        researcher to spend at each standing point. The default is 15 minutes. Once you have filled out all the
+                        above information, press next. <br /><br />
+                        Step 5: Once you press next, it will take you to the time slot page in which you will create a time
+                        slot for the test to be completed. Press ‘Create Time Slot’. <br /><br />
+                        Step 6: Once you press create time slot, it will allow you to input a start time and input the
+                        number of researchers (users that can signup for the test). Once finished, press ‘Complete’ and
+                        the test will be created.
+                    </p>
+
+                  <h3><u> Completing the Test </u></h3>
+                    <p> Step 1: Sign up for the test as you would any other test and press begin. <br /><br />
+                        Step 2: Once you press begin it will open the test and show you the project site. You can press
+                        start in the top left to start the test. <br /><br />
+                        Step 3: Coming soon. <br /><br />
+                        Step 4: Coming soon. <br /><br />
+                        Step 5: Once the test is completed, the results will automatically be saved and can be viewed on
+                        the home page along with all other projects and their results. It can also be viewed on the
+                        website. </p>
+
+                  <h3><u> Viewing the Results </u></h3>
+                    <p> Step 1: Go to the home page of the mobile app. On the home page you will see a list titled
+                        ‘Results’ that will contain each project you are a part of. <br /><br />
+                        Step 2: Select the project you would like to view the results for. It will then take you to the main
+                        results page where you can see a map of the project site, administrative information about that
+                        project, a button to receive the results in a CSV file via email, and pages of lists that contain tests
+                        that were completed for the project. <br /><br />
+                        Step 3: To view a specific test, click on the test you would like to see. Once you select a specific
+                        test, you will be taken to the results page for that specific test. At the top you will be able to see
+                        all the administrative information for that test. Below that you will have the option to view the test
+                        results on a map by clicking on the ‘View Map’ button. Below the view map button you will also
+                        see data on the results that were collected for that test.
+                    </p>
+
+                 <h2><a id="pimtlink">  People in Motion Tutorial </a></h2>
+                  <h3><u> Creating the Test </u></h3>
+                    <p> Step 1: Go to the create/signup for a test page that can be accessed by going to the
+                        collaboration page, then selecting Team -> Project <br /><br />
+                        Step 2: Press ‘Create Research Activity’ <br /><br />
+                        Step 3: Enter the information required for the test. You can select which test you want to create
+                        using the dropdown menu. Depending on which test you have selected, the name of the test will
+                        automatically default to that test’s name. We recommend inputting your own name as leaving the
+                        default name can be confusing when you have multiple tests of the same name. Then you will
+                        select the date in which you want the test to be completed. <br /><br />
+                        Step 4: For the People in Motion Test, you will have to set the time that you would like the
+                        researcher to spend at each standing point. The default is 15 minutes. Once you have filled out all the
+                        above information, press next. <br /><br />
+                        Step 5: Once you press next, it will take you to the time slot page in which you will create a time
+                        slot for the test to be completed. Press ‘Create Time Slot’. <br /><br />
+                        Step 6: Once you press create time slot, it will allow you to input a start time and input the
+                        number of researchers (users that can signup for the test). Once finished, press ‘Complete’ and
+                        the test will be created.
+                    </p>
+
+                  <h3><u> Completing the Test </u></h3>
+                    <p> Step 1: Sign up for the test as you would any other test and press begin. <br /><br />
+                        Step 2: Once you press begin it will open the test and show you the project site. You can press
+                        start in the top left to start the test. <br /><br />
+                        Step 3: Coming soon. <br /><br />
+                        Step 4: Coming soon. <br /><br />
+                        Step 5: Once the test is completed, the results will automatically be saved and can be viewed on
+                        the home page along with all other projects and their results. It can also be viewed on the
+                        website. </p>
+
+                  <h3><u> Viewing the Results </u></h3>
+                    <p> Step 1: Go to the home page of the mobile app. On the home page you will see a list titled
+                        ‘Results’ that will contain each project you are a part of. <br /><br />
+                        Step 2: Select the project you would like to view the results for. It will then take you to the main
+                        results page where you can see a map of the project site, administrative information about that
+                        project, a button to receive the results in a CSV file via email, and pages of lists that contain tests
+                        that were completed for the project. <br /><br />
+                        Step 3: To view a specific test, click on the test you would like to see. Once you select a specific
+                        test, you will be taken to the results page for that specific test. At the top you will be able to see
+                        all the administrative information for that test. Below that you will have the option to view the test
+                        results on a map by clicking on the ‘View Map’ button. Below the view map button you will also
+                        see data on the results that were collected for that test.
+                    </p>
+
+                 <h2><a id="cstlink">  Community Survey Tutorial </a></h2>
+                  <h3><u> Creating the Test </u></h3>
+                    <p> Step 1: Go to the create/signup for a test page that can be accessed by going to the
+                        collaboration page, then selecting Team -> Project <br /><br />
+                        Step 2: Press ‘Create Research Activity’ <br /><br />
+                        Step 3: Enter the information required for the test. You can select which test you want to create
+                        using the dropdown menu. Depending on which test you have selected, the name of the test will
+                        automatically default to that test’s name. We recommend inputting your own name as leaving the
+                        default name can be confusing when you have multiple tests of the same name. Then you will
+                        select the date in which you want the test to be completed. <br /><br />
+                        Step 4: Coming soon. <br /><br />
+                        Step 5: Once you press next, it will take you to the time slot page in which you will create a time
+                        slot for the test to be completed. Press ‘Create Time Slot’. <br /><br />
+                        Step 6: Once you press create time slot, it will allow you to input a start time and input the
+                        number of researchers (users that can signup for the test). Once finished, press ‘Complete’ and
+                        the test will be created.
+                    </p>
+
+                  <h3><u> Completing the Test </u></h3>
+                    <p> Step 1: Sign up for the test as you would any other test and press begin. <br /><br />
+                        Step 2: Coming soon. <br /><br />
+                        Step 3: Coming soon. <br /><br />
+                        Step 4: Coming soon. <br /><br />
+                        Step 5: Coming soon. </p>
+
+                  <h3><u> Viewing the Results </u></h3>
+                    <p> Step 1: Coming soon. <br /><br />
+                        Step 2: Coming soon. <br /><br />
+                        Step 3: Coming soon.
                     </p>
             </div>
         </div>
