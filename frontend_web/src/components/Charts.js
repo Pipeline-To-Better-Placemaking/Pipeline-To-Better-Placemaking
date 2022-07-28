@@ -88,7 +88,7 @@ export default function Charts(props) {
         Object.entries(data).map(([dateTime, arr])=>(
             arr.forEach((arr1, index)=>{
                 arr1.forEach((obj, ind)=>{
-                    obj.instance = `S${ind}`;
+                    obj.instance = `S${ind+1}`;
                     measurements.push(obj);
                     Object.entries(obj).forEach(([key, dataVal])=>{
                         if (key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5') {
@@ -134,8 +134,6 @@ export default function Charts(props) {
                 indexes.push(index);
             }
         })
-
-        console.log(data);
 
         return(
             <div className='Charts'>
@@ -191,7 +189,7 @@ export default function Charts(props) {
         ]
 
         data.forEach((obj, ind)=>{
-            obj.instance = `S${ind}`;
+            obj.instance = `S${ind+1}`;
             Object.entries(obj).forEach(([key, dataVal], index)=>{
                 if(key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5'){
                     if(key === 'decibel_1'){
@@ -747,17 +745,18 @@ export default function Charts(props) {
                 for(const index in arr[ind0]) {
                     if(arr[0][index].kind === 'Shelter') {
                         shelter += arr[0][index].value ;
+                        ind++;
                     } else if(arr[0][index].kind === 'Material') {
                         material += arr[0][index].value;
+                        ind++;
                     } else {
-                        arr[0][index].instance = `B${ind}`;
+                        arr[0][index].instance = `C${ind+1}`;
                         constructed.push(arr[0][index]);
                         ind++;
                     }
                 };
             };
         };
-        console.log(constructed);
 
         var totalPerc = [];
         totalPerc[0] = (shelter / projectArea) * 100;
@@ -822,14 +821,13 @@ export default function Charts(props) {
         for (const obj of Object.values(data)) {
             if (obj.kind === 'Shelter' || obj.kind === 'Material') {
                 horizontal.push(obj);
+                ind++;
             } else {
-                obj.instance = `C${ind}`;
+                obj.instance = `C${ind+1}`;
                 constructed.push(obj);
                 ind++;
             }
         };
-
-        console.log(constructed);
 
         return(
             <div id='boundCharts' className='Charts'>
