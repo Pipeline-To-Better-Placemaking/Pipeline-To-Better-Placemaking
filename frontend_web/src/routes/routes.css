@@ -203,7 +203,7 @@ div#createCard > div.card-body{
 div#editAreaMap > div#mapDoc, div#editAreaMap div#mapFrame, div#editPointMap>div#mapDoc,
 div#editPointMap div#mapFrame{
     height: calc(100vh - 69px);
-    width: 99vw;
+    width: calc(100vw - 1px);
     overflow-x: hidden;
 }
 
@@ -289,7 +289,7 @@ form.MuiBox-root {
 #MapPage {
     height: calc(100vh - 113px);
     background-color: rgb(56, 56, 56);
-    width: 99vw;
+    width: calc(100vw - 1px);
 }
 
 #newProjectButton, a#newTeamButton {

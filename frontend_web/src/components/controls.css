@@ -308,7 +308,7 @@ div#projectCreate div#mapFrame {
 }
 
 div#newProject div#mapFrame, div#newPoints div#mapFrame, div#newArea div#mapFrame {
-    width: 100vw;
+    width: calc(100vw - 1px);
     height: calc(100vh - 69px);
 }
 
