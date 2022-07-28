@@ -14,7 +14,7 @@ export default function DisplayCards(props) {
     //Surveyor Cards have surveyor name in header
     const surveyorCards = (surveyors) => (
         Object.values(surveyors).map((surveyor, index) => (
-            <Card key={ 's' + index } className='displayCard'>
+            <Card key={ 's' + index } className='displayCard' style={{display: 'block'}}>
                 <CardHeader title={ surveyor.name } />
                 { surveyorActivities(surveyor.activities) }
             </Card>
@@ -23,7 +23,7 @@ export default function DisplayCards(props) {
 
     //Activity renders in the body
     const surveyorActivities = (activities) => (
-        <CardContent>
+        <CardContent style={{display: 'flex', flexDirection: 'column', justifyContent:'center', alignContent: 'center'}}>
             { activities.map((activity, index) => (
                 <div key={ 'a' + index } className='cardRow'>
                     <Typography variant='text' component='div'>
