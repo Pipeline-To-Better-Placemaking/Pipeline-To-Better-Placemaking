@@ -13,9 +13,11 @@ export default function EditAreaMap() {
     var updatedPoints = [];
     var updatedArea = {};
 
-    area.points.forEach((point, index)=>(
-        temp.push({ lat: point.latitude, lng: point.longitude})
-    ))
+    if(loc.state.area){
+        area.points.forEach((point, index)=>(
+            temp.push({ lat: point.latitude, lng: point.longitude})
+        ))
+    }
 
     const updateArea = (newarea) => async (e) => {
         e.preventDefault();
@@ -79,7 +81,7 @@ export default function EditAreaMap() {
                 value={name}
                 onChange={e => setName(e.target.value)}
             />
-            <Map center={temp[0]} area={temp} type={6} zoom={16} update={loc.state.area ? updateArea : addArea}/>
+            <Map center={loc.state.area ? temp[0] : loc.state.center} area={temp} type={6} zoom={16} update={loc.state.area ? updateArea : addArea}/>
         </div>
     );
 }

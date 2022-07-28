@@ -414,23 +414,42 @@ export default function FullMap(props) {
                         </div>
                     </div>
                     :
-                    <div id='editAreaBlock'>
-                        <Button
-                            id='newAreaButton'
-                            className='newHoveringButtons confirm'
-                            onClick={props.update(clicks)}
-                        >
-                            Update Bounds
-                        </Button>
-                        <Button
-                            className='newHoveringButtons confirm'
-                            component={Link}
-                            state={loc.state}
-                            to={`../edit/${loc.pathname.split('/')[5]}/areas`}>
+                    loc.state.area ? (
+                        <div id='editAreaBlock'>
+                            <Button
+                                id='newAreaButton'
+                                className='newHoveringButtons confirm'
+                                onClick={props.update(clicks)}
+                            >
+                                Update Area
+                            </Button>
+                            <Button
+                                className='newHoveringButtons confirm'
+                                component={Link}
+                                state={loc.state}
+                                to={`../edit/${loc.pathname.split('/')[5]}/areas`}>
+                                    Cancel
+                            </Button>
+                            <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                        </div>) 
+                    : 
+                        <div id='editAreaBlock'>
+                            <Button
+                                id='newAreaButton'
+                                className='newHoveringButtons confirm'
+                                onClick={props.update(clicks)}
+                            >
+                                Add Area
+                            </Button>
+                            <Button
+                                className='newHoveringButtons confirm'
+                                component={Link}
+                                state={loc.state}
+                                to={`../edit/${loc.pathname.split('/')[5]}/areas`}>
                                 Cancel
-                        </Button>
-                        <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
-                    </div>
+                            </Button>
+                            <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                        </div>
                 )
                 : null
             }

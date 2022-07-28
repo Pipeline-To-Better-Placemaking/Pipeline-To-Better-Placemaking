@@ -128,7 +128,7 @@ export default function EditProject() {
                                         type='submit'
                                         size='lg'
                                         id='updateAreas'
-                                        state={{ ...loc.state, areas: subAreas }}
+                                        state={{ ...loc.state, areas: subAreas, center: center }}
                                         to='areas'
                                     >
                                         Edit Areas
