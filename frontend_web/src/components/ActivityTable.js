@@ -104,7 +104,7 @@ const subtable = (row, type, name, open) => (
                                             : pointArr.map((natureObj, i3)=>(                                        
                                                 <TableRow key={`${index}.${i1}`}>
                                                     <TableCell colSpan={2} className='value'>
-                                                        {natureType === 'animal' ? `${natureObj.kind}` : `${natureObj.area} sq.ft.`}
+                                                        {natureType === 'animal' ? `${natureObj.kind}` : `${natureObj.area} ft\u00B2`}
                                                     </TableCell>
                                                     <TableCell colSpan={2} className='type'>
                                                         {natureType === 'animal' ? `Animal: ${natureObj.description}` : (natureType === 'water' ? `Water: ${natureObj.description}` : `Vegetation: ${natureObj.description}`)}
@@ -182,7 +182,7 @@ const subtable = (row, type, name, open) => (
                                         </TableRow>
                                         <TableRow key={ index }>
                                             <TableCell colSpan={ 2 } className='value'>
-                                                {object.average ? `${object.average} dB` : (object.value && (object.kind === 'Construction' || object.kind === 'Constructed')? `${object.value} ft.` : (object.value && object.kind ? `${object.value} sq.ft.` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
+                                                {object.average ? `${object.average} dB` : (object.value && (object.kind === 'Construction' || object.kind === 'Constructed') ? `${object.value} ft` : (object.value && object.kind ? `${object.value} ft\u00B2` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
                                             </TableCell>
                                             <TableCell colSpan={ 2 } className='type'>
                                                 {object.average ? `${object.sound_type}` : (object.kind ? (`${object.kind} (${object.description})`) : (object.age ? `${object.age} ${object.gender} (${object.activity})` : 'N/A'))}
@@ -195,7 +195,7 @@ const subtable = (row, type, name, open) => (
                                 :
                                     <TableRow key={ index }>
                                         <TableCell colSpan={ 2 } className='value'>
-                                            {object.average ? `${object.average} dB` : (object.value && (object.kind === 'Construction' || object.kind === 'Constructed')? `${object.value} ft.` : (object.value && object.kind ? `${object.value} sq.ft.` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
+                                            {object.average ? `${object.average} dB` : (object.value && (object.kind === 'Construction' || object.kind === 'Constructed') ? `${object.value} ft` : (object.value && object.kind ? `${object.value} ft\u00B2` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
                                         </TableCell>
                                         <TableCell colSpan={ 2 } className='type'>
                                             {object.average ? `${object.sound_type}` : (object.kind ? (`${object.kind} (${object.description})`) : (object.age ? `${object.age} ${object.gender} (${object.activity})` : 'N/A'))}
@@ -235,7 +235,7 @@ const subtable = (row, type, name, open) => (
                                                     </TableCell>
                                                     <TableCell colSpan={1} className='value'>
                                                         {
-                                                            nature.area ? `${nature.area} sq.ft.` : nature.kind
+                                                            nature.area ? `${nature.area} ft\u00B2` : nature.kind
                                                         }
                                                     </TableCell>
                                                     <TableCell>
@@ -275,7 +275,7 @@ const subtable = (row, type, name, open) => (
                                         </TableCell>
                                         <TableCell colSpan={1} className='value'>
                                             {
-                                                instance.split('.')[0] === 'sound_maps' ? `${inst.average} dB` : (inst.value && (inst.kind === 'Construction' || inst.kind === 'Constructed') ? `${inst.value} ft.` : (inst.value && inst.kind ? `${inst.value} sq.ft.` : (inst.posture ? inst.posture : (inst.mode ? `${inst.mode}` : 'N/A'))))
+                                                instance.split('.')[0] === 'sound_maps' ? `${inst.average} dB` : (inst.value && (inst.kind === 'Construction' || inst.kind === 'Constructed') ? `${inst.value} ft` : (inst.value && inst.kind ? `${inst.value} ft\u00B2` : (inst.posture ? inst.posture : (inst.mode ? `${inst.mode}` : 'N/A'))))
                                             }
                                         </TableCell>
                                         <TableCell>

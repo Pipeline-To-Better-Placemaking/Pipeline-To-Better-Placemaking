@@ -799,7 +799,7 @@ export default function Charts(props) {
                 <BarChart width={ width } height={ height } data={ constructed }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='instance' />
-                    <YAxis label={{ value: 'Distance (ft.)', angle: -90, position: 'insideLeft' }} />
+                    <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
                     <Tooltip />
                     <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
                 </BarChart>
@@ -844,7 +844,7 @@ export default function Charts(props) {
                 <BarChart width={ width } height={ height } data={ constructed }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='instance' />
-                    <YAxis label={{ value: 'Distance (ft.)', angle: -90, position: 'insideLeft' }} />
+                    <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
                     <Tooltip />
                     <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
                 </BarChart>
