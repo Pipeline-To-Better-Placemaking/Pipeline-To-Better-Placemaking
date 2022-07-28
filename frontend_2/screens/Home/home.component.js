@@ -32,6 +32,8 @@ export const HomeScreen = ( props ) => {
   }
 
   const onCompareConfirm = async () => {
+    setLoading(true);
+    
     let projects = []
     let allResults = []
     let stationaryResults = []
@@ -96,7 +98,7 @@ export const HomeScreen = ( props ) => {
     };
 
     await props.setFilterCriteria(filteredResults);
-
+    setLoading(false);
     props.navigation.navigate("CompareFilteredView");
   }
 
