@@ -468,7 +468,7 @@ export default function FullMap(props) {
                                 center: center, 
                                 title: title, 
                                 area: areaData, 
-                                points: clicks, 
+                                points: clicks,
                                 zoom: zoom
                             }}
                         >
