@@ -141,7 +141,7 @@ div#deleteWindow button#deleteButton, div#deleteWindow button#cancelButton{
     left: calc(100vw - 450px)
 }
 
-#newProjectInput, #newAreaBlock, div.newPointBlock, #editAreaBlock{
+#newProjectInput, #newAreaBlock, div.newPointBlock, div#editAreaBlock{
     display: flex;
     flex-direction: row;
     justify-content: center;
