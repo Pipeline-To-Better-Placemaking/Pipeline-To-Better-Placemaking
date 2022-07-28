@@ -28,15 +28,21 @@ export default function App() {
     const [token, setToken] = React.useState();
 
     // true == active user (logged in)
-    const [state, setState] = React.useState(token && token !== {} ? true : /*(sessionStorage.getItem("userToken") !== '' ? : false)*/ false);
+    const [state, setState] = React.useState(token && token !== {} ? true : false);
     
     // Set user vars to access the user home page
     function handleOnLogin(active, token) {
         // Will be used to block users from user pages unless logged in
         setState(active);
         setToken(token);
-        sessionStorage.setItem("userToken", token);
-        console.log(sessionStorage.getItem("userToken"));
+        sessionStorage.setItem('userToken', JSON.stringify(token));
+        console.log(JSON.parse(sessionStorage.userToken));
+    }
+
+    function updateToken(token){
+        setToken(token);
+        sessionStorage.setItem('userToken', JSON.stringify(token));
+        console.log(JSON.parse(sessionStorage.userToken));
     }
 
     // clear all fields on logout

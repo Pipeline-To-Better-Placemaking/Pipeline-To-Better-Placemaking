@@ -104,9 +104,9 @@ export default function ActivityPage(props) {
                         } else if (category === 'nature_maps') {
                             Object.entries(dataobjects).forEach(([type, pointArr], ind0)=>{
                                 if(type === 'weather'){
-                                    obj = { Category: testNames(category), Date: date, Time: time, Point: 'N/A', 'Weather (temp/sky)': `${pointArr.temperature}`, 'Kind/Value (ft/sq.ft)': '', Description: `${pointArr.description}` }
+                                    obj = { Category: testNames(category), Date: date, Time: time, Point: 'N/A', 'Weather (temp/sky)': `${pointArr.temperature}\u00B0F`, 'Kind/Value (ft/sq.ft)': '', Description: `${pointArr.description}` }
                                     nature.push(obj);
-                                } else if(type === 'water'){
+                                } else if(type === 'water' || type === 'vegetation'){
                                     pointArr.forEach((natureArea, ind1)=>{
                                         obj = { Category: testNames(category), Date: date, Time: time, Point: ind1, 'Weather (temp/sky)': '', 'Kind/Area (ft/sq.ft)': `${natureArea.area}`, Description: `${natureArea.description}` }
                                         nature.push(obj);
