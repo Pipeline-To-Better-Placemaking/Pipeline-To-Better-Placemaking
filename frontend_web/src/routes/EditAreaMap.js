@@ -8,7 +8,7 @@ export default function EditAreaMap() {
     const loc = useLocation();
     const nav = useNavigate();
     const area = loc.state.area ? loc.state.area : {}
-    const [name, setName] = React.useState(area.title);
+    const [name, setName] = React.useState(area.title ? area.title : 'New Area');
     var temp = [];
     var updatedPoints = [];
     var updatedArea = {};

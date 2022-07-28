@@ -414,14 +414,13 @@ export default function FullMap(props) {
                         </div>
                     </div>
                     :
-                    loc.state.area ? (
                         <div id='editAreaBlock'>
                             <Button
                                 id='newAreaButton'
                                 className='newHoveringButtons confirm'
                                 onClick={props.update(clicks)}
                             >
-                                Update Area
+                                {loc.state.area ? 'Update Area' : 'Add Area'}
                             </Button>
                             <Button
                                 className='newHoveringButtons confirm'
@@ -431,43 +430,25 @@ export default function FullMap(props) {
                                     Cancel
                             </Button>
                             <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
-                        </div>) 
-                    : 
-                        <div id='editAreaBlock'>
-                            <Button
-                                id='newAreaButton'
-                                className='newHoveringButtons confirm'
-                                onClick={props.update(clicks)}
-                            >
-                                Add Area
-                            </Button>
-                            <Button
-                                className='newHoveringButtons confirm'
-                                component={Link}
-                                state={loc.state}
-                                to={`../edit/${loc.pathname.split('/')[5]}/areas`}>
-                                Cancel
-                            </Button>
-                            <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
                         </div>
                 )
                 : null
             }
-            { props.type === 7 ? 
-                <div className='newPointBlock'>
-                    <Button
-                        id='newPointButton'
-                        className='newHoveringButtons confirm'
-                        onClick={props.update(center)}
-                    >
-                        Update Point
-                    </Button>
-                    <Button
-                        className='newHoveringButtons confirm'
-                        component={Link}
-                        state={loc.state}
-                        to={`../edit/${loc.pathname.split('/')[5]}/points`}>Cancel</Button>
-                </div>
+            { props.type === 7 ?
+                    <div className='newPointBlock'>
+                        <Button
+                            id='newPointButton'
+                            className='newHoveringButtons confirm'
+                            onClick={props.update(center)}
+                        >
+                            {loc.state.point ? 'Update Point' : 'Add Point'}
+                        </Button>
+                        <Button
+                            className='newHoveringButtons confirm'
+                            component={Link}
+                            state={loc.state}
+                            to={`../edit/${loc.pathname.split('/')[5]}/points`}>Cancel</Button>
+                    </div>
                 : null
             }
             { props.type === 3 ? 

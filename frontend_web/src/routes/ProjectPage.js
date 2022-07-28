@@ -118,8 +118,6 @@ export default function ProjectPage(){
 
             var date = new Date(dateTime);
             var format = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
-            console.log(date);
-            console.log(format);
             var map = results;
 
             if (!map[apiCategory[cat]]) {
@@ -129,17 +127,16 @@ export default function ProjectPage(){
                 map[apiCategory[cat]][format] = {};
             }
 
-            var time = new Date(response?.data.date);
-            console.log(time);
-            var set = time.toLocaleTimeString();
-            console.log(set);
+            if (response?.data && response?.data.date && response?.data.date !== null){
+                var time = new Date(response?.data.date);
+                var set = time.toLocaleTimeString();
 
-            if (map[apiCategory[cat]][format][set]){
-                map[apiCategory[cat]][format][`${set} (${index})`] = await response.data;
-            }else{
-                map[apiCategory[cat]][format][set] = await response.data;
+                if (map[apiCategory[cat]][format][set]){
+                    map[apiCategory[cat]][format][`${set} (${index})`] = await response.data;
+                }else{
+                    map[apiCategory[cat]][format][set] = await response.data;
+                }
             }
-
             /* Structure reformatted for info and access ex: 
                 results = {
                     light_maps: {

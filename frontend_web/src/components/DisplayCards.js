@@ -23,7 +23,7 @@ export default function DisplayCards(props) {
 
     //Activity renders in the body
     const surveyorActivities = (activities) => (
-        <CardContent style={{display: 'flex', flexDirection: 'column', justifyContent:'center', alignContent: 'center'}}>
+        <CardContent style={{display: 'flex', flexDirection: 'column', justifyContent:'space-evenly', width: '100%'}}>
             { activities.map((activity, index) => (
                 <div key={ 'a' + index } className='cardRow'>
                     <Typography variant='text' component='div'>
