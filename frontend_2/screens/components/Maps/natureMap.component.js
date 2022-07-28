@@ -235,18 +235,21 @@ export function NatureMap(props) {
 
     // checks if a data point already exists at that location
     const checkPoint = (marker) =>{
-        let index = -1;
-        // loops through all the data points checking to see if its lat and long values are the same
-        for(let i = 0; i < props.dataPoints.length; i++){
-            if(props.dataPoints[i].marker.latitude === marker.latitude && props.dataPoints[i].marker.longitude === marker.longitude){
-                // if so set the index to its index in the data array
-                index = i
+        // if the linetool bar is pulled up, we don't need to try deleting/adding any marker
+        if(!props.cond){
+            let index = -1;
+            // loops through all the data points checking to see if its lat and long values are the same
+            for(let i = 0; i < props.dataPoints.length; i++){
+                if(props.dataPoints[i].marker.latitude === marker.latitude && props.dataPoints[i].marker.longitude === marker.longitude){
+                    // if so set the index to its index in the data array
+                    index = i
+                }
             }
+            // if the index is still -1, there is no point at that location so begin to add a marker
+            if(index === -1) props.addMarker(marker)
+            // otherwise, a point exists at that location so begin to delete the marker
+            else props.deleteMarker(index)
         }
-        // if the index is still -1, there is no point at that location so begin to add a marker
-        if(index === -1) props.addMarker(marker)
-        // otherwise, a point exists at that location so begin to delete the marker
-        else props.deleteMarker(index)
     }
 
     return(
