@@ -572,9 +572,9 @@ const Marker = (options) => {
     let style = {
         path: shape === 'triangle' ? 'M 0 2 L 2 2 L 1 0.25 z' : ( shape === 'lightcircle' ? 'M 10, 20 a 10, 10 0 1, 1 20, 0 a 10, 10 0 1, 1 -20, 0 M 19.5, 20 a 0.5, 0.5 0 1, 1 1, 0 a 0.5, 0.5 0 1, 1 -1, 0' : google.maps.SymbolPath.CIRCLE),
         fillColor: markerType ? colors[markerType][0] : colors.none[0],
-        fillOpacity: (markerSize ? 0.3 : 0.5),
+        fillOpacity: (markerSize ? 0.4 : (markerType === 'Behavior' || markerType === 'Maintenance' ? 1 :0.5)),
         scale: (markerSize ? (markerSize/2) : (shape === 'lightcircle' ? 1 : 10)),
-        strokeWeight: 1, 
+        strokeWeight: 1,
         strokeColor: markerType ? colors[markerType][1] : colors['none'][0],
         anchor: shape === 'lightcircle' ? new google.maps.Point(19.5, 20) : (shape === 'triangle' ? new google.maps.Point(1, 1) : new google.maps.Point(0,0))
     };
@@ -647,10 +647,10 @@ const Bounds = ({boundsPathWindow, ...options}) => {
         },
         types: {
             paths: area,
-            strokeColor: type === 'water' ? '#2578C5' : (type === 'vegetation' ? '#ff0000' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#FFFFFF')))),
+            strokeColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#ff0000' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#FFFFFF')))),
             strokeWeight: 2,
-            fillColor: type === 'water' ? '#2578C5' : (type === 'vegetation' ? '#BEFF05' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' :'#C4C4C4')))),
-            fillOpacity: 0.45,
+            fillColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#BEFF05' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' :'#C4C4C4')))),
+            fillOpacity: 0.40,
             clickable: type === 'New' ? false : true
         },
     }

@@ -74,6 +74,8 @@ export default function Charts(props) {
         var low = {};
         var measurements = [];
         var indexes = [0];
+        //var soundLoc = [];
+        //var avgs = [];
 
         var indexing = [
             'Animals',
@@ -177,6 +179,8 @@ export default function Charts(props) {
         var indexes = [0];
         var high = {};
         var low = {};
+        var soundLoc = [];
+        var avgs = [];
 
         var indexing = [
             'Animals',
@@ -190,7 +194,12 @@ export default function Charts(props) {
 
         data.forEach((obj, ind)=>{
             obj.instance = `Location ${ind+1}`;
+            var locArr = [];
             Object.entries(obj).forEach(([key, dataVal], index)=>{
+                locArr.push({ instance: key, recording: dataVal.recording })
+                if (key === 'average') {
+                    avgs.push(dataVal);
+                }
                 if(key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5'){
                     if(key === 'decibel_1'){
                         high = dataVal
@@ -221,6 +230,8 @@ export default function Charts(props) {
                     }
                 }
             })
+            soundLoc.push(locArr);
+            console.log(soundLoc);
         })
 
         frequent.forEach((value, index)=>{
@@ -231,6 +242,9 @@ export default function Charts(props) {
                indexes.push(index);
             }
         })
+
+        console.log(avgs);
+        console.log(soundLoc);
 
         return(
             <div className='Charts'>
@@ -257,6 +271,22 @@ export default function Charts(props) {
                     {indexes.map((value) => (`${indexing[value]} `))}
                 </div>
                 <br/>
+                {soundLoc.map((position, index) => (
+                    <>
+                        {console.log(position)}
+                        <BarChart width={width} height={height} data={position}>
+                            <CartesianGrid strokeDasharray='3 3' />
+                            <XAxis dataKey='instance' />
+                            <YAxis label={{ value: 'Decibels', angle: -90, position: 'insideLeft' }} />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey={'recording'} fill='#B073FF' />
+                        </BarChart>
+                        <br />
+                        <b>Average (Location {index + 1}): {avgs[index]}</b>
+                        <br />
+                    </>
+                ))}
                 <BarChart width={ width } height={ height } data={ data }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='instance' />
