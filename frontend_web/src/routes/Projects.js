@@ -94,7 +94,7 @@ export default function Projects(props){
                     {teamInfo?.title}
                 </h1>
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
-                    <div style={{ alignSelf: 'center' }}>{teamInfo?.users[0].firstname} {teamInfo?.users[0].lastname}</div>
+                    <div style={{ alignSelf: 'center' }}>Owner: {teamInfo?.users[0].firstname} {teamInfo?.users[0].lastname}</div>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
                         {teamInfo?.users.map((user, index)=>(
                             index !== (teamInfo?.users.length - 1) && teamInfo?.users[index].role !== 'owner' ? 

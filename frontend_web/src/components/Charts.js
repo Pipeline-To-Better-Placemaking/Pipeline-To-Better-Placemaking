@@ -14,7 +14,7 @@ export default function Charts(props) {
     const data = props.data;
     const selection = props.selection;
     const type = props.type;
-    const projectArea = Area(props.projArea);
+    const projectArea = props.projArea ? Area(props.projArea) : null;
 
     const boundsColor = {
         Constructed: '#FF00E5',
@@ -160,8 +160,7 @@ export default function Charts(props) {
                     <b>Most Frequent Reported Source(s):</b>
                     <br />
                     {indexes.map((value) => (`${indexing[value]} `))}
-                </div>
-                <br />
+                </div>&nbsp;
                 <br />
                 <b>Location Averages</b>
                 <BarChart width={width} height={height} data={measurements}>
@@ -268,11 +267,11 @@ export default function Charts(props) {
                     <b>Most Frequent Reported Source(s):</b>
                     <br />
                     {indexes.map((value) => (`${indexing[value]} `))}
-                </div>
+                </div>&nbsp;
                 <br/>
                 {soundLoc.map((position, index) => (
                     <div style={{borderBottom: '1px solid black', textAlign: 'center'}}>
-                        <b>Location {index+1}</b>
+                        <div style={{ backgroundColor: '#B073FF' }}><b>Location {index+1}</b></div>
                         <BarChart width={width} height={height} data={position}>
                             <CartesianGrid strokeDasharray='3 3' />
                             <XAxis dataKey='instance' />
@@ -285,7 +284,7 @@ export default function Charts(props) {
                         <b>Average (Location {index + 1}): {avgs[index]}</b>
                         <br />
                     </div>
-                ))}
+                ))}&nbsp;
                 <br/>
                 <b>Location Averages</b>
                 <BarChart width={ width } height={ height } data={ data }>
@@ -887,7 +886,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={marked} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {marked.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000'} fillOpacity={0.45} />
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
                     </Pie>
                     <Tooltip />
@@ -896,7 +895,7 @@ export default function Charts(props) {
                 <PieChart width={ width } height={ height }>
                         <Pie data={ array } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
                             { array.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000' } fillOpacity={ 0.45 } />
+                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000' } fillOpacity={ 0.85 } />
                             )) }
                         </Pie>
                     <Tooltip />
@@ -907,7 +906,7 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp; Shelter (Horizontal): {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : (totalPerc[0] > totalPerc[1] ? `>${totalPerc[1]}%` : `${totalPerc[1]}%`)} </div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
-                <br />
+                &nbsp;
                 <br/>
                 <div style={{ fontSize: 'larger' }}>Material Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
@@ -1077,7 +1076,7 @@ export default function Charts(props) {
                 <PieChart width={ width } height={ height }>
                     <Pie data={ horizontal } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
                         { horizontal.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000' } fillOpacity={ 0.45 }/>
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000' } fillOpacity={ 0.85 }/>
                         )) }
                     </Pie>
                     <Tooltip />
@@ -1086,7 +1085,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={array} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {array.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000'} fillOpacity={0.45} />
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
                     </Pie>
                     <Tooltip />
@@ -1097,7 +1096,7 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp; Shelter (Horizontal): {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : (totalPerc[0] > totalPerc[1] ? `>${totalPerc[1]}%` : `${totalPerc[1]}%`)} </div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
-                <br />
+                &nbsp;
                 <br/>
                 <div style={{ fontSize: 'larger' }}>Material Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
@@ -1274,7 +1273,7 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water</div>
                 </div>
                 <br/>
-                <div style={{ fontSize: 'larger' }}>Portion of All Nature in Total Area (%)</div>
+                <div style={{ fontSize: 'larger' }}>Occupied Area (%)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={totalArea} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {totalArea.map((entry, index) => (
@@ -1288,6 +1287,7 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: { totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : `${totalPerc[1]}%` }</div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; None: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
+                &nbsp;
                 <br/>
                 <div style={{ fontSize: 'larger' }}> Vegetation Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
@@ -1449,9 +1449,6 @@ export default function Charts(props) {
         var h2o = [{ type: 'Lake', area: lake }, { type: 'Ocean', area: ocean }, { type: 'River', area: river }, { type: 'Swamp', area: swamp }];
         var vege = [{ type: 'Native', area: native }, { type: 'Design', area: design }, { type: 'Field', area: field }];
 
-        console.log(h2o);
-        console.log(vege);
-
         return (
             <div id='natureCharts' className='Charts'>
                 <div style={{ fontSize: 'larger' }}>Vegetation and Water (ft<sup>2</sup>)</div>
@@ -1463,7 +1460,7 @@ export default function Charts(props) {
                     </Pie>
                     <Tooltip />
                 </PieChart>
-                <div style={{ fontSize: 'larger' }}>Portion of Nature in Total Area (%)</div>
+                <div style={{ fontSize: 'larger' }}>Occupied Area (%)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={totalArea} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {totalArea.map((entry, index) => (
@@ -1477,6 +1474,7 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : `${totalPerc[1]}%`}</div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; None: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
+                &nbsp;
                 <br />
                 <div style={{ fontSize: 'larger' }}> Vegetation Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
