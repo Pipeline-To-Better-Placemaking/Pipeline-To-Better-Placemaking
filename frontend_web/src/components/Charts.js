@@ -162,6 +162,8 @@ export default function Charts(props) {
                     {indexes.map((value) => (`${indexing[value]} `))}
                 </div>
                 <br />
+                <br />
+                <b>Location Averages</b>
                 <BarChart width={width} height={height} data={measurements}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='instance' />
@@ -269,7 +271,7 @@ export default function Charts(props) {
                 </div>
                 <br/>
                 {soundLoc.map((position, index) => (
-                    <div style={{borderBottom: '1px solid black'}}>
+                    <div style={{borderBottom: '1px solid black', textAlign: 'center'}}>
                         <b>Location {index+1}</b>
                         <BarChart width={width} height={height} data={position}>
                             <CartesianGrid strokeDasharray='3 3' />
@@ -282,9 +284,10 @@ export default function Charts(props) {
                         <br />
                         <b>Average (Location {index + 1}): {avgs[index]}</b>
                         <br />
-                        <br />
                     </div>
                 ))}
+                <br/>
+                <b>Location Averages</b>
                 <BarChart width={ width } height={ height } data={ data }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='instance' />
@@ -911,6 +914,7 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
                 <br />
+                <br/>
                 <div style={{ fontSize: 'larger' }}>Material Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']}>
@@ -1105,6 +1109,7 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
                 <br />
+                <br/>
                 <div style={{ fontSize: 'larger' }}>Material Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']} >
