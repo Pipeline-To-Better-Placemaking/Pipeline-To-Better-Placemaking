@@ -269,7 +269,7 @@ export default function Charts(props) {
                 </div>
                 <br/>
                 {soundLoc.map((position, index) => (
-                    <>
+                    <div style={{borderBottom: '1px solid black'}}>
                         <b>Location {index+1}</b>
                         <BarChart width={width} height={height} data={position}>
                             <CartesianGrid strokeDasharray='3 3' />
@@ -282,8 +282,8 @@ export default function Charts(props) {
                         <br />
                         <b>Average (Location {index + 1}): {avgs[index]}</b>
                         <br />
-                        <br/>
-                    </>
+                        <br />
+                    </div>
                 ))}
                 <BarChart width={ width } height={ height } data={ data }>
                     <CartesianGrid strokeDasharray='3 3' />
@@ -890,7 +890,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={marked} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {marked.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65} />
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.45} />
                         ))}
                     </Pie>
                     <Tooltip />
@@ -899,7 +899,7 @@ export default function Charts(props) {
                 <PieChart width={ width } height={ height }>
                         <Pie data={ array } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
                             { array.map((entry, index) => (
-                                <Cell key={ `cell-${index}` } fill={ boundsColor[entry.kind] } stroke={ boundsColor[entry.kind] } fillOpacity={ 0.65 } />
+                                <Cell key={ `cell-${index}` } fill={ boundsColor[entry.kind] } stroke={ boundsColor[entry.kind] } fillOpacity={ 0.45 } />
                             )) }
                         </Pie>
                     <Tooltip />
@@ -911,15 +911,23 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
                 <br />
-                <div style={{ fontSize: 'larger' }}>Material Areas</div>
+                <div style={{ fontSize: 'larger' }}>Material Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
-                    <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']} stroke={'000000'} />
+                    <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']}>
+                        {mat.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor['Material']} stroke={'000000'} />
+                        ))}
+                    </Pie>
                     <Tooltip />
                 </PieChart>
                 <br />
-                <div style={{ fontSize: 'larger' }}>Shelter Areas</div>
+                <div style={{ fontSize: 'larger' }}>Shelter Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
-                    <Pie data={shelt} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Shelter']} stroke={'000000'} />
+                    <Pie data={shelt} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Shelter']}>
+                        {shelt.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor['Shelter']} stroke={'000000'} />
+                        ))}
+                    </Pie>
                     <Tooltip />
                 </PieChart>
                 <br />
@@ -1059,7 +1067,7 @@ export default function Charts(props) {
         totalPerc[4] = ((projectArea - (material + shelter)) / projectArea) * 100;
         totalPerc[5] = Math.round(totalPerc[4]);
 
-        var array = [{ kind: 'Shelter', value: totalPerc[0].toFixed(1) }, { kind: 'Material', value: totalPerc[2].toFixed(1) }, { kind: 'Unmarked', value: totalPerc[4].toFixed(1) }];
+        var array = [{ kind: 'Shelter', value: totalPerc[0] }, { kind: 'Material', value: totalPerc[2] }, { kind: 'Unmarked', value: totalPerc[4] }];
         var mat = [{ type: 'Bricks', area: bricks}, {type: 'Concrete', area: concrete },{type: 'Natural',area: grass},{type: 'Tile',area: tile},{type: 'Wood', area: wood}];
         var shelt = [{ type: 'Canopy', area: canopy }, { type: 'Contructed Ceiling', area: ceiling }, { type: 'Temporary', area: temporary }, { type: 'Trees', area: trees }, { type: 'Umbrella Dining', area: umbrella }];
         var constr = [{ type: 'Curbs', area: curbs }, { type: 'Fences', area: fences }, { type: 'Building Wall', area: wall }, { type: 'Partial Wall', area: partial }, { type: 'Planter', area: planter }];
@@ -1076,7 +1084,7 @@ export default function Charts(props) {
                 <PieChart width={ width } height={ height }>
                     <Pie data={ horizontal } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
                         { horizontal.map((entry, index) => (
-                            <Cell key={ `cell-${index}` } fill={ boundsColor[entry.kind] } stroke={ boundsColor[entry.kind] } fillOpacity={ 0.65 }/>
+                            <Cell key={ `cell-${index}` } fill={ boundsColor[entry.kind] } stroke={ boundsColor[entry.kind] } fillOpacity={ 0.45 }/>
                         )) }
                     </Pie>
                     <Tooltip />
@@ -1085,7 +1093,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={array} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {array.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65} />
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.45} />
                         ))}
                     </Pie>
                     <Tooltip />
@@ -1097,15 +1105,23 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
                 <br />
-                <div style={{ fontSize: 'larger' }}>Material Areas</div>
+                <div style={{ fontSize: 'larger' }}>Material Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
-                    <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']} stroke={'000000'} />
+                    <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']} >
+                        {mat.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor['Material']} stroke={'000000'} />
+                        ))}
+                    </Pie>
                     <Tooltip />
                 </PieChart>
                 <br />
-                <div style={{ fontSize: 'larger' }}>Shelter Areas</div>
+                <div style={{ fontSize: 'larger' }}>Shelter Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
-                    <Pie data={shelt} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Shelter']} stroke={'000000'} />
+                    <Pie data={shelt} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Shelter']}>
+                        {shelt.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor['Shelter']} stroke={'000000'} />
+                        ))}
+                    </Pie>
                     <Tooltip />
                 </PieChart>
                 <br />
