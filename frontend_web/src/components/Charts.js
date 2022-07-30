@@ -196,11 +196,12 @@ export default function Charts(props) {
             obj.instance = `Location ${ind+1}`;
             var locArr = [];
             Object.entries(obj).forEach(([key, dataVal], index)=>{
-                locArr.push({ instance: key, recording: dataVal.recording })
                 if (key === 'average') {
                     avgs.push(dataVal);
                 }
                 if(key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5'){
+                    locArr.push({ instance: key, recording: dataVal.recording });
+
                     if(key === 'decibel_1'){
                         high = dataVal
                         low = dataVal
@@ -231,7 +232,6 @@ export default function Charts(props) {
                 }
             })
             soundLoc.push(locArr);
-            console.log(soundLoc);
         })
 
         frequent.forEach((value, index)=>{
@@ -241,10 +241,7 @@ export default function Charts(props) {
             } else if (value === frequent[indexes[0]] && index !== indexes[0]){
                indexes.push(index);
             }
-        })
-
-        console.log(avgs);
-        console.log(soundLoc);
+        });
 
         return(
             <div className='Charts'>
@@ -273,7 +270,7 @@ export default function Charts(props) {
                 <br/>
                 {soundLoc.map((position, index) => (
                     <>
-                        {console.log(position)}
+                        <b>Location {index+1}</b>
                         <BarChart width={width} height={height} data={position}>
                             <CartesianGrid strokeDasharray='3 3' />
                             <XAxis dataKey='instance' />
@@ -285,6 +282,7 @@ export default function Charts(props) {
                         <br />
                         <b>Average (Location {index + 1}): {avgs[index]}</b>
                         <br />
+                        <br/>
                     </>
                 ))}
                 <BarChart width={ width } height={ height } data={ data }>
@@ -770,18 +768,96 @@ export default function Charts(props) {
         var material = 0;
         var ind = 0;
 
+        var curbs = 0;
+        var wall = 0;
+        var partial = 0;
+        var fences = 0;
+        var planter = 0;
+
+        var bricks = 0;
+        var tile = 0;
+        var concrete = 0;
+        var grass = 0;
+        var wood = 0;
+
+        var canopy = 0;
+        var trees = 0;
+        var umbrella = 0;
+        var temporary = 0;
+        var ceiling = 0;
+
         for (const arr of  Object.values(data)) {
             for(const ind0 in arr){
                 for(const index in arr[ind0]) {
                     if(arr[0][index].kind === 'Shelter') {
                         shelter += arr[0][index].value ;
+                        switch (arr[0][index].description) {
+                            case 'Canopy':
+                                canopy += arr[0][index].value;
+                                break;
+                            case 'Constructed Ceiling':
+                                ceiling += arr[0][index].value;
+                                break;
+                            case 'Temporary':
+                                temporary += arr[0][index].value;
+                                break;
+                            case 'Trees':
+                                trees += arr[0][index].value;
+                                break;
+                            case 'Umbrella Dining':
+                                umbrella += arr[0][index].value;
+                                break;
+                            default:
+                                console.log('Non-matching description');
+                                console.log(arr[0][index].description)
+                        }
                         ind++;
                     } else if(arr[0][index].kind === 'Material') {
                         material += arr[0][index].value;
+                        switch (arr[0][index].description) {
+                            case 'Bricks':
+                                bricks += arr[0][index].value;
+                                break;
+                            case 'Concrete':
+                                concrete += arr[0][index].value;
+                                break;
+                            case 'Natural':
+                                grass += arr[0][index].value;
+                                break;
+                            case 'Tile':
+                                tile += arr[0][index].value;
+                                break;
+                            case 'Wood':
+                                wood += arr[0][index].value;
+                                break;
+                            default:
+                                console.log('Non-matching description');
+                                console.log(arr[0][index].description)
+                        }
                         ind++;
                     } else {
                         arr[0][index].instance = `Location ${ind+1}`;
                         constructed.push(arr[0][index]);
+                        switch (arr[0][index].description) {
+                            case 'Curbs':
+                                curbs += arr[0][index].value;
+                                break;
+                            case 'Fences':
+                                fences += arr[0][index].value;
+                                break;
+                            case 'Building Wall':
+                                wall += arr[0][index].value;
+                                break;
+                            case 'Partial Wall':
+                                partial += arr[0][index].value;
+                                break;
+                            case 'Planter':
+                                planter += arr[0][index].value;
+                                break;
+                            default:
+                                console.log('Non-matching description');
+                                console.log(arr[0][index].description)
+                        }
                         ind++;
                     }
                 };
@@ -798,9 +874,19 @@ export default function Charts(props) {
 
         var array = [{ kind: 'Shelter', value: totalPerc[0] }, { kind: 'Material', value: totalPerc[2] }, { kind: 'Unmarked', value: totalPerc[4] }];
         var marked = [{ kind: 'Shelter', value: shelter }, { kind: 'Material', value: material }];
+        var mat = [{ type: 'Bricks', area: bricks }, { type: 'Concrete', area: concrete }, { type: 'Natural', area: grass }, { type: 'Tile', area: tile }, { type: 'Wood', area: wood }];
+        var shelt = [{ type: 'Canopy', area: canopy }, { type: 'Contructed Ceiling', area: ceiling }, { type: 'Temporary', area: temporary }, { type: 'Trees', area: trees }, { type: 'Umbrella Dining', area: umbrella }];
+        var constr = [{ type: 'Curbs', area: curbs }, { type: 'Fences', area: fences }, { type: 'Building Wall', area: wall }, { type: 'Partial Wall', area: partial }, { type: 'Planter', area: planter }];
+
+        console.log(array);
+        console.log(totalPerc);
+        console.log(mat)
+        console.log(shelt)
+        console.log(constr)
+
         return(
             <div className='Charts'>
-                <div style={{ fontSize: 'larger' }}> Marked Areas (ft<sup>2</sup>)</div>
+                <div style={{ fontSize: 'larger' }}> Boundary Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={marked} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {marked.map((entry, index) => (
@@ -809,7 +895,7 @@ export default function Charts(props) {
                     </Pie>
                     <Tooltip />
                 </PieChart>
-                <div style={{ fontSize: 'larger' }}> Portion of Total Area (%)</div>
+                <div style={{ fontSize: 'larger' }}> Occupied Area (%)</div>
                 <PieChart width={ width } height={ height }>
                         <Pie data={ array } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
                             { array.map((entry, index) => (
@@ -825,13 +911,34 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
                 <br />
-                <div style={{ fontSize: 'larger' }}>Constructed Distances</div>
+                <div style={{ fontSize: 'larger' }}>Material Areas</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']} stroke={'000000'} />
+                    <Tooltip />
+                </PieChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}>Shelter Areas</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={shelt} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Shelter']} stroke={'000000'} />
+                    <Tooltip />
+                </PieChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}>Constructed Boundary Distances</div>
                 <BarChart width={ width } height={ height } data={ constructed }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='instance' />
                     <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
                     <Tooltip />
                     <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
+                </BarChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}>Constructed Distances - Types</div>
+                <BarChart width={width} height={height} data={constr}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='type' />
+                    <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'area'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.65} />
                 </BarChart>
                 <br />
                 <div >
@@ -845,19 +952,123 @@ export default function Charts(props) {
 
     const BoundaryPieChart = (data) => {
         var constructed = [];
+        var shelter = 0;
+        var material = 0;
         var horizontal = [];
         var ind = 0;
+
+        var curbs = 0;
+        var wall = 0;
+        var partial = 0;
+        var fences = 0;
+        var planter = 0;
+
+        var bricks = 0;
+        var tile = 0;
+        var concrete = 0;
+        var grass = 0;
+        var wood = 0;
+
+        var canopy = 0;
+        var trees = 0;
+        var umbrella = 0;
+        var temporary = 0;
+        var ceiling = 0;
 
         for (const obj of Object.values(data)) {
             if (obj.kind === 'Shelter' || obj.kind === 'Material') {
                 horizontal.push(obj);
+                if(obj.kind === 'Shelter'){
+                    shelter += obj.value;
+                    switch (obj.description){
+                        case 'Canopy' :
+                            canopy += obj.value;
+                            break;
+                        case 'Constructed Ceiling':
+                            ceiling += obj.value;
+                            break;
+                        case 'Temporary':
+                            temporary += obj.value;
+                            break;
+                        case 'Trees':
+                            trees += obj.value;
+                            break;
+                        case 'Umbrella Dining':
+                            umbrella += obj.value;
+                            break;
+                        default:
+                            console.log('Non-matching description');
+                            console.log(obj.description)
+                    }
+                } else {
+                    material += obj.value;
+                    switch (obj.description) {
+                        case 'Bricks':
+                            bricks += obj.value;
+                            break;
+                        case 'Concrete':
+                            concrete += obj.value;
+                            break;
+                        case 'Natural':
+                            grass += obj.value;
+                            break;
+                        case 'Tile':
+                            tile += obj.value;
+                            break;
+                        case 'Wood':
+                            wood += obj.value;
+                            break;
+                        default:
+                            console.log('Non-matching description');
+                            console.log(obj.description)
+                    }
+                }
                 ind++;
             } else {
                 obj.instance = `Location ${ind+1}`;
                 constructed.push(obj);
+                switch (obj.description) {
+                    case 'Curbs':
+                        curbs += obj.value;
+                        break;
+                    case 'Fences':
+                        fences += obj.value;
+                        break;
+                    case 'Building Wall':
+                        wall += obj.value;
+                        break;
+                    case 'Partial Wall':
+                        partial += obj.value;
+                        break;
+                    case 'Planter':
+                        planter += obj.value;
+                        break;
+                    default:
+                        console.log('Non-matching description');
+                        console.log(obj.description)
+                }
                 ind++;
             }
         };
+
+        var totalPerc = [];
+        totalPerc[0] = (shelter / projectArea) * 100;
+        totalPerc[1] = Math.round(totalPerc[0]);
+        totalPerc[2] = (material / projectArea) * 100;
+        totalPerc[3] = Math.round(totalPerc[2]);
+        totalPerc[4] = ((projectArea - (material + shelter)) / projectArea) * 100;
+        totalPerc[5] = Math.round(totalPerc[4]);
+
+        var array = [{ kind: 'Shelter', value: totalPerc[0].toFixed(1) }, { kind: 'Material', value: totalPerc[2].toFixed(1) }, { kind: 'Unmarked', value: totalPerc[4].toFixed(1) }];
+        var mat = [{ type: 'Bricks', area: bricks}, {type: 'Concrete', area: concrete },{type: 'Natural',area: grass},{type: 'Tile',area: tile},{type: 'Wood', area: wood}];
+        var shelt = [{ type: 'Canopy', area: canopy }, { type: 'Contructed Ceiling', area: ceiling }, { type: 'Temporary', area: temporary }, { type: 'Trees', area: trees }, { type: 'Umbrella Dining', area: umbrella }];
+        var constr = [{ type: 'Curbs', area: curbs }, { type: 'Fences', area: fences }, { type: 'Building Wall', area: wall }, { type: 'Partial Wall', area: partial }, { type: 'Planter', area: planter }];
+
+        console.log(array);
+        console.log(totalPerc);
+        console.log(mat)
+        console.log(shelt)
+        console.log(constr)
 
         return(
             <div id='boundCharts' className='Charts'>
@@ -870,7 +1081,35 @@ export default function Charts(props) {
                     </Pie>
                     <Tooltip />
                 </PieChart>
-                <div style={{ fontSize: 'larger' }}>Constructed Distances</div>
+                <div style={{ fontSize: 'larger' }}> Occupied Area (%)</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={array} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                        {array.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.65} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <br/>
+                <div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Material'] }}>&nbsp;&nbsp;</div>&nbsp; Material (Horizontal): {totalPerc[2] < totalPerc[3] ? `<${totalPerc[3]}%` : (totalPerc[2] > totalPerc[3] ? `>${totalPerc[3]}%` : `${totalPerc[3]}%`)} </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp; Shelter (Horizontal): {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : (totalPerc[0] > totalPerc[1] ? `>${totalPerc[1]}%` : `${totalPerc[1]}%`)} </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
+                </div>
+                <br />
+                <div style={{ fontSize: 'larger' }}>Material Areas</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']} stroke={'000000'} />
+                    <Tooltip />
+                </PieChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}>Shelter Areas</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={shelt} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Shelter']} stroke={'000000'} />
+                    <Tooltip />
+                </PieChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}>Constructed Boundary Distances</div>
                 <BarChart width={ width } height={ height } data={ constructed }>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='instance' />
@@ -879,6 +1118,15 @@ export default function Charts(props) {
                     <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
                 </BarChart>
                 <br/>
+                <div style={{ fontSize: 'larger' }}>Constructed Distances - Types</div>
+                <BarChart width={width} height={height} data={constr}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='type' />
+                    <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'area'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.65} />
+                </BarChart>
+                <br />
                 <div >
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Material'] }}>&nbsp;&nbsp;</div>&nbsp;Material (Horizontal) </div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp;Shelter (Horizontal) </div>
