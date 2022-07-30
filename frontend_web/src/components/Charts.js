@@ -915,7 +915,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']}>
                         {mat.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor['Material']} stroke={'000000'} />
+                            <Cell key={`cell-${index}`} fill={boundsColor['Material']} stroke={'#000000'} />
                         ))}
                     </Pie>
                     <Tooltip />
@@ -925,7 +925,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={shelt} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Shelter']}>
                         {shelt.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor['Shelter']} stroke={'000000'} />
+                            <Cell key={`cell-${index}`} fill={boundsColor['Shelter']} stroke={'#000000'} />
                         ))}
                     </Pie>
                     <Tooltip />
@@ -1109,7 +1109,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']} >
                         {mat.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor['Material']} stroke={'000000'} />
+                            <Cell key={`cell-${index}`} fill={boundsColor['Material']} stroke={'#000000'} />
                         ))}
                     </Pie>
                     <Tooltip />
@@ -1119,7 +1119,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={shelt} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Shelter']}>
                         {shelt.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor['Shelter']} stroke={'000000'} />
+                            <Cell key={`cell-${index}`} fill={boundsColor['Shelter']} stroke={'#000000'} />
                         ))}
                     </Pie>
                     <Tooltip />
