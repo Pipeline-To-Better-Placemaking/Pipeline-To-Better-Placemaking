@@ -881,12 +881,6 @@ export default function Charts(props) {
         var shelt = [{ type: 'Canopy', area: canopy }, { type: 'Contructed Ceiling', area: ceiling }, { type: 'Temporary', area: temporary }, { type: 'Trees', area: trees }, { type: 'Umbrella Dining', area: umbrella }];
         var constr = [{ type: 'Curbs', area: curbs }, { type: 'Fences', area: fences }, { type: 'Building Wall', area: wall }, { type: 'Partial Wall', area: partial }, { type: 'Planter', area: planter }];
 
-        console.log(array);
-        console.log(totalPerc);
-        console.log(mat)
-        console.log(shelt)
-        console.log(constr)
-
         return(
             <div className='Charts'>
                 <div style={{ fontSize: 'larger' }}> Boundary Areas (ft<sup>2</sup>)</div>
@@ -1076,12 +1070,6 @@ export default function Charts(props) {
         var shelt = [{ type: 'Canopy', area: canopy }, { type: 'Contructed Ceiling', area: ceiling }, { type: 'Temporary', area: temporary }, { type: 'Trees', area: trees }, { type: 'Umbrella Dining', area: umbrella }];
         var constr = [{ type: 'Curbs', area: curbs }, { type: 'Fences', area: fences }, { type: 'Building Wall', area: wall }, { type: 'Partial Wall', area: partial }, { type: 'Planter', area: planter }];
 
-        console.log(array);
-        console.log(totalPerc);
-        console.log(mat)
-        console.log(shelt)
-        console.log(constr)
-
         return(
             <div id='boundCharts' className='Charts'>
                 <div style={{ fontSize: 'larger' }}>Boundary Areas (ft<sup>2</sup>)</div>
@@ -1170,6 +1158,13 @@ export default function Charts(props) {
         var squirrels = 0;
         var water = 0;
         var veg = 0;
+        var lake = 0;
+        var ocean = 0;
+        var river = 0;
+        var swamp = 0;
+        var native = 0;
+        var design = 0;
+        var field = 0;
 
         for (const [dateTime, resultArr] of Object.entries(data)) {
             for (const index1 of resultArr) {
@@ -1179,9 +1174,40 @@ export default function Charts(props) {
                             if (natureType === 'water') {
                                 waterAndVeg[0].area += typeArr[typePoint].area;
                                 water += typeArr[typePoint].area;
+                                switch(typeArr[typePoint].description){
+                                    case 'Lake':
+                                        lake += typeArr[typePoint].area;
+                                        break;
+                                    case 'Ocean':
+                                        ocean += typeArr[typePoint].area;
+                                        break;
+                                    case 'River':
+                                        river += typeArr[typePoint].area;
+                                        break;
+                                    case 'Swamp':
+                                        swamp += typeArr[typePoint].area;
+                                        break;
+                                    default: 
+                                        console.log('Non-matching description');
+                                        console.log(typeArr[typePoint].description)
+                                }
                             } else if (natureType === 'vegetation') {
                                 waterAndVeg[1].area += typeArr[typePoint].area;
                                 veg += typeArr[typePoint].area;
+                                switch (typeArr[typePoint].description) {
+                                    case 'Native':
+                                        native += typeArr[typePoint].area;
+                                        break;
+                                    case 'Design':
+                                        design += typeArr[typePoint].area;
+                                        break;
+                                    case 'Open Field':
+                                        field += typeArr[typePoint].area;
+                                        break;
+                                    default:
+                                        console.log('Non-matching description');
+                                        console.log(typeArr[typePoint].description)
+                                }
                             } else {
                                 if (typeArr[typePoint].description === 'Dog') {
                                     dogs++;
@@ -1228,6 +1254,8 @@ export default function Charts(props) {
         var totalArea = [{ nature: 'Water', area: totalPerc[0] }, { nature: 'Vegetation', area: totalPerc[2] }, { nature: 'None', area: totalPerc[4] }];
         var species = [{ species: 'Domestic Dogs', total: dogs }, { species: 'Domestic Cats', total: cats }, { species: 'Wild Birds', total: birds }, { species: 'Wild Ducks', total: ducks }, { species: 'Wild Rabbits', total: rabbits }, { species: 'Wild Squirrels', total: squirrels }, { species: 'Wild Turtles', total: turtles }, { species: 'Domestic (Other)', total: otherD }, { species: 'Wild (Other)', total: otherW }];
         var variant = [{ variant: 'Wild', total: (wild + otherW) }, { variant: 'Domesticated', total: (domestic + otherD) }]
+        var h2o = [{ type: 'Lake', area: lake }, { type: 'Ocean', area: ocean }, { type: 'River', area: river }, { type: 'Swamp', area: swamp }];
+        var vege = [{ type: 'Native', area: native }, { type: 'Design', area: design }, { type: 'Field', area: field }];
 
         return (
             <div id='natureCharts' className='Charts'>
@@ -1259,6 +1287,26 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: { totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : `${totalPerc[1]}%` }</div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; None: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
+                <br/>
+                <div style={{ fontSize: 'larger' }}> Vegetation Areas (ft<sup>2</sup>)</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={vege} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                        {vege.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={natureColor['Vegetation']} stroke={'#000000'} fillOpacity={0.65} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}> Water Areas (ft<sup>2</sup>)</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={h2o} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                        {h2o.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={natureColor['Water']} stroke={'#000000'} fillOpacity={0.65} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
                 <br/>
                 <div style={{ fontSize: 'larger' }}>Species</div>
                 <BarChart width={width} height={height} data={species}>
@@ -1301,6 +1349,13 @@ export default function Charts(props) {
         var squirrels = 0;
         var water = 0;
         var veg = 0;
+        var lake = 0;
+        var ocean = 0;
+        var river = 0;
+        var swamp = 0;
+        var native = 0;
+        var design = 0;
+        var field = 0;
 
         for(const ind in data){
             for (const [natureType, typeArr] of Object.entries(data[ind])) {
@@ -1311,11 +1366,42 @@ export default function Charts(props) {
                         adjusted.nature = 'Water';
                         waterAndVeg.push(adjusted);
                         water += typeArr[typePoint].area;
+                        switch (typeArr[typePoint].description) {
+                            case 'Lake':
+                                lake += typeArr[typePoint].area;
+                                break;
+                            case 'Ocean':
+                                ocean += typeArr[typePoint].area;
+                                break;
+                            case 'River':
+                                river += typeArr[typePoint].area;
+                                break;
+                            case 'Swamp':
+                                swamp += typeArr[typePoint].area;
+                                break;
+                            default:
+                                console.log('Non-matching description');
+                                console.log(typeArr[typePoint].description)
+                        }
                     } else if(natureType === 'vegetation'){
                         adjusted = typeArr[typePoint];
                         adjusted.nature = 'Vegetation';
                         waterAndVeg.push(adjusted);
                         veg += typeArr[typePoint].area;
+                        switch (typeArr[typePoint].description) {
+                            case 'Native':
+                                native += typeArr[typePoint].area;
+                                break;
+                            case 'Design':
+                                design += typeArr[typePoint].area;
+                                break;
+                            case 'Open Field':
+                                field += typeArr[typePoint].area;
+                                break;
+                            default:
+                                console.log('Non-matching description');
+                                console.log(typeArr[typePoint].description)
+                        }
                     } else {
                         if(typeArr[typePoint].description === 'Dog'){
                             dogs++;
@@ -1358,7 +1444,12 @@ export default function Charts(props) {
 
         var totalArea = [{ nature: 'Water', area: totalPerc[0] }, { nature: 'Vegetation', area: totalPerc[2] }, { nature: 'None', area: totalPerc[4] }];
         var species = [{ species: 'Domestic Dogs', count: dogs }, { species: 'Domestic Cats', count: cats }, { species: 'Wild Birds', count: birds }, {species: 'Wild Ducks', count: ducks }, { species: 'Wild Rabbits', count: rabbits }, { species: 'Wild Squirrels', count: squirrels }, { species: 'Wild Turtles', count: turtles}, {species: 'Domestic (Other)', count: otherD}, {species: 'Wild (Other)', count: otherW}];
-        var variant = [{ variant: 'Wild', count: (wild+otherW)}, { variant: 'Domesticated', count: (domestic+otherD) }]
+        var variant = [{ variant: 'Wild', count: (wild+otherW)}, { variant: 'Domesticated', count: (domestic+otherD) }];
+        var h2o = [{ type: 'Lake', area: lake }, { type: 'Ocean', area: ocean }, { type: 'River', area: river }, { type: 'Swamp', area: swamp }];
+        var vege = [{ type: 'Native', area: native }, { type: 'Design', area: design }, { type: 'Field', area: field }];
+
+        console.log(h2o);
+        console.log(vege);
 
         return (
             <div id='natureCharts' className='Charts'>
@@ -1385,6 +1476,26 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : `${totalPerc[1]}%`}</div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; None: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
+                <br />
+                <div style={{ fontSize: 'larger' }}> Vegetation Areas (ft<sup>2</sup>)</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={vege} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                        {vege.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={natureColor['Vegetation']} stroke={'#000000'} fillOpacity={0.65} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}> Water Areas (ft<sup>2</sup>)</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={h2o} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                        {h2o.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={natureColor['Water']} stroke={'#000000'} fillOpacity={0.65} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
                 <br />
                 <div style={{ fontSize: 'larger' }}>Species</div>
                 <BarChart width={width} height={height} data={species}>
