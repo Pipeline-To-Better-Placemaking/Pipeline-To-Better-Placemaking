@@ -887,7 +887,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={marked} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {marked.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.45} />
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000'} fillOpacity={0.45} />
                         ))}
                     </Pie>
                     <Tooltip />
@@ -896,7 +896,7 @@ export default function Charts(props) {
                 <PieChart width={ width } height={ height }>
                         <Pie data={ array } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
                             { array.map((entry, index) => (
-                                <Cell key={ `cell-${index}` } fill={ boundsColor[entry.kind] } stroke={ boundsColor[entry.kind] } fillOpacity={ 0.45 } />
+                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000' } fillOpacity={ 0.45 } />
                             )) }
                         </Pie>
                     <Tooltip />
@@ -983,6 +983,7 @@ export default function Charts(props) {
 
         for (const obj of Object.values(data)) {
             if (obj.kind === 'Shelter' || obj.kind === 'Material') {
+                obj.instance = `Location ${ind + 1}`;
                 horizontal.push(obj);
                 if(obj.kind === 'Shelter'){
                     shelter += obj.value;
@@ -1076,7 +1077,7 @@ export default function Charts(props) {
                 <PieChart width={ width } height={ height }>
                     <Pie data={ horizontal } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
                         { horizontal.map((entry, index) => (
-                            <Cell key={ `cell-${index}` } fill={ boundsColor[entry.kind] } stroke={ boundsColor[entry.kind] } fillOpacity={ 0.45 }/>
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000' } fillOpacity={ 0.45 }/>
                         )) }
                     </Pie>
                     <Tooltip />
@@ -1085,7 +1086,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={array} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {array.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={boundsColor[entry.kind]} fillOpacity={0.45} />
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000'} fillOpacity={0.45} />
                         ))}
                     </Pie>
                     <Tooltip />
@@ -1263,7 +1264,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={waterAndVeg} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {waterAndVeg.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={natureColor[entry.nature]} stroke={'#ff0000'} fillOpacity={0.65} />
+                            <Cell key={`cell-${index}`} fill={natureColor[entry.nature]} stroke={'#000000'} fillOpacity={0.65} />
                         ))}
                     </Pie>
                     <Tooltip />
@@ -1277,7 +1278,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={totalArea} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {totalArea.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={natureColor[entry.nature]} stroke={'#ff0000'} fillOpacity={0.65} />
+                            <Cell key={`cell-${index}`} fill={natureColor[entry.nature]} stroke={'#000000'} fillOpacity={0.65} />
                         ))}
                     </Pie>
                     <Tooltip />
@@ -1457,7 +1458,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={waterAndVeg} dataKey='area' nameKey='description' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {waterAndVeg.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={natureColor[entry.nature]} stroke={'#ff0000'} fillOpacity={0.65} />
+                            <Cell key={`cell-${index}`} fill={natureColor[entry.nature]} stroke={'#000000'} fillOpacity={0.65} />
                         ))}
                     </Pie>
                     <Tooltip />
@@ -1466,7 +1467,7 @@ export default function Charts(props) {
                 <PieChart width={width} height={height}>
                     <Pie data={totalArea} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
                         {totalArea.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={natureColor[entry.nature]} stroke={'#ff0000'} fillOpacity={0.65} />
+                            <Cell key={`cell-${index}`} fill={natureColor[entry.nature]} stroke={'#000000'} fillOpacity={0.65} />
                         ))}
                     </Pie>
                     <Tooltip />
