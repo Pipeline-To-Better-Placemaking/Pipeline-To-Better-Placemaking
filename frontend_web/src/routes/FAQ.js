@@ -413,7 +413,7 @@ export default function FAQ(){
 
                   <h3><u> Completing the Test </u></h3>
                     <p> Step 1: Sign up for the test as you would any other test and press begin. <br /><br />
-                        Step 2: Coming soon. <br /><br />
+                        Step 2: Coming. soon. <br /><br />
                         Step 3: Coming soon. <br /><br />
                         Step 4: Coming soon. <br /><br />
                         Step 5: Coming soon. </p>
