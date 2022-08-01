@@ -1,2 +1,2 @@
 # Spring2022-Group02
-Creating a Pipeline to Better Placemaking.
+Mobile Application for Pipeline to Better Placemaking used React Native for its development.
