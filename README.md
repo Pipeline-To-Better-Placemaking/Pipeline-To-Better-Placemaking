@@ -17,7 +17,7 @@ The structure of the website including the Routes and pathnames are set in App.j
 Map.jsx is the singular component called for every instance. Map.jsx handles data based on the drawer.Results object.
 
 ### Drawers/Drawer Structure  (Collapsable Menus overlaying Map) - MUI
-The drawers are directly mapped from the drawer object from ProjectPage.js including the key values. The Graphs and Data objects (within drawers object) represent the Graphs and Data buttons/collapsable menus, their data is generated based on the Results object (also within the drawers obj) but hold different components that are generated upon selection. 
+The drawers are directly mapped from the drawer object from ProjectPage.js including the key values. The Graphs and Data objects (within drawers object) represent the Graphs and Data buttons/collapsable menus, their data is generated based on the Results object (also within the drawers object) but hold different components that are generated upon selection. 
 
 The menu selections are mapped from the drawer.Results object including its keys for quick access with unique identifying information.
 
@@ -26,23 +26,23 @@ Any change to the drawers object structure (i.e. using a given Activity Name) me
 The location and position of each menu is set in MapDrawers.js
 
 Example 'drawers' Object:
-drawers = {
-    Results:{
-        date1:{
-            time1:{
-                (activity)_map data
-            },
-            time2:{
-                data
-            }
-        },
-        date2:{
-            time1:{
-                data
-            }
-        }
-    },
-    /* These will stay empty as objects and are later populated with chart and table components */
-    Graphs:{},
-    Data:{}
+drawers = {<br/>
+    &emsp;Results: {<br/>
+        &emsp;&emsp;date1: {<br/>
+            &emsp;&emsp;&emsp;time1: {<br/>
+                &emsp;&emsp;&emsp;&emsp;(activity)_map data<br/>
+            &emsp;&emsp;&emsp;},<br/>
+            &emsp;&emsp;&emsp;time2: {<br/>
+                &emsp;&emsp;&emsp;&emsp;data<br/>
+            &emsp;&emsp;&emsp;}<br/>
+        &emsp;&emsp;},<br/>
+        &emsp;&emsp;date2: {<br/>
+            &emsp;&emsp;&emsp;time1: {<br/>
+                &emsp;&emsp;&emsp;&emsp;data<br/>
+            &emsp;&emsp;&emsp;}<br/>
+        &emsp;&emsp;}<br/>
+    &emsp;},<br/>
+    /* These will stay empty as objects and are later populated with chart and table components */<br/>
+    &emsp;Graphs: {},<br/>
+    &emsp;Data: {}<br/>
 }
