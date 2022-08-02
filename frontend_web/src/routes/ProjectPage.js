@@ -7,6 +7,12 @@ import ActivityPage from './ActivityPage';
 import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
 
+/* 
+    (1) Handles routes to projects/:id/(activities/map/surveyors) 
+    (2) Sets object structure for Results, Graphs, and Data drawers(menus) on the Map Page
+
+*/
+
 export default function ProjectPage(){
     // Retrieve Location info
     const loc = useLocation();
@@ -116,28 +122,33 @@ export default function ProjectPage(){
                 withCredentials: true
             });
 
-            var date = new Date(dateTime);
-            var format = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
             var map = results;
 
-            if (!map[apiCategory[cat]]) {
-                map[apiCategory[cat]] = {};
-            }
-            if(!map[apiCategory[cat]][format]){ 
-                map[apiCategory[cat]][format] = {};
-            }
-
             if (response?.data && response?.data.date && response?.data.date !== null){
+                var date = new Date(dateTime);
+                var format = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+                
                 var time = new Date(response?.data.date);
                 var set = time.toLocaleTimeString();
 
+                if (!map[apiCategory[cat]]) {
+                    map[apiCategory[cat]] = {};
+                }
+                if (!map[apiCategory[cat]][format]) {
+                    map[apiCategory[cat]][format] = {};
+                }
                 if (map[apiCategory[cat]][format][set]){
                     map[apiCategory[cat]][format][`${set} (${index})`] = await response.data;
                 }else{
                     map[apiCategory[cat]][format][set] = await response.data;
                 }
             }
-            /* Structure reformatted for info and access ex: 
+
+            /* !!Structure reformatted for info and access ex: 
+                **the map page drawers access the date and time from this for easy access
+                **if changed to be organized by name keys instead of date and time keys
+                **change references to access date and time from the response data portion
+
                 results = {
                     light_maps: {
                         '02/22/22':{

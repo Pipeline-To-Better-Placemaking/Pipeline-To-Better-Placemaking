@@ -277,6 +277,11 @@ export default function MapDrawer(props) {
         </>
     );
 
+    /* Drawers use objects and are setting the keys as menu values (i.e. date/time).
+        Change the references for the menu titles or restructure the objects if drawer data
+        is changed to sort/list items by name instead of date a time
+    */
+
     return (
         <div id='projectFrame'>
             { Object.entries(drawers).map(([name, data]) => (
