@@ -46,3 +46,13 @@ drawers = {<br/>
     &emsp;Graphs: {},<br/>
     &emsp;Data: {}<br/>
 }
+
+## Backend .js files
+### Models
+This subdirectory is where the all of the MongoDB schemas (document templates) are stored.  In addition to this, the files contain helper functions which assist the APIs as needed.
+### Routes
+This subdirectory contains all of the APIs for the project
+### Utils/Middlewares
+Helper files which assist the back-end with tasks from sending emails to error handling.
+### app.js
+This file is the "server" file for the backend.  This is essentially what "starts and calls" all of the other code.
