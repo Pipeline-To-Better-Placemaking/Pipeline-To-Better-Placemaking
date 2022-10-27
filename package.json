@@ -12,7 +12,9 @@
   },
   "author": {
     "version 1": "Bautista Bertolami, Madison Dishman, Joshua Howell, Mason Proco, Mike Triana",
-    "version 2": "Ronald Campos, Kyle Gebhardt, Jessica Hawkins, Andres Jardon, Will Whisel"
+    "version 2": "Ronald Campos, Kyle Gebhardt, Jessica Hawkins, Andres Jardon, Will Whisel",
+    "version 3": "Andrea White, Alejandro Fernandez, Jacob Campbell, Sebastian Morales, Sebastian Castañeda"
+
   },
   "license": "ISC",
   "devDependencies": {
