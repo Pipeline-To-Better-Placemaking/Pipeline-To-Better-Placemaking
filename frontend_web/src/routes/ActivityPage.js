@@ -61,6 +61,7 @@ export default function ActivityPage(props) {
         var lighting = [];
         var nature = [];
         var sound = [];
+        var access = [];
 
         // Loop through Project Data
         Object.entries(drawers).forEach(([category, catobject])=>{
@@ -118,6 +119,11 @@ export default function ActivityPage(props) {
                                     })
                                 }
                             })
+                        } else if(category === 'access_maps') { //Check cloned code
+                            dataobjects.points.forEach((point, ind) => {
+                                obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, Description: point.light_description }
+                                access.push(obj);
+                            })
                         }
                     })
                 })
@@ -132,6 +138,7 @@ export default function ActivityPage(props) {
         var worksheetlight = XLSX.utils.json_to_sheet(lighting);
         var worksheetnat = XLSX.utils.json_to_sheet(nature);
         var worksheetsound = XLSX.utils.json_to_sheet(sound);
+        var worksheetaccess = XLSX.utils.json_to_sheet(access);
 
         // Append worksheets to workbook and name them
         XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
@@ -141,6 +148,7 @@ export default function ActivityPage(props) {
         XLSX.utils.book_append_sheet(workbook, worksheetnat, 'NaturePrevalence');
         XLSX.utils.book_append_sheet(workbook, worksheetmov, 'PeopleInMotion');
         XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
+        XLSX.utils.book_append_sheet(workbook, worksheetaccess, 'IdentifyingAccess');
         
         // Excel Format
         XLSX.writeFileXLSX(workbook, `${props.title}.xlsx`);
