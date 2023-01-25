@@ -161,7 +161,7 @@ export default function FullMap(props) {
                     var s = newSelection[date].indexOf(time);
                     newSelection[date].splice(s, 1);
                 }
-                setSoundCollections(newSelection);
+                setAccessCollections(newSelection);
                 setCollections({ ...collections, [category]: newSelection });
                 break;
             default:

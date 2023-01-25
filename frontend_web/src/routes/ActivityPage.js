@@ -102,6 +102,11 @@ export default function ActivityPage(props) {
                                 obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, Description: point.light_description }
                                 lighting.push(obj);
                             })
+                        } else if(category === 'access_maps') {
+                            dataobjects.points.forEach((point, ind) => {
+                                obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, Description: point.access_description }
+                                access.push(obj);
+                            })
                         } else if (category === 'nature_maps') {
                             Object.entries(dataobjects).forEach(([type, pointArr], ind0)=>{
                                 if(type === 'weather'){
@@ -119,12 +124,7 @@ export default function ActivityPage(props) {
                                     })
                                 }
                             })
-                        } else if(category === 'access_maps') { //Check cloned code
-                            dataobjects.points.forEach((point, ind) => {
-                                obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, Description: point.light_description }
-                                access.push(obj);
-                            })
-                        }
+                        } 
                     })
                 })
             })
