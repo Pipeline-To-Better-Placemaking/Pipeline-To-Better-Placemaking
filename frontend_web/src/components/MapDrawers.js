@@ -32,6 +32,7 @@ export default function MapDrawer(props) {
     const [lighting, setLighting] = React.useState({});
     const [nature, setNature] = React.useState({});
     const [sound, setSound] = React.useState({});
+    const [program, setProgram] = React.useState({});
 
     // Holds boolean toggle values to pass onto the map and determing if the value needs to be added or removed to selections
     const [checked, setChecked] = React.useState({});
@@ -52,7 +53,8 @@ export default function MapDrawer(props) {
         boundaries_maps: false,
         light_maps: false,
         nature_maps: false,
-        sound_maps: false
+        sound_maps: false,
+        program_maps: false,
     });
 
     // Boolean toggle for opening the drawers with the Activity, Graphs, and Data drawers
@@ -137,6 +139,13 @@ export default function MapDrawer(props) {
                     newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setSound(newEntry);
                     break;
+                case 'program_maps':
+                    newEntry = program;
+
+                    if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
+                    newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
+                    setProgram(newEntry);
+                    break;    
                 default:
                     console.log(`Error handling selection change.`);
             }
@@ -182,6 +191,11 @@ export default function MapDrawer(props) {
                     delete removeEntry[`${date}.${time}`]
                     setSound(removeEntry);
                     break;
+                case 'program_maps':
+                    removeEntry = program;
+                    delete removeEntry[`${date}.${time}`]
+                    setProgram(removeEntry);
+                    break;    
                 default:
                     console.log(`Error handling selection change.`);
             }
@@ -274,6 +288,7 @@ export default function MapDrawer(props) {
             { Object.keys(lighting)?.length > 1 ? <Charts selection='light_maps.Group' data={lighting} type={1} projArea={area} /> : null }
             { Object.keys(nature)?.length > 1 ? <Charts selection='nature_maps.Group' data={nature} type={1} projArea={area} /> : null }
             { Object.keys(sound)?.length > 1 ? <Charts selection='sound_maps.Group' data={sound} type={1} projArea={area} /> : null }
+            { Object.keys(program)?.length > 1 ? <Charts selection='program_maps.Group' data={program} type={1} projArea={area} /> : null }
         </>
     );
 
@@ -310,7 +325,7 @@ export default function MapDrawer(props) {
                             : null }
                         { menuAnchors[name] === 'left' ? 
                             list(name, data) 
-                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : (menuAnchors[name] === 'right' ? charts(selections, stationary, moving, order, boundaries, lighting, nature, sound) : null)) }
+                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : (menuAnchors[name] === 'right' ? charts(selections, stationary, moving, order, boundaries, lighting, nature, sound, program) : null)) }
                     </Drawer>
                 </React.Fragment>
             ))}

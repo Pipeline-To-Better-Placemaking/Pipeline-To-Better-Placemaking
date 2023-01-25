@@ -86,6 +86,11 @@ export default function ProjectPage(){
                     await collectionPoints(id, 'stationary', collection.date, index)
                 ))
             ))
+            response?.data?.programCollections.map((collection) => (
+                collection.maps.map(async (id, index) => {
+                    await collectionPoints(id, 'bounds', collection.date, index);
+                })
+            ))
 
             setActivities(results);
             setStandingPoints(sPoints);
@@ -109,7 +114,8 @@ export default function ProjectPage(){
             nature: 'nature_maps',
             order: 'order_maps',
             sound: 'sound_maps',
-            stationary: 'stationary_maps'
+            stationary: 'stationary_maps',
+            program:    'program_maps'
         }
 
         try {

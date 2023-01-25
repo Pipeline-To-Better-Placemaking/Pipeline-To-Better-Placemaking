@@ -31,7 +31,7 @@ export default function NewActivityTimes(props) {
         order_maps: ['order_collections', 'order'],
         sound_maps: ['sound_collections', 'sound'],
         stationary_maps: ['stationary_collections', 'stationary'],
-        identifying_program: ['program_collections', 'program']
+        program_maps: ['program_collections', 'program']
     }
 
     //dynamically adds removes timeSlot cards for the activity
