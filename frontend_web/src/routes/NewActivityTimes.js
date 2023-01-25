@@ -30,7 +30,8 @@ export default function NewActivityTimes(props) {
         nature_maps: ['nature_collections', 'nature'],
         order_maps: ['order_collections', 'order'],
         sound_maps: ['sound_collections', 'sound'],
-        stationary_maps: ['stationary_collections', 'stationary']
+        stationary_maps: ['stationary_collections', 'stationary'],
+        identifying_program: ['program_collections', 'program']
     }
 
     //dynamically adds removes timeSlot cards for the activity
@@ -211,7 +212,7 @@ export default function NewActivityTimes(props) {
                     Time per Location: { activity.timer }
                 </Card.Header>
                 <Card.Body id='timeCardContent'>
-                    <span ref={response} style={{ display: 'none', color: 'red' }}>{message}</span>
+                    <span ref={response} style={{ display: 'inline-block', color: 'red' }}>{message}</span>
                     <Button id='newTimeButton' onClick={ newTime } className='scheme'>New Time Slot</Button>
                     { timeCards(timeSlots) }
                 </Card.Body>
