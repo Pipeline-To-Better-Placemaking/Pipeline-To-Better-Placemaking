@@ -7,6 +7,7 @@ import axios from '../api/axios';
 import TimeForm from '../components/TimeForm';
 import { testNames } from '../functions/HelperFunctions';
 import '../components/controls.css';
+import Map from '../components/Map';
 
 export default function NewActivityTimes(props) {
     const nav = useNavigate();
@@ -33,6 +34,11 @@ export default function NewActivityTimes(props) {
         stationary_maps: ['stationary_collections', 'stationary'],
         program_maps: ['program_collections', 'program']
     }
+
+    //loading in center, areas, and subareas from information
+    var center = { lat: props.projectInfo?.standingPoints[0].latitude, lng: props.projectInfo?.standingPoints[0].longitude };
+    var area = props.projectInfo?.area?.points;
+    var subAreas = props.projectInfo?.subareas;
 
     //dynamically adds removes timeSlot cards for the activity
     const timeCards = (timeSlots) => (
@@ -217,6 +223,10 @@ export default function NewActivityTimes(props) {
                     { timeCards(timeSlots) }
                 </Card.Body>
                 <Button component={ Link } to='../activities' state={{team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken}}>Cancel</Button>
+
+                {testNames(activity.activity) !== 'Identifying Program' ? null
+                    : 
+                    <Map center={center} area={area} points={subAreas} zoom={15} type={4} />}
             </Card>
         </div>
     );
