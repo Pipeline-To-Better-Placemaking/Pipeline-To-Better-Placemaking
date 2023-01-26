@@ -4,6 +4,7 @@ import { Text, Button, Input, Icon } from '@ui-kitten/components';
 import { MapAddArea, getAreaName, getRegionForCoordinates, getLocationAddress } from '../../components/Maps/mapPoints.component';
 import { ModalContainer} from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LOCAL_SERVER } from '@env';
 
 import { styles } from './createProjectModal.styles';
 
@@ -40,7 +41,7 @@ export function CreateProject(props) {
 
     // Save the new project
     try {
-        const response = await fetch('https://p2bp.herokuapp.com/api/projects/', {
+        const response = await fetch(LOCAL_SERVER+'/projects/', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

@@ -9,6 +9,7 @@ import { MovingModal } from '../../../components/Activities/Stationary/movingMod
 import { DataEntryModal } from '../../../components/Activities/PeopleMoving/dataEntryModal.component.js';
 import { PopupMessage } from '../../../components/Activities/popupMessage.component.js';
 import CountDown from 'react-native-countdown-component';
+import { LOCAL_SERVER } from '@env';
 
 import { styles } from '../activity.style';
 
@@ -63,7 +64,7 @@ export function PeopleMovingActivity(props) {
             // console.log("TimeSlot: " + props.timeSlot._id)
             // console.log("Data: " + JSON.stringify(data))
 
-            const response = await fetch('https://p2bp.herokuapp.com/api/moving_maps/' + props.timeSlot._id + '/data', {
+            const response = await fetch(LOCAL_SERVER+'/moving_maps/' + props.timeSlot._id + '/data', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

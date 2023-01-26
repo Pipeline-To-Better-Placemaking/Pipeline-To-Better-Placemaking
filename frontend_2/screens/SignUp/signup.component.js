@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, View, TouchableWithoutFeedback, Modal } from 'rea
 import { Icon, Text, Button, Input, Spinner } from '@ui-kitten/components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
+import { LOCAL_SERVER } from '@env';
 
 import { styles } from './signup.styles';
 
@@ -64,7 +65,7 @@ export const SignUpScreen = ( props ) => {
 
         try {
             // Make an HTTP request to create a new user
-            const response = await fetch('https://p2bp.herokuapp.com/api/users', {
+            const response = await fetch(LOCAL_SERVER+'/users', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

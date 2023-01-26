@@ -9,6 +9,7 @@ import { DeleteModal } from '../../../components/Activities/deleteModal.componen
 import { DescModal } from '../../../components/Activities/Order/descModal.component';
 import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import CountDown from 'react-native-countdown-component';
+import { LOCAL_SERVER } from '@env';
 
 import { styles } from './orderTest.styles';
 
@@ -64,7 +65,7 @@ export function OrderTest(props) {
 
         // Sends the collected data to DB
         try {
-            const response = await fetch('https://p2bp.herokuapp.com/api/order_maps/' + props.timeSlot._id + '/data', {
+            const response = await fetch(LOCAL_SERVER+'/order_maps/' + props.timeSlot._id + '/data', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

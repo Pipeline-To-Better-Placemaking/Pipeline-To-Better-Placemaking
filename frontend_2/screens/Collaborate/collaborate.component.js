@@ -5,6 +5,7 @@ import { Header } from '../components/headers.component';
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getTeam, postInvite, getUserInfo } from '../components/apiCalls';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LOCAL_SERVER } from '@env';
 
 import { styles } from './collaborate.styles';
 
@@ -57,7 +58,7 @@ export function Collaborate(props) {
     let newTeam = null;
     // Save the new team
     try {
-        const response = await fetch('https://p2bp.herokuapp.com/api/teams/', {
+        const response = await fetch(LOCAL_SERVER+'/teams/', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

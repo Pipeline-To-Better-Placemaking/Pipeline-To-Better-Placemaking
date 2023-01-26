@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LOCAL_SERVER } from '@env';
 import moment from 'moment';
 
 export async function getProject(project) {
@@ -7,7 +8,7 @@ export async function getProject(project) {
   let projectDetails = null
   // Get the project information
   try {
-      const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + project._id, {
+      const response = await fetch(LOCAL_SERVER+'/projects/' + project._id, {
           method: 'GET',
           headers: {
               Accept: 'application/json',
@@ -261,7 +262,7 @@ export async function getTeam(team) {
   let success = false
   let teamDetails = null
   try {
-      const response = await fetch('https://p2bp.herokuapp.com/api/teams/' + team._id, {
+      const response = await fetch(LOCAL_SERVER+'/teams/' + team._id, {
           method: 'GET',
           headers: {
               Accept: 'application/json',
@@ -321,7 +322,7 @@ export async function postInvite(id, claim) {
   let success = false;
   let result = null;
   try {
-      const response = await fetch('https://p2bp.herokuapp.com/api/users/invites/', {
+      const response = await fetch(LOCAL_SERVER+'/users/invites/', {
           method: 'POST',
           headers: {
               Accept: 'application/json',
@@ -358,7 +359,7 @@ export async function getUserInfo() {
   let success = false;
   let userInfo = null;
   try {
-      const response = await fetch('https://p2bp.herokuapp.com/api/users/', {
+      const response = await fetch(LOCAL_SERVER+'/users/', {
           method: 'GET',
           headers: {
               Accept: 'application/json',
@@ -396,7 +397,7 @@ export async function getTimeSlot(route, id) {
   let success = false
   let timeSlotDetails = null
   try {
-    const response = await fetch('https://p2bp.herokuapp.com/api/' + route + id, {
+    const response = await fetch(LOCAL_SERVER+'/' + route + id, {
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -426,7 +427,7 @@ export async function deleteTimeSlot(route, id) {
   let success = false
   let result = null
   try {
-    const response = await fetch('https://p2bp.herokuapp.com/api/' + route + '/' + id, {
+    const response = await fetch(LOCAL_SERVER+'/' + route + '/' + id, {
         method: 'DELETE',
         headers: {
             Accept: 'application/json',
@@ -452,7 +453,7 @@ export async function getCollection(route, collection) {
   let success = false
   let collectionDetails = null
   try {
-    const response = await fetch('https://p2bp.herokuapp.com/api/collections/' +
+    const response = await fetch(LOCAL_SERVER+'/collections/' +
                                                   route + collection._id, {
         method: 'GET',
         headers: {
@@ -849,7 +850,7 @@ async function helperGetResultDetails(resultId, routePath) {
   let success = false
   let res = null
   try {
-      const response = await fetch('https://p2bp.herokuapp.com/api/' + routePath + resultId, {
+      const response = await fetch(LOCAL_SERVER+'/' + routePath + resultId, {
           method: 'GET',
           headers: {
               Accept: 'application/json',

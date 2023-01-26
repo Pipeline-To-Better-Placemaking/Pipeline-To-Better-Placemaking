@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Text, Button, Input, Icon } from '@ui-kitten/components';
 import { ModalContainer, ConfirmDelete } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LOCAL_SERVER } from '@env';
 
 import { styles } from './editTeam.styles';
 
@@ -52,7 +53,7 @@ export function EditTeamPage(props) {
 
 		// Delete Team from backend
 		try {
-			const response = await fetch('https://p2bp.herokuapp.com/api/teams/' + deleteTeamID, {
+			const response = await fetch(LOCAL_SERVER+'/teams/' + deleteTeamID, {
 				method: 'DELETE',
 				headers: {
 					Accept: 'application/json',
@@ -101,7 +102,7 @@ export function EditTeamPage(props) {
 		try {
       console.log("Trying to update a team")
 
-      const response = await fetch('https://p2bp.herokuapp.com/api/teams/' + props.team._id, {
+      const response = await fetch(LOCAL_SERVER+'/teams/' + props.team._id, {
         method: 'PUT',
         headers: {
           Accept: 'application/json',

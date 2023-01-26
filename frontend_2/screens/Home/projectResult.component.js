@@ -6,6 +6,7 @@ import { MapAreaWrapper, ShowArea } from '../components/Maps/mapPoints.component
 import { ViewableArea, ContentContainer, PopUpContainer } from '../components/content.component';
 import { getDayStr, getTimeStr } from '../components/timeStrings.component';
 import { getAllResults, getProject } from '../components/apiCalls';
+import { LOCAL_SERVER } from '@env';
 import { 
   formatStationaryGraphData, 
   formatMovingGraphData, 
@@ -93,7 +94,7 @@ export function ProjectResultPage(props) {
     let success = false
     let result = null
     try {
-        const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + props.project._id + '/export', {
+        const response = await fetch(LOCAL_SERVER+'/projects/' + props.project._id + '/export', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',

@@ -11,6 +11,7 @@ import { PopupMessage } from '../../../components/Activities/popupMessage.compon
 import { DecibelEntryModal } from '../../../components/Activities/Sound/decibelEntryModal.component';
 import { MainSoundModal } from '../../../components/Activities/Sound/mainSoundModal.component';
 import { SoundsModal } from '../../../components/Activities/Sound/soundsModal.component';
+import { LOCAL_SERVER } from '@env';
 
 import { styles } from './soundTest.styles';
 
@@ -132,7 +133,7 @@ export function SoundTest(props){
         }
 
         try {
-            const response = await fetch('https://p2bp.herokuapp.com/api/sound_maps/' + props.timeSlot._id + '/data', {
+            const response = await fetch(LOCAL_SERVER+'/sound_maps/' + props.timeSlot._id + '/data', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

@@ -7,6 +7,7 @@ import { ViewableArea, ContentContainer, PopUpContainer } from '../components/co
 import { styles } from './userSettings.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MapConfigButtonGroup } from '../components/UserSettingsModals/mapConfigButtonGroup.component.js';
+import { LOCAL_SERVER } from '@env';
 
 export function UserSettings(props) {
 
@@ -94,7 +95,7 @@ export function UserSettings(props) {
     try {
       console.log("Trying to update a user")
 
-      const response = await fetch('https://p2bp.herokuapp.com/api/users/', {
+      const response = await fetch(LOCAL_SERVER+'/users/', {
         method: 'PUT',
         headers: {
           Accept: 'application/json',
@@ -183,7 +184,7 @@ export function UserSettings(props) {
         let result = null;
 
         try {
-            const response = await fetch('https://p2bp.herokuapp.com/api/verify/newcode', {
+            const response = await fetch(LOCAL_SERVER+'/verify/newcode', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
