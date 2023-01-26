@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HomeScreenStack } from './homeStack.component';
 import { UserSettingsStack } from './userStack.component';
 import { CollaborateStack } from './collaborateStack.component';
+import { LOCAL_SERVER } from '@env';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -76,7 +77,7 @@ export function TabNavigation(props) {
     let teamDetails = null
     // Get the team information
     try {
-        const response = await fetch('https://p2bp.herokuapp.com/api/teams/' + team._id, {
+        const response = await fetch(LOCAL_SERVER+'/teams/' + team._id, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',

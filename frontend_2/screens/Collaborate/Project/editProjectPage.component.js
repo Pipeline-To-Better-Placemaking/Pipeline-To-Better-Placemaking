@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Text, Button, Input, Icon } from '@ui-kitten/components';
 import { ModalContainer, ConfirmDelete } from '../../components/content.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LOCAL_SERVER } from '@env';
 
 import { styles } from './editProjectPage.styles';
 
@@ -64,7 +65,7 @@ export function EditProjectPage(props) {
 
     // Delete
     try {
-      const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + props.project._id, {
+      const response = await fetch(LOCAL_SERVER+'/projects/' + props.project._id, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
@@ -121,7 +122,7 @@ export function EditProjectPage(props) {
 
     // Delete
     try {
-      const response = await fetch('https://p2bp.herokuapp.com/api/projects/' + props.project._id, {
+      const response = await fetch(LOCAL_SERVER+'/projects/' + props.project._id, {
         method: 'PUT',
         headers: {
           Accept: 'application/json',

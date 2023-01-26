@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Button, Input, Icon } from '@ui-kitten/components';
 import { MapAddOne } from '../../components/Maps/mapPoints.component';
 import { ModalContainer, ConfirmDelete } from '../../components/content.component';
+import { LOCAL_SERVER } from '@env';
 
 import { styles } from './editStandingPoints.styles';
 
@@ -45,7 +46,7 @@ export function EditPoints(props) {
 
     // Save the new point
     try {
-      const response = await fetch('https://p2bp.herokuapp.com/api/projects/' +
+      const response = await fetch(LOCAL_SERVER+'/projects/' +
                                     props.project._id +
                                     '/standing_points', {
           method: 'POST',
@@ -90,7 +91,7 @@ export function EditPoints(props) {
     console.log("editing point with id:", props.pointInfo._id);
     // Save the new area
     try {
-      const response = await fetch('https://p2bp.herokuapp.com/api/projects/' +
+      const response = await fetch(LOCAL_SERVER+'/projects/' +
                                     props.project._id +
                                     '/standing_points/' +
                                     props.pointInfo._id, {
@@ -136,7 +137,7 @@ export function EditPoints(props) {
       console.log("deleteing point with id:", props.pointInfo._id);
       // Delete point
       try {
-          const response = await fetch('https://p2bp.herokuapp.com/api/projects/' +
+          const response = await fetch(LOCAL_SERVER+'/projects/' +
                                         props.project._id +
                                         '/standing_points/' +
                                         props.pointInfo._id, {

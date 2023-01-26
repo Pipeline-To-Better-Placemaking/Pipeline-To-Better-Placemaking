@@ -7,6 +7,7 @@ import { MapAreaWrapper, ShowArea, ShowMarkers } from '../../../components/Maps/
 import { getDayStr, getTimeStr } from '../../../components/timeStrings.component';
 import { getAllCollectionInfo } from '../../../components/apiCalls';
 import { retrieveTestName } from '../../../components/helperFunctions';
+import { LOCAL_SERVER } from '@env';
 
 import { styles } from './activitySignUp.styles';
 
@@ -417,7 +418,7 @@ export function ActivitySignUpPage(props) {
     let success = false
     let res = null
     try {
-        const response = await fetch('https://p2bp.herokuapp.com/api/' + route + timeSlot._id + '/claim', {
+        const response = await fetch(LOCAL_SERVER+'/' + route + timeSlot._id + '/claim', {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -439,7 +440,7 @@ export function ActivitySignUpPage(props) {
     let success = false
     let res = null
     try {
-        const response = await fetch('https://p2bp.herokuapp.com/api/'+ route + timeSlot._id + '/claim', {
+        const response = await fetch(LOCAL_SERVER+'/'+ route + timeSlot._id + '/claim', {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',

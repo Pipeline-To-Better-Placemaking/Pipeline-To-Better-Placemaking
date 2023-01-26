@@ -7,6 +7,7 @@ import { CreateProject } from './createProjectModal.component';
 import { EditTeamPage } from './editTeam.component';
 import { getTeam, getFilteredProjectDetails } from '../../components/apiCalls';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LOCAL_SERVER } from '@env';
 
 import { styles } from './team.styles';
 
@@ -116,7 +117,7 @@ export function TeamPage(props) {
     let res = null;
     // Send invite by user email
     try {
-      const response = await fetch('https://p2bp.herokuapp.com/api/teams/'+ props.team._id +'/invites', {
+      const response = await fetch(LOCAL_SERVER+'/teams/'+ props.team._id +'/invites', {
         method: 'POST',
         headers: {
             Accept: 'application/json',

@@ -7,6 +7,7 @@ import { ResetMessage } from './resetMessage.component';
 import { ErrorMessage } from './errorMessage.component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
+import { LOCAL_SERVER } from '@env';
 
 import { styles } from './login.styles';
 
@@ -43,7 +44,7 @@ export const LoginScreen = ( props ) => {
 
     try {
 
-        const response = await fetch('https://p2bp.herokuapp.com/api/login', {
+        const response = await fetch(LOCAL_SERVER+'/login', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -99,7 +100,7 @@ export const LoginScreen = ( props ) => {
     let address = inf.email;
     setResetEmail(address);
     try {
-      const response = await fetch('https://p2bp.herokuapp.com/api/password_reset/', {
+      const response = await fetch(LOCAL_SERVER+'/password_reset/', {
           method: 'POST',
           headers: {
             Accept: 
