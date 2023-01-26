@@ -221,6 +221,17 @@ export default function ProjectPage(){
                                 projectInfo={projectInfo}
                             />
                         }/>
+                        <Route path='activities/identifying_program' element={
+                            <MapPage 
+                                title={ projectInfo?.title } 
+                                drawers={ drawer }  
+                                area={ area } 
+                                center={ center }
+                                standingPoints={ standingPoints }
+                                subAreas={ subAreas }
+                            />
+                        }/>
+                        
                         <Route path='surveyors' element={
                             <SurveyorPage title={ projectInfo?.title } 
                                 drawers={ activities }  
