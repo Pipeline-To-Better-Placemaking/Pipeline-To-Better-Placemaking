@@ -1059,7 +1059,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
             {
                 filename: 'PlaceProject.xlsx',
                 content: projectExport(stationaryData, movingData, soundData, 
-                                    natureData, lightData, orderData, boundariesData)
+                                    natureData, lightData, orderData, boundariesData, accessData)
             }
         ]
     }

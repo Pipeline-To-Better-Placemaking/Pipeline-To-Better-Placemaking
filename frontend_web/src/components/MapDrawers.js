@@ -276,7 +276,7 @@ export default function MapDrawer(props) {
         </TableContainer>
     );
 
-    const charts = (selections, stationary, moving, order, boundaries, lighting, nature, sound) => (
+    const charts = (selections, stationary, moving, order, boundaries, lighting, nature, sound, access) => (
         <>
             { Object.entries(selections).map(([selection, obj])=>(
                 <Charts key={ selection } selection={ selection } data={ obj.data } type={ 0 } projArea={ area }/>
