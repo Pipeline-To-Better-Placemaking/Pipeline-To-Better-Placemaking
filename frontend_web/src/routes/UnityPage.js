@@ -11,10 +11,10 @@ export default function UnityPage() {
     isLoaded,
     loadingProgression,
   } = useUnityContext({
-    loaderUrl: "./build/Builds.loader.js",
-    dataUrl: "./build/webgl.data",
-    frameworkUrl: "./build/Builds.framework.js",
-    codeUrl: "./build/Builds.wasm",
+    loaderUrl: "frontend_web/public/Build/IdentifyingProgram.loader.js",
+    dataUrl: "frontend_web/public/Build/IdentifyingProgram.data",
+    frameworkUrl: "frontend_web/public/Build/IdentifyingProgram.framework.js",
+    codeUrl: "frontend_web/public/Build/IdentifyingProgram.wasm",
     webglContextAttributes: {
       preserveDrawingBuffer: true,
     },
