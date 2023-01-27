@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Link } from 'react-router-dom';
 import axios from '../api/axios.js';
 import MapPage from './MapPage';
 import TabPanel from '../components/ProjectTabPanel';
 import ActivityPage from './ActivityPage';
 import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
+import UnityPage from './UnityPage';
+import Button from '@mui/material/Button';
 
 /* 
     (1) Handles routes to projects/:id/(activities/map/surveyors) 
@@ -222,14 +224,28 @@ export default function ProjectPage(){
                             />
                         }/>
                         <Route path='activities/identifying_program' element={
-                            <MapPage 
+                            <div>
+                                <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities'
+                                    state={{team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken}} >
+                                    Reset Model
+                                </Button>
+                                <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude' 
+                                    state={{...loc.state}} >
+                                    Continue Model
+                                </Button>
+                                <MapPage 
                                 title={ projectInfo?.title } 
                                 drawers={ drawer }  
                                 area={ area } 
                                 center={ center }
                                 standingPoints={ standingPoints }
                                 subAreas={ subAreas }
-                            />
+                                />
+                            </div>
+                            
+                        }/>
+                        <Route path='activities/identifying_program/extrude' element={
+                            <UnityPage />
                         }/>
                         
                         <Route path='surveyors' element={
