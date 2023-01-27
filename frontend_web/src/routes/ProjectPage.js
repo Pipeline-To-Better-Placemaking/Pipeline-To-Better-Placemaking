@@ -90,7 +90,7 @@ export default function ProjectPage(){
             ))
             response?.data?.programCollections.map((collection) => (
                 collection.maps.map(async (id, index) => {
-                    await collectionPoints(id, 'bounds', collection.date, index);
+                    await collectionPoints(id, 'program', collection.date, index);
                 })
             ))
 

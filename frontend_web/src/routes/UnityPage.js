@@ -11,10 +11,12 @@ export default function UnityPage() {
     isLoaded,
     loadingProgression,
   } = useUnityContext({
-    loaderUrl: "frontend_web/public/Build/IdentifyingProgram.loader.js",
-    dataUrl: "frontend_web/public/Build/IdentifyingProgram.data",
-    frameworkUrl: "frontend_web/public/Build/IdentifyingProgram.framework.js",
-    codeUrl: "frontend_web/public/Build/IdentifyingProgram.wasm",
+    // This is just to make sure the file path is correct when loading Unity inside the website
+    // Build loads in the activity path without ../ needs to load inside website root
+    loaderUrl: "../../../../../../../../../Build/IdentifyingProgram.loader.js", 
+    dataUrl: "../../../../../../../../../Build/IdentifyingProgram.data",
+    frameworkUrl: "../../../../../../../../../Build/IdentifyingProgram.framework.js",
+    codeUrl: "../../../../../../../../../Build/IdentifyingProgram.wasm",
     webglContextAttributes: {
       preserveDrawingBuffer: true,
     },
