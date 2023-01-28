@@ -14,7 +14,8 @@ import {
   formatBoundaryGraphData, 
   formatNatureGraphData,
   formatLightGraphData,
-  formatOrderGraphData, 
+  formatOrderGraphData,
+  formatAccessGraphData,  
   retrieveTestName 
 } from '../components/helperFunctions';
 import { Pagination } from '../components/pagination.component';
@@ -85,6 +86,11 @@ export function ProjectResultPage(props) {
       let result = await formatOrderGraphData(item);
       await props.setSelectedResult(result);
       props.navigation.navigate("OrderResultPage");
+    }
+    else if (item.test_type === 'access') {
+      let result = await formatAccessGraphData(item);
+      await props.setSelectedResult(result);
+      props.navigation.navigate("AccessResultPage");
     }
     //add new tests here ^
 

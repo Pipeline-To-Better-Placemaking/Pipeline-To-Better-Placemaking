@@ -286,7 +286,8 @@ export function CreateTimeSlots(props) {
           props.selectedActivity === 'Boundary' ||
           props.selectedActivity === 'Nature' ||
           props.selectedActivity === 'Light' ||
-          props.selectedActivity === 'Order' ? 
+          props.selectedActivity === 'Order' ||
+          props.selectedActivity === 'Access' ? 
             null
           : 
             <SelectPoints {...{item, index}} />

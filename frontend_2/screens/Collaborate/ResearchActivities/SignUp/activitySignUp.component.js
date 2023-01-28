@@ -15,7 +15,7 @@ export function ActivitySignUpPage(props) {
 
   // add new tests here, keep indices consistent
   // Constant array of activities
-  const activityList = ["stationary", "moving", "survey", "sound", "boundary", "nature", "light", "order"]
+  const activityList = ["stationary", "moving", "survey", "sound", "boundary", "nature", "light", "order", "access"]
 
   const [editMenuVisible, setEditMenuVisible] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -74,7 +74,8 @@ export function ActivitySignUpPage(props) {
                   <Text>
                     {(props.activity.test_type === activityList[2] || 
                     props.activity.test_type === activityList[4] ||
-                    props.activity.test_type === activityList[5] ? 
+                    props.activity.test_type === activityList[5] ||
+                    props.activity.test_type === activityList[8] ? 
                       "Time at Site:"
                     : 
                       "Time per Standing Point:"
@@ -93,7 +94,8 @@ export function ActivitySignUpPage(props) {
     props.activity.test_type !== activityList[4] && 
     props.activity.test_type !== activityList[5] &&
     props.activity.test_type !== activityList[6] &&
-    props.activity.test_type !== activityList[7]
+    props.activity.test_type !== activityList[7] &&
+    props.activity.test_type !== activityList[8]
     ){
       let allGood = true;
       for (let i = 0; i < props.timeSlots.length; i++) {
@@ -130,7 +132,8 @@ export function ActivitySignUpPage(props) {
                     props.activity.test_type === activityList[4] ||
                     props.activity.test_type === activityList[5] ||
                     props.activity.test_type === activityList[6] ||
-                    props.activity.test_type === activityList[7] ? 
+                    props.activity.test_type === activityList[7] ||
+                    props.activity.test_type === activityList[8] ? 
                       "Time at Site:"
                     : 
                       "Time per Standing Point:"
@@ -352,6 +355,31 @@ export function ActivitySignUpPage(props) {
 
       props.navigation.navigate("OrderTest")
     }
+    // access test
+    else if (props.activity.test_type == activityList[8]){
+      let activityDetails = {
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
+        position: [],
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
+      }
+
+      let originalDetails = {
+        _id: timeSlot._id,
+        location: timeSlot.sharedData.area.points[0],
+        area: timeSlot.sharedData.area.points,
+        position: [],
+        time: timeSlot.sharedData.duration*60,
+        timeLeft: timeSlot.sharedData.duration*60
+      }
+
+      props.setTimeSlot(activityDetails);
+      props.setInitialTimeSlot(originalDetails);
+
+      props.navigation.navigate("AccessTest")
+    }
 
   }
 
@@ -380,6 +408,8 @@ export function ActivitySignUpPage(props) {
       route = 'light_maps/';
     } else if (props.activity.test_type === activityList[7]) {
       route = 'order_maps/';
+    } else if (props.activity.test_type === activityList[8]) {
+      route = 'access_maps/';
     }
     // add any new tests to this ^
 
@@ -505,6 +535,7 @@ export function ActivitySignUpPage(props) {
   }
 
   const timeSlotCard = ({item, index}) => (
+    console.log("Time Slot: " , item),
     <Card disabled={true}>
       <View style={styles.rowView}>
         <View style={styles.infoColumn}>
@@ -514,7 +545,8 @@ export function ActivitySignUpPage(props) {
           props.activity.test_type === activityList[4] ||
           props.activity.test_type === activityList[5] ||
           props.activity.test_type === activityList[6] ||
-          props.activity.test_type === activityList[7] ? 
+          props.activity.test_type === activityList[7] ||
+          props.activity.test_type === activityList[8] ? 
             null 
           : 
             <Text>Standing Points: {'\n\t' + getPointsString(item)}</Text>
@@ -545,14 +577,18 @@ export function ActivitySignUpPage(props) {
   
   return (
     <ViewableArea>
+      {/* Nav bar */}
       {props.teamOwner() ?
+        //If team owner enable edit
         <HeaderBackEdit {...props} text={props.activity.title} editMenuVisible={editMenuVisible} setEditMenuVisible={setEditMenuVisible}>
           <MenuItem title='Edit Info' onPress={() => {setEditMenuVisible(false); editActivityInfo()}}/>
         </HeaderBackEdit>
       :
+        //If not team owner
         <HeaderBack {...props} text={props.activity.title}/>
       }
       <ContentContainer>
+        
         <View style={styles.mapWrapper}>
           <MapAreaWrapper area={props.activity.area.points} mapHeight={'100%'}>
             <ShowArea area={props.activity.area.points} />
@@ -561,32 +597,40 @@ export function ActivitySignUpPage(props) {
             props.activity.test_type === activityList[4] ||
             props.activity.test_type === activityList[5] ||
             props.activity.test_type === activityList[6] ||
-            props.activity.test_type === activityList[7] ? 
+            props.activity.test_type === activityList[7] ||
+            props.activity.test_type === activityList[8] ? 
               null 
             : 
               <ShowMarkers markers={props.project.standingPoints} />)
             }
           </MapAreaWrapper>
         </View>
+
         <View style={styles.viewSpacer}>
           <Text category='s1'>Activity: {retrieveTestName(props.activity.test_type)}</Text>
           <Text category='s1'>Day: {getDayStr(props.activity.date)}</Text>
           { props.activity.test_type === activityList[3] ?
+            //If sound test
             <Text>Time per Standing Point: {props.activity.duration} (sec)</Text>
           :
+            //If any other test
             <Text>
               {(props.activity.test_type === activityList[2] || 
               props.activity.test_type === activityList[4] ||
               props.activity.test_type === activityList[5] ||
               props.activity.test_type === activityList[6] ||
-              props.activity.test_type === activityList[7] ? 
+              props.activity.test_type === activityList[7] ||
+              props.activity.test_type === activityList[8] ?
+                //If test does not have standing points
                 "Time at Site:"
               : 
+                //If test does have standing points
                 "Time per Standing Point:"
               )} {props.activity.duration} (min)
             </Text>
           }
         </View>
+
         <View style={styles.listView}>
           <List
             style={styles.list}

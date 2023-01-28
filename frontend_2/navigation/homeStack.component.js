@@ -30,6 +30,10 @@ import { LightCompare } from '../screens/Home/Compare/lightCompare.component';
 import { OrderResultPage } from '../screens/Home/ResultPages/orderResultPage.component';
 import { OrderMapResultsView } from '../screens/Home/ResultPages/orderMapResults.component';
 import { OrderCompare } from '../screens/Home/Compare/orderCompare.component';
+// access test result screens
+import { AccessResultPage } from '../screens/Home/ResultPages/accessResultPage.component';
+import { AccessMapResultsView } from '../screens/Home/ResultPages/accessMapResults.component';
+import { AccessCompare } from '../screens/Home/Compare/accessCompare.component';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -210,6 +214,17 @@ export function HomeScreenStack(props){
       </Screen>
 
       <Screen
+        name="AccessCompare"
+      >
+      {props =>
+        <AccessCompare 
+          {...props}
+          results={compareResults}
+        />
+      }
+      </Screen>
+
+      <Screen
         name='ProjectResultPage'
       >
       {props =>
@@ -361,6 +376,23 @@ export function HomeScreenStack(props){
       </Screen>
 
       <Screen
+        name='AccessResultPage'
+      >
+      {props =>
+        <AccessResultPage 
+          {...props}
+          token={token}
+          userId={userId}
+          project={selectedProject}
+          team={selectedTeam}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+          setResults={setResults}
+        />
+      }
+      </Screen>
+
+      <Screen
         name='StationaryActivityResultView'
       >
         {props =>
@@ -437,6 +469,18 @@ export function HomeScreenStack(props){
       >
       {props=>
         <OrderMapResultsView
+          {...props}
+          selectedResult={selectedResult}
+          setSelectedResult={setSelectedResult}
+        />
+      }
+      </Screen>
+
+      <Screen
+        name='AccessMapResultsView'
+      >
+      {props=>
+        <AccessMapResultsView
           {...props}
           selectedResult={selectedResult}
           setSelectedResult={setSelectedResult}

@@ -475,6 +475,50 @@ export async function formatOrderGraphData(result){
   return tempResult;
 }
 
+export async function formatAccessGraphData(result){
+  if (result === null ||
+      result.data === undefined ||
+      result.data === null ||
+      result.data.length <= 0 ||
+      result.graph !== undefined
+    ) {
+    return result;
+  }
+  
+  console.log(result);
+
+  // each object in data are submitted results for that test
+  let tempResult = {...result};
+  let graph = {
+    data: [],
+    labels: []
+  };
+  let index;
+  // loop through the entire data array to format each points array for the barchart
+  for(let i = 0; i < result.data.length; i++){
+    let data = result.data[i].points;
+    // loop through the entire points array and format its data into the graph object
+    for(let j = 0; j < data.length; j++){
+      index = conDescSearch(graph.labels, data[j].access_description)
+      // if that description already exists in graph's labels
+      if(index !== -1){
+        // increase the count of that index
+        graph.data[index] += 1;
+      }
+      // otherwise, that description does not exist in graph's labels
+      else{
+        // so push the description to the end of graph's labels and a 1 onto the end of data labels
+        graph.labels.push(data[j].access_description);
+        graph.data.push(1);
+      }
+      
+    }
+  }
+  // console.log("resulting graph data: ", graph);
+  tempResult.graph = {...graph};
+  return tempResult;
+}
+
 export function retrieveTestName(str){
   let lowerStr = str.toLowerCase();
   
@@ -514,6 +558,10 @@ export function retrieveTestName(str){
     //console.log('absence of order test');
     testType = 'Absence of Order Locator';
    }
+  else if(lowerStr.localeCompare('access') === 0){
+    //console.log('Identifying Access');
+    testType = 'Identifying Access';
+  }
   // it should never enter this else
   else{
     console.log('error getting test type');

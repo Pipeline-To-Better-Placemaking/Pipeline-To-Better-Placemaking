@@ -14,7 +14,7 @@ export function CompareFilteredView(props) {
     const [titleIndex, setTitleIndex] = useState(new IndexPath(0))
     //add the new tests here
     // not index 2 is not for the survery here, index 2 is the sound test
-    const activities = ['People in Place', 'People in Motion', 'Acoustical Profile', 'Spatial Boundaries', 'Nature Prevalence', 'Lighting Profile', 'Absence of Order Locator']
+    const activities = ['People in Place', 'People in Motion', 'Acoustical Profile', 'Spatial Boundaries', 'Nature Prevalence', 'Lighting Profile', 'Absence of Order Locator', 'Identifying Access']
 
     const selectedActivity = () => {
         if (titleIndex.row === 0) {
@@ -37,6 +37,9 @@ export function CompareFilteredView(props) {
         }
         else if (titleIndex.row === 6){
           return props.filterCriteria.order
+        }
+        else if (titleIndex.row === 7){
+          return props.filterCriteria.access
         }
         else {
           return props.filterCriteria.all;
@@ -98,6 +101,9 @@ export function CompareFilteredView(props) {
       }
       else if (titleIndex.row === 6){ // order
         props.navigation.navigate("OrderCompare");
+      }
+      else if (titleIndex.row === 7){ // access
+        props.navigation.navigate("AccessCompare");
       }
 
     }
