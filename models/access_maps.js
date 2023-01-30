@@ -109,12 +109,11 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-        kind: newEntry.kind,
-        value: newEntry.value,
-        time: newEntry.time,
-        description: newEntry.description,
-        purpose: newEntry.purpose,
-        path: newEntry.path
+        path: newEntry.path,
+        accessType: newEntry.accessType,
+        area: newEntry.area,
+        distance: newEntry.distance,
+        inPerimeter: newEntry.inPerimeter
     })
 
     return await Maps.updateOne(

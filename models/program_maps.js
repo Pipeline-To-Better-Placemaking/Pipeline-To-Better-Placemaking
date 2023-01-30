@@ -11,38 +11,49 @@ const dataSchema = mongoose.Schema({
         required: true
     },
 
-    //stores the full building model url string provided by firebase
-    //references the actual mesh stored in firebase
-    orgFullModel: {
-        type: String,
-        required: true
-    },
-
-    //stores array of the object id that references each floors schema
-    floors: [{
-        type: ObjectId, 
-        required: true
+    //stores the points for the perimeter of the building
+    //used to render the model. 
+    perimeterPoints: [{
+        latitude:{
+            type: Number,
+            required: true
+        },
+        longitude:{
+            type: Number,
+            required: true 
+        }
     }],
+
+    //stores an array of floors with the floor schema
+    floors: [floorSchema]
     
 })
 
-const floor_schema = mongoose.Schema({
+const newProgramSchema = mongoose.Schema({
+    //stores the points for this section
+    //perimeter of the section made by user.  
+    points: [{
+        latitude:{
+            type: Number,
+            required: true
+        },
+        longitude:{
+            type: Number,
+            required: true 
+        }
+    }],
+
+    programType: {
+        type: String,
+        required: true
+    }
+
+})
+
+const floorSchema = mongoose.Schema({
     floorNum:{
         type: Number,
         required: true
-    },
-
-    //stores the original floor model url string provided by firebase
-    //references the actual mesh stored in firebase
-    orgFloorModel: {
-        type: String,
-        required: true
-    },
-
-    //stores updated floor mesh url from firebase. 
-    //needs to be updated everytime a program is added and identified.
-    updatedFloorModel:{
-        type: String,
     },
 
     //number of program sections identified on this floor
@@ -51,11 +62,8 @@ const floor_schema = mongoose.Schema({
         required: true
     },
 
-    //array of object ids that refer to programs that have been identified
-    //on this floor. each time a user identifies a program, add its id if not in already.
-    programTypes:[{
-        type:ObjectId,
-    }],
+    //programs that are identified on this floor. 
+    programs: [newProgramSchema]
 })
 
 const program_schema = mongoose.Schema({
@@ -94,6 +102,8 @@ const program_schema = mongoose.Schema({
 
 const Maps = module.exports = mongoose.model('Program_Maps', program_schema)
 const Entry = mongoose.model('Program_Entry', dataSchema)
+const FloorEntry = mongoose.model('Floor_Entry', floorSchema)
+const ProgramEntry = mongoose.model('Program_Entry', newProgramSchema)
 
 module.exports.addMap = async function(newMap) {
     return await newMap.save()
@@ -129,17 +139,44 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-        kind: newEntry.kind,
-        value: newEntry.value,
-        time: newEntry.time,
-        description: newEntry.description,
-        purpose: newEntry.purpose,
-        path: newEntry.path
+        numFloors: newEntry.numFloors,
+        perimeterPoints: newEntry.perimeterPoints,
     })
 
     return await Maps.updateOne(
         { _id: mapId },
         { $push: { data: entry}}
+    )
+}
+
+module.exports.addFloor = async function(mapId, entryId, newEntry) {
+    var entry = new FloorEntry({
+        floorNum: newEntry.floorNum,
+        programCount: newEntry.programCount,
+    })
+
+    return await Maps.updateOne(
+        { 
+            _id: mapId,
+            'data._id': entryId
+        },
+        { $push: { floors: entry}}
+    )
+}
+
+module.exports.addProgram = async function(mapId, entryId, floorId, newEntry) {
+    var entry = new FloorEntry({
+        points: newEntry.points,
+        programType: newEntry.programType,
+    })
+
+    return await Maps.updateOne(
+        { 
+            _id: mapId,
+            'data._id': entryId,
+            'floors._id': floorId
+        },
+        { $push: { programs: entry}}
     )
 }
 
@@ -184,6 +221,31 @@ module.exports.findData = async function(mapId, entryId){
     return out[0].data[0]
 }
 
+module.exports.findFloor = async function(mapId, entryId, floorId){
+    
+    const out = (await Maps.find({
+        _id: mapId,
+        'data._id': entryId,
+        'floors._id': floorId
+    },
+    {'floors.$': 1}))
+
+    return out[0].floors[0]
+}
+
+module.exports.findProgram = async function(mapId, entryId, floorId, programId){
+    
+    const out = (await Maps.find({
+        _id: mapId,
+        'data._id': entryId,
+        'floors._id': floorId,
+        'programs._id': programId
+    },
+    {'programs.$': 1}))
+
+    return out[0].programs[0]
+}
+
 module.exports.updateData = async function(mapId, dataId, newEntry){
     return await Maps.updateOne(
         {
@@ -200,4 +262,45 @@ module.exports.deleteEntry = async function(mapId, entryId) {
             })
     }
 
-//functions to do with the floors? figure that out
+module.exports.deleteFloor = async function(mapId, entryId, floorId){
+    return await Maps.updateOne(
+        {
+            _id: mapId, 
+            'data._id': entryId
+        },
+        { $pull: {floors: {_id:floorId}}}
+        )
+}
+
+
+    
+module.exports.updateFloor = async function(mapId, dataId, floorId, newEntry){
+        return await Maps.updateOne(
+            {
+                _id: mapId,
+                'data._id': dataId,
+                'floors._id': floorId
+            },
+        { $set: { "floors.$": newEntry}}
+    )}
+
+module.exports.updateProgram = async function(mapId, dataId, floorId, programId, newEntry){
+    return await Maps.updateOne(
+        {
+            _id: mapId,
+            'data._id': dataId,
+            'floors._id': floorId,
+            'programs._id:': programId
+        },
+        { $set: { "programs.$": newEntry}}
+    )}
+        
+        
+module.exports.deleteProgram = async function(mapId, entryId, floorId, programId){
+    return await Maps.updateOne(
+        {_id: mapId}, 
+        {'data._id': entryId},
+        {'floors._id': floorId},
+        { $pull: {programs: {_id:programId}}}
+    )
+}
