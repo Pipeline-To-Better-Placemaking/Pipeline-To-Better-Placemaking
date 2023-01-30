@@ -12,6 +12,7 @@ const testNames = [
     { label: 'Lighting Profile', type: 'light_maps' },
     { label: 'Nature Prevalence', type: 'nature_maps' },
     { label: 'Acoustical Profile', type: 'sound_maps' },
+    { label: 'Section Cutter', type: 'section_maps'},
 ];
 
 export default function ActivityForm(props) {

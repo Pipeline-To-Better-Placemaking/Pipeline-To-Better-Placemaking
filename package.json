@@ -5,7 +5,7 @@
   "main": "index.js",
   "homepage": "https://p2bp.herokuapp.com/",
   "scripts": {
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "dev": "cross-env NODE_ENV=dev node app.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend_web && npm run build --prefix frontend_web"
@@ -14,7 +14,6 @@
     "version 1": "Bautista Bertolami, Madison Dishman, Joshua Howell, Mason Proco, Mike Triana",
     "version 2": "Ronald Campos, Kyle Gebhardt, Jessica Hawkins, Andres Jardon, Will Whisel",
     "version 3": "Andrea White, Alejandro Fernandez, Jacob Campbell, Sebastian Morales, Sebastian Castañeda"
-
   },
   "license": "ISC",
   "devDependencies": {
@@ -37,6 +36,7 @@
     "mongoose": "^5.10.12",
     "mongoose-unique-validator": "^2.0.3",
     "nodemailer": "^6.4.17",
+    "nodemon": "^2.0.20",
     "passport": "^0.4.1",
     "passport-json": "^1.2.0",
     "passport-jwt": "^4.0.0",

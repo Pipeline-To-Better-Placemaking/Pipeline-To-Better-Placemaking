@@ -4,7 +4,7 @@ const XLSX = require('xlsx')
 //takes in data from projects route and receives objects from helper functions.  
 //converts those into xlsx and returns them to projects
 projectExport = function(stationaryData, movingData, soundData, natureData, lightData, orderData,
-                        boundariesData){
+                        boundariesData, sectionData){
 
     var stationary = []
     var moving = []
@@ -13,6 +13,7 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
     var lighting = []
     var nature = []
     var sound = []
+    var section = []
     var workbook = XLSX.utils.book_new();
 
 
@@ -44,6 +45,10 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
         boundaries = boundToXLSX(boundariesData)
         var worksheetbounds = XLSX.utils.json_to_sheet(boundaries);
         XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
+
+        section = boundToXLSX(sectionData)
+        var worksheetsection = XLSX.utils.json_to_sheet(section);
+        XLSX.utils.book_append_sheet(workbook, worksheetsection, 'SectionCutter');
 
 
     // Excel Format
@@ -366,6 +371,46 @@ function orderToXLSX(data){
         return order
     }catch(error){
     console.log("order fails " + error)
+    }
+}
+
+function sectionToXLSX(data){
+
+    try{
+        var section = []
+        var obj = {}
+
+        for(var i = 0; i < data.sectionCollections.length; i++){
+            var collection = data.sectionCollections[i]
+            
+            if(collection.maps){
+                for (var j = 0; j < collection.maps.length; j++){
+                    var map = collection.maps[j]
+
+                        if(map.data){
+                        for(var k = 0; k < map.data.length; k++){
+                            var entry = map.data[k]
+
+                            obj = { Category: `${collection.title}(${j})`, 
+                                    Date: map.date, 
+                                    Time: getDigitalTime(entry.time), 
+                                    Point: k, 
+                                    Kind: entry.kind, 
+                                    Description: entry.description, 
+                                    Purpose: parseArrAsString(entry.purpose), 
+                                    'Value (ft/sq.ft)': entry.value
+                            }
+
+                            section.push(obj)
+                        }
+                    }
+                }
+            }
+        }
+
+        return section
+    }catch(error){
+    console.log("section fails " + error)
     }
 }
 

@@ -45,6 +45,7 @@ const boundApi      = require('./routes/boundaries_maps.js')
 const surveyApi     = require('./routes/surveys.js')
 const collectionApi = require('./routes/collections.js')
 const resetApi      = require('./routes/password_reset.js')
+const sectionApi    = require('./routes/section_maps.js')
 
 //first parameter will be the directory name used from front end to access these routes
 app.use('/api/login',           loginApi)
@@ -58,10 +59,11 @@ app.use('/api/sound_maps',      soundApi)
 app.use('/api/nature_maps',     natureApi)
 app.use('/api/light_maps',      lightApi)
 app.use('/api/order_maps',      orderApi)
-app.use('/api/boundaries_maps',      boundApi)
+app.use('/api/boundaries_maps', boundApi)
 app.use('/api/surveys',         surveyApi)
 app.use('/api/collections',     collectionApi)
 app.use('/api/password_reset',  resetApi)
+app.use('/api/section_maps',    sectionApi)
 
 app.use(passport.initialize());
 app.use(passport.session());

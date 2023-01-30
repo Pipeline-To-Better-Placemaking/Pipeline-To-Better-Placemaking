@@ -30,7 +30,8 @@ export default function NewActivityTimes(props) {
         nature_maps: ['nature_collections', 'nature'],
         order_maps: ['order_collections', 'order'],
         sound_maps: ['sound_collections', 'sound'],
-        stationary_maps: ['stationary_collections', 'stationary']
+        stationary_maps: ['stationary_collections', 'stationary'],
+        section_maps: ['section_collections', 'section'],
     }
 
     //dynamically adds removes timeSlot cards for the activity
@@ -151,7 +152,7 @@ export default function NewActivityTimes(props) {
     const addNewTimeSlots = async (timeSlot, title, id, timeSlotName, type) => {
         var selectedPoints = [];
 
-        if (type !== 'boundary' && type !== 'nature' && type !== 'order' && type !== 'survey'){
+        if (type !== 'boundary' && type !== 'nature' && type !== 'order' && type !== 'survey' ){
             if(timeSlot.points && timeSlot.points.length !== 0){
                 Object.entries(timeSlot.points).forEach(([pointInd, bool])=>(
                     bool ? selectedPoints.push(props.projectInfo.standingPoints[pointInd]) : null

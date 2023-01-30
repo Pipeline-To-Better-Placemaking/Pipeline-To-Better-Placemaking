@@ -56,6 +56,11 @@ export default function ProjectPage(){
                     await collectionPoints(id, 'bounds', collection.date, index);
                 })
             ))
+            response?.data?.sectionCollections.map((collection) => (
+                collection.maps.map(async (id, index) => {
+                    await collectionPoints(id, 'section', collection.date, index);
+                })
+            ))
             response?.data?.lightCollections.map((collection) => (
                 collection.maps.map(async (id, index) => (
                     await collectionPoints(id, 'light', collection.date, index)
@@ -109,7 +114,8 @@ export default function ProjectPage(){
             nature: 'nature_maps',
             order: 'order_maps',
             sound: 'sound_maps',
-            stationary: 'stationary_maps'
+            stationary: 'stationary_maps',
+            section: 'section_maps',
         }
 
         try {
