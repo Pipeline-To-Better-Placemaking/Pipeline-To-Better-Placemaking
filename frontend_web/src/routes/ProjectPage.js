@@ -8,6 +8,7 @@ import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
 import UnityPage from './UnityPage';
 import Button from '@mui/material/Button';
+import NewProgram from './NewProgram.js';
 
 /* 
     (1) Handles routes to projects/:id/(activities/map/surveyors) 
@@ -225,22 +226,14 @@ export default function ProjectPage(){
                         }/>
                         <Route path='activities/identifying_program' element={
                             <div>
-                                <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities'
-                                    state={{team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken}} >
-                                    Reset Model
-                                </Button>
-                                <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude' 
-                                    state={{...loc.state}} >
-                                    Continue Model
-                                </Button>
-                                <MapPage 
-                                title={ projectInfo?.title } 
-                                drawers={ drawer }  
-                                area={ area } 
-                                center={ center }
-                                standingPoints={ standingPoints }
-                                subAreas={ subAreas }
+                                
+                                <NewProgram 
+                                    center={ center }
+                                    title={ projectInfo?.title }
+                                    area= { area }
+                                    subAreas= { subAreas }
                                 />
+                                
                             </div>
                             
                         }/>

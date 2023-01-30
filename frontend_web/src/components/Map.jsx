@@ -23,6 +23,7 @@ const render = (status) => {
     // 5 - new project map
     // 6 - edit existing area/add area
     // 7 -  edit existing point/add point
+    // 8 - new program
 
 export default function FullMap(props) {
     const [map, setMap] = React.useState(null);
@@ -34,7 +35,7 @@ export default function FullMap(props) {
     const [bounds, setBounds] = React.useState();
     const [click, setClick] = React.useState(props.type === 0 || props.type === 2 || props.type === 7 ? props.center : null);
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
-    const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 || props.type === 2 ? props.area : null);
+    const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 || props.type === 2  || props.type === 8 ? props.area : null);
     const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [] :(props.type === 6 ? props.area : [])));
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreas : [];
@@ -411,7 +412,7 @@ export default function FullMap(props) {
                     { props.type === 0 ? <Places map={map} onChange={placeOn ? onChange : null} on={placeOn} togglePlaces={togglePlaces} onClick={onPClick} center={center} zoom={zoom} state={loc.state}/> : null }
                     {/* Change marker types for non center markers to show difference */}
                     { props.type === 3 || props.type === 5 ? clicks.map((latLng, i) => (<Marker key={i} position={ latLng } info={`<div>Position ${i}</div>`}/>)) : null }
-                    { props.type === 4 || props.type === 6 ? NewArea(clicks) : null } {/*<DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null */}
+                    { props.type === 4 || props.type === 6 || props.type === 8 ? NewArea(clicks) : null } {/*<DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null */}
                 </Map>
             </Wrapper>
             { props.type === 4 || props.type === 6 ?
@@ -489,6 +490,27 @@ export default function FullMap(props) {
                             Set Points
                         </Button> 
                         <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                    </div>
+                </div>
+                : null
+            }
+            { props.type === 8 ? 
+                <div id='newProgramButtons'>
+                    <div style={{ textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '10px', borderRadius: '5px', width: '30vw', border: '2px solid transparent' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                            <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities'
+                                state={{team: loc.state.team, 
+                                        project: loc.state.project, 
+                                        userToken: loc.state.userToken
+                                        }}>
+                                Reset Model
+                            </Button>
+
+                            <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude' 
+                                state={{...loc.state}} >
+                                Continue Model
+                            </Button>
+                        </div>
                     </div>
                 </div>
                 : null
