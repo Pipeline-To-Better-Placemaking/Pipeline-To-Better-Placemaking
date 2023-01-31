@@ -200,7 +200,7 @@ export default function FullMap(props) {
         if(props.type === 2 || props.type === 0 || props.type === 7 ) {
             setClick(e.latLng);
             setCenter(e.latLng);
-        } else if(props.type === 3 || props.type === 4 || props.type === 6) {
+        } else if(props.type === 3 || props.type === 4 || props.type === 6 || props.type === 8) {
             var clickObj = {
                 lat: 0,
                 lng: 0
@@ -503,13 +503,17 @@ export default function FullMap(props) {
                                         project: loc.state.project, 
                                         userToken: loc.state.userToken
                                         }}>
-                                Reset Model
+                                Cancel
                             </Button>
 
-                            <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude' 
-                                state={{...loc.state}} >
-                                Continue Model
-                            </Button>
+                            { clicks.length < 3 ? null :
+                                <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude' 
+                                    state={{...loc.state, buildingArea: clicks}} >
+                                    Continue Model
+                                </Button>
+                            }
+                            
+                            <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
                         </div>
                     </div>
                 </div>
