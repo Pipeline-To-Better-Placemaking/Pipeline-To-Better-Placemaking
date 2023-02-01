@@ -417,6 +417,8 @@ export async function getTimeSlot(route, id) {
   let token = await AsyncStorage.getItem("@token");
   let success = false
   let timeSlotDetails = null
+  //console.log("Route: ", route);
+  //console.log("ID: ", id);
   try {
     const response = await fetch(LOCAL_SERVER+'/' + route + id, {
         method: 'GET',
@@ -427,7 +429,7 @@ export async function getTimeSlot(route, id) {
         }
     })
     timeSlotDetails = await response.json();
-    //console.log("time slot: ", timeSlotDetails);
+    console.log("time slot: ", timeSlotDetails);
     success = true
   } catch (error) {
       console.log("error", error)
@@ -636,7 +638,12 @@ export async function getAllCollectionInfo(collectionDetails) {
     if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
       for (let i = 0; i < collectionDetails.maps.length; i++) {
         let item = collectionDetails.maps[i];
-        let timeSlot = await getTimeSlot('access_maps/', item._id);
+
+        //For some reason the id in access collection maps is being stored in 'item' instead of 'item._id'
+        //console.log("Item ID: ", item);
+        let timeSlot = await getTimeSlot('access_maps/', item);
+
+
         success = (timeSlot !== null)
         if (success)
           timeSlots.push(timeSlot);
