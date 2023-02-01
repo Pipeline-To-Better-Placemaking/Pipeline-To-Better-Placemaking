@@ -11,7 +11,15 @@ export const styles = StyleSheet.create({
     },
 
     viewContainer: {
-        height: '28%',
+        height: '45%',
+        marginTop: 'auto',
+        borderTopLeftRadius: 35,
+        borderTopRightRadius: 35,
+        borderWidth: 1
+    },
+
+    purposeViewContainer:{
+        height: '40%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -40,24 +48,36 @@ export const styles = StyleSheet.create({
     buttonRow:{
         width: width,
         flexDirection: 'row',
-        justifyContent: 'space-evenly',        
+        justifyContent: 'space-around',        
         marginTop: height * .015,
     },
 
     button:{
-        width: width * .3,
-        height: height * .06, 
-        alignSelf:'center'
+        width: width * .35,
+        height: height * .07
     },
 
     buttonTxt:{
         color: 'white',
-        fontSize: width * .031,
-        fontWeight: 'bold'
+        fontSize: width * .033,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    offButtonTxt:{
+        color: '#006FD6',
+        fontSize: width * .033,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    lastButtonView:{
+        marginTop: height * .015,
+        alignItems: 'center'
     },
 
     backButton:{
-        width: width * .275,
+        width: width * .3,
         height: height * .04, 
         alignSelf:'center',
         backgroundColor: '#6690FF',
@@ -66,14 +86,37 @@ export const styles = StyleSheet.create({
 
     backButtonTxt:{
         color: 'white',
-        fontSize: width * .03,
+        fontSize: width * .031,
         fontWeight: 'bold'
     },
 
-    backButtonView:{
-        marginTop: height * .015
+    submitButton:{
+        width: width * .25,
+        height: 5,
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0
+    },
+
+    multiView:{
+        marginTop: height * .02,
+        alignItems: 'center'
+    },
+
+    multiSubmit:{
+        width: width * .3,
+        height: height * .065
+    },
+
+    selectError:{
+        alignItems: 'center',
+        marginTop: height * .005,
+        marginBottom: -8,
+    },
+
+    redTxt:{
+        color: 'red'
     }
 
-})
+});
 
 export default styles;

@@ -5,9 +5,9 @@ import { Header } from '../../../components/headers.component';
 import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
 import { AccessMap } from '../../../components/Maps/accessMap.component.js';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component';
-import { ErrorModal } from '../../../components/Activities/Boundary/errorModal.component';
-import { DataModal } from '../../../components/Activities/Boundary/dataModal.component';
-import { PurposeModal } from '../../../components/Activities/Boundary/purposeModal.component';
+import { ErrorModal } from '../../../components/Activities/Access/errorModal.component';
+import { DataModal } from '../../../components/Activities/Access/dataModal.component';
+import { PurposeModal } from '../../../components/Activities/Access/purposeModal.component';
 import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import { calcArea, haverSine } from '../../../components/helperFunctions';
@@ -41,16 +41,16 @@ export function AccessTest(props) {
     const [filter, setFilter] = useState([
         {label: "Hide", value: 0},
         {label: "Show All", value: 1}, 
-        {label: "Constructed", value: 2},
-        {label: "Material", value: 3}, 
-        {label: "Shelter", value: 4}
+        {label: "Access Points", value: 2},
+        {label: "Access Paths", value: 3}, 
+        {label: "Access Areas", value: 4}
     ]);
     const [viewAll, setViewAll] = useState(false);
-    const [constructBool, setConstructBool] = useState(false);
-    const [materialBool, setMaterialBool] = useState(false);
-    const [shelterBool, setShelterBool] = useState(false);
+    const [pointBool, setPointBool] = useState(false);
+    const [pathBool, setMaterialBool] = useState(false);
+    const [areaBool, setShelterBool] = useState(false);
 
-    // boundary tools
+    // access tools
     const [lineTools, setLineTools] = useState(false);
     const [boundIndex, setBoundIndex] = useState(-1);
 
@@ -58,9 +58,13 @@ export function AccessTest(props) {
     const [currentPath, setCurrentPath] = useState([])
     const [currentPathSize, setCurrentPathSize] = useState(0)
     // Stores total paths seperatley for the 3 types of boundaries
-    const [constructTotalPaths] = useState([]);
-    const [materialTotalPaths] = useState([]);
-    const [shelterTotalPaths] = useState([]);
+    const [totalPoints] = useState([]);
+    const [totalPaths] = useState([]);
+    const [totalAreas] = useState([]);
+
+    // used to store all collected data during test (to be sent to DB)
+    const [data] = useState([]);
+    const [dataIndex, setDataIndex] = useState(0);
 
     // Modal controls/tools
     const [errorModal, setErrorModal] = useState(false);
@@ -78,50 +82,90 @@ export function AccessTest(props) {
     // Used to store all the data info
     const [dataPoints] = useState([]);
 
+    const pointPrompt = ["Bike Rack", "RidepShare Drop Off", "Elevator", "Planter", "Partial Wall"]
+    const pathPrompt = ["Sidewalk", "Side Street", "Main Road", "Natural (grass)", "Wood (deck)"]
+    const areaPrompt = ["Parking Lot", "Parking", "Umbrella Dining", "Temporary", "Pointed Ceiling"]
+
     // End Button press or whenever the timer hits 0
-    const endActivity = async () => {
-        setStart(false)
-        clearInterval(id);
+    // const endActivity = async () => {
+    //     setStart(false)
+    //     clearInterval(id);
 
-        // close any of the modals that may be open when the test ends (timer hits 0 while in a modal)
-        if(dataModal) setDataModal(false);
+    //     // close any of the modals that may be open when the test ends (timer hits 0 while in a modal)
+    //     if(dataModal) setDataModal(false);
         
-        // console.log(dataPoints)
+    //     // console.log(dataPoints)
         
-        // package the data; needs to be an array for multiple entries for a test
-        let data =[{
-            points: dataPoints,
-            time: new Date()
-        }]
+    //     // package the data; needs to be an array for multiple entries for a test
+    //     let data =[{
+    //         points: dataPoints,
+    //         time: new Date()
+    //     }]
 
-        // Sends the collected data to DB
-        try {
-            const response = await fetch(LOCAL_SERVER+'/access_maps/' + props.timeSlot._id + '/data', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + props.token
-                },
-                body: JSON.stringify({
-                    entries: data
-                })
-            })
+    //     // Sends the collected data to DB
+    //     try {
+    //         const response = await fetch(LOCAL_SERVER+'/access_maps/' + props.timeSlot._id + '/data', {
+    //             method: 'POST',
+    //             headers: {
+    //                 Accept: 'application/json',
+    //                     'Content-Type': 'application/json',
+    //                     'Authorization': 'Bearer ' + props.token
+    //             },
+    //             body: JSON.stringify({
+    //                 entries: data
+    //             })
+    //         })
 
-            let info = await response.json()
+    //         let info = await response.json()
         
-            console.log(info)
+    //         console.log(info)
         
-        } catch (error) {
-            console.log("ERROR: ", error)
-        }
+    //     } catch (error) {
+    //         console.log("ERROR: ", error)
+    //     }
 
-        props.navigation.navigate("ActivitySignUpPage");
-    }
+    //     props.navigation.navigate("ActivitySignUpPage");
+    // }
 
 // START BOUNDARY CLONE
 
-        // closes the modal and stores the boundary data
+        // closes the modal and stores the access data
+        
+        // ends activity and sends data to the DB
+    
+        const endActivity = async () => {
+            console.log('ending activity');
+            setStart(false);
+            clearInterval(id);
+            
+            // closes any modals that may be open
+            if(errorModal) setErrorModal(false);
+            if(dataModal) setDataModal(false);
+            if(purposeModal) setPurposeModal(false);
+            
+            try {
+                const response = await fetch(LOCAL_SERVER+'/access_maps/' + props.timeSlot._id + '/data', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + props.token
+                    },
+                    body: JSON.stringify({
+                        entries: data
+                    })
+                })
+
+                let info = await response.json()
+                
+                console.log(info);
+
+            } catch (error) {
+                console.log("ERROR: ", error)
+            }
+            props.navigation.navigate("ActivitySignUpPage");
+        }
+        
         const closeData = async (inf) => {
             // close the modal
             setDataModal(false);
@@ -129,12 +173,12 @@ export function AccessTest(props) {
             setDataIndex(dataIndex + 1);
             let type;
             let val = 0;
-            // store the boundary in its respective array and set the type variable
-            // if we are doing a constructed boundary, pull up the purpose modal
+            // store the access in its respective array and set the type variable
+            // if we are doing a point access, pull up the purpose modal
             if(boundIndex === 0){
                 setPurposeModal(true);
-                constructTotalPaths.push(currentPath);
-                type = 'Constructed'
+                totalPoints.push(currentPath);
+                type = 'Access Points';
                 // calculate the distance between each subsequent point to find total distance of drawn line
                 for (let i = 1; i < currentPathSize; i++) val += haverSine(currentPath[i-1], currentPath[i]);
                 // ensure the percision is fixed to 2nd decimal place
@@ -142,16 +186,16 @@ export function AccessTest(props) {
                 val = parseFloat(tempString);
             }
             else if (boundIndex === 1){
-                materialTotalPaths.push(currentPath);
-                type = 'Material'
+                totalPaths.push(currentPath);
+                type = 'Access Paths';  
                 val = calcArea(currentPath)
             }
             else{
-                shelterTotalPaths.push(currentPath);
-                type = 'Shelter'
+                totalAreas.push(currentPath);
+                type = 'Access Areas';
                 val = calcArea(currentPath)
             }
-            // gets rid of any parenthesis in the description (for material and shelter prompts)
+            // gets rid of any parenthesis in the description (for path and area prompts)
             let shorten = inf.description.indexOf("(");
             let fixedDesc;
             if(shorten !== -1){
@@ -202,19 +246,19 @@ export function AccessTest(props) {
 
         // pulls up the delete modal
         const handleDelete = (type, index, coords) =>{
-            // constructed boundary
+            // point access
             if(type === 0){
-                setDeleteDesc("constructed boundary")
+                setDeleteDesc("point access")
                 setDeleteType(type);
             }
-            // material boundary
+            // path access
             else if(type === 1){
-                setDeleteDesc("material boundary")
+                setDeleteDesc("path access")
                 setDeleteType(type);
             }
-            // shelter boundary
+            // area access
             else{
-                setDeleteDesc("shelter boundary")
+                setDeleteDesc("area access")
                 setDeleteType(type);
             }
             // sets the description and index, then pulls up the modal
@@ -223,27 +267,27 @@ export function AccessTest(props) {
             setDeleteModal(true);
         }
         
-        // deletes the boundary from the total paths and data arrays
-        const deleteBoundary = async () =>{
-            // constructed boundary
+        // deletes the access from the total paths and data arrays
+        const deleteAccess = async () =>{
+            // point access
             if(deleteType === 0){
-                constructTotalPaths.splice(deleteIndex, 1);
+                totalPoints.splice(deleteIndex, 1);
             }
-            // material boundary
+            // path access
             else if(deleteType === 1){
-                materialTotalPaths.splice(deleteIndex, 1);
+                totalPaths.splice(deleteIndex, 1);
             }
-            // shelter boundary
+            // area access
             else{
-                shelterTotalPaths.splice(deleteIndex, 1);
+                totalAreas.splice(deleteIndex, 1);
             }
             let tempIndex = -1;
             let tempFilter;
-            // loop through the data array looking for the boundary to be deleted
+            // loop through the data array looking for the access to be deleted
             for(let i = 0; i < data.length; i++){
-                // searches each data's path to see if those coordinates match the coordinates of the boundary that is being deleted 
+                // searches each data's path to see if those coordinates patch the coordinates of the access that is being deleted 
                 tempFilter = data[i].path.filter((coord) => deleteCoords.find((dCoord) => coord.latitude === dCoord.latitude && coord.longitude === dCoord.longitude))
-                // coordinate path of constructed is the same as the deleteCoord path
+                // coordinate path of point is the same as the deleteCoord path
                 if(deleteType === 0){
                     if(tempFilter.length === deleteCoords.length){
                         // save the index and break from the loop
@@ -251,7 +295,7 @@ export function AccessTest(props) {
                         break
                     }
                 }
-                // coordinate path of material/shelter
+                // coordinate path of path/area
                 else{
                     // android device
                     if(plat === 'android'){
@@ -271,14 +315,14 @@ export function AccessTest(props) {
                     }
                 }
             }
-            // should never really go into this if statement; it should always find the boundary
+            // should never really go into this if statement; it should always find the access
             // but just in case it doesn't it displays this error
             // last entry is deleted due to how splice deals with -1 as the starting index
-            if(tempIndex === -1) console.log('ERROR, boundary not found... Deleting last entry in the data array')
+            if(tempIndex === -1) console.log('ERROR, access not found... Deleting last entry in the data array')
             
-            // removes the boundary from the data array
+            // removes the access from the data array
             data.splice(tempIndex, 1);
-            // since we removed a boundary object, decrement the dataIndex
+            // since we removed a access object, decrement the dataIndex
             setDataIndex(dataIndex - 1);
             //reset delete controls
             setDeleteIndex(-1);
@@ -286,9 +330,9 @@ export function AccessTest(props) {
             setDeleteModal(false);
         }
 
-        // checks the boundary and sets the buttons to collect data
+        // checks the access and sets the buttons to collect data
         const confirm = () => {
-            // constructed boundary
+            // point access
             if(boundIndex === 0){
                 // line size check, needs at least 2 points
                 if(currentPathSize < 2){
@@ -297,10 +341,10 @@ export function AccessTest(props) {
                     return
                 }
                 // sets the modals buttons and pulls up the modal
-                setPrompts(constructPrompt);
+                setPrompts(pointPrompt);
             }
-            // material/shelter boundary
-            else if(boundIndex === 1 || boundIndex === 2){
+            // path/area access
+            else if(boundIndex === 2){
                 // polygon size check, needs at lest 3 points
                 if(currentPathSize < 3){
                     setErrorMsg("Need at least 3 points to confirm a Material/Shelter Boundary");
@@ -308,8 +352,8 @@ export function AccessTest(props) {
                     return
                 }
                 
-                if(boundIndex === 1) setPrompts(matPrompt);
-                else setPrompts(shePrompt); 
+                if(boundIndex === 1) setPrompts(pathPrompt);
+                else setPrompts(areaPrompt); 
             }
             
             // pull up the data modal
@@ -325,7 +369,7 @@ export function AccessTest(props) {
                 setCurrentPath(currPath)
                 setCurrentPathSize(currentPathSize - 1)
             }
-            // if we try deleting with no marker on drawn boundary, put away the line toolbar
+            // if we try deleting with no marker on drawn access, put away the line toolbar
             else setLineTools(false);
         }
         
@@ -350,27 +394,29 @@ export function AccessTest(props) {
             }
         }
         
-        // only allow the user to choose the boundary type when the test is started
-        const boundaryType = (val) =>{
+        // only allow the user to choose the access type when the test is started
+        const accessType = (val) =>{
             if(start){
                 if(val === 0){
-                    console.log('Constructed Boundary');
+                    console.log('Point Access');
                     setBoundIndex(0);
                 }
                 else if (val === 1){
-                    console.log('Material Boundary');
+                    console.log('Path Access');
                     setBoundIndex(1);
+                    // pull up line toolbar for every non-point access type
+                    setLineTools(true);
                 }
                 else if (val === 2){
-                    console.log('Shelter Boundary');
+                    console.log('Area Access');
                     setBoundIndex(2);
+                    // pull up line toolbar for every non-point access type
+                    setLineTools(true);
                 }
-                // pull up line toolbar for every boundary type
-                setLineTools(true);
             }
         }
 
-        const BoundaryToolBar = () =>{
+        const AccessToolBar = () =>{
             // line toolbar is rendered
             if(lineTools){
                 return null
@@ -378,21 +424,22 @@ export function AccessTest(props) {
             else{
                 // render the button toolbar only if the test has started
                 if(start){
+                    //console.log("Started Access");
                     return(
                         <View style={styles.buttonRow}>
-                            <Button style={styles.buttons} onPress={() => boundaryType(0)}>
+                            <Button style={styles.buttons} onPress={() => accessType(0)}>
                                 <View>
-                                    <Text style={styles.buttonTxt}>Constructed</Text>
+                                    <Text style={styles.buttonTxt}>Point</Text>
                                 </View>
                             </Button>
-                            <Button style={styles.buttons} onPress={() => boundaryType(1)}>
+                            <Button style={styles.buttons} onPress={() => accessType(1)}>
                                 <View>
-                                    <Text style={styles.buttonTxt}>Material</Text>
+                                    <Text style={styles.buttonTxt}>Path</Text>
                                 </View>
                             </Button>
-                            <Button style={styles.buttons} onPress={() => boundaryType(2)}>
+                            <Button style={styles.buttons} onPress={() => accessType(2)}>
                                 <View>
-                                    <Text style={styles.buttonTxt}>Shelter</Text>
+                                    <Text style={styles.buttonTxt}>Area</Text>
                                 </View>
                             </Button>
                         </View>
@@ -411,7 +458,17 @@ export function AccessTest(props) {
             }
         }
 
-        // closes the error modal
+        //closes the error modal
+       
+    //    const AccessToolBar = () =>{
+    //         return(
+    //             <View style={styles.buttonRow}>
+    //                 <Text style={styles.buttonTxt}>Point</Text>
+    //             </View>
+    //         )
+    //     }       
+       
+       
         const dismiss = () =>{
             setErrorModal(false);
         }
@@ -509,6 +566,7 @@ export function AccessTest(props) {
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
                 clearInterval(id);
+                setStart(false);
                 endActivity();
             }
         // 1000 ms == 1 s
@@ -545,6 +603,24 @@ export function AccessTest(props) {
                 <View style={styles.container}>
 
                     <StartStopButton/>
+
+                    <View style={styles.filterView} >
+                        
+                        <View>
+                            <DropDownPicker
+                                style={styles.filterSelect}
+                                disabled={initalStart}
+                                open={open}
+                                setOpen={setOpen}
+                                value={value}
+                                setValue={setValue}
+                                onSelectItem={ item => filterControl(item)}
+                                items={filter}
+                                setItems={setFilter}
+                            />
+                        </View>
+
+                    </View>
 
                     <View style={styles.timerRow}>
                         
@@ -613,7 +689,7 @@ export function AccessTest(props) {
                     visible={deleteModal}
                     setVisible={setDeleteModal}
                     dataType={deleteDesc}
-                    deleteFunction={deleteBoundary}
+                    deleteFunction={deleteAccess}
                     //deleteFunction={deletePoint}
                 />
 
@@ -625,12 +701,12 @@ export function AccessTest(props) {
                             markers={currentPath}
                             addMarker={addMarker}
                             deleteMarker={handleDelete}
-                            lineBool={constructBool}
-                            linePaths={constructTotalPaths}
-                            matBool={materialBool}
-                            matPaths={materialTotalPaths}
-                            sheBool={shelterBool}
-                            shePaths={shelterTotalPaths}
+                            pointBool={pointBool}
+                            pointPaths={totalPoints}
+                            patBool={pathBool}
+                            patPaths={totalPaths}
+                            araBool={areaBool}
+                            araPaths={totalAreas}
                             viewAll={viewAll}
                             lineTools={lineTools}
                             recenter={recenter}
@@ -645,8 +721,11 @@ export function AccessTest(props) {
                     deleteMarker={handleDelete}
                 /> */}
                 
+                <AccessToolBar/>
+                <LineToolBar/>
+
             </ContentContainer>
-            {start ?
+            {/* {start ?
                 <View style={styles.descriptionView}>
                     <Text category={'s1'}>Tap on the map to plot access points</Text>
                 </View>
@@ -658,7 +737,7 @@ export function AccessTest(props) {
                         <Text category={'s1'}>Press the play button to resume the test</Text>
                     }
                 </View>
-            }
+            } */}
         </ViewableArea>
     )
 }
