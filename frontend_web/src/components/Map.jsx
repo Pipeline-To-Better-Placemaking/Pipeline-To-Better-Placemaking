@@ -39,6 +39,7 @@ export default function FullMap(props) {
     const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [] :(props.type === 6 ? props.area : [])));
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreas : [];
+    const [numFloors, setNumFloors] = React.useState(1);
     // Access Universal Data passed around including the key for maps
     const loc = useLocation();
 
@@ -505,15 +506,18 @@ export default function FullMap(props) {
                                         }}>
                                 Cancel
                             </Button>
+                            
+                            <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                            {/* ref={ ref } */}
+                            <input name='floor' id='floorsInput' label='Number of floors' type='number' onChange={e => setNumFloors(e.target.value)}/>
+                            {/* <Button className='newHoveringButtons' onClick={setNumFloors(3)} > Submit Floors</Button> */}
 
-                            { clicks.length < 3 ? null :
+                            { clicks.length < 3 || numFloors < 1 ? null :
                                 <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude' 
                                     state={{...loc.state, buildingArea: clicks}} >
                                     Continue Model
                                 </Button>
                             }
-                            
-                            <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
                         </div>
                     </div>
                 </div>
