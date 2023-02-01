@@ -514,7 +514,7 @@ export default function FullMap(props) {
 
                             { clicks.length < 3 || numFloors < 1 ? null :
                                 <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude' 
-                                    state={{...loc.state, buildingArea: clicks}} >
+                                    state={{...loc.state, buildingArea: clicks, numFloors: numFloors}} >
                                     Continue Model
                                 </Button>
                             }
