@@ -2,8 +2,7 @@ import React from 'react';
 import { View, Modal} from 'react-native';
 import { useTheme, Text, Button } from '@ui-kitten/components';
 
-import { styles } from './modal.styles';
-
+import { styles } from './dataModal.styles';
 
 export function DataModal(props) {
 
@@ -11,8 +10,7 @@ export function DataModal(props) {
     
     const sendData = async (desc) => {
         let data = {
-            access_description: desc,
-            location: props.point,
+            description: desc
         }
         
         // closes the modal (in accessTest)
@@ -23,39 +21,60 @@ export function DataModal(props) {
         <Modal transparent={true} animationType='slide' visible={props.visible}>
             <View style={styles.modalContainer}>
                 <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
-                        <Text category={'h1'} style={styles.titleText}>Access Type</Text>
-                        <View style={styles.dataView}>
-                                    
-                            <View style={styles.titleDesc}>
-                                <Text category={'s1'} style={styles.titleDescTxt}>Select the type of access you marked</Text>
+                        
+                    <Text category={'h1'} style={styles.titleText}>Access Description</Text>
+                    <View style={styles.dataView}>
+                                
+                        <View style={styles.titleDesc}>
+                            <Text category={'s1'} style={styles.titleDescTxt}>Select the best description for the access you marked</Text>
+                        </View>
+                        {/* CHECK THESE BUTTONS FOR ALL (3) MODALS TO MAKE SURE THEY WORK WELL */}
+                        <View>
+                            <View style={styles.buttonRow}>
+                                <Button style={styles.button} onPress={()=> sendData(props.desc[0])}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>{props.desc[0]}</Text>
+                                    </View>
+                                </Button>
+                                <Button style={styles.button} onPress={()=> sendData(props.desc[1])}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>{props.desc[1]}</Text>
+                                    </View>
+                                </Button>
                             </View>
 
                             <View style={styles.buttonRow}>
-                                <Button style={styles.button} onPress={()=> sendData("Cars")}>
+                                <Button style={styles.button} onPress={()=> sendData(props.desc[2])}>
                                     <View>
-                                        <Text style={styles.buttonTxt}>Cars</Text>
+                                        <Text style={styles.buttonTxt}>{props.desc[2]}</Text>
                                     </View>
+
                                 </Button>
-                                <Button style={styles.button} onPress={()=> sendData("Bikes")}>
+                                <Button style={styles.button} onPress={()=> sendData(props.desc[3])}>
                                     <View>
-                                        <Text style={styles.buttonTxt}>Bikes</Text>
-                                    </View>
-                                </Button>
-                                <Button style={styles.button} onPress={()=> sendData("RVs")}>
-                                    <View>
-                                        <Text style={styles.buttonTxt}>RVs</Text>
+                                        <Text style={styles.buttonTxt}>{props.desc[3]}</Text>
                                     </View>
                                 </Button>
                             </View>
 
-                            <View style={styles.backButtonView}>
+                            <View style={styles.lastButtonView}>
+                                <Button style={styles.button} onPress={()=> sendData(props.desc[4])}>
+                                    <View>
+                                        <Text style={styles.buttonTxt}>{props.desc[4]}</Text>
+                                    </View>
+                                </Button>
+                            </View>
+
+                            <View style={styles.multiView}>
                                 <Button style={styles.backButton} onPress={() => props.back()}>
                                     <View>
                                         <Text style={styles.backButtonTxt}>Back</Text>
                                     </View>
                                 </Button>
                             </View>
-                        </View>                 
+
+                        </View>
+                    </View>                      
                 </View>
             </View>
         </Modal>

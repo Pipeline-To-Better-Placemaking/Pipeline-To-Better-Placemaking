@@ -12,12 +12,12 @@ import { DeleteModal } from '../../../components/Activities/deleteModal.componen
 import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import { calcArea, haverSine } from '../../../components/helperFunctions';
 import CountDown from 'react-native-countdown-component';
+import DropDownPicker from 'react-native-dropdown-picker';
 import { LOCAL_SERVER } from '@env';
 
 import { styles } from './accessTest.styles';
 
 export function AccessTest(props) {
-
     const theme = useTheme();
     const plat = Platform.OS;
 
@@ -27,7 +27,6 @@ export function AccessTest(props) {
     // Begins the test
     const [start, setStart] = useState(false);
     const [initalStart, setInitalStart] = useState(true);
-
     // timer stuff
     const initalTime = props.timeSlot.timeLeft;
     // controls the rendered countdown timer
@@ -47,17 +46,18 @@ export function AccessTest(props) {
     ]);
     const [viewAll, setViewAll] = useState(false);
     const [pointBool, setPointBool] = useState(false);
-    const [pathBool, setMaterialBool] = useState(false);
-    const [areaBool, setShelterBool] = useState(false);
+    const [pathBool, setPathBool] = useState(false);
+    const [areaBool, setAreaBool] = useState(false);
+
 
     // access tools
     const [lineTools, setLineTools] = useState(false);
-    const [boundIndex, setBoundIndex] = useState(-1);
+    const [accessIndex, setAccessIndex] = useState(-1);
 
     // Current path being drawn
     const [currentPath, setCurrentPath] = useState([])
     const [currentPathSize, setCurrentPathSize] = useState(0)
-    // Stores total paths seperatley for the 3 types of boundaries
+    // Stores total paths seperatley for the 3 types of access
     const [totalPoints] = useState([]);
     const [totalPaths] = useState([]);
     const [totalAreas] = useState([]);
@@ -79,12 +79,9 @@ export function AccessTest(props) {
     const [deleteDesc, setDeleteDesc] = useState('');
     const [deleteType, setDeleteType] = useState(-1);
 
-    // Used to store all the data info
-    const [dataPoints] = useState([]);
-
-    const pointPrompt = ["Bike Rack", "RidepShare Drop Off", "Elevator", "Planter", "Partial Wall"]
+    const pointPrompt = ["Bike Rack", "RidepShare Drop Off", "Elevator", "Valet Counter", "Partial Wall"]
     const pathPrompt = ["Sidewalk", "Side Street", "Main Road", "Natural (grass)", "Wood (deck)"]
-    const areaPrompt = ["Parking Lot", "Parking", "Umbrella Dining", "Temporary", "Pointed Ceiling"]
+    const areaPrompt = ["Parking Lot", "Parking Garage", "Umbrella Dining", "Temporary", "Pointed Ceiling"]
 
     // End Button press or whenever the timer hits 0
     // const endActivity = async () => {
@@ -175,20 +172,19 @@ export function AccessTest(props) {
             let val = 0;
             // store the access in its respective array and set the type variable
             // if we are doing a point access, pull up the purpose modal
-            if(boundIndex === 0){
-                setPurposeModal(true);
+            if(accessIndex === 0){
                 totalPoints.push(currentPath);
                 type = 'Access Points';
+                val = calcArea(currentPath)
+            }
+            else if (accessIndex === 1){
+                totalPaths.push(currentPath);
+                type = 'Access Paths';  
                 // calculate the distance between each subsequent point to find total distance of drawn line
                 for (let i = 1; i < currentPathSize; i++) val += haverSine(currentPath[i-1], currentPath[i]);
                 // ensure the percision is fixed to 2nd decimal place
                 let tempString = val.toFixed(2);
                 val = parseFloat(tempString);
-            }
-            else if (boundIndex === 1){
-                totalPaths.push(currentPath);
-                type = 'Access Paths';  
-                val = calcArea(currentPath)
             }
             else{
                 totalAreas.push(currentPath);
@@ -222,7 +218,7 @@ export function AccessTest(props) {
 
             // reset test controls
             setLineTools(false);
-            setBoundIndex(-1);
+            setAccessIndex(-1);
         }
 
         // closes the purpose modal and stores the purpose(s)
@@ -234,6 +230,7 @@ export function AccessTest(props) {
         // adds a marker to the current path
         const addMarker = (marker) =>{
             // only add a marker if the test has started and the line toolbar is pulled up
+            // console.log(marker);
             if(start && lineTools){
                 // current marker being added
                 // console.log(marker);
@@ -330,30 +327,38 @@ export function AccessTest(props) {
             setDeleteModal(false);
         }
 
-        // checks the access and sets the buttons to collect data
         const confirm = () => {
             // point access
-            if(boundIndex === 0){
-                // line size check, needs at least 2 points
-                if(currentPathSize < 2){
-                    setErrorMsg("Need at least 2 points to confirm a Constructed Boundary");
+            if(accessIndex === 0){
+                // point size check, needs at most 1 point
+                if(currentPathSize > 1){
+                    setErrorMsg("Need at most 1 point to confirm a Point Access");
                     setErrorModal(true);
                     return
                 }
                 // sets the modals buttons and pulls up the modal
                 setPrompts(pointPrompt);
             }
-            // path/area access
-            else if(boundIndex === 2){
-                // polygon size check, needs at lest 3 points
-                if(currentPathSize < 3){
-                    setErrorMsg("Need at least 3 points to confirm a Material/Shelter Boundary");
+            // constructed accessary
+            else if(accessIndex === 1){
+                // line size check, needs at least 2 points
+                if(currentPathSize < 2){
+                    setErrorMsg("Need at least 2 points to confirm a Path Access");
                     setErrorModal(true);
                     return
                 }
-                
-                if(boundIndex === 1) setPrompts(pathPrompt);
-                else setPrompts(areaPrompt); 
+                // sets the modals buttons and pulls up the modal
+                setPrompts(pathPrompt);
+            }
+            // material/shelter accessary
+            else if(accessIndex === 2){
+                // polygon size check, needs at lest 3 points
+                if(currentPathSize < 3){
+                    setErrorMsg("Need at least 3 points to confirm an Area Access");
+                    setErrorModal(true);
+                    return
+                }
+                setPrompts(areaPrompt); 
             }
             
             // pull up the data modal
@@ -399,17 +404,19 @@ export function AccessTest(props) {
             if(start){
                 if(val === 0){
                     console.log('Point Access');
-                    setBoundIndex(0);
+                    setAccessIndex(0);
+                    // pull up line toolbar for every non-point access type
+                    setLineTools(true);
                 }
                 else if (val === 1){
                     console.log('Path Access');
-                    setBoundIndex(1);
+                    setAccessIndex(1);
                     // pull up line toolbar for every non-point access type
                     setLineTools(true);
                 }
                 else if (val === 2){
                     console.log('Area Access');
-                    setBoundIndex(2);
+                    setAccessIndex(2);
                     // pull up line toolbar for every non-point access type
                     setLineTools(true);
                 }
@@ -471,6 +478,47 @@ export function AccessTest(props) {
        
         const dismiss = () =>{
             setErrorModal(false);
+        }
+
+        // controls which access types appear on the map during data collection
+        const filterControl = (item) =>{
+            let type = item.value;
+            // Hide (set to default)
+            if(type === 0){
+                setViewAll(false);
+                setPointBool(false);
+                setPathBool(false);
+                setAreaBool(false);
+            }
+            
+            else{
+                // all bounds needs this to be true to render
+                setViewAll(true);  
+                // Show All
+                if(type === 1){
+                    setPointBool(true);
+                    setPathBool(true);
+                    setAreaBool(true);
+                }
+                // Construction
+                else if(type === 2){
+                    setPointBool(true);
+                    setPathBool(false);
+                    setAreaBool(false);
+                }
+                // Material
+                else if(type === 3){
+                    setPointBool(false);
+                    setPathBool(true);
+                    setAreaBool(false);
+                }
+                // Shelter
+                else if(type === 4){
+                    setPointBool(false);
+                    setPathBool(false);
+                    setAreaBool(true);
+                }
+            }
         }
 
 
@@ -697,16 +745,16 @@ export function AccessTest(props) {
                 <View style={{zIndex: -1}}>
                         <AccessMap
                             area={area}
-                            type={boundIndex}
+                            type={accessIndex}
                             markers={currentPath}
                             addMarker={addMarker}
                             deleteMarker={handleDelete}
                             pointBool={pointBool}
                             pointPaths={totalPoints}
-                            patBool={pathBool}
-                            patPaths={totalPaths}
-                            araBool={areaBool}
-                            araPaths={totalAreas}
+                            pathBool={pathBool}
+                            linePaths={totalPaths}
+                            areaBool={areaBool}
+                            areaPaths={totalAreas}
                             viewAll={viewAll}
                             lineTools={lineTools}
                             recenter={recenter}

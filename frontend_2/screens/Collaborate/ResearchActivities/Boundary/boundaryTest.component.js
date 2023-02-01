@@ -147,7 +147,7 @@ export function BoundaryTest(props){
             type = 'Shelter'
             val = calcArea(currentPath)
         }
-        // gets rid of any parenthesis in the description (for material and shelter prompts)
+        // gets rid of any parenthesis in the description (for material and shelter prompts) may also crash a[]
         let shorten = inf.description.indexOf("(");
         let fixedDesc;
         if(shorten !== -1){

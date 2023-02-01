@@ -22,8 +22,27 @@ export function AccessMap(props) {
 // BEGIN BOUNDARY CLONE
 
         const CreatePoly = () => {
-            // if the type of boundary is a construction boundary (polyline)
+            // if the type of access is a point (marker)
             if(props.type === 0){
+                let color = colors[0];
+                if(props.markers === null || props.markers.length == 0) {
+                    return null
+                }
+
+                else {
+                    return (props.markers.map((coord, index) => (
+                        <MapView.Marker
+                            key={index}
+                            coordinate={props.markers[0]}
+                        >
+                            <DataPin color={color} colorFill={'rgba(253, 0, 0, .5)'}/>
+                        </MapView.Marker>
+                    )))
+                }
+            }
+            // else if it is a path (polyline)
+            else if(props.type === 1){
+                let color = colors[1];
                 if(props.markers === null || props.markers.length == 0) {
                     return null
                 }
@@ -34,7 +53,7 @@ export function AccessMap(props) {
                             key={index}
                             coordinate={props.markers[0]}
                         >
-                            <DataPin color={colors[0]}/>
+                            <DataPin color={color}/>
                         </MapView.Marker>
                     )))
                 }
@@ -45,23 +64,15 @@ export function AccessMap(props) {
                         <MapView.Polyline
                             coordinates={props.markers}
                             strokeWidth={3}
-                            strokeColor={colors[0]}
+                            strokeColor={color}
                         />
                     )
                 }
             }
-            // otherwise, it is a material or shelter boundary (polygon)
-            else{
-                let fill;
-                let color;
-                if(props.type === 1){
-                    color = colors[1];
-                    fill = fills[0];
-                }
-                else{
-                    color = colors[2];
-                    fill = fills[1];
-                }
+            // else if it is a area (polygon)
+            else if(props.type === 2){
+                let fill = fills[1];
+                let color = colors[2];
 
                 if(props.markers === null || props.markers.length == 0) {
                     return (null);
@@ -112,6 +123,9 @@ export function AccessMap(props) {
                     }
                 }
             }
+            else {
+                return null;
+            }
         }
 
         // Shows plotted points of the boundary being drawn
@@ -139,30 +153,33 @@ export function AccessMap(props) {
             }
         }    
 
-        const ConstructBounds = () =>{
-            if(props.lineBool){
+        const PointAccess = () =>{
+            if(props.pointBool){
                 return(    
-                    props.linePaths.map((obj, index) => (
-                        <MapView.Polyline
-                            coordinates={obj}
-                            strokeWidth={3}
-                            strokeColor={colors[0]}
-                            key={index}
-                            tappable={props.lineTools ? false : true}
-                            onPress={() => props.deleteMarker(0, index, obj)}
-                        />
+                    props.pointPaths.map((obj, index) => (
+                        <MapView.Marker
+                            coordinate={obj[0]}
+                            anchor={offsetPoint}
+                            // sloves problem of not being able to delete points for android
+                            onPress={(e) => checkPoint(e.nativeEvent.coordinate)}
+                        >
+                            <DataPin
+                                color={colors[0]}
+                                colorFill={colorFill}
+                            />
+                        </MapView.Marker>
                     ))
                 )
             }
             else return null
         }
 
-        const MaterialBounds = () =>{
-            if(props.matBool){
+        const PathAccess = () =>{
+            if(props.pathBool){
                 // android device
                 if(plat === 'android'){
                     return(
-                        props.matPaths.map((obj, index) => (
+                        props.linePaths.map((obj, index) => (
                             <MapView.Polygon
                                 coordinates={obj}
                                 strokeWidth={2}
@@ -178,9 +195,9 @@ export function AccessMap(props) {
                 // ios device
                 else{
                     // used to convert polygon arrays into enclosed line arrays (for consistent color)
-                    let paths = props.matPaths;
+                    let paths = props.linePaths;
                     let linePaths = [];
-                    let len = props.matPaths.length;
+                    let len = props.linePaths.length;
                     // adds the 1st point to the end of each path object
                     for(let i = 0; i < len; i++) linePaths[i] = paths[i].concat(paths[i][0]);
 
@@ -201,12 +218,12 @@ export function AccessMap(props) {
             else return null
         }
 
-        const ShelterBounds = () =>{
-            if(props.sheBool){
+        const AreaAccess = () =>{
+            if(props.areaBool){
                 // android device
                 if(plat === 'android'){
                     return(
-                        props.shePaths.map((obj, index) => (
+                        props.areaPaths.map((obj, index) => (
                             <MapView.Polygon
                                 coordinates={obj}
                                 strokeWidth={2}
@@ -222,14 +239,14 @@ export function AccessMap(props) {
                 // ios device
                 else{
                     // used to convert polygon arrays into enclosed line arrays
-                    let paths = props.shePaths;
-                    let linePaths = [];
-                    let len = props.shePaths.length;
+                    let paths = props.areaPaths;
+                    let areaPaths = [];
+                    let len = props.areaPaths.length;
                     // adds the 1st point to the end of each path object
-                    for(let i = 0; i < len; i++) linePaths[i] = paths[i].concat(paths[i][0]);
+                    for(let i = 0; i < len; i++) areaPaths[i] = paths[i].concat(paths[i][0]);
 
                     return(
-                        linePaths.map((obj, index) => (
+                        areaPaths.map((obj, index) => (
                             <MapView.Polyline
                                 coordinates={obj}
                                 strokeWidth={2}
@@ -245,14 +262,14 @@ export function AccessMap(props) {
             else return null
         }
 
-        const AllBounds = () => {
+        const AllAccess = () => {
             if (props.viewAll) {
                 //console.log("Drawing boundaries")
                 return (
                     <View>
-                        <ConstructBounds />
-                        <MaterialBounds />
-                        <ShelterBounds />
+                        <PointAccess />
+                        <PathAccess />
+                        <AreaAccess />
                     </View>
                 )
             }
@@ -371,7 +388,7 @@ export function AccessMap(props) {
                 <ShowPoints />
                 
                 {/* renders submitted drawn boundaries during test collection */}
-                <AllBounds />
+                <AllAccess />
 
                 {/* <AddPoint /> */}
 
