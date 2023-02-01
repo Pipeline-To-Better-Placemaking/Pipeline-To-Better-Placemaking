@@ -3,8 +3,8 @@ const mongoose = require('mongoose')
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-// Document Schema for data entry
-const dataSchema = mongoose.Schema({
+// Document Schema for Media Entry
+const media_schema = mongoose.Schema({
   title: String,
 
   url_link: {
@@ -12,13 +12,24 @@ const dataSchema = mongoose.Schema({
     required: true
   },
 
-  
+  panoramic: {
+    type: Boolean,
+    required: false
+  },
+
+  tags: [{
+    type: String,
+    required: false
+  }],
+
+  other: {
+    type: String,
+    required: false
+  }
 
 })
-//End
 
 // Document Schema for Section Maps
-
 const section_schema = mongoose.Schema({
     
     title: String,
@@ -51,13 +62,13 @@ const section_schema = mongoose.Schema({
         required: true
     },
 
-    data:[dataSchema] 
-    // data represents const dataSchema which houses the actual testing data parameters  
+    data: [media_schema] 
+    // data represents const media_schema which houses the actual testing data parameters  
 })
 // end
 
 const Maps = module.exports = mongoose.model('Section_Maps', section_schema)
-const Entry = mongoose.model('Media_Entry', dataSchema)
+const Entry = mongoose.model('Media_Entry', media_schema)
 
 module.exports.addMap = async function(newMap) {
     return await newMap.save()
@@ -93,6 +104,11 @@ module.exports.projectCleanup = async function(projectId) {
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
+        title: newEntry.title,
+        url_link: newEntry.url_link,
+        panoramic: newEntry.panoramic,
+        tags: newEntry.tags,
+        other: newEntry.other
     })
 
     return await Maps.updateOne(
@@ -157,4 +173,3 @@ module.exports.deleteEntry = async function(mapId, entryId) {
             { $pull: { data: {_id:entryId }}
             })
     }
-    
