@@ -165,7 +165,7 @@ export function AccessMap(props) {
                         >
                             <DataPin
                                 color={colors[0]}
-                                colorFill={colorFill}
+                                colorFill={'rgba(253, 0, 0, .5)'}
                             />
                         </MapView.Marker>
                     ))
@@ -180,7 +180,7 @@ export function AccessMap(props) {
                 if(plat === 'android'){
                     return(
                         props.linePaths.map((obj, index) => (
-                            <MapView.Polygon
+                            <MapView.Polyline
                                 coordinates={obj}
                                 strokeWidth={2}
                                 strokeColor={colors[1]}
@@ -194,15 +194,8 @@ export function AccessMap(props) {
                 }
                 // ios device
                 else{
-                    // used to convert polygon arrays into enclosed line arrays (for consistent color)
-                    let paths = props.linePaths;
-                    let linePaths = [];
-                    let len = props.linePaths.length;
-                    // adds the 1st point to the end of each path object
-                    //for(let i = 0; i < len; i++) linePaths[i] = paths[i].concat(paths[i][0]);
-
                     return(
-                        linePaths.map((obj, index) => (
+                        props.linePaths.map((obj, index) => (
                             <MapView.Polyline
                                 coordinates={obj}
                                 strokeWidth={2}
