@@ -199,7 +199,7 @@ export function AccessMap(props) {
                     let linePaths = [];
                     let len = props.linePaths.length;
                     // adds the 1st point to the end of each path object
-                    for(let i = 0; i < len; i++) linePaths[i] = paths[i].concat(paths[i][0]);
+                    //for(let i = 0; i < len; i++) linePaths[i] = paths[i].concat(paths[i][0]);
 
                     return(
                         linePaths.map((obj, index) => (
@@ -247,7 +247,7 @@ export function AccessMap(props) {
 
                     return(
                         areaPaths.map((obj, index) => (
-                            <MapView.Polyline
+                            <MapView.Polygon
                                 coordinates={obj}
                                 strokeWidth={2}
                                 strokeColor={colors[2]}
