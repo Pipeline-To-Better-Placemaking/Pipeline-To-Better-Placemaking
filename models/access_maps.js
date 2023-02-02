@@ -34,6 +34,11 @@ const dataSchema = mongoose.Schema({
     //distance the access point is from the perimeter of the place
     //(if outside place perimeter)
     distance: Number,
+
+    modified: {
+        type: Date,
+        required: true
+    }
     
 
 })

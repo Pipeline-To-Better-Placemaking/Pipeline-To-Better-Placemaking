@@ -24,6 +24,11 @@ const dataSchema = mongoose.Schema({
         }
     }],
 
+    modified: {
+        type: Date,
+        required: true
+    },
+
     //stores an array of floors with the floor schema
     floors: [floorSchema]
     
@@ -44,6 +49,11 @@ const newProgramSchema = mongoose.Schema({
     }],
 
     programType: {
+        type: String,
+        required: true
+    },
+
+    color: {
         type: String,
         required: true
     }
@@ -92,7 +102,7 @@ const program_schema = mongoose.Schema({
         required: true
     },
 
-    modified:{
+    date:{
         type: Date,
         required: true
     },
