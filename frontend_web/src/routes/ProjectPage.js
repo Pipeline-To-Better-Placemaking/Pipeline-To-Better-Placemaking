@@ -167,6 +167,7 @@ export default function ProjectPage(){
                 }
             */
 
+            //console.log(results);
             results = map;
         } catch (error) {
             //project api get error

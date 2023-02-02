@@ -58,7 +58,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
 //route gets all map data, including any collection data.
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
-    const map = await Map.findById(req.params.id)
+    const map = await  Map.findById(req.params.id)
                            .populate('researchers','firstname lastname')
                            .populate([
                                {
@@ -128,7 +128,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
     if(await Team.isAdmin(project.team,user._id)){
-        res.json(awAccess.deleteMap(map.sharedData,map._id))
+        res.json(await Access_Collection.deleteMap(map.sharedData,map._id))
 
         
     }

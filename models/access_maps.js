@@ -36,7 +36,7 @@ const dataSchema = mongoose.Schema({
 //end
 
 
-// Document Schema for Identifying Access Maps
+// Document Schema for Access Maps
 const access_schema = mongoose.Schema({
     
     title: String,

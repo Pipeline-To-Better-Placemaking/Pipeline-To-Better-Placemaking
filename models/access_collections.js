@@ -8,7 +8,7 @@ const Access_Maps = require('./access_maps.js')
 const Area = require('./areas.js')
 const { collection } = require('./surveys.js')
 
-// Document Schema for Identifying Access Collections.  Maps references Identifying Access Maps Schema
+// Document Schema for Access Collections.  Maps references Access Maps Schema
 const collection_schema = mongoose.Schema({
     title: String,
 
