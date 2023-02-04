@@ -14,13 +14,12 @@
     "version 1": "Bautista Bertolami, Madison Dishman, Joshua Howell, Mason Proco, Mike Triana",
     "version 2": "Ronald Campos, Kyle Gebhardt, Jessica Hawkins, Andres Jardon, Will Whisel",
     "version 3": "Andrea White, Alejandro Fernandez, Jacob Campbell, Sebastian Morales, Sebastian Castañeda"
-
   },
   "license": "ISC",
   "devDependencies": {
     "@types/xlsx": "0.0.36",
     "cross-env": "^7.0.3",
-    "jest": "^26.5.3",
+    "jest": "^26.6.3",
     "supertest": "^5.0.0"
   },
   "dependencies": {
