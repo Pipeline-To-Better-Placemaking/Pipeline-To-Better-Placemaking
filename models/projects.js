@@ -284,7 +284,7 @@ module.exports.deleteBoundariesCollection = async function(projectId, collection
 module.exports.addSectionCollection = async function (projectId, collectionId) {
     return await Projects.updateOne(
        { _id: projectId },
-       { $push: { boundariesCollections:  collectionId}}
+       { $push: { sectionCollections:  collectionId}}
    )
 }
 
