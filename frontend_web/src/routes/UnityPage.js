@@ -34,22 +34,27 @@ export default function UnityPage() {
     };
   }, [detachAndUnloadImmediate]);
 
+  useEffect(() => {
+    handleExtrude();
+  }, [isLoaded])
+
   function handleExtrude() 
   {
     // points.Add(new Vector3(-10,5,0));
     //     points.Add(new Vector3(-20,10,0));
     //     points.Add(new Vector3(-30,5,0));
     //     points.Add(new Vector3(-20,5,0));
+  
     const obj = {
       numFloors: loc.state.numFloors,
       points: loc.state.buildingArea,
     }
-    
+      
     const myJSON = JSON.stringify(obj)
     // console.log(myJSON);
     sendMessage("Building", "GetPoints", myJSON);
+  
   }
-  handleExtrude();
 
   return (
     <div>
@@ -64,13 +69,14 @@ export default function UnityPage() {
             Accept and Continue
         </Button>
         <div>
-          {!isLoaded && (
-            <p>Loading Application... {Math.round(loadingProgression * 100)}%</p>
-          )}
-          <Unity
-            unityProvider={unityProvider}
-            style={{ width: 1600, height: 900, visibility: isLoaded ? "visible" : "hidden" }}
-          />
+            {!isLoaded && (
+              <p>Loading Application... {Math.round(loadingProgression * 100)}%</p>
+            )}
+            <Unity
+              unityProvider={unityProvider}
+              style={{ width: 1600, height: 900, visibility: isLoaded ? "visible" : "hidden" }}
+            />
+
         </div>
     </div>
   );
