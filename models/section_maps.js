@@ -11,7 +11,7 @@ const media_schema = mongoose.Schema({
     type: Date,
     required: true
   },
-  
+
   url_link: {
     type: String,
     required: true
@@ -110,6 +110,7 @@ module.exports.projectCleanup = async function(projectId) {
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
         title: newEntry.title,
+        date: newEntry.date,
         url_link: newEntry.url_link,
         panoramic: newEntry.panoramic,
         tags: newEntry.tags,

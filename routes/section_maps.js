@@ -8,10 +8,12 @@ const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 const { models } = require('mongoose')
+const { UnauthorizedError, BadRequestError } = require('../utils/errors')
+
+// imports required to use firebase
 const { storage } = require('../utils/firebase_config')
 const { ref, uploadBytes, getDownloadURL } = require('firebase/storage') 
 const { v4 } = require('uuid')
-const { UnauthorizedError, BadRequestError } = require('../utils/errors')
 
 // cant let users decide name to own file, 
 // have to append unique ending to file name
@@ -24,16 +26,16 @@ export const uploadMedia = () => {
     })
 } 
 
-//route creates new map(s).  If there are multiple time slots in test, multiple timseslots are created.
+//route creates new map(s).  If there are multiple tags slots in test, multiple timseslots are created.
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.body.project)
 
     if(await Team.isAdmin(project.team,user._id)){
         
-        if(req.body.timeSlots)
-            for(var i = 0; i < req.body.timeSlots.length; i++){
-                var slot = req.body.timeSlots[0]
+        if(req.body.tagsSlots)
+            for(var i = 0; i < req.body.tagsSlots.length; i++){
+                var slot = req.body.tagsSlots[0]
 
                 let newMap = new Map({
                     title: slot.title,
@@ -46,9 +48,9 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
                 //create new map with method from _map models and add ref to its parent collection.
                 const map = await Map.addMap(newMap)
-                await Boundaries_Collection.addActivity(req.body.collection, map._id)
+                await Section_Collection.addActivity(req.body.collection, map._id)
 
-                res.status(201).json(await Boundaries_Collection.findById(req.body.collection))
+                res.status(201).json(await Section_Collection.findById(req.body.collection))
             }
             
         //note that boundaries does not use any standing points
@@ -62,7 +64,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
             maxResearchers: req.body.maxResearchers,
         })
         const map = await Map.addMap(newMap)
-        await Boundaries_Collection.addActivity(req.body.collection,map._id)
+        await Section_Collection.addActivity(req.body.collection,map._id)
         res.status(201).json(map)
 
     }
@@ -77,11 +79,11 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                            .populate('researchers','firstname lastname')
                            .populate([
                                {
-                                   path:'sharedData',
-                                   model:'Boundaries_Collections',
+                                   other:'sharedData',
+                                   model:'Section_Collections',
                                    select:'title duration',
                                    populate: {
-                                    path: 'area',
+                                    other: 'area',
                                     model: 'Areas'
                                    }
                                 }])
@@ -89,7 +91,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     res.status(200).json(map)
 })
 
-//route signs team member up to a time slot.
+//route signs team member up to a tags slot.
 router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
@@ -105,7 +107,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
         throw new BadRequestError('Research team is already full')
 })
 
-//route reverses sign up to a time slot.
+//route reverses sign up to a tags slot.
 router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
@@ -113,7 +115,7 @@ router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async 
 
 })
 
-//route edits time slot information when updating a map
+//route edits tags slot information when updating a map
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
@@ -143,7 +145,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
     if(await Team.isAdmin(project.team,user._id)){
-        res.json(await Boundaries_Collection.deleteMap(map.sharedData,map._id)) 
+        res.json(await Section_Collection.deleteMap(map.sharedData,map._id)) 
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
@@ -151,7 +153,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 
 })
 
-//route adds test data to its relevant time slot
+//route adds test data to its relevant tags slot
 router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
@@ -171,7 +173,7 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
     }
 })
 
-//route edits any already created tested time slots.  Essentially redoing a test run for a time slot 
+//route edits any already created tested tags slots.  Essentially redoing a test run for a tags slot 
 router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user   
     mapId = req.params.id
@@ -182,12 +184,12 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 
         const newData = {
             _id: oldData._id,
-            kind: (req.body.kind ? req.body.kind : oldData.kind),
-            description: (req.body.description ? req.body.description : oldData.description),
-            value: (req.body.value ? req.body.value : oldData.value),
-            purpose: (req.body.purpose ? req.body.purpose : oldData.purpose),
-            time: (req.body.time ? req.body.time : oldData.time),
-            path: (req.body.path ? req.body.path : oldData.path)
+            title: (req.body.title ? req.body.title : oldData.title),
+            date: (req.body.date ? req.body.date : oldData.date),
+            url_link: (req.body.url_link ? req.body.url_link : oldData.url_link),
+            panoramic: (req.body.panoramic ? req.body.panoramic : oldData.panoramic),
+            tags: (req.body.tags ? req.body.tags : oldData.tags),
+            other: (req.body.other ? req.body.other : oldData.other)
         }
     
         await Map.updateData(mapId,oldData._id,newData)
@@ -198,7 +200,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
     }  
 })
 
-//route deletes an individual time slot from a map
+//route deletes an individual tags slot from a map
 router.delete('/:id/data/:data_id',passport.authenticate('jwt',{session:false}), async (req, res, next) => { 
     user = await req.user
     map = await Map.findById(req.params.id)
