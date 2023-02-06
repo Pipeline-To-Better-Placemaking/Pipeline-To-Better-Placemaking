@@ -6,7 +6,12 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 // Document Schema for Media Entry
 const media_schema = mongoose.Schema({
   title: String,
-
+  
+  date: {
+    type: Date,
+    required: true
+  },
+  
   url_link: {
     type: String,
     required: true

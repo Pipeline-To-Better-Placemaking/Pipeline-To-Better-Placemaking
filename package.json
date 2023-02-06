@@ -14,7 +14,6 @@
     "version 1": "Bautista Bertolami, Madison Dishman, Joshua Howell, Mason Proco, Mike Triana",
     "version 2": "Ronald Campos, Kyle Gebhardt, Jessica Hawkins, Andres Jardon, Will Whisel",
     "version 3": "Andrea White, Alejandro Fernandez, Jacob Campbell, Sebastian Morales, Sebastian Castañeda"
-
   },
   "license": "ISC",
   "devDependencies": {
@@ -30,6 +29,7 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-session": "^1.17.1",
+    "firebase": "^9.17.1",
     "googleapis": "^67.1.1",
     "json-server": "^0.16.2",
     "jsonwebtoken": "^8.5.1",
@@ -41,6 +41,7 @@
     "passport-json": "^1.2.0",
     "passport-jwt": "^4.0.0",
     "passport-local-mongoose": "^6.0.1",
+    "uui": "^1.0.7",
     "xlsx": "file:vendor/xlsx-0.18.9.tgz",
     "xoauth2": "^1.2.0"
   },
