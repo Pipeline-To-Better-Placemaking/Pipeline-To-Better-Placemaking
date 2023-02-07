@@ -10,22 +10,6 @@ const config = require('../utils/config')
 const { models } = require('mongoose')
 const { UnauthorizedError, BadRequestError } = require('../utils/errors')
 
-// imports required to use firebase
-const { storage } = require('../utils/firebase_config')
-const { ref, uploadBytes, getDownloadURL } = require('firebase/storage') 
-const { v4 } = require('uuid')
-
-// cant let users decide name to own file, 
-// have to append unique ending to file name
-export const uploadMedia = () => {
-    const mediaRef = ref(storage, `media_uploads/${mediaUpload.name + v4()}`)
-    uploadBytes(mediaRef, mediaUpload).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-
-        })
-    })
-} 
-
 //route creates new map(s).  If there are multiple tags slots in test, multiple timseslots are created.
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
