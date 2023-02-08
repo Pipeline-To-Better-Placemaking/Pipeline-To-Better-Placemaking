@@ -83,6 +83,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                           .populate('boundariesCollections')
                           .populate('orderCollections')
                           .populate('surveyCollections')
+                          .populate('programCollections')
                           
             )
 })
@@ -767,7 +768,7 @@ router.post('/:id/program_collections', passport.authenticate('jwt',{session:fal
     user = await req.user
     project = await Project.findById(req.params.id)
 
-    if(await Team.isUser(project.team,user._id)){   
+    if(await (Team.isUser(project.team,user._id) || Team.isOwner(project.team, user._id) || Team.isAdmin(project.team, user._id))){   
 
         let newCollection = new Program_Collection({
             title: req.body.title,
@@ -779,7 +780,7 @@ router.post('/:id/program_collections', passport.authenticate('jwt',{session:fal
         await newCollection.save()
         await Area.addRefrence(newCollection.area)
 
-       
+
         await Project.addProgramCollection(project._id,newCollection._id)
         res.json(newCollection)
     }
@@ -794,8 +795,8 @@ router.put('/:id/program_collections/:collectionId', passport.authenticate('jwt'
     collection = await Program_Collection.findById(req.params.collectionId)
 
     if(await Team.isAdmin(project.team,user._id)){
-    
-        
+
+
         let newCollection = new Program_Collection({
                 title: (req.body.title ? req.body.title : collection.title),
                 date: (req.body.date ? req.body.date : collection.date),
@@ -807,7 +808,7 @@ router.put('/:id/program_collections/:collectionId', passport.authenticate('jwt'
             await Area.addRefrence(req.body.area)
             await Area.removeRefrence(collection.area)
         }
-  
+
         res.status(201).json(await Program_Collection.updateCollection(req.params.collectionId, newCollection))
     }
     else{
@@ -1015,28 +1016,30 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                 }])
 
     programData = await Project.findById(req.params.id)
-                            .populate('area')
-                            .populate([
-                            {
-                                path:'programCollections',
-                                model:'Program_Collections',
-                                populate: [{
-                                    path: 'maps',
-                                    model: 'Program_Maps',
-                                    select: 'date',
+                                .populate('area')
+                                .populate([
+                                {
+                                    path:'programCollections',
+                                    model:'Program_Collections',
                                     populate: [{
-                                        path: 'data',
-                                        // populate:{
-                                        //     path: 'standingPoint',
-                                        //     model: 'Standing_Points'
-                                        // }
+                                        path: 'maps',
+                                        model: 'Program_Maps',
+                                        select: 'date',
+                                        populate: [{
+                                            path: 'data',
+                                            populate:{
+                                                path: 'floors',
+                                                populate:{
+                                                    path: 'programs'
+                                                }
+                                            }
+                                            },{
+                                            path: 'researchers'
+                                            }]
                                         },{
-                                        path: 'researchers'
+                                        path: 'area',
                                         }]
-                                    },{
-                                    path: 'area',
-                                    }]
-                                }])
+                                    }])
 
     const emailHTML = `
         <h3>Hello from Pipeline to Better Placemaking!</h3>
@@ -1057,7 +1060,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
             {
                 filename: 'PlaceProject.xlsx',
                 content: projectExport(stationaryData, movingData, soundData, 
-                                    natureData, lightData, orderData, boundariesData)
+                                    natureData, lightData, orderData, boundariesData, programData)
             }
         ]
     }

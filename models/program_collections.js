@@ -6,9 +6,9 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Program_Maps = require('./program_maps.js')
 const Area = require('./areas.js')
-const { collection } = require('./surveys.js')
 
-// Document Schema for Program Collections.  Maps references Program Maps Schema
+
+// Document Schema for program Collections.  Maps references program Maps Schema
 const collection_schema = mongoose.Schema({
     title: String,
     
@@ -17,18 +17,21 @@ const collection_schema = mongoose.Schema({
         required: true
     },
 
+    //area the project will occur in, see areas.js
     area: {
         type: ObjectId,
         required: true,
         ref: 'Areas'
     },
 
+     //duration of the test
     duration: {
         type: Number,
         required: true,
         default: 15
     },
 
+    //maps for this test in this project
     maps: [{
         type: ObjectId,
         ref: 'Program_Maps'
