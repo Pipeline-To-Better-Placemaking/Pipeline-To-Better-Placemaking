@@ -12,8 +12,11 @@ let REFRESH_TOKEN = process.env.REFRESH_TOKEN
 let ACCESS_TOKEN = process.env.ACCESS_TOKEN
 let GOOGLE_MAP_KEY = process.env.GOOGLE_MAP_KEY
 
+
+//the jest db uri points to the actualtestsdb
+//use this for the unit testing with jest and scripts in the test folder
 if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
-	DB_URI = process.env.TEST_DB_URI
+	DB_URI = process.env.JEST_TEST_URI
     PRIVATE_KEY = process.env.TEST_PRIVATE_KEY
 }
 

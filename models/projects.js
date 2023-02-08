@@ -12,6 +12,8 @@ const Nature_Collection = require('../models/nature_collections.js')
 const Light_Collection = require('../models/light_collections.js')
 const Boundaries_Collection = require('../models/boundaries_collections.js')
 const Order_Collection = require('../models/order_collections.js')
+const Access_Collection = require('../models/access_collections.js')
+const Program_Collection = require('../models/program_collections.js')
 
 
 const ObjectId = mongoose.Schema.Types.ObjectId
@@ -73,6 +75,14 @@ const project_schema = mongoose.Schema({
         type: ObjectId,
         ref: 'Survey_Collections'
     }],
+    accessCollections: [{
+        type: ObjectId,
+        ref: 'Access_Collections'
+    }],
+    programCollections: [{
+        type: ObjectId,
+        ref: 'Program_Collections'
+    }]
 })
 
 project_schema.plugin(uniqueValidator)
@@ -142,6 +152,14 @@ module.exports.deleteProject = async function(projectId) {
     if(project.surveyCollections.length){    
         for(var i = 0; i < project.surveyCollections.length; i++)   
             await Survey_Collection.deleteCollection(project.surveyCollections[i])
+    }
+    if(project.accessCollections.length){    
+        for(var i = 0; i < project.accessCollections.length; i++)   
+            await Access_Collection.deleteCollection(project.accessCollections[i])
+    }
+    if(project.programCollections.length){    
+        for(var i = 0; i < project.programCollections.length; i++)   
+            await Program_Collection.deleteCollection(project.programCollections[i])
     }
           
     return await Projects.findByIdAndDelete(projectId)
@@ -286,6 +304,39 @@ module.exports.deleteOrderCollection = async function(projectId, collectionId) {
        { $pull: { orderCollections: collectionId}}
    )
    return await Order_Collection.deleteCollection(collectionId)
+}   
+
+module.exports.addAccessCollection = async function (projectId, collectionId) {
+    return await Projects.updateOne(
+       { _id: projectId },
+       { $push: { accessCollections:  collectionId}}
+   )
+}
+
+module.exports.deleteAccessCollection = async function(projectId, collectionId) {
+   
+   await Projects.updateOne(
+       { _id: projectId },
+       { $pull: { accessCollections: collectionId}}
+   )
+   return await Access_Collection.deleteCollection(collectionId)
+}   
+
+
+module.exports.addProgramCollection = async function (projectId, collectionId) {
+    return await Projects.updateOne(
+       { _id: projectId },
+       { $push: { programCollections:  collectionId}}
+   )
+}
+
+module.exports.deleteProgramCollection = async function(projectId, collectionId) {
+   
+   await Projects.updateOne(
+       { _id: projectId },
+       { $pull: { programCollections: collectionId}}
+   )
+   return await Program_Collection.deleteCollection(collectionId)
 }   
 
 

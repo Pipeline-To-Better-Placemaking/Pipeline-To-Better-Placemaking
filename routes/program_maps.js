@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 const { models } = require('mongoose')
 
+
 const { UnauthorizedError, BadRequestError } = require('../utils/errors')
 
 //route creates new map(s).  If there are multiple time slots in test, multiple timseslots are created.
@@ -96,6 +97,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
 router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
+    user = await req.user
     return res.status(200).json(await Map.removeResearcher(map._id,user._id))
 
 })
@@ -145,7 +147,7 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
     if(Map.isResearcher(map._id, user._id)){
         if(req.body.entries){
             for(var i = 0; i < req.body.entries.length; i++){
-                await Map.addEntry(map._id,req.body.entries[i])
+                await Map.addEntry(map._id, req.body.entries[i])
             } 
             res.status(201).json(await Map.findById(map._id))
         }
@@ -162,6 +164,7 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
 router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user   
     mapId = req.params.id
+
 
     if (Map.isResearcher(mapId, user._id)){
 
@@ -182,23 +185,47 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
     }  
 })
 
+
+//route adds floor data to its data object 
+router.post('/:id/data/:data_id/floors', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    map = await Map.findById(req.params.id)
+    dataId = req.params.data_id
+
+    if(Map.isResearcher(map._id, user._id)){
+        if(req.body.entries){
+            for(var i = 0; i < req.body.entries.length; i++){
+                await Map.addFloor(map._id, dataId, req.body.entries[i])
+            } 
+            res.status(201).json(await Map.findById(map._id))
+        }
+        else{
+            res.json(await Map.addFloor(map._id, dataId, req.body))
+       }
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
 //route edits the floors object any already created tested time slots
 router.put('/:id/data/:data_id/floors/:floors_id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user   
     mapId = req.params.id
+    dataId = req.params.data_id
+    
 
     if (Map.isResearcher(mapId, user._id)){
 
-        //ask aj about this
-        oldData = await Map.findData(mapId, req.params.data_id.floors_id)
-
+        oldData = await Map.findFloor(mapId, dataId, req.params.floors_id)
+        
         const newData = {
             _id: oldData._id,
             floorNum: (req.body.floorNum ? req.body.floorNum : oldData.floorNum),
             programCount: (req.body.programCount ? req.body.programCount : oldData.programCount),
         }
     
-        await Map.updateData(mapId,oldData._id,newData)
+        await Map.updateFloor(mapId, dataId, oldData._id,newData)
         res.status(201).json(await Map.findById(req.params.id))
     }  
     else{
@@ -206,10 +233,35 @@ router.put('/:id/data/:data_id/floors/:floors_id', passport.authenticate('jwt',{
     }  
 })
 
-//route edits the floors object any already created tested time slots
+//route adds program data to its data object 
+router.post('/:id/data/:data_id/floors/:floors_id/programs', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    map = await Map.findById(req.params.id)
+    dataId = req.params.data_id
+    floorId = req.params.floors_id
+
+    if(Map.isResearcher(map._id, user._id)){
+        if(req.body.entries){
+            for(var i = 0; i < req.body.entries.length; i++){
+                await Map.addProgram(map._id, dataId, floorId, req.body.entries[i])
+            } 
+            res.status(201).json(await Map.findById(map._id))
+        }
+        else{
+            res.json(await Map.addProgram(map._id, dataId, floorId, req.body))
+       }
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+//route edits the program object any already created tested time slots
 router.put('/:id/data/:data_id/floors/:floors_id/programs/programs_id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user   
     mapId = req.params.id
+    dataId = req.params.data_id
+
 
     if (Map.isResearcher(mapId, user._id)){
 
@@ -223,7 +275,7 @@ router.put('/:id/data/:data_id/floors/:floors_id/programs/programs_id', passport
             color: (req.body.color ? req.body.programType : oldData.color)
         }
     
-        await Map.updateData(mapId,oldData._id,newData)
+        await Map.updateFloor(mapId,oldData._id,newData)
         res.status(201).json(await Map.findById(req.params.id))
     }  
     else{

@@ -11,6 +11,8 @@ const Nature_Collection = require('../models/nature_collections.js')
 const Light_Collection = require('../models/light_collections.js')
 const Boundaries_Collection = require('../models/boundaries_collections.js')
 const Order_Collection = require('../models/order_collections.js')
+const Access_Collection = require('../models/access_collections.js')
+const Program_Collection = require('../models/program_collections.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
@@ -74,6 +76,20 @@ router.get('/survey/:id', passport.authenticate('jwt',{session:false}), async (r
     res.status(200).json(await Survey_Collection.findById(req.params.id)
                                                 .populate('area')
                                                 .populate('surveys'))
+
+})
+
+router.get('/access/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    res.status(200).json(await Access_Collection.findById(req.params.id)
+                                                .populate('area')
+                                                .populate('maps'))
+
+})
+
+router.get('/program/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    res.status(200).json(await Program_Collection.findById(req.params.id)
+                                                .populate('area')
+                                                .populate('maps'))
 
 })
 

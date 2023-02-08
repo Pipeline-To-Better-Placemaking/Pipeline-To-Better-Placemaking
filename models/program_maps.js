@@ -1,38 +1,9 @@
 const mongoose = require('mongoose')
+const { findData } = require('./stationary_maps')
 
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-//schema for all the specific recorded data from the test. 
-const dataSchema = mongoose.Schema({
-    //record the number of floors the building has
-    numFloors: {
-        type: Number,
-        required: true
-    },
-
-    //stores the points for the perimeter of the building
-    //used to render the model. 
-    perimeterPoints: [{
-        latitude:{
-            type: Number,
-            required: true
-        },
-        longitude:{
-            type: Number,
-            required: true 
-        }
-    }],
-
-    modified: {
-        type: Date,
-        required: true
-    },
-
-    //stores an array of floors with the floor schema
-    floors: [floorSchema]
-    
-})
 
 const newProgramSchema = mongoose.Schema({
     //stores the points for this section
@@ -76,6 +47,40 @@ const floorSchema = mongoose.Schema({
     programs: [newProgramSchema]
 })
 
+
+//schema for all the specific recorded data from the test. 
+const dataSchema = mongoose.Schema({
+    //record the number of floors the building has
+    numFloors: {
+        type: Number,
+        required: true
+    },
+
+    //stores the points for the perimeter of the building
+    //used to render the model. 
+    perimeterPoints: [{
+        latitude:{
+            type: Number,
+            required: true
+        },
+        longitude:{
+            type: Number,
+            required: true 
+        }
+    }],
+
+    modified: {
+        type: Date,
+        required: true
+    },
+
+    //stores an array of floors with the floor schema
+    floors: [floorSchema]
+    
+})
+
+
+
 const program_schema = mongoose.Schema({
     title: String,
 
@@ -113,7 +118,7 @@ const program_schema = mongoose.Schema({
 const Maps = module.exports = mongoose.model('Program_Maps', program_schema)
 const Entry = mongoose.model('Program_Entry', dataSchema)
 const FloorEntry = mongoose.model('Floor_Entry', floorSchema)
-const ProgramEntry = mongoose.model('Program_Entry', newProgramSchema)
+const NewProgramEntry = mongoose.model('NewProgram_Entry', newProgramSchema)
 
 module.exports.addMap = async function(newMap) {
     return await newMap.save()
@@ -170,12 +175,12 @@ module.exports.addFloor = async function(mapId, entryId, newEntry) {
             _id: mapId,
             'data._id': entryId
         },
-        { $push: { floors: entry}}
+        { $push: { "data.$.floors" : entry}}
     )
 }
 
 module.exports.addProgram = async function(mapId, entryId, floorId, newEntry) {
-    var entry = new FloorEntry({
+    var entry = new NewProgramEntry({
         points: newEntry.points,
         programType: newEntry.programType,
     })
@@ -186,7 +191,7 @@ module.exports.addProgram = async function(mapId, entryId, floorId, newEntry) {
             'data._id': entryId,
             'floors._id': floorId
         },
-        { $push: { programs: entry}}
+        { $push: { "data.floors.$.programs": entry}}
     )
 }
 
@@ -227,20 +232,19 @@ module.exports.findData = async function(mapId, entryId){
         'data._id': entryId 
     },
     {'data.$':1}))
-
+    //console.log(out[0])
     return out[0].data[0]
 }
 
 module.exports.findFloor = async function(mapId, entryId, floorId){
-    
-    const out = (await Maps.find({
-        _id: mapId,
-        'data._id': entryId,
-        'floors._id': floorId
+    const out = (await Maps.aggregate({
+        $match: {_id: mapId},
+        $match: {'data._id':entryId},
+        $match: {'floors._id': floorId}
     },
-    {'floors.$': 1}))
-
-    return out[0].floors[0]
+    ))
+    console.log(out[0])
+    return out[0]
 }
 
 module.exports.findProgram = async function(mapId, entryId, floorId, programId){
@@ -256,6 +260,7 @@ module.exports.findProgram = async function(mapId, entryId, floorId, programId){
     return out[0].programs[0]
 }
 
+//update the data for an already exisitng data object 
 module.exports.updateData = async function(mapId, dataId, newEntry){
     return await Maps.updateOne(
         {
@@ -264,6 +269,7 @@ module.exports.updateData = async function(mapId, dataId, newEntry){
         },
         { $set: { "data.$": newEntry}}
     )}
+
 
 module.exports.deleteEntry = async function(mapId, entryId) {
         return await Maps.updateOne(
@@ -291,7 +297,13 @@ module.exports.updateFloor = async function(mapId, dataId, floorId, newEntry){
                 'data._id': dataId,
                 'floors._id': floorId
             },
-        { $set: { "floors.$": newEntry}}
+        { $set: { "data.$[outer].floors.$[inner].": newEntry}},
+        {
+            arrayFilters:[
+                {"outer._id" : dataId},
+                {"inner._id": floorId}
+            ]
+        }
     )}
 
 module.exports.updateProgram = async function(mapId, dataId, floorId, programId, newEntry){
