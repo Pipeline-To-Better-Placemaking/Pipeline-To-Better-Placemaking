@@ -21,10 +21,10 @@ export const uploadMedia = () => {
     const mediaRef = ref(storage, `media_uploads/${mediaUpload.name + v4()}`)
     uploadBytes(mediaRef, mediaUpload).then((snapshot) => {
         getDownloadURL(snapshot.ref).then((url) => {
-
+            
         })
     })
-} 
+}
 
 //route creates new map(s).  If there are multiple tags slots in test, multiple timseslots are created.
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
