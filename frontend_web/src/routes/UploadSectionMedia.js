@@ -1,13 +1,18 @@
 import {useState} from "react";
 import { storage } from "./firebase";
-import { ref, uploadBytes, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import './routes.css';
+import { Link, useLocation } from 'react-router-dom';
+import { AppBar, Toolbar, Typography } from '@mui/material';
+import logo1 from '../images/PtBPLogo.png';
+import Image from 'react-bootstrap/Image';
 
 function UploadSectionMedia() {
     const [mediaUrl, setMediaUrl] = useState(null);
     const [progresspercent, setProgresspercent] = useState(0);
     const [mediaUrls, setImageUrls ] = useState([]);
+    const location = useLocation();
   
     const handleSubmit = (e) => {
       e.preventDefault()
@@ -31,33 +36,34 @@ function UploadSectionMedia() {
           });
         }
       );
+      location.reload()
     }
 
     return (
         <div className="UploadSectionMedia">
-            <h1> Section Cutter </h1>
-            <br></br>
+            <AppBar sx={{ bgcolor: "#006FD6" }} position="sticky">
+              <Toolbar>
+                <Link className='homeButton' to='/home' state={location.state}><Image src={logo1} className='icon-shadow' alt='logo' height='50px' /></Link>
+              </Toolbar>
+            </AppBar>
             <form onSubmit={handleSubmit} className='form'>
-                <input type='file' />
-                <br></br>
-                <br></br>
-                <button type='submit'> Upload Media </button>
-            </form>
-            {
-                !mediaUrl &&
-                <div className='outerbar'>
-                    <div className='innerbar' style={{ width: `${progresspercent}%` }}>{progresspercent}%</div>
+                <div className="SubmitButton">
+                  <h1> Section Cutter </h1>
+                  <br></br>
+                  <input type='file' />
+                  <br></br>
+                  <button type='submit'> Upload Media </button>
                 </div>
-            }
+                
+            </form>
+            <br></br>
+            <progress id="file" max="100" value={progresspercent}>  </progress>
             <br></br>
             {
                 mediaUrl &&
-                (<video width="320" height="240" controls>
-                    <source src={mediaUrl} type="video/mp4"></source>
-                    <source src={mediaUrl} type="video/ogg"></source>
-                </video> ||
-                <img src={mediaUrl} alt='uploaded file' height={200} /> )
+                  <img src={mediaUrl} alt='uploaded file' height={200} />
             }
+        
         </div>
     );
 }
