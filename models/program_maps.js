@@ -1,52 +1,10 @@
 const mongoose = require('mongoose')
-const { findData } = require('./stationary_maps')
+
 
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-
-const newProgramSchema = mongoose.Schema({
-    //stores the points for this section
-    //perimeter of the section made by user.  
-    points: [{
-        latitude:{
-            type: Number,
-            required: true
-        },
-        longitude:{
-            type: Number,
-            required: true 
-        }
-    }],
-
-    programType: {
-        type: String,
-        required: true
-    },
-
-    color: {
-        type: String,
-        required: true
-    }
-
-})
-
-const floorSchema = mongoose.Schema({
-    floorNum:{
-        type: Number,
-        required: true
-    },
-
-    //number of program sections identified on this floor
-    programCount: {
-        type: Number,
-        required: true
-    },
-
-    //programs that are identified on this floor. 
-    programs: [newProgramSchema]
-})
-
+const Floor = require('./program_floors.js')
 
 //schema for all the specific recorded data from the test. 
 const dataSchema = mongoose.Schema({
@@ -59,24 +17,26 @@ const dataSchema = mongoose.Schema({
     //stores the points for the perimeter of the building
     //used to render the model. 
     perimeterPoints: [{
-        latitude:{
+        lat:{
             type: Number,
             required: true
         },
-        longitude:{
+        lng:{
             type: Number,
             required: true 
         }
     }],
 
-    modified: {
+    //time the slot is scheduled for 
+    time: {
         type: Date,
         required: true
     },
 
-    //stores an array of floors with the floor schema
-    floors: [floorSchema]
-    
+    //stores an array of object ids that correspond to each floor object. 
+    floors: [{
+        type: ObjectId
+    }]    
 })
 
 
@@ -117,8 +77,6 @@ const program_schema = mongoose.Schema({
 
 const Maps = module.exports = mongoose.model('Program_Maps', program_schema)
 const Entry = mongoose.model('Program_Entry', dataSchema)
-const FloorEntry = mongoose.model('Floor_Entry', floorSchema)
-const NewProgramEntry = mongoose.model('NewProgram_Entry', newProgramSchema)
 
 module.exports.addMap = async function(newMap) {
     return await newMap.save()
@@ -152,10 +110,12 @@ module.exports.projectCleanup = async function(projectId) {
     return await Maps.deleteMany({ project: projectId })
 }
 
+//add data to the map
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
         numFloors: newEntry.numFloors,
         perimeterPoints: newEntry.perimeterPoints,
+        time: newEntry.time
     })
 
     return await Maps.updateOne(
@@ -164,35 +124,30 @@ module.exports.addEntry = async function(mapId, newEntry) {
     )
 }
 
-module.exports.addFloor = async function(mapId, entryId, newEntry) {
-    var entry = new FloorEntry({
-        floorNum: newEntry.floorNum,
-        programCount: newEntry.programCount,
-    })
-
+//adds the floor id to the floors array
+module.exports.addFloor = async function(mapId, entryId, floorId){
+    console.log(floorId)
     return await Maps.updateOne(
         { 
             _id: mapId,
             'data._id': entryId
         },
-        { $push: { "data.$.floors" : entry}}
+        { $push: { "data.$.floors" : floorId}}
     )
+    
 }
 
-module.exports.addProgram = async function(mapId, entryId, floorId, newEntry) {
-    var entry = new NewProgramEntry({
-        points: newEntry.points,
-        programType: newEntry.programType,
-    })
+//deletes a floor from the floors array
+module.exports.deleteFloor = async function(mapId, dataId, floorId){
 
     return await Maps.updateOne(
         { 
-            _id: mapId,
-            'data._id': entryId,
-            'floors._id': floorId
+            _id: mapId ,
+            'data._id': dataId
         },
-        { $push: { "data.floors.$.programs": entry}}
+        { $pull: { "data.$.floors" : {"_id": floorId}}}
     )
+
 }
 
 module.exports.addResearcher = async function(mapId, userId){
@@ -232,33 +187,10 @@ module.exports.findData = async function(mapId, entryId){
         'data._id': entryId 
     },
     {'data.$':1}))
-    //console.log(out[0])
+    
     return out[0].data[0]
 }
 
-module.exports.findFloor = async function(mapId, entryId, floorId){
-    const out = (await Maps.aggregate({
-        $match: {_id: mapId},
-        $match: {'data._id':entryId},
-        $match: {'floors._id': floorId}
-    },
-    ))
-    console.log(out[0])
-    return out[0]
-}
-
-module.exports.findProgram = async function(mapId, entryId, floorId, programId){
-    
-    const out = (await Maps.find({
-        _id: mapId,
-        'data._id': entryId,
-        'floors._id': floorId,
-        'programs._id': programId
-    },
-    {'programs.$': 1}))
-
-    return out[0].programs[0]
-}
 
 //update the data for an already exisitng data object 
 module.exports.updateData = async function(mapId, dataId, newEntry){
@@ -271,6 +203,7 @@ module.exports.updateData = async function(mapId, dataId, newEntry){
     )}
 
 
+//deletes a data object (entry) given the map id and the data id.
 module.exports.deleteEntry = async function(mapId, entryId) {
         return await Maps.updateOne(
             { _id: mapId },
@@ -278,51 +211,4 @@ module.exports.deleteEntry = async function(mapId, entryId) {
             })
     }
 
-module.exports.deleteFloor = async function(mapId, entryId, floorId){
-    return await Maps.updateOne(
-        {
-            _id: mapId, 
-            'data._id': entryId
-        },
-        { $pull: {floors: {_id:floorId}}}
-        )
-}
 
-
-    
-module.exports.updateFloor = async function(mapId, dataId, floorId, newEntry){
-        return await Maps.updateOne(
-            {
-                _id: mapId,
-                'data._id': dataId,
-                'floors._id': floorId
-            },
-        { $set: { "data.$[outer].floors.$[inner].": newEntry}},
-        {
-            arrayFilters:[
-                {"outer._id" : dataId},
-                {"inner._id": floorId}
-            ]
-        }
-    )}
-
-module.exports.updateProgram = async function(mapId, dataId, floorId, programId, newEntry){
-    return await Maps.updateOne(
-        {
-            _id: mapId,
-            'data._id': dataId,
-            'floors._id': floorId,
-            'programs._id:': programId
-        },
-        { $set: { "programs.$": newEntry}}
-    )}
-        
-        
-module.exports.deleteProgram = async function(mapId, entryId, floorId, programId){
-    return await Maps.updateOne(
-        {_id: mapId}, 
-        {'data._id': entryId},
-        {'floors._id': floorId},
-        { $pull: {programs: {_id:programId}}}
-    )
-}

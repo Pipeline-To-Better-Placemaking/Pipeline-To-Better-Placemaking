@@ -6,11 +6,11 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const dataSchema = mongoose.Schema({
     path: [{
-        latitude:{
+        lat:{
             type: Number,
             required: true
         },
-        longitude:{
+        lng:{
             type: Number,
             required: true 
         }
@@ -35,10 +35,12 @@ const dataSchema = mongoose.Schema({
     //(if outside place perimeter)
     distance: Number,
 
-    modified: {
+    //time the slot is scheduled for
+    time: {
         type: Date,
         required: true
     }
+
     
 
 })
@@ -69,7 +71,7 @@ const access_schema = mongoose.Schema({
         required: true
     },
 
-    modified:{
+    date:{
         type: Date,
         required: true
     },
@@ -118,7 +120,8 @@ module.exports.addEntry = async function(mapId, newEntry) {
         accessType: newEntry.accessType,
         area: newEntry.area,
         distance: newEntry.distance,
-        inPerimeter: newEntry.inPerimeter
+        inPerimeter: newEntry.inPerimeter,
+        time: newEntry.time
     })
 
     return await Maps.updateOne(
