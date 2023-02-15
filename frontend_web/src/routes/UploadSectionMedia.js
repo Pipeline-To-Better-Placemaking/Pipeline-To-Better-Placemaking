@@ -7,6 +7,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import logo1 from '../images/PtBPLogo.png';
 import Image from 'react-bootstrap/Image';
+import 'react-slideshow-image/dist/styles.css'
+import { Slide } from 'react-slideshow-image';
 
 function UploadSectionMedia() {
     const [mediaUrl, setMediaUrl] = useState(null);
@@ -32,11 +34,26 @@ function UploadSectionMedia() {
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setMediaUrl(downloadURL)
+            setMediaUrl(downloadURL);
+            setImageUrls((prev) => [...prev, downloadURL]);
           });
         }
       );
       location.reload()
+    }
+
+    const divStyle = {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundSize: 'cover',
+      height: '400px'
+    }
+
+    const spanStyle = {
+      padding: '20px',
+      background: '#efefef',
+      color: '#000000'
     }
 
     return (
@@ -63,8 +80,7 @@ function UploadSectionMedia() {
                 mediaUrl &&
                   <img src={mediaUrl} alt='uploaded file' height={200} />
             }
-        
-        </div>
+      </div>
     );
 }
 

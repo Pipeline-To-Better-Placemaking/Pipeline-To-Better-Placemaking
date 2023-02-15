@@ -6,6 +6,7 @@ import TabPanel from '../components/ProjectTabPanel';
 import ActivityPage from './ActivityPage';
 import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
+import NewSection from './NewSection.js';
 
 /* 
     (1) Handles routes to projects/:id/(activities/map/surveyors) 
@@ -221,6 +222,17 @@ export default function ProjectPage(){
                                 projectInfo={projectInfo}
                             />
                         }/>
+                        <Route path='activities/section_cutter' element={
+                            <div>
+                                <NewSection>
+                                    center={ center }
+                                    title= { projectInfo?.title }
+                                    area= { area }
+                                    subAreas = { subAreas }
+                                </NewSection>
+                            </div>
+                        }>
+                        </Route>
                         <Route path='surveyors' element={
                             <SurveyorPage title={ projectInfo?.title } 
                                 drawers={ activities }  

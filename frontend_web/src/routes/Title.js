@@ -87,7 +87,7 @@ export default function Title(props) {
             props.onLogin(true, user);
 
             //redirect user to url/home
-            nav('/upload_section_media', { state: { userToken: user } });
+            nav('/home', { state: { userToken: user } });
 
         } catch(error){
             //user login error
