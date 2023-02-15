@@ -179,7 +179,15 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             area: (req.body.area ? req.body.area : oldData.area),
             distance: (req.body.distance ? req.body.distance : oldData.distance),
             path: (req.body.path ? req.body.path : oldData.path),
-            time: (req.body.time ? req.body.time : oldData.time)
+            time: (req.body.time ? req.body.time : oldData.time),
+            distancePath: (req.body.distancePath ? req.body.distancePath : oldData.distancePath),
+            roadData: (req.body.roadData ? req.body.roadData : req.body.roadData),
+            diffRating: (req.body.diffRating ? req.body.diffRating : oldData.diffRating),
+            cost: (req.body.cost ? req.body.cost : oldData.cost),
+            spots: (req.body.spots ? req.body.spots : oldData.spots),
+            floors: (req.body.floors ? req.body.floors : oldData.floors),
+            
+        
         }
     
         await Map.updateData(mapId,oldData._id,newData)

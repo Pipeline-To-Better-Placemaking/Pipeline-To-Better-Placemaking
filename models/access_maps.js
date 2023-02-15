@@ -5,6 +5,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 
 const dataSchema = mongoose.Schema({
+    //stores any access points and types
     path: [{
         lat:{
             type: Number,
@@ -31,18 +32,45 @@ const dataSchema = mongoose.Schema({
     //area of the access point if its a lot/garage
     area: Number,
 
-    //distance the access point is from the perimeter of the place
-    //(if outside place perimeter)
-    distance: Number,
+    //path from the parking lot/garage/spot to the perimeter of the place
+    distancePath:[{
+        latitude:{
+            type: Number
+        },
+        longitude:{
+            type: Number
+        }
+    }],
+
+    roadData:{
+        lanes: Number,
+
+        //dropdowns on frontend?
+        median: Boolean,
+        turnLane: Boolean,
+        tollLane: Boolean,
+        paved: Boolean,
+        twoWay: Boolean
+
+    },
+
+    //how difficult is it to get to the place from this access spot
+    diffRating: String,
+
+    //cost of the access spot if any - 
+    cost: Number,
+
+    //number of spots for lots, garages, bike racks, bus frequency
+    spots: Number,
+
+    //number of floors in a garage
+    floors: Number,
 
     //time the slot is scheduled for
     time: {
         type: Date,
         required: true
     }
-
-    
-
 })
 
 const access_schema = mongoose.Schema({
