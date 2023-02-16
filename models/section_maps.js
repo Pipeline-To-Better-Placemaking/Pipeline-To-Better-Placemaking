@@ -6,7 +6,17 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 // Document Schema for Media Entry
 const media_schema = mongoose.Schema({
   title: String,
-  
+  path: [{
+    latitude: {
+        type: Number,
+        required: true
+    },
+    longitude: {
+        type: Number,
+        required: true
+    }
+  }],
+
   date: {
     type: Date,
     required: true
@@ -110,6 +120,7 @@ module.exports.projectCleanup = async function(projectId) {
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
         title: newEntry.title,
+        path: newEntry.path,
         date: newEntry.date,
         url_link: newEntry.url_link,
         panoramic: newEntry.panoramic,

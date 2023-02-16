@@ -169,6 +169,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
         const newData = {
             _id: oldData._id,
             title: (req.body.title ? req.body.title : oldData.title),
+            path: (req.body.path ? req.body.path : oldData.path),
             date: (req.body.date ? req.body.date : oldData.date),
             url_link: (req.body.url_link ? req.body.url_link : oldData.url_link),
             panoramic: (req.body.panoramic ? req.body.panoramic : oldData.panoramic),
