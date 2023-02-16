@@ -881,6 +881,7 @@ export async function getAccessResults(projectDetails, results) {
       results.push(tempObj);
     }
   }
+  console.log(results);
   return results;
 }
 
