@@ -7,6 +7,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import logo1 from '../images/PtBPLogo.png';
 import Image from 'react-bootstrap/Image';
+import Button from '@mui/material/Button';
 import 'react-slideshow-image/dist/styles.css'
 import { Slide } from 'react-slideshow-image';
 
@@ -80,6 +81,15 @@ function UploadSectionMedia() {
                 mediaUrl &&
                   <img src={mediaUrl} alt='uploaded file' height={200} />
             }
+            <br></br>
+            <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/section_cutter' 
+              state={{...location.state}} >
+              Reset Section Cut
+            </Button>
+            <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='success' to='../activities/times' 
+              state={{...location.state}}>
+              Accept and Continue
+            </Button>
       </div>
     );
 }

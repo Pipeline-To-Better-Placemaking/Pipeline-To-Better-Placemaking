@@ -184,7 +184,7 @@ export default function ProjectPage(){
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
     var area = projectInfo?.area?.points;
     var subAreas = projectInfo?.subareas;
-    
+
     return (
         <div id='ProjectPage'>
             <TabPanel state={ loc.state }/>
@@ -224,12 +224,13 @@ export default function ProjectPage(){
                         }/>
                         <Route path='activities/section_cutter' element={
                             <div>
-                                <NewSection>
+                                <NewSection 
                                     center={ center }
                                     title= { projectInfo?.title }
                                     area= { area }
                                     subAreas = { subAreas }
-                                </NewSection>
+                                />
+                                    
                             </div>
                         }>
                         </Route>
