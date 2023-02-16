@@ -3,51 +3,87 @@ const mongoose = require('mongoose')
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-// Document Schema for data entry
+
 const dataSchema = mongoose.Schema({
-
-    points: [{
-
-        access_description:{
-            type: String,
+    //stores any access points and types
+    path: [{
+        latitude:{
+            type: Number,
             required: true
         },
-
-        location: {
-
-            latitude: {
-                type: Number,
-                required: true
-            },
-            longitude: {
-                type: Number,
-                required: true
-            }
+        longitude:{
+            type: Number,
+            required: true 
         }
-
     }],
 
+    accessType: {
+        type: String,
+        required: true
+    },
+
+    //is this access point inside the perimeter or not
+    inPerimeter: {
+        type: Boolean, 
+        required: true
+
+    },
+
+    //area of the access point if its a lot/garage
+    area: Number,
+
+    //path from the parking lot/garage/spot to the perimeter of the place
+    distancePath:[{
+        latitude:{
+            type: Number
+        },
+        longitude:{
+            type: Number
+        }
+    }],
+
+    roadData:{
+        lanes: Number,
+
+        //dropdowns on frontend?
+        median: Boolean,
+        turnLane: Boolean,
+        tollLane: Boolean,
+        paved: Boolean,
+        twoWay: Boolean
+
+    },
+
+    //how difficult is it to get to the place from this access spot
+    diffRating: String,
+
+    //cost of the access spot if any - 
+    cost: Number,
+
+    //number of spots for lots, garages, bike racks, bus frequency
+    spots: Number,
+
+    //number of floors in a garage
+    floors: Number,
+
+    //time the slot is scheduled for
     time: {
         type: Date,
         required: true
     }
-
 })
-//end
 
-
-// Document Schema for Access Maps
 const access_schema = mongoose.Schema({
-    
     title: String,
-    
+
     project: {
-        type: ObjectId,
+        type:ObjectId,
         required: true
     },
+
     researchers: [{
         type: ObjectId,
-        required: true,
+        required: true, 
         ref: 'Users'
     }],
 
@@ -68,11 +104,8 @@ const access_schema = mongoose.Schema({
         required: true
     },
 
-    data:[dataSchema]
-    // data represents const dataSchema which houses the actual testing data parameters  
-   
+    data: [dataSchema]
 })
-// end
 
 const Maps = module.exports = mongoose.model('Access_Maps', access_schema)
 const Entry = mongoose.model('Access_Entry', dataSchema)
@@ -93,21 +126,29 @@ module.exports.updateMap = async function (projectId, newMap) {
 }
 
 module.exports.deleteMap = async function(mapId) {
+
+    const map = await Maps.findById(mapId)
+    
     return await Maps.findByIdAndDelete(mapId)
 }
 
 module.exports.projectCleanup = async function(projectId) {
-    
+
     const data = await Maps.find({project: projectId})
     if (data === null){
         return
     }
+    
     return await Maps.deleteMany({ project: projectId })
 }
 
 module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
-        points: newEntry.points,
+        path: newEntry.path,
+        accessType: newEntry.accessType,
+        area: newEntry.area,
+        distance: newEntry.distance,
+        inPerimeter: newEntry.inPerimeter,
         time: newEntry.time
     })
 
@@ -173,4 +214,3 @@ module.exports.deleteEntry = async function(mapId, entryId) {
             { $pull: { data: {_id:entryId }}
             })
     }
-    
