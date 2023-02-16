@@ -522,6 +522,34 @@ export async function formatAccessGraphData(result){
   return tempResult;
 }
 
+export async function formatAcessGraphData(result){
+  if (result === null ||
+      result.data === undefined ||
+      result.data === null ||
+      result.data.length <= 0 ||
+      result.graph !== undefined
+    ) {
+    return result;
+  }
+  
+  let tempResult = {...result};
+  let graph = [];
+  
+  for(let i = 0; i < result.data.length; i++){
+    let data = result.data[i];
+    // push a graph object for the every data object and pull out the relevant information the chart needs
+    graph.push({key: 0, value: 0, description: [[]], type: [[]]});
+    graph[i].key = i + 1;
+    graph[i].value = data.value;
+    graph[i].description = data.description;
+    graph[i].type = data.kind;    
+  }
+
+  //console.log("resulting graph data: ", graph);
+  tempResult.graph = {...graph};
+  return tempResult;
+}
+
 export function retrieveTestName(str){
   let lowerStr = str.toLowerCase();
   

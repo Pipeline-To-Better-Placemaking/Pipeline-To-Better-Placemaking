@@ -7,7 +7,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import { styles } from './sharedMap.styles';
 
-export function AccessMapResults(props) {
+export function BoundaryMapResults(props) {
 
     // filter controls
     const [open, setOpen] = useState(false);
@@ -38,7 +38,7 @@ export function AccessMapResults(props) {
             setPathBool(true);
             setAreaBool(true);
         }
-        // Pointion
+        // Point
         else if(type === 2){
             setPointBool(true);
             setPathBool(false);
@@ -78,17 +78,16 @@ export function AccessMapResults(props) {
             let objData = [[]];
             // loop through all the data objects and add the appropriate rendered object only if that filter is true
             for(let i = 0; i < props.dataMarkers.length; i++){
-                // filter for pointion access
+                // filter for point access
                 if(pointBool){
-                    // if the boundary is a pointion boundary, add a polyline
+                    // if the access is a point access, add a marker
                     if(props.dataMarkers[i].kind === "Point"){
-                        console.log(props.dataMarkers[i].longitude);
                         objData[i] = (
                             <View key={i.toString()}>
                                 <MapView.Marker
-                                    coordinate={{
-                                        latitude: props.dataMarkers[i].latitude,
-                                        longitude: props.dataMarkers[i].longitude}}
+                                    coordinates={props.dataMarkers[i].path}
+                                    strokeWidth={3}
+                                    strokeColor={colors[0]}
                                     tappable={true}
                                     onPress={()=> dataCallout(props.dataMarkers[i])}
                                 />
@@ -98,7 +97,7 @@ export function AccessMapResults(props) {
                 }
                 // filter for path access
                 if(pathBool){
-                    // if the boundary is a path boundary, add a polygon
+                    // if the access is a path access, add a polyline
                     if(props.dataMarkers[i].kind === "Path"){
                         objData[i] = (
                             <View key={i.toString()}>
@@ -116,7 +115,7 @@ export function AccessMapResults(props) {
                 }
                 // filter for area access
                 if(areaBool){
-                    // if the boundary is a area boundary, add a polygon
+                    // if the access is a area access, add a polygon
                     if(props.dataMarkers[i].kind === "Area"){
                         objData[i] = (
                             <View key={i.toString()}>

@@ -176,7 +176,7 @@ export function AccessTest(props) {
             if(accessIndex === 0){
                 totalPoints.push(currentPath);
                 type = 'Access Points';
-                val = calcArea(currentPath)
+                val = 0
             }
 
             // Path Access
