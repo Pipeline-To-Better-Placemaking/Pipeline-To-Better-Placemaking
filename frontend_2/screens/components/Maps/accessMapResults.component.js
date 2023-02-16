@@ -1,90 +1,139 @@
-import React from 'react';
-import MapView, { Callout } from 'react-native-maps';
+import React, { useState } from 'react';
+import MapView from 'react-native-maps';
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
-import { Text } from '@ui-kitten/components';
+import { InfoModal } from '../Activities/Access/infoModal.component';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import { styles } from './sharedMap.styles';
 
 export function AccessMapResults(props) {
 
-    // access data pin
-    const DataPin = (props) => {
-        return(
-            <View style={[styles.accessDataPinCircle, {backgroundColor: props.colorFill, borderColor: props.color}]}>
-                <View style={[styles.accessDataPin, {backgroundColor: props.color}]} />
-            </View>
-        )
-    }
+    // filter controls
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(1);
+    const [filter, setFilter] = useState([
+        {label: "Show All", value: 1}, 
+        {label: "Point", value: 2},
+        {label: "Path", value: 3}, 
+        {label: "Area", value: 4}
+    ]);
+    const [pointBool, setPointBool] = useState(true);
+    const [pathBool, setPathBool] = useState(true);
+    const [areaBool, setAreaBool] = useState(true);
 
-    // displays information about the DataPin
-    const DataCallout = (props) => {
-        return (
-            <View style={styles.soundDataCallOutView}>
-                <Text style={styles.dataText}>Access: {props.desc}</Text>
-            </View>
-        )
-    }
+    const [infoModal, setInfoModal] = useState(false);
+    const [boundInfo, setBoundInfo] = useState();
 
-    // offsets the data circle to have its center appear at the exact location of the marker
-    let offsetPoint = {
-        x: 0.5,
-        y: 0.69
+
+    const colors = ['rgba(255, 0, 255, 1)', 'rgba(0, 255, 193, 1)', 'rgba(255, 166, 77, 1)'];
+    const fills = ['rgba(0, 255, 193, 0.5)', 'rgba(255, 166, 77, 0.5)'];
+
+    // controls which access show on the map during data collection
+    const filterControl = (item) =>{
+        let type = item.value; 
+        // Show All
+        if(type === 1){
+            setPointBool(true);
+            setPathBool(true);
+            setAreaBool(true);
+        }
+        // Pointion
+        else if(type === 2){
+            setPointBool(true);
+            setPathBool(false);
+            setAreaBool(false);
+        }
+        // Path
+        else if(type === 3){
+            setPointBool(false);
+            setPathBool(true);
+            setAreaBool(false);
+        }
+        // Area
+        else if(type === 4){
+            setPointBool(false);
+            setPathBool(false);
+            setAreaBool(true);
+        }
+    }
+    
+    // pulls up the information modal of the boundary that was touched
+    const dataCallout = (bound) =>{
+        setInfoModal(true);
+        setBoundInfo(bound);
+    }
+    
+    // closes the information modal
+    const closeModal = () =>{
+        setInfoModal(false);
     }
 
     // renders the project data that was collected
     const ShowData = () =>{
-        
         if(props.dataMarkers === null) {
             return (null);
         }
         else{
-            // keySum is so it doesn't complain about there being duplicate keys for the objData View's
-            let keySum = 0;
             let objData = [[]];
             // loop through all the data objects and add the appropriate rendered object only if that filter is true
             for(let i = 0; i < props.dataMarkers.length; i++){
-                let pointArr = props.dataMarkers[i].points;
-                // loop through the points array and plot those data points
-                for(let j = 0; j < pointArr.length; j++){
-                    // gets the color based on the access_description
-                    let color;
-                    let colorFill;
-                    // only change color if its for the Vegetation type
-                    if(pointArr[j].access_description === "Rhythmic"){
-                        color = "#FFE371"
-                        colorFill = 'rgba(255, 227, 113, .5)'
+                // filter for pointion access
+                if(pointBool){
+                    // if the boundary is a pointion boundary, add a polyline
+                    if(props.dataMarkers[i].kind === "Point"){
+                        console.log(props.dataMarkers[i].longitude);
+                        objData[i] = (
+                            <View key={i.toString()}>
+                                <MapView.Marker
+                                    coordinate={{
+                                        latitude: props.dataMarkers[i].latitude,
+                                        longitude: props.dataMarkers[i].longitude}}
+                                    tappable={true}
+                                    onPress={()=> dataCallout(props.dataMarkers[i])}
+                                />
+                            </View>
+                        )
                     }
-                    else if(pointArr[j].access_description === "Building"){
-                        color = "#FF9933"
-                        colorFill = 'rgba(255, 153, 51, .5)'
+                }
+                // filter for path access
+                if(pathBool){
+                    // if the boundary is a path boundary, add a polygon
+                    if(props.dataMarkers[i].kind === "Path"){
+                        objData[i] = (
+                            <View key={i.toString()}>
+                                <MapView.Polyline
+                                    coordinates={props.dataMarkers[i].path}
+                                    strokeWidth={3}
+                                    strokeColor={colors[1]}
+                                    fillColor={fills[0]}
+                                    tappable={true}
+                                    onPress={()=> dataCallout(props.dataMarkers[i])}
+                                />
+                            </View>
+                        )
                     }
-                    else{
-                        color = '#FF00FF'
-                        colorFill = 'rgba(255, 0, 255, .5)'
+                }
+                // filter for area access
+                if(areaBool){
+                    // if the boundary is a area boundary, add a polygon
+                    if(props.dataMarkers[i].kind === "Area"){
+                        objData[i] = (
+                            <View key={i.toString()}>
+                                <MapView.Polygon
+                                    coordinates={props.dataMarkers[i].path}
+                                    strokeWidth={3}
+                                    strokeColor={colors[2]}
+                                    fillColor={fills[1]}
+                                    tappable={true}
+                                    onPress={()=> dataCallout(props.dataMarkers[i])}
+                                />
+                            </View>
+                        )
                     }
-                    // add the marker to the rendered JSX array
-                    objData.push(
-                        <View key={keySum}>
-                            <MapView.Marker
-                                coordinate = {{
-                                    latitude: pointArr[j].location.latitude,
-                                    longitude: pointArr[j].location.longitude
-                                }}
-                                anchor={offsetPoint}
-                            >
-                                <DataPin color={color} colorFill={colorFill}/>
-
-                                <Callout style={styles.callout}>
-                                    <DataCallout desc={pointArr[j].access_description}/>
-                                </Callout>
-                        
-                            </MapView.Marker>
-                        </View>
-                    )
-                    keySum++;
                 }
             }
+
             // return that array of JSX in a view (for it to render)
             return(
                 <View>
@@ -94,27 +143,52 @@ export function AccessMapResults(props) {
         }
     }
 
+
     return(
 
         <View>
-            
-            <PressMapAreaWrapper
-                area={props.area}
-                mapHeight={'100%'}
-                onPress={() => null}
-            >
-                {/* project perimeter render */}
-                <MapView.Polygon
-                    coordinates={props.area}
-                    strokeWidth={3}
-                    strokeColor={'rgba(255,0,0,0.5)'}
-                    fillColor={'rgba(0,0,0,0.2)'}
+            <View>
+                <InfoModal
+                    visible={infoModal}
+                    data={boundInfo}
+                    close={closeModal}
                 />
-                    
-                {/* project data render */}
-                <ShowData/>
+            </View>
 
-            </PressMapAreaWrapper>
+            <View style={styles.filterView}>
+                <View>
+                    <DropDownPicker
+                        style={styles.filterSelect}
+                        open={open}
+                        setOpen={setOpen}
+                        value={value}
+                        setValue={setValue}
+                        onSelectItem={ item => filterControl(item)}
+                        items={filter}
+                        setItems={setFilter}
+                    />
+                </View>
+            </View>
+            {/* zIndex allows the dropdown menu to render over the map */}
+            <View style={{zIndex: -1}}>
+                <PressMapAreaWrapper
+                    area={props.area}
+                    mapHeight={'96.5%'}
+                    onPress={() => null}
+                >
+                    {/* project perimeter render */}
+                    <MapView.Polygon
+                        coordinates={props.area}
+                        strokeWidth={3}
+                        strokeColor={'rgba(255,0,0,0.5)'}
+                        fillColor={'rgba(0,0,0,0.2)'}
+                    />
+                    
+                    {/* project data render */}
+                    <ShowData/>
+
+                </PressMapAreaWrapper>
+            </View>
         </View>
     )
 }

@@ -130,6 +130,7 @@ export function ProjectResultPage(props) {
   
   const activityItem = ({ item, index }) => {
     let testType = retrieveTestName(item.test_type);
+    console.log("activityItem", item);
     return (
       <ListItem
         title={

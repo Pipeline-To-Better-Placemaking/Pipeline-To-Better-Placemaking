@@ -171,12 +171,15 @@ export function AccessTest(props) {
             let type;
             let val = 0;
             // store the access in its respective array and set the type variable
-            // if we are doing a point access, pull up the purpose modal
+
+            // Point access
             if(accessIndex === 0){
                 totalPoints.push(currentPath);
                 type = 'Access Points';
                 val = calcArea(currentPath)
             }
+
+            // Path Access
             else if (accessIndex === 1){
                 totalPaths.push(currentPath);
                 type = 'Access Paths';  
@@ -186,7 +189,9 @@ export function AccessTest(props) {
                 let tempString = val.toFixed(2);
                 val = parseFloat(tempString);
             }
-            else{
+
+            // Area Access
+            else {
                 totalAreas.push(currentPath);
                 type = 'Access Areas';
                 val = calcArea(currentPath)
@@ -203,10 +208,15 @@ export function AccessTest(props) {
             data.push(
                 {
                     path: currentPath,
-                    kind: type,
-                    description: fixedDesc,
-                    value: val,
-                    purpose: [],
+                    accessType: fixedDesc,
+                    inPerimeter: true,
+                    area: val,
+                    distancePath: 0,
+                    roadData: null,
+                    diffRating: diffRating,
+                    cost: 0,
+                    spots: 0,
+                    floors: 0,
                     time: new Date()
                 }
             );

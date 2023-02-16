@@ -42,6 +42,8 @@ export const LoginScreen = ( props ) => {
     let success = false;
     let res = null;
 
+    console.log(LOCAL_SERVER);
+
     try {
 
         const response = await fetch(LOCAL_SERVER+'/login', {

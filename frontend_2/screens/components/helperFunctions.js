@@ -484,37 +484,40 @@ export async function formatAccessGraphData(result){
     ) {
     return result;
   }
+  //console.log(result);
   
-  console.log(result);
-
-  // each object in data are submitted results for that test
   let tempResult = {...result};
-  let graph = {
-    data: [],
-    labels: []
-  };
-  let index;
-  // loop through the entire data array to format each points array for the barchart
-  for(let i = 0; i < result.data.length; i++){
-    let data = result.data[i].points;
-    // loop through the entire points array and format its data into the graph object
-    for(let j = 0; j < data.length; j++){
-      index = conDescSearch(graph.labels, data[j].access_description)
-      // if that description already exists in graph's labels
-      if(index !== -1){
-        // increase the count of that index
-        graph.data[index] += 1;
-      }
-      // otherwise, that description does not exist in graph's labels
-      else{
-        // so push the description to the end of graph's labels and a 1 onto the end of data labels
-        graph.labels.push(data[j].access_description);
-        graph.data.push(1);
-      }
-      
+  let graph = [];
+  let data = result.data[i].path;
+
+  // loop through the entire points array and format its data into the graph object
+  for(let j = 0; j < data.length; j++){
+    index = conDescSearch(graph.labels, data[j].kind)
+    // if that description already exists in graph's labels
+    if(index !== -1){
+      // increase the count of that index
+      graph.data[index] += 1;
     }
+    // otherwise, that description does not exist in graph's labels
+    else{
+      // so push the description to the end of graph's labels and a 1 onto the end of data labels
+      graph.labels.push(data[j].kind);
+      graph.data.push(1);
+    }
+    
   }
-  // console.log("resulting graph data: ", graph);
+  
+  // for(let i = 0; i < result.data.length; i++){
+  //   let data = result.data[i];
+  //   // push a graph object for the every data object and pull out the relevant information the chart needs
+  //   graph.push({key: 0, value: 0, description: [[]], type: [[]]});
+  //   graph[i].key = i + 1;
+  //   graph[i].value = data.value;
+  //   graph[i].description = data.description;
+  //   graph[i].type = data.kind;    
+  // }
+
+  //console.log("resulting graph data: ", graph);
   tempResult.graph = {...graph};
   return tempResult;
 }

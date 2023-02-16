@@ -10,7 +10,7 @@ export function DataModal(props) {
     
     const sendData = async (desc) => {
         let data = {
-            description: desc
+            accessType: desc
         }
         
         // closes the modal (in accessTest)

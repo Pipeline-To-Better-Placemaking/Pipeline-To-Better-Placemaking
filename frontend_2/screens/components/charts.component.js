@@ -18,6 +18,8 @@ height={}
 */
 export function MyBarChart({children, ...props}){
 
+  console.log("props",props);
+
   if(props.dataLabels === null || props.dataLabels.length <= 0) {
     return null;
   }
