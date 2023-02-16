@@ -69,7 +69,7 @@ export default function NewActivityTimes(props) {
 
     function newTime(e) {
         var temp = timeSlots;
-        if (activity.activity !== 'boundaries_maps' && activity.activity !== 'light_maps' && activity.activity !== 'nature_maps' && activity.activity !== 'order_maps'){
+        if (activity.activity !== 'boundaries_maps' && activity.activity !== 'light_maps' && activity.activity !== 'nature_maps' && activity.activity !== 'order_maps' && activity.activity !== 'section_maps'){
             temp.push({
                 type: collections[activity.activity][1],
                 instance: activity.number,
