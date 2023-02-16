@@ -3,7 +3,7 @@ import Map from '../components/Map';
 import { useLocation } from 'react-router-dom';
 
 function NewSection(props) {
-    //recieves location data from NewSectoin.js
+    //recieves location data from NewSection.js
     // const loc = useLocation();
 
     const values = {
