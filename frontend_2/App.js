@@ -11,7 +11,7 @@ export default () => {
   const [theme, setTheme] = React.useState(Appearance.getColorScheme());
 
   const toggleTheme = () => {
-    console.log(theme);
+    //console.log(theme);
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
   };

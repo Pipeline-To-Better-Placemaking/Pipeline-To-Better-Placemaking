@@ -213,7 +213,9 @@ export function CreateActivityStack(props) {
   const postCollection = async (name, test_type, collectionName, timeSlotName) => {
     let success = false
     let collectionDetails = null
-    console.log("saving with area id", area._id);
+
+    //console.log("🚀 ~ file: createActivityStack.component.js:218 ~ postCollection ~ area._id: saving with area id", area._id);
+
     // Save the activity
     try {
         const response = await fetch(LOCAL_SERVER+'/projects/' + props.project._id + collectionName, {
@@ -235,7 +237,7 @@ export function CreateActivityStack(props) {
     } catch (error) {
         console.log("ERROR: ", error)
     }
-    console.log("create collection response:", collectionDetails);
+    //console.log("create collection response:", collectionDetails);
     if(collectionDetails.success !== undefined) {
       success = collectionDetails.success
       console.log("success: ", success);

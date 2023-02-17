@@ -1,3 +1,5 @@
+import {format as prettyFormat} from 'pretty-format';
+
 export async function formatStationaryGraphData(result) {
   if (result === null ||
       result.data === undefined ||
@@ -222,6 +224,7 @@ export async function formatBoundaryGraphData(result){
 
 // searches to see if that description exists in the array (helper for formatNatureGraphData)
 const conDescSearch = (arr, str)=>{
+  if(arr == undefined) return -1;
   // search through formatted array to see if that description is in it
   for(let i = 0; i < arr.length; i++){
     // if it is there, return its index
@@ -398,8 +401,6 @@ export async function formatLightGraphData(result){
     ) {
     return result;
   }
-  
-  console.log(result);
 
   // each object in data are submitted results for that test
   let tempResult = {...result};
@@ -484,68 +485,61 @@ export async function formatAccessGraphData(result){
     ) {
     return result;
   }
-  //console.log(result);
+
+  console.log("🚀 ~ file: helperFunctions.js:487 ~ formatAccessGraphData ~ result", prettyFormat(result));
+
   
+  let index;
   let tempResult = {...result};
-  let graph = [];
-  let data = result.data[i].path;
-
-  // loop through the entire points array and format its data into the graph object
-  for(let j = 0; j < data.length; j++){
-    index = conDescSearch(graph.labels, data[j].kind)
-    // if that description already exists in graph's labels
-    if(index !== -1){
-      // increase the count of that index
-      graph.data[index] += 1;
-    }
-    // otherwise, that description does not exist in graph's labels
-    else{
-      // so push the description to the end of graph's labels and a 1 onto the end of data labels
-      graph.labels.push(data[j].kind);
-      graph.data.push(1);
-    }
-    
-  }
-  
-  // for(let i = 0; i < result.data.length; i++){
-  //   let data = result.data[i];
-  //   // push a graph object for the every data object and pull out the relevant information the chart needs
-  //   graph.push({key: 0, value: 0, description: [[]], type: [[]]});
-  //   graph[i].key = i + 1;
-  //   graph[i].value = data.value;
-  //   graph[i].description = data.description;
-  //   graph[i].type = data.kind;    
-  // }
-
-  //console.log("resulting graph data: ", graph);
-  tempResult.graph = {...graph};
-  return tempResult;
-}
-
-export async function formatAcessGraphData(result){
-  if (result === null ||
-      result.data === undefined ||
-      result.data === null ||
-      result.data.length <= 0 ||
-      result.graph !== undefined
-    ) {
-    return result;
-  }
-  
-  let tempResult = {...result};
-  let graph = [];
+  let graph = {
+      key: 0, 
+      pointGraph: {
+        labels: [],
+        data: []
+      },
+      pathGraph: {
+        labels: [],
+        data: []
+      },
+      areaGraph: {
+        labels: [],
+        data: []
+      }
+    };
   
   for(let i = 0; i < result.data.length; i++){
     let data = result.data[i];
-    // push a graph object for the every data object and pull out the relevant information the chart needs
-    graph.push({key: 0, value: 0, description: [[]], type: [[]]});
-    graph[i].key = i + 1;
-    graph[i].value = data.value;
-    graph[i].description = data.description;
-    graph[i].type = data.kind;    
+
+    // Count point access occurrances
+    if(data.accessType == "Access Points") {
+      index = conDescSearch(graph.pointGraph.labels, result.data[i].description)
+
+      // if that description already exists in graph's labels
+      if(index !== -1){
+        // increase the count of that index
+        graph.pointGraph.data[index] += 1;
+      }
+      // otherwise, that description does not exist in graph's labels
+      else{
+        // so push the description to the end of graph's labels and a 1 onto the end of data labels
+        graph.pointGraph.labels.push(result.data[i].description);
+
+        graph.pointGraph.data.push(1);
+      }
+    }    
+
+    // graph[i].key = i + 1;
+    // graph[i].accessType = data.accessType;   
+    // graph[i].description = data.description;   
+    
   }
 
-  //console.log("resulting graph data: ", graph);
+  console.log("🚀 ~ file: helperFunctions.js:528 ~ formatAccessGraphData ~ graph.labels", graph.pointGraph.labels);
+
+  console.log("🚀 ~ file: helperFunctions.js:528 ~ formatAccessGraphData ~ graph.data", graph.pointGraph.data);
+
+  console.log("🚀 ~ file: helperFunctions.js:526 ~ formatAccessGraphData ~ graph", prettyFormat(graph));
+
   tempResult.graph = {...graph};
   return tempResult;
 }

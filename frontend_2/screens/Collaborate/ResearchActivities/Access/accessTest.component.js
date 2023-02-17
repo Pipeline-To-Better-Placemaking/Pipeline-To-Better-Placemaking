@@ -13,6 +13,7 @@ import { PopupMessage } from '../../../components/Activities/popupMessage.compon
 import { calcArea, haverSine } from '../../../components/helperFunctions';
 import CountDown from 'react-native-countdown-component';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {format as prettyFormat} from 'pretty-format';
 import { LOCAL_SERVER } from '@env';
 
 import { styles } from './accessTest.styles';
@@ -83,492 +84,416 @@ export function AccessTest(props) {
     const pathPrompt = ["Sidewalk", "Side Street", "Main Road", "Natural (grass)", "Wood (deck)"]
     const areaPrompt = ["Parking Lot", "Parking Garage", "Umbrella Dining", "Temporary", "Pointed Ceiling"]
 
-    // End Button press or whenever the timer hits 0
-    // const endActivity = async () => {
-    //     setStart(false)
-    //     clearInterval(id);
-
-    //     // close any of the modals that may be open when the test ends (timer hits 0 while in a modal)
-    //     if(dataModal) setDataModal(false);
-        
-    //     // console.log(dataPoints)
-        
-    //     // package the data; needs to be an array for multiple entries for a test
-    //     let data =[{
-    //         points: dataPoints,
-    //         time: new Date()
-    //     }]
-
-    //     // Sends the collected data to DB
-    //     try {
-    //         const response = await fetch(LOCAL_SERVER+'/access_maps/' + props.timeSlot._id + '/data', {
-    //             method: 'POST',
-    //             headers: {
-    //                 Accept: 'application/json',
-    //                     'Content-Type': 'application/json',
-    //                     'Authorization': 'Bearer ' + props.token
-    //             },
-    //             body: JSON.stringify({
-    //                 entries: data
-    //             })
-    //         })
-
-    //         let info = await response.json()
-        
-    //         console.log(info)
-        
-    //     } catch (error) {
-    //         console.log("ERROR: ", error)
-    //     }
-
-    //     props.navigation.navigate("ActivitySignUpPage");
-    // }
-
-// START BOUNDARY CLONE
-
-        // closes the modal and stores the access data
-        
-        // ends activity and sends data to the DB
+    // closes the modal and stores the access data
     
-        const endActivity = async () => {
-            console.log('ending activity');
-            setStart(false);
-            clearInterval(id);
-            
-            // closes any modals that may be open
-            if(errorModal) setErrorModal(false);
-            if(dataModal) setDataModal(false);
-            if(purposeModal) setPurposeModal(false);
-            
-            try {
-                const response = await fetch(LOCAL_SERVER+'/access_maps/' + props.timeSlot._id + '/data', {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Bearer ' + props.token
-                    },
-                    body: JSON.stringify({
-                        entries: data
-                    })
+    // ends activity and sends data to the DB
+
+    const endActivity = async () => {
+        //console.log('ending activity');
+        setStart(false);
+        clearInterval(id);
+        
+        // closes any modals that may be open
+        if(errorModal) setErrorModal(false);
+        if(dataModal) setDataModal(false);
+        if(purposeModal) setPurposeModal(false);
+        
+        try {
+            const response = await fetch(LOCAL_SERVER+'/access_maps/' + props.timeSlot._id + '/data', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + props.token
+                },
+                body: JSON.stringify({
+                    entries: data
                 })
+            })
 
-                let info = await response.json()
-                
-                console.log(info);
+            let info = await response.json()
 
-            } catch (error) {
-                console.log("ERROR: ", error)
-            }
-            props.navigation.navigate("ActivitySignUpPage");
+            //console.log("🚀 ~ file: accessTest.component.js:117 ~ endActivity ~ info", info);
+
+
+        } catch (error) {
+            console.log("ERROR: ", error)
         }
-        
-        const closeData = async (inf) => {
-            // close the modal
-            setDataModal(false);
-            // increase the dataIndex
-            setDataIndex(dataIndex + 1);
-            let type;
-            let val = 0;
-            // store the access in its respective array and set the type variable
+        props.navigation.navigate("ActivitySignUpPage");
+    }
+    
+    const closeData = async (inf) => {
+        // close the modal
+        setDataModal(false);
+        // increase the dataIndex
+        setDataIndex(dataIndex + 1);
+        let type;
+        let val = 0;
+        // store the access in its respective array and set the type variable
 
-            // Point access
-            if(accessIndex === 0){
-                totalPoints.push(currentPath);
-                type = 'Access Points';
-                val = 0
-            }
-
-            // Path Access
-            else if (accessIndex === 1){
-                totalPaths.push(currentPath);
-                type = 'Access Paths';  
-                // calculate the distance between each subsequent point to find total distance of drawn line
-                for (let i = 1; i < currentPathSize; i++) val += haverSine(currentPath[i-1], currentPath[i]);
-                // ensure the percision is fixed to 2nd decimal place
-                let tempString = val.toFixed(2);
-                val = parseFloat(tempString);
-            }
-
-            // Area Access
-            else {
-                totalAreas.push(currentPath);
-                type = 'Access Areas';
-                val = calcArea(currentPath)
-            }
-            // gets rid of any parenthesis in the description (for path and area prompts)
-            let shorten = inf.description.indexOf("(");
-            let fixedDesc;
-            if(shorten !== -1){
-                fixedDesc = inf.description.slice(0, shorten - 1);
-            }
-            else fixedDesc = inf.description
-
-            // package the data
-            data.push(
-                {
-                    path: currentPath,
-                    accessType: fixedDesc,
-                    inPerimeter: true,
-                    area: val,
-                    distancePath: 0,
-                    roadData: null,
-                    diffRating: diffRating,
-                    cost: 0,
-                    spots: 0,
-                    floors: 0,
-                    time: new Date()
-                }
-            );
-
-            // whenever the data is packaged, clear out the current paths stuff for next enteries
-            let emptyPath = [];
-            setCurrentPath(emptyPath);
-            setCurrentPathSize(0);
-
-            // reset test controls
-            setLineTools(false);
-            setAccessIndex(-1);
+        // Point access
+        if(accessIndex === 0){
+            totalPoints.push(currentPath);
+            type = 'Access Points';
+            val = 0
         }
 
-        // closes the purpose modal and stores the purpose(s)
-        const closePurpose = async (inf) => {        
-            data[dataIndex - 1].purpose = inf.purpose;
-            setPurposeModal(false);
+        // Path Access
+        else if (accessIndex === 1){
+            totalPaths.push(currentPath);
+            type = 'Access Paths';  
+            // calculate the distance between each subsequent point to find total distance of drawn line
+            for (let i = 1; i < currentPathSize; i++) val += haverSine(currentPath[i-1], currentPath[i]);
+            // ensure the percision is fixed to 2nd decimal place
+            let tempString = val.toFixed(2);
+            val = parseFloat(tempString);
         }
 
-        // adds a marker to the current path
-        const addMarker = (marker) =>{
-            // only add a marker if the test has started and the line toolbar is pulled up
+        // Area Access
+        else {
+            totalAreas.push(currentPath);
+            type = 'Access Areas';
+            val = calcArea(currentPath)
+        }
+        // gets rid of any parenthesis in the description (for path and area prompts)
+        /*let shorten = inf.description.indexOf("(");
+        let fixedDesc;
+        if(shorten !== -1){
+            fixedDesc = inf.description.slice(0, shorten - 1);
+        }
+        else fixedDesc = inf.description
+        */
+
+        // package the data
+        data.push(
+            {
+                path: currentPath,
+                accessType: type,
+                description: inf.description,
+                inPerimeter: true,
+                area: val,
+                distancePath: 0,
+                roadData: null,
+                diffRating: 0,
+                cost: 0,
+                spots: 0,
+                floors: 0,
+                time: new Date()
+            }
+        );
+
+        console.log("🚀 ~ file: accessTest.component.js:184 ~ closeData ~ data", prettyFormat(data));
+
+
+        // whenever the data is packaged, clear out the current paths stuff for next enteries
+        let emptyPath = [];
+        setCurrentPath(emptyPath);
+        setCurrentPathSize(0);
+
+        // reset test controls
+        setLineTools(false);
+        setAccessIndex(-1);
+    }
+
+    // closes the purpose modal and stores the purpose(s)
+    const closePurpose = async (inf) => {        
+        data[dataIndex - 1].purpose = inf.purpose;
+        setPurposeModal(false);
+    }
+
+    // adds a marker to the current path
+    const addMarker = (marker) =>{
+        // only add a marker if the test has started and the line toolbar is pulled up
+        // console.log(marker);
+        if(start && lineTools){
+            // current marker being added
             // console.log(marker);
-            if(start && lineTools){
-                // current marker being added
-                // console.log(marker);
-                // cannot use currentPath.push here, causes a read-only error somehow on the 3rd marker
-                setCurrentPath(currentPath.concat(marker));
-                setCurrentPathSize(currentPathSize+1);
-            }
+            // cannot use currentPath.push here, causes a read-only error somehow on the 3rd marker
+            setCurrentPath(currentPath.concat(marker));
+            setCurrentPathSize(currentPathSize+1);
         }
+    }
 
 
-        // pulls up the delete modal
-        const handleDelete = (type, index, coords) =>{
-            // point access
-            if(type === 0){
-                setDeleteDesc("point access")
-                setDeleteType(type);
-            }
-            // path access
-            else if(type === 1){
-                setDeleteDesc("path access")
-                setDeleteType(type);
-            }
-            // area access
-            else{
-                setDeleteDesc("area access")
-                setDeleteType(type);
-            }
-            // sets the description and index, then pulls up the modal
-            setDeleteIndex(index);
-            setDeleteCoords(coords);
-            setDeleteModal(true);
+    // pulls up the delete modal
+    const handleDelete = (type, index, coords) =>{
+        // point access
+        if(type === 0){
+            setDeleteDesc("point access")
+            setDeleteType(type);
         }
-        
-        // deletes the access from the total paths and data arrays
-        const deleteAccess = async () =>{
-            // point access
+        // path access
+        else if(type === 1){
+            setDeleteDesc("path access")
+            setDeleteType(type);
+        }
+        // area access
+        else{
+            setDeleteDesc("area access")
+            setDeleteType(type);
+        }
+        // sets the description and index, then pulls up the modal
+        setDeleteIndex(index);
+        setDeleteCoords(coords);
+        setDeleteModal(true);
+    }
+    
+    // deletes the access from the total paths and data arrays
+    const deleteAccess = async () =>{
+        // point access
+        if(deleteType === 0){
+            totalPoints.splice(deleteIndex, 1);
+        }
+        // path access
+        else if(deleteType === 1){
+            totalPaths.splice(deleteIndex, 1);
+        }
+        // area access
+        else{
+            totalAreas.splice(deleteIndex, 1);
+        }
+        let tempIndex = -1;
+        let tempFilter;
+        // loop through the data array looking for the access to be deleted
+        for(let i = 0; i < data.length; i++){
+            // searches each data's path to see if those coordinates patch the coordinates of the access that is being deleted 
+            tempFilter = data[i].path.filter((coord) => deleteCoords.find((dCoord) => coord.latitude === dCoord.latitude && coord.longitude === dCoord.longitude))
+            // coordinate path of point is the same as the deleteCoord path
             if(deleteType === 0){
-                totalPoints.splice(deleteIndex, 1);
+                if(tempFilter.length === deleteCoords.length){
+                    // save the index and break from the loop
+                    tempIndex = i
+                    break
+                }
             }
-            // path access
-            else if(deleteType === 1){
-                totalPaths.splice(deleteIndex, 1);
-            }
-            // area access
+            // coordinate path of path/area
             else{
-                totalAreas.splice(deleteIndex, 1);
-            }
-            let tempIndex = -1;
-            let tempFilter;
-            // loop through the data array looking for the access to be deleted
-            for(let i = 0; i < data.length; i++){
-                // searches each data's path to see if those coordinates patch the coordinates of the access that is being deleted 
-                tempFilter = data[i].path.filter((coord) => deleteCoords.find((dCoord) => coord.latitude === dCoord.latitude && coord.longitude === dCoord.longitude))
-                // coordinate path of point is the same as the deleteCoord path
-                if(deleteType === 0){
+                // android device
+                if(plat === 'android'){
                     if(tempFilter.length === deleteCoords.length){
+                        tempIndex = i;
+                        break
+                    }
+                }
+                // ios device
+                else{
+                    // if its an ios device, there is an extra coord at the end of the path (on the deleteCoords array which forms the enclosed line polygons)
+                    if(tempFilter.length === deleteCoords.length - 1){
                         // save the index and break from the loop
                         tempIndex = i
                         break
                     }
                 }
-                // coordinate path of path/area
-                else{
-                    // android device
-                    if(plat === 'android'){
-                        if(tempFilter.length === deleteCoords.length){
-                            tempIndex = i;
-                            break
-                        }
-                    }
-                    // ios device
-                    else{
-                        // if its an ios device, there is an extra coord at the end of the path (on the deleteCoords array which forms the enclosed line polygons)
-                        if(tempFilter.length === deleteCoords.length - 1){
-                            // save the index and break from the loop
-                            tempIndex = i
-                            break
-                        }
-                    }
-                }
             }
-            // should never really go into this if statement; it should always find the access
-            // but just in case it doesn't it displays this error
-            // last entry is deleted due to how splice deals with -1 as the starting index
-            if(tempIndex === -1) console.log('ERROR, access not found... Deleting last entry in the data array')
-            
-            // removes the access from the data array
-            data.splice(tempIndex, 1);
-            // since we removed a access object, decrement the dataIndex
-            setDataIndex(dataIndex - 1);
-            //reset delete controls
-            setDeleteIndex(-1);
-            setDeleteDesc('');
-            setDeleteModal(false);
         }
+        // should never really go into this if statement; it should always find the access
+        // but just in case it doesn't it displays this error
+        // last entry is deleted due to how splice deals with -1 as the starting index
+        if(tempIndex === -1) console.log('ERROR, access not found... Deleting last entry in the data array')
+        
+        // removes the access from the data array
+        data.splice(tempIndex, 1);
+        // since we removed a access object, decrement the dataIndex
+        setDataIndex(dataIndex - 1);
+        //reset delete controls
+        setDeleteIndex(-1);
+        setDeleteDesc('');
+        setDeleteModal(false);
+    }
 
-        const confirm = () => {
-            // point access
-            if(accessIndex === 0){
-                // point size check, needs at most 1 point
-                if(currentPathSize > 1){
-                    setErrorMsg("Need at most 1 point to confirm a Point Access");
-                    setErrorModal(true);
-                    return
-                }
-                // sets the modals buttons and pulls up the modal
-                setPrompts(pointPrompt);
+    const confirm = () => {
+        // point access
+        if(accessIndex === 0){
+            // point size check, needs at most 1 point
+            if(currentPathSize > 1){
+                setErrorMsg("Need at most 1 point to confirm a Point Access");
+                setErrorModal(true);
+                return
             }
-            // constructed accessary
-            else if(accessIndex === 1){
-                // line size check, needs at least 2 points
-                if(currentPathSize < 2){
-                    setErrorMsg("Need at least 2 points to confirm a Path Access");
-                    setErrorModal(true);
-                    return
-                }
-                // sets the modals buttons and pulls up the modal
-                setPrompts(pathPrompt);
+            // sets the modals buttons and pulls up the modal
+            setPrompts(pointPrompt);
+        }
+        // constructed accessary
+        else if(accessIndex === 1){
+            // line size check, needs at least 2 points
+            if(currentPathSize < 2){
+                setErrorMsg("Need at least 2 points to confirm a Path Access");
+                setErrorModal(true);
+                return
             }
-            // material/shelter accessary
-            else if(accessIndex === 2){
-                // polygon size check, needs at lest 3 points
-                if(currentPathSize < 3){
-                    setErrorMsg("Need at least 3 points to confirm an Area Access");
-                    setErrorModal(true);
-                    return
-                }
-                setPrompts(areaPrompt); 
+            // sets the modals buttons and pulls up the modal
+            setPrompts(pathPrompt);
+        }
+        // material/shelter accessary
+        else if(accessIndex === 2){
+            // polygon size check, needs at lest 3 points
+            if(currentPathSize < 3){
+                setErrorMsg("Need at least 3 points to confirm an Area Access");
+                setErrorModal(true);
+                return
             }
-            
-            // pull up the data modal
-            setDataModal(true);
+            setPrompts(areaPrompt); 
         }
         
-        // removes last plotted marker
-        const removeLastPoint = () => {
-            if (currentPathSize >= 1) {              
-                let currPath = [...currentPath]
-                currPath.splice(-1, 1)
-                
-                setCurrentPath(currPath)
-                setCurrentPathSize(currentPathSize - 1)
-            }
-            // if we try deleting with no marker on drawn access, put away the line toolbar
-            else setLineTools(false);
-        }
-        
-        // cancels the current line being drawn (also closes line toolbar)
-        const cancel = () => {
-            // reset current path and path size, set line tools to false
-            let emptyPath = []
-            setCurrentPath(emptyPath)
-            setCurrentPathSize(0)
-            setLineTools(false)
+        // pull up the data modal
+        setDataModal(true);
+    }
+    
+    // removes last plotted marker
+    const removeLastPoint = () => {
+        if (currentPathSize >= 1) {              
+            let currPath = [...currentPath]
+            currPath.splice(-1, 1)
             
+            setCurrentPath(currPath)
+            setCurrentPathSize(currentPathSize - 1)
         }
+        // if we try deleting with no marker on drawn access, put away the line toolbar
+        else setLineTools(false);
+    }
+    
+    // cancels the current line being drawn (also closes line toolbar)
+    const cancel = () => {
+        // reset current path and path size, set line tools to false
+        let emptyPath = []
+        setCurrentPath(emptyPath)
+        setCurrentPathSize(0)
+        setLineTools(false)
+        
+    }
 
-        const LineToolBar = () => {
-            if (start && lineTools) {
-                return (
-                    <LineTools confirm={confirm} cancel={cancel} removeLastPoint={removeLastPoint}/>
+    const LineToolBar = () => {
+        if (start && lineTools) {
+            return (
+                <LineTools confirm={confirm} cancel={cancel} removeLastPoint={removeLastPoint}/>
+            )
+        }
+        else{
+            return null;
+        }
+    }
+    
+    // only allow the user to choose the access type when the test is started
+    const accessType = (val) =>{
+        if(start){
+            if(val === 0){
+                console.log('Point Access');
+                setAccessIndex(0);
+                // pull up line toolbar for every non-point access type
+                setLineTools(true);
+            }
+            else if (val === 1){
+                console.log('Path Access');
+                setAccessIndex(1);
+                // pull up line toolbar for every non-point access type
+                setLineTools(true);
+            }
+            else if (val === 2){
+                console.log('Area Access');
+                setAccessIndex(2);
+                // pull up line toolbar for every non-point access type
+                setLineTools(true);
+            }
+        }
+    }
+
+    const AccessToolBar = () =>{
+        // line toolbar is rendered
+        if(lineTools){
+            return null
+        }
+        else{
+            // render the button toolbar only if the test has started
+            if(start){
+                //console.log("Started Access");
+                return(
+                    <View style={styles.buttonRow}>
+                        <Button style={styles.buttons} onPress={() => accessType(0)}>
+                            <View>
+                                <Text style={styles.buttonTxt}>Point</Text>
+                            </View>
+                        </Button>
+                        <Button style={styles.buttons} onPress={() => accessType(1)}>
+                            <View>
+                                <Text style={styles.buttonTxt}>Path</Text>
+                            </View>
+                        </Button>
+                        <Button style={styles.buttons} onPress={() => accessType(2)}>
+                            <View>
+                                <Text style={styles.buttonTxt}>Area</Text>
+                            </View>
+                        </Button>
+                    </View>
                 )
             }
-            else{
-                return null;
+            // if the test has been started, but then paused at some point, render this message
+            else if(!initalStart){
+                return(
+                    <View style={styles.descriptionView}>
+                        <Text category={'s1'}>Press the play button to resume the test</Text>
+                    </View>
+                )
             }
+            // initally renders this (test has not yet started)
+            else return null
+        }
+    }
+
+    //closes the error modal
+
+//    const AccessToolBar = () =>{
+//         return(
+//             <View style={styles.buttonRow}>
+//                 <Text style={styles.buttonTxt}>Point</Text>
+//             </View>
+//         )
+//     }       
+
+
+    const dismiss = () =>{
+        setErrorModal(false);
+    }
+
+    // controls which access types appear on the map during data collection
+    const filterControl = (item) =>{
+        let type = item.value;
+        // Hide (set to default)
+        if(type === 0){
+            setViewAll(false);
+            setPointBool(false);
+            setPathBool(false);
+            setAreaBool(false);
         }
         
-        // only allow the user to choose the access type when the test is started
-        const accessType = (val) =>{
-            if(start){
-                if(val === 0){
-                    console.log('Point Access');
-                    setAccessIndex(0);
-                    // pull up line toolbar for every non-point access type
-                    setLineTools(true);
-                }
-                else if (val === 1){
-                    console.log('Path Access');
-                    setAccessIndex(1);
-                    // pull up line toolbar for every non-point access type
-                    setLineTools(true);
-                }
-                else if (val === 2){
-                    console.log('Area Access');
-                    setAccessIndex(2);
-                    // pull up line toolbar for every non-point access type
-                    setLineTools(true);
-                }
+        else{
+            // all bounds needs this to be true to render
+            setViewAll(true);  
+            // Show All
+            if(type === 1){
+                setPointBool(true);
+                setPathBool(true);
+                setAreaBool(true);
             }
-        }
-
-        const AccessToolBar = () =>{
-            // line toolbar is rendered
-            if(lineTools){
-                return null
-            }
-            else{
-                // render the button toolbar only if the test has started
-                if(start){
-                    //console.log("Started Access");
-                    return(
-                        <View style={styles.buttonRow}>
-                            <Button style={styles.buttons} onPress={() => accessType(0)}>
-                                <View>
-                                    <Text style={styles.buttonTxt}>Point</Text>
-                                </View>
-                            </Button>
-                            <Button style={styles.buttons} onPress={() => accessType(1)}>
-                                <View>
-                                    <Text style={styles.buttonTxt}>Path</Text>
-                                </View>
-                            </Button>
-                            <Button style={styles.buttons} onPress={() => accessType(2)}>
-                                <View>
-                                    <Text style={styles.buttonTxt}>Area</Text>
-                                </View>
-                            </Button>
-                        </View>
-                    )
-                }
-                // if the test has been started, but then paused at some point, render this message
-                else if(!initalStart){
-                    return(
-                        <View style={styles.descriptionView}>
-                            <Text category={'s1'}>Press the play button to resume the test</Text>
-                        </View>
-                    )
-                }
-                // initally renders this (test has not yet started)
-                else return null
-            }
-        }
-
-        //closes the error modal
-       
-    //    const AccessToolBar = () =>{
-    //         return(
-    //             <View style={styles.buttonRow}>
-    //                 <Text style={styles.buttonTxt}>Point</Text>
-    //             </View>
-    //         )
-    //     }       
-       
-       
-        const dismiss = () =>{
-            setErrorModal(false);
-        }
-
-        // controls which access types appear on the map during data collection
-        const filterControl = (item) =>{
-            let type = item.value;
-            // Hide (set to default)
-            if(type === 0){
-                setViewAll(false);
-                setPointBool(false);
+            // Construction
+            else if(type === 2){
+                setPointBool(true);
                 setPathBool(false);
                 setAreaBool(false);
             }
-            
-            else{
-                // all bounds needs this to be true to render
-                setViewAll(true);  
-                // Show All
-                if(type === 1){
-                    setPointBool(true);
-                    setPathBool(true);
-                    setAreaBool(true);
-                }
-                // Construction
-                else if(type === 2){
-                    setPointBool(true);
-                    setPathBool(false);
-                    setAreaBool(false);
-                }
-                // Material
-                else if(type === 3){
-                    setPointBool(false);
-                    setPathBool(true);
-                    setAreaBool(false);
-                }
-                // Shelter
-                else if(type === 4){
-                    setPointBool(false);
-                    setPathBool(false);
-                    setAreaBool(true);
-                }
+            // Material
+            else if(type === 3){
+                setPointBool(false);
+                setPathBool(true);
+                setAreaBool(false);
+            }
+            // Shelter
+            else if(type === 4){
+                setPointBool(false);
+                setPathBool(false);
+                setAreaBool(true);
             }
         }
-
-
-// END BOUNDARY CLONE
-    
-    // // Opens the data model and stores a temporary points
-    // const onPointCreate = async (marker) => {
-    //     if (start) {
-    //         setDataModal(true)
-    //         setTempMarker(marker)
-    //     }
-    // }
-
-    // // Closes the modal and saves the data point
-    // const closeData = async (inf) => {
-    //     // console.log(inf)
-    //     // save the data point to be rendered
-    //     dataPoints.push(inf);
-    //     setDataModal(false);
-    //     setTempMarker();
-    // }
-    
-    // // pulls up the delete modal
-    // const handleDelete = (index) =>{
-    //     // sets the description and index, then pulls up the modal
-    //     setDeleteDesc(dataPoints[index].access_description.toLowerCase() + " point")
-    //     setDeleteIndex(index)
-    //     setDeleteModal(true);
-    // }
-    
-    // // deletes the point from the data array
-    // const deletePoint = async () =>{
-    //     // removes the data point from the array
-    //     dataPoints.splice(deleteIndex, 1)
-        
-    //     //reset delete controls
-    //     setDeleteIndex(-1);
-    //     setDeleteDesc('');
-    //     setDeleteModal(false);
-    // }
+    }
     
     // Start and Exit button
     const StartStopButton = () => {

@@ -7,13 +7,14 @@ import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js
 import { helperGetResult, deleteTimeSlot, getProject, getAllResults, isUserTeamOwner } from '../../components/apiCalls';
 import { formatAccessGraphData, calcArea } from '../../components/helperFunctions';
 import { MyPieChart, MyBarChart } from '../../components/charts.component';
+import {format as prettyFormat} from 'pretty-format';
 
 import { styles } from './resultPage.styles';
 
 //quantitative data screen
 export function AccessResultPage(props) {
 
-  console.log("Graph Props: " + props.selectedResult.graph);
+  console.log("🚀 ~ file: accessResultPage.component.js ~ line 18 ~ AccessResultPage ~ props.selectedResult.graph", prettyFormat(props.selectedResult.graph));
 
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false); 
@@ -185,7 +186,9 @@ export function AccessResultPage(props) {
   }
   
   const formatForTotalPie = (obj) =>{
-    //console.log(obj)
+
+    console.table("🚀 ~ file: accessResultPage.component.js:192 ~ formatForTotalPie ~ obj", obj);
+
     let ret = [{}];
     let sum;
     let currentType = "Path";
@@ -306,7 +309,7 @@ export function AccessResultPage(props) {
 
   const color = '#006FD6';
   
-  const conGraph = formatForPoint(props.selectedResult.graph);
+  //const conGraph = formatForPoint(props.selectedResult.graph);
 
   return (
     <ViewableArea>
@@ -391,15 +394,15 @@ export function AccessResultPage(props) {
               {...props}
               title={"Access Data"}
               rotation={'0deg'}
-              dataValues={props.selectedResult.graph.data}
-              dataLabels={props.selectedResult.graph.labels}
+              dataValues={props.selectedResult.graph.pointGraph.data}
+              dataLabels={props.selectedResult.graph.pointGraph.labels}
               barColor={color}
               width={chartWidth}
               height={chartHeight}
             />
           </View>
           
-          <View style={styles.spacing}>
+          {/* <View style={styles.spacing}>
             <MyPieChart
               title={'Occupied Area'}
               graph={formatForTotalPie(props.selectedResult.graph)}
@@ -424,7 +427,7 @@ export function AccessResultPage(props) {
               cond={false}
               height={200}
             />
-          </View>
+          </View> 
 
           <View style={styles.spacing}>
             <MyBarChart
@@ -438,7 +441,7 @@ export function AccessResultPage(props) {
               height={chartHeight}
             />
           </View>
-          
+          */}
         </ScrollView>
       </ContentContainer>
     </ViewableArea>

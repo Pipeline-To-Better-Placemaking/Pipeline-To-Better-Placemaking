@@ -4,6 +4,7 @@ import { Text, useTheme} from '@ui-kitten/components';
 import { ThemeContext } from '../../theme-context';
 import { BarChart, Grid, YAxis, PieChart } from 'react-native-svg-charts';
 import { LinearGradient, Stop, Defs, Text as TextSVG } from 'react-native-svg';
+import {format as prettyFormat} from 'pretty-format';
 
 import { styles } from './charts.styles';
 
@@ -18,7 +19,9 @@ height={}
 */
 export function MyBarChart({children, ...props}){
 
-  console.log("props",props);
+  console.log("🚀 ~ file: charts.component.js:23 ~ MyBarChart ~ props.dataLabels", props.dataLabels);
+  console.log("🚀 ~ file: charts.component.js:23 ~ MyBarChart ~ props.dataValues", props.dataValues);
+
 
   if(props.dataLabels === null || props.dataLabels.length <= 0) {
     return null;
