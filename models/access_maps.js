@@ -22,6 +22,11 @@ const dataSchema = mongoose.Schema({
         required: true
     },
 
+    description: {
+        type: String,
+        required: true
+    },
+
     //is this access point inside the perimeter or not
     inPerimeter: {
         type: Boolean, 
@@ -146,6 +151,7 @@ module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
         path: newEntry.path,
         accessType: newEntry.accessType,
+        description: newEntry.description,
         area: newEntry.area,
         distance: newEntry.distance,
         inPerimeter: newEntry.inPerimeter,
