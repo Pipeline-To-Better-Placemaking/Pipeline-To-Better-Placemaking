@@ -9,6 +9,7 @@ import NewActivityTimes from './NewActivityTimes';
 import UnityPage from './UnityPage';
 import Button from '@mui/material/Button';
 import NewProgram from './NewProgram.js';
+import UnitySurveyorPage from './UnitySurveyorPage.js';
 
 /* 
     (1) Handles routes to projects/:id/(activities/map/surveyors) 
@@ -240,6 +241,12 @@ export default function ProjectPage(){
                         <Route path='activities/identifying_program/extrude' element={
                             <UnityPage />
                         }/>
+
+                        <Route path = 'activities/program_surveyors' element={
+                            <UnitySurveyorPage />
+                        }
+                        
+                        />
                         
                         <Route path='surveyors' element={
                             <SurveyorPage title={ projectInfo?.title } 
