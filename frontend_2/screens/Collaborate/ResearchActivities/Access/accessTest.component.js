@@ -664,6 +664,7 @@ export function AccessTest(props) {
                 <DetailsModal 
                     visible={detailsModal}
                     accessType={accessDataType}
+                    data={data[dataIndex - 1]}
                     closeDetails={closeDetails}
                 />
 
@@ -723,3 +724,5 @@ export function AccessTest(props) {
         </ViewableArea>
     )
 }
+
+

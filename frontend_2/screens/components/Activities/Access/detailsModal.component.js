@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Modal } from 'react-native';
+import { View, Modal, TextInput } from 'react-native';
 import { useTheme, Text, Button } from '@ui-kitten/components';
 
 import { styles } from './dataModal.styles';
@@ -14,16 +14,20 @@ export function DetailsModal(props){
     const [select1, setSelect1] = useState(false);
     const [select2, setSelect2] = useState(false);
     const [select3, setSelect3] = useState(false);
+
+    //Details fields
+    const [spotsText, spotsOnChangeText] = React.useState('')
     
     const sendData = async () => {
         let arr = packageData();
 
+        //ADD cancel button
         // there was nothing selected so do not sendData
-        if(arr.length === 0){
-            // display error
-            setNoneSelect(true)
-            return
-        }
+        // if(arr.length === 0){
+        //     // display error
+        //     setNoneSelect(true)
+        //     return
+        // }
 
         let data = {
             purpose: arr
@@ -34,25 +38,25 @@ export function DetailsModal(props){
         await props.closeDetails(data);
     }
 
-    const ShowOptions = (props) => {
+    const ShowOptions = () => {
+        console.log("🚀 ~ file: detailsModal.component.js:41 ~ ShowOptions ~ props.data", props.data);
 
         // Show options for point, path, or area
         if(props.accessType === "Point") {
             // Show options for bike rack
-            if(props.data === "Bike Rack") {
+            if(props.data.description === "Bike Rack") {
                 return(
                     <View style={styles.buttonRow}>
-                        <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
-                            <View>
-                                <Text style={select1 ? styles.buttonTxt : styles.offButtonTxt}>Spots</Text>
-                            </View>
-                        </Button>
-                        <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>
-                            <View>
-                                <Text style={select2 ? styles.buttonTxt : styles.offButtonTxt}>Prevention</Text>
-                            </View>
-
-                        </Button>
+                        <Text
+                            style={styles.inputLabel}
+                        > Spots </Text>
+                        <TextInput
+                            style={styles.inputField}
+                            onChangeText={spotsOnChangeText}
+                            value={spotsText}
+                            placeholder="0"
+                            keyboardType='numeric'
+                        />
                     </View>    
                 )
             } else {
@@ -99,6 +103,8 @@ export function DetailsModal(props){
         } 
         else return null;
     }
+
+
 
     const packageData = () =>{
         const arr = [];
@@ -163,41 +169,16 @@ export function DetailsModal(props){
                         }
 
                         <ShowOptions/>
-
-                        {/* 
-                            Replace with showOptions
-                        <View>
-                            <View style={styles.buttonRow}>
-                                <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
-                                    <View>
-                                        <Text style={select1 ? styles.buttonTxt : styles.offButtonTxt}>Safety</Text>
-                                    </View>
-                                </Button>
-                                <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>
-                                    <View>
-                                        <Text style={select2 ? styles.buttonTxt : styles.offButtonTxt}>Prevention</Text>
-                                    </View>
-
-                                </Button>
-                            </View>
-
-                            <View style={styles.lastButtonView}>
-                                <Button style={styles.button} appearance={select3 ? 'primary' : 'outline'} onPress={()=> setSelect(3)}>
-                                    <View>
-                                        <Text style={select3 ? styles.buttonTxt : styles.offButtonTxt}>Creating Seperation</Text>
-                                    </View>
-                                </Button>
-                            </View>      
-                        
-                        </View>
-                        
-                        */}
-
                                     
-                        <View style={styles.multiView}>
+                        <View style={styles.buttonRow}>
                             <Button style={styles.multiSubmit} onPress={sendData}>
                                 <View>
                                     <Text style={styles.backButtonTxt}>Submit</Text>
+                                </View>
+                            </Button>
+                            <Button style={styles.multiSubmit} onPress={sendData}>
+                                <View>
+                                    <Text style={styles.backButtonTxt}>Cancel</Text>
                                 </View>
                             </Button>
                         </View>

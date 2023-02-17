@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     },
 
     purposeViewContainer:{
-        height: '40%',
+        height: '50%',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -69,6 +69,23 @@ export const styles = StyleSheet.create({
         fontSize: width * .033,
         fontWeight: 'bold',
         textAlign: 'center',
+    },
+
+    inputLabel:{
+        color: '#006FD6',
+        fontSize: width * .033,
+        height: height * .04, 
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
+    inputField:{
+        color: '#006FD6',
+        height: height * .04, 
+        width: width * .53, 
+        fontSize: width * .033,
+        fontWeight: 'bold',
+        textAlign: 'right',
     },
 
     lastButtonView:{
