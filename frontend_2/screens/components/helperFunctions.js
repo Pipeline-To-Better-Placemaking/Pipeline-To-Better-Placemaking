@@ -511,7 +511,7 @@ export async function formatAccessGraphData(result){
     let data = result.data[i];
 
     // Count point access occurrances
-    if(data.accessType == "Access Points") {
+    if(data.accessType == "Access Point") {
       index = conDescSearch(graph.pointGraph.labels, result.data[i].description)
 
       // if that description already exists in graph's labels

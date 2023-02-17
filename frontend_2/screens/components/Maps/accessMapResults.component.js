@@ -4,10 +4,14 @@ import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 import { InfoModal } from '../Activities/Access/infoModal.component';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {format as prettyFormat} from 'pretty-format';
 
 import { styles } from './sharedMap.styles';
 
-export function BoundaryMapResults(props) {
+export function AccessMapResults(props) {
+
+console.log("🚀 ~ file: accessMapResults.component.js:12 ~ AccessMapResults ~ props", prettyFormat(props));
+
 
     // filter controls
     const [open, setOpen] = useState(false);
@@ -81,13 +85,11 @@ export function BoundaryMapResults(props) {
                 // filter for point access
                 if(pointBool){
                     // if the access is a point access, add a marker
-                    if(props.dataMarkers[i].kind === "Point"){
+                    if(props.dataMarkers[i].accessType === "Access Point"){
                         objData[i] = (
                             <View key={i.toString()}>
                                 <MapView.Marker
-                                    coordinates={props.dataMarkers[i].path}
-                                    strokeWidth={3}
-                                    strokeColor={colors[0]}
+                                    coordinate={{ latitude: props.dataMarkers[i].path[0].latitude, longitude : props.dataMarkers[i].path[0].longitude }}
                                     tappable={true}
                                     onPress={()=> dataCallout(props.dataMarkers[i])}
                                 />
@@ -98,14 +100,13 @@ export function BoundaryMapResults(props) {
                 // filter for path access
                 if(pathBool){
                     // if the access is a path access, add a polyline
-                    if(props.dataMarkers[i].kind === "Path"){
+                    if(props.dataMarkers[i].accessType === "Access Path"){
                         objData[i] = (
                             <View key={i.toString()}>
                                 <MapView.Polyline
                                     coordinates={props.dataMarkers[i].path}
                                     strokeWidth={3}
                                     strokeColor={colors[1]}
-                                    fillColor={fills[0]}
                                     tappable={true}
                                     onPress={()=> dataCallout(props.dataMarkers[i])}
                                 />
@@ -116,7 +117,7 @@ export function BoundaryMapResults(props) {
                 // filter for area access
                 if(areaBool){
                     // if the access is a area access, add a polygon
-                    if(props.dataMarkers[i].kind === "Area"){
+                    if(props.dataMarkers[i].accessType === "Access Area"){
                         objData[i] = (
                             <View key={i.toString()}>
                                 <MapView.Polygon

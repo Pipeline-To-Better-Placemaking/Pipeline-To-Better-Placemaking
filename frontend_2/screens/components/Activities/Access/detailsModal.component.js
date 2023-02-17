@@ -4,7 +4,7 @@ import { useTheme, Text, Button } from '@ui-kitten/components';
 
 import { styles } from './dataModal.styles';
 
-export function PurposeModal(props){
+export function DetailsModal(props){
 
     const theme = useTheme();
     
@@ -31,7 +31,73 @@ export function PurposeModal(props){
         // reset modal control for subsequent entires
         setNoneSelect(false);
         // closes the modal (in boundaryTest)
-        await props.closePurpose(data);
+        await props.closeDetails(data);
+    }
+
+    const ShowOptions = (props) => {
+
+        // Show options for point, path, or area
+        if(props.accessType === "Point") {
+            // Show options for bike rack
+            if(props.data === "Bike Rack") {
+                return(
+                    <View style={styles.buttonRow}>
+                        <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
+                            <View>
+                                <Text style={select1 ? styles.buttonTxt : styles.offButtonTxt}>Spots</Text>
+                            </View>
+                        </Button>
+                        <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>
+                            <View>
+                                <Text style={select2 ? styles.buttonTxt : styles.offButtonTxt}>Prevention</Text>
+                            </View>
+
+                        </Button>
+                    </View>    
+                )
+            } else {
+                return null
+            }
+        }
+        if(props.accessType === "Path") {
+            // Show options for roads
+            if(props.data === "Main Road" | props.data === "Side Road") {
+                return(
+                    <View style={styles.buttonRow}>
+                        <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
+                            <View>
+                                <Text style={select1 ? styles.buttonTxt : styles.offButtonTxt}>Two Lane</Text>
+                            </View>
+                        </Button>
+                        <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>
+                            <View>
+                                <Text style={select2 ? styles.buttonTxt : styles.offButtonTxt}>Paved</Text>
+                            </View>
+                        </Button>
+                    </View>    
+                )
+            } else {
+                return null
+            }
+        }
+        if(props.accessType === "Area") {
+            return(
+                <View style={styles.buttonRow}>
+                    <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
+                        <View>
+                            <Text style={select1 ? styles.buttonTxt : styles.offButtonTxt}>Spots</Text>
+                        </View>
+                    </Button>
+                    <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>
+                        <View>
+                            <Text style={select2 ? styles.buttonTxt : styles.offButtonTxt}>Prevention</Text>
+                        </View>
+
+                    </Button>
+                </View>    
+            )
+        } 
+        else return null;
     }
 
     const packageData = () =>{
@@ -81,21 +147,25 @@ export function PurposeModal(props){
             <View style={styles.modalContainer}>
                 <View style={[ styles.purposeViewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                         
-                    <Text category={'h1'} style={styles.titleText}>Purpose</Text>
+                    <Text category={'h1'} style={styles.titleText}>Details</Text>
                     <View style={styles.dataView}>
                                 
                         <View style={styles.titleDesc}>
-                            <Text category={'s1'} style={styles.titleDescTxt}>Select the purpose(s) that the boundary serves</Text>
+                            <Text category={'s1'} style={styles.titleDescTxt}>Enter the Access {props.accessType} details</Text>
                         </View>
 
                         { noneSelect ?
                             <View style={styles.selectError}>
-                                <Text style={styles.redTxt}>Please select at least one purpose to submit</Text>
+                                <Text style={styles.redTxt}>Please fill in the details</Text>
                             </View>
                         :
                             null
                         }
 
+                        <ShowOptions/>
+
+                        {/* 
+                            Replace with showOptions
                         <View>
                             <View style={styles.buttonRow}>
                                 <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
@@ -120,6 +190,8 @@ export function PurposeModal(props){
                             </View>      
                         
                         </View>
+                        
+                        */}
 
                                     
                         <View style={styles.multiView}>

@@ -7,7 +7,7 @@ import { AccessMap } from '../../../components/Maps/accessMap.component.js';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component';
 import { ErrorModal } from '../../../components/Activities/Access/errorModal.component';
 import { DataModal } from '../../../components/Activities/Access/dataModal.component';
-import { PurposeModal } from '../../../components/Activities/Access/purposeModal.component';
+import { DetailsModal } from '../../../components/Activities/Access/detailsModal.component';
 import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import { calcArea, haverSine } from '../../../components/helperFunctions';
@@ -41,9 +41,9 @@ export function AccessTest(props) {
     const [filter, setFilter] = useState([
         {label: "Hide", value: 0},
         {label: "Show All", value: 1}, 
-        {label: "Access Points", value: 2},
-        {label: "Access Paths", value: 3}, 
-        {label: "Access Areas", value: 4}
+        {label: "Access Point", value: 2},
+        {label: "Access Path", value: 3}, 
+        {label: "Access Area", value: 4}
     ]);
     const [viewAll, setViewAll] = useState(false);
     const [pointBool, setPointBool] = useState(false);
@@ -68,12 +68,13 @@ export function AccessTest(props) {
     const [dataIndex, setDataIndex] = useState(0);
 
     // Modal controls/tools
+    const [accessDataType, setAccessDataType] = useState("");
     const [errorModal, setErrorModal] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const [popupMsg, setPopupMsg] = useState(true);
     const [dataModal, setDataModal] = useState(false);
     const [prompts, setPrompts] = useState([]);
-    const [purposeModal, setPurposeModal] = useState(false);
+    const [detailsModal, setDetailsModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const [deleteIndex, setDeleteIndex] = useState(-1);
     const [deleteCoords, setDeleteCoords] = useState();
@@ -96,7 +97,7 @@ export function AccessTest(props) {
         // closes any modals that may be open
         if(errorModal) setErrorModal(false);
         if(dataModal) setDataModal(false);
-        if(purposeModal) setPurposeModal(false);
+        if(detailsModal) setDetailsModal(false);
         
         try {
             const response = await fetch(LOCAL_SERVER+'/access_maps/' + props.timeSlot._id + '/data', {
@@ -134,35 +135,30 @@ export function AccessTest(props) {
         // Point access
         if(accessIndex === 0){
             totalPoints.push(currentPath);
-            type = 'Access Points';
-            val = 0
+            type = 'Access Point';
+            val = 0;
+            setAccessDataType("Point");
         }
 
         // Path Access
         else if (accessIndex === 1){
             totalPaths.push(currentPath);
-            type = 'Access Paths';  
+            type = 'Access Path';  
             // calculate the distance between each subsequent point to find total distance of drawn line
             for (let i = 1; i < currentPathSize; i++) val += haverSine(currentPath[i-1], currentPath[i]);
             // ensure the percision is fixed to 2nd decimal place
             let tempString = val.toFixed(2);
             val = parseFloat(tempString);
+            setAccessDataType("Path");
         }
 
         // Area Access
         else {
             totalAreas.push(currentPath);
-            type = 'Access Areas';
-            val = calcArea(currentPath)
+            type = 'Access Area';
+            val = calcArea(currentPath);
+            setAccessDataType("Area");
         }
-        // gets rid of any parenthesis in the description (for path and area prompts)
-        /*let shorten = inf.description.indexOf("(");
-        let fixedDesc;
-        if(shorten !== -1){
-            fixedDesc = inf.description.slice(0, shorten - 1);
-        }
-        else fixedDesc = inf.description
-        */
 
         // package the data
         data.push(
@@ -181,6 +177,8 @@ export function AccessTest(props) {
                 time: new Date()
             }
         );
+        
+        setDetailsModal(true);
 
         console.log("🚀 ~ file: accessTest.component.js:184 ~ closeData ~ data", prettyFormat(data));
 
@@ -195,10 +193,10 @@ export function AccessTest(props) {
         setAccessIndex(-1);
     }
 
-    // closes the purpose modal and stores the purpose(s)
-    const closePurpose = async (inf) => {        
-        data[dataIndex - 1].purpose = inf.purpose;
-        setPurposeModal(false);
+    // closes the details modal and stores the details(s)
+    const closeDetails = async (inf) => {        
+        data[dataIndex - 1].details = inf.details;
+        setDetailsModal(false);
     }
 
     // adds a marker to the current path
@@ -305,8 +303,8 @@ export function AccessTest(props) {
         // point access
         if(accessIndex === 0){
             // point size check, needs at most 1 point
-            if(currentPathSize > 1){
-                setErrorMsg("Need at most 1 point to confirm a Point Access");
+            if(currentPathSize != 1){
+                setErrorMsg("Need 1 point to confirm a Point Access");
                 setErrorModal(true);
                 return
             }
@@ -663,9 +661,10 @@ export function AccessTest(props) {
                     //point={tempMarker}
                 />
 
-                <PurposeModal 
-                    visible={purposeModal}
-                    closePurpose={closePurpose}
+                <DetailsModal 
+                    visible={detailsModal}
+                    accessType={accessDataType}
+                    closeDetails={closeDetails}
                 />
 
                 <DeleteModal
@@ -710,7 +709,7 @@ export function AccessTest(props) {
             </ContentContainer>
             {/* {start ?
                 <View style={styles.descriptionView}>
-                    <Text category={'s1'}>Tap on the map to plot access points</Text>
+                    <Text category={'s1'}>Tap on the map to plot Access Point</Text>
                 </View>
             :
                 <View style={styles.descriptionView}>

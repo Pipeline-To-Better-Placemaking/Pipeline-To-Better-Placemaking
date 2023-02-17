@@ -26,22 +26,27 @@ export function InfoModal(props) {
                     <TouchableOpacity onPress={() => props.close()} activeOpacity={1}>
                         <TouchableWithoutFeedback style={styles.sizing}>
                             <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]}>   
-                                <Text category={'h4'} style={styles.titleText}>{props.data.kind} Access</Text>
+                                <Text category={'h4'} style={styles.titleText}>{props.data.accessType}</Text>
                                 <View style={styles.dataView}>
-                                    
-                                    <View style={styles.spacing}>
-                                        {(props.data.kind === "Path") ?                  
-                                            <Text style={styles.infoText}>Distance: {props.data.value} ft</Text>
-                                        :
-                                            <Text style={styles.infoText}>Area: {props.data.value} ft²</Text>
-                                        }   
-                                    </View>
 
                                     <View style={styles.spacing}>
                                         <Text style={styles.infoText}>Description: {props.data.description}</Text>
                                     </View>
+                                    
+                                    <View style={styles.spacing}>
+                                        {(props.data.accessType === "Access Point") ?                  
+                                            <Text style={styles.infoText}>Spots: {props.data.spots}</Text>
+                                        :
+                                            (props.data.accessType === "Access Path") ?                  
+                                            <Text style={styles.infoText}>Distance: {props.data.area} ft</Text>
+                                            :
+                                            //else its a path
+                                            <Text style={styles.infoText}>Area: {props.data.area} ft²</Text>
+                                        }   
+                                    </View>
 
-                                    {(props.data.kind === "Path") ?
+                                    {/* Extra data for specific types */}
+                                    {(props.data.accessType === "Access Point") ?
                                         <View style={styles.spacing}>
                                             <Text style={styles.infoText}>Purpose: {purposeFormat}</Text>
                                         </View>

@@ -221,7 +221,7 @@ export function AccessResultPage(props) {
       currentType = "Area";
       svg = {fill: "#FFA64D"};
     }
-    // now compute the free space value since we have the sums of the other 2 access areas
+    // now compute the free space value since we have the sums of the other 2 Access Area
     let areaLeft = totalArea - (ret[1].value + ret[2].value);
     // ensures the decimal is rounded to the 2nd place
     tempString = areaLeft.toFixed(2)
