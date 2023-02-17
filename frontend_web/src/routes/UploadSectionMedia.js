@@ -3,7 +3,7 @@ import { storage } from "./firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import './routes.css';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import logo1 from '../images/PtBPLogo.png';
 import Image from 'react-bootstrap/Image';
@@ -40,7 +40,6 @@ function UploadSectionMedia() {
           });
         }
       );
-      location.reload()
     }
 
     const divStyle = {
@@ -82,10 +81,6 @@ function UploadSectionMedia() {
                   <img src={mediaUrl} alt='uploaded file' height={200} />
             }
             <br></br>
-            <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/section_cutter' 
-              state={{...location.state}} >
-              Reset Section Cut
-            </Button>
             <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='success' to='../activities/times' 
               state={{...location.state}}>
               Accept and Continue
