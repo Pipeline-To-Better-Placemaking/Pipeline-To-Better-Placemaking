@@ -59,7 +59,38 @@ export function DetailsModal(props){
                         />
                     </View>    
                 )
+            } else if(props.data.description === "Public Transport Stop") {
+                return(
+                    <View>
+                        <View style={styles.buttonRow}>
+                            <Text
+                                style={styles.inputLabel}
+                            >Line Number</Text>
+                            <TextInput
+                                style={styles.inputField}
+                                onChangeText={spotsOnChangeText}
+                                value={spotsText}
+                                placeholder="0"
+                                keyboardType='numeric'
+                            />
+                        </View>    
+                        <View style={styles.buttonRow}>
+                            <Text
+                                style={styles.inputLabel}
+                            >Daily Loops</Text>
+                            <TextInput
+                                style={styles.inputField}
+                                onChangeText={spotsOnChangeText}
+                                value={spotsText}
+                                placeholder="0"
+                                keyboardType='numeric'
+                            />
+                        </View>   
+                    </View>
+
+                )
             } else {
+                sendData();
                 return null
             }
         }

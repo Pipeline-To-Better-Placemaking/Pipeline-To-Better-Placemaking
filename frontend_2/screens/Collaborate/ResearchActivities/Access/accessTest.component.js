@@ -81,9 +81,9 @@ export function AccessTest(props) {
     const [deleteDesc, setDeleteDesc] = useState('');
     const [deleteType, setDeleteType] = useState(-1);
 
-    const pointPrompt = ["Bike Rack", "RidepShare Drop Off", "Elevator", "Valet Counter", "Partial Wall"]
-    const pathPrompt = ["Sidewalk", "Side Street", "Main Road", "Natural (grass)", "Wood (deck)"]
-    const areaPrompt = ["Parking Lot", "Parking Garage", "Umbrella Dining", "Temporary", "Pointed Ceiling"]
+    const pointPrompt = ["Bike Rack", "RidepShare Drop Off", "Public Transport Stop", "Valet Counter"]
+    const pathPrompt = ["Sidewalk", "Side Street", "Main Road"]
+    const areaPrompt = ["Parking Lot", "Parking Garage"]
 
     // closes the modal and stores the access data
     
