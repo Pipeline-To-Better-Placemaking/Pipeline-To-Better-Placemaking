@@ -14,10 +14,13 @@ import {
   formatBoundaryGraphData, 
   formatNatureGraphData,
   formatLightGraphData,
-  formatOrderGraphData, 
+  formatOrderGraphData,
+  formatAccessGraphData,  
   retrieveTestName 
 } from '../components/helperFunctions';
 import { Pagination } from '../components/pagination.component';
+import {format as prettyFormat} from 'pretty-format';
+
 
 import { styles } from './projectResult.styles';
 
@@ -86,6 +89,11 @@ export function ProjectResultPage(props) {
       await props.setSelectedResult(result);
       props.navigation.navigate("OrderResultPage");
     }
+    else if (item.test_type === 'access') {
+      let result = await formatAccessGraphData(item);
+      await props.setSelectedResult(result);
+      props.navigation.navigate("AccessResultPage");
+    }
     //add new tests here ^
 
   };
@@ -124,6 +132,9 @@ export function ProjectResultPage(props) {
   
   const activityItem = ({ item, index }) => {
     let testType = retrieveTestName(item.test_type);
+
+    //console.log("🚀 ~ file: projectResult.component.js:136 ~ activityItem ~ item", prettyFormat(item));
+
     return (
       <ListItem
         title={

@@ -226,6 +226,25 @@ export async function getFilteredProjectDetails(project) {
       let removeIndex = projectDetails.orderCollections.findIndex(element => element._id === pastOrderCollections[i]._id);
       projectDetails.orderCollections.splice(removeIndex, 1);
     }
+    // access test
+    let pastAccessCollections = [];
+    if(projectDetails.accessCollections != null) {
+      for(let i = 0; i < projectDetails.accessCollections.length; i++) {
+        let collection = projectDetails.accessCollections[i];
+        collection.test_type = 'access';
+        // handle date
+        collection.date = new Date(collection.date);
+        if (moment(today).isAfter(collection.date, 'day')) {
+          pastAccessCollections.push(collection);
+        }
+        projectDetails.accessCollections[i] = collection;
+      }
+    }
+    // remove collections from the list that are in the past
+    for(let i = 0; i < pastAccessCollections.length; i++) {
+      let removeIndex = projectDetails.accessCollections.findIndex(element => element._id === pastAccessCollections[i]._id);
+      projectDetails.accessCollections.splice(removeIndex, 1);
+    }
 
     // add new tests here (above and then below)
     
@@ -237,7 +256,8 @@ export async function getFilteredProjectDetails(project) {
       ...projectDetails.boundariesCollections, 
       ...projectDetails.natureCollections, 
       ...projectDetails.lightCollections, 
-      ...projectDetails.orderCollections
+      ...projectDetails.orderCollections, 
+      ...projectDetails.accessCollections
     ];
     projectDetails.pastActivities = [
       ...pastStationaryCollections, 
@@ -247,7 +267,8 @@ export async function getFilteredProjectDetails(project) {
       ...pastBoundariesCollections, 
       ...pastNatureCollections,
       ...pastLightCollections,
-      ...pastOrderCollections
+      ...pastOrderCollections,
+      ...pastAccessCollections
     ];
 
     projectDetails.activities = mergeSortEarlyDate(projectDetails.activities);
@@ -396,6 +417,8 @@ export async function getTimeSlot(route, id) {
   let token = await AsyncStorage.getItem("@token");
   let success = false
   let timeSlotDetails = null
+  //console.log("Route: ", route);
+  //console.log("ID: ", id);
   try {
     const response = await fetch(LOCAL_SERVER+'/' + route + id, {
         method: 'GET',
@@ -406,7 +429,7 @@ export async function getTimeSlot(route, id) {
         }
     })
     timeSlotDetails = await response.json();
-    //console.log("time slot: ", timeSlotDetails);
+    console.log("time slot: ", timeSlotDetails);
     success = true
   } catch (error) {
       console.log("error", error)
@@ -607,6 +630,26 @@ export async function getAllCollectionInfo(collectionDetails) {
       }
       success = true
     }
+  } else if(collectionDetails.test_type === 'access'){
+    // get the collection info
+    collectionDetails = await getCollection('access/', collectionDetails);
+    success = (collectionDetails !== null);
+    // get the timeSlot info
+    if (success && collectionDetails.maps !== undefined && collectionDetails.maps.length >= 1) {
+      for (let i = 0; i < collectionDetails.maps.length; i++) {
+        let item = collectionDetails.maps[i];
+
+        //For some reason the id in access collection maps is being stored in 'item' instead of 'item._id'
+        //console.log("Item ID: ", item);
+        let timeSlot = await getTimeSlot('access_maps/', item);
+
+
+        success = (timeSlot !== null)
+        if (success)
+          timeSlots.push(timeSlot);
+      }
+      success = true
+    }
   }
 
   // if successfully retrieved collection info, Update
@@ -658,6 +701,7 @@ export async function getAllResults(projectDetails) {
   results = await getNatureResults(projectDetails, results);
   results = await getLightResults(projectDetails, results);
   results = await getOrderResults(projectDetails, results);
+  results = await getAccessResults(projectDetails, results);
   
   results = mergeSortLateDate(results);
   return  results;
@@ -817,6 +861,27 @@ export async function getOrderResults(projectDetails, results) {
       results.push(tempObj);
     }
   }
+  return results;
+}
+
+export async function getAccessResults(projectDetails, results) {
+  let today = new Date();
+  // loop through all Access Test collections and get all of the maps
+  for (let i = 0; i < projectDetails.accessCollections.length; i++) {
+    let collection = projectDetails.accessCollections[i];
+    for (let j=0; collection.maps !== null && j < collection.maps.length; j++) {
+      let id = collection.maps[j];
+      let tempObj = await helperGetResult(id, 'access_maps/', "access", collection, projectDetails);
+      // check if the result object's start date is after today's date
+      if(moment(tempObj.sharedData.date).isAfter(today)){
+        // if so check if its data is empty, if so continue (so it doesn't show in the project results)
+        if(tempObj.data.length === 0) continue
+      }
+      // this will still have project results that are empty, but only if its start date has passed
+      results.push(tempObj);
+    }
+  }
+  console.log(results);
   return results;
 }
 

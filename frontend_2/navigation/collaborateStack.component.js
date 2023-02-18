@@ -15,6 +15,7 @@ import { BoundaryTest } from '../screens/Collaborate/ResearchActivities/Boundary
 import { NatureTest } from '../screens/Collaborate/ResearchActivities/Nature/natureTest.component';
 import { LightTest } from '../screens/Collaborate/ResearchActivities/Light/lightTest.component';
 import { OrderTest } from '../screens/Collaborate/ResearchActivities/Order/orderTest.component';
+import { AccessTest } from '../screens/Collaborate/ResearchActivities/Access/accessTest.component';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -25,7 +26,7 @@ export function CollaborateStack(props) {
 
   // add new tests here
   // Array with activity names
-  const activityTypes = ['Stationary Map', 'People Moving', 'Survey', 'Sound', 'Boundary', 'Nature', 'Light', 'Order'];
+  const activityTypes = ['Stationary Map', 'People Moving', 'Survey', 'Sound', 'Boundary', 'Nature', 'Light', 'Order', 'Access'];
 
   // These are used for api calls
   const [token, setToken] = useState(null);
@@ -330,6 +331,22 @@ export function CollaborateStack(props) {
       >
         {props =>
           <OrderTest
+            {...props}
+            getSelectedActivity={activities}
+            initialTimeSlot={initialTimeSlot}
+            setTimeSlot={setTimeSlot}
+            timeSlot={timeSlot}
+            token={token}
+          />
+        }
+      </Screen>
+
+      <Screen
+        name="AccessTest"
+        options={{gestureEnabled: false}}
+      >
+        {props =>
+          <AccessTest
             {...props}
             getSelectedActivity={activities}
             initialTimeSlot={initialTimeSlot}

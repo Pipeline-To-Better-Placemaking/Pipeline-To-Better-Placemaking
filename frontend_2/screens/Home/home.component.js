@@ -44,6 +44,7 @@ export const HomeScreen = ( props ) => {
     let natureResults = []
     let lightResults = []
     let orderResults = []
+    let accessResults = []
 
     //add the new test result arrays here ^
 
@@ -78,6 +79,8 @@ export const HomeScreen = ( props ) => {
           lightResults.push(result);
         } else if (result.test_type === "order"){
           orderResults.push(result);
+        } else if (result.test_type === "access"){
+          accessResults.push(result);
         }
         //add the new tests here ^^
 
@@ -93,7 +96,8 @@ export const HomeScreen = ( props ) => {
       boundary: [...boundaryResults],
       nature: [...natureResults],
       light: [...lightResults],
-      order: [...orderResults]
+      order: [...orderResults],
+      access: [...accessResults]
       //add the new tests here ^^
     };
 

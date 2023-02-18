@@ -45,7 +45,8 @@ export function IntialForm(props) {
         props.activityTypes[props.selectedActivityIndex.row] === 'Boundary' ||
         props.activityTypes[props.selectedActivityIndex.row] === 'Nature' ||
         props.activityTypes[props.selectedActivityIndex.row] === 'Light' ||
-        props.activityTypes[props.selectedActivityIndex.row] === 'Order'
+        props.activityTypes[props.selectedActivityIndex.row] === 'Order' ||
+        props.activityTypes[props.selectedActivityIndex.row] === 'Access'
       ){
         props.setDuration('20');
         setSelect(false);
@@ -139,7 +140,8 @@ export function IntialForm(props) {
                     props.activityTypes[props.selectedActivityIndex.row] === 'Boundary' || 
                     props.activityTypes[props.selectedActivityIndex.row] === 'Nature' ||
                     props.activityTypes[props.selectedActivityIndex.row] === 'Light' ||
-                    props.activityTypes[props.selectedActivityIndex.row] === 'Order' ?
+                    props.activityTypes[props.selectedActivityIndex.row] === 'Order' ||
+                    props.activityTypes[props.selectedActivityIndex.row] === 'Access' ?
                       "Time at Site" 
                     : 
                       "Time per Standing Point"

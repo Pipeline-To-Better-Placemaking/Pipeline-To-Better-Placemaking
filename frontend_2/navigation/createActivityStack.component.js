@@ -62,7 +62,7 @@ export function CreateActivityStack(props) {
     await setDate(props.activity.date);
     await setDuration('' + props.activity.duration);
     
-    let types = ['stationary', 'moving', 'survey', 'sound', 'boundary', 'nature', 'light', 'order'];
+    let types = ['stationary', 'moving', 'survey', 'sound', 'boundary', 'nature', 'light', 'order', 'access'];
     let activityIndex = types.findIndex(element => element === props.activity.test_type);
     setSelectedActivity(new IndexPath(activityIndex));
     if (props.activity.area === null) {
@@ -168,6 +168,9 @@ export function CreateActivityStack(props) {
       else if (row === 7) { // Order
         await putCollection(name, 'order', '/order_collections', 'order_maps/');
       }
+      else if (row === 8) { // Access
+        await putCollection(name, 'access', '/access_collections', 'access_maps/');
+      }
       await props.setUpdateActivity(false);
       setLoading(false);
       props.navigation.navigate('ProjectPage')
@@ -198,6 +201,9 @@ export function CreateActivityStack(props) {
       else if (row === 7) { // Order
         await postCollection(name, 'order', '/order_collections', 'order_maps/');
       }
+      else if (row === 8) { // Access
+        await postCollection(name, 'access', '/access_collections', 'access_maps/');
+      }
       // Navigate back to Project page
       setLoading(false);
       props.navigation.navigate('ProjectPage')
@@ -207,7 +213,9 @@ export function CreateActivityStack(props) {
   const postCollection = async (name, test_type, collectionName, timeSlotName) => {
     let success = false
     let collectionDetails = null
-    console.log("saving with area id", area._id);
+
+    //console.log("🚀 ~ file: createActivityStack.component.js:218 ~ postCollection ~ area._id: saving with area id", area._id);
+
     // Save the activity
     try {
         const response = await fetch(LOCAL_SERVER+'/projects/' + props.project._id + collectionName, {
@@ -229,7 +237,7 @@ export function CreateActivityStack(props) {
     } catch (error) {
         console.log("ERROR: ", error)
     }
-    console.log("create collection response:", collectionDetails);
+    //console.log("create collection response:", collectionDetails);
     if(collectionDetails.success !== undefined) {
       success = collectionDetails.success
       console.log("success: ", success);
@@ -268,7 +276,7 @@ export function CreateActivityStack(props) {
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
     // treat the new tests as survey (no standing points) except for the sound test
-    if (test_type !== "survey" && test_type !== "boundary" && test_type !== "nature" && test_type !== "light" && test_type !== "order") {
+    if (test_type !== "survey" && test_type !== "boundary" && test_type !== "nature" && test_type !== "light" && test_type !== "order" && test_type !== "access") {
       if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
         selectedPoints = timeSlot.assignedPointIndicies.map(index => {
           return standingPoints[index.row];
@@ -400,7 +408,7 @@ export function CreateActivityStack(props) {
     let success = false
     let activityDetails = null
     let selectedPoints = [...props.project.standingPoints]; // default standing points to project list
-    if (test_type !== "survey" && test_type !== "boundary" && test_type !== "nature" && test_type !== "light" && test_type !== "order") {
+    if (test_type !== "survey" && test_type !== "boundary" && test_type !== "nature" && test_type !== "light" && test_type !== "order" && test_type !== "access") {
       if (timeSlot.assignedPointIndicies !== null && timeSlot.assignedPointIndicies.length > 0) {
         selectedPoints = timeSlot.assignedPointIndicies.map(index => {
           return standingPoints[index.row];

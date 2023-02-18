@@ -1,3 +1,5 @@
+import {format as prettyFormat} from 'pretty-format';
+
 export async function formatStationaryGraphData(result) {
   if (result === null ||
       result.data === undefined ||
@@ -222,6 +224,7 @@ export async function formatBoundaryGraphData(result){
 
 // searches to see if that description exists in the array (helper for formatNatureGraphData)
 const conDescSearch = (arr, str)=>{
+  if(arr == undefined) return -1;
   // search through formatted array to see if that description is in it
   for(let i = 0; i < arr.length; i++){
     // if it is there, return its index
@@ -398,8 +401,6 @@ export async function formatLightGraphData(result){
     ) {
     return result;
   }
-  
-  console.log(result);
 
   // each object in data are submitted results for that test
   let tempResult = {...result};
@@ -475,6 +476,74 @@ export async function formatOrderGraphData(result){
   return tempResult;
 }
 
+export async function formatAccessGraphData(result){
+  if (result === null ||
+      result.data === undefined ||
+      result.data === null ||
+      result.data.length <= 0 ||
+      result.graph !== undefined
+    ) {
+    return result;
+  }
+
+  console.log("🚀 ~ file: helperFunctions.js:487 ~ formatAccessGraphData ~ result", prettyFormat(result));
+
+  
+  let index;
+  let tempResult = {...result};
+  let graph = {
+      key: 0, 
+      pointGraph: {
+        labels: [],
+        data: []
+      },
+      pathGraph: {
+        labels: [],
+        data: []
+      },
+      areaGraph: {
+        labels: [],
+        data: []
+      }
+    };
+  
+  for(let i = 0; i < result.data.length; i++){
+    let data = result.data[i];
+
+    // Count point access occurrances
+    if(data.accessType == "Access Point") {
+      index = conDescSearch(graph.pointGraph.labels, result.data[i].description)
+
+      // if that description already exists in graph's labels
+      if(index !== -1){
+        // increase the count of that index
+        graph.pointGraph.data[index] += 1;
+      }
+      // otherwise, that description does not exist in graph's labels
+      else{
+        // so push the description to the end of graph's labels and a 1 onto the end of data labels
+        graph.pointGraph.labels.push(result.data[i].description);
+
+        graph.pointGraph.data.push(1);
+      }
+    }    
+
+    // graph[i].key = i + 1;
+    // graph[i].accessType = data.accessType;   
+    // graph[i].description = data.description;   
+    
+  }
+
+  console.log("🚀 ~ file: helperFunctions.js:528 ~ formatAccessGraphData ~ graph.labels", graph.pointGraph.labels);
+
+  console.log("🚀 ~ file: helperFunctions.js:528 ~ formatAccessGraphData ~ graph.data", graph.pointGraph.data);
+
+  console.log("🚀 ~ file: helperFunctions.js:526 ~ formatAccessGraphData ~ graph", prettyFormat(graph));
+
+  tempResult.graph = {...graph};
+  return tempResult;
+}
+
 export function retrieveTestName(str){
   let lowerStr = str.toLowerCase();
   
@@ -514,6 +583,10 @@ export function retrieveTestName(str){
     //console.log('absence of order test');
     testType = 'Absence of Order Locator';
    }
+  else if(lowerStr.localeCompare('access') === 0){
+    //console.log('Identifying Access');
+    testType = 'Identifying Access';
+  }
   // it should never enter this else
   else{
     console.log('error getting test type');
