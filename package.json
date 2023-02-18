@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "concat-map": "^0.0.2",
     "concurrently": "^7.6.0",
     "connect-ensure-login": "^0.1.1",
     "dotenv": "^8.2.0",
@@ -43,8 +44,8 @@
     "passport-json": "^1.2.0",
     "passport-jwt": "^4.0.0",
     "passport-local-mongoose": "^6.0.1",
-    "uui": "^1.0.7",
     "react-unity-webgl": "^9.4.0",
+    "uui": "^1.0.7",
     "xlsx": "file:vendor/xlsx-0.18.9.tgz",
     "xoauth2": "^1.2.0"
   },
