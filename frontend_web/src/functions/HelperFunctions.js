@@ -58,7 +58,8 @@ function testNames(collection) {
         light_maps: 'Lighting Profile',
         nature_maps: 'Nature Prevalence',
         sound_maps: 'Acoustical Profile',
-        access_maps: 'Identifying Access'
+        access_maps: 'Identifying Access',
+        program_maps: 'Identifying Program'
     };
     
     return(testNames[collection]);

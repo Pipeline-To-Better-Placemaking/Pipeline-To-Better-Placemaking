@@ -16,6 +16,7 @@ const Section_Collection = require('../models/section_collections.js')
 const Boundaries_Collection = require('../models/boundaries_collections.js')
 const Order_Collection = require('../models/order_collections.js')
 const Access_Collection = require('../models/access_collections.js')
+const Program_Collection = require('../models/program_collections')
 
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
@@ -86,6 +87,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                           .populate('surveyCollections')
                           .populate('sectionCollections')
                           .populate('accessCollections')
+                          .populate('programCollections')
                           
             )
 })
@@ -766,10 +768,74 @@ router.delete('/:id/survey_collections/:collectionId', passport.authenticate('jw
     }
 })
 
-router.post('/:id/access_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+router.post('/:id/program_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.params.id)
 
+    if(await (Team.isUser(project.team,user._id) || Team.isOwner(project.team, user._id) || Team.isAdmin(project.team, user._id))){   
+
+        let newCollection = new Program_Collection({
+            title: req.body.title,
+            date: req.body.date,
+            area: req.body.area,
+            duration: req.body.duration
+        })
+
+        await newCollection.save()
+        await Area.addRefrence(newCollection.area)
+
+
+        await Project.addProgramCollection(project._id,newCollection._id)
+        res.json(newCollection)
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.put('/:id/program_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Program_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+
+
+        let newCollection = new Program_Collection({
+                title: (req.body.title ? req.body.title : collection.title),
+                date: (req.body.date ? req.body.date : collection.date),
+                area: (req.body.area ? req.body.area : collection.area),
+                duration: (req.body.duration ? req.body.duration : collection.duration)
+        })
+
+        if(req.body.area){
+            await Area.addRefrence(req.body.area)
+            await Area.removeRefrence(collection.area)
+        }
+
+        res.status(201).json(await Program_Collection.updateCollection(req.params.collectionId, newCollection))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.delete('/:id/program_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Program_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+        await Area.removeRefrence(collection.area)
+        res.status(201).json(await Project.deleteProgramCollection(project._id,req.params.collectionId))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+router.post('/:id/access_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
     if(await Team.isUser(project.team,user._id)){   
 
         let newCollection = new Access_Collection({
@@ -1128,6 +1194,32 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     path: 'area',
                                     }]
                                         }])                                
+    programData = await Project.findById(req.params.id)
+                                .populate('area')
+                                .populate([
+                                {
+                                    path:'programCollections',
+                                    model:'Program_Collections',
+                                    populate: [{
+                                        path: 'maps',
+                                        model: 'Program_Maps',
+                                        select: 'date',
+                                        populate: [{
+                                            path: 'data',
+                                            populate:{
+                                                path: 'floors',
+                                                populate:{
+                                                    path: 'programs'
+                                                }
+                                            }
+                                            },{
+                                            path: 'researchers'
+                                            }]
+                                        },{
+                                        path: 'area',
+                                        }]
+                                    }])
+
     const emailHTML = `
         <h3>Hello from Pipeline to Better Placemaking!</h3>
         <p>You have requested a copy of project data. Attached is a csv formatted file representing the data.</p>
@@ -1147,7 +1239,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
             {
                 filename: 'PlaceProject.xlsx',
                 content: projectExport(stationaryData, movingData, soundData, 
-                                    natureData, lightData, orderData, boundariesData, accessData)
+                                    natureData, lightData, orderData, boundariesData, programData, accessData, sectionData)
             }
         ]
     }

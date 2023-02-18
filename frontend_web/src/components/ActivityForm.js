@@ -13,6 +13,7 @@ const testNames = [
     { label: 'Nature Prevalence', type: 'nature_maps' },
     { label: 'Acoustical Profile', type: 'sound_maps' },
     { label: 'Identifying Access', type: 'access_maps' },
+    { label: 'Identifying Program', type: 'program_maps'},
 ];
 
 export default function ActivityForm(props) {
@@ -29,6 +30,15 @@ export default function ActivityForm(props) {
     const handleChange = (key, ver) => (e) => {
         setForm({ ...form, [key]: e.target.value });
     };
+    
+    const handleRoute = (activity) => 
+    {
+        if (activity !== 'program_maps')
+            return 'times';
+        else
+            return 'identifying_program ';
+    }
+
 
     // Form info is sent to NewActivityTimes.js for time slots
     return(
@@ -59,7 +69,7 @@ export default function ActivityForm(props) {
                 <Form.Control type='number' id='timerSelect' name='timerSelect' className='dateTimePickers' value={form.timer} min='5' max='100' onChange={handleChange('timer')} />
             </div>
             <Button className='newHoveringButtons confirm' id='addButton' component={ Link }
-                to='times'
+                to={handleRoute(form.activity)}
                 state={{...loc.state, form: form}}
             >
                 <AddIcon />

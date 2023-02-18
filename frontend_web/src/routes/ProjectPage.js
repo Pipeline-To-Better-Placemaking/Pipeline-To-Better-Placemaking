@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Link } from 'react-router-dom';
 import axios from '../api/axios.js';
 import MapPage from './MapPage';
 import TabPanel from '../components/ProjectTabPanel';
 import ActivityPage from './ActivityPage';
 import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
+import UnityPage from './UnityPage';
+import Button from '@mui/material/Button';
+import NewProgram from './NewProgram.js';
+import UnitySurveyorPage from './UnitySurveyorPage.js';
 
 /* 
     (1) Handles routes to projects/:id/(activities/map/surveyors) 
@@ -91,6 +95,11 @@ export default function ProjectPage(){
                     await collectionPoints(id, 'access', collection.date, index)
                 ))
             ))
+            response?.data?.programCollections.map((collection) => (
+                collection.maps.map(async (id, index) => {
+                    await collectionPoints(id, 'program', collection.date, index);
+                })
+            ))
 
             setActivities(results);
             setStandingPoints(sPoints);
@@ -115,7 +124,8 @@ export default function ProjectPage(){
             order: 'order_maps',
             sound: 'sound_maps',
             stationary: 'stationary_maps',
-            access: 'access_maps'
+            access: 'access_maps',
+            program:    'program_maps'
         }
 
         try {
@@ -222,6 +232,29 @@ export default function ProjectPage(){
                                 projectInfo={projectInfo}
                             />
                         }/>
+                        <Route path='activities/identifying_program' element={
+                            <div>
+                                
+                                <NewProgram 
+                                    center={ center }
+                                    title={ projectInfo?.title }
+                                    area= { area }
+                                    subAreas= { subAreas }
+                                />
+                                
+                            </div>
+                            
+                        }/>
+                        <Route path='activities/identifying_program/extrude' element={
+                            <UnityPage />
+                        }/>
+
+                        <Route path = 'activities/program_surveyors' element={
+                            <UnitySurveyorPage />
+                        }
+                        
+                        />
+                        
                         <Route path='surveyors' element={
                             <SurveyorPage title={ projectInfo?.title } 
                                 drawers={ activities }  

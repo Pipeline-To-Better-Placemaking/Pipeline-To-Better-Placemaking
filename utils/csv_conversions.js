@@ -457,7 +457,6 @@ surveyToCSV = function(data) {
 }
 
 accessToCSV = function(data) {
-
     var headers = "Collection_Title," +
                   "Collection_Date,"  +
                   "Area_Title,Area,Duration,Activity_Time," +
@@ -466,10 +465,9 @@ accessToCSV = function(data) {
 
     var csv = headers
 
-    for(var i = 0; i < data.accessCollections.length; i++){
-        var collection = data.accessCollections[i]
-        
-        var area = "\"POLYGON (("
+        for(var i = 0; i < data.accessCollections.length; i++){
+            var collection = data.accessCollections[i]
+            var area = "\"POLYGON (("
         for(var j = 0; j < collection.area.points.length; j++){
             if (j != 0) area += ','
             area += collection.area.points[j].latitude + " "
@@ -503,7 +501,75 @@ accessToCSV = function(data) {
                         csv += entry.points.light_description
                     }
                 }
-            }a
+
+            }
+            
+        }
+
+    }
+    return csv;
+}
+programToCSV = function(data) {
+
+    var headers = "Collection_Title," +
+                  "Collection_Date,"  +
+                  "Area_Title,Area,Duration,Activity_Time," +
+                  "Researchers," +
+
+                
+                  "Kind,Description,Value,Purpose"
+
+    var csv = headers
+
+    for(var i = 0; i < data.programCollections.length; i++){
+        var collection = data.programCollections[i]
+        var area = "\"POLYGON (("
+        for(var j = 0; j < collection.area.points.length; j++){
+            if (j != 0) area += ','
+            area += collection.area.points[j].latitude + " "
+            area += collection.area.points[j].longitude
+        }
+        area += "))\""
+        
+        if(collection.maps){
+            for (var j = 0; j < collection.maps.length; j++){
+                var map = collection.maps[j]
+                var researchers = "\""
+                if(map.researchers){
+                    for(var k = 0; k < map.researchers.length; k++){
+                        if(k != 0) researchers += ', '
+                        researchers += map.researchers[k].firstname + " " + map.researchers[k].lastname
+                    }
+                }
+                researchers += "\""
+                if(map.data){
+                    for(var k = 0; k < map.data.length; k++){
+                        var entry = map.data[k]
+                        csv += '\n'
+                        csv += collection.title + ','
+                        csv += collection.date + ','
+                        csv += collection.area.title + ','
+                        csv += area + ','
+                        csv += collection.duration + ','
+                        csv += map.date + ','
+                        csv += researchers + ','
+
+                    
+                        // path = "\"LINESTRING ( "
+                        // for(var l = 0; l < entry.path.length; l++){
+                        //    if (l != 0) path += ", "
+                        //    path += entry.path[l].latitude + " " + entry.path[l].longitude
+                        // }
+                        // path += ")\""
+                        // csv += path
+                        csv += entry.kind + ','
+                        csv += entry.description + ','
+                        csv += entry.value + ',' 
+                        csv += entry.purpose  
+
+                    }
+                }
+            }
         }
     }
 
@@ -519,5 +585,6 @@ module.exports = {
     orderToCSV,
     boundariesToCSV,
     natureToCSV,
-    accessToCSV
+    accessToCSV,
+    programToCSV
 }

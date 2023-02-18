@@ -13,7 +13,7 @@ const Light_Collection = require('../models/light_collections.js')
 const Boundaries_Collection = require('../models/boundaries_collections.js')
 const Order_Collection = require('../models/order_collections.js')
 const Access_Collection = require('../models/access_collections.js')
-
+const Program_Collection = require('../models/program_collections.js')
 
 
 const ObjectId = mongoose.Schema.Types.ObjectId
@@ -78,6 +78,10 @@ const project_schema = mongoose.Schema({
     accessCollections:[{
         type: ObjectId,
         ref: 'Access_Collections'
+    }],
+    programCollections:[{
+        type: ObjectId,
+        ref: 'Program_Collections'
     }],
 })
 
@@ -152,6 +156,10 @@ module.exports.deleteProject = async function(projectId) {
     if(project.accessCollections.length){    
         for(var i = 0; i < project.accessCollections.length; i++)   
             await Access_Collection.deleteCollection(project.accessCollections[i])
+    }
+    if(project.programCollections.length){    
+        for(var i = 0; i < project.programCollections.length; i++)   
+            await Program_Collection.deleteCollection(project.programCollections[i])
     }
           
     return await Projects.findByIdAndDelete(projectId)
@@ -344,3 +352,19 @@ module.exports.deletePoint = async function(projectId, pointId) {
       { $pull: { standingPoints: pointId}}
   )
 }
+
+module.exports.addProgramCollection = async function (projectId, collectionId) {
+    return await Projects.updateOne(
+       { _id: projectId },
+       { $push: { programCollections:  collectionId}}
+   )
+}
+
+module.exports.deleteProgramCollection = async function(projectId, collectionId) {
+   
+   await Projects.updateOne(
+       { _id: projectId },
+       { $pull: { programCollections: collectionId}}
+   )
+   return await Program_Collection.deleteCollection(collectionId)
+}   
