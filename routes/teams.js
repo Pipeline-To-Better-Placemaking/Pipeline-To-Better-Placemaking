@@ -11,6 +11,7 @@ const Light_Map = require('../models/light_maps.js')
 const Order_Map = require('../models/order_maps.js')
 const Boundaries_Map = require('../models/boundaries_maps.js')
 const Section_Map = require('../models/section_maps.js')
+const Access_Map = require('../models/access_maps.js')
 
 
 const passport = require('passport')
@@ -95,6 +96,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
                 await Order_Map.projectCleanup(proj)
                 await Boundaries_Map.projectCleanup(proj)
                 await Section_Map.projectCleanup(proj)
+                await Access_Map.projectCleanup(proj)
             }
     
             await Project.teamCleanup(team._id)
