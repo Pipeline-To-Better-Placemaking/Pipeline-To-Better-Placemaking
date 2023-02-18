@@ -6,6 +6,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 // Document Schema for Media Entry
 const media_schema = mongoose.Schema({
   title: String,
+  
   path: [{
     latitude: {
         type: Number,
