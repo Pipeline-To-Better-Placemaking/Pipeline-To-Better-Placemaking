@@ -49,6 +49,7 @@ export default function FullMap(props) {
     const [lightingCollections, setLightingCollections] = React.useState({});
     const [natureCollections, setNatureCollections] = React.useState({});
     const [soundCollections, setSoundCollections] = React.useState({});
+    const [accessCollections, setAccessCollections] = React.useState({});
 
     //holds ALL Collections for rendering
     const [collections, setCollections] = React.useState({
@@ -58,7 +59,8 @@ export default function FullMap(props) {
         boundaries_maps: boundariesCollections, 
         light_maps: lightingCollections, 
         nature_maps: natureCollections, 
-        sound_maps: soundCollections
+        sound_maps: soundCollections,
+        access_maps: accessCollections
     });
 
     // onSelection handles the boolean toggling from Map Drawer selections/switches
@@ -148,6 +150,18 @@ export default function FullMap(props) {
                     newSelection[date].splice(s, 1);
                 }
                 setSoundCollections(newSelection);
+                setCollections({ ...collections, [category]: newSelection });
+                break;
+            case 'access_maps':
+                newSelection = accessCollections;
+                if (check === true) {
+                    if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
+                    newSelection[`${date}`].push(time);
+                } else {
+                    var s = newSelection[date].indexOf(time);
+                    newSelection[date].splice(s, 1);
+                }
+                setAccessCollections(newSelection);
                 setCollections({ ...collections, [category]: newSelection });
                 break;
             default:
