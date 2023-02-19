@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Modal, TextInput, Switch, TouchableOpacity } from 'react-native';
+import { View, Modal, TextInput, Switch, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { useTheme, Text, Button } from '@ui-kitten/components';
+import RNPickerSelect from 'react-native-picker-select';
 
 import { styles } from './dataModal.styles';
 
@@ -19,6 +20,8 @@ export function DetailsModal(props){
 
     //Details fields
     const [spotsText, spotsOnChangeText] = React.useState('')
+    const [lineNumText, lineNumOnChangeText] = React.useState('')
+    const [loopsText, loopsOnChangeText] = React.useState('')
 
     //Details Options
     const pavedOptions = [
@@ -67,6 +70,14 @@ export function DetailsModal(props){
         await props.closeDetails(data);
     }
 
+    const options = [
+        { label: '1', value: '1' },
+        { label: '2', value: '2' },
+        { label: '3', value: '3' },
+        { label: '4', value: '4' },
+        { label: '5', value: '5' },
+      ];
+
     const ShowOptions = () => {
         console.log("🚀 ~ file: detailsModal.component.js:41 ~ ShowOptions ~ props.data", props.data);
 
@@ -95,13 +106,11 @@ export function DetailsModal(props){
                             <Text
                                 style={styles.inputLabel}
                             >Line Number</Text>
-                            <TextInput
-                                style={styles.inputField}
-                                onChangeText={spotsOnChangeText}
-                                value={spotsText}
-                                placeholder="0"
-                                keyboardType='numeric'
-                            />
+                            <RNPickerSelect
+                                onValueChange={(value) => console.log(value)}
+                                items={options}
+                                style={{inputIOS: {fontSize: 16}}}
+                                />
                         </View>    
                         <View style={styles.buttonRow}>
                             <Text
@@ -109,9 +118,9 @@ export function DetailsModal(props){
                             >Daily Loops</Text>
                             <TextInput
                                 style={styles.inputField}
-                                onChangeText={spotsOnChangeText}
-                                value={spotsText}
-                                placeholder="0"
+                                onChangeText={loopsOnChangeText}
+                                value={loopsText}
+                                placeholder="00"
                                 keyboardType='numeric'
                             />
                         </View>   
@@ -128,6 +137,18 @@ export function DetailsModal(props){
             if(props.data.description === "Main Road" || props.data.description === "Side Road") {
                 return(
                     <View>
+                        <View style={styles.buttonRow}>
+                            <Text
+                                style={styles.inputLabel}
+                            >Number of Lanes</Text>
+                            <TextInput
+                            style={styles.inputField}
+                            onChangeText={spotsOnChangeText}
+                            value={spotsText}
+                            placeholder="0"
+                            keyboardType='numeric'
+                        />
+                        </View>   
                         <View style={styles.buttonRow}>
                             {pavedOptions.map(option => (
                                 <Button  
@@ -295,7 +316,7 @@ export function DetailsModal(props){
     return(
         <Modal transparent={true} animationType='slide' visible={props.visible}>
             <View style={styles.modalContainer}>
-                <View style={[ styles.purposeViewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
+                <View style={[ styles.largePurposeViewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
                         
                     <Text category={'h1'} style={styles.titleText}>Details</Text>
                     <View style={styles.dataView}>
@@ -314,7 +335,10 @@ export function DetailsModal(props){
 
                         <ShowOptions/>
                                     
-                        <View style={styles.buttonRow}>
+                       
+
+                    </View>
+                    <View style={styles.controlButtonRow}>
                             <Button style={styles.multiSubmit} onPress={sendData}>
                                 <View>
                                     <Text style={styles.backButtonTxt}>Submit</Text>
@@ -326,8 +350,6 @@ export function DetailsModal(props){
                                 </View>
                             </Button>
                         </View>
-
-                    </View>
                 </View>                      
             </View>
         </Modal>

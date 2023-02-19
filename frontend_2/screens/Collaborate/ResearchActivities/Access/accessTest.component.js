@@ -182,6 +182,7 @@ export function AccessTest(props) {
         );
         
         setDetailsModal(true);
+        setStart(false);
 
         console.log("🚀 ~ file: accessTest.component.js:184 ~ closeData ~ data", prettyFormat(data));
 
@@ -199,6 +200,7 @@ export function AccessTest(props) {
     // closes the details modal and stores the details(s)
     const closeDetails = async (inf) => {        
         data[dataIndex - 1].details = inf.details;
+        setStart(true);
         setDetailsModal(false);
     }
 

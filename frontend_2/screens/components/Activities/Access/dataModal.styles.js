@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
     purposeViewContainer:{
         height: '50%',
         marginTop: 'auto',
+        marginBottom: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
         borderWidth: 1
@@ -50,6 +51,16 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',        
         marginTop: height * .015,
+    },
+
+    controlButtonRow:{
+        width: width,
+        flexDirection: 'row',
+        justifyContent: 'space-around',        
+        marginTop: 'auto',
+        position: 'absolute',
+        bottom: 0,
+        padding: 25,
     },
 
     button:{
@@ -99,6 +110,10 @@ export const styles = StyleSheet.create({
         alignSelf:'center',
         backgroundColor: '#6690FF',
         borderColor: '#6690FF'
+    },
+
+    container: {
+        flex: 1,
     },
 
     backButtonTxt:{

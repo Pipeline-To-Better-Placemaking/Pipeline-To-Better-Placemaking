@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Modal} from 'react-native';
+import { View, Modal, KeyboardAvoidingView} from 'react-native';
 import { useTheme, Text, Button } from '@ui-kitten/components';
 
 import { styles } from './dataModal.styles';
@@ -18,6 +18,7 @@ export function DataModal(props) {
     }
 
     return(
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
         <Modal transparent={true} animationType='slide' visible={props.visible}>
             <View style={styles.modalContainer}>
                 <View style={[ styles.viewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
@@ -78,5 +79,6 @@ export function DataModal(props) {
                 </View>
             </View>
         </Modal>
+        </KeyboardAvoidingView>
     )
 }
