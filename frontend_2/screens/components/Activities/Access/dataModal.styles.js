@@ -27,6 +27,15 @@ export const styles = StyleSheet.create({
         borderWidth: 1
     },
 
+    largePurposeViewContainer:{
+        height: '70%',
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        borderTopLeftRadius: 35,
+        borderTopRightRadius: 35,
+        borderWidth: 1
+    },
+
     titleText:{
         marginTop: 10,
         alignSelf: 'center',
@@ -165,7 +174,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         marginRight: 10,
     },
-    
+
     radioButtonSelected: {
         width: 10,
         height: 10,
