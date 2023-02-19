@@ -132,7 +132,31 @@ export const styles = StyleSheet.create({
 
     redTxt:{
         color: 'red'
-    }
+    },
+
+    radioButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+
+    radioButtonIcon: {
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#999',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 10,
+    },
+    
+    radioButtonSelected: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: '#000',
+    },
 
 });
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Modal, TextInput } from 'react-native';
+import { View, Modal, TextInput, Switch, TouchableOpacity } from 'react-native';
 import { useTheme, Text, Button } from '@ui-kitten/components';
 
 import { styles } from './dataModal.styles';
@@ -11,13 +11,42 @@ export function DetailsModal(props){
     const [noneSelect, setNoneSelect] = useState(false);
     
     // multi-select useStates
-    const [select1, setSelect1] = useState(false);
-    const [select2, setSelect2] = useState(false);
-    const [select3, setSelect3] = useState(false);
+    const [select1, setSelect1] = useState(null);
+    const [select2, setSelect2] = useState(null);
+    const [select3, setSelect3] = useState(null);
+    const [select4, setSelect4] = useState([]);
+    const [select5, setSelect5] = useState(null);
 
     //Details fields
     const [spotsText, spotsOnChangeText] = React.useState('')
+
+    //Details Options
+    const pavedOptions = [
+        { label: 'Paved', value: 1 },
+        { label: 'Not Paved', value: 2 },
+    ];
+
+    const medianOptions = [
+        { label: 'Median', value: 1 },
+        { label: 'No Median', value: 2 },
+    ];
+
+    const directionOptions = [
+        { label: 'One-way', value: 1 },
+        { label: 'Two-way', value: 2 },
+    ];
+
+    const turnOptions = [
+        { label: 'No Turn', value: 1 },
+        { label: 'Left Turn', value: 2 },
+        { label: 'Right Turn', value: 3 },
+    ];
     
+    const tollOptions = [
+        { label: 'Toll Road', value: 1 },
+        { label: 'Not Toll Road', value: 2 },
+    ];
+
     const sendData = async () => {
         let arr = packageData();
 
@@ -49,7 +78,7 @@ export function DetailsModal(props){
                     <View style={styles.buttonRow}>
                         <Text
                             style={styles.inputLabel}
-                        > Spots </Text>
+                        >Bike Spots</Text>
                         <TextInput
                             style={styles.inputField}
                             onChangeText={spotsOnChangeText}
@@ -96,19 +125,86 @@ export function DetailsModal(props){
         }
         if(props.accessType === "Path") {
             // Show options for roads
-            if(props.data === "Main Road" | props.data === "Side Road") {
+            if(props.data.description === "Main Road" || props.data.description === "Side Road") {
                 return(
-                    <View style={styles.buttonRow}>
-                        <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
-                            <View>
-                                <Text style={select1 ? styles.buttonTxt : styles.offButtonTxt}>Two Lane</Text>
-                            </View>
-                        </Button>
-                        <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>
-                            <View>
-                                <Text style={select2 ? styles.buttonTxt : styles.offButtonTxt}>Paved</Text>
-                            </View>
-                        </Button>
+                    <View>
+                        <View style={styles.buttonRow}>
+                            {pavedOptions.map(option => (
+                                <Button  
+                                key={option.value}
+                                style={styles.button} 
+                                onPress={() => {setSelect1(option.value)}}
+                                appearance={`${getButtonAppearance(option.value, select1)}`}
+                                >
+                                    <Text style={styles.backButtonTxt}>{option.label}</Text>
+                                </Button>
+                            ))}
+                        </View>
+                        <View style={styles.buttonRow}>
+                            {medianOptions.map(option => (
+                                <Button  
+                                key={option.value}
+                                style={styles.button} 
+                                onPress={() => {setSelect5(option.value)}}
+                                appearance={`${getButtonAppearance(option.value, select5)}`}
+                                >
+                                    <Text style={styles.backButtonTxt}>{option.label}</Text>
+                                </Button>
+                            ))}
+                        </View>
+                        <View style={styles.buttonRow}>
+                            {directionOptions.map(option => (
+                                <Button  
+                                key={option.value}
+                                style={styles.button} 
+                                onPress={() => {setSelect2(option.value)}}
+                                appearance={`${getButtonAppearance(option.value, select2)}`}
+                                >
+                                    <Text style={styles.backButtonTxt}>{option.label}</Text>
+                                </Button>
+                            ))}
+                        </View>
+                        <View style={styles.buttonRow}>
+                            {tollOptions.map(option => (
+                                <Button  
+                                key={option.value}
+                                style={styles.button} 
+                                onPress={() => {setSelect3(option.value)}}
+                                appearance={`${getButtonAppearance(option.value, select3)}`}
+                                >
+                                    <Text style={styles.backButtonTxt}>{option.label}</Text>
+                                </Button>
+                            ))}
+                        </View>
+                        <View style={styles.buttonRow}>
+                            {turnOptions.map(option => (
+                                <Button
+                                key={option.value}
+                                style={styles.button}
+                                onPress={() => {
+                                    if (option.value === turnOptions[0].value) {
+                                      // If the option is the first option, select only this option
+                                      setSelect4([option.value]);
+                                    } else {
+                                      // If the option is not the first option, add or remove the option value from select4
+                                      if (select4.includes(option.value)) {
+                                        // Remove the option value from select4 if it's already in the array
+                                        setSelect4(select4.filter(value => value !== option.value));
+                                      } else {
+                                        // Add the option value to select4 if it's not already in the array
+                                        setSelect4([...select4, option.value]);
+                                      }
+                                      if (select4.includes(turnOptions[0].value)) {
+                                          setSelect4(select4.filter(value => value !== turnOptions[0].value));
+                                    }
+                                    }
+                                  }}
+                                appearance={getButtonAppearance(option.value, select4)}
+                              >
+                                <Text style={styles.backButtonTxt}>{option.label}</Text>
+                              </Button>
+                            ))}
+                        </View>
                     </View>    
                 )
             } else {
@@ -117,23 +213,40 @@ export function DetailsModal(props){
         }
         if(props.accessType === "Area") {
             return(
-                <View style={styles.buttonRow}>
-                    <Button style={styles.button} appearance={select1 ? 'primary' : 'outline'} onPress={()=> setSelect(1)}>
-                        <View>
-                            <Text style={select1 ? styles.buttonTxt : styles.offButtonTxt}>Spots</Text>
-                        </View>
-                    </Button>
-                    <Button style={styles.button} appearance={select2 ? 'primary' : 'outline'} onPress={()=> setSelect(2)}>
-                        <View>
-                            <Text style={select2 ? styles.buttonTxt : styles.offButtonTxt}>Prevention</Text>
-                        </View>
+                <View>
+                    <View style={styles.buttonRow}>
+                        <Text
+                            style={styles.inputLabel}
+                        >Line Number</Text>
+                        <TextInput
+                            style={styles.inputField}
+                            onChangeText={spotsOnChangeText}
+                            value={spotsText}
+                            placeholder="0"
+                            keyboardType='numeric'
+                        />
+                    </View>  
+                    <View style={styles.buttonRow}>
 
-                    </Button>
+                    </View>
                 </View>    
             )
         } 
         else return null;
     }
+
+    const getButtonAppearance = (option, group) => {        
+        if (Array.isArray(group)) {
+            if (group.includes(option)) {
+              return 'primary';
+            }
+        } else {
+            if (option === group) {
+              return 'primary';
+            }
+          }
+        return 'outline';
+      };
 
 
 

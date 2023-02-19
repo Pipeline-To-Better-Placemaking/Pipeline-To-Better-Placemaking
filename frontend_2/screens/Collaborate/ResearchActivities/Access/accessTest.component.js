@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, LogBox  } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
@@ -17,6 +17,8 @@ import {format as prettyFormat} from 'pretty-format';
 import { LOCAL_SERVER } from '@env';
 
 import { styles } from './accessTest.styles';
+
+LogBox.ignoreLogs(['EventEmitter.removeListener']);
 
 export function AccessTest(props) {
     const theme = useTheme();
@@ -81,9 +83,10 @@ export function AccessTest(props) {
     const [deleteDesc, setDeleteDesc] = useState('');
     const [deleteType, setDeleteType] = useState(-1);
 
-    const pointPrompt = ["Bike Rack", "RidepShare Drop Off", "Public Transport Stop", "Valet Counter"]
+    const pointPrompt = ["Bike Rack", "RidepShare Drop Off", "Public Transport Stop", "Valet Counter", "E-scooter Parking"]
     const pathPrompt = ["Sidewalk", "Side Street", "Main Road"]
     const areaPrompt = ["Parking Lot", "Parking Garage"]
+    
 
     // closes the modal and stores the access data
     

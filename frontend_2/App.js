@@ -4,11 +4,15 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { AppNavigator } from './navigation/mainNavigation.component';
 import { ThemeContext } from './theme-context';
-import { Appearance } from 'react-native';
+import { Appearance, LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['EventEmitter.removeListener']);
 
 export default () => {
 
   const [theme, setTheme] = React.useState(Appearance.getColorScheme());
+
+
 
   const toggleTheme = () => {
     //console.log(theme);
