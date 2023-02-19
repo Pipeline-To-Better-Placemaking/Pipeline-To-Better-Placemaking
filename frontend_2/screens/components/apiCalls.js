@@ -418,7 +418,7 @@ export async function getTimeSlot(route, id) {
   let success = false
   let timeSlotDetails = null
   //console.log("Route: ", route);
-  //console.log("ID: ", id);
+  console.log("ID: ", id);
   try {
     const response = await fetch(LOCAL_SERVER+'/' + route + id, {
         method: 'GET',
@@ -641,7 +641,8 @@ export async function getAllCollectionInfo(collectionDetails) {
 
         //For some reason the id in access collection maps is being stored in 'item' instead of 'item._id'
         //console.log("Item ID: ", item);
-        let timeSlot = await getTimeSlot('access_maps/', item);
+        //This issue seems to be fixed but will leave this log here incase it appears again
+        let timeSlot = await getTimeSlot('access_maps/', item._id);
 
 
         success = (timeSlot !== null)
