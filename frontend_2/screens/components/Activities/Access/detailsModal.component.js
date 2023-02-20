@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect, useImperativeHandle } from 'react';
 import { View, Modal, TextInput, Switch, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { useTheme, Text, Button } from '@ui-kitten/components';
 import RNPickerSelect from 'react-native-picker-select';
@@ -12,13 +12,6 @@ export function DetailsModal(props){
     //Size responsive variables
     const [containerHeight, setContainerHeight] = useState(0);
     const showOptionsRef = useRef(null);
-
-    useLayoutEffect(() => {
-        const height = showOptionsRef.current.getHeight() + 135; // add some extra height to accommodate for other elements
-        if (containerHeight !== height) {
-          setContainerHeight(height);
-        }
-      }, [showOptionsRef]);
     
     const [noneSelect, setNoneSelect] = useState(false);
     
@@ -92,12 +85,14 @@ export function DetailsModal(props){
 
     const ShowOptions = React.forwardRef((props, ref) => {
         const optionsRef = useRef(null);
-      
-        useImperativeHandle(ref, () => ({
-          getHeight: () => {
-            return optionsRef.current.clientHeight;
-          }
-        }));
+        
+        useLayoutEffect(() => {
+            const height = showOptionsRef.current.getHeight() + 135;
+            if (containerHeight !== height && !isNaN(height)) {
+              setContainerHeight(height);
+            }
+          }, [showOptionsRef, containerHeight]);
+          
 
         console.log("🚀 ~ file: detailsModal.component.js:41 ~ ShowOptions ~ props.data", props.data);
 
@@ -256,7 +251,7 @@ export function DetailsModal(props){
         if(props.accessType === "Area") {
             if(props.data.description === "Parking Garage") {
                 return(
-                    <View style={styles.optionsModal}>
+                    <View style={styles.optionsModal} ref={optionsRef}>
                         <View style={styles.textRow}>
                             <Text
                                 style={styles.inputLabel}
@@ -343,6 +338,17 @@ export function DetailsModal(props){
         return 'outline';
     };
 
+
+
+    useLayoutEffect(() => {
+        if (showOptionsRef.current) {
+          const height = showOptionsRef.current.getHeight() + 135; // add some extra height to accommodate for other elements
+          if (containerHeight !== height) {
+            setContainerHeight(height);
+          }
+        }
+      }, [showOptionsRef, containerHeight]);
+      
 
 
     const packageData = () =>{
