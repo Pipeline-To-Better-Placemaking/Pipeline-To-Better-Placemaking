@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Modal, TextInput, Switch, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { useTheme, Text, Button } from '@ui-kitten/components';
 import RNPickerSelect from 'react-native-picker-select';
@@ -8,6 +8,17 @@ import { styles } from './dataModal.styles';
 export function DetailsModal(props){
 
     const theme = useTheme();
+
+    //Size responsive variables
+    const [containerHeight, setContainerHeight] = useState(0);
+    const showOptionsRef = useRef(null);
+
+    useLayoutEffect(() => {
+        const height = showOptionsRef.current.getHeight() + 135; // add some extra height to accommodate for other elements
+        if (containerHeight !== height) {
+          setContainerHeight(height);
+        }
+      }, [showOptionsRef]);
     
     const [noneSelect, setNoneSelect] = useState(false);
     
@@ -19,9 +30,11 @@ export function DetailsModal(props){
     const [select5, setSelect5] = useState(null);
 
     //Details fields
-    const [spotsText, spotsOnChangeText] = React.useState('')
-    const [lineNumText, lineNumOnChangeText] = React.useState('')
-    const [loopsText, loopsOnChangeText] = React.useState('')
+    const [spotsText, spotsOnChangeText] = React.useState(0)
+    const [lineNumText, lineNumOnChangeText] = React.useState(0)
+    const [loopsText, loopsOnChangeText] = React.useState(0)
+    const [costText, costOnChangeText] = React.useState(0)
+    const [laneCount, setLaneCount] = React.useState(null)
 
     //Details Options
     const pavedOptions = [
@@ -70,15 +83,22 @@ export function DetailsModal(props){
         await props.closeDetails(data);
     }
 
-    const options = [
-        { label: '1', value: '1' },
-        { label: '2', value: '2' },
-        { label: '3', value: '3' },
-        { label: '4', value: '4' },
-        { label: '5', value: '5' },
-      ];
+    const options = [];
 
-    const ShowOptions = () => {
+    for (let i = 1; i <= 10; i++) {
+        options.push({ value: `${i}`, label: `${i}` });
+    }
+
+
+    const ShowOptions = React.forwardRef((props, ref) => {
+        const optionsRef = useRef(null);
+      
+        useImperativeHandle(ref, () => ({
+          getHeight: () => {
+            return optionsRef.current.clientHeight;
+          }
+        }));
+
         console.log("🚀 ~ file: detailsModal.component.js:41 ~ ShowOptions ~ props.data", props.data);
 
         // Show options for point, path, or area
@@ -106,11 +126,13 @@ export function DetailsModal(props){
                             <Text
                                 style={styles.inputLabel}
                             >Line Number</Text>
-                            <RNPickerSelect
-                                onValueChange={(value) => console.log(value)}
-                                items={options}
-                                style={{inputIOS: {fontSize: 16}}}
-                                />
+                            <TextInput
+                                style={styles.inputField}
+                                onChangeText={lineNumOnChangeText}
+                                value={lineNumText}
+                                placeholder="00"
+                                keyboardType='numeric'
+                            />
                         </View>    
                         <View style={styles.buttonRow}>
                             <Text
@@ -136,18 +158,17 @@ export function DetailsModal(props){
             // Show options for roads
             if(props.data.description === "Main Road" || props.data.description === "Side Road") {
                 return(
-                    <View>
+                    <View style={{height: '250px'}}>
                         <View style={styles.buttonRow}>
                             <Text
                                 style={styles.inputLabel}
                             >Number of Lanes</Text>
-                            <TextInput
-                            style={styles.inputField}
-                            onChangeText={spotsOnChangeText}
-                            value={spotsText}
-                            placeholder="0"
-                            keyboardType='numeric'
-                        />
+                            <RNPickerSelect
+                                onValueChange={(value) => setLaneCount(value)}
+                                items={options}
+                                value={laneCount}
+                                style={{inputIOS: {fontSize: 16}}}
+                            />
                         </View>   
                         <View style={styles.buttonRow}>
                             {pavedOptions.map(option => (
@@ -233,20 +254,73 @@ export function DetailsModal(props){
             }
         }
         if(props.accessType === "Area") {
+            if(props.data.description === "Parking Garage") {
+                return(
+                    <View style={styles.optionsModal}>
+                        <View style={styles.textRow}>
+                            <Text
+                                style={styles.inputLabel}
+                                >Number of Spots</Text>
+                            <TextInput
+                                style={styles.inputField}
+                                onChangeText={spotsOnChangeText}
+                                value={spotsText}
+                                placeholder="00"
+                                keyboardType='numeric'
+                            />
+                        </View>  
+                        <View style={styles.textRow}>
+                            <Text
+                                style={styles.inputLabel}
+                                >Cost (If any)</Text>
+                            <TextInput
+                                style={styles.inputField}
+                                onChangeText={costOnChangeText}
+                                value={costText}
+                                placeholder="00"
+                                keyboardType='numeric'
+                            />
+                        </View> 
+                        <View style={styles.textRow}>
+                            <Text
+                                style={styles.inputLabel}
+                                >Number of Floors</Text>
+                            <RNPickerSelect
+                                    onValueChange={(value) => setLaneCount(value)}
+                                    items={options}
+                                    value={laneCount}
+                                    style={styles.inputField}
+                                />
+                        </View>
+                    </View>    
+                )
+            }
             return(
                 <View>
                     <View style={styles.buttonRow}>
                         <Text
                             style={styles.inputLabel}
-                        >Line Number</Text>
+                        >Number of Spots</Text>
                         <TextInput
                             style={styles.inputField}
                             onChangeText={spotsOnChangeText}
                             value={spotsText}
-                            placeholder="0"
+                            placeholder="00"
                             keyboardType='numeric'
                         />
                     </View>  
+                    <View style={styles.buttonRow}>
+                        <Text
+                            style={styles.inputLabel}
+                        >Cost (If any)</Text>
+                        <TextInput
+                            style={styles.inputField}
+                            onChangeText={costOnChangeText}
+                            value={costText}
+                            placeholder="00"
+                            keyboardType='numeric'
+                        />
+                    </View> 
                     <View style={styles.buttonRow}>
 
                     </View>
@@ -254,7 +328,7 @@ export function DetailsModal(props){
             )
         } 
         else return null;
-    }
+    })
 
     const getButtonAppearance = (option, group) => {        
         if (Array.isArray(group)) {
@@ -267,7 +341,7 @@ export function DetailsModal(props){
             }
           }
         return 'outline';
-      };
+    };
 
 
 
@@ -316,41 +390,50 @@ export function DetailsModal(props){
     return(
         <Modal transparent={true} animationType='slide' visible={props.visible}>
             <View style={styles.modalContainer}>
-                <View style={[ styles.largePurposeViewContainer, {backgroundColor:theme['background-basic-color-1']}]} >
-                        
-                    <Text category={'h1'} style={styles.titleText}>Details</Text>
-                    <View style={styles.dataView}>
-                                
-                        <View style={styles.titleDesc}>
-                            <Text category={'s1'} style={styles.titleDescTxt}>Enter the Access {props.accessType} details</Text>
-                        </View>
-
-                        { noneSelect ?
-                            <View style={styles.selectError}>
-                                <Text style={styles.redTxt}>Please fill in the details</Text>
-                            </View>
-                        :
-                            null
+                <View style={{ height: containerHeight }}>
+                    <View style={[ styles.largePurposeViewContainer, {backgroundColor:theme['background-basic-color-1']}]}
+                    onLayout={(event) => {
+                        const height = event.nativeEvent.layout.height + 135; // add some extra height to accommodate for other elements
+                        if (containerHeight !== height) {
+                            setContainerHeight(height);
                         }
-
-                        <ShowOptions/>
+                        }}
+                    >
+                            
+                        <Text category={'h1'} style={styles.titleText}>Details</Text>
+                        <View style={styles.dataView}>
                                     
-                       
+                            <View style={styles.titleDesc}>
+                                <Text category={'s1'} style={styles.titleDescTxt}>Enter the Access {props.accessType} details</Text>
+                            </View>
 
-                    </View>
-                    <View style={styles.controlButtonRow}>
-                            <Button style={styles.multiSubmit} onPress={sendData}>
-                                <View>
-                                    <Text style={styles.backButtonTxt}>Submit</Text>
+                            { noneSelect ?
+                                <View style={styles.selectError}>
+                                    <Text style={styles.redTxt}>Please fill in the details</Text>
                                 </View>
-                            </Button>
-                            <Button style={styles.multiSubmit} onPress={sendData}>
-                                <View>
-                                    <Text style={styles.backButtonTxt}>Cancel</Text>
-                                </View>
-                            </Button>
+                            :
+                                null
+                            }
+
+                            <ShowOptions ref={showOptionsRef}/>
+                                        
+                        
+
                         </View>
-                </View>                      
+                        <View style={styles.controlButtonRow}>
+                                <Button style={styles.multiSubmit} onPress={sendData}>
+                                    <View>
+                                        <Text style={styles.backButtonTxt}>Submit</Text>
+                                    </View>
+                                </Button>
+                                <Button style={styles.multiSubmit} onPress={sendData}>
+                                    <View>
+                                        <Text style={styles.backButtonTxt}>Cancel</Text>
+                                    </View>
+                                </Button>
+                            </View>
+                    </View>                      
+                </View>
             </View>
         </Modal>
     )

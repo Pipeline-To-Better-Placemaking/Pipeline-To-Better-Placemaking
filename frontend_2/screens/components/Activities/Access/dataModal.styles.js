@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
         marginBottom: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
-        borderWidth: 1
+        borderWidth: 1,
     },
 
     titleText:{
@@ -59,6 +59,20 @@ export const styles = StyleSheet.create({
         width: width,
         flexDirection: 'row',
         justifyContent: 'space-around',        
+        marginTop: height * .015,
+    },
+
+    textRow: {
+        flexDirection: "row",
+        width: width * .8,
+        alignItems: "center",
+        marginBottom: 20,
+        marginTop: height * .02,
+        justifyContent: "space-between",
+    },
+      
+    optionsModal:{
+        flex: 1,
         marginTop: height * .015,
     },
 
@@ -91,22 +105,23 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
-    inputLabel:{
+    inputLabel: {
         color: '#006FD6',
         fontSize: width * .033,
         height: height * .04, 
         fontWeight: 'bold',
-        textAlign: 'center',
+        textAlign: 'left',
+        marginRight: 10,
     },
-
-    inputField:{
+    
+    inputField: {
         color: '#006FD6',
         height: height * .04, 
-        width: width * .53, 
         fontSize: width * .033,
         fontWeight: 'bold',
         textAlign: 'right',
     },
+      
 
     lastButtonView:{
         marginTop: height * .015,
