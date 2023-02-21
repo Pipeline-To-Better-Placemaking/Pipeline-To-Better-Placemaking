@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useLayoutEffect, useImperativeHandle } from 'react';
-import { View, Modal, TextInput, Switch, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Modal, TextInput } from 'react-native';
 import { useTheme, Text, Button } from '@ui-kitten/components';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -23,6 +23,7 @@ export function DetailsModal(props){
     const [select5, setSelect5] = useState(null);
 
     //Details fields
+    const [diffValue, setDiffValue] = useState(0)
     const [spotsText, spotsOnChangeText] = React.useState(0)
     const [lineNumText, lineNumOnChangeText] = React.useState(0)
     const [loopsText, loopsOnChangeText] = React.useState(0)
@@ -41,8 +42,8 @@ export function DetailsModal(props){
     ];
 
     const directionOptions = [
-        { label: 'One-way', value: 1 },
-        { label: 'Two-way', value: 2 },
+        { label: 'Two-way', value: 1 },
+        { label: 'One-way', value: 2 },
     ];
 
     const turnOptions = [
@@ -57,23 +58,13 @@ export function DetailsModal(props){
     ];
 
     const sendData = async () => {
-        let arr = packageData();
+        let obj = packageData();
 
-        //ADD cancel button
-        // there was nothing selected so do not sendData
-        // if(arr.length === 0){
-        //     // display error
-        //     setNoneSelect(true)
-        //     return
-        // }
-
-        let data = {
-            purpose: arr
-        }
         // reset modal control for subsequent entires
         setNoneSelect(false);
-        // closes the modal (in boundaryTest)
-        await props.closeDetails(data);
+
+        // closes the modal (in accessTest)
+        await props.closeDetails(obj);
     }
 
     const options = [];
@@ -82,19 +73,16 @@ export function DetailsModal(props){
         options.push({ value: `${i}`, label: `${i}` });
     }
 
+    const diffOptions = [];
 
-    const ShowOptions = React.forwardRef((props, ref) => {
-        const optionsRef = useRef(null);
-        
-        useLayoutEffect(() => {
-            const height = showOptionsRef.current.getHeight() + 135;
-            if (containerHeight !== height && !isNaN(height)) {
-              setContainerHeight(height);
-            }
-          }, [showOptionsRef, containerHeight]);
-          
+    for (let i = 1; i <= 5; i++) {
+        diffOptions.push({ value: `${i}`, label: `${i}` });
+    }
 
-        console.log("🚀 ~ file: detailsModal.component.js:41 ~ ShowOptions ~ props.data", props.data);
+
+    const ShowOptions = () => {
+
+        //console.log("🚀 ~ file: detailsModal.component.js:41 ~ ShowOptions ~ props.data", props.data);
 
         // Show options for point, path, or area
         if(props.accessType === "Point") {
@@ -152,6 +140,7 @@ export function DetailsModal(props){
         if(props.accessType === "Path") {
             // Show options for roads
             if(props.data.description === "Main Road" || props.data.description === "Side Road") {
+                setContainerHeight(1000);
                 return(
                     <View style={{height: '250px'}}>
                         <View style={styles.buttonRow}>
@@ -251,7 +240,7 @@ export function DetailsModal(props){
         if(props.accessType === "Area") {
             if(props.data.description === "Parking Garage") {
                 return(
-                    <View style={styles.optionsModal} ref={optionsRef}>
+                    <View style={styles.optionsModal}>
                         <View style={styles.textRow}>
                             <Text
                                 style={styles.inputLabel}
@@ -323,7 +312,7 @@ export function DetailsModal(props){
             )
         } 
         else return null;
-    })
+    }
 
     const getButtonAppearance = (option, group) => {        
         if (Array.isArray(group)) {
@@ -338,38 +327,74 @@ export function DetailsModal(props){
         return 'outline';
     };
 
-
-
-    useLayoutEffect(() => {
-        if (showOptionsRef.current) {
-          const height = showOptionsRef.current.getHeight() + 135; // add some extra height to accommodate for other elements
-          if (containerHeight !== height) {
-            setContainerHeight(height);
-          }
-        }
-      }, [showOptionsRef, containerHeight]);
-      
-
-
     const packageData = () =>{
-        const arr = [];
 
-        // if an option is selected push its contents onto the data array 
+        // if an option is selected push its contents onto the options data object
         // then reset that state for subsequent entries
-        if(select1){
-            arr.push('Points');
-            setSelect1(false)
+
+
+        // Package options data for point, path, or area
+        if(props.accessType === "Point") {
+            // Package options data for bike rack
+            if(props.data.description === "Bike Rack" || props.data.description === "E-scooter Parking") {
+                var options = {
+                    spots: spotsText,
+                }
+                spotsOnChangeText(0)
+            } else if(props.data.description === "Public Transport Stop") {
+                var options = {
+                    spots: spotsText,
+                    lineNumber: lineNumText,
+                }
+                spotsOnChangeText(0)
+                lineNumOnChangeText(0)
+            }
         }
-        if(select2){
-            arr.push('Paths');
-            setSelect2(false)
+        else if(props.accessType === "Path") {
+            // Package options data for roads
+            if(props.data.description === "Main Road" || props.data.description === "Side Road") {
+                var options = {
+                    laneCount: parseInt(laneCount),
+                    paved: (select1 === 1 ? true : false),
+                    median: (select5 === 1 ? true : false),
+                    twoWay: (select2 === 1 ? true : false),
+                    tollLane: (select3 === 1 ? true : false),
+                    turnLane: select4,
+                }
+                setLaneCount(null)
+                setSelect1(false)
+                setSelect2(false)
+                setSelect3(false)
+                setSelect4([])
+                setSelect5(false)
+            }
         }
-        if(select3){
-            arr.push('Areas');
-            setSelect3(false)
-        }
-        // return the array of data
-        return arr
+        else if(props.accessType === "Area") {
+            if(props.data.description === "Parking Garage") {
+                var options = {
+                    spots: parseInt(spotsText),
+                    cost: parseFloat(costText),
+                    floors: parseInt(laneCount),
+                }
+                spotsOnChangeText(0)
+                costOnChangeText(0)
+                setLaneCount(null)
+            }
+            else {
+                var options = {
+                    spots: spotsText,
+                    cost: costText,
+                }
+                spotsOnChangeText(0)
+                costOnChangeText(0)
+            }
+        } 
+
+
+        options.diffRating = parseInt(diffValue)
+
+        // return the object of options data
+        return options
     }
     
     // changes apperance of buttons based on if its selected or not
@@ -421,7 +446,19 @@ export function DetailsModal(props){
                                 null
                             }
 
-                            <ShowOptions ref={showOptionsRef}/>
+                            <View style={styles.buttonRow}>
+                                <Text
+                                    style={styles.inputLabel}
+                                >Access Difficulty</Text>
+                                <RNPickerSelect
+                                    onValueChange={(value) => setDiffValue(value)}
+                                    items={diffOptions}
+                                    value={diffValue}
+                                    style={{inputIOS: {fontSize: 16}}}
+                                />
+                            </View>  
+
+                            <ShowOptions/>
                                         
                         
 

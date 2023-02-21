@@ -117,7 +117,8 @@ export function AccessTest(props) {
 
             let info = await response.json()
 
-            //console.log("🚀 ~ file: accessTest.component.js:117 ~ endActivity ~ info", info);
+            console.log("🚀 ~ file: accessTest.component.js:117 ~ endActivity ~ info", info);
+            console.log("🚀 ~ file: accessTest.component.js:117 ~ endActivity ~ data", data);
 
 
         } catch (error) {
@@ -172,14 +173,28 @@ export function AccessTest(props) {
                 inPerimeter: true,
                 area: val,
                 distancePath: 0,
-                roadData: null,
-                diffRating: 0,
-                cost: 0,
-                spots: 0,
-                floors: 0,
+                distanceFromArea: 0,
                 time: new Date()
             }
         );
+
+        //console.log("\n\n\n DISTANCE FROM PERIMETER: \n", calculateMinimumDistance(props.initialTimeSlot.area, currentPath));
+        //console.log("\n\n\n PERIMETER: \n", props.initialTimeSlot.area);
+
+        // Map perimeter area object into 2D array of coords
+        const projectCoordinates = props.initialTimeSlot.area.map(coord => [coord.latitude, coord.longitude]);
+
+        // Map test object into 2D array of coords
+        const testCoordinates = currentPath.map(coord => [coord.latitude, coord.longitude]);
+
+        if(!isWithinProjectArea(projectCoordinates, testCoordinates)) {
+            const distance = calculateMinimumDistance(projectCoordinates, testCoordinates);
+
+            data[dataIndex].inPerimeter = false;
+            data[dataIndex].distanceFromArea = distance;
+        }
+
+
         
         setDetailsModal(true);
         setStart(false);
@@ -199,10 +214,99 @@ export function AccessTest(props) {
 
     // closes the details modal and stores the details(s)
     const closeDetails = async (inf) => {        
-        data[dataIndex - 1].details = inf.details;
+        data[dataIndex - 1].details = inf;
+
+        console.log("🚀 ~ file: accessTest.component.js:204 ~ closeDetails ~ data[dataIndex - 1]", data[dataIndex - 1]);
+
         setStart(true);
         setDetailsModal(false);
     }
+
+    // Checks if the test coordinates are within the project bounds
+    function isWithinProjectArea(projectCoords, testCoords) {
+        const [xMin, yMin] = projectCoords.reduce(([x, y], [pX, pY]) => [Math.min(x, pX), Math.min(y, pY)], [Infinity, Infinity]);
+        const [xMax, yMax] = projectCoords.reduce(([x, y], [pX, pY]) => [Math.max(x, pX), Math.max(y, pY)], [-Infinity, -Infinity]);
+      
+        let within = false;
+      
+        for (let i = 0; i < testCoords.length; i++) {
+          const [x, y] = testCoords[i];
+      
+          // Check if point is outside bounding box
+          if (x < xMin || x > xMax || y < yMin || y > yMax) {
+            continue;
+          }
+      
+          // Check intersections with project area edges
+          let count = 0;
+      
+          for (let j = 0; j < projectCoords.length; j++) {
+            const [x1, y1] = projectCoords[j];
+            const [x2, y2] = projectCoords[(j + 1) % projectCoords.length];
+      
+            if ((y > y1 && y <= y2 || y > y2 && y <= y1) && x < (x2 - x1) * (y - y1) / (y2 - y1) + x1) {
+              count++;
+            }
+          }
+      
+          if (count % 2 !== 0) {
+            within = true;
+            break;
+          }
+        }
+      
+        return within;
+    }
+      
+    //Haversine formula for calculating distance between coordinates
+    const distanceInMeters = (lat1, lon1, lat2, lon2) => {
+        const R = 6371000; // radius of the earth in meters
+        const phi1 = lat1 * Math.PI / 180; // latitude of point 1 in radians
+        const phi2 = lat2 * Math.PI / 180; // latitude of point 2 in radians
+        const deltaPhi = (lat2 - lat1) * Math.PI / 180; // difference in latitude in radians
+        const deltaLambda = (lon2 - lon1) * Math.PI / 180; // difference in longitude in radians
+        
+        const a = Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+                  Math.cos(phi1) * Math.cos(phi2) *
+                  Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        
+        const distance = R * c;
+        return distance;
+      }
+      
+    
+    function pointToLineDistance(x, y, x1, y1, x2, y2) {
+        const a = distanceInMeters(x, y, x1, y1);
+        const b = distanceInMeters(x, y, x2, y2);
+        const c = distanceInMeters(x1, y1, x2, y2);
+        const p = (a + b + c) / 2;
+        const h = (2 / c) * Math.sqrt(p * (p - a) * (p - b) * (p - c));
+        return h;
+    }
+    
+    function calculateMinimumDistance(projectCoords, testCoords) {
+        let minDistance = Number.MAX_VALUE;
+        
+        for (let i = 0; i < projectCoords.length - 1; i++) {
+            const x1 = projectCoords[i][0];
+            const y1 = projectCoords[i][1];
+            const x2 = projectCoords[i + 1][0];
+            const y2 = projectCoords[i + 1][1];
+        
+            for (let j = 0; j < testCoords.length; j++) {
+            const x = testCoords[j][0];
+            const y = testCoords[j][1];
+        
+            const d = pointToLineDistance(x, y, x1, y1, x2, y2);
+            minDistance = Math.min(minDistance, d);
+
+
+            }
+        }
+        
+        return minDistance;
+    }    
 
     // adds a marker to the current path
     const addMarker = (marker) =>{
@@ -216,7 +320,6 @@ export function AccessTest(props) {
             setCurrentPathSize(currentPathSize+1);
         }
     }
-
 
     // pulls up the delete modal
     const handleDelete = (type, index, coords) =>{
@@ -442,17 +545,6 @@ export function AccessTest(props) {
         }
     }
 
-    //closes the error modal
-
-//    const AccessToolBar = () =>{
-//         return(
-//             <View style={styles.buttonRow}>
-//                 <Text style={styles.buttonTxt}>Point</Text>
-//             </View>
-//         )
-//     }       
-
-
     const dismiss = () =>{
         setErrorModal(false);
     }
@@ -562,7 +654,7 @@ export function AccessTest(props) {
     const PlayPauseButton = () =>{
         const Play = () => <Icon name='play-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
         const Pause = () => <Icon name='pause-circle' fill={'#FFFFFF'} style={styles.playPauseIcon} />
-      
+
         // timer is active
         if(start){
           return(
@@ -700,14 +792,6 @@ export function AccessTest(props) {
                             recenter={recenter}
                         />
                     </View>
-
-                {/* <AccessMap
-                    area={area}
-                    marker={tempMarker}
-                    dataPoints={dataPoints}
-                    addMarker={onPointCreate}
-                    deleteMarker={handleDelete}
-                /> */}
                 
                 <AccessToolBar/>
                 <LineToolBar/>
@@ -715,7 +799,7 @@ export function AccessTest(props) {
             </ContentContainer>
             {/* {start ?
                 <View style={styles.descriptionView}>
-                    <Text category={'s1'}>Tap on the map to plot Access Point</Text>
+                    <Text category={'s1'}>Select a type to plot Access</Text>
                 </View>
             :
                 <View style={styles.descriptionView}>
