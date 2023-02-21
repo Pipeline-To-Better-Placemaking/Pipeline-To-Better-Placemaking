@@ -118,7 +118,7 @@ const subtable = (row, type, name, open) => (
                                 ))
                             ))
                         ))) 
-                    :(name === 'light_maps' || name === 'order_maps' || name === 'access_maps' ? 
+                    :(name === 'light_maps' || name === 'order_maps' ? 
                         (Object.entries(row).map(([date, dObj]) => (
                             Object.entries(dObj).map(([time, tObj]) => (
                                 tObj.data.map((object, index) => (
