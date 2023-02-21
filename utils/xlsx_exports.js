@@ -3,8 +3,8 @@ const XLSX = require('xlsx')
 
 //takes in data from projects route and receives objects from helper functions.  
 //converts those into xlsx and returns them to projects
-projectExport = function(stationaryData, movingData, soundData, natureData, lightData, orderData,
-                        boundariesData){
+projectExport = function(stationaryData, movingData, soundData, natureData, lightData, orderData, accessData,
+                        boundariesData, programData){
 
     var stationary = []
     var moving = []
@@ -13,6 +13,8 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
     var lighting = []
     var nature = []
     var sound = []
+    var access = []
+    var program = []
     var workbook = XLSX.utils.book_new();
 
 
@@ -44,6 +46,14 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
         boundaries = boundToXLSX(boundariesData)
         var worksheetbounds = XLSX.utils.json_to_sheet(boundaries);
         XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
+        
+        program = programToXLSX(programData)
+        var worksheetprograms = XLSX.utils.json_to_sheet(program);
+        XLSX.utils.book_append_sheet(workbook, worksheetprograms, 'IdentifyingProgram');
+
+        access = accessToXLSX(accessData)
+        var worksheetaccess = XLSX.utils.json_to_sheet(access)
+        XLSX.utils.book_append_sheet(workbook, worksheetaccess, 'IdentifyingAccess');
 
 
     // Excel Format
@@ -366,6 +376,87 @@ function orderToXLSX(data){
         return order
     }catch(error){
     console.log("order fails " + error)
+    }
+}
+
+function accessToXLSX(data){
+
+    try{
+        var access = []
+        var obj = {}
+
+        for(var i = 0; i < data.accessCollections.length; i++){
+            var collection = data.accessCollections[i]
+            
+            if(collection.maps){
+                for (var j = 0; j < collection.maps.length; j++){
+                    var map = collection.maps[j]
+
+                        if(map.data){
+                        for(var k = 0; k < map.data.length; k++){
+                            var entry = map.data[k]
+
+                                for (var l = 0; l < entry.points.length; l++){
+                                    var points = entry.points[l]
+
+                                    obj = { Category: `${collection.title}(${j})`, 
+                                            Date: map.date, 
+                                            Time: getDigitalTime(entry.time), 
+                                            Point: l, 
+                                            Description: points.access_description
+                                }
+
+                                access.push(obj)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return access
+    }
+    catch(error){
+    console.log("light fails " + error)
+    }
+}
+        
+function programToXLSX(data){
+
+    try{
+        var programs = []
+        var obj = {}
+
+        for(var i = 0; i < data.programCollections.length; i++){
+            var collection = data.programCollections[i]
+            
+            if(collection.maps){
+                for (var j = 0; j < collection.maps.length; j++){
+                    var map = collection.maps[j]
+
+                        if(map.data){
+                        for(var k = 0; k < map.data.length; k++){
+                            var entry = map.data[k]
+
+                            obj = { Category: `${collection.title}(${j})`, 
+                                    Date: map.date, 
+                                    Time: getDigitalTime(entry.time), 
+                                    Point: k, 
+                                    Kind: entry.kind, 
+                                    Description: entry.description, 
+                                    Purpose: parseArrAsString(entry.purpose), 
+                                    'Value (ft/sq.ft)': entry.value
+                            }
+
+                            programs.push(obj)
+                        }
+                    }
+                }
+            }
+        }
+        return programs
+
+    }catch(error){
+    console.log("program fails " + error)
     }
 }
 

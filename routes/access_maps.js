@@ -8,7 +8,6 @@ const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const { models } = require('mongoose')
 
-
 const { UnauthorizedError, BadRequestError } = require('../utils/errors')
 
 //route creates new map(s).  If there are multiple time slots in test, multiple timseslots are created.
@@ -38,6 +37,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                 res.status(201).json(await Access_Collection.findById(req.body.collection))
             }
             
+        //note that access test does not use any standing points
 
         let newMap = new Map({
             title: req.body.title,
@@ -57,8 +57,6 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     }   
 })
 
-
-
 //route gets all map data, including any collection data.
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     const map = await  Map.findById(req.params.id)
@@ -76,7 +74,6 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                            
     res.status(200).json(map)
 })
-
 
 //route signs team member up to a time slot.
 router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
@@ -126,7 +123,6 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     }
     
 })
-
 
 
 //route deletes a map from a test collection
@@ -186,10 +182,8 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             cost: (req.body.cost ? req.body.cost : oldData.cost),
             spots: (req.body.spots ? req.body.spots : oldData.spots),
             floors: (req.body.floors ? req.body.floors : oldData.floors),
-            
-        
         }
-    
+
         await Map.updateData(mapId,oldData._id,newData)
         res.status(201).json(await Map.findById(req.params.id))
     }  

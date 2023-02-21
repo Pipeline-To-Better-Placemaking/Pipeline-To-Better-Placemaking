@@ -7,17 +7,22 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 const dataSchema = mongoose.Schema({
     //stores any access points and types
     path: [{
-        lat:{
+        latitude:{
             type: Number,
             required: true
         },
-        lng:{
+        longitude:{
             type: Number,
             required: true 
         }
     }],
 
     accessType: {
+        type: String,
+        required: true
+    },
+
+    description: {
         type: String,
         required: true
     },
@@ -146,6 +151,7 @@ module.exports.addEntry = async function(mapId, newEntry) {
     var entry = new Entry({
         path: newEntry.path,
         accessType: newEntry.accessType,
+        description: newEntry.description,
         area: newEntry.area,
         distance: newEntry.distance,
         inPerimeter: newEntry.inPerimeter,

@@ -10,8 +10,9 @@ const Nature_Map = require('../models/nature_maps.js')
 const Light_Map = require('../models/light_maps.js')
 const Order_Map = require('../models/order_maps.js')
 const Boundaries_Map = require('../models/boundaries_maps.js')
-const Program_Map = require('../models/program_maps.js')
+const Section_Map = require('../models/section_maps.js')
 const Access_Map = require('../models/access_maps.js')
+const Program_Map = require('../models/program_maps.js')
 
 
 const passport = require('passport')
@@ -47,10 +48,11 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     for(var i = 0; i < team.users.length; i++){
         const user = await User.findById(team.users[i].user)
         myRole = team.users[i].role
-        team.users[i] = {user: user._id,
-                         role: myRole,
-                         firstname: user.firstname,
-                         lastname: user.lastname
+        team.users[i] = {
+                            user: user._id,
+                            role: myRole,
+                            firstname: user.firstname,
+                            lastname: user.lastname
                         }
     }
     res.status(200).json(team)
@@ -94,6 +96,7 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
                 await Light_Map.projectCleanup(proj)
                 await Order_Map.projectCleanup(proj)
                 await Boundaries_Map.projectCleanup(proj)
+                await Section_Map.projectCleanup(proj)
                 await Access_Map.projectCleanup(proj)
                 await Program_Map.projectCleanup(proj)
             }

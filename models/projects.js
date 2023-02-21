@@ -75,14 +75,14 @@ const project_schema = mongoose.Schema({
         type: ObjectId,
         ref: 'Survey_Collections'
     }],
-    accessCollections: [{
+    accessCollections:[{
         type: ObjectId,
         ref: 'Access_Collections'
     }],
-    programCollections: [{
+    programCollections:[{
         type: ObjectId,
         ref: 'Program_Collections'
-    }]
+    }],
 })
 
 project_schema.plugin(uniqueValidator)
@@ -322,7 +322,6 @@ module.exports.deleteAccessCollection = async function(projectId, collectionId) 
    return await Access_Collection.deleteCollection(collectionId)
 }   
 
-
 module.exports.addProgramCollection = async function (projectId, collectionId) {
     return await Projects.updateOne(
        { _id: projectId },
@@ -338,7 +337,6 @@ module.exports.deleteProgramCollection = async function(projectId, collectionId)
    )
    return await Program_Collection.deleteCollection(collectionId)
 }   
-
 
 module.exports.addArea = async function(projectId, areaId) {
     return await Projects.updateOne(
@@ -369,3 +367,19 @@ module.exports.deletePoint = async function(projectId, pointId) {
       { $pull: { standingPoints: pointId}}
   )
 }
+
+module.exports.addProgramCollection = async function (projectId, collectionId) {
+    return await Projects.updateOne(
+       { _id: projectId },
+       { $push: { programCollections:  collectionId}}
+   )
+}
+
+module.exports.deleteProgramCollection = async function(projectId, collectionId) {
+   
+   await Projects.updateOne(
+       { _id: projectId },
+       { $pull: { programCollections: collectionId}}
+   )
+   return await Program_Collection.deleteCollection(collectionId)
+}   

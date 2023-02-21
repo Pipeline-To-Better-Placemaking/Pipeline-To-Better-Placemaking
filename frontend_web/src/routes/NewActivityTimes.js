@@ -30,7 +30,9 @@ export default function NewActivityTimes(props) {
         nature_maps: ['nature_collections', 'nature'],
         order_maps: ['order_collections', 'order'],
         sound_maps: ['sound_collections', 'sound'],
-        stationary_maps: ['stationary_collections', 'stationary']
+        stationary_maps: ['stationary_collections', 'stationary'],
+        access_maps: ['access_collections', 'access'],
+        program_maps: ['program_collections', 'program']
     }
 
     //dynamically adds removes timeSlot cards for the activity
@@ -68,7 +70,7 @@ export default function NewActivityTimes(props) {
 
     function newTime(e) {
         var temp = timeSlots;
-        if (activity.activity !== 'boundaries_maps' && activity.activity !== 'light_maps' && activity.activity !== 'nature_maps' && activity.activity !== 'order_maps'){
+        if (activity.activity !== 'boundaries_maps' && activity.activity !== 'light_maps' && activity.activity !== 'nature_maps' && activity.activity !== 'order_maps' && activity.activity !== 'program_maps'){
             temp.push({
                 type: collections[activity.activity][1],
                 instance: activity.number,
@@ -78,6 +80,7 @@ export default function NewActivityTimes(props) {
                 points: {},
                 researchers: []
             });
+            // Add an else if statement
         } else {
             temp.push({
                 type: collections[activity.activity][1],
@@ -151,7 +154,7 @@ export default function NewActivityTimes(props) {
     const addNewTimeSlots = async (timeSlot, title, id, timeSlotName, type) => {
         var selectedPoints = [];
 
-        if (type !== 'boundary' && type !== 'nature' && type !== 'order' && type !== 'survey'){
+        if (type !== 'boundary' && type !== 'nature' && type !== 'order' && type !== 'survey' && type !== 'program'){
             if(timeSlot.points && timeSlot.points.length !== 0){
                 Object.entries(timeSlot.points).forEach(([pointInd, bool])=>(
                     bool ? selectedPoints.push(props.projectInfo.standingPoints[pointInd]) : null
@@ -165,33 +168,103 @@ export default function NewActivityTimes(props) {
         console.log(adjusted);
         console.log(adjusted.toISOString())
 
-        try {
-            const response = await axios.post(`/${timeSlotName}`, JSON.stringify({
-                title: title,
-                standingPoints: selectedPoints,
-                researchers: [],
-                project: props.projectInfo._id, 
-                collection: id,
-                date: (adjusted.toISOString()),
-                maxResearchers: `${timeSlot.maxResearchers}`
-            }), {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Authorization': `Bearer ${loc.state.userToken.token}`
-                },
-                withCredentials: true
-            });
+        if (type === 'program')
+        {
+            let isoDate = new Date(`${activity.date}T00:00:00`);
+            let activityDetails;
+            console.log(loc.state.buildingArea);
+            const buildingData = {
+                numFloors: loc.state.numFloors,
+                perimeterPoints: loc.state.buildingArea,
+                modified: isoDate.toISOString(),
+            }
 
-            let activityDetails = await response.data;
+            console.log(buildingData);
+            try {
+                const response = await axios.post(`/${timeSlotName}`, JSON.stringify({
+                    title: title,
+                    standingPoints: selectedPoints,
+                    researchers: [],
+                    project: props.projectInfo._id, 
+                    collection: id,
+                    date: (adjusted.toISOString()),
+                    maxResearchers: `${timeSlot.maxResearchers}`,
+                    data: buildingData
 
-        } catch (error) {
-            console.log('ERROR: ', error);
-            setMessage(error.response.data?.message);
-            response.current.style.display = 'inline-block';
-            return;
+                }), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': `Bearer ${loc.state.userToken.token}`
+                    },
+                    withCredentials: true
+                });
+    
+                activityDetails = await response.data;
+
+            } catch (error) {
+                console.log('ERROR: ', error);
+                setMessage(error.response.data?.message);
+                response.current.style.display = 'inline-block';
+                return;
+            }
+
+            for (let i = 0; i < loc.state.numFloors; i++)
+            {
+                try {
+                    const response = await axios.post(`/${timeSlotName}/${activityDetails._id}/data/${activityDetails.data[0]._id}/floors`, JSON.stringify({
+                        floorNum: (i+1),
+                        programCount: 0
+    
+                    }), {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Authorization': `Bearer ${loc.state.userToken.token}`
+                        },
+                        withCredentials: true
+                    });
+                    let floorDetails = await response.data;
+
+                } catch (error) {
+                    console.log('ERROR: ', error);
+                    setMessage(error.response.data?.message);
+                    response.current.style.display = 'inline-block';
+                    return;
+                }
+            }
         }
 
+        else 
+        {
+            try {
+                const response = await axios.post(`/${timeSlotName}`, JSON.stringify({
+                    title: title,
+                    standingPoints: selectedPoints,
+                    researchers: [],
+                    project: props.projectInfo._id, 
+                    collection: id,
+                    date: (adjusted.toISOString()),
+                    maxResearchers: `${timeSlot.maxResearchers}`
+                }), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': `Bearer ${loc.state.userToken.token}`
+                    },
+                    withCredentials: true
+                });
+    
+                let activityDetails = await response.data;
+    
+            } catch (error) {
+                console.log('ERROR: ', error);
+                setMessage(error.response.data?.message);
+                response.current.style.display = 'inline-block';
+                return;
+            }
+        }
+        
     }
 
     return(
@@ -211,11 +284,15 @@ export default function NewActivityTimes(props) {
                     Time per Location: { activity.timer }
                 </Card.Header>
                 <Card.Body id='timeCardContent'>
-                    <span ref={response} style={{ display: 'none', color: 'red' }}>{message}</span>
+                    <span ref={response} style={{ display: 'inline-block', color: 'red' }}>{message}</span>
                     <Button id='newTimeButton' onClick={ newTime } className='scheme'>New Time Slot</Button>
                     { timeCards(timeSlots) }
                 </Card.Body>
                 <Button component={ Link } to='../activities' state={{team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken}}>Cancel</Button>
+
+                {testNames(activity.activity) !== 'Identifying Program' ? null
+                    : 
+                    null}
             </Card>
         </div>
     );

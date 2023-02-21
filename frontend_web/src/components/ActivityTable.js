@@ -64,7 +64,7 @@ const subtable = (row, type, name, open) => (
                         { type === 0 ? 'Type' : 'Value' }
                     </TableCell>
                     <TableCell>{ type === 0 ? 'Location' : 'Type(s)/Source(s)' }</TableCell>
-                    <TableCell>{ type === 0 ? 'Date Time' : 'Location' }</TableCell>
+                    <TableCell>{ type === 0 ? 'Date Time': 'Location' }</TableCell>
                     <TableCell>{ type === 0 ? 'Surveyor' : 'Date Time' }</TableCell>
                 </TableRow>
             </TableHead>
@@ -141,7 +141,7 @@ const subtable = (row, type, name, open) => (
                                                         {point.kind ? point.kind : 'N/A'}
                                                     </TableCell>
                                                     <TableCell colSpan={2} className='type'>
-                                                        {point.description ? `${point.description}` : `${point.light_description}`}
+                                                        {point.description ? `${point.description}` : (point.light_description ? `${point.light_description}` : `${point.access_description}`) }
                                                     </TableCell>
                                                     <TableCell>Location {i1 + 1}</TableCell>
                                                     <TableCell>{date} {time}</TableCell>
@@ -154,7 +154,7 @@ const subtable = (row, type, name, open) => (
                                                 { point.kind ? point.kind : 'N/A'}
                                             </TableCell>
                                             <TableCell colSpan={2} className='type'>
-                                                { point.description ? `${point.description}` : `${point.light_description}` }
+                                                { point.description ? `${point.description}` : (point.light_description ? `${point.light_description}` : `${point.access_description}`) }
                                             </TableCell>
                                             <TableCell>Location {i1 + 1}</TableCell>
                                             <TableCell>{date} {time}</TableCell>
@@ -250,7 +250,7 @@ const subtable = (row, type, name, open) => (
                                         )
                                 ))
                             :
-                                instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' ? 
+                                instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' || instance.split('.')[0] === 'access_maps' ? 
                                     (inst.points).map((point, i2) => (
                                         <TableRow key={`${ind}.${i2}`}>
                                             <TableCell colSpan={2} className='category'>
@@ -261,7 +261,7 @@ const subtable = (row, type, name, open) => (
                                             </TableCell>
                                             <TableCell>
                                                 {
-                                                    point.description ? `${point.description}` : point.light_description
+                                                    point.description ? `${point.description}` : (point.light_description ? `${point.light_description}` : `${point.access_description}`)
                                                 }
                                             </TableCell>
                                             <TableCell>Location {i2 + 1}</TableCell>

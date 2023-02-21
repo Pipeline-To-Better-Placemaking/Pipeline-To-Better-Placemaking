@@ -83,13 +83,19 @@ router.get('/access/:id', passport.authenticate('jwt',{session:false}), async (r
     res.status(200).json(await Access_Collection.findById(req.params.id)
                                                 .populate('area')
                                                 .populate('maps'))
-
 })
 
 router.get('/program/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     res.status(200).json(await Program_Collection.findById(req.params.id)
                                                 .populate('area')
                                                 .populate('maps'))
+
+})
+
+router.get('/access/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    res.status(200).json(await Access_Collection.findById(req.params.id)
+                                                .populate('area')
+                                                .populate('access'))
 
 })
 

@@ -7,16 +7,15 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 const Access_Maps = require('./access_maps.js')
 const Area = require('../models/areas.js')
 
-
+// Document Schema for Access Collections.  Maps references Access Maps Schema
 const collection_schema = mongoose.Schema({
     title: String,
 
     date: {
-        type: Date, 
+    //area the project will occur in (areas.js)
+        type: Date,
         required: true
     },
-
-    //area the project will occur in (areas.js)
     area: {
         type: ObjectId,
         required: true,
@@ -35,7 +34,8 @@ const collection_schema = mongoose.Schema({
         type: ObjectId,
         ref: 'Access_Maps'
     }]
-}) 
+})
+//end
 
 const Collection = module.exports = mongoose.model('Access_Collections', collection_schema)
 

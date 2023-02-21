@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-
-
 const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
@@ -191,7 +189,6 @@ module.exports.findData = async function(mapId, entryId){
     return out[0].data[0]
 }
 
-
 //update the data for an already exisitng data object 
 module.exports.updateData = async function(mapId, dataId, newEntry){
     return await Maps.updateOne(
@@ -210,5 +207,3 @@ module.exports.deleteEntry = async function(mapId, entryId) {
             { $pull: { data: {_id:entryId }}
             })
     }
-
-

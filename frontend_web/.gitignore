@@ -8,6 +8,7 @@ frontend_web\src\routes\ProjectPageResultsComment.txt
 
 # testing
 /coverage
+frontend_web\src\api\axios.js
 
 # production
 /build
@@ -18,6 +19,7 @@ frontend_web\src\routes\ProjectPageResultsComment.txt
 .env.development.local
 .env.test.local
 .env.production.local
+/src/api/axios.js
 
 npm-debug.log*
 yarn-debug.log*
