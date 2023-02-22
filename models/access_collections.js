@@ -5,35 +5,35 @@ const Date = mongoose.Schema.Types.Date
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const Access_Maps = require('./access_maps.js')
-const Area = require('./areas.js')
-const { collection } = require('./surveys.js')
+const Area = require('../models/areas.js')
 
 // Document Schema for Access Collections.  Maps references Access Maps Schema
 const collection_schema = mongoose.Schema({
     title: String,
 
     date: {
+    //area the project will occur in (areas.js)
         type: Date,
         required: true
     },
-
     area: {
         type: ObjectId,
         required: true,
         ref: 'Areas'
     },
 
+    //duration of the test
     duration: {
         type: Number,
         required: true,
         default: 15
     },
 
+    //maps that are for this test
     maps: [{
         type: ObjectId,
         ref: 'Access_Maps'
     }]
-
 })
 //end
 

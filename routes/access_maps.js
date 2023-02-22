@@ -6,6 +6,7 @@ const Access_Collection = require('../models/access_collections.js')
 const Team = require('../models/teams.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
+const { models } = require('mongoose')
 
 const { UnauthorizedError, BadRequestError } = require('../utils/errors')
 
@@ -29,13 +30,13 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                     maxResearchers: slot.maxResearchers,
                 })
 
-                //create new map with method from _map models and add ref to its parent collection.                               
+                //create new map with method from _map models and add ref to its parent collection.
                 const map = await Map.addMap(newMap)
                 await Access_Collection.addActivity(req.body.collection, map._id)
 
                 res.status(201).json(await Access_Collection.findById(req.body.collection))
             }
-
+            
         //note that access test does not use any standing points
 
         let newMap = new Map({
@@ -90,6 +91,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
         throw new BadRequestError('Research team is already full')
 })
 
+
 //route reverses sign up to a time slot.
 router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     map = await Map.findById(req.params.id)
@@ -122,15 +124,14 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     
 })
 
+
 //route deletes a map from a test collection
 router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
     if(await Team.isAdmin(project.team,user._id)){
-        res.json(await Access_Collection.deleteMap(map.sharedData,map._id))
-
-        
+        res.json(await Access_Collection.deleteMap(map.sharedData,map._id)) 
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
@@ -157,7 +158,7 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
         throw new UnauthorizedError('You do not have permision to perform this operation')
     }
 })
-//
+
 //route edits any already created tested time slots.  Essentially redoing a test run for a time slot 
 router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user   
@@ -169,8 +170,18 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
 
         const newData = {
             _id: oldData._id,
-            points: (req.body.points ? req.body.points : oldData.points),
-            time: (req.body.time ? req.body.time : oldData.time)
+            accessType: (req.body.accessType ? req.body.accessType : oldData.accessType),
+            inPerimeter: (req.body.inPerimeter ? req.body.inPerimeter : oldData.inPerimeter),
+            area: (req.body.area ? req.body.area : oldData.area),
+            distance: (req.body.distance ? req.body.distance : oldData.distance),
+            path: (req.body.path ? req.body.path : oldData.path),
+            time: (req.body.time ? req.body.time : oldData.time),
+            distancePath: (req.body.distancePath ? req.body.distancePath : oldData.distancePath),
+            roadData: (req.body.roadData ? req.body.roadData : req.body.roadData),
+            diffRating: (req.body.diffRating ? req.body.diffRating : oldData.diffRating),
+            cost: (req.body.cost ? req.body.cost : oldData.cost),
+            spots: (req.body.spots ? req.body.spots : oldData.spots),
+            floors: (req.body.floors ? req.body.floors : oldData.floors),
         }
 
         await Map.updateData(mapId,oldData._id,newData)

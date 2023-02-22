@@ -347,6 +347,21 @@ module.exports.deleteAccessCollection = async function(projectId, collectionId) 
    return await Access_Collection.deleteCollection(collectionId)
 }   
 
+module.exports.addProgramCollection = async function (projectId, collectionId) {
+    return await Projects.updateOne(
+       { _id: projectId },
+       { $push: { programCollections:  collectionId}}
+   )
+}
+
+module.exports.deleteProgramCollection = async function(projectId, collectionId) {
+   
+   await Projects.updateOne(
+       { _id: projectId },
+       { $pull: { programCollections: collectionId}}
+   )
+   return await Program_Collection.deleteCollection(collectionId)
+}   
 
 module.exports.addArea = async function(projectId, areaId) {
     return await Projects.updateOne(

@@ -9,38 +9,37 @@ const User = require('../models/users')
 
 const baseUrl = '/api/projects'
 
-// const testUser = {
-//     firstname: 'John',
-//     lastname: 'Doe',
-//     institution: 'University of Central Florida',
-//     email: 'test@yahoo.com',
-//     password: '1#Aadmin'
-// }
+var testUser = {
+    firstname: 'Andrea',
+    lastname: 'Test',
+    email: 'andreatesting2@aol.com',
+    password: 'testing12Andrea!'
+}
 
 const mockObjectId = new mongoose.Types.ObjectId();
-const teamId = new mongoose.Types.ObjectId('6265b5f7fef8fc5ad4ebb63e');
+const teamId = new mongoose.Types.ObjectId('63dd7f0ce430a91b9bc425e7');
 const standingPointsId = new mongoose.Types.ObjectId('6265d737dc628b7c7ae00c80')
 const areaId = new mongoose.Types.ObjectId('6265dfabdc628b7c7ae00c81')
 
 
 describe('When creating a project', () => {
 
-    // beforeEach(async () => {
-    //     // Begin each test with a known user record in the database
+    //  beforeEach(async () => {
+    //      // Begin each test with a known user record in the database
 
-    //     // await User.deleteMany({})
-    //     // const user = new User({
-    //     //     firstname: testUser.firstname,
-    //     //     lastname: testUser.lastname,
-    //     //     institution: testUser.institution,
-    //     //     email: testUser.email,
-    //     //     password: testUser.password
-    //     // })
-    //     // await User.addUser(user)
-    //     // token = th.getToken(user)
-    //     // console.log(token)
+    //       //await User.deleteMany({})
+    //       const user = new User({
+    //           firstname: testUser.firstname,
+    //           lastname: testUser.lastname,
+    //           institution: testUser.institution,
+    //           email: testUser.email,
+    //           password: testUser.password
+    //       })
+    //       await User.addUser(user)
+    //       token = th.getToken(user)
+    //       console.log(token)
         
-    // })
+    //  })
     
     test('Creation succeeds', async () => {
 
@@ -60,14 +59,14 @@ describe('When creating a project', () => {
            title: 'circle'
        }) 
 
-       testUser = await User.findUserByEmail('test@yahoo.com')
-
+       testUser = await User.findUserByEmail('andreatesting2@aol.com')
+        
         token = th.getToken(testUser)
         console.log(token)
 
         const testProj = {
-            title: 'New Project',
-            description: 'Its a secret',
+            title: 'Andrea Test project',
+            description: 'testing the tester',
             points: area,
             standingPoints: standingPoints,
             team: teamId,
@@ -81,7 +80,8 @@ describe('When creating a project', () => {
             // Confirm successful login
             .expect(201)
             .expect('Content-Type', /application\/json/)
-
+        
+        console.log(response)
         // Confirm that response contains email
         // expect(response.body).toMatchObject({ user: { email: testUser.email } })
         

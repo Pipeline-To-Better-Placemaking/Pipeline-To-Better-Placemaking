@@ -4,6 +4,7 @@ const Map = require('../models/program_maps.js')
 const Project = require('../models/projects.js')
 const Program_Collection = require('../models/program_collections.js')
 const Team = require('../models/teams.js')
+const Floor = require('../models/program_floors.js')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
@@ -39,7 +40,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
 
                 res.status(201).json(await Program_Collection.findById(req.body.collection))
             }
-            
+           
         //note that program does not use any standing points
 
         let newMap = new Map({
@@ -176,7 +177,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             _id: oldData._id,
             numFloors: (req.body.numFloors ? req.body.numFloors : oldData.numFloors),
             perimeterPoints: (req.body.perimeterPoints ? req.body.perimeterPoints : oldData.perimeterPoints),
-            modified: (req.body.modified ? req.body.modified : oldData.modified)
+            time: (req.body.time ? req.body.time : oldData.time)
         }
     
         await Map.updateData(mapId,oldData._id,newData)
@@ -285,7 +286,6 @@ router.put('/:id/data/:data_id/floors/:floors_id/programs/programs_id', passport
     }  
 })
 
-
 //route deletes an individual time slot from a map (data object) 
 router.delete('/:id/data/:data_id',passport.authenticate('jwt',{session:false}), async (req, res, next) => { 
     user = await req.user
@@ -298,28 +298,4 @@ router.delete('/:id/data/:data_id',passport.authenticate('jwt',{session:false}),
     }
 })
 
-//route deletes an individual time slot from a map (floors object) 
-router.delete('/:id/data/:data_id/floors/:floors_id',passport.authenticate('jwt',{session:false}), async (req, res, next) => { 
-    user = await req.user
-    map = await Map.findById(req.params.id)
-    if(Map.isResearcher(map._id, user._id)){
-        //****** */
-        res.json(await Map.deleteEntry(map._id,req.params.data_id.floors_id))
-    }
-    else{
-        throw new UnauthorizedError('You do not have permision to perform this operation')
-    }
-})
-
-//route deletes an individual time slot from a map (programs object) 
-router.delete('/:id/data/:data_id/floors/:floors_id/programs/programs_id',passport.authenticate('jwt',{session:false}), async (req, res, next) => { 
-    user = await req.user
-    map = await Map.findById(req.params.id)
-    if(Map.isResearcher(map._id, user._id)){
-        res.json(await Map.deleteEntry(map._id,req.params.data_id.floors_id.programs_id))
-    }
-    else{
-        throw new UnauthorizedError('You do not have permision to perform this operation')
-    }
-})
 module.exports = router

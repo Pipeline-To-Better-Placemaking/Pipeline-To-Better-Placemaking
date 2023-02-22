@@ -15,7 +15,7 @@ const connect = async () => {
     try {
         await mongoose.connect(config.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
         log.info('Connected to database')
-    } catch (err) {
+    } catch (error) {
         log.info('Error connecting to database: ', error.message)
     }
 }
@@ -47,7 +47,9 @@ const accessApi      = require('./routes/access_maps.js')
 const surveyApi     = require('./routes/surveys.js')
 const collectionApi = require('./routes/collections.js')
 const resetApi      = require('./routes/password_reset.js')
+const accessApi     = require('./routes/access_maps.js')
 const programApi    = require('./routes/program_maps.js')
+const floorsApi     = require('./routes/program_floors.js')
 
 //first parameter will be the directory name used from front end to access these routes
 app.use('/api/login',           loginApi)
@@ -68,6 +70,7 @@ app.use('/api/access_maps',     accessApi)
 app.use('/api/collections',     collectionApi)
 app.use('/api/password_reset',  resetApi)
 app.use('/api/program_maps',    programApi)
+app.use('/api/program_floors',  floorsApi)
 
 app.use(passport.initialize());
 app.use(passport.session());

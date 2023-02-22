@@ -15,8 +15,8 @@ const Light_Collection = require('../models/light_collections.js')
 const Boundaries_Collection = require('../models/boundaries_collections.js')
 const Order_Collection = require('../models/order_collections.js')
 const Access_Collection = require('../models/access_collections.js')
-const Program_Collection = require('../models/program_collections')
 const Section_Collection = require('../models/section_collections.js')
+const Program_Collection = require('../models/program_collections.js')
 
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
@@ -853,8 +853,6 @@ router.post('/:id/program_collections', passport.authenticate('jwt',{session:fal
 
         await newCollection.save()
         await Area.addRefrence(newCollection.area)
-
-
         await Project.addProgramCollection(project._id,newCollection._id)
         res.json(newCollection)
     }
@@ -933,8 +931,6 @@ router.put('/:id/access_collections/:collectionId', passport.authenticate('jwt',
     collection = await Access_Collection.findById(req.params.collectionId)
 
     if(await Team.isAdmin(project.team,user._id)){
-    
-        
         let newCollection = new Access_Collection({
                 title: (req.body.title ? req.body.title : collection.title),
                 date: (req.body.date ? req.body.date : collection.date),
@@ -1176,6 +1172,75 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     path: 'area',
                                     }]
                                 }])
+    accessData = await Project.findById(req.params.id)
+                            .populate('area')
+                            .populate([
+                            {
+                                path: 'accessCollections',
+                                model: 'Access_Collections',
+                                populate: [{
+                                    path:'maps',
+                                    model:'Access_Maps',
+                                    select: 'date',
+                                    populate:[{
+                                        path: 'data',
+                                    },{
+                                        path: 'researchers'
+                                    }]
+                                },{
+                                    path: 'area',
+                                }]
+                            }])
+    
+    programData = await Project.findById(req.params.id)
+                            .populate('area')
+                            .populate([
+                            {
+                                path:'programCollections',
+                                model:'Program_Collections',
+                                populate: [{
+                                    path: 'maps',
+                                    model: 'Program_Maps',
+                                    select: 'date',
+                                    populate: [{
+                                        path: 'data',
+                                        populate:{
+                                            path: 'floors',
+                                            populate:{
+                                                path: 'programs'
+                                            }
+                                        }
+                                        },{
+                                        path: 'researchers'
+                                        }]
+                                    },{
+                                    path: 'area',
+                                    }]
+                                }])
+
+    sectionData = await Project.findById(req.params.id)
+                            .populate('area')
+                            .populate([
+                            {
+                                path:'sectionCollections',
+                                model:'Section_Collections',
+                                populate: [{
+                                    path:'maps',
+                                    model:'Section_Maps',
+                                    select: 'date',
+                                    populate: [{
+                                        path: 'data',
+                                        populate:{
+                                            path: 'standingPoint',
+                                            model: 'Standing_Points'
+                                        }
+                                        },{
+                                            path: 'researchers'
+                                        }]
+                                    },{
+                                    path: 'area',
+                                    }]    
+                                        }])
     
     accessData = await Project.findById(req.params.id)
                             .populate('area')
