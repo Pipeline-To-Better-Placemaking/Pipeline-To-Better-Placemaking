@@ -152,7 +152,7 @@ div#deleteWindow button#deleteButton, div#deleteWindow button#cancelButton{
     z-index: 999;
 }
 
-#newProgramButtons{
+#newSectionButtons, #newProgramButtons {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -162,7 +162,7 @@ div#deleteWindow button#deleteButton, div#deleteWindow button#cancelButton{
     z-index: 999;
 }
 
-#newAreaBlock, #newProjPoints{
+#newAreaBlock, #newProjPoints, #newAreaBlock, #newProjPoints {
     flex-direction: column;
     left: calc(50vw - 15vw);
 }
@@ -317,7 +317,7 @@ div#projectCreate div#mapFrame {
     margin-bottom: 20px;
 }
 
-div#newProject div#mapFrame, div#newPoints div#mapFrame, div#newArea div#mapFrame, div#newProgram div#mapFrame {
+div#newProject div#mapFrame, div#newPoints div#mapFrame, div#newArea div#mapFrame, div#newSection div#mapFrame, div#newProgram div#mapFrame {
     width: calc(100vw - 1px);
     height: calc(100vh - 69px);
 }

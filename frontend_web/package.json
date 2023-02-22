@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "fast-equals": "^3.0.3",
+    "firebase": "^9.17.1",
     "html2canvas": "^1.4.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.2.1",
@@ -24,7 +25,10 @@
     "react-router-dom": "^6.2.2",
     "react-scripts": "^5.0.1",
     "react-unity-webgl": "^9.4.0",
+    "react-slideshow-image": "^4.2.0",
     "recharts": "^2.1.10",
+    "semantic-ui-css": "^2.5.0",
+    "semantic-ui-react": "^2.1.4",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5"
   },

@@ -62,6 +62,7 @@ export default function ActivityPage(props) {
         var nature = [];
         var sound = [];
         var access = [];
+        var section = [];
 
         // Loop through Project Data
         Object.entries(drawers).forEach(([category, catobject])=>{
@@ -92,6 +93,9 @@ export default function ActivityPage(props) {
                         } else if (category === 'boundaries_maps') {
                             obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: index, Kind: dataobjects.kind, Description: dataobjects.description, Purpose: `${dataobjects.purpose}`, 'Value (ft/sq.ft)': dataobjects.value }
                             boundaries.push(obj);
+                        } else if (category === 'section_maps') {
+                            obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: index, Kind: dataobjects.kind, Description: dataobjects.description, Purpose: `${dataobjects.purpose}`, 'Value (ft/sq.ft)': dataobjects.value }
+                            section.push(obj);
                         } else if(category === 'order_maps') {
                             dataobjects.points.forEach((point, ind)=>{
                                 obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, Kind: point.kind, Description: `${point.description}` }
@@ -139,6 +143,7 @@ export default function ActivityPage(props) {
         var worksheetnat = XLSX.utils.json_to_sheet(nature);
         var worksheetsound = XLSX.utils.json_to_sheet(sound);
         var worksheetaccess = XLSX.utils.json_to_sheet(access);
+        var worksheetsection = XLSX.utils.json_to_sheet(section);
 
         // Append worksheets to workbook and name them
         XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
@@ -149,6 +154,7 @@ export default function ActivityPage(props) {
         XLSX.utils.book_append_sheet(workbook, worksheetmov, 'PeopleInMotion');
         XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
         XLSX.utils.book_append_sheet(workbook, worksheetaccess, 'IdentifyingAccess');
+        XLSX.utils.book_append_sheet(workbook, worksheetsection, 'SectionCutter');
         
         // Excel Format
         XLSX.writeFileXLSX(workbook, `${props.title}.xlsx`);

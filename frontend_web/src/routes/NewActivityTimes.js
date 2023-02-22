@@ -32,7 +32,8 @@ export default function NewActivityTimes(props) {
         sound_maps: ['sound_collections', 'sound'],
         stationary_maps: ['stationary_collections', 'stationary'],
         access_maps: ['access_collections', 'access'],
-        program_maps: ['program_collections', 'program']
+        program_maps: ['program_collections', 'program'],
+        section_maps: ['section_collections', 'section'],
     }
 
     //dynamically adds removes timeSlot cards for the activity
@@ -70,7 +71,7 @@ export default function NewActivityTimes(props) {
 
     function newTime(e) {
         var temp = timeSlots;
-        if (activity.activity !== 'boundaries_maps' && activity.activity !== 'light_maps' && activity.activity !== 'nature_maps' && activity.activity !== 'order_maps' && activity.activity !== 'program_maps'){
+        if (activity.activity !== 'boundaries_maps' && activity.activity !== 'light_maps' && activity.activity !== 'nature_maps' && activity.activity !== 'order_maps' && activity.activity !== 'program_maps' && activity.activity !== 'section_maps'){
             temp.push({
                 type: collections[activity.activity][1],
                 instance: activity.number,
@@ -154,7 +155,7 @@ export default function NewActivityTimes(props) {
     const addNewTimeSlots = async (timeSlot, title, id, timeSlotName, type) => {
         var selectedPoints = [];
 
-        if (type !== 'boundary' && type !== 'nature' && type !== 'order' && type !== 'survey' && type !== 'program'){
+        if (type !== 'boundary' && type !== 'nature' && type !== 'order' && type !== 'survey' && type !== 'program' && type !== 'section'){
             if(timeSlot.points && timeSlot.points.length !== 0){
                 Object.entries(timeSlot.points).forEach(([pointInd, bool])=>(
                     bool ? selectedPoints.push(props.projectInfo.standingPoints[pointInd]) : null

@@ -14,6 +14,7 @@ const testNames = [
     { label: 'Acoustical Profile', type: 'sound_maps' },
     { label: 'Identifying Access', type: 'access_maps' },
     { label: 'Identifying Program', type: 'program_maps'},
+    { label: 'Section Cutter', type: 'section_maps'},
 ];
 
 export default function ActivityForm(props) {
@@ -33,10 +34,13 @@ export default function ActivityForm(props) {
     
     const handleRoute = (activity) => 
     {
-        if (activity !== 'program_maps')
-            return 'times';
+        if(activity === 'section_maps')
+            return 'section_cutter';
+        else if(activity === 'program_maps')
+            return 'identifying_program';
         else
-            return 'identifying_program ';
+            return 'times';
+
     }
 
 

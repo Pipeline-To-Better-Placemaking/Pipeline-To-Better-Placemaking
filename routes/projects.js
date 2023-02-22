@@ -17,6 +17,7 @@ const Boundaries_Collection = require('../models/boundaries_collections.js')
 const Order_Collection = require('../models/order_collections.js')
 const Access_Collection = require('../models/access_collections.js')
 const Program_Collection = require('../models/program_collections')
+const Section_Collection = require('../models/section_collections.js')
 
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
@@ -639,6 +640,76 @@ router.delete('/:id/boundaries_collections/:collectionId', passport.authenticate
     }
 })
 
+//POST, PUT, DELETE for section cutter
+
+router.post('/:id/section_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+
+    if(await Team.isUser(project.team,user._id)){   
+
+        let newCollection = new Section_Collection({
+            title: req.body.title,
+            date: req.body.date,
+            area: req.body.area,
+            duration: req.body.duration
+        })
+
+        await newCollection.save()
+        await Area.addRefrence(newCollection.area)
+
+       
+        await Project.addSectionCollection(project._id,newCollection._id)
+        res.json(newCollection)
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+router.delete('/:id/section_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Section_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+        await Area.removeRefrence(collection.area)
+        res.status(201).json(await Project.deleteSectionCollection(project._id,req.params.collectionId))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+
+router.put('/:id/section_collections/:collectionId', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user
+    project = await Project.findById(req.params.id)
+    collection = await Section_Collection.findById(req.params.collectionId)
+
+    if(await Team.isAdmin(project.team,user._id)){
+    
+        
+        let newCollection = new Section_Collection({
+                title: (req.body.title ? req.body.title : collection.title),
+                date: (req.body.date ? req.body.date : collection.date),
+                area: (req.body.area ? req.body.area : collection.area),
+                duration: (req.body.duration ? req.body.duration : collection.duration)
+        })
+
+        if(req.body.area){
+            await Area.addRefrence(req.body.area)
+            await Area.removeRefrence(collection.area)
+        }
+  
+        res.status(201).json(await Section_Collection.updateCollection(req.params.collectionId, newCollection))
+    }
+    else{
+        throw new UnauthorizedError('You do not have permision to perform this operation')
+    }
+})
+
+
 router.post('/:id/order_collections', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.params.id)
@@ -1055,6 +1126,32 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     path: 'area',
                                     }]
                                 }])
+    
+    sectionData = await Project.findById(req.params.id)
+                            .populate('area')
+                            .populate([
+                            {
+                                path:'sectionCollections',
+                                model:'Section_Collections',
+                                populate: [{
+                                    path: 'maps',
+                                    model: 'Section_Maps',
+                                    select: 'date',
+                                    populate: [{
+                                        path: 'data',
+                                        // populate:{
+                                        //     path: 'standingPoint',
+                                        //     model: 'Standing_Points'
+                                        // }
+                                        },{
+                                        path: 'researchers'
+                                        }]
+                                    },{
+                                    path: 'area',
+                                    }]
+                                }])
+    
+
     natureData = await Project.findById(req.params.id)
                             .populate('area')
                             .populate([
@@ -1238,8 +1335,7 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
         attachments: [
             {
                 filename: 'PlaceProject.xlsx',
-                content: projectExport(stationaryData, movingData, soundData, 
-                                    natureData, lightData, orderData, boundariesData, programData, accessData, sectionData)
+                content: projectExport(stationaryData, movingData, soundData, natureData, lightData, orderData, boundariesData, programData, accessData, sectionData)
             }
         ]
     }

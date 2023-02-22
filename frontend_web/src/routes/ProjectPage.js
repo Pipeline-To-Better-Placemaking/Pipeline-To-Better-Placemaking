@@ -10,6 +10,7 @@ import UnityPage from './UnityPage';
 import Button from '@mui/material/Button';
 import NewProgram from './NewProgram.js';
 import UnitySurveyorPage from './UnitySurveyorPage.js';
+import NewSection from './NewSection.js';
 
 /* 
     (1) Handles routes to projects/:id/(activities/map/surveyors) 
@@ -58,6 +59,11 @@ export default function ProjectPage(){
             response?.data?.boundariesCollections.map((collection) => (
                 collection.maps.map(async (id, index) => {
                     await collectionPoints(id, 'bounds', collection.date, index);
+                })
+            ))
+            response?.data?.sectionCollections.map((collection) => (
+                collection.maps.map(async (id, index) => {
+                    await collectionPoints(id, 'section', collection.date, index);
                 })
             ))
             response?.data?.lightCollections.map((collection) => (
@@ -125,7 +131,8 @@ export default function ProjectPage(){
             sound: 'sound_maps',
             stationary: 'stationary_maps',
             access: 'access_maps',
-            program:    'program_maps'
+            program: 'program_maps',
+            section: 'section_maps',
         }
 
         try {
@@ -194,7 +201,7 @@ export default function ProjectPage(){
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };
     var area = projectInfo?.area?.points;
     var subAreas = projectInfo?.subareas;
-    
+
     return (
         <div id='ProjectPage'>
             <TabPanel state={ loc.state }/>
@@ -255,6 +262,18 @@ export default function ProjectPage(){
                         
                         />
                         
+                        <Route path='activities/section_cutter' element={
+                            <div>
+                                <NewSection 
+                                    center={ center }
+                                    title= { projectInfo?.title }
+                                    area= { area }
+                                    subAreas = { subAreas }
+                                />
+                                    
+                            </div>
+                        }>
+                        </Route>
                         <Route path='surveyors' element={
                             <SurveyorPage title={ projectInfo?.title } 
                                 drawers={ activities }  

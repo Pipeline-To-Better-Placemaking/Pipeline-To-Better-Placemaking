@@ -34,6 +34,7 @@ export default function MapDrawer(props) {
     const [sound, setSound] = React.useState({});
     const [access, setAccess] = React.useState({});
     const [program, setProgram] = React.useState({});
+    const [section, setSection] = React.useState({});
 
     // Holds boolean toggle values to pass onto the map and determing if the value needs to be added or removed to selections
     const [checked, setChecked] = React.useState({});
@@ -57,6 +58,7 @@ export default function MapDrawer(props) {
         sound_maps: false,
         access_maps: false,
         program_maps: false,
+        section_maps: false,
     });
 
     // Boolean toggle for opening the drawers with the Activity, Graphs, and Data drawers
@@ -120,6 +122,15 @@ export default function MapDrawer(props) {
                     newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setBoundaries(newEntry);
                     break;
+
+                case 'section_maps':
+                    newEntry = section;
+    
+                    if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
+                    newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
+                    setSection(newEntry);
+                    break;
+
                 case 'light_maps':
                     newEntry = lighting;
 
@@ -185,6 +196,13 @@ export default function MapDrawer(props) {
                     delete removeEntry[`${date}.${time}`]
                     setBoundaries(removeEntry);
                     break;
+                
+                case 'section_maps':
+                    removeEntry = section;
+                    delete removeEntry[`${date}.${time}`]
+                    setSection(removeEntry);
+                    break;
+
                 case 'light_maps':
                     removeEntry = lighting;
                     delete removeEntry[`${date}.${time}`]
@@ -290,7 +308,7 @@ export default function MapDrawer(props) {
         </TableContainer>
     );
 
-    const charts = (selections, stationary, moving, order, boundaries, lighting, nature, sound, access) => (
+    const charts = (selections, stationary, moving, order, boundaries, lighting, nature, sound, access, section) => (
         <>
             { Object.entries(selections).map(([selection, obj])=>(
                 <Charts key={ selection } selection={ selection } data={ obj.data } type={ 0 } projArea={ area }/>
@@ -304,6 +322,7 @@ export default function MapDrawer(props) {
             { Object.keys(sound)?.length > 1 ? <Charts selection='sound_maps.Group' data={sound} type={1} projArea={area} /> : null }
             { Object.keys(access)?.length > 1 ? <Charts selection='access_maps.Group' data={access} type={1} projArea={area} /> : null }
             { Object.keys(program)?.length > 1 ? <Charts selection='program_maps.Group' data={program} type={1} projArea={area} /> : null }
+            { Object.keys(section)?.length > 1 ? <Charts selection='section_maps.Group' data={section} type={1} projArea={area} /> : null }
         </>
     );
 
@@ -340,7 +359,7 @@ export default function MapDrawer(props) {
                             : null }
                         { menuAnchors[name] === 'left' ? 
                             list(name, data) 
-                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : (menuAnchors[name] === 'right' ? charts(selections, stationary, moving, order, boundaries, lighting, nature, sound, access, program) : null)) }
+                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : (menuAnchors[name] === 'right' ? charts(selections, stationary, moving, order, boundaries, lighting, nature, sound, access, program, section) : null)) }
                     </Drawer>
                 </React.Fragment>
             ))}

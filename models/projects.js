@@ -14,6 +14,7 @@ const Boundaries_Collection = require('../models/boundaries_collections.js')
 const Order_Collection = require('../models/order_collections.js')
 const Access_Collection = require('../models/access_collections.js')
 const Program_Collection = require('../models/program_collections.js')
+const Section_Collection = require('../models/section_collections.js')
 
 
 const ObjectId = mongoose.Schema.Types.ObjectId
@@ -83,6 +84,10 @@ const project_schema = mongoose.Schema({
         type: ObjectId,
         ref: 'Program_Collections'
     }],
+    sectionCollections:[{
+        type: ObjectId,
+        ref: 'Section_Collections'
+    }]
 })
 
 project_schema.plugin(uniqueValidator)
@@ -160,6 +165,10 @@ module.exports.deleteProject = async function(projectId) {
     if(project.programCollections.length){    
         for(var i = 0; i < project.programCollections.length; i++)   
             await Program_Collection.deleteCollection(project.programCollections[i])
+    }
+    if(project.sectionCollections.length){    
+        for(var i = 0; i < project.sectionCollections.length; i++)   
+            await Section_Collection.deleteCollection(project.sectionCollections[i])
     }
           
     return await Projects.findByIdAndDelete(projectId)
@@ -288,7 +297,23 @@ module.exports.deleteBoundariesCollection = async function(projectId, collection
        { $pull: { boundariesCollections: collectionId}}
    )
    return await Boundaries_Collection.deleteCollection(collectionId)
-}   
+}
+
+module.exports.addSectionCollection = async function (projectId, collectionId) {
+    return await Projects.updateOne(
+       { _id: projectId },
+       { $push: { sectionCollections:  collectionId}}
+   )
+}
+
+module.exports.deleteSectionCollection = async function(projectId, collectionId) {
+   
+    await Projects.updateOne(
+        { _id: projectId },
+        { $pull: { sectionCollections: collectionId}}
+    )
+    return await Section_Collection.deleteCollection(collectionId)
+ }
 
 module.exports.addOrderCollection = async function (projectId, collectionId) {
     return await Projects.updateOne(

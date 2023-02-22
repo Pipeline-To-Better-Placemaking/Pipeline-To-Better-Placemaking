@@ -59,7 +59,8 @@ function testNames(collection) {
         nature_maps: 'Nature Prevalence',
         sound_maps: 'Acoustical Profile',
         access_maps: 'Identifying Access',
-        program_maps: 'Identifying Program'
+        program_maps: 'Identifying Program',
+        section_maps: 'Section Cutter',
     };
     
     return(testNames[collection]);

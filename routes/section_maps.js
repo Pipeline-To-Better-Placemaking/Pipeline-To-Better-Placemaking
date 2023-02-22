@@ -16,7 +16,6 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
     project = await Project.findById(req.body.project)
 
     if(await Team.isAdmin(project.team,user._id)){
-        
         if(req.body.tagsSlots)
             for(var i = 0; i < req.body.tagsSlots.length; i++){
                 var slot = req.body.tagsSlots[0]
@@ -37,8 +36,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                 res.status(201).json(await Section_Collection.findById(req.body.collection))
             }
             
-        //note that boundaries does not use any standing points
-
+        //note that sections does not use any standing points
         let newMap = new Map({
             title: req.body.title,
             researchers: req.body.researchers,
