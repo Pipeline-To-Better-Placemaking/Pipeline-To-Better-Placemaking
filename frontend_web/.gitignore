@@ -5,6 +5,7 @@ frontend_web\src\routes\ProjectPageResultsComment.txt
 /node_modules
 /.pnp
 .pnp.js
+package-lock.json
 
 # testing
 /coverage
