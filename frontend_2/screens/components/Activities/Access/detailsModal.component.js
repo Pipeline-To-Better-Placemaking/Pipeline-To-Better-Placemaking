@@ -493,9 +493,8 @@ export function DetailsModal(props){
                                     style={styles.inputLabel}
                                 >Access Difficulty</Text>
                                 <RNPickerSelect
-                                    onValueChange={(value) => console.log(value)}
-                                    onDonePress={(value) => setDiffValue(value)}
-                                    placeholder={{ label: '1 easiest - 5 hardest', value: null }}
+                                    onValueChange={(value) => setDiffValue(value)}
+                                    placeholder={{ label: '1 easiest - 5 hardest', value: 0 }}
                                     items={options1}
                                     value={diffValue}
                                     style={styles.scrollWheel}

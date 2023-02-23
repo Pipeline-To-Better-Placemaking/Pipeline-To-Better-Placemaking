@@ -38,8 +38,10 @@ export const styles = StyleSheet.create({
     },
 
     scrollWheel:{
-        inputIOS: {fontSize: width * .033},
-        color: 'rgba(255,255,255)',
+        inputIOS: {
+            fontSize: width * .033,
+            color: 'rgba(255,255,255)',
+        },
     },
 
     titleText:{
@@ -98,7 +100,7 @@ export const styles = StyleSheet.create({
 
     button:{
         width: width * .3,
-        height: height * .05
+        height: height * .15
     },
 
     buttonTxt:{
