@@ -149,6 +149,7 @@ module.exports.addEntry = async function(mapId, newEntry) {
         path: newEntry.path,
         accessType: newEntry.accessType,
         description: newEntry.description,
+        details: newEntry.details,
         area: newEntry.area,
         distance: newEntry.distance,
         inPerimeter: newEntry.inPerimeter,
