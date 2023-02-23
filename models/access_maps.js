@@ -47,29 +47,26 @@ const dataSchema = mongoose.Schema({
         }
     }],
 
-    roadData:{
-        lanes: Number,
+    details:{//how difficult is it to get to the place from this access spot
+        diffRating: String,
+    
+        //cost of the access spot if any 
+        cost: Number,
+    
+        //number of spots for lots, garages, bike racks, bus frequency
+        spots: Number,
+    
+        //number of floors in a garage
+        floors: Number,
 
-        //dropdowns on frontend?
+        //road data
+        laneCount: Number,
         median: Boolean,
-        turnLane: Boolean,
+        turnLane: Array,
         tollLane: Boolean,
         paved: Boolean,
         twoWay: Boolean
-
-    },
-
-    //how difficult is it to get to the place from this access spot
-    diffRating: String,
-
-    //cost of the access spot if any - 
-    cost: Number,
-
-    //number of spots for lots, garages, bike racks, bus frequency
-    spots: Number,
-
-    //number of floors in a garage
-    floors: Number,
+    },    
 
     //time the slot is scheduled for
     time: {
