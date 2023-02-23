@@ -7,11 +7,14 @@ export const styles = StyleSheet.create({
 
     modalContainer: {
         height: '100%',
-        backgroundColor:'rgba(0,0,0, 0.5)'
+        backgroundColor:'rgba(0,0,0, 0.5)',
+        alignContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
     },
 
     viewContainer: {
-        height: '45%',
+        height: 'auto',
         marginTop: 'auto',
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
@@ -28,12 +31,15 @@ export const styles = StyleSheet.create({
     },
 
     largePurposeViewContainer:{
-        height: '70%',
         marginTop: 'auto',
         marginBottom: 'auto',
-        borderTopLeftRadius: 35,
-        borderTopRightRadius: 35,
+        borderRadius: 35,
         borderWidth: 1,
+    },
+
+    scrollWheel:{
+        inputIOS: {fontSize: width * .033},
+        color: 'rgba(255,255,255)',
     },
 
     titleText:{
@@ -60,6 +66,9 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',        
         marginTop: height * .015,
+        height: 'auto',
+        textAlign: 'center',
+        alignItems: "center",
     },
 
     textRow: {
@@ -69,6 +78,7 @@ export const styles = StyleSheet.create({
         marginBottom: 20,
         marginTop: height * .02,
         justifyContent: "space-between",
+        height: height * .05
     },
       
     optionsModal:{
@@ -81,14 +91,14 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',        
         marginTop: 'auto',
-        position: 'absolute',
+        position: 'relative',
         bottom: 0,
         padding: 25,
     },
 
     button:{
-        width: width * .35,
-        height: height * .07
+        width: width * .3,
+        height: height * .05
     },
 
     buttonTxt:{
