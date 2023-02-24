@@ -8,6 +8,7 @@ import axios from '../api/axios';
 export default function UnityPage() {
   const loc = useLocation();
   const [message, setMessage] = React.useState('');
+  const [programJSON, setProgramJSON] = React.useState();
   
   const {
     unityProvider,
@@ -15,6 +16,8 @@ export default function UnityPage() {
     loadingProgression,
     sendMessage,
     UNSAFE__detachAndUnloadImmediate: detachAndUnloadImmediate,
+    addEventListener,
+    removeEventListener
   } = useUnityContext({
     // This is just to make sure the file path is correct when loading Unity inside the website
     // Build loads in the activity path without ../ needs to load inside website root
@@ -40,6 +43,19 @@ export default function UnityPage() {
   useEffect(() => {
     handleSurveyors();
   }, [isLoaded])
+
+  const handleSetProgramJSON = useCallback((programJSON) => {
+      // handle the JSON sent from Unity here
+      console.log(programJSON);
+
+  }, []);
+
+  useEffect(() => {
+    addEventListener("ReceiveProgramData", handleSetProgramJSON);
+    return () => {
+      removeEventListener("ReceiveProgramData", handleSetProgramJSON);
+    };
+  }, [addEventListener, removeEventListener, handleSetProgramJSON]);
 
   async function handleSurveyors() 
   {
