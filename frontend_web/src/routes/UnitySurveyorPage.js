@@ -1,10 +1,13 @@
+import * as React from 'react';
 import { useCallback, useEffect, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import Button from '@mui/material/Button';
 import { Link, useLocation, useNavigate} from 'react-router-dom';
+import axios from '../api/axios';
 
 export default function UnityPage() {
   const loc = useLocation();
+  const [message, setMessage] = React.useState('');
   
   const {
     unityProvider,
@@ -34,23 +37,48 @@ export default function UnityPage() {
     };
   }, [detachAndUnloadImmediate]);
 
-//   useEffect(() => {
-//     handleExtrude();
-//   }, [isLoaded])
+  useEffect(() => {
+    handleSurveyors();
+  }, [isLoaded])
 
-//   function handleExtrude() 
-//   {
+  async function handleSurveyors() 
+  {
+    try {
+      const response = await axios.get(`/program_maps/63f8fdf8ac6cf91a9c1cb2e9`, {
+          headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': `Bearer ${loc.state.userToken.token}`
+          },
+          withCredentials: true
+      });
+      console.log(response.data);
+
+      const obj = {
+        numFloors: response.data.data[0].numFloors,
+        points: response.data.data[0].perimeterPoints
+      }
+      const myJSON = JSON.stringify(obj);
+
+      sendMessage("Building", "SurveyorProgram", myJSON);
+
+    } catch (error) {
+        console.log('ERROR: ', error);
+        setMessage(error.response.data?.message);
+        // response.current.style.display = 'inline-block';
+        return;
+    }
   
-//     const obj = {
-//       numFloors: loc.state.numFloors,
-//       points: loc.state.buildingArea,
-//     }
+    // const obj = {
+    //   numFloors: loc.state.numFloors,
+    //   points: loc.state.buildingArea,
+    // }
       
-//     const myJSON = JSON.stringify(obj)
-//     // console.log(myJSON);
-//     sendMessage("Building", "GetPoints", myJSON);
+    // const myJSON = JSON.stringify(obj)
+    // // console.log(myJSON);
+    // sendMessage("Building", "GetPoints", myJSON);
   
-//   }
+  }
 
   return (
     <div>

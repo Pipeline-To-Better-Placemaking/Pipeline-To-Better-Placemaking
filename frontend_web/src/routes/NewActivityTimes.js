@@ -174,13 +174,14 @@ export default function NewActivityTimes(props) {
             let isoDate = new Date(`${activity.date}T00:00:00`);
             let activityDetails;
             console.log(loc.state.buildingArea);
+
             const buildingData = {
                 numFloors: loc.state.numFloors,
                 perimeterPoints: loc.state.buildingArea,
-                modified: isoDate.toISOString(),
+                time: isoDate.toISOString(),
+            
             }
-
-            console.log(buildingData);
+    
             try {
                 const response = await axios.post(`/${timeSlotName}`, JSON.stringify({
                     title: title,
@@ -210,13 +211,22 @@ export default function NewActivityTimes(props) {
                 return;
             }
 
+            let floorsArr = [];
+
             for (let i = 0; i < loc.state.numFloors; i++)
             {
+                
+                // const floorData = {
+                //     map: activityDetails._id,
+                //     floorNum: (i+1),
+                //     programCount: 0
+                // }
+                console.log(activityDetails._id);
                 try {
-                    const response = await axios.post(`/${timeSlotName}/${activityDetails._id}/data/${activityDetails.data[0]._id}/floors`, JSON.stringify({
+                    const response = await axios.post(`/program_floors`, JSON.stringify({
+                        mapId: activityDetails._id,
                         floorNum: (i+1),
                         programCount: 0
-    
                     }), {
                         headers: {
                             'Content-Type': 'application/json',
@@ -225,7 +235,8 @@ export default function NewActivityTimes(props) {
                         },
                         withCredentials: true
                     });
-                    let floorDetails = await response.data;
+                    let floorId = await response.data._id;
+                    floorsArr.push(floorId);
 
                 } catch (error) {
                     console.log('ERROR: ', error);
@@ -234,6 +245,52 @@ export default function NewActivityTimes(props) {
                     return;
                 }
             }
+
+
+            try {
+                const response = await axios.put(`/${timeSlotName}/${activityDetails._id}/data/${activityDetails.data[0]._id}`, JSON.stringify({
+                    floors: floorsArr
+                }), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': `Bearer ${loc.state.userToken.token}`
+                    },
+                    withCredentials: true
+                });
+                activityDetails = await response.data;
+
+            } catch (error){
+                console.log('ERROR: ', error);
+                setMessage(error.response.data?.message);
+                response.current.style.display = 'inline-block';
+                return;
+            }
+
+            // for (let i = 0; i < loc.state.numFloors; i++)
+            // {
+            //     try {
+            //         const response = await axios.post(`/${timeSlotName}/${activityDetails._id}/data/${activityDetails.data[0]._id}/floors`, JSON.stringify({
+            //             floorNum: (i+1),
+            //             programCount: 0
+    
+            //         }), {
+            //             headers: {
+            //                 'Content-Type': 'application/json',
+            //                 'Access-Control-Allow-Origin': '*',
+            //                 'Authorization': `Bearer ${loc.state.userToken.token}`
+            //             },
+            //             withCredentials: true
+            //         });
+            //         let floorDetails = await response.data;
+
+            //     } catch (error) {
+            //         console.log('ERROR: ', error);
+            //         setMessage(error.response.data?.message);
+            //         response.current.style.display = 'inline-block';
+            //         return;
+            //     }
+            // }
         }
 
         else 
