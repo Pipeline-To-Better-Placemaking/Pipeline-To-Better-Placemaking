@@ -156,7 +156,6 @@ export function DetailsModal(props){
 
                 )
             } else {
-                sendData();
                 return null
             }
         }
