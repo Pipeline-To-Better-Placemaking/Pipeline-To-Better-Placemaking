@@ -178,7 +178,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             time: (req.body.time ? req.body.time : oldData.time),
             distancePath: (req.body.distancePath ? req.body.distancePath : oldData.distancePath),
             details: (req.body.details ? req.body.details : req.body.details),
-            floors: (req.body.floors ? req.body.floors : oldData.floors),
+           // floors: (req.body.floors ? req.body.floors : oldData.floors),
         }
 
         await Map.updateData(mapId,oldData._id,newData)

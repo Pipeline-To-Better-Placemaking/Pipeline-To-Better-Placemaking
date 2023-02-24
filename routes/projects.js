@@ -1241,57 +1241,8 @@ router.get('/:id/export', passport.authenticate('jwt',{session:false}), async (r
                                     path: 'area',
                                     }]    
                                         }])
-    
-    accessData = await Project.findById(req.params.id)
-                            .populate('area')
-                            .populate([
-                            {
-                                path:'accessCollections',
-                                model:'Access_Collections',
-                                populate: [{
-                                    path: 'maps',
-                                    model: 'Access_Maps',
-                                    select: 'date',
-                                    populate: [{
-                                        path: 'data',
-                                        // populate:{
-                                        //     path: 'standingPoint',
-                                        //     model: 'Standing_Points'
-                                        // }
-                                        },
-                                        {
+                                  
 
-                                        path: 'researchers'
-                                        }]
-                                    },{
-                                    path: 'area',
-                                    }]
-                                        }])                                
-    programData = await Project.findById(req.params.id)
-                                .populate('area')
-                                .populate([
-                                {
-                                    path:'programCollections',
-                                    model:'Program_Collections',
-                                    populate: [{
-                                        path: 'maps',
-                                        model: 'Program_Maps',
-                                        select: 'date',
-                                        populate: [{
-                                            path: 'data',
-                                            populate:{
-                                                path: 'floors',
-                                                populate:{
-                                                    path: 'programs'
-                                                }
-                                            }
-                                            },{
-                                            path: 'researchers'
-                                            }]
-                                        },{
-                                        path: 'area',
-                                        }]
-                                    }])
 
     const emailHTML = `
         <h3>Hello from Pipeline to Better Placemaking!</h3>
