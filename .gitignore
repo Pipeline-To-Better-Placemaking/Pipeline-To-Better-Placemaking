@@ -9,4 +9,4 @@ frontend_2/.expo/packager-info.json
 .DS_Store
 package-lock.json
 frontend_web/src/api
-.vscode/launch.json
+.vscode/

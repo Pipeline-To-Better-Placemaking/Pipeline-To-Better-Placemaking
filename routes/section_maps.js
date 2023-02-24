@@ -10,15 +10,16 @@ const config = require('../utils/config')
 const { models } = require('mongoose')
 const { UnauthorizedError, BadRequestError } = require('../utils/errors')
 
-//route creates new map(s).  If there are multiple tags slots in test, multiple timseslots are created.
+// route creates new map(s).  If there are multiple timeslots in test, multiple timseslots are created.
 router.post('', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     project = await Project.findById(req.body.project)
 
+    // checks if user is Admin of the project to assign multiple timeslots. I
     if(await Team.isAdmin(project.team,user._id)){
-        if(req.body.tagsSlots)
-            for(var i = 0; i < req.body.tagsSlots.length; i++){
-                var slot = req.body.tagsSlots[0]
+        if(req.body.timesSlots)
+            for(var i = 0; i < req.body.timeSlots.length; i++){
+                var slot = req.body.timeSlots[0]
 
                 let newMap = new Map({
                     title: slot.title,
@@ -36,7 +37,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                 res.status(201).json(await Section_Collection.findById(req.body.collection))
             }
             
-        //note that sections does not use any standing points
+        // create a new time slot if no other present
         let newMap = new Map({
             title: req.body.title,
             researchers: req.body.researchers,
@@ -48,20 +49,19 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
         const map = await Map.addMap(newMap)
         await Section_Collection.addActivity(req.body.collection,map._id)
         res.status(201).json(map)
-
     }
     else{
         throw new UnauthorizedError('You do not have permision to perform this operation')
     }   
 })
 
-//route gets all map data, including any collection data.
+// route gets all map data, including any collection data.
 router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     const map = await  Map.findById(req.params.id)
                            .populate('researchers','firstname lastname')
                            .populate([
                                {
-                                   other:'sharedData',
+                                   path:'sharedData',
                                    model:'Section_Collections',
                                    select:'title duration',
                                    populate: {
@@ -73,7 +73,7 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     res.status(200).json(map)
 })
 
-//route signs team member up to a tags slot.
+// route signs team member up to a time slot.
 router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
@@ -89,7 +89,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
         throw new BadRequestError('Research team is already full')
 })
 
-//route reverses sign up to a tags slot.
+// route removes researcher from a time slot.
 router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
@@ -97,7 +97,7 @@ router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async 
 
 })
 
-//route edits tags slot information when updating a map
+//route edits time slot information when updating a map
 router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
@@ -121,7 +121,7 @@ router.put('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     
 })
 
-//route deletes a map from a test collection
+// route deletes a map from a test collection
 router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user
     map = await Map.findById(req.params.id)
@@ -135,17 +135,22 @@ router.delete('/:id', passport.authenticate('jwt',{session:false}), async (req, 
 
 })
 
-//route adds test data to its relevant tags slot
+// route adds test data to its relevant time slot
 router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    // find user assigned timeslot and map to add data to
     user = await req.user
     map = await Map.findById(req.params.id)
+
+    // after checking if user is a researcher AND the entry is NOT null, add the entry to section_map
     if(Map.isResearcher(map._id, user._id)){
         if(req.body.entries){
             for(var i = 0; i < req.body.entries.length; i++){
+                // add entries to the data point of the section_map
                 await Map.addEntry(map._id,req.body.entries[i])
             } 
             res.status(201).json(await Map.findById(map._id))
         }
+        // else add single entry to the section_map
         else{
             res.json(await Map.addEntry(map._id,req.body))
        }
@@ -155,7 +160,7 @@ router.post('/:id/data', passport.authenticate('jwt',{session:false}), async (re
     }
 })
 
-//route edits any already created tested tags slots.  Essentially redoing a test run for a tags slot 
+// route edits any already created tested times slots. Essentially redoing a test run for a times slot 
 router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     user = await req.user   
     mapId = req.params.id
@@ -163,7 +168,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
     if (Map.isResearcher(mapId, user._id)){
 
         oldData = await Map.findData(mapId, req.params.data_id)
-
+        // checks if we can replace the oldData with the new, non-void, data fields. 
         const newData = {
             _id: oldData._id,
             title: (req.body.title ? req.body.title : oldData.title),
@@ -183,7 +188,7 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
     }  
 })
 
-//route deletes an individual tags slot from a map
+// route deletes an individual times slot from a map
 router.delete('/:id/data/:data_id',passport.authenticate('jwt',{session:false}), async (req, res, next) => { 
     user = await req.user
     map = await Map.findById(req.params.id)
