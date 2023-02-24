@@ -11,7 +11,7 @@ import { DetailsModal } from '../../../components/Activities/Access/detailsModal
 import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import { calcArea, haverSine } from '../../../components/helperFunctions';
-import CountDown from 'react-native-countdown-component';
+import CountDown from 'react-native-countdown-fixed';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {format as prettyFormat} from 'pretty-format';
 import { LOCAL_SERVER } from '@env';

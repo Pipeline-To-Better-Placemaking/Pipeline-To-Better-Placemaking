@@ -5834,6 +5834,15 @@
     "prop-types" "^15.5.8"
     "sprintf-js" "^1.1.1"
 
+"react-native-countdown-fixed@^2.7.1":
+  "integrity" "sha512-OIQce9PfbtIkUw47KQ+7hqRF3T/nq+mhQ6HeR+9K7PnveMaAonh9UEHjMC+5xfdSvC3kwHv2dg/cRHSRqbAByA=="
+  "resolved" "https://registry.npmjs.org/react-native-countdown-fixed/-/react-native-countdown-fixed-2.7.1.tgz"
+  "version" "2.7.1"
+  dependencies:
+    "lodash" "^4.17.13"
+    "prop-types" "^15.5.8"
+    "sprintf-js" "^1.1.1"
+
 "react-native-dotenv@^3.4.7":
   "integrity" "sha512-GqUDdmrtKw7qYS9jjQLipEPctMd0YuSBNVZBNlaHtaHMJ63iaB4FABO4uX0iSUJpgMwozZki4fRv4dDHmVUoLg=="
   "resolved" "https://registry.npmjs.org/react-native-dotenv/-/react-native-dotenv-3.4.7.tgz"
