@@ -34,6 +34,8 @@ const dataSchema = mongoose.Schema({
 
     },
 
+    distanceFromArea: Number,
+
     //area of the access point if its a lot/garage
     area: Number,
 
@@ -149,6 +151,7 @@ module.exports.addEntry = async function(mapId, newEntry) {
         path: newEntry.path,
         accessType: newEntry.accessType,
         description: newEntry.description,
+        distanceFromArea: newEntry.distanceFromArea,
         details: newEntry.details,
         area: newEntry.area,
         distance: newEntry.distance,
