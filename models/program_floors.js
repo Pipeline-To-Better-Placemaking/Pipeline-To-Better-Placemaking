@@ -8,14 +8,18 @@ const newProgramSchema = mongoose.Schema({
     //stores the points for this section
     //perimeter of the section made by user.  
     points: [{
-        lat:{
+        xCoord:{
             type: Number,
             required: true
         },
-        lng:{
+        yCoord:{
             type: Number,
-            required: true 
-        }
+            required: true
+        },
+        zCoord:{
+            type: Number,
+            required: true
+        },
     }],
 
     programType: {
@@ -23,10 +27,6 @@ const newProgramSchema = mongoose.Schema({
         required: true
     },
 
-    color: {
-        type: String,
-        required: true
-    }
 
 })
 
@@ -97,7 +97,6 @@ module.exports.mapCleanup = async function(mapId) {
 module.exports.addProgram = async function(floorId, newProgram) {
     var entry = new NewProgramEntry({
         programType: newProgram.programType,
-        color: newProgram.color,
         points: newProgram.points,
     })
 
