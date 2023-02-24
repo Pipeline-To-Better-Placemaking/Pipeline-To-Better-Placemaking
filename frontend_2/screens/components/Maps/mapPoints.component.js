@@ -232,7 +232,7 @@ export const SoundMapAreaWrapper = ({children, area, mapHeight, recenter }) => {
   })
 
   // recenters the map only if the recenter bool is true
-  if(recenter) _mapView.current.animateToRegion(defaultRegion, 750);
+  if(recenter) _current.animateToRegion(defaultRegion, 750);
 
   return (
     <View>
@@ -266,7 +266,7 @@ export const PressMapAreaWrapper = ({children, area, mapHeight, onPress, recente
   })
 
   // recenters the map only if the recenter bool is true
-  if(recenter) _mapView.current.animateToRegion(defaultRegion, 750);
+  if(recenter) _current.animateToRegion(defaultRegion, 750);
   
   return (
     <View>
@@ -322,7 +322,7 @@ export const MapWrapper = ({children, location, mapHeight}) => {
 
 export const ShowArea = ({area}) => {
   return (
-    <MapView.Polygon
+    <Polygon
       coordinates={area}
       strokeWidth={3}
       strokeColor={'rgba(255,0,0,0.5)'}
@@ -335,15 +335,15 @@ export const ShowAreas = ({areas}) => {
   const center = areas.map((area, index) => getRegionForCoordinates(area.points));
   return (areas.map((area, index) => (
     <View key={area._id}>
-      <MapView.Polygon
+      <Polygon
         coordinates={area.points}
         strokeWidth={3}
         strokeColor={(index === 0 ? 'rgba(0,0,255,0.5)' : 'rgba(255,0,0,0.5)')}
         fillColor={(index === 0 ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.2)')}
         key={area._id}
       >
-      </MapView.Polygon>
-      <MapView.Marker
+      </Polygon>
+      <Marker
         key={area.points[0]._id}
         coordinate = {{
             latitude: center[index].latitude,
@@ -355,7 +355,7 @@ export const ShowAreas = ({areas}) => {
             {(index === 0 ? '' : area.title)}
           </Text>
         </View>
-      </MapView.Marker>
+      </Marker>
       </View>
   )))
 };
@@ -371,7 +371,7 @@ export const ShowMarkers = ({markers}) => {
       y: 1.1
     }
     return (markers.map((coord, index) => (
-        <MapView.Marker
+        <Marker
           key={coord._id}
           coordinate = {{
               latitude: coord.latitude,
@@ -382,7 +382,7 @@ export const ShowMarkers = ({markers}) => {
           <Callout>
             <Text style={styles.showMarkersText}>{coord.title}</Text>
           </Callout>
-        </MapView.Marker>
+        </Marker>
         )))
     }
 };
@@ -459,7 +459,7 @@ export function MapAddArea({children, ...props}) {
     }
     else if (markers.length <= 1) {
       return (markers.map((coord, index) => (
-          <MapView.Marker
+          <Marker
             key={index}
             coordinate = {{
                 latitude: coord.latitude,
@@ -469,7 +469,7 @@ export function MapAddArea({children, ...props}) {
         )));
     } else if (markers.length === 2) {
       return (
-          <MapView.Polyline
+          <Polyline
             coordinates={markers}
             strokeWidth={3}
             strokeColor={'rgba(255,0,0,0.5)'}
@@ -477,7 +477,7 @@ export function MapAddArea({children, ...props}) {
         );
     } else {
       return(
-          <MapView.Polygon
+          <Polygon
             coordinates={markers}
             strokeWidth={3}
             strokeColor={'rgba(255,0,0,0.5)'}
@@ -553,7 +553,7 @@ export function MapAddOne({children, ...props}) {
         }}
         onPress={event => props.setMarker(event.nativeEvent.coordinate)}
       >
-        <MapView.Marker
+        <Marker
           coordinate={props.marker}
           draggable={true}
           anchor={offsetPoint}

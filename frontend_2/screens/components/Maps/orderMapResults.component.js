@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView, { Callout } from 'react-native-maps';
+import MapView, { Marker, Polygon, Polyline, Callout } from 'react-native-maps';
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 import { Text } from '@ui-kitten/components';
@@ -59,7 +59,7 @@ export function OrderMapResults(props) {
                     // add the marker to the rendered JSX array
                     objData.push(
                         <View key={keySum}>
-                            <MapView.Marker
+                            <Marker
                                 coordinate = {{
                                     latitude: pointArr[j].location.latitude,
                                     longitude: pointArr[j].location.longitude
@@ -74,7 +74,7 @@ export function OrderMapResults(props) {
                                     />
                                 </Callout>
                         
-                            </MapView.Marker>
+                            </Marker>
                         </View>
                     )
                     keySum++;
@@ -99,7 +99,7 @@ export function OrderMapResults(props) {
                 onPress={() => null}
             >
                 {/* project perimeter render */}
-                <MapView.Polygon
+                <Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}

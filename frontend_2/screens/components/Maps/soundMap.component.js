@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView from 'react-native-maps'
+import MapView, { Marker, Polygon, Polyline } from 'react-native-maps'
 import { View } from 'react-native';
 import { SoundMapAreaWrapper } from './mapPoints.component';
 
@@ -17,12 +17,12 @@ export function SoundMap(props) {
                 mapHeight={'97%'}
                 recenter={props.recenter}
             >
-                <MapView.Marker
+                <Marker
                     coordinate = {props.position}
                     anchor={offsetPoint}
                 />
 
-                <MapView.Polygon
+                <Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}

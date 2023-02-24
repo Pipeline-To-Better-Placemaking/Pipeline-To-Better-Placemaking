@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView, { Callout } from 'react-native-maps';
+import MapView, { Marker, Polygon, Polyline, Callout } from 'react-native-maps';
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 import { Text } from '@ui-kitten/components';
@@ -67,7 +67,7 @@ export function StationaryMapResults(props) {
         else {
             return (
                 props.dataMarkers.map((data, index) => (
-                <MapView.Marker
+                <Marker
                     key={index}
                     coordinate = {{
                         latitude: data.location.latitude,
@@ -78,7 +78,7 @@ export function StationaryMapResults(props) {
                     <Callout style={styles.callout}>
                         <DataCallout point={data}/>
                     </Callout>
-                </MapView.Marker>
+                </Marker>
              )))
          }
     }
@@ -91,11 +91,11 @@ export function StationaryMapResults(props) {
                 mapHeight={'100%'}
                 onPress={() => null}
             >
-                <MapView.Marker
+                <Marker
                     coordinate = {props.position}
                 />
 
-                <MapView.Polygon
+                <Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MapView, { Callout } from 'react-native-maps';
+import MapView, { Marker, Polygon, Polyline, Callout } from 'react-native-maps';
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 import { Text } from '@ui-kitten/components';
@@ -107,7 +107,7 @@ export function SoundMapResults(props) {
                 // create an array of JSX objects to be rendered (at each standing point)
                 objData[i] = (
                     <View key={i.toString()}>
-                        <MapView.Marker
+                        <Marker
                             coordinate = {{
                                 latitude: props.position[i].latitude,
                                 longitude: props.position[i].longitude
@@ -124,7 +124,7 @@ export function SoundMapResults(props) {
                                 />
                             </Callout>
                         
-                        </MapView.Marker>
+                        </Marker>
                     </View>
                 )
             }
@@ -147,7 +147,7 @@ export function SoundMapResults(props) {
                 onPress={() => null}
             >
                 {/* project perimeter render */}
-                <MapView.Polygon
+                <Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}

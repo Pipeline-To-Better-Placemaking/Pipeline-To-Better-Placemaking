@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView from 'react-native-maps'
+import MapView, { Marker, Polygon, Polyline } from 'react-native-maps'
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 
@@ -22,9 +22,9 @@ export function OrderMap(props) {
 
         else{
             return(
-                <MapView.Marker coordinate={props.marker} >
+                <Marker coordinate={props.marker} >
                     <DataPin color={'red'} />
-                </MapView.Marker>
+                </Marker>
             )
         }
     }
@@ -45,13 +45,13 @@ export function OrderMap(props) {
                 if(props.dataPoints[i].kind === "Behavior") color = "#FF9933"
                 obj[i] = (
                     <View key={i.toString()}>
-                        <MapView.Marker 
+                        <Marker 
                             coordinate={props.dataPoints[i].location} 
                             // sloves problem of not being able to delete points for android
                             onPress={(e) => checkPoint(e.nativeEvent.coordinate)}
                         >
                             <DataPin color={color} />
-                        </MapView.Marker>
+                        </Marker>
                     </View>
                 )
             }
@@ -88,7 +88,7 @@ export function OrderMap(props) {
                 onPress={checkPoint}
             >
                 {/* shows the project area on the map */}
-                <MapView.Polygon
+                <Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}

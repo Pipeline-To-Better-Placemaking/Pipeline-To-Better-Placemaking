@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView from 'react-native-maps'
+import MapView, { Marker, Polygon, Polyline } from 'react-native-maps'
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 
@@ -31,12 +31,12 @@ export function AccessMap(props) {
 
                 else {
                     return (props.markers.map((coord, index) => (
-                        <MapView.Marker
+                        <Marker
                             key={index}
                             coordinate={props.markers[0]}
                         >
                             <DataPin color={color} colorFill={'rgba(253, 0, 0, .5)'}/>
-                        </MapView.Marker>
+                        </Marker>
                     )))
                 }
             }
@@ -49,19 +49,19 @@ export function AccessMap(props) {
 
                 else if (props.markers.length == 1) {
                     return (props.markers.map((coord, index) => (
-                        <MapView.Marker
+                        <Marker
                             key={index}
                             coordinate={props.markers[0]}
                         >
                             <DataPin color={color}/>
-                        </MapView.Marker>
+                        </Marker>
                     )))
                 }
 
                 else if (props.markers.length > 1) {
 
                     return (
-                        <MapView.Polyline
+                        <Polyline
                             coordinates={props.markers}
                             strokeWidth={3}
                             strokeColor={color}
@@ -80,19 +80,19 @@ export function AccessMap(props) {
 
                 else if (props.markers.length == 1) {
                     return (props.markers.map((coord, index) => (
-                        <MapView.Marker
+                        <Marker
                             key={index}
                             coordinate = {props.markers[0]}
                         >
                             <DataPin color={color}/>
-                        </MapView.Marker>
+                        </Marker>
                     )))
                 }
 
                 else if (props.markers.length === 2) {
 
                     return (
-                        <MapView.Polyline
+                        <Polyline
                             coordinates={props.markers}
                             strokeWidth={2}
                             strokeColor={color}
@@ -104,7 +104,7 @@ export function AccessMap(props) {
                     // android device
                     if(plat === 'android'){
                         return(
-                            <MapView.Polygon 
+                            <Polygon 
                             coordinates={props.markers}
                             strokeWidth={2}
                             strokeColor={color}
@@ -115,7 +115,7 @@ export function AccessMap(props) {
                     // ios device
                     else{
                         return(
-                            <MapView.Polygon 
+                            <Polygon 
                                 coordinates={props.markers}
                                 strokeWidth={2}
                             />
@@ -140,7 +140,7 @@ export function AccessMap(props) {
 
                 return (
                     props.markers.map((coord, index) => (
-                    <MapView.Marker
+                    <Marker
                         key={index}
                         coordinate = {{
                             latitude: coord.latitude,
@@ -148,7 +148,7 @@ export function AccessMap(props) {
                         }}
                     >
                         <DataPin color={color}/>
-                    </MapView.Marker>
+                    </Marker>
                 )))
             }
         }    
@@ -157,7 +157,7 @@ export function AccessMap(props) {
             if(props.pointBool){
                 return(    
                     props.pointPaths.map((obj, index) => (
-                        <MapView.Marker
+                        <Marker
                             coordinate={obj[0]}
                             anchor={offsetPoint}
                             // sloves problem of not being able to delete points for android
@@ -167,7 +167,7 @@ export function AccessMap(props) {
                                 color={colors[0]}
                                 colorFill={'rgba(253, 0, 0, .5)'}
                             />
-                        </MapView.Marker>
+                        </Marker>
                     ))
                 )
             }
@@ -180,7 +180,7 @@ export function AccessMap(props) {
                 if(plat === 'android'){
                     return(
                         props.linePaths.map((obj, index) => (
-                            <MapView.Polyline
+                            <Polyline
                                 coordinates={obj}
                                 strokeWidth={2}
                                 strokeColor={colors[1]}
@@ -196,7 +196,7 @@ export function AccessMap(props) {
                 else{
                     return(
                         props.linePaths.map((obj, index) => (
-                            <MapView.Polyline
+                            <Polyline
                                 coordinates={obj}
                                 strokeWidth={2}
                                 strokeColor={colors[1]}
@@ -217,7 +217,7 @@ export function AccessMap(props) {
                 if(plat === 'android'){
                     return(
                         props.areaPaths.map((obj, index) => (
-                            <MapView.Polygon
+                            <Polygon
                                 coordinates={obj}
                                 strokeWidth={2}
                                 strokeColor={colors[2]}
@@ -240,7 +240,7 @@ export function AccessMap(props) {
 
                     return(
                         areaPaths.map((obj, index) => (
-                            <MapView.Polygon
+                            <Polygon
                                 coordinates={obj}
                                 strokeWidth={2}
                                 strokeColor={colors[2]}
@@ -285,9 +285,9 @@ export function AccessMap(props) {
 
         else{
             return(
-                <MapView.Marker coordinate={props.marker} anchor={offsetPoint}>
+                <Marker coordinate={props.marker} anchor={offsetPoint}>
                     <DataPin color={'#FD0000'} colorFill={'rgba(253, 0, 0, .5)'} />
-                </MapView.Marker>
+                </Marker>
             )
         }
     }
@@ -319,7 +319,7 @@ export function AccessMap(props) {
                 }
                 obj[i] = (
                     <View key={i.toString()}>
-                        <MapView.Marker
+                        <Marker
                             coordinate={props.dataPoints[i].location}
                             anchor={offsetPoint}
                             // sloves problem of not being able to delete points for android
@@ -329,7 +329,7 @@ export function AccessMap(props) {
                                 color={color}
                                 colorFill={colorFill}
                             />
-                        </MapView.Marker>
+                        </Marker>
                     </View>
                 )
             }
@@ -368,7 +368,7 @@ export function AccessMap(props) {
                 recenter={props.recenter}
             >
                 {/* shows the project area on the map */}
-                <MapView.Polygon
+                <Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}

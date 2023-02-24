@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MapView from 'react-native-maps';
+import MapView, { Marker, Polygon, Polyline } from 'react-native-maps';
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 import { InfoModal } from '../Activities/Access/infoModal.component';
@@ -88,7 +88,7 @@ console.log("🚀 ~ file: accessMapResults.component.js:12 ~ AccessMapResults ~ 
                     if(props.dataMarkers[i].accessType === "Access Point"){
                         objData[i] = (
                             <View key={i.toString()}>
-                                <MapView.Marker
+                                <Marker
                                     coordinate={{ latitude: props.dataMarkers[i].path[0].latitude, longitude : props.dataMarkers[i].path[0].longitude }}
                                     tappable={true}
                                     onPress={()=> dataCallout(props.dataMarkers[i])}
@@ -103,7 +103,7 @@ console.log("🚀 ~ file: accessMapResults.component.js:12 ~ AccessMapResults ~ 
                     if(props.dataMarkers[i].accessType === "Access Path"){
                         objData[i] = (
                             <View key={i.toString()}>
-                                <MapView.Polyline
+                                <Polyline
                                     coordinates={props.dataMarkers[i].path}
                                     strokeWidth={3}
                                     strokeColor={colors[1]}
@@ -120,7 +120,7 @@ console.log("🚀 ~ file: accessMapResults.component.js:12 ~ AccessMapResults ~ 
                     if(props.dataMarkers[i].accessType === "Access Area"){
                         objData[i] = (
                             <View key={i.toString()}>
-                                <MapView.Polygon
+                                <Polygon
                                     coordinates={props.dataMarkers[i].path}
                                     strokeWidth={3}
                                     strokeColor={colors[2]}
@@ -177,7 +177,7 @@ console.log("🚀 ~ file: accessMapResults.component.js:12 ~ AccessMapResults ~ 
                     onPress={() => null}
                 >
                     {/* project perimeter render */}
-                    <MapView.Polygon
+                    <Polygon
                         coordinates={props.area}
                         strokeWidth={3}
                         strokeColor={'rgba(255,0,0,0.5)'}

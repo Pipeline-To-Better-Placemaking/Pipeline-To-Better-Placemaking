@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MapView from 'react-native-maps';
+import MapView, { Marker, Polygon, Polyline } from 'react-native-maps';
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 import { InfoModal } from '../Activities/Boundary/infoModal.component';
@@ -84,7 +84,7 @@ export function BoundaryMapResults(props) {
                     if(props.dataMarkers[i].kind === "Constructed"){
                         objData[i] = (
                             <View key={i.toString()}>
-                                <MapView.Polyline
+                                <Polyline
                                     coordinates={props.dataMarkers[i].path}
                                     strokeWidth={3}
                                     strokeColor={colors[0]}
@@ -101,7 +101,7 @@ export function BoundaryMapResults(props) {
                     if(props.dataMarkers[i].kind === "Material"){
                         objData[i] = (
                             <View key={i.toString()}>
-                                <MapView.Polygon
+                                <Polygon
                                     coordinates={props.dataMarkers[i].path}
                                     strokeWidth={3}
                                     strokeColor={colors[1]}
@@ -119,7 +119,7 @@ export function BoundaryMapResults(props) {
                     if(props.dataMarkers[i].kind === "Shelter"){
                         objData[i] = (
                             <View key={i.toString()}>
-                                <MapView.Polygon
+                                <Polygon
                                     coordinates={props.dataMarkers[i].path}
                                     strokeWidth={3}
                                     strokeColor={colors[2]}
@@ -176,7 +176,7 @@ export function BoundaryMapResults(props) {
                     onPress={() => null}
                 >
                     {/* project perimeter render */}
-                    <MapView.Polygon
+                    <Polygon
                         coordinates={props.area}
                         strokeWidth={3}
                         strokeColor={'rgba(255,0,0,0.5)'}

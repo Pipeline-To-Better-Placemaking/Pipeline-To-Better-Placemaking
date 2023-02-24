@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView from 'react-native-maps'
+import MapView, { Marker, Polygon, Polyline } from 'react-native-maps'
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 
@@ -27,19 +27,19 @@ export function PeopleMovingMap(props) {
         else if (props.markers.length == 1) {
 
             return (props.markers.map((coord, index) => (
-                <MapView.Marker
+                <Marker
                     key={index}
                     coordinate = {props.markers[0]}
                 >
                     <DataPin/>
-                </MapView.Marker>
+                </Marker>
         )));
 
         }
         else if (props.markers.length > 1) {
 
             return (
-                <MapView.Polyline
+                <Polyline
                     coordinates={props.markers}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}
@@ -55,7 +55,7 @@ export function PeopleMovingMap(props) {
             //console.log("Drawing lines")
 
             return (props.totalPaths.map((obj, index) => (
-                <MapView.Polyline
+                <Polyline
                     coordinates={obj.path}
                     strokeWidth={3}
                     strokeColor={colors[obj.colorIndex]}
@@ -76,7 +76,7 @@ export function PeopleMovingMap(props) {
         else {
             return (
                 props.markers.map((coord, index) => (
-                <MapView.Marker
+                <Marker
                     key={index}
                     coordinate = {{
                         latitude: coord.latitude,
@@ -84,7 +84,7 @@ export function PeopleMovingMap(props) {
                     }}
                 >
                     <DataPin index={index}/>
-                </MapView.Marker>
+                </Marker>
              )))
          }
     }
@@ -102,12 +102,12 @@ export function PeopleMovingMap(props) {
                 onPress={props.addMarker}
                 recenter={props.recenter}
             >
-                <MapView.Marker
+                <Marker
                     coordinate={props.position}
                     anchor={offsetPoint}
                 />
 
-                <MapView.Polygon
+                <Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}

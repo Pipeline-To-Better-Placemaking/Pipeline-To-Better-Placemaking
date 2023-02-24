@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView from 'react-native-maps'
+import MapView, { Marker, Polygon, Polyline } from 'react-native-maps'
 import { View, Platform } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 
@@ -28,19 +28,19 @@ export function BoundaryMap(props) {
 
             else if (props.markers.length == 1) {
                 return (props.markers.map((coord, index) => (
-                    <MapView.Marker
+                    <Marker
                         key={index}
                         coordinate={props.markers[0]}
                     >
                         <DataPin color={colors[0]}/>
-                    </MapView.Marker>
+                    </Marker>
                 )))
             }
 
             else if (props.markers.length > 1) {
 
                 return (
-                    <MapView.Polyline
+                    <Polyline
                         coordinates={props.markers}
                         strokeWidth={3}
                         strokeColor={colors[0]}
@@ -67,19 +67,19 @@ export function BoundaryMap(props) {
 
             else if (props.markers.length == 1) {
                 return (props.markers.map((coord, index) => (
-                    <MapView.Marker
+                    <Marker
                         key={index}
                         coordinate = {props.markers[0]}
                     >
                         <DataPin color={color}/>
-                    </MapView.Marker>
+                    </Marker>
                 )))
             }
 
             else if (props.markers.length === 2) {
 
                 return (
-                    <MapView.Polyline
+                    <Polyline
                         coordinates={props.markers}
                         strokeWidth={2}
                         strokeColor={color}
@@ -91,7 +91,7 @@ export function BoundaryMap(props) {
                 // android device
                 if(plat === 'android'){
                     return(
-                        <MapView.Polygon 
+                        <Polygon 
                         coordinates={props.markers}
                         strokeWidth={2}
                         strokeColor={color}
@@ -102,7 +102,7 @@ export function BoundaryMap(props) {
                 // ios device
                 else{
                     return(
-                        <MapView.Polygon 
+                        <Polygon 
                             coordinates={props.markers}
                             strokeWidth={2}
                         />
@@ -124,7 +124,7 @@ export function BoundaryMap(props) {
 
             return (
                 props.markers.map((coord, index) => (
-                <MapView.Marker
+                <Marker
                     key={index}
                     coordinate = {{
                         latitude: coord.latitude,
@@ -132,7 +132,7 @@ export function BoundaryMap(props) {
                     }}
                 >
                     <DataPin color={color}/>
-                </MapView.Marker>
+                </Marker>
              )))
          }
     }    
@@ -141,7 +141,7 @@ export function BoundaryMap(props) {
         if(props.lineBool){
             return(    
                 props.linePaths.map((obj, index) => (
-                    <MapView.Polyline
+                    <Polyline
                         coordinates={obj}
                         strokeWidth={3}
                         strokeColor={colors[0]}
@@ -161,7 +161,7 @@ export function BoundaryMap(props) {
             if(plat === 'android'){
                 return(
                     props.matPaths.map((obj, index) => (
-                        <MapView.Polygon
+                        <Polygon
                             coordinates={obj}
                             strokeWidth={2}
                             strokeColor={colors[1]}
@@ -184,7 +184,7 @@ export function BoundaryMap(props) {
 
                 return(
                     linePaths.map((obj, index) => (
-                        <MapView.Polyline
+                        <Polyline
                             coordinates={obj}
                             strokeWidth={2}
                             strokeColor={colors[1]}
@@ -205,7 +205,7 @@ export function BoundaryMap(props) {
             if(plat === 'android'){
                 return(
                     props.shePaths.map((obj, index) => (
-                        <MapView.Polygon
+                        <Polygon
                             coordinates={obj}
                             strokeWidth={2}
                             strokeColor={colors[2]}
@@ -228,7 +228,7 @@ export function BoundaryMap(props) {
 
                 return(
                     linePaths.map((obj, index) => (
-                        <MapView.Polyline
+                        <Polyline
                             coordinates={obj}
                             strokeWidth={2}
                             strokeColor={colors[2]}
@@ -267,7 +267,7 @@ export function BoundaryMap(props) {
                 recenter={props.recenter}
             >
                 {/* shows the project area on the map */}
-                <MapView.Polygon
+                <Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}

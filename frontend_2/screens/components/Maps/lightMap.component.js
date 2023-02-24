@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView from 'react-native-maps'
+import MapView, { Marker, Polygon, Polyline } from 'react-native-maps'
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 
@@ -30,9 +30,9 @@ export function LightMap(props) {
 
         else{
             return(
-                <MapView.Marker coordinate={props.marker} anchor={offsetPoint}>
+                <Marker coordinate={props.marker} anchor={offsetPoint}>
                     <DataPin color={'#FD0000'} colorFill={'rgba(253, 0, 0, .5)'} />
-                </MapView.Marker>
+                </Marker>
             )
         }
     }
@@ -64,7 +64,7 @@ export function LightMap(props) {
                 }
                 obj[i] = (
                     <View key={i.toString()}>
-                        <MapView.Marker
+                        <Marker
                             coordinate={props.dataPoints[i].location}
                             anchor={offsetPoint}
                             // sloves problem of not being able to delete points for android
@@ -74,7 +74,7 @@ export function LightMap(props) {
                                 color={color}
                                 colorFill={colorFill}
                             />
-                        </MapView.Marker>
+                        </Marker>
                     </View>
                 )
             }
@@ -111,7 +111,7 @@ export function LightMap(props) {
                 onPress={checkPoint}
             >
                 {/* shows the project area on the map */}
-                <MapView.Polygon
+                <Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}

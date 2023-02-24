@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView from 'react-native-maps'
+import MapView, { Marker, Polygon, Polyline } from 'react-native-maps'
 import { View, Platform } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 
@@ -31,9 +31,9 @@ export function NatureMap(props) {
 
         else{
             return(
-                <MapView.Marker coordinate={props.marker} >
+                <Marker coordinate={props.marker} >
                     <DataPin />
-                </MapView.Marker>
+                </Marker>
             )
         }
     }
@@ -48,14 +48,14 @@ export function NatureMap(props) {
             let obj = [];
             for(let i = 0; i < props.dataPoints.length; i++){
                 obj[i] = ( 
-                    <MapView.Marker
+                    <Marker
                         key={i.toString()}
                         coordinate={props.dataPoints[i].marker}
                         // sloves problem of not being able to delete points for android
                         onPress={(e) => checkPoint(e.nativeEvent.coordinate)}
                     >
                         <DataPin />
-                    </MapView.Marker>
+                    </Marker>
                 )
             }
             return(
@@ -78,12 +78,12 @@ export function NatureMap(props) {
             // change it only if it is a body of water
             if(props.polyType === 0) color = 'red'
             return (props.markers.map((coord, index) => (
-                <MapView.Marker
+                <Marker
                     key={index}
                     coordinate = {props.markers[0]}
                 >
                     <TempDataPin color={color} />
-                </MapView.Marker>
+                </Marker>
             )));
 
         }
@@ -93,7 +93,7 @@ export function NatureMap(props) {
             // change it only if it is a body of water
             if(props.polyType === 0) color = 'red'
             return (
-                <MapView.Polyline
+                <Polyline
                     coordinates={props.markers}
                     strokeWidth={3}
                     strokeColor={color}
@@ -112,7 +112,7 @@ export function NatureMap(props) {
             // android device
             if(plat === 'android'){
                 return(
-                    <MapView.Polygon 
+                    <Polygon 
                         coordinates={props.markers}
                         strokeWidth={2}
                         strokeColor={color}
@@ -123,7 +123,7 @@ export function NatureMap(props) {
             // ios device
             else{
                 return(
-                    <MapView.Polygon
+                    <Polygon
                         coordinates={props.markers}
                     />
                 )
@@ -143,7 +143,7 @@ export function NatureMap(props) {
             if(props.polyType === 0) color = 'red'
             return (
                 props.markers.map((coord, index) => (
-                <MapView.Marker
+                <Marker
                     key={index}
                     coordinate = {{
                         latitude: coord.latitude,
@@ -151,7 +151,7 @@ export function NatureMap(props) {
                     }}
                 >
                     <TempDataPin color={color}/>
-                </MapView.Marker>
+                </Marker>
              )))
          }
     }
@@ -163,7 +163,7 @@ export function NatureMap(props) {
             if(plat === 'android'){
                 return(
                     props.water.map((obj, index) => (
-                        <MapView.Polygon
+                        <Polygon
                             coordinates={obj}
                             key={index}
                             strokeWidth={2}
@@ -177,7 +177,7 @@ export function NatureMap(props) {
             else{
                 return(
                     props.water.map((obj, index) => (
-                        <MapView.Polygon
+                        <Polygon
                             coordinates={obj}
                             key={index}
                         />
@@ -197,7 +197,7 @@ export function NatureMap(props) {
             if(plat === 'android'){
                 return(
                     props.vege.map((obj, index) => (
-                        <MapView.Polygon
+                        <Polygon
                             coordinates={obj}
                             key={index}
                             strokeWidth={2}
@@ -218,7 +218,7 @@ export function NatureMap(props) {
                 
                 return(
                     linePaths.map((obj, index) => (
-                        <MapView.Polyline
+                        <Polyline
                             coordinates={obj}
                             strokeWidth={3}
                             strokeColor={'#00FF00'}
@@ -261,7 +261,7 @@ export function NatureMap(props) {
                 onPress={props.cond ? props.addShape : checkPoint}
             >
                 {/* shows the project area on the map */}
-                <MapView.Polygon
+                <Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}

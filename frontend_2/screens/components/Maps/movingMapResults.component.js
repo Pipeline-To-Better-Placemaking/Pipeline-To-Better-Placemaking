@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView from 'react-native-maps'
+import MapView, { Marker, Polygon, Polyline } from 'react-native-maps'
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 
@@ -14,7 +14,7 @@ export function MovingMapResults(props) {
 
             return (props.totalPaths.map((obj, index) => (
 
-                <MapView.Polyline
+                <Polyline
                     coordinates={obj.path}
                     strokeWidth={3}
                     strokeColor={colors[obj.colorIndex]}
@@ -35,11 +35,11 @@ export function MovingMapResults(props) {
                 mapHeight={'97.2%'}
                 onPress={() => null}
             >
-                <MapView.Marker
+                <Marker
                     coordinate = {props.position}
                 />
 
-                <MapView.Polygon
+                <Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}

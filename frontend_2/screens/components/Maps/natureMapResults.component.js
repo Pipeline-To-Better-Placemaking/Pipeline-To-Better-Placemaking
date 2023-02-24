@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MapView, { Callout } from 'react-native-maps';
+import MapView, { Marker, Polygon, Polyline, Callout } from 'react-native-maps';
 import { View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 import { Text } from '@ui-kitten/components';
@@ -64,7 +64,7 @@ export function NatureMapResults(props) {
                     // add the marker to the rendered JSX array
                     objData.push(
                         <View key={keySum}>
-                            <MapView.Marker
+                            <Marker
                                 coordinate = {{
                                     latitude: pointArr[j].marker.latitude,
                                     longitude: pointArr[j].marker.longitude
@@ -79,7 +79,7 @@ export function NatureMapResults(props) {
                                     />
                                 </Callout>
                         
-                            </MapView.Marker>
+                            </Marker>
                         </View>
                     )
                     keySum++;
@@ -89,7 +89,7 @@ export function NatureMapResults(props) {
                 for(let j = 0; j < vegeArr.length; j++){
                     objData.push(
                         <View key={keySum}>
-                            <MapView.Polygon
+                            <Polygon
                                 coordinates={vegeArr[j].location}
                                 strokeWidth={2}
                                 strokeColor={'#00FF00'}
@@ -106,7 +106,7 @@ export function NatureMapResults(props) {
                 for(let j = 0; j < waterArr.length; j++){
                     objData.push(
                         <View key={keySum}>
-                            <MapView.Polygon
+                            <Polygon
                                 coordinates={waterArr[j].location}
                                 strokeWidth={2}
                                 strokeColor={'#8CFFFF'}
@@ -147,7 +147,7 @@ export function NatureMapResults(props) {
                 onPress={() => null}
             >
                 {/* project perimeter render */}
-                <MapView.Polygon
+                <Polygon
                     coordinates={props.area}
                     strokeWidth={3}
                     strokeColor={'rgba(255,0,0,0.5)'}
