@@ -24,6 +24,32 @@ export function DataModal(props) {
         await props.closeData(data);
     }
 
+    const renderButtonRows = () => {
+        const buttonRows = [];
+        const buttons = props.desc.map((desc, index) => (
+            <Button
+                style={[styles.button, { height: buttonHeight + 65 }]}
+                key={index}
+                onLayout={(event) => {setButtonHeight(event)}}
+                onPress={() => sendData(desc)}
+            >
+                <View>
+                    <Text style={styles.buttonTxt}>{desc}</Text>
+                </View>
+            </Button>
+        ));
+
+        while (buttons.length) {
+            buttonRows.push(buttons.splice(0, 3));
+        }
+
+        return buttonRows.map((row, index) => (
+            <View style={styles.buttonRow} key={index}>
+                {row}
+            </View>
+        ));
+    };
+
     return(
         <KeyboardAvoidingView style={styles.container} behavior="padding">
         <Modal transparent={true} animationType='slide' visible={props.visible}>
@@ -36,57 +62,23 @@ export function DataModal(props) {
                         <View style={styles.titleDesc}>
                             <Text category={'s1'} style={styles.titleDescTxt}>Select the best description for the access you marked</Text>
                         </View>
-                        {/* CHECK THESE BUTTONS FOR ALL (3) MODALS TO MAKE SURE THEY WORK WELL */}
+                        
                         <View>
-                            <View style={styles.buttonRow}>
-                                <Button style={styles.buttonTxt} onPress={()=> sendData(props.desc[0])}>
-                                    <View>
-                                        <Text style={styles.buttonTxt}>{props.desc[0]}</Text>
-                                    </View>
-                                </Button>
-
-                                <Button style={[styles.button, { height: buttonHeight + 5 }]} onPress={()=> sendData(props.desc[1])}>
-                                    <View>
-                                        <Text style={styles.buttonTxt}>{props.desc[1]}</Text>
-                                    </View>
-                                </Button>
-
-                                <Button style={styles.button} onPress={()=> sendData(props.desc[2])}>
-                                    <View>
-                                        <Text style={styles.buttonTxt}>{props.desc[2]}</Text>
-                                    </View>
-
-                                </Button>
-
-                            </View>
-
-                            <View style={styles.buttonRow}>
-                                <Button style={styles.button} onPress={()=> sendData(props.desc[3])}>
-                                    <View>
-                                        <Text style={styles.buttonTxt}>{props.desc[3]}</Text>
-                                    </View>
-                                </Button>
-
-                                <Button style={styles.button} onPress={()=> sendData(props.desc[4])}>
-                                    <View>
-                                        <Text style={styles.buttonTxt}>{props.desc[4]}</Text>
-                                    </View>
-                                </Button>
-                            </View>
-
-                            <View style={styles.multiView}>
-                                <Button style={styles.backButton} onPress={() => props.back()}>
-                                    <View>
-                                        <Text style={styles.backButtonTxt}>Back</Text>
-                                    </View>
-                                </Button>
-                            </View>
-
+                            {renderButtonRows()}
                         </View>
+                        
+                        <View style={styles.multiView}>
+                            <Button style={styles.backButton} onPress={() => props.back()}>
+                                <View>
+                                    <Text style={styles.backButtonTxt}>Back</Text>
+                                </View>
+                            </Button>
+                        </View>
+
                     </View>                      
                 </View>
             </View>
         </Modal>
         </KeyboardAvoidingView>
     )
-}
+} 

@@ -83,7 +83,7 @@ export function AccessTest(props) {
     const [deleteDesc, setDeleteDesc] = useState('');
     const [deleteType, setDeleteType] = useState(-1);
 
-    const pointPrompt = ["Bike Rack", "RidepShare Drop Off", "Public Transport Stop", "Valet Counter", "E-scooter Parking"]
+    const pointPrompt = ["Bike Rack", "Ride Share Drop Off", "Public Transport Stop", "Valet Counter", "E-scooter Parking"]
     const pathPrompt = ["Sidewalk", "Side Street", "Main Road"]
     const areaPrompt = ["Parking Lot", "Parking Garage"]
     
@@ -750,13 +750,12 @@ export function AccessTest(props) {
                     visible={popupMsg}
                 />
 
-                <DataModal
-                    visible={dataModal}
+                {dataModal ? <DataModal
                     closeData={closeData}
                     back={goBack}
                     desc={prompts}
                     //point={tempMarker}
-                />
+                /> : null}
 
                 <DetailsModal 
                     visible={detailsModal}

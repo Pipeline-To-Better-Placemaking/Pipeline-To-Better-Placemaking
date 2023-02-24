@@ -93,6 +93,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',        
         marginTop: 'auto',
+        marginBottom: width * .04,
         position: 'relative',
         bottom: 0,
         padding: 25,
@@ -100,7 +101,8 @@ export const styles = StyleSheet.create({
 
     button:{
         width: width * .3,
-        height: height * .15
+        height: height * .15,
+        maxHeight: 150
     },
 
     buttonTxt:{
