@@ -83,7 +83,7 @@ export function AccessTest(props) {
     const [deleteDesc, setDeleteDesc] = useState('');
     const [deleteType, setDeleteType] = useState(-1);
 
-    const pointPrompt = ["Bike Rack", "Ride Share Drop Off", "Public Transport Stop", "Valet Counter", "E-scooter Parking"]
+    const pointPrompt = ["Ride Share Drop Off", "Bike Rack", "Public Transport Stop", "Valet Counter", "E-scooter Parking"]
     const pathPrompt = ["Sidewalk", "Side Street", "Main Road"]
     const areaPrompt = ["Parking Lot", "Parking Garage"]
     

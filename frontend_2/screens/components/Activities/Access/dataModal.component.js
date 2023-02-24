@@ -9,11 +9,19 @@ export function DataModal(props) {
     const theme = useTheme();
 
     const [buttonHeight, setButtonHeight] = useState(0);
+    const [maxButtonHeight, setMaxButtonHeight] = useState(0);
+
 
     const handleButtonLayout = (event) => {
         const { height } = event.nativeEvent.layout;
         setButtonHeight(height);
-    };
+        console.log(height);
+        if (height > maxButtonHeight + 5) {
+          setButtonHeight(height);
+          setMaxButtonHeight(height);
+        }
+      };
+      
     
     const sendData = async (desc) => {
         let data = {
@@ -28,9 +36,13 @@ export function DataModal(props) {
         const buttonRows = [];
         const buttons = props.desc.map((desc, index) => (
             <Button
-                style={[styles.button, { height: buttonHeight + 65 }]}
+                style={[styles.button, { height: buttonHeight + 1 }]}
                 key={index}
-                onLayout={(event) => {setButtonHeight(event)}}
+                onLayout={(event) => {
+                    if (index % 3 === 0) {
+                        setMaxButtonHeight(0);
+                      }
+                    setButtonHeight(event)}}
                 onPress={() => sendData(desc)}
             >
                 <View>
@@ -67,7 +79,7 @@ export function DataModal(props) {
                             {renderButtonRows()}
                         </View>
                         
-                        <View style={styles.multiView}>
+                        <View style={styles.controlButtonRow}>
                             <Button style={styles.backButton} onPress={() => props.back()}>
                                 <View>
                                     <Text style={styles.backButtonTxt}>Back</Text>
