@@ -7,6 +7,7 @@ import axios from '../api/axios';
 
 export default function UnityPage() {
   const loc = useLocation();
+  const nav = useNavigate();
   const [message, setMessage] = React.useState('');
   const [programJSON, setProgramJSON] = React.useState();
   
@@ -47,6 +48,12 @@ export default function UnityPage() {
   const handleSetProgramJSON = useCallback((programJSON) => {
       // handle the JSON sent from Unity here
       console.log(programJSON);
+      
+
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! MIGHT WANT TO CHANGE THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // Where should we go after the surveyor submits a program? right now it goes back to the main
+      // project map page... which is probably where we should go back anyways.....
+      nav('../', { replace: true, state: {team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken} });
 
   }, []);
 
