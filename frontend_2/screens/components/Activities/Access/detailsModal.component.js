@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { View, Modal, TextInput } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Modal, TextInput, SafeAreaView } from 'react-native';
 import { useTheme, Text, Button } from '@ui-kitten/components';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -356,6 +356,7 @@ export function DetailsModal(props){
         // if an option is selected push its contents onto the options data object
         // then reset that state for subsequent entries
 
+        var options = { diffRating: diffValue }
 
         // Package options data for point, path, or area
         if(props.accessType === "Point") {
@@ -372,7 +373,7 @@ export function DetailsModal(props){
                 }
                 setSpotsCount(0)
                 setLineNumber(0)
-            }
+            } 
         }
         else if(props.accessType === "Path") {
             // Package options data for roads
@@ -415,7 +416,8 @@ export function DetailsModal(props){
         } 
 
 
-        options.diffRating = parseInt(diffValue)
+        //console.log(diffValue);
+        //options.diffRating = diffValue
 
         // return the object of options data
         return options
@@ -466,60 +468,127 @@ export function DetailsModal(props){
     }
 
     return(
-        <Modal transparent={true} animationType='slide' visible={props.visible}>
-            <View style={styles.modalContainer}>
-                <View style={{height: containerHeight + 150}}>
-                    <View style={[ styles.largePurposeViewContainer, {backgroundColor:theme['background-basic-color-1']}]}
-                    >
-                            
-                        <Text category={'h1'} style={styles.titleText}>Details</Text>
-                        <View style={styles.dataView}>
-                                    
-                            <View style={styles.titleDesc}>
-                                <Text category={'s1'} style={styles.titleDescTxt}>Enter the Access {props.accessType} details</Text>
-                            </View>
-
-                            { noneSelect ?
-                                <View style={styles.selectError}>
-                                    <Text style={styles.redTxt}>Please fill in the details</Text>
-                                </View>
-                            :
-                                null
-                            }
-
-                            <View style={styles.buttonRow}>
-                                <Text
-                                    style={styles.inputLabel}
-                                >Access Difficulty</Text>
-                                <RNPickerSelect
-                                    onValueChange={(value) => setDiffValue(value)}
-                                    placeholder={{ label: '1 easiest - 5 hardest', value: 0 }}
-                                    items={options1}
-                                    value={diffValue}
-                                    style={styles.scrollWheel}
-                                />
-                            </View>  
-
-                            <ShowOptions onLayout={handleLayout}/>
-                                        
+    <Modal onShow={console.log("Modal Showing: " + props.visible)} transparent={true} animationType='slide' visible={props.visible}>
+        <View style={styles.modalContainer}>
+            <View style={{height: containerHeight + 150}}>
+                <View style={[ styles.largePurposeViewContainer, {backgroundColor:theme['background-basic-color-1']}]}
+                >
                         
-
+                    <Text category={'h1'} style={styles.titleText}>Details</Text>
+                    <View style={styles.dataView}>
+                                
+                        <View style={styles.titleDesc}>
+                            <Text category={'s1'} style={styles.titleDescTxt}>Enter the Access {props.accessType} details</Text>
                         </View>
-                        <View style={styles.controlButtonRow}>
-                                <Button style={styles.multiSubmit} onPress={sendData}>
-                                    <View>
-                                        <Text style={styles.backButtonTxt}>Submit</Text>
-                                    </View>
-                                </Button>
-                                <Button style={styles.multiSubmit} onPress={sendData}>
-                                    <View>
-                                        <Text style={styles.backButtonTxt}>Cancel</Text>
-                                    </View>
-                                </Button>
+
+                        { noneSelect ?
+                            <View style={styles.selectError}>
+                                <Text style={styles.redTxt}>Please fill in the details</Text>
                             </View>
-                    </View>                      
-                </View>
+                        :
+                            null
+                        }
+
+                        <View style={styles.buttonRow}>
+                            <Text
+                                style={styles.inputLabel}
+                            >Access Difficulty</Text>
+                            <RNPickerSelect
+                            onValueChange={(value) => {
+                                if (value !== null && value !== undefined) {
+                                    console.log(value);
+                                    setDiffValue(value);
+                                }
+                            }}
+                                placeholder={{ label: '1 easiest - 5 hardest', value: 0 }}
+                                items={options1}
+                                value={diffValue}
+                                style={styles.scrollWheel}
+                            />
+                        </View>  
+
+                        <ShowOptions onLayout={handleLayout}/>
+                                    
+                    
+
+                    </View>
+                    <View style={styles.controlButtonRow}>
+                            <Button style={styles.multiSubmit} onPress={sendData}>
+                                <View>
+                                    <Text style={styles.backButtonTxt}>Submit</Text>
+                                </View>
+                            </Button>
+                            <Button style={styles.multiSubmit} onPress={sendData}>
+                                <View>
+                                    <Text style={styles.backButtonTxt}>Cancel</Text>
+                                </View>
+                            </Button>
+                    </View>
+                </View>                      
             </View>
-        </Modal>
+        </View>
+    </Modal>
+    )
+    return(
+        //<Modal transparent={true} animationType='slide'>
+        <View style={styles.modalContainer}>
+        <View style={{height: containerHeight + 150}}>
+            <View style={[ styles.largePurposeViewContainer, {backgroundColor:theme['background-basic-color-1']}]}
+            >
+                    
+                <Text category={'h1'} style={styles.titleText}>Details</Text>
+                <View style={styles.dataView}>
+                            
+                    <View style={styles.titleDesc}>
+                        <Text category={'s1'} style={styles.titleDescTxt}>Enter the Access {props.accessType} details</Text>
+                    </View>
+
+                    { noneSelect ?
+                        <View style={styles.selectError}>
+                            <Text style={styles.redTxt}>Please fill in the details</Text>
+                        </View>
+                    :
+                        null
+                    }
+
+                    <View style={styles.buttonRow}>
+                        <Text
+                            style={styles.inputLabel}
+                        >Access Difficulty</Text>
+                        <RNPickerSelect
+                        onValueChange={(value) => {
+                            if (value !== null && value !== undefined) {
+                                console.log(value);
+                                setDiffValue(value);
+                            }
+                        }}
+                            placeholder={{ label: '1 easiest - 5 hardest', value: 0 }}
+                            items={options1}
+                            value={diffValue}
+                            style={styles.scrollWheel}
+                        />
+                    </View>  
+
+                    <ShowOptions onLayout={handleLayout}/>
+                                
+                
+
+                </View>
+                <View style={styles.controlButtonRow}>
+                        <Button style={styles.multiSubmit} onPress={sendData}>
+                            <View>
+                                <Text style={styles.backButtonTxt}>Submit</Text>
+                            </View>
+                        </Button>
+                        <Button style={styles.multiSubmit} onPress={sendData}>
+                            <View>
+                                <Text style={styles.backButtonTxt}>Cancel</Text>
+                            </View>
+                        </Button>
+                </View>
+            </View>                      
+        </View>
+    </View>
+        //</Modal>
     )
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, LogBox  } from 'react-native';
+import { View, TouchableOpacity, LogBox, Modal  } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
@@ -170,6 +170,7 @@ export function AccessTest(props) {
                 path: currentPath,
                 accessType: type,
                 description: inf.description,
+                details: null,
                 inPerimeter: true,
                 area: val,
                 distancePath: 0,
@@ -196,8 +197,8 @@ export function AccessTest(props) {
 
 
         
-        setDetailsModal(true);
         setStart(false);
+        setDetailsModal(true);
 
         console.log("🚀 ~ file: accessTest.component.js:184 ~ closeData ~ data", prettyFormat(data));
 
@@ -754,15 +755,18 @@ export function AccessTest(props) {
                     closeData={closeData}
                     back={goBack}
                     desc={prompts}
-                    //point={tempMarker}
                 /> : null}
 
-                <DetailsModal 
-                    visible={detailsModal}
-                    accessType={accessDataType}
-                    data={data[dataIndex - 1]}
-                    closeDetails={closeDetails}
-                />
+                {detailsModal ? 
+                //<Modal transparent={true} visible={detailsModal}>
+                    <DetailsModal 
+                        visible={detailsModal}
+                        accessType={accessDataType}
+                        data={data[dataIndex - 1]}
+                        closeDetails={closeDetails}
+                    />
+                //</Modal>
+                 : null}
 
                 <DeleteModal
                     visible={deleteModal}
