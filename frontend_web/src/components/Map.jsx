@@ -566,7 +566,7 @@ export default function FullMap(props) {
                                 </Button>
                                 <Button className='newHoveringButtons' onClick={removePoint}> Undo <UndoIcon /></Button>
                                 { clicks.length > 2 || clicks.length == 0 ? null:
-                                   <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/times' state={{...loc.state }}>
+                                   <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/times' state={{...loc.state, path: clicks}}>
                                         Continue Section
                                     </Button> 
                                 }

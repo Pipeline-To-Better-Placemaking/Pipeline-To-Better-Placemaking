@@ -154,7 +154,7 @@ export default function NewActivityTimes(props) {
 
     const addNewTimeSlots = async (timeSlot, title, id, timeSlotName, type) => {
         var selectedPoints = [];
-
+        console.log(type);
         if (type !== 'boundary' && type !== 'nature' && type !== 'order' && type !== 'survey' && type !== 'program' && type !== 'section'){
             if(timeSlot.points && timeSlot.points.length !== 0){
                 Object.entries(timeSlot.points).forEach(([pointInd, bool])=>(
@@ -233,6 +233,55 @@ export default function NewActivityTimes(props) {
                     response.current.style.display = 'inline-block';
                     return;
                 }
+            }
+        }
+
+        else if(type === 'section')
+        {
+            let isoDate = new Date(`${activity.date}T00:00:00`);
+            let activityDetails;
+            console.log(loc.state.path);
+            const pathData = {
+                path:[{
+                    latitude: loc.state.path[0].lat,
+                    longitude: loc.state.path[0].lng
+                },
+                {
+                    latitude: loc.state.path[1].lat,
+                    longitude: loc.state.path[1].lng,
+                }],
+                modified: isoDate.toISOString(),
+            }
+
+            console.log(pathData);
+            try {
+                const response = await axios.post(`/${timeSlotName}`, JSON.stringify({
+                    title: title,
+                    researchers: [],
+                    project: props.projectInfo._id, 
+                    collection: id,
+                    date: (adjusted.toISOString()),
+                    maxResearchers: `${timeSlot.maxResearchers}`,
+                    data: pathData
+
+                }), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': `Bearer ${loc.state.userToken.token}`
+                    },
+                    withCredentials: true
+                });
+    
+                activityDetails = await response.data;
+
+                console.log(activityDetails);
+
+            } catch (error) {
+                console.log('ERROR: ', error);
+                setMessage(error.response.data?.message);
+                response.current.style.display = 'inline-block';
+                return;
             }
         }
 

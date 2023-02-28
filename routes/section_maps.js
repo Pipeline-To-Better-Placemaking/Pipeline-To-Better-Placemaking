@@ -27,6 +27,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
                     sharedData: req.body.collection,
                     date: slot.date,
                     maxResearchers: slot.maxResearchers,
+                    data: req.body.data
                 })
 
                 //create new map with method from _map models and add ref to its parent collection.
@@ -44,6 +45,7 @@ router.post('', passport.authenticate('jwt',{session:false}), async (req, res, n
             sharedData: req.body.collection,
             date: req.body.date, 
             maxResearchers: req.body.maxResearchers,
+            data: req.body.data
         })
         const map = await Map.addMap(newMap)
         await Section_Collection.addActivity(req.body.collection,map._id)
@@ -61,11 +63,11 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
                            .populate('researchers','firstname lastname')
                            .populate([
                                {
-                                   other:'sharedData',
+                                   path:'sharedData',
                                    model:'Section_Collections',
                                    select:'title duration',
                                    populate: {
-                                    other: 'area',
+                                    path: 'area',
                                     model: 'Areas'
                                    }
                                 }])
