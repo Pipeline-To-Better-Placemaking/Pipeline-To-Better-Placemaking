@@ -7,7 +7,7 @@ import { LightMap } from '../../../components/Maps/lightMap.component.js';
 import { DataModal } from '../../../components/Activities/Light/dataModal.component';
 import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import { PopupMessage } from '../../../components/Activities/popupMessage.component';
-import CountDown from 'react-native-countdown-component';
+import CountDown from 'react-native-countdown-fixed';
 import { LOCAL_SERVER } from '@env';
 
 import { styles } from './lightTest.styles';

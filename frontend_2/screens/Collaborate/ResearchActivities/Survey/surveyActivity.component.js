@@ -5,7 +5,7 @@ import { Header } from '../../../components/headers.component';
 import { useTheme, Text, Button, Icon } from '@ui-kitten/components';
 import { MapAreaWrapper, ShowArea } from '../../../components/Maps/mapPoints.component.js';
 import { PopupMessage } from '../../../components/Activities/popupMessage.component';
-import CountDown from 'react-native-countdown-component';
+import CountDown from 'react-native-countdown-fixed';
 
 import { styles } from './surveyActivity.styles';
 

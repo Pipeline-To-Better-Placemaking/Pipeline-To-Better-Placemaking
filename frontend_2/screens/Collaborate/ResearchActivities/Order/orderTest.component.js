@@ -8,7 +8,7 @@ import { DataModal } from '../../../components/Activities/Order/dataModal.compon
 import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import { DescModal } from '../../../components/Activities/Order/descModal.component';
 import { PopupMessage } from '../../../components/Activities/popupMessage.component';
-import CountDown from 'react-native-countdown-component';
+import CountDown from 'react-native-countdown-fixed';
 import { LOCAL_SERVER } from '@env';
 
 import { styles } from './orderTest.styles';

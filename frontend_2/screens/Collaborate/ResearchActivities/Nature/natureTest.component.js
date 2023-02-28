@@ -13,7 +13,7 @@ import { DataModal } from '../../../components/Activities/Nature/dataModal.compo
 import { DeleteModal } from '../../../components/Activities/deleteModal.component';
 import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import { calcArea } from '../../../components/helperFunctions';
-import CountDown from 'react-native-countdown-component';
+import CountDown from 'react-native-countdown-fixed';
 import { LOCAL_SERVER } from '@env';
 
 import { styles } from './natureTest.styles';
