@@ -73,7 +73,7 @@ export function AccessTest(props) {
     const [accessDataType, setAccessDataType] = useState("");
     const [errorModal, setErrorModal] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
-    const [popupMsg, setPopupMsg] = useState(true);
+    const [popupMsg, setPopupMsg] = useState(false);
     const [dataModal, setDataModal] = useState(false);
     const [prompts, setPrompts] = useState([]);
     const [detailsModal, setDetailsModal] = useState(false);
@@ -198,7 +198,7 @@ export function AccessTest(props) {
 
         
         setStart(false);
-        setDetailsModal(true);
+        setTimeout(()=>handleDetailsOpen());
 
         console.log("🚀 ~ file: accessTest.component.js:184 ~ closeData ~ data", prettyFormat(data));
 
@@ -211,6 +211,10 @@ export function AccessTest(props) {
         // reset test controls
         setLineTools(false);
         setAccessIndex(-1);
+    }
+
+    const handleDetailsOpen = () => {
+        setDetailsModal(true);
     }
 
     // closes the details modal and stores the details(s)
@@ -757,16 +761,14 @@ export function AccessTest(props) {
                     desc={prompts}
                 /> : null}
 
-                {detailsModal ? 
-                //<Modal transparent={true} visible={detailsModal}>
+                <Modal transparent={true} visible={detailsModal}>
                     <DetailsModal 
                         visible={detailsModal}
                         accessType={accessDataType}
                         data={data[dataIndex - 1]}
                         closeDetails={closeDetails}
                     />
-                //</Modal>
-                 : null}
+                </Modal>
 
                 <DeleteModal
                     visible={deleteModal}
