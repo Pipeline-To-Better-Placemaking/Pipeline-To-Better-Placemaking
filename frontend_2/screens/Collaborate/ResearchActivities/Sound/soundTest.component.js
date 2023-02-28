@@ -5,7 +5,7 @@ import { Header } from '../../../components/headers.component';
 import { useTheme, Button, Icon, Text } from '@ui-kitten/components';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import { SoundMap } from '../../../components/Maps/soundMap.component';
-import CountDown from 'react-native-countdown-component';
+import CountDown from 'react-native-countdown-fixed';
 
 import { PopupMessage } from '../../../components/Activities/popupMessage.component';
 import { DecibelEntryModal } from '../../../components/Activities/Sound/decibelEntryModal.component';

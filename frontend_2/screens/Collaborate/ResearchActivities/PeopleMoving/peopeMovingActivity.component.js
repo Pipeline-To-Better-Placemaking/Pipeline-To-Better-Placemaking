@@ -8,7 +8,7 @@ import { Header } from '../../../components/headers.component';
 import { MovingModal } from '../../../components/Activities/Stationary/movingModal.component.js';
 import { DataEntryModal } from '../../../components/Activities/PeopleMoving/dataEntryModal.component.js';
 import { PopupMessage } from '../../../components/Activities/popupMessage.component.js';
-import CountDown from 'react-native-countdown-component';
+import CountDown from 'react-native-countdown-fixed';
 import { LOCAL_SERVER } from '@env';
 
 import { styles } from '../activity.style';
