@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Select, SelectItem, Modal, Text, Button, Input, Icon, Divider, List, Card } from '@ui-kitten/components';
-import { DateTimePickerModal } from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { ViewableArea, ContentContainer, LoadingSpinner } from '../../../components/content.component';
 import { HeaderExit } from '../../../components/headers.component';
 
@@ -157,22 +157,25 @@ export function CreateTimeSlots(props) {
   }
 
   const TimePicker = ({item, index}) => (
-      <View style={styles.leftShift}>
+      <View style={[styles.leftShift, {flex: 1, borderStyle: 'solid', borderColor: 'black', borderWidth: '1px', justifyContent: 'center'}]}>
         <Button
           onPress={() => editTime(item, index)}
           accessoryRight={ClockIcon}
           appearance='ghost'
           >
-          <Text>Start Time </Text>
-          <Text>{item.timeString} </Text>
+          <Text style={{ lineHeight:'auto', textAlignVertical: 'center', borderStyle: 'solid', borderColor: 'black', borderWidth: '1px' }}>Start Time
+          
+          </Text>
+          <DateTimePicker
+            isVisible={isTimePickerVisible}
+            mode="time"
+            value={timeValue}
+            onConfirm={setTime}
+            onCancel={() => setTimePickerVisibility(false)}
+          />
+          
         </Button>
-        <DateTimePickerModal
-          isVisible={isTimePickerVisible}
-          mode="time"
-          date={timeValue}
-          onConfirm={setTime}
-          onCancel={() => setTimePickerVisibility(false)}
-        />
+        
       </View>
   );
 

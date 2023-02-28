@@ -18,7 +18,7 @@ import { LOCAL_SERVER } from '@env';
 
 import { styles } from './accessTest.styles';
 
-LogBox.ignoreLogs(['EventEmitter.removeListener']);
+//LogBox.ignoreLogs(['EventEmitter.remove']);
 
 export function AccessTest(props) {
     const theme = useTheme();
