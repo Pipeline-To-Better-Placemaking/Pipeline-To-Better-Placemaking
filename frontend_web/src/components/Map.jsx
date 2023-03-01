@@ -4,7 +4,7 @@ import { createCustomEqual } from 'fast-equals';
 import { isLatLngLiteral } from '@googlemaps/typescript-guards';
 import Button from '@mui/material/Button';
 import UndoIcon from '@mui/icons-material/Undo';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import MapDrawers from './MapDrawers';
 import { testNames } from '../functions/HelperFunctions';
@@ -40,10 +40,11 @@ export default function FullMap(props) {
     const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 || props.type === 2  || props.type === 8 || props.type === 10  ? props.area : null);
     const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [] :(props.type === 6 ? props.area : [])));
     const standingPoints = props.standingPoints ? props.standingPoints : null;
-    const subAreas = props.subAreas ? props.subAreas : [];
+    const subAreas = props.subAreas ? props.subAreaas : [];
     const [numFloors, setNumFloors] = React.useState(1);
     // Access Universal Data passed around including the key for maps
     const loc = useLocation();
+    const nav = useNavigate();
 
     // Hold the selections from the switch toggles (from Map Drawers)
     const [stationaryCollections, setStationaryCollections] = React.useState({});
@@ -176,6 +177,15 @@ export default function FullMap(props) {
                 break;
             case 'access_maps':
                 newSelection = accessCollections;
+                if (check === true) {
+                    if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
+                    newSelection[`${date}`].push(time);
+                } else {
+                    var a = newSelection[date].indexOf(time);
+                    newSelection[date].splice(a, 1);
+                }
+                setAccessCollections(newSelection);
+                setCollections({ ...collections, [category]: newSelection });
                 break;
             case 'program_maps': 
                 newSelection = programCollections;
@@ -276,10 +286,36 @@ export default function FullMap(props) {
         setPlaceOn(!placeOn);
     }
 
+    //weird
+    const handleIPSurveyorRoute = () => {
+        nav('../activities/program_surveyors', { replace: true, state: {team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken} });
+    }
+
+    const handleBaseplateRender = (e) => {
+        let obj = [];
+
+        e.map(vertex => {
+            // console.log(vertex)
+                let newObj = {
+                    latitude: vertex.lat,
+                    longitude: vertex.lng,
+                };
+                obj.push(newObj);
+            }
+            
+        )
+        return obj;
+    }
+
     // Info Window/Modal for Boundaries and Paths which do no have Google Maps Info Windows
     const boundsPathWindow = (title, date, time, index, ver) => (e) => {
         const popup = document.getElementById('pathBoundWindow');
         const inner = document.getElementById('popUpText');
+
+        // this ensures? that the IPSurveyorBtn doesn't get displayed for the other test models
+        const IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
+        IPsurveyorbutton.style.display = 'none';
+
         if(ver === 0 || ver === 2) {
             // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
             inner.innerHTML = '';
@@ -297,6 +333,16 @@ export default function FullMap(props) {
             inner.innerHTML = '';
             inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Vegetation<br/>Location ${index[1] + 1}<br/>Description: ${data.Results[title][date][time].data[index[0]].vegetation[index[1]].description}<br/>Area: ${data.Results[title][date][time].data[index[0]].vegetation[index[1]].area} ft<sup>2</sup>`
             popup.style.display = 'flex';
+        } else if(ver === 5) {
+            // version 5 == identifying program collection
+            const popup = document.getElementById('pathBoundWindow');
+            inner.innerHTML = '';
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>`;
+            popup.style.display = 'flex';
+
+            
+            IPsurveyorbutton.style.display = 'flex';
+
         } else {
             // version 4 moving collections
             const popup = document.getElementById('pathBoundWindow');
@@ -346,61 +392,119 @@ export default function FullMap(props) {
                         ))
                     )))
                     :
-                    (title === 'light_maps' || title === 'order_maps' ? 
-                        !data.Results[title][sdate][time].data ? null :(data.Results[title][sdate][time].data).map((inst) => (
-                            Object.entries(inst.points).map(([ind, point], i2) => (
-                                <Marker
-                                    key={`${sdate}.${time}.${i2}`}
-                                    shape={ title === 'order_maps' ? 'triangle' : 'lightcircle'}
-                                    info={ point.light_description ?
-                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`) 
-                                            : (point.description ? (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.kind}<br/>${point.description}</div>`) : null)}
-                                    position={ point.location }
-                                    markerType={point.light_description ? point.light_description : point.kind }
-                                />
-                            ))
+                    (title === 'program_maps' ? 
+                        !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                            <Bounds 
+                            key = {`${sdate}.${time}.${0}`}
+                            title={title}
+                            date={sdate}
+                            time={time}
+                            index={0}
+                            // [[28.376002646895927, -81.5514212934046], [28.37641799472018, -81.54852450766852], [28.374907631199783, -81.5476018277674]
+                            // , [28.37398252292356, -81.55285895743658],  [28.375115307459065, -81.55341685691168]]
+                            // [{latitude: 38.897361411665344, longitude:-77.03679200665762},
+                            //     {latitude: 38.89794173105639, longitude: -77.03680809991171},
+                            //     {latitude: 38.89764113455378, longitude:-77.03616973416617},
+                            //     ]
+                            
+                            area={handleBaseplateRender(inst.perimeterPoints)}
+                            type={"Baseplate"}
+                            boundsPathWindow={boundsPathWindow}
+                        />
                         ))
-                        : 
-                        !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
-                            point ? (point.mode || point.kind === 'Constructed' || point.kind === 'Construction' ? 
-                                <Path 
-                                    key={`${sdate}.${time}.${i2}`} 
-                                    path={point.path} 
-                                    mode={point.mode ? point.mode : point.kind}
-                                    title={title} date={sdate} time={time} index={i2}
-                                    boundsPathWindow={boundsPathWindow}
-                                /> 
-                                :
-                                (point.kind === 'Shelter' || point.kind === 'Material' ? 
-                                    <Bounds 
+                    
+                    : 
+                    (title === 'access_maps' ? 
+                        !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                            Object.entries(inst.path).map(([ind, point], i2) => 
+                                {point.accessType === "Access Point" ? 
+                                    <Marker
+                                        key={`${sdate}.${time}.${i2}`}
+                                        shape={ 'lightcircle'}
+                                        info={ point.accessType ? `<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.accessType}</div>` : null}
+                                        position={ point.path }
+                                        markerType={point.accessType ? point.accessType : null}
+                                    /> 
+                                : point.accessType === "Access Path" ? 
+                                    <Path 
                                         key={`${sdate}.${time}.${i2}`} 
-                                        title={title} 
-                                        date={sdate} 
-                                        time={time} 
-                                        index={i2} 
-                                        area={point.path} 
-                                        type={point.kind ? point.kind : point.result} 
+                                        path={point.path} 
+                                        //mode={point.mode ? point.mode : point.kind}
+                                        title={title} date={sdate} time={time} index={i2}
+                                        boundsPathWindow={boundsPathWindow}
+                                    /> 
+                                : //Access Area
+                                    <Bounds
+                                        key={`${sdate}.${time}.${i2}`}
+                                        title={title}
+                                        date={sdate}
+                                        time={time}
+                                        area={point.path}
+                                        type={point.accessType}
+                                        boundsPathWindow={boundsPathWindow}
+                                    />
+                                }
+                            )
+                        ))
+                        :
+                        (title === 'light_maps' || title === 'order_maps' ? 
+                            !data.Results[title][sdate][time].data ? null :(data.Results[title][sdate][time].data).map((inst) => (
+                                Object.entries(inst.points).map(([ind, point], i2) => (
+                                    <Marker
+                                        key={`${sdate}.${time}.${i2}`}
+                                        shape={ title === 'order_maps' ? 'triangle' : 'lightcircle'}
+                                        info={ point.light_description ?
+                                            (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`) 
+                                                : (point.description ? (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.kind}<br/>${point.description}</div>`) : null)}
+                                        position={ point.location }
+                                        markerType={point.light_description ? point.light_description : point.kind }
+                                    />
+                                ))
+                            ))
+                            : 
+                            !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
+                                point ? (point.mode || point.kind === 'Constructed' || point.kind === 'Construction' ? 
+                                    <Path 
+                                        key={`${sdate}.${time}.${i2}`} 
+                                        path={point.path} 
+                                        mode={point.mode ? point.mode : point.kind}
+                                        title={title} date={sdate} time={time} index={i2}
                                         boundsPathWindow={boundsPathWindow}
                                     /> 
                                     :
-                                    <Marker 
-                                        key={`${sdate}.${time}.${i2}`} 
-                                        shape={'circle'}
-                                        info={ point.average ? 
-                                            (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.average} dB</div>`) 
-                                                : (point.result ? 
-                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.result}</div>`)
-                                                        : (point.posture ? 
-                                                            (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.posture}</div>`) 
-                                                            : null)) } 
-                                        position={point.location ? point.location : standingPoints[point.standingPoint]} 
-                                        markerType={point.average ? 'sound_maps' 
-                                            : (point.result ? point.result : (point.posture ? point.posture : null))} 
-                                        markerSize={title === 'sound_maps' ? point.average : null} 
-                                    />
-                                )
-                            ) : null
-                        ))
+                                    (point.kind === 'Shelter' || point.kind === 'Material' ? 
+                                        <Bounds 
+                                            key={`${sdate}.${time}.${i2}`} 
+                                            title={title} 
+                                            date={sdate} 
+                                            time={time} 
+                                            index={i2} 
+                                            area={point.path} 
+                                            type={point.kind ? point.kind : point.result} 
+                                            boundsPathWindow={boundsPathWindow}
+                                        /> 
+                                        :
+                                        <Marker 
+                                            key={`${sdate}.${time}.${i2}`} 
+                                            shape={'circle'}
+                                            info={ point.average ? 
+                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.average} dB</div>`) 
+                                                    : (point.result ? 
+                                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.result}</div>`)
+                                                            : (point.posture ? 
+                                                                // This is where the data from people in places are coming from
+                                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.posture}</div>`) 
+                                                                : null)) } 
+                                            position={point.location ? point.location : standingPoints[point.standingPoint]} 
+                                            markerType={point.average ? 'sound_maps' 
+                                                : (point.result ? point.result : (point.posture ? point.posture : null))} 
+                                            markerSize={title === 'sound_maps' ? point.average : null} 
+                                        />
+                                    )
+                                ) : null
+                            ))
+                        )
+                    )
                     )
                 ))
             ))
@@ -426,7 +530,7 @@ export default function FullMap(props) {
                     mapTypeId='satellite'
                 >
                     { areaData && (props.type >= 3 && props.type <= 5) ? <Bounds area={areaData} type={'area'} ver={true} /> : (areaData ? <Bounds area={areaData} type={'area'} /> : null )}
-                    { subAreas.length > 1 ? subAreas.map((area, index)=>( index === 0 ? null : <Bounds area={area.points} type={'area'} />)) : null }
+                    { subAreas ? (subAreas.length > 1 ? subAreas.map((area, index)=>( index === 0 ? null : <Bounds area={area.points} type={'area'} />)) : null) : null }
                     { props.type === 1 ? 
                         actCoords(collections) : 
                         (props.type === 2 || props.type === 4 ? 
@@ -578,7 +682,10 @@ export default function FullMap(props) {
 
             <div id='pathBoundWindow' style={{display: 'none', position: 'fixed', flexDirection: 'row', justifyContent: 'center'}}>
                 <div id='popUpBlock'>
-                    <div id='popUpText'></div>
+                    <div id='popUpText'>
+                        
+                    </div>
+                    <Button id='IPSurveyorsBtn' style={{display: 'none'}} onClick={handleIPSurveyorRoute}>Conduct Surveyor Test</Button>
                     <Button id='closeButton' onClick={closeWindow}>Close</Button>
                 </div>
             </div>
@@ -648,6 +755,7 @@ const Marker = (options) => {
     const markerSize = Number(options.markerSize);
     const shape = options.shape;
     const [infoWindow, setInfoWindow] = React.useState();
+    console.log("options position: ", options.position);
 
     const colors = {
         sound_maps: ['#B073FF', '#B073FF'],
@@ -773,7 +881,7 @@ const Bounds = ({boundsPathWindow, ...options}) => {
             );
 
             if (boundsPathWindow) {
-                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : (type === 'vegetation' ? 3 : 0))));
+                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : (type === 'vegetation' ? 3 : (type === 'Baseplate' ? 5 : 0)))));
             }
         }
     }, [paths, options, type, area, boundsPathWindow]);
