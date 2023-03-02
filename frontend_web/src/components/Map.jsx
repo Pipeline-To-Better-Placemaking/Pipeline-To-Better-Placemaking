@@ -9,6 +9,7 @@ import html2canvas from 'html2canvas';
 import MapDrawers from './MapDrawers';
 import { testNames } from '../functions/HelperFunctions';
 import './controls.css';
+import { Form } from 'react-bootstrap';
 import { ClickAwayListener } from '@mui/material';
 
 const render = (status) => {
@@ -720,8 +721,8 @@ export default function FullMap(props) {
                                     Cancel
                                 </Button>
                                 <Button className='newHoveringButtons' onClick={removePoint}> Undo <UndoIcon /></Button>
-                                {clicks.length > 2 || clicks.length === 0 ? null :
-                                    <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='/upload_section_media'>
+                                { clicks.length > 2 || clicks.length == 0 ? null:
+                                   <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/times' state={{...loc.state, path: clicks}}>
                                         Continue Section
                                     </Button>
                                 }
