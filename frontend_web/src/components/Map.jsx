@@ -355,6 +355,9 @@ export default function FullMap(props) {
         const IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
         IPsurveyorbutton.style.display = 'none';
 
+        //const IPsurveyorbutton = document.getElementById('');
+        //IPsurveyorbutton.style.display = 'none';
+
         if (ver === 0 || ver === 2) {
             // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
             inner.innerHTML = '';
