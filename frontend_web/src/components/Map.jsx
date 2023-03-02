@@ -497,6 +497,10 @@ export default function FullMap(props) {
                                     )
                                 ))
                                 // If the activity is not an access map, render markers, boundaries or polylines based on the point's kind
+                                : (title === 'section_maps' ? {
+                                    
+                                } 
+                                
                                 : (title === 'light_maps' || title === 'order_maps' ?
                                     // For light and order maps, map over each instance's points to render them as markers
                                     !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
@@ -555,9 +559,7 @@ export default function FullMap(props) {
                                         ) : null
                                     ))
                                 )
-                            )
-                        )
-                ))
+                        ))
             ))
         ))
     );
