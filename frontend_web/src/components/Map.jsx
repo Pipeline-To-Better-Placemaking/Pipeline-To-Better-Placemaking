@@ -355,6 +355,9 @@ export default function FullMap(props) {
         const IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
         IPsurveyorbutton.style.display = 'none';
 
+        //const IPsurveyorbutton = document.getElementById('');
+        //IPsurveyorbutton.style.display = 'none';
+
         if (ver === 0 || ver === 2) {
             // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
             inner.innerHTML = '';
@@ -497,9 +500,20 @@ export default function FullMap(props) {
                                     )
                                 ))
                                 // If the activity is not an access map, render markers, boundaries or polylines based on the point's kind
-                                : (title === 'section_maps' ? {
-                                    
-                                } 
+                                : (title === 'section_maps' ? !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                                    // For each instance, map over its path to render each point as a marker or boundary
+                                    Object.entries(inst.path).map(([ind, point], i2) =>
+                                    // If the data (point) is an access point, render a marker
+                                        <Path
+                                            key={`${sdate}.${time}.${i2}`}
+                                            path={point.path}
+                                            //mode={point.mode ? point.mode : point.kind}
+                                            title={title} date={sdate} time={time} index={i2}
+                                            boundsPathWindow={boundsPathWindow}
+                                        />
+                                    )
+                                    )
+                                )
                                 
                                 : (title === 'light_maps' || title === 'order_maps' ?
                                     // For light and order maps, map over each instance's points to render them as markers
