@@ -381,10 +381,23 @@ export default function FullMap(props) {
             inner.innerHTML = '';
             inner.innerHTML = `<h5>${testNames(title)}</h5><br/>`;
             popup.style.display = 'flex';
-
             IPsurveyorbutton.style.display = 'flex';
-
-        } else {
+        } else if (ver === 6) {
+            // version 5 == identifying program collection
+            inner.innerHTML = '';
+            inner.innerHTML = `
+                <h5>${testNames(title)}</h5>
+                <br/>
+                Location ${index + 1}
+                <br/>
+                kind: ${data.Results[title][date][time].data[index].kind}
+                <br/>
+                description: ${data.Results[title][date][time].data[index].description}
+                <br/>
+                ${data.Results[title][date][time].data[index].kind === 'Constructed' || data.Results[title][date][time].data[index].kind === 'Construction' ? 'Length' : 'Area'}: ${data.Results[title][date][time].data[index].value} ${data.Results[title][date][time].data[index].kind === 'Constructed' || data.Results[title][date][time].data[index].kind === 'Construction' ? 'ft' : 'ft<sup>2</sup>'}`
+            popup.style.display = 'flex';
+        }
+         else {
             // version 4 moving collections
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
@@ -466,38 +479,38 @@ export default function FullMap(props) {
                             // If the activity is an access map, render markers and boundaries
                             : (title === 'access_maps' ?
                                 // Check if there is data for the current time, and map over it to render each instance                    
-                                !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                                !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst, index) => (
                                     // For each instance, map over its path to render each point as a marker or boundary
-                                    Object.entries(inst.path).map(([ind, point], i2) =>
+                                    //Object.entries(inst.path).map(([ind, point], i2) =>
                                     // If the data (point) is an access point, render a marker
-                                    (point.accessType === "Access Point" ?
+                                        (inst.accessType === "Access Point" ?
                                         <Marker
-                                            key={`${sdate}.${time}.${i2}`}
+                                            key={`${sdate}.${time}.${index}`}
                                             shape={'lightcircle'}
-                                            info={point.accessType ? `<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.accessType}</div>` : null}
-                                            position={point.path}
-                                            markerType={point.accessType ? point.accessType : null}
+                                            info={inst.accessType ? `<div><b>${testNames(title)}</b><br/>Location ${index}<br/>${inst.accessType}</div>` : null}
+                                            position={inst.path[0]}
+                                            markerType={'access_maps'}
                                         />
                                         // If the data (point) is an access path, render a polyline
-                                        : point.accessType === "Access Path" ?
+                                        : inst.accessType === "Access Path" ?
                                             <Path
-                                                key={`${sdate}.${time}.${i2}`}
-                                                path={point.path}
+                                                key={`${sdate}.${time}.${index}`}
+                                                path={inst.path}
                                                 //mode={point.mode ? point.mode : point.kind}
-                                                title={title} date={sdate} time={time} index={i2}
+                                                title={title} date={sdate} time={time} index={index}
                                                 boundsPathWindow={boundsPathWindow}
                                             />
-                                            : point.accessType === "Access Area" ? // If the data (point) is an access area, render a polygon
+                                            : inst.accessType === "Access Area" ? // If the data (point) is an access area, render a polygon
                                                 <Bounds
-                                                    key={`${sdate}.${time}.${i2}`}
+                                                    key={`${sdate}.${time}.${index}`}
                                                     title={title}
                                                     date={sdate}
                                                     time={time}
-                                                    area={point.path}
-                                                    type={point.accessType}
+                                                    area={inst.path}
+                                                    type={'access'}
                                                     boundsPathWindow={boundsPathWindow}
                                                 /> : null
-                                    )
+                                    //)
                                     )
                                 ))
                                 // If the activity is not an access map, render markers, boundaries or polylines based on the point's kind
@@ -832,6 +845,7 @@ const Marker = (options) => {
 
     const colors = {
         sound_maps: ['#B073FF', '#B073FF'],
+        access_maps: ['blue', 'black'],
         animal: ['#9C4B00', 'red'],
         Squatting: ['green', 'black'],
         Sitting: ['red', 'black'],
@@ -880,10 +894,15 @@ const Marker = (options) => {
         };
     }, [marker, icon, info, infoWindow, markerType]);
 
+    //console.log("🚀 ~ file: Map.jsx:889 ~ React.useEffect ~ latitude:", options.position.latitude);
+    //console.log("🚀 ~ file: Map.jsx:889 ~ React.useEffect ~ options:", options);
+
     // handles any coordinates from DB with latitude and longitude
     React.useEffect(() => {
         if (marker) {
             marker.setOptions({ clickable: true, map: options.map, position: options.position && options.position.latitude ? (new google.maps.LatLng(options.position.latitude, options.position.longitude)) : (options.position ? options.position : null) });
+
+
 
             marker.addListener('click', () => {
                 infoWindow.open({
@@ -955,7 +974,7 @@ const Bounds = ({ boundsPathWindow, ...options }) => {
             );
 
             if (boundsPathWindow) {
-                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : (type === 'vegetation' ? 3 : (type === 'Baseplate' ? 5 : 0)))));
+                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : (type === 'vegetation' ? 3 : (type === 'Baseplate' ? 5 : (type === 'access' ? 6 : 0))))));
             }
         }
     }, [paths, options, type, area, boundsPathWindow]);
