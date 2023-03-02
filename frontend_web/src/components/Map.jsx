@@ -72,8 +72,17 @@ export default function FullMap(props) {
         section_maps: sectionCollections,
     });
 
-    // onSelection handles the boolean toggling from Map Drawer selections/switches
-    // passes updates to specific state object and then to collections objects to register updates
+    /**
+        Function: onSelection
+        Description: This function handles the boolean toggling from Map Drawer selections/switches.
+        It receives the category, date, time, and check parameters, updates the specific state object,
+        and then registers the updates to the collections objects.
+        @param {string} category - The category of the selection (e.g. stationary_maps, moving_maps, order_maps, etc.)
+        @param {string} date - The date of the selection
+        @param {string} time - The time of the selection
+        @param {boolean} check - The boolean value of the selection (true if selected, false if unselected)
+        @return {void}
+    */
     function onSelection(category, date, time, check) {
         var newSelection;
         switch (category) {
@@ -204,8 +213,13 @@ export default function FullMap(props) {
         }
     };
 
-    // html2canvas functions --- saveAs, convertToImage -----
-    // Renders and image of the map
+    /**
+        Function: saveAs
+        Description: This function generates a simulated link and link click to download an image with the given URL and filename. If the browser supports the "download" attribute, the image will be downloaded directly. Otherwise, a new window will be opened with the image URL.
+        @param {string} url - The URL of the image to download
+        @param {string} filename - The filename to save the image as
+        @return {void}
+    */
     function saveAs(url, filename) {
         var link = document.createElement('a');
         //simulated link and link click with removal
@@ -221,6 +235,13 @@ export default function FullMap(props) {
         }
     }
 
+    /**
+        Function: convertToImage
+        Description: This function converts the mapFrame HTML element to an image using html2canvas library
+        and downloads the image with the given title as a PNG file using the saveAs function.
+        @param {Event} e - The event object.
+        @return {void}
+    */
     const convertToImage = (e) => {
         html2canvas(document.getElementById('mapFrame'), {
             useCORS: true
@@ -307,7 +328,18 @@ export default function FullMap(props) {
         return obj;
     }
 
-    // Info Window/Modal for Boundaries and Paths which do no have Google Maps Info Windows
+    /**
+        Function: boundsPathWindow
+        Description: Displays an info window/modal for boundaries and paths that do not have Google Maps Info Windows.
+        It receives the title, date, time, index, and ver parameters, checks the values to determine which kind of collection to display,
+        and then populates the modal with the relevant data. The function also shows/hides the IPSurveyorsBtn as needed.
+        @param {string} title - The title of the collection
+        @param {string} date - The date of the collection
+        @param {string} time - The time of the collection
+        @param {number | Array} index - The index or array of indices of the selected data point(s)
+        @param {number} ver - The version of the collection (0-5)
+        @return {void}
+    */
     const boundsPathWindow = (title, date, time, index, ver) => (e) => {
         const popup = document.getElementById('pathBoundWindow');
         const inner = document.getElementById('popUpText');
@@ -359,151 +391,164 @@ export default function FullMap(props) {
         inner.innerHTML = '';
     }
 
-    // Renders all selected activity options to the corresponding markers, polylines and boundaries -----
-    // Conditionals handle alternate object structures
+    // Renders all selected activity options to the corresponding markers, polylines and boundaries
     const actCoords = (collections) => (
+        // Loop through the activity collections
         Object.entries(collections).map(([title, object], index) => (
-            Object.entries(object).map(([sdate, stimes])=>(
-                stimes.map(time => (title === 'nature_maps'  ?
-                    !data.Results[title][sdate][time].data ? null : ((data.Results[title][sdate][time].data).map((inst, ind0) => (
-                        Object.entries(inst).map(([natureType, pointArr], ind1)=>(
-                            natureType === 'weather' || natureType === '_id' || natureType === 'time' ? null :
-                                pointArr.map((natureObj, ind2)=>(
-                                    natureType === 'animal' ? 
-                                        <Marker
-                                            key={`${sdate}.${time}.${ind2}`}
-                                            shape='circle'
-                                            info={
-                                                `<div><b>${testNames(title)}</b><br/>Location ${ind2+1}<br/>Animal: ${natureObj.description}<br/>[${natureObj.kind}]</div>`}
-                                            position={natureObj.marker}
-                                            markerType={natureType}
-                                        /> 
-                                    : <Bounds
-                                            key={`${sdate}.${time}.${ind2}`}
-                                            title={title}
-                                            date={sdate}
-                                            time={time}
-                                            index={[ind0, ind2]}
-                                            area={natureObj.location}
-                                            type={natureType}
-                                            boundsPathWindow={boundsPathWindow}
-                                        />
-                                ))
-                        ))
-                    )))
-                    :
-                    (title === 'program_maps' ? 
-                        !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
-                            <Bounds 
-                            key = {`${sdate}.${time}.${0}`}
+        // Loop through the activity collection's objects
+        Object.entries(object).map(([sdate, stimes])=>(
+            // Loop through the object's times
+            stimes.map(time => (
+            // Check if the activity is a nature map
+            title === 'nature_maps' ?
+                // If it is a nature map, loop through the data and render markers and boundaries
+                !data.Results[title][sdate][time].data ? null :
+                ((data.Results[title][sdate][time].data).map((inst, ind0) => (
+                    // Loop through the instances and render markers and boundaries
+                    Object.entries(inst).map(([natureType, pointArr], ind1)=>(
+                    pointArr.map((natureObj, ind2)=>(
+                        // If the object is an animal, render a marker
+                        natureType === 'animal' ? 
+                        <Marker
+                            key={`${sdate}.${time}.${ind2}`}
+                            shape='circle'
+                            info={
+                            `<div><b>${testNames(title)}</b><br/>Location ${ind2+1}<br/>Animal: ${natureObj.description}<br/>[${natureObj.kind}]</div>`
+                            }
+                            position={natureObj.marker}
+                            markerType={natureType}
+                        /> 
+                        // If it is not an animal, render a boundary
+                        : <Bounds
+                            key={`${sdate}.${time}.${ind2}`}
                             title={title}
                             date={sdate}
                             time={time}
-                            index={0}
-                            // [[28.376002646895927, -81.5514212934046], [28.37641799472018, -81.54852450766852], [28.374907631199783, -81.5476018277674]
-                            // , [28.37398252292356, -81.55285895743658],  [28.375115307459065, -81.55341685691168]]
-                            // [{latitude: 38.897361411665344, longitude:-77.03679200665762},
-                            //     {latitude: 38.89794173105639, longitude: -77.03680809991171},
-                            //     {latitude: 38.89764113455378, longitude:-77.03616973416617},
-                            //     ]
-                            
-                            area={handleBaseplateRender(inst.perimeterPoints)}
-                            type={"Baseplate"}
+                            index={[ind0, ind2]}
+                            area={natureObj.location}
+                            type={natureType}
                             boundsPathWindow={boundsPathWindow}
-                        />
-                        ))
-                    
-                    : 
-                    (title === 'access_maps' ? 
+                            />
+                    ))
+                    ))
+                )))
+                // If the activity is a program map, render a boundary
+                :   (title === 'program_maps' ? 
                         !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
-                            Object.entries(inst.path).map(([ind, point], i2) => 
-                                {point.accessType === "Access Point" ? 
-                                    <Marker
-                                        key={`${sdate}.${time}.${i2}`}
-                                        shape={ 'lightcircle'}
-                                        info={ point.accessType ? `<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.accessType}</div>` : null}
-                                        position={ point.path }
-                                        markerType={point.accessType ? point.accessType : null}
-                                    /> 
-                                : point.accessType === "Access Path" ? 
-                                    <Path 
-                                        key={`${sdate}.${time}.${i2}`} 
-                                        path={point.path} 
-                                        //mode={point.mode ? point.mode : point.kind}
-                                        title={title} date={sdate} time={time} index={i2}
-                                        boundsPathWindow={boundsPathWindow}
-                                    /> 
-                                : //Access Area
-                                    <Bounds
-                                        key={`${sdate}.${time}.${i2}`}
-                                        title={title}
-                                        date={sdate}
-                                        time={time}
-                                        area={point.path}
-                                        type={point.accessType}
-                                        boundsPathWindow={boundsPathWindow}
-                                    />
-                                }
-                            )
+                            <Bounds 
+                                key = {`${sdate}.${time}.${0}`}
+                                title={title}
+                                date={sdate}
+                                time={time}
+                                index={0}
+                                // [[28.376002646895927, -81.5514212934046], [28.37641799472018, -81.54852450766852], [28.374907631199783, -81.5476018277674]
+                                // , [28.37398252292356, -81.55285895743658],  [28.375115307459065, -81.55341685691168]]
+                                // [{latitude: 38.897361411665344, longitude:-77.03679200665762},
+                                //     {latitude: 38.89794173105639, longitude: -77.03680809991171},
+                                //     {latitude: 38.89764113455378, longitude:-77.03616973416617},
+                                //     ]
+                                
+                                area={handleBaseplateRender(inst.perimeterPoints)}
+                                type={"Baseplate"}
+                                boundsPathWindow={boundsPathWindow}
+                            />
                         ))
-                        :
-                        (title === 'light_maps' || title === 'order_maps' ? 
-                            !data.Results[title][sdate][time].data ? null :(data.Results[title][sdate][time].data).map((inst) => (
-                                Object.entries(inst.points).map(([ind, point], i2) => (
-                                    <Marker
-                                        key={`${sdate}.${time}.${i2}`}
-                                        shape={ title === 'order_maps' ? 'triangle' : 'lightcircle'}
-                                        info={ point.light_description ?
-                                            (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`) 
-                                                : (point.description ? (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.kind}<br/>${point.description}</div>`) : null)}
-                                        position={ point.location }
-                                        markerType={point.light_description ? point.light_description : point.kind }
-                                    />
-                                ))
-                            ))
-                            : 
-                            !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
-                                point ? (point.mode || point.kind === 'Constructed' || point.kind === 'Construction' ? 
-                                    <Path 
-                                        key={`${sdate}.${time}.${i2}`} 
-                                        path={point.path} 
-                                        mode={point.mode ? point.mode : point.kind}
-                                        title={title} date={sdate} time={time} index={i2}
-                                        boundsPathWindow={boundsPathWindow}
-                                    /> 
-                                    :
-                                    (point.kind === 'Shelter' || point.kind === 'Material' ? 
-                                        <Bounds 
+                        // If the activity is an access map, render markers and boundaries
+                        : (title === 'access_maps' ? 
+                            // Check if there is data for the current time, and map over it to render each instance                    
+                            !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                                // For each instance, map over its path to render each point as a marker or boundary
+                                Object.entries(inst.path).map(([ind, point], i2) => 
+                                    // If the data (point) is an access point, render a marker
+                                    {point.accessType === "Access Point" ? 
+                                        <Marker
+                                            key={`${sdate}.${time}.${i2}`}
+                                            shape={ 'lightcircle'}
+                                            info={ point.accessType ? `<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.accessType}</div>` : null}
+                                            position={ point.path }
+                                            markerType={point.accessType ? point.accessType : null}
+                                        />
+                                        // If the data (point) is an access path, render a polyline
+                                    : point.accessType === "Access Path" ? 
+                                        <Path 
                                             key={`${sdate}.${time}.${i2}`} 
-                                            title={title} 
-                                            date={sdate} 
-                                            time={time} 
-                                            index={i2} 
-                                            area={point.path} 
-                                            type={point.kind ? point.kind : point.result} 
+                                            path={point.path} 
+                                            //mode={point.mode ? point.mode : point.kind}
+                                            title={title} date={sdate} time={time} index={i2}
+                                            boundsPathWindow={boundsPathWindow}
+                                        /> 
+                                    : // If the data (point) is an access area, render a polygon
+                                        <Bounds
+                                            key={`${sdate}.${time}.${i2}`}
+                                            title={title}
+                                            date={sdate}
+                                            time={time}
+                                            area={point.path}
+                                            type={point.accessType}
+                                            boundsPathWindow={boundsPathWindow}
+                                        />
+                                    }
+                                )
+                            ))
+                            // If the activity is not an access map, render markers, boundaries or polylines based on the point's kind
+                            : (title === 'light_maps' || title === 'order_maps' ? 
+                                // For light and order maps, map over each instance's points to render them as markers
+                                !data.Results[title][sdate][time].data ? null :(data.Results[title][sdate][time].data).map((inst) => (
+                                    Object.entries(inst.points).map(([ind, point], i2) => (
+                                        <Marker
+                                            key={`${sdate}.${time}.${i2}`}
+                                            shape={ title === 'order_maps' ? 'triangle' : 'lightcircle'}
+                                            info={ point.light_description ?
+                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`) 
+                                                    : (point.description ? (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.kind}<br/>${point.description}</div>`) : null)}
+                                            position={ point.location }
+                                            markerType={point.light_description ? point.light_description : point.kind }
+                                        />
+                                    ))
+                                ))
+                                : 
+                                !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
+                                    point ? (point.mode || point.kind === 'Constructed' || point.kind === 'Construction' ? 
+                                        <Path 
+                                            key={`${sdate}.${time}.${i2}`} 
+                                            path={point.path} 
+                                            mode={point.mode ? point.mode : point.kind}
+                                            title={title} date={sdate} time={time} index={i2}
                                             boundsPathWindow={boundsPathWindow}
                                         /> 
                                         :
-                                        <Marker 
-                                            key={`${sdate}.${time}.${i2}`} 
-                                            shape={'circle'}
-                                            info={ point.average ? 
-                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.average} dB</div>`) 
-                                                    : (point.result ? 
-                                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.result}</div>`)
-                                                            : (point.posture ? 
-                                                                // This is where the data from people in places are coming from
-                                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.posture}</div>`) 
-                                                                : null)) } 
-                                            position={point.location ? point.location : standingPoints[point.standingPoint]} 
-                                            markerType={point.average ? 'sound_maps' 
-                                                : (point.result ? point.result : (point.posture ? point.posture : null))} 
-                                            markerSize={title === 'sound_maps' ? point.average : null} 
-                                        />
-                                    )
-                                ) : null
-                            ))
-                        )
+                                        (point.kind === 'Shelter' || point.kind === 'Material' ? 
+                                            <Bounds 
+                                                key={`${sdate}.${time}.${i2}`} 
+                                                title={title} 
+                                                date={sdate} 
+                                                time={time} 
+                                                index={i2} 
+                                                area={point.path} 
+                                                type={point.kind ? point.kind : point.result} 
+                                                boundsPathWindow={boundsPathWindow}
+                                            /> 
+                                            :
+                                            <Marker 
+                                                key={`${sdate}.${time}.${i2}`} 
+                                                shape={'circle'}
+                                                info={ point.average ? 
+                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.average} dB</div>`) 
+                                                        : (point.result ? 
+                                                            (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.result}</div>`)
+                                                                : (point.posture ? 
+                                                                    // This is where the data from people in places are coming from
+                                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.posture}</div>`) 
+                                                                    : null)) } 
+                                                position={point.location ? point.location : standingPoints[point.standingPoint]} 
+                                                markerType={point.average ? 'sound_maps' 
+                                                    : (point.result ? point.result : (point.posture ? point.posture : null))} 
+                                                markerSize={title === 'sound_maps' ? point.average : null} 
+                                            />
+                                        )
+                                    ) : null
+                                ))
+                            )
                     )
                     )
                 ))
