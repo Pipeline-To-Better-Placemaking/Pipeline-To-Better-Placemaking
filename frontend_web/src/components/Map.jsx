@@ -13,19 +13,19 @@ import { ClickAwayListener } from '@mui/material';
 
 const render = (status) => {
     console.log(status);
-    return <h1>{ status }</h1>;
+    return <h1>{status}</h1>;
 };
-    // props.type :
-    // 0 - new project
-    // 1 - Map Page
-    // 2 - edit project
-    // 3 - new project points
-    // 4 - new project area
-    // 5 - new project map
-    // 6 - edit existing area/add area
-    // 7 -  edit existing point/add point
-    // 8 - new program
-    // 10 - new section cutter
+// props.type :
+// 0 - new project
+// 1 - Map Page
+// 2 - edit project
+// 3 - new project points
+// 4 - new project area
+// 5 - new project map
+// 6 - edit existing area/add area
+// 7 -  edit existing point/add point
+// 8 - new program
+// 10 - new section cutter
 
 export default function FullMap(props) {
     const [map, setMap] = React.useState(null);
@@ -33,15 +33,17 @@ export default function FullMap(props) {
     const [placeOn, setPlaceOn] = React.useState(false);
     const [title, setTitle] = React.useState(props.type > 0 ? props.title : null);
     const [zoom, setZoom] = React.useState(props.zoom ? props.zoom : 16); // initial zoom
-    const [center, setCenter] = React.useState(props.center ? props.center : { lat:28.54023216523664, lng:-81.38181298263407 });
+    const [center, setCenter] = React.useState(props.center ? props.center : { lat: 28.54023216523664, lng: -81.38181298263407 });
     const [bounds, setBounds] = React.useState();
     const [click, setClick] = React.useState(props.type === 0 || props.type === 2 || props.type === 7 ? props.center : null);
     const [data, setData] = React.useState(props.type === 1 ? props.drawers : {});
-    const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 || props.type === 2  || props.type === 8 || props.type === 10  ? props.area : null);
-    const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [] :(props.type === 6 ? props.area : [])));
+    const [areaData, setAreaData] = React.useState(props.type === 1 || props.type === 3 || props.type === 5 || props.type === 2 || props.type === 8 || props.type === 10 ? props.area : null);
+    const [clicks, setClicks] = React.useState(props.type === 5 ? props.points : (props.type === 3 ? [] : (props.type === 6 ? props.area : [])));
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreaas : [];
     const [numFloors, setNumFloors] = React.useState(1);
+    let buildingData;
+
     // Access Universal Data passed around including the key for maps
     const loc = useLocation();
     const nav = useNavigate();
@@ -62,13 +64,13 @@ export default function FullMap(props) {
     const [collections, setCollections] = React.useState({
         stationary_maps: stationaryCollections,
         moving_maps: movingCollections,
-        order_maps: orderCollections, 
-        boundaries_maps: boundariesCollections, 
-        light_maps: lightingCollections, 
-        nature_maps: natureCollections, 
+        order_maps: orderCollections,
+        boundaries_maps: boundariesCollections,
+        light_maps: lightingCollections,
+        nature_maps: natureCollections,
         sound_maps: soundCollections,
         access_maps: accessCollections,
-        program_maps: programCollections, 
+        program_maps: programCollections,
         section_maps: sectionCollections,
     });
 
@@ -122,7 +124,7 @@ export default function FullMap(props) {
                 setOrderCollections(newSelection);
                 setCollections({ ...collections, [category]: newSelection });
                 break;
-            case 'boundaries_maps': 
+            case 'boundaries_maps':
                 newSelection = boundariesCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -134,21 +136,21 @@ export default function FullMap(props) {
                 setBoundariesCollections(newSelection);
                 setCollections({ ...collections, [category]: newSelection });
                 break;
-            
-            case 'section_maps': 
+
+            case 'section_maps':
                 newSelection = sectionCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
                     newSelection[`${date}`].push(time);
                 } else {
-                    var b = newSelection[date].indexOf(time);
-                    newSelection[date].splice(b, 1);
+                    var se = newSelection[date].indexOf(time);
+                    newSelection[date].splice(se, 1);
                 }
                 setSectionCollections(newSelection);
                 setCollections({ ...collections, [category]: newSelection });
                 break;
-            
-            case 'light_maps': 
+
+            case 'light_maps':
                 newSelection = lightingCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
@@ -196,14 +198,14 @@ export default function FullMap(props) {
                 setAccessCollections(newSelection);
                 setCollections({ ...collections, [category]: newSelection });
                 break;
-            case 'program_maps': 
+            case 'program_maps':
                 newSelection = programCollections;
                 if (check === true) {
                     if (!newSelection[`${date}`]) newSelection[`${date}`] = [];
                     newSelection[`${date}`].push(time);
                 } else {
-                    var b = newSelection[date].indexOf(time);
-                    newSelection[date].splice(b, 1);
+                    var p = newSelection[date].indexOf(time);
+                    newSelection[date].splice(p, 1);
                 }
                 setProgramCollections(newSelection);
                 setCollections({ ...collections, [category]: newSelection });
@@ -246,16 +248,16 @@ export default function FullMap(props) {
         html2canvas(document.getElementById('mapFrame'), {
             useCORS: true
         }).then(
-            function(canvas) {saveAs(canvas.toDataURL(), `${title}.png`)}
+            function (canvas) { saveAs(canvas.toDataURL(), `${title}.png`) }
         );
     }
 
     // Event handling functions ------
     const onMClick = (e) => {
-        if(props.type === 2 || props.type === 0 || props.type === 7 ) {
+        if (props.type === 2 || props.type === 0 || props.type === 7) {
             setClick(e.latLng);
             setCenter(e.latLng);
-        } else if(props.type === 3 || props.type === 4 || props.type === 6 || props.type === 8 || props.type === 10 ) {
+        } else if (props.type === 3 || props.type === 4 || props.type === 6 || props.type === 8 || props.type === 10) {
             var clickObj = {
                 lat: 0,
                 lng: 0
@@ -296,8 +298,8 @@ export default function FullMap(props) {
     const removePoint = (e) => {
         e.preventDefault();
         var temp = [];
-        clicks.forEach((click, index)=>(
-            index !== clicks.length-1 ?
+        clicks.forEach((click, index) => (
+            index !== clicks.length - 1 ?
                 temp.push(click) : null
         ))
         setClicks(temp);
@@ -309,21 +311,25 @@ export default function FullMap(props) {
 
     //weird
     const handleIPSurveyorRoute = () => {
-        nav('../activities/program_surveyors', { replace: true, state: {team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken} });
+        nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData } });
+    }
+
+    const handleSendBuildingData = (e) => {
+        buildingData = e;
     }
 
     const handleBaseplateRender = (e) => {
         let obj = [];
 
-        e.map(vertex => {
+        e.perimeterPoints.map(vertex => {
             // console.log(vertex)
-                let newObj = {
-                    latitude: vertex.lat,
-                    longitude: vertex.lng,
-                };
-                obj.push(newObj);
-            }
-            
+            let newObj = {
+                latitude: vertex.lat,
+                longitude: vertex.lng,
+            };
+            obj.push(newObj);
+        }
+
         )
         return obj;
     }
@@ -348,31 +354,30 @@ export default function FullMap(props) {
         const IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
         IPsurveyorbutton.style.display = 'none';
 
-        if(ver === 0 || ver === 2) {
+        if (ver === 0 || ver === 2) {
             // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
             inner.innerHTML = '';
             inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Location ${index + 1}<br/>kind: ${data.Results[title][date][time].data[index].kind}<br/>description: ${data.Results[title][date][time].data[index].description}<br/>${data.Results[title][date][time].data[index].kind === 'Constructed' || data.Results[title][date][time].data[index].kind === 'Construction' ? 'Length' : 'Area'}: ${data.Results[title][date][time].data[index].value} ${data.Results[title][date][time].data[index].kind === 'Constructed' || data.Results[title][date][time].data[index].kind === 'Construction' ? 'ft' : 'ft<sup>2</sup>'}`
             popup.style.display = 'flex';
-        } else if(ver === 1) {
+        } else if (ver === 1) {
             // version 1 == water nature collection
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
             inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Water<br/>Location ${index[1] + 1}<br/>Description: ${data.Results[title][date][time].data[index[0]].water[index[1]].description}<br/>Area: ${data.Results[title][date][time].data[index[0]].water[index[1]].area} ft<sup>2</sup>`
             popup.style.display = 'flex';
-        } else if(ver === 3){
+        } else if (ver === 3) {
             // version 3 == vegetation nature collection
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
             inner.innerHTML = `<h5>${testNames(title)}</h5><br/>Vegetation<br/>Location ${index[1] + 1}<br/>Description: ${data.Results[title][date][time].data[index[0]].vegetation[index[1]].description}<br/>Area: ${data.Results[title][date][time].data[index[0]].vegetation[index[1]].area} ft<sup>2</sup>`
             popup.style.display = 'flex';
-        } else if(ver === 5) {
+        } else if (ver === 5) {
             // version 5 == identifying program collection
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
             inner.innerHTML = `<h5>${testNames(title)}</h5><br/>`;
             popup.style.display = 'flex';
 
-            
             IPsurveyorbutton.style.display = 'flex';
 
         } else {
@@ -395,48 +400,47 @@ export default function FullMap(props) {
     const actCoords = (collections) => (
         // Loop through the activity collections
         Object.entries(collections).map(([title, object], index) => (
-        // Loop through the activity collection's objects
-        Object.entries(object).map(([sdate, stimes])=>(
-            // Loop through the object's times
-            stimes.map(time => (
-            // Check if the activity is a nature map
-            title === 'nature_maps' ?
-                // If it is a nature map, loop through the data and render markers and boundaries
-                !data.Results[title][sdate][time].data ? null :
-                ((data.Results[title][sdate][time].data).map((inst, ind0) => (
-                    // Loop through the instances and render markers and boundaries
-                    Object.entries(inst).map(([natureType, pointArr], ind1)=>(
-                    pointArr.map((natureObj, ind2)=>(
-                        // If the object is an animal, render a marker
-                        natureType === 'animal' ? 
-                        <Marker
-                            key={`${sdate}.${time}.${ind2}`}
-                            shape='circle'
-                            info={
-                            `<div><b>${testNames(title)}</b><br/>Location ${ind2+1}<br/>Animal: ${natureObj.description}<br/>[${natureObj.kind}]</div>`
-                            }
-                            position={natureObj.marker}
-                            markerType={natureType}
-                        /> 
-                        // If it is not an animal, render a boundary
-                        : <Bounds
-                            key={`${sdate}.${time}.${ind2}`}
-                            title={title}
-                            date={sdate}
-                            time={time}
-                            index={[ind0, ind2]}
-                            area={natureObj.location}
-                            type={natureType}
-                            boundsPathWindow={boundsPathWindow}
-                            />
-                    ))
-                    ))
-                )))
-                // If the activity is a program map, render a boundary
-                :   (title === 'program_maps' ? 
-                        !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
-                            <Bounds 
-                                key = {`${sdate}.${time}.${0}`}
+            // Loop through the activity collection's objects
+            Object.entries(object).map(([sdate, stimes]) => (
+                // Loop through the object's times
+                stimes.map(time => (
+                    // Check if the activity is a nature map
+                    title === 'nature_maps' ?
+                        // If it is a nature map, loop through the data and render markers and boundaries
+                        !data.Results[title][sdate][time].data ? null :
+                            ((data.Results[title][sdate][time].data).map((inst, ind0) => (
+                                // Loop through the instances and render markers and boundaries
+                                Object.entries(inst).map(([natureType, pointArr], ind1) => (
+                                    pointArr.map((natureObj, ind2) => (
+                                        // If the object is an animal, render a marker
+                                        natureType === 'animal' ?
+                                            <Marker
+                                                key={`${sdate}.${time}.${ind2}`}
+                                                shape='circle'
+                                                info={
+                                                    `<div><b>${testNames(title)}</b><br/>Location ${ind2 + 1}<br/>Animal: ${natureObj.description}<br/>[${natureObj.kind}]</div>`
+                                                }
+                                                position={natureObj.marker}
+                                                markerType={natureType}
+                                            />
+                                            // If it is not an animal, render a boundary
+                                            : <Bounds
+                                                key={`${sdate}.${time}.${ind2}`}
+                                                title={title}
+                                                date={sdate}
+                                                time={time}
+                                                index={[ind0, ind2]}
+                                                area={natureObj.location}
+                                                type={natureType}
+                                                boundsPathWindow={boundsPathWindow}
+                                            />
+                                    ))
+                                ))
+                            )))
+                        // If the activity is a program map, render a boundary
+                        : (title === 'program_maps' ? !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                            <Bounds
+                                key={`${sdate}.${time}.${0}`}
                                 title={title}
                                 date={sdate}
                                 time={time}
@@ -447,110 +451,111 @@ export default function FullMap(props) {
                                 //     {latitude: 38.89794173105639, longitude: -77.03680809991171},
                                 //     {latitude: 38.89764113455378, longitude:-77.03616973416617},
                                 //     ]
-                                
-                                area={handleBaseplateRender(inst.perimeterPoints)}
+
+                                area={handleBaseplateRender(inst)}
+                                doThis={handleSendBuildingData(data.Results[title][sdate][time])}
                                 type={"Baseplate"}
                                 boundsPathWindow={boundsPathWindow}
                             />
                         ))
-                        // If the activity is an access map, render markers and boundaries
-                        : (title === 'access_maps' ? 
-                            // Check if there is data for the current time, and map over it to render each instance                    
-                            !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
-                                // For each instance, map over its path to render each point as a marker or boundary
-                                Object.entries(inst.path).map(([ind, point], i2) => 
+                            // If the activity is an access map, render markers and boundaries
+                            : (title === 'access_maps' ?
+                                // Check if there is data for the current time, and map over it to render each instance                    
+                                !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                                    // For each instance, map over its path to render each point as a marker or boundary
+                                    Object.entries(inst.path).map(([ind, point], i2) =>
                                     // If the data (point) is an access point, render a marker
-                                    {point.accessType === "Access Point" ? 
+                                    (point.accessType === "Access Point" ?
                                         <Marker
                                             key={`${sdate}.${time}.${i2}`}
-                                            shape={ 'lightcircle'}
-                                            info={ point.accessType ? `<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.accessType}</div>` : null}
-                                            position={ point.path }
+                                            shape={'lightcircle'}
+                                            info={point.accessType ? `<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.accessType}</div>` : null}
+                                            position={point.path}
                                             markerType={point.accessType ? point.accessType : null}
                                         />
                                         // If the data (point) is an access path, render a polyline
-                                    : point.accessType === "Access Path" ? 
-                                        <Path 
-                                            key={`${sdate}.${time}.${i2}`} 
-                                            path={point.path} 
-                                            //mode={point.mode ? point.mode : point.kind}
-                                            title={title} date={sdate} time={time} index={i2}
-                                            boundsPathWindow={boundsPathWindow}
-                                        /> 
-                                    : // If the data (point) is an access area, render a polygon
-                                        <Bounds
-                                            key={`${sdate}.${time}.${i2}`}
-                                            title={title}
-                                            date={sdate}
-                                            time={time}
-                                            area={point.path}
-                                            type={point.accessType}
-                                            boundsPathWindow={boundsPathWindow}
-                                        />
-                                    }
-                                )
-                            ))
-                            // If the activity is not an access map, render markers, boundaries or polylines based on the point's kind
-                            : (title === 'light_maps' || title === 'order_maps' ? 
-                                // For light and order maps, map over each instance's points to render them as markers
-                                !data.Results[title][sdate][time].data ? null :(data.Results[title][sdate][time].data).map((inst) => (
-                                    Object.entries(inst.points).map(([ind, point], i2) => (
-                                        <Marker
-                                            key={`${sdate}.${time}.${i2}`}
-                                            shape={ title === 'order_maps' ? 'triangle' : 'lightcircle'}
-                                            info={ point.light_description ?
-                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`) 
-                                                    : (point.description ? (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.kind}<br/>${point.description}</div>`) : null)}
-                                            position={ point.location }
-                                            markerType={point.light_description ? point.light_description : point.kind }
-                                        />
-                                    ))
-                                ))
-                                : 
-                                !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
-                                    point ? (point.mode || point.kind === 'Constructed' || point.kind === 'Construction' ? 
-                                        <Path 
-                                            key={`${sdate}.${time}.${i2}`} 
-                                            path={point.path} 
-                                            mode={point.mode ? point.mode : point.kind}
-                                            title={title} date={sdate} time={time} index={i2}
-                                            boundsPathWindow={boundsPathWindow}
-                                        /> 
-                                        :
-                                        (point.kind === 'Shelter' || point.kind === 'Material' ? 
-                                            <Bounds 
-                                                key={`${sdate}.${time}.${i2}`} 
-                                                title={title} 
-                                                date={sdate} 
-                                                time={time} 
-                                                index={i2} 
-                                                area={point.path} 
-                                                type={point.kind ? point.kind : point.result} 
+                                        : point.accessType === "Access Path" ?
+                                            <Path
+                                                key={`${sdate}.${time}.${i2}`}
+                                                path={point.path}
+                                                //mode={point.mode ? point.mode : point.kind}
+                                                title={title} date={sdate} time={time} index={i2}
                                                 boundsPathWindow={boundsPathWindow}
-                                            /> 
-                                            :
-                                            <Marker 
-                                                key={`${sdate}.${time}.${i2}`} 
-                                                shape={'circle'}
-                                                info={ point.average ? 
-                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.average} dB</div>`) 
-                                                        : (point.result ? 
-                                                            (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.result}</div>`)
-                                                                : (point.posture ? 
-                                                                    // This is where the data from people in places are coming from
-                                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2+1}<br/>${point.posture}</div>`) 
-                                                                    : null)) } 
-                                                position={point.location ? point.location : standingPoints[point.standingPoint]} 
-                                                markerType={point.average ? 'sound_maps' 
-                                                    : (point.result ? point.result : (point.posture ? point.posture : null))} 
-                                                markerSize={title === 'sound_maps' ? point.average : null} 
                                             />
-                                        )
-                                    ) : null
+                                            : // If the data (point) is an access area, render a polygon
+                                            <Bounds
+                                                key={`${sdate}.${time}.${i2}`}
+                                                title={title}
+                                                date={sdate}
+                                                time={time}
+                                                area={point.path}
+                                                type={point.accessType}
+                                                boundsPathWindow={boundsPathWindow}
+                                            />
+                                    )
+                                    )
                                 ))
+                                // If the activity is not an access map, render markers, boundaries or polylines based on the point's kind
+                                : (title === 'light_maps' || title === 'order_maps' ?
+                                    // For light and order maps, map over each instance's points to render them as markers
+                                    !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                                        Object.entries(inst.points).map(([ind, point], i2) => (
+                                            <Marker
+                                                key={`${sdate}.${time}.${i2}`}
+                                                shape={title === 'order_maps' ? 'triangle' : 'lightcircle'}
+                                                info={point.light_description ?
+                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`)
+                                                    : (point.description ? (`<div><b>${testNames(title)}</b><br/>Location ${i2 + 1}<br/>${point.kind}<br/>${point.description}</div>`) : null)}
+                                                position={point.location}
+                                                markerType={point.light_description ? point.light_description : point.kind}
+                                            />
+                                        ))
+                                    ))
+                                    :
+                                    !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
+                                        point ? (point.mode || point.kind === 'Constructed' || point.kind === 'Construction' ?
+                                            <Path
+                                                key={`${sdate}.${time}.${i2}`}
+                                                path={point.path}
+                                                mode={point.mode ? point.mode : point.kind}
+                                                title={title} date={sdate} time={time} index={i2}
+                                                boundsPathWindow={boundsPathWindow}
+                                            />
+                                            :
+                                            (point.kind === 'Shelter' || point.kind === 'Material' ?
+                                                <Bounds
+                                                    key={`${sdate}.${time}.${i2}`}
+                                                    title={title}
+                                                    date={sdate}
+                                                    time={time}
+                                                    index={i2}
+                                                    area={point.path}
+                                                    type={point.kind ? point.kind : point.result}
+                                                    boundsPathWindow={boundsPathWindow}
+                                                />
+                                                :
+                                                <Marker
+                                                    key={`${sdate}.${time}.${i2}`}
+                                                    shape={'circle'}
+                                                    info={point.average ?
+                                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2 + 1}<br/>${point.average} dB</div>`)
+                                                        : (point.result ?
+                                                            (`<div><b>${testNames(title)}</b><br/>Location ${i2 + 1}<br/>${point.result}</div>`)
+                                                            : (point.posture ?
+                                                                // This is where the data from people in places are coming from
+                                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2 + 1}<br/>${point.posture}</div>`)
+                                                                : null))}
+                                                    position={point.location ? point.location : standingPoints[point.standingPoint]}
+                                                    markerType={point.average ? 'sound_maps'
+                                                        : (point.result ? point.result : (point.posture ? point.posture : null))}
+                                                    markerSize={title === 'sound_maps' ? point.average : null}
+                                                />
+                                            )
+                                        ) : null
+                                    ))
+                                )
                             )
-                    )
-                    )
+                        )
                 ))
             ))
         ))
@@ -560,133 +565,135 @@ export default function FullMap(props) {
     return (
         <div id='mapDoc'>
             {/* Map Drawers overlay in map.jsx to better communicate*/}
-            { props.type === 1 ? <MapDrawers drawers={ data } selection={ onSelection } area={ areaData }/> : null }
-            { props.type === 1 ? <Button id='printButton' onClick={ convertToImage }>Print Map</Button>: null }
+            {props.type === 1 ? <MapDrawers drawers={data} selection={onSelection} area={areaData} /> : null}
+            {props.type === 1 ? <Button id='printButton' onClick={convertToImage}>Print Map</Button> : null}
             {/* Wrapper imports Google Maps API */}
-            <Wrapper apiKey={loc.state.userToken.map_key} render={ render } id='mapContainer' libraries={['drawing', 'places']}>
+            <Wrapper apiKey={loc.state.userToken.map_key} render={render} id='mapContainer' libraries={['drawing', 'places']}>
                 <Map
-                    center={ center }
-                    onClick={ onMClick }
-                    onIdle={ onIdle }
-                    onBounds={ onBounds }
-                    mapObj={ setMap }
-                    places={ mapPlaces }
-                    zoom={ zoom }
+                    center={center}
+                    onClick={onMClick}
+                    onIdle={onIdle}
+                    onBounds={onBounds}
+                    mapObj={setMap}
+                    places={mapPlaces}
+                    zoom={zoom}
                     mapTypeId='satellite'
                 >
-                    { areaData && (props.type >= 3 && props.type <= 5) ? <Bounds area={areaData} type={'area'} ver={true} /> : (areaData ? <Bounds area={areaData} type={'area'} /> : null )}
-                    { subAreas ? (subAreas.length > 1 ? subAreas.map((area, index)=>( index === 0 ? null : <Bounds area={area.points} type={'area'} />)) : null) : null }
-                    { props.type === 1 ? 
-                        actCoords(collections) : 
-                        (props.type === 2 || props.type === 4 ? 
-                            <Marker position={props.center} /> : 
-                            (props.type === 0 || props.type === 7 ? 
-                                <Marker position={click} /> : null)) }
-                    { props.type === 0 ? <Places map={map} onChange={placeOn ? onChange : null} on={placeOn} togglePlaces={togglePlaces} onClick={onPClick} center={center} zoom={zoom} state={loc.state}/> : null }
+                    {areaData && (props.type >= 3 && props.type <= 5) ? <Bounds area={areaData} type={'area'} ver={true} /> : (areaData ? <Bounds area={areaData} type={'area'} /> : null)}
+                    {subAreas ? (subAreas.length > 1 ? subAreas.map((area, index) => (index === 0 ? null : <Bounds area={area.points} type={'area'} />)) : null) : null}
+                    {props.type === 1 ?
+                        actCoords(collections) :
+                        (props.type === 2 || props.type === 4 ?
+                            <Marker position={props.center} /> :
+                            (props.type === 0 || props.type === 7 ?
+                                <Marker position={click} /> : null))}
+                    {props.type === 0 ? <Places map={map} onChange={placeOn ? onChange : null} on={placeOn} togglePlaces={togglePlaces} onClick={onPClick} center={center} zoom={zoom} state={loc.state} /> : null}
                     {/* Change marker types for non center markers to show difference */}
-                    { props.type === 3 || props.type === 5 ? clicks.map((latLng, i) => (<Marker key={i} position={ latLng } info={`<div>Position ${i}</div>`}/>)) : null }
-                    { props.type === 4 || props.type === 6 || props.type === 8 || props.type === 10  ? NewArea(clicks) : null } {/*<DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null */}
+                    {props.type === 3 || props.type === 5 ? clicks.map((latLng, i) => (<Marker key={i} position={latLng} info={`<div>Position ${i}</div>`} />)) : null}
+                    {props.type === 4 || props.type === 6 || props.type === 8 || props.type === 10 ? NewArea(clicks) : null} {/*<DrawBounds onComplete={ onComplete } center={ props.center } zoom={ zoom } title={ title } points={ clicks }/>: null */}
                 </Map>
             </Wrapper>
-            { props.type === 4 || props.type === 6 ?
+            {props.type === 4 || props.type === 6 ?
                 (props.type === 4 ?
                     <div id='newAreaBlock'>
                         <div style={{ textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '10px', borderRadius: '5px', width: '30vw', border: '2px solid transparent' }}> Click on the map to set points for the project perimeter<br /> When the perimeter is done click 'Set Perimeter' <div style={{ fontSize: 'small' }}> *3 points minimum</div></div>
-                        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                             {clicks.length < 3 ? null : <Button
                                 id='newAreaButton'
                                 className='newHoveringButtons confirm'
-                                component={ Link }
+                                component={Link}
                                 to='points'
-                                state={{...loc.state, center: center, title: title, area: clicks, zoom: zoom }}
+                                state={{ ...loc.state, center: center, title: title, area: clicks, zoom: zoom }}
                             >
                                 Set Perimeter
-                            </Button> }
+                            </Button>}
                             <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
                         </div>
                     </div>
                     :
-                        <div id='editAreaBlock'>
-                            <Button
-                                id='newAreaButton'
-                                className='newHoveringButtons confirm'
-                                onClick={props.update(clicks)}
-                            >
-                                {loc.state.area ? 'Update Area' : 'Add Area'}
-                            </Button>
-                            <Button
-                                className='newHoveringButtons confirm'
-                                component={Link}
-                                state={loc.state}
-                                to={`../edit/${loc.pathname.split('/')[5]}/areas`}>
-                                    Cancel
-                            </Button>
-                            <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
-                        </div>
-                )
-                : null
-            }
-            { props.type === 7 ?
-                    <div className='newPointBlock'>
+                    <div id='editAreaBlock'>
                         <Button
-                            id='newPointButton'
+                            id='newAreaButton'
                             className='newHoveringButtons confirm'
-                            onClick={props.update(center)}
+                            onClick={props.update(clicks)}
                         >
-                            {loc.state.point ? 'Update Point' : 'Add Point'}
+                            {loc.state.area ? 'Update Area' : 'Add Area'}
                         </Button>
                         <Button
                             className='newHoveringButtons confirm'
                             component={Link}
                             state={loc.state}
-                            to={`../edit/${loc.pathname.split('/')[5]}/points`}>Cancel</Button>
+                            to={`../edit/${loc.pathname.split('/')[5]}/areas`}>
+                            Cancel
+                        </Button>
+                        <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
                     </div>
+                )
                 : null
             }
-            { props.type === 3 ? 
-                <div className='newPointBlock' style={{top: '75px'}} >
-                    <div style={{ textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '10px', borderRadius: '5px', width: '30vw', border: '2px solid transparent' }}> Click on the map to set any specific locations as standing points for recording activity results <div style={{ fontSize: 'small'}}> *The location specified earlier is the center and a default standing point</div></div>
+            {props.type === 7 ?
+                <div className='newPointBlock'>
+                    <Button
+                        id='newPointButton'
+                        className='newHoveringButtons confirm'
+                        onClick={props.update(center)}
+                    >
+                        {loc.state.point ? 'Update Point' : 'Add Point'}
+                    </Button>
+                    <Button
+                        className='newHoveringButtons confirm'
+                        component={Link}
+                        state={loc.state}
+                        to={`../edit/${loc.pathname.split('/')[5]}/points`}>Cancel</Button>
+                </div>
+                : null
+            }
+            {props.type === 3 ?
+                <div className='newPointBlock' style={{ top: '75px' }} >
+                    <div style={{ textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '10px', borderRadius: '5px', width: '30vw', border: '2px solid transparent' }}> Click on the map to set any specific locations as standing points for recording activity results <div style={{ fontSize: 'small' }}> *The location specified earlier is the center and a default standing point</div></div>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                         <Button
                             id='newPointsButton'
                             className='newHoveringButtons confirm'
-                            component={ Link }
+                            component={Link}
                             to={`/home/teams/${loc.pathname.split('/')[3]}/new/area/points/form`}
-                            state={{...loc.state,
-                                center: center, 
-                                title: title, 
-                                area: areaData, 
+                            state={{
+                                ...loc.state,
+                                center: center,
+                                title: title,
+                                area: areaData,
                                 points: clicks,
                                 zoom: zoom
                             }}
                         >
                             Set Points
-                        </Button> 
+                        </Button>
                         <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
                     </div>
                 </div>
                 : null
             }
-            { props.type === 8 ? 
+            {props.type === 8 ?
                 <div id='newProgramButtons'>
                     <div style={{ textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '10px', borderRadius: '5px', width: '30vw', border: '2px solid transparent' }}>
                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                             <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities'
-                                state={{team: loc.state.team, 
-                                        project: loc.state.project, 
-                                        userToken: loc.state.userToken
-                                        }}>
+                                state={{
+                                    team: loc.state.team,
+                                    project: loc.state.project,
+                                    userToken: loc.state.userToken
+                                }}>
                                 Cancel
                             </Button>
-                            
+
                             <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
                             {/* ref={ ref } */}
-                            <input name='floor' id='floorsInput' label='Number of floors' type='number' onChange={e => setNumFloors(e.target.value)}/>
+                            <input name='floor' id='floorsInput' label='Number of floors' type='number' onChange={e => setNumFloors(e.target.value)} />
                             {/* <Button className='newHoveringButtons' onClick={setNumFloors(3)} > Submit Floors</Button> */}
 
-                            { clicks.length < 3 || numFloors < 1 ? null :
-                                <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude' 
-                                    state={{...loc.state, buildingArea: clicks, numFloors: numFloors}} >
+                            {clicks.length < 3 || numFloors < 1 ? null :
+                                <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude'
+                                    state={{ ...loc.state, buildingArea: clicks, numFloors: numFloors }} >
                                     Continue Model
                                 </Button>
                             }
@@ -701,36 +708,36 @@ export default function FullMap(props) {
 
                 props.type === 10 ?
                     <div id='newSectionButtons'>
-                        <div style={{ textAlign: 'center', backgroundColor: 'white', marginButton: '5px', padding: '10px', borderRadius: '5px', width: '30vw', border: '2px solid transparent'}} >
-                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',  }}>
+                        <div style={{ textAlign: 'center', backgroundColor: 'white', marginButton: '5px', padding: '10px', borderRadius: '5px', width: '30vw', border: '2px solid transparent' }} >
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', }}>
                                 <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities'
-                                    state= {{
+                                    state={{
                                         team: loc.state.team,
                                         project: loc.state.project,
                                         userToken: loc.state.userToken,
                                     }}>
-                                    
+
                                     Cancel
                                 </Button>
                                 <Button className='newHoveringButtons' onClick={removePoint}> Undo <UndoIcon /></Button>
-                                { clicks.length > 2 || clicks.length == 0 ? null:
-                                   <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='/upload_section_media'>
+                                {clicks.length > 2 || clicks.length === 0 ? null :
+                                    <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='/upload_section_media'>
                                         Continue Section
-                                    </Button> 
+                                    </Button>
                                 }
-                                
+
                             </div>
                         </div>
                     </div>
                     : null
             }
 
-            <div id='pathBoundWindow' style={{display: 'none', position: 'fixed', flexDirection: 'row', justifyContent: 'center'}}>
+            <div id='pathBoundWindow' style={{ display: 'none', position: 'fixed', flexDirection: 'row', justifyContent: 'center' }}>
                 <div id='popUpBlock'>
                     <div id='popUpText'>
-                        
+
                     </div>
-                    <Button id='IPSurveyorsBtn' style={{display: 'none'}} onClick={handleIPSurveyorRoute}>Conduct Surveyor Test</Button>
+                    <Button id='IPSurveyorsBtn' style={{ display: 'none' }} onClick={handleIPSurveyorRoute}>Conduct Surveyor Test</Button>
                     <Button id='closeButton' onClick={closeWindow}>Close</Button>
                 </div>
             </div>
@@ -775,7 +782,7 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, onBounds, mapObj, places, ch
                 map.addListener('idle', () => onIdle(map));
             }
 
-            if(onBounds) {
+            if (onBounds) {
                 map.addListener('bounds_changed', () => onBounds(map, places))
             }
         }
@@ -783,7 +790,7 @@ const Map: React.FC<MapProps> = ({ onClick, onIdle, onBounds, mapObj, places, ch
 
     return (
         <>
-            <div ref={ ref } style={ style } id='mapFrame'/>
+            <div ref={ref} style={style} id='mapFrame' />
             {React.Children.map(children, (child) => {
                 if (React.isValidElement(child)) {
                     // sets the map prop on the child component (markers)
@@ -817,16 +824,16 @@ const Marker = (options) => {
         Task: ['#FF00E5', '#FF00E5'],
         New: ['rgba(255, 0, 0, 0.5)', 'rgba(255,0,0,0.5)']
     };
-    
+
     //SVG shape icons
     let style = {
-        path: shape === 'triangle' ? 'M 0 2 L 2 2 L 1 0.25 z' : ( shape === 'lightcircle' ? 'M 10, 20 a 10, 10 0 1, 1 20, 0 a 10, 10 0 1, 1 -20, 0 M 19.5, 20 a 0.5, 0.5 0 1, 1 1, 0 a 0.5, 0.5 0 1, 1 -1, 0' : google.maps.SymbolPath.CIRCLE),
+        path: shape === 'triangle' ? 'M 0 2 L 2 2 L 1 0.25 z' : (shape === 'lightcircle' ? 'M 10, 20 a 10, 10 0 1, 1 20, 0 a 10, 10 0 1, 1 -20, 0 M 19.5, 20 a 0.5, 0.5 0 1, 1 1, 0 a 0.5, 0.5 0 1, 1 -1, 0' : google.maps.SymbolPath.CIRCLE),
         fillColor: markerType ? colors[markerType][0] : colors.none[0],
         fillOpacity: (markerSize ? 0.4 : (markerType === 'Behavior' || markerType === 'Maintenance' || markerType === 'animal' ? 1 : 0.5)),
-        scale: (markerSize ? (markerSize/2) : (shape === 'lightcircle' ? 1 : 10)),
+        scale: (markerSize ? (markerSize / 2) : (shape === 'lightcircle' ? 1 : 10)),
         strokeWeight: 1,
         strokeColor: markerType ? colors[markerType][1] : colors['none'][0],
-        anchor: shape === 'lightcircle' ? new google.maps.Point(19.5, 20) : (shape === 'triangle' ? new google.maps.Point(1, 1) : new google.maps.Point(0,0))
+        anchor: shape === 'lightcircle' ? new google.maps.Point(19.5, 20) : (shape === 'triangle' ? new google.maps.Point(1, 1) : new google.maps.Point(0, 0))
     };
 
     const icon = markerType && colors[markerType][0] ? style : null;
@@ -834,10 +841,11 @@ const Marker = (options) => {
 
     React.useEffect(() => {
         if (!marker) {
-            setMarker(new google.maps.Marker({ 
-                icon: icon, 
-                zIndex: (markerType === 'sound_maps' ? 10 : 99999999)}));
-            if(!infoWindow) {
+            setMarker(new google.maps.Marker({
+                icon: icon,
+                zIndex: (markerType === 'sound_maps' ? 10 : 99999999)
+            }));
+            if (!infoWindow) {
                 setInfoWindow(new google.maps.InfoWindow({
                     content: info,
                 }));
@@ -869,20 +877,20 @@ const Marker = (options) => {
     return null;
 };
 
-const Bounds = ({boundsPathWindow, ...options}) => {
+const Bounds = ({ boundsPathWindow, ...options }) => {
     const [paths, setPaths] = React.useState();
     const type = options.type;
     var tempArea = [];
 
     // Handles any DB coordinates with latitude and longitude, which Google Maps does not accept
-    if(!options.ver){
+    if (!options.ver) {
         (options.area).map((point) => (
             tempArea.push(new google.maps.LatLng(point.latitude, point.longitude))
         ))
-    } 
+    }
 
     const [area, setArea] = React.useState(options.ver ? options.area : tempArea);
-    if(area.length !== options.area.length){
+    if (area.length !== options.area.length) {
         setArea(options.area);
     }
 
@@ -899,7 +907,7 @@ const Bounds = ({boundsPathWindow, ...options}) => {
             paths: area,
             strokeColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#ff0000' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#FFFFFF')))),
             strokeWeight: 2,
-            fillColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#BEFF05' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' :'#C4C4C4')))),
+            fillColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#BEFF05' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#C4C4C4')))),
             fillOpacity: 0.50,
             clickable: type === 'New' ? false : true
         },
@@ -934,7 +942,7 @@ const Bounds = ({boundsPathWindow, ...options}) => {
     return null;
 };
 
-const Path = ({boundsPathWindow, ...options}) => {
+const Path = ({ boundsPathWindow, ...options }) => {
     const type = options.title;
     var tempPath = [];
 
@@ -942,7 +950,7 @@ const Path = ({boundsPathWindow, ...options}) => {
     (options.path).map((point) => (
         tempPath.push(new google.maps.LatLng(point.latitude, point.longitude))
     ))
-    
+
     const [path, setPath] = React.useState();
     const colors = {
         Walking: '#0000FF',
@@ -995,23 +1003,23 @@ const Path = ({boundsPathWindow, ...options}) => {
 
 // Function for drawing a new project Area
 const NewArea = (points) => (
-    !points ? null : 
+    !points ? null :
         (points.length <= 1 ?
             points.map((coord, index) => (
                 <Marker
-                    key={ index }
-                    position={ coord }
+                    key={index}
+                    position={coord}
                 />
             )) :
             (points.length === 2 ?
                 <Path
-                    path={ points }
+                    path={points}
                     mode='New'
                     ver={true}
                 />
-            :
+                :
                 <Bounds
-                    area={ points }
+                    area={points}
                     type='New'
                     ver={true}
                 />
@@ -1024,7 +1032,7 @@ interface PlaceProps extends google.maps.places.AutocompleteOptions {
     onChange?: (place: google.maps.places.Autocomplete) => void;
 }
 
-const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
+const Places: React.FC<PlaceProps> = ({ onChange, ...options }) => {
     const [placesWidget, setPlacesWidget] = React.useState();
     const ref = React.useRef(null);
 
@@ -1051,7 +1059,7 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
     }, [placesWidget]);
 
     React.useEffect(() => {
-        if ( placesWidget) {
+        if (placesWidget) {
             ['place_changed'].forEach((eventName) =>
                 google.maps.event.clearListeners(placesWidget, eventName)
             );
@@ -1062,23 +1070,24 @@ const Places: React.FC<PlaceProps> = ({onChange, ...options}) => {
         }
     }, [placesWidget, onChange]);
 
-    return(
+    return (
         <div id='newProjectInput'>
             <Button
                 id='placesButton'
                 className='newHoveringButtons'
                 onClick={options.togglePlaces}
             >
-                { options.on ? 'Disable Autocomplete' : 'Enable Autocomplete'}
+                {options.on ? 'Disable Autocomplete' : 'Enable Autocomplete'}
             </Button>
-            <input ref={ ref } name='search' id='locationSearch' label='Project Location' type='text' />
-            <Button 
-                className='newHoveringButtons' 
-                id='newLocationButton' 
-                component={ Link } to='area' 
-                state={{ ...options.state,
-                    center: options.center, 
-                    title: ( options.on && placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : ref?.current?.value),
+            <input ref={ref} name='search' id='locationSearch' label='Project Location' type='text' />
+            <Button
+                className='newHoveringButtons'
+                id='newLocationButton'
+                component={Link} to='area'
+                state={{
+                    ...options.state,
+                    center: options.center,
+                    title: (options.on && placesWidget && placesWidget.getPlace() ? placesWidget.getPlace().name : ref?.current?.value),
                     zoom: options.zoom
                 }}
             >
