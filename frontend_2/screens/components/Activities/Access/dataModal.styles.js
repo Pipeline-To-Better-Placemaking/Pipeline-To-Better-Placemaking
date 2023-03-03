@@ -13,6 +13,10 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
     },
 
+    forceModal: {
+        paddingTop: height * .3
+    },
+
     viewContainer: {
         height: 'auto',
         marginTop: 'auto',
@@ -35,6 +39,7 @@ export const styles = StyleSheet.create({
         marginBottom: 'auto',
         borderRadius: 35,
         borderWidth: 1,
+        position: 'absolute',
     },
 
     scrollWheel:{
@@ -101,7 +106,7 @@ export const styles = StyleSheet.create({
 
     button:{
         width: width * .3,
-        height: height * .15,
+        height: height * .02,
         maxHeight: 150
     },
 

@@ -102,7 +102,7 @@ export function InfoModal(props) {
                                         </View>
 
                                         <View style={styles.spacing}>
-                                            <Text style={styles.infoText}>{(props.data.details.tollLane) ? "The path is two-way" : "The path is one-way"}</Text>
+                                            <Text style={styles.infoText}>{(props.data.details.twoWay) ? "The path is two-way" : "The path is one-way"}</Text>
                                         </View>
 
                                          <View style={styles.spacing}>                

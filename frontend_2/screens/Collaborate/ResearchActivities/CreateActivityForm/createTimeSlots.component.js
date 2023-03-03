@@ -157,22 +157,31 @@ export function CreateTimeSlots(props) {
   }
 
   const TimePicker = ({item, index}) => (
-      <View style={[styles.leftShift, {flex: 1, borderStyle: 'solid', borderColor: 'black', borderWidth: '1px', justifyContent: 'center'}]}>
+      <View style={styles.leftShift}>
         <Button
           onPress={() => editTime(item, index)}
           accessoryRight={ClockIcon}
           appearance='ghost'
+          style={{borderStyle: 'solid', borderColor: 'black', borderWidth: '1px', justifyContent: 'center'}}
           >
-          <Text style={{ lineHeight:'auto', textAlignVertical: 'center', borderStyle: 'solid', borderColor: 'black', borderWidth: '1px' }}>Start Time
-          
+          <Text style={{ 
+            lineHeight: 'auto',
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            borderStyle: 'solid',
+            borderColor: 'black',
+            borderWidth: '1px', }}>
+              Start Time
+            <View>
+              <DateTimePicker
+                isVisible={isTimePickerVisible}
+                mode="time"
+                value={timeValue}
+                onConfirm={setTime}
+                onCancel={() => setTimePickerVisibility(false)}
+              />
+            </View>
           </Text>
-          <DateTimePicker
-            isVisible={isTimePickerVisible}
-            mode="time"
-            value={timeValue}
-            onConfirm={setTime}
-            onCancel={() => setTimePickerVisibility(false)}
-          />
           
         </Button>
         

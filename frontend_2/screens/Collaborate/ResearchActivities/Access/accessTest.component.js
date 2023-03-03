@@ -761,16 +761,14 @@ export function AccessTest(props) {
                     desc={prompts}
                 /> : null}
 
-                {/* {detailsModal ?  */}
-                {/* <Modal transparent={true} visible={detailsModal}> */}
+                {detailsModal ? 
                     <DetailsModal 
                         visible={detailsModal}
                         accessType={accessDataType}
                         data={data[dataIndex - 1]}
                         closeDetails={closeDetails}
                     />
-                {/* </Modal> */}
-                 {/* : null} */}
+                 : null}
 
                 <DeleteModal
                     visible={deleteModal}

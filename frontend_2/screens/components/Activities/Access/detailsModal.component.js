@@ -466,8 +466,8 @@ export function DetailsModal(props){
 
     return(
         //<View style={styles.modalContainer}>    
-            <Modal onShow={console.log("Modal Showing: " + props.visible)} transparent={true} animationType='slide' visible={props.visible}>
-            <View style={{height: containerHeight + 150}}>
+            //<Modal onShow={console.log("Modal Showing: " + props.visible)} transparent={true} animationType='slide' visible={props.visible}>
+            <View style={styles.forceModal}>
                 <View style={[ styles.largePurposeViewContainer, {backgroundColor:theme['background-basic-color-1']}]}
                 >
                         
@@ -523,7 +523,7 @@ export function DetailsModal(props){
                     </View>
                 </View>                      
             </View>
-            </Modal>
+            //</Modal>
         //</View>
     )
 }
