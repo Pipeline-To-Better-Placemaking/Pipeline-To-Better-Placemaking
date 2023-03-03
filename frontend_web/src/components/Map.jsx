@@ -3,7 +3,10 @@ import { Wrapper } from '@googlemaps/react-wrapper';
 import { createCustomEqual } from 'fast-equals';
 import { isLatLngLiteral } from '@googlemaps/typescript-guards';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import UndoIcon from '@mui/icons-material/Undo';
+import IPDialog from '../components/IPDialog';
+import Clear from '@mui/icons-material/Clear';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import MapDrawers from './MapDrawers';
@@ -383,7 +386,7 @@ export default function FullMap(props) {
             popup.style.display = 'flex';
             IPsurveyorbutton.style.display = 'flex';
         } else if (ver === 6) {
-            // version 5 == identifying program collection
+            // version 6 == identifying access collection
             inner.innerHTML = '';
             inner.innerHTML = `
                 <h5>${testNames(title)}</h5>
@@ -396,6 +399,13 @@ export default function FullMap(props) {
                 <br/>
                 ${data.Results[title][date][time].data[index].kind === 'Constructed' || data.Results[title][date][time].data[index].kind === 'Construction' ? 'Length' : 'Area'}: ${data.Results[title][date][time].data[index].value} ${data.Results[title][date][time].data[index].kind === 'Constructed' || data.Results[title][date][time].data[index].kind === 'Construction' ? 'ft' : 'ft<sup>2</sup>'}`
             popup.style.display = 'flex';
+        } else if(ver === 7) {
+            // version 7 == section cutter collection
+            const popup = document.getElementById('pathBoundWindow');
+            inner.innerHTML = '';
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>`;
+            popup.style.display = 'flex';
+            IPsurveyorbutton.style.display = 'flex';
         }
          else {
             // version 4 moving collections
@@ -545,18 +555,14 @@ export default function FullMap(props) {
                                     )
                                 ))
                                 // If the activity is not an access map, render markers, boundaries or polylines based on the point's kind
-                                : (title === 'section_maps' ? !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
-                                    // For each instance, map over its path to render each point as a marker or boundary
-                                    Object.entries(inst.path).map(([ind, point], i2) =>
-                                    // If the data (point) is an access point, render a marker
-                                        <Path
-                                            key={`${sdate}.${time}.${i2}`}
-                                            path={point.path}
-                                            //mode={point.mode ? point.mode : point.kind}
-                                            title={title} date={sdate} time={time} index={i2}
-                                            boundsPathWindow={boundsPathWindow}
-                                        />
-                                    )
+                                : (title === 'section_maps' ? 
+                                    !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                                    
+                                    <Path
+                                                key={`${sdate}.${time}.${index}`}
+                                                path={inst.path}
+                                                boundsPathWindow={boundsPathWindow}
+                                    />
                                     )
 
                                 )
@@ -739,29 +745,46 @@ export default function FullMap(props) {
                 : null
             }
             {props.type === 8 ?
-                <div id='newProgramButtons'>
-                    <div style={{ textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '10px', borderRadius: '5px', width: '30vw', border: '2px solid transparent' }}>
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                            <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities'
-                                state={{
-                                    team: loc.state.team,
-                                    project: loc.state.project,
-                                    userToken: loc.state.userToken
-                                }}>
-                                Cancel
-                            </Button>
+                <div id='newProgramButtons' style={{ justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '10px', borderRadius: '5px', width: '40vw', border: '2px solid transparent' }}>
+                        <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities'
+                            state={{
+                                team: loc.state.team,
+                                project: loc.state.project,
+                                userToken: loc.state.userToken
+                            }}>
+                            Cancel <Clear />
 
-                            <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                        </Button>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', width: '80%' }}>
+
+
+                            <Button style={{ marginRight: '20px' }} className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
                             {/* ref={ ref } */}
-                            <input name='floor' id='floorsInput' label='Number of floors' type='number' onChange={e => setNumFloors(e.target.value)} />
+                            <div style={{ marginRight: '20px', marginTop: '5px' }}>
+
+                                <TextField
+                                    id="outlined-number"
+                                    label="Number of Floors"
+                                    type="number"
+                                    placeholder='1'
+                                    inputProps={{ min: "1" }}
+                                    onChange={e => setNumFloors(e.target.value)}
+                                    size="small"
+                                />
+
+                            </div>
+
                             {/* <Button className='newHoveringButtons' onClick={setNumFloors(3)} > Submit Floors</Button> */}
 
                             {clicks.length < 3 || numFloors < 1 ? null :
-                                <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude'
+                                <Button style={{ marginRight: '10px' }} className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude'
                                     state={{ ...loc.state, buildingArea: clicks, numFloors: numFloors }} >
-                                    Continue Model
+                                    Continue
                                 </Button>
                             }
+                            <IPDialog />
+
                         </div>
                     </div>
                 </div>
@@ -877,6 +900,7 @@ const Marker = (options) => {
     const colors = {
         sound_maps: ['#B073FF', '#B073FF'],
         access_maps: ['blue', 'black'],
+        section_maps: ['red', 'red'],
         animal: ['#9C4B00', 'red'],
         Squatting: ['green', 'black'],
         Sitting: ['red', 'black'],
@@ -1005,7 +1029,7 @@ const Bounds = ({ boundsPathWindow, ...options }) => {
             );
 
             if (boundsPathWindow) {
-                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : (type === 'vegetation' ? 3 : (type === 'Baseplate' ? 5 : (type === 'access' ? 6 : 0))))));
+                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : (type === 'vegetation' ? 3 : (type === 'Baseplate' ? 5 : (type === 'access' ? 6 : (type === 'section' ? 7 : 0)))))));
             }
         }
     }, [paths, options, type, area, boundsPathWindow]);
