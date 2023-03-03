@@ -595,29 +595,46 @@ export default function FullMap(props) {
                 : null
             }
             {props.type === 8 ?
-                <div id='newProgramButtons'>
-                    <div style={{ textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '10px', borderRadius: '5px', width: '30vw', border: '2px solid transparent' }}>
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                            <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities'
-                                state={{
-                                    team: loc.state.team,
-                                    project: loc.state.project,
-                                    userToken: loc.state.userToken
-                                }}>
-                                Cancel
-                            </Button>
+                <div id='newProgramButtons' style={{ justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '10px', borderRadius: '5px', width: '40vw', border: '2px solid transparent' }}>
+                        <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities'
+                            state={{
+                                team: loc.state.team,
+                                project: loc.state.project,
+                                userToken: loc.state.userToken
+                            }}>
+                            Cancel <Clear />
 
-                            <Button className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
+                        </Button>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', width: '80%' }}>
+
+
+                            <Button style={{ marginRight: '20px' }} className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
                             {/* ref={ ref } */}
-                            <input name='floor' id='floorsInput' label='Number of floors' type='number' onChange={e => setNumFloors(e.target.value)} />
+                            <div style={{ marginRight: '20px', marginTop: '5px' }}>
+
+                                <TextField
+                                    id="outlined-number"
+                                    label="Number of Floors"
+                                    type="number"
+                                    placeholder='1'
+                                    inputProps={{ min: "1" }}
+                                    onChange={e => setNumFloors(e.target.value)}
+                                    size="small"
+                                />
+
+                            </div>
+
                             {/* <Button className='newHoveringButtons' onClick={setNumFloors(3)} > Submit Floors</Button> */}
 
                             {clicks.length < 3 || numFloors < 1 ? null :
-                                <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude'
+                                <Button style={{ marginRight: '10px' }} className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude'
                                     state={{ ...loc.state, buildingArea: clicks, numFloors: numFloors }} >
-                                    Continue Model
+                                    Continue
                                 </Button>
                             }
+                            <IPDialog />
+
                         </div>
                     </div>
                 </div>
