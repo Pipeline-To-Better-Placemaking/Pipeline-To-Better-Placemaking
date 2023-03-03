@@ -386,7 +386,7 @@ export default function FullMap(props) {
             popup.style.display = 'flex';
             IPsurveyorbutton.style.display = 'flex';
         } else if (ver === 6) {
-            // version 5 == identifying program collection
+            // version 6 == identifying access collection
             inner.innerHTML = '';
             inner.innerHTML = `
                 <h5>${testNames(title)}</h5>
@@ -399,6 +399,13 @@ export default function FullMap(props) {
                 <br/>
                 ${data.Results[title][date][time].data[index].kind === 'Constructed' || data.Results[title][date][time].data[index].kind === 'Construction' ? 'Length' : 'Area'}: ${data.Results[title][date][time].data[index].value} ${data.Results[title][date][time].data[index].kind === 'Constructed' || data.Results[title][date][time].data[index].kind === 'Construction' ? 'ft' : 'ft<sup>2</sup>'}`
             popup.style.display = 'flex';
+        } else if(ver === 7) {
+            // version 7 == section cutter collection
+            const popup = document.getElementById('pathBoundWindow');
+            inner.innerHTML = '';
+            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>`;
+            popup.style.display = 'flex';
+            IPsurveyorbutton.style.display = 'flex';
         }
          else {
             // version 4 moving collections
@@ -517,18 +524,14 @@ export default function FullMap(props) {
                                     )
                                 ))
                                 // If the activity is not an access map, render markers, boundaries or polylines based on the point's kind
-                                : (title === 'section_maps' ? !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
-                                    // For each instance, map over its path to render each point as a marker or boundary
-                                    Object.entries(inst.path).map(([ind, point], i2) =>
-                                    // If the data (point) is an access point, render a marker
-                                        <Path
-                                            key={`${sdate}.${time}.${i2}`}
-                                            path={point.path}
-                                            //mode={point.mode ? point.mode : point.kind}
-                                            title={title} date={sdate} time={time} index={i2}
-                                            boundsPathWindow={boundsPathWindow}
-                                        />
-                                    )
+                                : (title === 'section_maps' ? 
+                                    !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                                    
+                                    <Path
+                                                key={`${sdate}.${time}.${index}`}
+                                                path={inst.path}
+                                                boundsPathWindow={boundsPathWindow}
+                                    />
                                     )
 
                                 )
@@ -866,6 +869,7 @@ const Marker = (options) => {
     const colors = {
         sound_maps: ['#B073FF', '#B073FF'],
         access_maps: ['blue', 'black'],
+        section_maps: ['red', 'red'],
         animal: ['#9C4B00', 'red'],
         Squatting: ['green', 'black'],
         Sitting: ['red', 'black'],
@@ -994,7 +998,7 @@ const Bounds = ({ boundsPathWindow, ...options }) => {
             );
 
             if (boundsPathWindow) {
-                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : (type === 'vegetation' ? 3 : (type === 'Baseplate' ? 5 : (type === 'access' ? 6 : 0))))));
+                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : (type === 'vegetation' ? 3 : (type === 'Baseplate' ? 5 : (type === 'access' ? 6 : (type === 'section' ? 7 : 0)))))));
             }
         }
     }, [paths, options, type, area, boundsPathWindow]);
