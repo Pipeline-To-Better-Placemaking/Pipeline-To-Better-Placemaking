@@ -136,6 +136,7 @@ export const styles = StyleSheet.create({
     inputField: {
         color: '#006FD6',
         height: height * .04, 
+        minWidth: width * .1,
         fontSize: width * .033,
         fontWeight: 'bold',
         textAlign: 'right',

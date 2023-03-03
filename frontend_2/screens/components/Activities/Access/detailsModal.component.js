@@ -24,11 +24,11 @@ export function DetailsModal(props){
     const [select5, setSelect5] = useState(null);
 
     //Details fields
-    const [diffValue, setDiffValue] = useState(0)
-    const [spotsCount, setSpotsCount] = React.useState(0)
-    const [lineNumber, setLineNumber] = React.useState(0)
-    const [loopsCount, setLoopsCount] = React.useState(0)
-    const [costValue, setCostValue] = React.useState(0)
+    const [diffValue, setDiffValue] = useState(null)
+    const [spotsCount, setSpotsCount] = React.useState(null)
+    const [lineNumber, setLineNumber] = React.useState(null)
+    const [loopsCount, setLoopsCount] = React.useState(null)
+    const [costValue, setCostValue] = React.useState(null)
     const [laneCount, setLaneCount] = React.useState(null)
 
     //Details Options
@@ -68,50 +68,60 @@ export function DetailsModal(props){
     }
 
     const sendData = async () => {
-        if(diffValue == 0) {
+        // Check if all fields are filled
+        if(diffValue == null) {
             setErrorModal(true);
             return;
         }
+        //console.log("🚀 ~ file: detailsModal.component.js:77 ~ sendData ~ errorCheck:", spotsCount);
         switch(props.accessType) {
             case "Point":
-                switch(props.description) {
+                switch(props.data.description) {
                     case "Bike Rack":
-                        if(spotsCount == 0)
+                        if(spotsCount === null){
                             setErrorModal(true);
+                            return;
+                        }
                         break;
                     case "Public Transport Stop":
-                        if(lineNumber == 0 || loopsCount == 0)
+                        if(lineNumber == null || loopsCount == null) {
                             setErrorModal(true);
+                            return;
+                        }
                         break;
                 }
                 break;
             case "Path":
-                if(props.description == "Main Road")
-                    if(laneCount == 0 || select1 == null || select2 == null || select3 == null || select4 == null || select5 == null)
+                if(props.data.description == "Main Road")
+                    if(laneCount == null || select1 == null || select2 == null || select3 == null || select4 == null || select5 == null) {
                         setErrorModal(true);
+                        return;
+                    }
                 break;
             case "Area":
-                if(props.description == "Parking Garage") 
-                        if(laneCount == 0)
+                if(props.data.description == "Parking Garage") 
+                        if(laneCount == null) {
                             setErrorModal(true);
-                if(spotsCount == 0)
+                            return;
+                        }
+                if(spotsCount == null) {
                     setErrorModal(true);
+                    return;
+                }
                 break;
         
         }
-        if(errorModal) {
-            console.log("Empty Field")
-            return;
+
+        if(!errorModal) {
+            let obj = packageData();
+
+            // reset modal control for subsequent entires
+            setNoneSelect(false);
+            setOptionsNull()
+
+            // closes the modal (in accessTest)
+            await props.closeDetails(obj);
         }
-
-        let obj = packageData();
-
-        // reset modal control for subsequent entires
-        setNoneSelect(false);
-        setOptionsNull()
-
-        // closes the modal (in accessTest)
-        await props.closeDetails(obj);
     }
 
     const options1 = [];
@@ -129,13 +139,10 @@ export function DetailsModal(props){
     }
 
     const ShowOptions = () => {
-
-        //console.log("🚀 ~ file: detailsModal.component.js:41 ~ ShowOptions ~ props.data", props.data);
-
         // Show options for point, path, or area
         if(props.accessType === "Point") {
             // Show options for bike rack
-            if(props.data.description === "Bike Rack") {
+            if(props.data.description === "Bike Rack" || props.data.description === "E-scooter Parking") {
                 return(
                     <View>
                         <View style={styles.buttonRow}>
@@ -149,16 +156,6 @@ export function DetailsModal(props){
                                 placeholder="00"
                                 keyboardType='numeric'
                             />
-                            {/* <RNPickerSelect
-                                onValueChange={(value) => {
-                                    if (value !== null && value !== undefined) {
-                                        setSpotsCount(value);
-                                    }
-                                }}
-                                items={options2}
-                                value={spotsCount}
-                                style={styles.scrollWheel}
-                            /> */}
                         </View>    
                         <View style={styles.buttonRow}>
                             <Text
@@ -166,23 +163,15 @@ export function DetailsModal(props){
                                 >Cost (If any)</Text>
                                 <TextInput
                                     style={styles.inputField}
-                                    onChange={setCostValue}
+                                    onChangeText={setCostValue}
                                     value={costValue}
                                     placeholder="$0.00"
                                     keyboardType='numeric'
                                 />
-                            {/* <RNPickerSelect
-                                onValueChange={setCostValue}
-                                onDonePress={() => {}}
-                                items={options3}
-                                value={costValue}
-                                style={styles.scrollWheel}
-                            /> */}
                         </View> 
                     </View>
                 )
             } else if(props.data.description === "Public Transport Stop") {
-                //setContainerHeight(500);
                 return(
                     <View>
                         <View style={styles.buttonRow}>
@@ -196,16 +185,6 @@ export function DetailsModal(props){
                                 placeholder="00"
                                 keyboardType='numeric'
                             />
-                            {/* <RNPickerSelect
-                                onValueChange={(value) => {
-                                    if (value !== null && value !== undefined) {
-                                        setLineNumber(value);
-                                    }
-                                }}
-                                items={options2}
-                                value={lineNumber}
-                                style={styles.scrollWheel}
-                            /> */}
                         </View>    
                         <View style={styles.buttonRow}>
                             <Text
@@ -218,19 +197,6 @@ export function DetailsModal(props){
                                 placeholder="00"
                                 keyboardType='numeric'
                             />
-                            {/* <RNPickerSelect
-                                onValueChange={(value) => {
-                                    if (value !== null && value !== undefined) {
-                                        setLoopsCount(value);
-                                    }
-                                }}
-                                items={options3}
-                                value={loopsCount}
-                                style={styles.scrollWheel}
-                                textStyle={{
-                                  color: 'blue',
-                                }}
-                            /> */}
                         </View>   
                         <View style={styles.buttonRow}>
                             <Text
@@ -238,18 +204,11 @@ export function DetailsModal(props){
                                 >Cost (If any)</Text>
                                 <TextInput
                                     style={styles.inputField}
-                                    onChange={setCostValue}
+                                    onChangeText={setCostValue}
                                     value={costValue}
                                     placeholder="$0.00"
                                     keyboardType='numeric'
                                 />
-                            {/* <RNPickerSelect
-                                onValueChange={setCostValue}
-                                onDonePress={() => {}}
-                                items={options3}
-                                value={costValue}
-                                style={styles.scrollWheel}
-                            /> */}
                         </View> 
                     </View>
 
@@ -261,7 +220,6 @@ export function DetailsModal(props){
         if(props.accessType === "Path") {
             // Show options for roads
             if(props.data.description === "Main Road" || props.data.description === "Side Road") {
-                //setContainerHeight(1000);
                 return(
                     <View>
                         <View style={styles.buttonRow}>
@@ -275,13 +233,6 @@ export function DetailsModal(props){
                                 placeholder="00"
                                 keyboardType='numeric'
                             />
-                            {/* <RNPickerSelect
-                                onValueChange={(value) => console.log(value)}
-                                onDonePress={(value) => setLaneCount(value)}
-                                items={options2}
-                                value={laneCount}
-                                style={styles.scrollWheel}
-                            /> */}
                         </View>   
                         <View style={styles.buttonRow}>
                             {pavedOptions.map(option => (
@@ -376,18 +327,11 @@ export function DetailsModal(props){
                                 >Number of Spots</Text>
                                 <TextInput
                                     style={styles.inputField}
-                                    onChange={setSpotsCount}
+                                    onChangeText={setSpotsCount}
                                     value={spotsCount}
                                     placeholder="00"
                                     keyboardType='numeric'
                                 />
-                            {/* <RNPickerSelect
-                                onValueChange={setSpotsCount}
-                                onDonePress={() => {}}
-                                items={options2}
-                                value={spotsCount}
-                                style={styles.scrollWheel}
-                            /> */}
                         </View>  
                         <View style={styles.buttonRow}>
                             <Text
@@ -395,18 +339,11 @@ export function DetailsModal(props){
                                 >Cost (If any)</Text>
                                 <TextInput
                                     style={styles.inputField}
-                                    onChange={setCostValue}
+                                    onChangeText={setCostValue}
                                     value={costValue}
                                     placeholder="$0.00"
                                     keyboardType='numeric'
                                 />
-                            {/* <RNPickerSelect
-                                onValueChange={setCostValue}
-                                onDonePress={() => {}}
-                                items={options3}
-                                value={costValue}
-                                style={styles.scrollWheel}
-                            /> */}
                         </View> 
                         <View style={styles.buttonRow}>
                             <Text
@@ -414,18 +351,11 @@ export function DetailsModal(props){
                                 >Number of Floors</Text>
                                 <TextInput
                                     style={styles.inputField}
-                                    onChange={setLaneCount}
+                                    onChangeText={setLaneCount}
                                     value={laneCount}
                                     placeholder="00"
                                     keyboardType='numeric'
                                 />
-                            {/* <RNPickerSelect
-                                onValueChange={setLaneCount}
-                                onDonePress={() => {}}
-                                items={options4}
-                                value={laneCount}
-                                style={styles.scrollWheel}
-                                /> */}
                         </View>
                     </View>    
                 )
@@ -594,14 +524,10 @@ export function DetailsModal(props){
         }
     }
 
-    const Options = () => {
-        
-    }
-
     return(
         //<View style={styles.modalContainer}>    
             //<Modal onShow={console.log("Modal Showing: " + props.visible)} transparent={true} animationType='slide' visible={props.visible}>
-            <View style={styles.forceModal}>
+            <View>
                 <View style={[ styles.largePurposeViewContainer, {backgroundColor:theme['background-basic-color-1']}]}
                 >
                     <ErrorModal 
@@ -636,18 +562,6 @@ export function DetailsModal(props){
                                 placeholder="1-5"
                                 keyboardType='numeric'
                             />
-                            {/* <RNPickerSelect
-                            onValueChange={(value) => {
-                                if (value !== null && value !== undefined) {
-                                    console.log(value);
-                                    setDiffValue(value);
-                                }
-                            }}
-                                placeholder={{ label: '1 easiest - 5 hardest', value: 0 }}
-                                items={options1}
-                                value={diffValue}
-                                style={styles.scrollWheel}
-                            /> */}
                         </View>  
 
                         <ShowOptions onLayout={handleLayout}/>
