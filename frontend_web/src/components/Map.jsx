@@ -12,6 +12,7 @@ import html2canvas from 'html2canvas';
 import MapDrawers from './MapDrawers';
 import { testNames } from '../functions/HelperFunctions';
 import './controls.css';
+import { Form } from 'react-bootstrap';
 import { ClickAwayListener } from '@mui/material';
 
 const render = (status) => {
@@ -357,6 +358,9 @@ export default function FullMap(props) {
         const IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
         IPsurveyorbutton.style.display = 'none';
 
+        //const IPsurveyorbutton = document.getElementById('');
+        //IPsurveyorbutton.style.display = 'none';
+
         if (ver === 0 || ver === 2) {
             // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
             inner.innerHTML = '';
@@ -380,10 +384,23 @@ export default function FullMap(props) {
             inner.innerHTML = '';
             inner.innerHTML = `<h5>${testNames(title)}</h5><br/>`;
             popup.style.display = 'flex';
-
             IPsurveyorbutton.style.display = 'flex';
-
-        } else {
+        } else if (ver === 6) {
+            // version 5 == identifying program collection
+            inner.innerHTML = '';
+            inner.innerHTML = `
+                <h5>${testNames(title)}</h5>
+                <br/>
+                Location ${index + 1}
+                <br/>
+                kind: ${data.Results[title][date][time].data[index].kind}
+                <br/>
+                description: ${data.Results[title][date][time].data[index].description}
+                <br/>
+                ${data.Results[title][date][time].data[index].kind === 'Constructed' || data.Results[title][date][time].data[index].kind === 'Construction' ? 'Length' : 'Area'}: ${data.Results[title][date][time].data[index].value} ${data.Results[title][date][time].data[index].kind === 'Constructed' || data.Results[title][date][time].data[index].kind === 'Construction' ? 'ft' : 'ft<sup>2</sup>'}`
+            popup.style.display = 'flex';
+        }
+         else {
             // version 4 moving collections
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
@@ -441,7 +458,8 @@ export default function FullMap(props) {
                                 ))
                             )))
                         // If the activity is a program map, render a boundary
-                        : (title === 'program_maps' ? !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                        : (title === 'program_maps' ? 
+                            !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
                             <Bounds
                                 key={`${sdate}.${time}.${0}`}
                                 title={title}
@@ -464,105 +482,121 @@ export default function FullMap(props) {
                             // If the activity is an access map, render markers and boundaries
                             : (title === 'access_maps' ?
                                 // Check if there is data for the current time, and map over it to render each instance                    
-                                !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                                !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst, index) => (
                                     // For each instance, map over its path to render each point as a marker or boundary
-                                    Object.entries(inst.path).map(([ind, point], i2) =>
+                                    //Object.entries(inst.path).map(([ind, point], i2) =>
                                     // If the data (point) is an access point, render a marker
-                                    (point.accessType === "Access Point" ?
+                                        (inst.accessType === "Access Point" ?
                                         <Marker
-                                            key={`${sdate}.${time}.${i2}`}
+                                            key={`${sdate}.${time}.${index}`}
                                             shape={'lightcircle'}
-                                            info={point.accessType ? `<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.accessType}</div>` : null}
-                                            position={point.path}
-                                            markerType={point.accessType ? point.accessType : null}
+                                            info={inst.accessType ? `<div><b>${testNames(title)}</b><br/>Location ${index}<br/>${inst.accessType}</div>` : null}
+                                            position={inst.path[0]}
+                                            markerType={'access_maps'}
                                         />
                                         // If the data (point) is an access path, render a polyline
-                                        : point.accessType === "Access Path" ?
+                                        : inst.accessType === "Access Path" ?
                                             <Path
-                                                key={`${sdate}.${time}.${i2}`}
-                                                path={point.path}
+                                                key={`${sdate}.${time}.${index}`}
+                                                path={inst.path}
                                                 //mode={point.mode ? point.mode : point.kind}
-                                                title={title} date={sdate} time={time} index={i2}
+                                                title={title} date={sdate} time={time} index={index}
                                                 boundsPathWindow={boundsPathWindow}
                                             />
-                                            : // If the data (point) is an access area, render a polygon
-                                            <Bounds
-                                                key={`${sdate}.${time}.${i2}`}
-                                                title={title}
-                                                date={sdate}
-                                                time={time}
-                                                area={point.path}
-                                                type={point.accessType}
-                                                boundsPathWindow={boundsPathWindow}
-                                            />
-                                    )
-                                    )
-                                ))
-                                // If the activity is not an access map, render markers, boundaries or polylines based on the point's kind
-                                : (title === 'light_maps' || title === 'order_maps' ?
-                                    // For light and order maps, map over each instance's points to render them as markers
-                                    !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
-                                        Object.entries(inst.points).map(([ind, point], i2) => (
-                                            <Marker
-                                                key={`${sdate}.${time}.${i2}`}
-                                                shape={title === 'order_maps' ? 'triangle' : 'lightcircle'}
-                                                info={point.light_description ?
-                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`)
-                                                    : (point.description ? (`<div><b>${testNames(title)}</b><br/>Location ${i2 + 1}<br/>${point.kind}<br/>${point.description}</div>`) : null)}
-                                                position={point.location}
-                                                markerType={point.light_description ? point.light_description : point.kind}
-                                            />
-                                        ))
-                                    ))
-                                    :
-                                    !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
-                                        point ? (point.mode || point.kind === 'Constructed' || point.kind === 'Construction' ?
-                                            <Path
-                                                key={`${sdate}.${time}.${i2}`}
-                                                path={point.path}
-                                                mode={point.mode ? point.mode : point.kind}
-                                                title={title} date={sdate} time={time} index={i2}
-                                                boundsPathWindow={boundsPathWindow}
-                                            />
-                                            :
-                                            (point.kind === 'Shelter' || point.kind === 'Material' ?
+                                            : inst.accessType === "Access Area" ? // If the data (point) is an access area, render a polygon
                                                 <Bounds
-                                                    key={`${sdate}.${time}.${i2}`}
+                                                    key={`${sdate}.${time}.${index}`}
                                                     title={title}
                                                     date={sdate}
                                                     time={time}
-                                                    index={i2}
-                                                    area={point.path}
-                                                    type={point.kind ? point.kind : point.result}
+                                                    area={inst.path}
+                                                    type={'access'}
+                                                    boundsPathWindow={boundsPathWindow}
+                                                /> : null
+                                    //)
+                                    )
+                                ))
+                                // If the activity is not an access map, render markers, boundaries or polylines based on the point's kind
+                                : (title === 'section_maps' ? !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                                    // For each instance, map over its path to render each point as a marker or boundary
+                                    Object.entries(inst.path).map(([ind, point], i2) =>
+                                    // If the data (point) is an access point, render a marker
+                                        <Path
+                                            key={`${sdate}.${time}.${i2}`}
+                                            path={point.path}
+                                            //mode={point.mode ? point.mode : point.kind}
+                                            title={title} date={sdate} time={time} index={i2}
+                                            boundsPathWindow={boundsPathWindow}
+                                        />
+                                    )
+                                    )
+
+                                )
+                                    : (title === 'light_maps' || title === 'order_maps' ?
+                                        // For light and order maps, map over each instance's points to render them as markers
+                                        !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                                            Object.entries(inst.points).map(([ind, point], i2) => (
+                                                <Marker
+                                                    key={`${sdate}.${time}.${i2}`}
+                                                    shape={title === 'order_maps' ? 'triangle' : 'lightcircle'}
+                                                    info={point.light_description ?
+                                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2}<br/>${point.light_description}</div>`)
+                                                        : (point.description ? (`<div><b>${testNames(title)}</b><br/>Location ${i2 + 1}<br/>${point.kind}<br/>${point.description}</div>`) : null)}
+                                                    position={point.location}
+                                                    markerType={point.light_description ? point.light_description : point.kind}
+                                                />
+                                            ))
+                                        ))
+                                        :
+                                        !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((point, i2) => (
+                                            point ? (point.mode || point.kind === 'Constructed' || point.kind === 'Construction' ?
+                                                <Path
+                                                    key={`${sdate}.${time}.${i2}`}
+                                                    path={point.path}
+                                                    mode={point.mode ? point.mode : point.kind}
+                                                    title={title} date={sdate} time={time} index={i2}
                                                     boundsPathWindow={boundsPathWindow}
                                                 />
                                                 :
-                                                <Marker
-                                                    key={`${sdate}.${time}.${i2}`}
-                                                    shape={'circle'}
-                                                    info={point.average ?
-                                                        (`<div><b>${testNames(title)}</b><br/>Location ${i2 + 1}<br/>${point.average} dB</div>`)
-                                                        : (point.result ?
-                                                            (`<div><b>${testNames(title)}</b><br/>Location ${i2 + 1}<br/>${point.result}</div>`)
-                                                            : (point.posture ?
-                                                                // This is where the data from people in places are coming from
-                                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2 + 1}<br/>${point.posture}</div>`)
-                                                                : null))}
-                                                    position={point.location ? point.location : standingPoints[point.standingPoint]}
-                                                    markerType={point.average ? 'sound_maps'
-                                                        : (point.result ? point.result : (point.posture ? point.posture : null))}
-                                                    markerSize={title === 'sound_maps' ? point.average : null}
-                                                />
-                                            )
-                                        ) : null
-                                    ))
+                                                (point.kind === 'Shelter' || point.kind === 'Material' ?
+                                                    <Bounds
+                                                        key={`${sdate}.${time}.${i2}`}
+                                                        title={title}
+                                                        date={sdate}
+                                                        time={time}
+                                                        index={i2}
+                                                        area={point.path}
+                                                        type={point.kind ? point.kind : point.result}
+                                                        boundsPathWindow={boundsPathWindow}
+                                                    />
+                                                    :
+                                                    <Marker
+                                                        key={`${sdate}.${time}.${i2}`}
+                                                        shape={'circle'}
+                                                        info={point.average ?
+                                                            (`<div><b>${testNames(title)}</b><br/>Location ${i2 + 1}<br/>${point.average} dB</div>`)
+                                                            : (point.result ?
+                                                                (`<div><b>${testNames(title)}</b><br/>Location ${i2 + 1}<br/>${point.result}</div>`)
+                                                                : (point.posture ?
+                                                                    // This is where the data from people in places are coming from
+                                                                    (`<div><b>${testNames(title)}</b><br/>Location ${i2 + 1}<br/>${point.posture}</div>`)
+                                                                    : null))}
+                                                        position={point.location ? point.location : standingPoints[point.standingPoint]}
+                                                        markerType={point.average ? 'sound_maps'
+                                                            : (point.result ? point.result : (point.posture ? point.posture : null))}
+                                                        markerSize={title === 'sound_maps' ? point.average : null}
+                                                    />
+                                                )
+                                            ) : null
+                                        ))
+                                    )
                                 )
                             )
                         )
-                ))
+                )
             ))
         ))
-    );
+    ));
 
     // Components returned on render -----
     return (
@@ -740,8 +774,8 @@ export default function FullMap(props) {
                                     Cancel
                                 </Button>
                                 <Button className='newHoveringButtons' onClick={removePoint}> Undo <UndoIcon /></Button>
-                                {clicks.length > 2 || clicks.length === 0 ? null :
-                                    <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='/upload_section_media'>
+                                { clicks.length > 2 || clicks.length == 0 ? null:
+                                   <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/times' state={{...loc.state, path: clicks}}>
                                         Continue Section
                                     </Button>
                                 }
@@ -831,6 +865,7 @@ const Marker = (options) => {
 
     const colors = {
         sound_maps: ['#B073FF', '#B073FF'],
+        access_maps: ['blue', 'black'],
         animal: ['#9C4B00', 'red'],
         Squatting: ['green', 'black'],
         Sitting: ['red', 'black'],
@@ -879,10 +914,15 @@ const Marker = (options) => {
         };
     }, [marker, icon, info, infoWindow, markerType]);
 
+    //console.log("🚀 ~ file: Map.jsx:889 ~ React.useEffect ~ latitude:", options.position.latitude);
+    //console.log("🚀 ~ file: Map.jsx:889 ~ React.useEffect ~ options:", options);
+
     // handles any coordinates from DB with latitude and longitude
     React.useEffect(() => {
         if (marker) {
             marker.setOptions({ clickable: true, map: options.map, position: options.position && options.position.latitude ? (new google.maps.LatLng(options.position.latitude, options.position.longitude)) : (options.position ? options.position : null) });
+
+
 
             marker.addListener('click', () => {
                 infoWindow.open({
@@ -954,7 +994,7 @@ const Bounds = ({ boundsPathWindow, ...options }) => {
             );
 
             if (boundsPathWindow) {
-                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : (type === 'vegetation' ? 3 : (type === 'Baseplate' ? 5 : 0)))));
+                paths.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'water' ? 1 : (type === 'vegetation' ? 3 : (type === 'Baseplate' ? 5 : (type === 'access' ? 6 : 0))))));
             }
         }
     }, [paths, options, type, area, boundsPathWindow]);

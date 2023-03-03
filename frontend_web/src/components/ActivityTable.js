@@ -118,7 +118,7 @@ const subtable = (row, type, name, open) => (
                                 ))
                             ))
                         ))) 
-                    :(name === 'light_maps' || name === 'order_maps' || name === 'section_maps' ? 
+                    :(name === 'light_maps' || name === 'order_maps' ? 
                         (Object.entries(row).map(([date, dObj]) => (
                             Object.entries(dObj).map(([time, tObj]) => (
                                 tObj.data.map((object, index) => (
@@ -141,7 +141,7 @@ const subtable = (row, type, name, open) => (
                                                         {point.kind ? point.kind : 'N/A'}
                                                     </TableCell>
                                                     <TableCell colSpan={2} className='type'>
-                                                        {point.description ? `${point.description}` : (point.light_description ? `${point.light_description}` : (`${point.access_description}` ? `${point.access_description}` : `${point.section_description}`)) }
+                                                        {point.description ? `${point.description}` : (point.light_description ? `${point.light_description}` : (`${point.access_description}` ? `${point.access_description}` : `test`)) }
                                                     </TableCell>
                                                     <TableCell>Location {i1 + 1}</TableCell>
                                                     <TableCell>{date} {time}</TableCell>

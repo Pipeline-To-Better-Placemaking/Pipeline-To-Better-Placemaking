@@ -10,22 +10,22 @@ const media_schema = mongoose.Schema({
   path: [{
     latitude: {
         type: Number,
-        required: true
+        required: false
     },
     longitude: {
         type: Number,
-        required: true
+        required: false
     }
   }],
 
   date: {
     type: Date,
-    required: true
+    required: false
   },
 
   url_link: {
     type: String,
-    required: true
+    required: false
   },
 
   panoramic: {
