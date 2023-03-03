@@ -3,12 +3,16 @@ import { Wrapper } from '@googlemaps/react-wrapper';
 import { createCustomEqual } from 'fast-equals';
 import { isLatLngLiteral } from '@googlemaps/typescript-guards';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import UndoIcon from '@mui/icons-material/Undo';
+import IPDialog from '../components/IPDialog';
+import Clear from '@mui/icons-material/Clear';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import MapDrawers from './MapDrawers';
 import { testNames } from '../functions/HelperFunctions';
 import './controls.css';
+import { Form } from 'react-bootstrap';
 import { ClickAwayListener } from '@mui/material';
 
 const render = (status) => {
