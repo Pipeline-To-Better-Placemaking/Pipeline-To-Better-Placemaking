@@ -846,9 +846,9 @@ const Bounds = ({ boundsPathWindow, ...options }) => {
         },
         types: {
             paths: area,
-            strokeColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#ff0000' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#FFFFFF')))),
+            strokeColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#ff0000' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'Baseplate' ? '#831DC7' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#FFFFFF'))))),
             strokeWeight: 2,
-            fillColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#BEFF05' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#C4C4C4')))),
+            fillColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#BEFF05' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'Baseplate' ? '#D79CFF' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#C4C4C4'))))),
             fillOpacity: 0.50,
             clickable: type === 'New' ? false : true
         },

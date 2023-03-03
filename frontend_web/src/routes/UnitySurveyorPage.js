@@ -111,7 +111,7 @@ export default function UnityPage() {
 
 
 
-    // nav('../', { replace: true, state: {team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken} });
+    nav('../', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken } });
 
   }, []);
 
@@ -135,17 +135,63 @@ export default function UnityPage() {
       });
 
       // console.log(response.data.programs.length);
+      let programObjects = [];
+      for (let i = 0; i < response.data.data[0].floors.length; i++) {
+        const curFloor = response.data.data[0].floors[i];
 
+
+        try {
+          const resp = await axios.get(`/program_floors/${curFloor}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': `Bearer ${loc.state.userToken.token}`
+            },
+            withCredentials: true
+          });
+
+          // iterate through each program on that floor
+          for (let j = 0; j < resp.data.programs.length; j++) {
+            let programPoints = [];
+            for (let k = 0; k < resp.data.programs[j].points.length; k++) {
+              const coordinate = {
+                xCoord: resp.data.programs[j].points[k].xCoord,
+                yCoord: resp.data.programs[j].points[k].yCoord,
+                zCoord: resp.data.programs[j].points[k].zCoord,
+              }
+              programPoints.push(coordinate);
+            }
+
+            let programObj = {
+              programPointsList: programPoints,
+              programType: resp.data.programs[j].programType
+            }
+
+            programObjects.push(programObj);
+          }
+
+
+        } catch (error) {
+          console.log('ERROR: ', error);
+          // setMessage(error.response.data?.message);
+          // response.current.style.display = 'inline-block';
+          return;
+        }
+      }
 
 
 
 
       const obj = {
         numFloors: response.data.data[0].numFloors,
-        points: response.data.data[0].perimeterPoints
+        points: response.data.data[0].perimeterPoints,
+        programs: programObjects
       }
       const myJSON = JSON.stringify(obj);
 
+      console.log(myJSON);
+
+      // We send the JSON to the Unity player with this function
       sendMessage("Building", "SurveyorProgram", myJSON);
 
     } catch (error) {
