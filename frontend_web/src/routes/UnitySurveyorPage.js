@@ -122,7 +122,7 @@ export default function UnityPage() {
     };
   }, [addEventListener, removeEventListener, handleSetProgramJSON]);
 
-  async function handleSurveyors() {
+  const handleSurveyors = async () => {
     try {
       console.log(loc.state.data);
       const response = await axios.get(`/program_maps/${loc.state.data._id}`, {
@@ -214,7 +214,8 @@ export default function UnityPage() {
 
   return (
     <div>
-      <h1>Identifying Program</h1>
+      {/* <h1>Identifying Program</h1> */}
+      <br />
       {/* state={{userToken:loc.state.userToken, team: loc.state.team}} <-- this is a parameter for the button component if you need it later*/}
 
       <div>
@@ -223,7 +224,7 @@ export default function UnityPage() {
         )}
         <Unity
           unityProvider={unityProvider}
-          style={{ width: 1600, height: 900, visibility: isLoaded ? "visible" : "hidden" }}
+          style={{ width: 1600, height: 900, marginLeft: 134.4, visibility: isLoaded ? "visible" : "hidden" }}
         />
 
       </div>
