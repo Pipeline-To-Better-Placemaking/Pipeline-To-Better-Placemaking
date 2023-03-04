@@ -22,7 +22,7 @@ import EditPoints from './routes/EditPoints';
 import EditAreaMap from './routes/EditAreaMap';
 import EditPointMap from './routes/EditPointMap';
 import FAQ from './routes/FAQ';
-import UploadSectionMedia from './routes/UploadSectionMedia';
+
 
 export default function App() {
     // token is currently stored in app state
@@ -108,7 +108,6 @@ export default function App() {
                 {/* pass onLogin function to handle user state pass for new user as well (?)*/}
                 <Route index element={ <Title onLogin={ handleOnLogin }/> }/>
                 <Route path='home/*' element={<UserRoutes />} />
-                <Route path='upload_section_media' element={<UploadSectionMedia/>} />
                 <Route path='new' element={ <NewUser onLogin={ handleOnLogin }/> } />
                 <Route path='forgot_password' element={ <ForgotPassword/> } />
                 <Route path='password_reset/:id/:token' element={<ResetPassword/>} exact/>

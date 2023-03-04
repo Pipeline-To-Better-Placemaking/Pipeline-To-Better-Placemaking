@@ -4,7 +4,6 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import './routes.css';
 import { Link, useLocation } from 'react-router-dom';
-import { AppBar, Toolbar } from '@mui/material';
 import logo1 from '../images/PtBPLogo.png';
 import Image from 'react-bootstrap/Image';
 import axios from '../api/axios';
@@ -67,11 +66,6 @@ function UploadSectionMedia() {
 
     return (
         <div className="UploadSectionMedia">
-            <AppBar sx={{ bgcolor: "#006FD6" }} position="sticky">
-              <Toolbar>
-                <Link className='homeButton' to='/home' state={location.state}><Image src={logo1} className='icon-shadow' alt='logo' height='50px' /></Link>
-              </Toolbar>
-            </AppBar>
             <form onSubmit={handleSubmit} className='form'>
                 <div className="SubmitButton">
                   <h1> Section Cutter </h1>

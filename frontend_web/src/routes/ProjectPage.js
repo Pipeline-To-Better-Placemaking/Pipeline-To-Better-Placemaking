@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import NewProgram from './NewProgram.js';
 import UnitySurveyorPage from './UnitySurveyorPage.js';
 import NewSection from './NewSection.js';
+import UploadSectionMedia from './UploadSectionMedia';
 
 /* 
     (1) Handles routes to projects/:id/(activities/map/surveyors) 
@@ -274,6 +275,9 @@ export default function ProjectPage(){
                                     
                             </div>
                         }>
+                        </Route>
+                        <Route path ='activities/upload_section_media' element = {<UploadSectionMedia/>}>
+
                         </Route>
                         <Route path='surveyors' element={
                             <SurveyorPage title={ projectInfo?.title } 

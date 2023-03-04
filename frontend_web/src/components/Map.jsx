@@ -318,6 +318,10 @@ export default function FullMap(props) {
         nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData } });
     }
 
+    const handleSCSurveyorRoute = () => {
+        nav('../activities/upload_section_media', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken } });
+    }
+
     const handleSendBuildingData = (e) => {
         buildingData = e;
     }
@@ -358,9 +362,11 @@ export default function FullMap(props) {
         const IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
         IPsurveyorbutton.style.display = 'none';
 
+        const SCsurveyorbutton = document.getElementById('SCSurveyorsBtn');
+        SCsurveyorbutton.style.display = 'none';
+
         //const IPsurveyorbutton = document.getElementById('');
         //IPsurveyorbutton.style.display = 'none';
-
         if (ver === 0 || ver === 2) {
             // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
             inner.innerHTML = '';
@@ -403,9 +409,9 @@ export default function FullMap(props) {
             // version 7 == section cutter collection
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
-            inner.innerHTML = `<h5>${testNames(title)}</h5><br/>`;
+            inner.innerHTML = `<h5>Section Cutter</h5><br/>`;
             popup.style.display = 'flex';
-            IPsurveyorbutton.style.display = 'flex';
+            SCsurveyorbutton.style.display = 'flex';
         }
          else {
             // version 4 moving collections
@@ -530,6 +536,7 @@ export default function FullMap(props) {
                                     <Path
                                                 key={`${sdate}.${time}.${index}`}
                                                 path={inst.path}
+                                                title={'section'}
                                                 boundsPathWindow={boundsPathWindow}
                                     />
                                     )
@@ -795,6 +802,7 @@ export default function FullMap(props) {
 
                     </div>
                     <Button id='IPSurveyorsBtn' style={{ display: 'none' }} onClick={handleIPSurveyorRoute}>Conduct Surveyor Test</Button>
+                    <Button id='SCSurveyorsBtn' style={{ display: 'none' }} onClick={handleSCSurveyorRoute}>Conduct Surveyor Test</Button>
                     <Button id='closeButton' onClick={closeWindow}>Close</Button>
                 </div>
             </div>
@@ -1023,7 +1031,8 @@ const Path = ({ boundsPathWindow, ...options }) => {
         'Activity on Wheels': '#008000',
         'Handicap Assisted Wheels': '#FFA500',
         Constructed: '#FF00E5',
-        New: 'rgba(255, 0, 0, 0.5)'
+        New: 'rgba(255, 0, 0, 0.5)',
+        section: '#8800FF'
     }
     const lines = {
         style: {
@@ -1057,7 +1066,7 @@ const Path = ({ boundsPathWindow, ...options }) => {
             );
 
             if (boundsPathWindow) {
-                path.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'moving_maps' ? 4 : 2)));
+                path.addListener('click', boundsPathWindow(options.title, options.date, options.time, options.index, (type === 'moving_maps' ? 4 : (type === 'section' ? 7 : 2))));
             }
         }
     }, [path, options, type, boundsPathWindow]);
