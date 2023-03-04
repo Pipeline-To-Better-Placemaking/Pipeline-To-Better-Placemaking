@@ -35,7 +35,7 @@ export function InfoModal(props) {
                                         </View>
 
                                         <View style={styles.spacing}>                
-                                                <Text style={styles.infoText}>{props.data.inPerimeter ? `Inside project area` : `${props.data.distanceFromArea.toFixed(2)}ft from project area`}</Text>                                          
+                                                <Text style={styles.infoText}>{props.data.inPerimeter ? `Inside project area` : `${props.data.distanceFromArea.toFixed(2).toLocaleString('en-US')}ft from project area`}</Text>                                          
                                         </View>
 
                                         <View style={styles.spacing}>                
@@ -48,7 +48,7 @@ export function InfoModal(props) {
 
                                         {/* Extra data for specific types */}
                                             <View style={styles.spacing}>
-                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? (props.data.details.cost != 0 ? Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(props.data.details.cost) : "FREE!") : "FREE!"}</Text>
+                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? (props.data.details.cost != 0 ? Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(props.data.details.cost).toLocaleString('en-US') : "FREE!") : "FREE!"}</Text>
                                             </View>
                                         
                                         <View style={styles.buttonView}>
@@ -74,7 +74,7 @@ export function InfoModal(props) {
                                         </View>
 
                                         <View style={styles.spacing}>                
-                                        <Text style={styles.infoText}>{props.data.inPerimeter ? `Inside project area` : `${props.data.distanceFromArea.toFixed(2)}ft from project area`}</Text>                                          
+                                        <Text style={styles.infoText}>{props.data.inPerimeter ? `Inside project area` : `${props.data.distanceFromArea.toFixed(2).toLocaleString('en-US')}ft from project area`}</Text>                                          
                                         </View>
                                         
                                         <View style={styles.spacing}>                
@@ -82,7 +82,7 @@ export function InfoModal(props) {
                                         </View>
 
                                         <View style={styles.spacing}>                
-                                                <Text style={styles.infoText}>Length: {props.data.area}ft</Text>                                          
+                                                <Text style={styles.infoText}>Length: {props.data.area.toFixed(2).toLocaleString('en-US')} ft</Text>                                          
                                         </View>
 
                                         <View style={styles.spacing}>                
@@ -166,20 +166,24 @@ export function InfoModal(props) {
                                         </View>
 
                                         <View style={styles.spacing}>                
-                                        <Text style={styles.infoText}>{props.data.inPerimeter ? `Inside project area` : `${props.data.distanceFromArea.toFixed(2)}m from project area`}</Text>                                          
+                                            <Text style={styles.infoText}>{props.data.inPerimeter ? `Inside project area` : `${props.data.distanceFromArea.toFixed(2).toLocaleString('en-US')} ft from project area`}</Text>                                          
                                         </View>
                                         
                                         <View style={styles.spacing}>                
-                                                <Text style={styles.infoText}>Difficulty Rating: {props.data.details.diffRating}</Text>                                          
+                                            <Text style={styles.infoText}>Difficulty Rating: {props.data.details.diffRating}</Text>                                          
                                         </View>
 
                                         <View style={styles.spacing}>                
-                                                <Text style={styles.infoText}>Spots: {props.data.details.spots}</Text>                                          
+                                            <Text style={styles.infoText}>{`${props.data.area.toFixed(2).toLocaleString('en-US')} ft²`}</Text>                                          
+                                        </View>
+
+                                        <View style={styles.spacing}>                
+                                            <Text style={styles.infoText}>Spots: {props.data.details.spots}</Text>                                          
                                         </View>
 
                                         {/* Extra data for specific types */}
                                             <View style={styles.spacing}>
-                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? (props.data.details.cost != 0 ? Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(props.data.details.cost) : "FREE!") : "FREE!"}</Text>
+                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? (props.data.details.cost != 0 ? Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(props.data.details.cost).toLocaleString('en-US') : "FREE!") : "FREE!"}</Text>
                                             </View>
                                         
                                         <View style={styles.buttonView}>
