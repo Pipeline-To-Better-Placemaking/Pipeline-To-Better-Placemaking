@@ -503,7 +503,37 @@ export default function FullMap(props) {
                                         <Marker
                                             key={`${sdate}.${time}.${index}`}
                                             shape={'lightcircle'}
-                                            info={inst.accessType ? `<div><b>${testNames(title)}</b><br/>Location ${index}<br/>${inst.accessType}</div>` : null}
+                                            info={`<div>
+                                                <b>${inst.accessType}</b><br/>
+                                                <text>${inst.description}</text><br/>
+                                                <text>${inst.inPerimeter ? inst.distance : "Inside perimeter"}</text><br/>
+                                                <text>Difficulty Rating: ${inst.details.diffRating}</text><br/>
+                                                <text>${inst.description}</text><br/>
+                                                <text>Number spots: ${inst.details.spots}</text><br/>
+                                                <text>Cost: ${inst.details.cost > 0 ? inst.details.cost : "FREE!"}</text>`}
+                                            // {inst.accessType ? 
+                                            //     `<div>
+                                            //     <b>${inst.accessType}</b><br/>
+                                            //     <text>${inst.description}</text><br/>
+                                            //     <text>${inst.inPerimeter ? inst.distance : "Inside perimeter"}</text><br/>
+                                            //     <text>Difficulty Rating: ${inst.details.diffRating}</text><br/>
+                                            //     <text>${inst.description}</text><br/>
+                                            //     ${inst.accessType == "Access Point" ? 
+                                            //         `<text>Number spots: ${inst.details.spots}</text><br/>
+                                            //          <text>Cost: ${inst.details.cost > 0 ? inst.details.cost : "FREE!"}</text>`
+                                            //     : (inst.accessType == "Access Path" ? 
+                                            //         `<text>Length ${inst.details.area}</text><br/>
+                                            //          <text>Number Lanes: ${inst.details.laneCount}</text><br/>
+                                            //          <text>This path is ${inst.details.twoWay ? `two-way` : `one-way`}<text/><br/>
+                                            //          ${inst.details.median ? `<text>This path has a median<text/>` : null}<br/>
+                                            //          ${inst.details.paved ? `<text>This path is paved<text/>` : null}<br/>
+                                            //          ${inst.details.tollLane ? `<text>This path has a toll<text/>` : null}<br/>
+                                            //          ${inst.details.turnLane.length > 1 ? `<text>The path has both left and right turn lanes<text/>` : (inst.details.turnLane.length == 1 ? (inst.details.turnLane[0] === 1 ? "The path has a left turn lane" : "The path has a right turn lane") : "The path has no turn lanes")}<br/>`
+                                            //     : (inst.accessType == "Access Area" ? 
+                                            //         `<text>Number spots: ${inst.details.spots}</text><br/>
+                                            //          <text>Cost: ${inst.details.cost > 0 ? inst.details.cost : "FREE!"}</text>` 
+                                            //          : null))}
+                                            //     </div>` : null}
                                             position={inst.path[0]}
                                             markerType={'access_maps'}
                                         />
@@ -514,6 +544,7 @@ export default function FullMap(props) {
                                                 path={inst.path}
                                                 //mode={point.mode ? point.mode : point.kind}
                                                 title={title} date={sdate} time={time} index={index}
+                                                type={'access'}
                                                 boundsPathWindow={boundsPathWindow}
                                             />
                                             : inst.accessType === "Access Area" ? // If the data (point) is an access area, render a polygon
