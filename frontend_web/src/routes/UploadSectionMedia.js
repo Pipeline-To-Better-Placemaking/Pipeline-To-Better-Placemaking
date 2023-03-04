@@ -9,6 +9,7 @@ import Image from 'react-bootstrap/Image';
 import axios from '../api/axios';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
+import Button from '@mui/material/Button';
 
 function UploadSectionMedia() {
     const [mediaUrl, setMediaUrl] = useState(null);
@@ -78,6 +79,11 @@ function UploadSectionMedia() {
             </form>
             <br></br>
             <progress id="file" max="100" value={progresspercent}>  </progress>
+            <br></br>
+            <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='success' to='../' 
+              state={{...location.state}}>
+              Accept and Continue
+            </Button>
             <br></br>
             {
                 mediaUrl &&
