@@ -264,9 +264,114 @@ export function MyPieChart(props){
               <Text style={{color: props.graph[i].svg.fill}}>■</Text>
               
               {props.cond ?
-                <Text style={styles.whiteText}> {props.graph[i].value} ft² ({props.graph[i].percent}% of project area)</Text>
+                <Text style={styles.whiteText}> {props.graph[i].value.toFixed(2)} ft² ({props.graph[i].percent}% of project area)</Text>
               :
-                <Text style={styles.whiteText}> {props.graph[i].value} ft² ({props.graph[i].percent}%)</Text>
+                <Text style={styles.whiteText}> {props.graph[i].value.toFixed(2)} ft² ({props.graph[i].percent}%)</Text>
+              }
+            
+            </View>
+          )
+        }
+      }
+
+      return(
+        <View style={styles.pieLegendView}>
+          <Text category={'s1'} style={styles.whiteText}>Legend</Text>
+          {obj}
+        </View>
+      )
+    }
+
+    return(
+      <View style={{flex: 1}}>
+        <Text category={'h4'}>{props.title}</Text>
+        <PieChart
+          style={{ height: props.height }}
+          outerRadius={'100%'}
+          innerRadius={20}
+          padAngle={0}
+          data={props.graph}
+        />
+        
+        <Legend />
+      
+      </View>
+    )
+  }
+  else return null
+}
+
+export function MyPieChartCounts(props){
+  // if there are not any values for the passed in object, don't render anything
+  if(props.graph[0] !== undefined && props.graph[0].value !== undefined){
+    const Legend = () =>{
+      let obj = [];
+      for(let i = 0; i < Object.keys(props.graph).length; i++){
+        // this is mainly for the occupied area chart, if there is no data of that boundary type, don't render anything for it 
+        if(props.graph[i].value !== 0){
+          obj[i] = (
+            <View key={i.toString()} style={styles.pieLegend}>
+              <Text style={styles.whiteText}>{props.graph[i].legend}: </Text>
+              <Text style={{color: props.graph[i].svg.fill}}>■</Text>
+              
+              {props.cond ?
+                <Text style={styles.whiteText}> {props.graph[i].value.toFixed(2)} ({props.graph[i].percent}% of project area)</Text>
+              :
+                <Text style={styles.whiteText}> {props.graph[i].value.toFixed(2)} ({props.graph[i].percent}%)</Text>
+              }
+            
+            </View>
+          )
+        }
+      }
+
+      return(
+        <View style={styles.pieLegendView}>
+          <Text category={'s1'} style={styles.whiteText}>Legend</Text>
+          {obj}
+        </View>
+      )
+    }
+
+    return(
+      <View style={{flex: 1}}>
+        <Text category={'h4'}>{props.title}</Text>
+        <PieChart
+          style={{ height: props.height }}
+          outerRadius={'100%'}
+          innerRadius={20}
+          padAngle={0}
+          data={props.graph}
+        />
+        
+        <Legend />
+      
+      </View>
+    )
+  }
+  else return null
+}
+
+export function MyPieChartArea(props){
+
+  console.log("🚀 ~ file: charts.component.js:357 ~ MyPieChartArea ~ props:", props);
+
+  // if there are not any values for the passed in object, don't render anything
+  if(props.graph[0] !== undefined){
+    const Legend = () =>{
+      let obj = [];
+      for(let i = 0; i < Object.keys(props.graph).length; i++){
+        // this is mainly for the occupied area chart, if there is no data of that boundary type, don't render anything for it 
+        if(props.graph[i].value !== 0){
+          obj[i] = (
+            <View key={i.toString()} style={styles.pieLegend}>
+              <Text style={styles.whiteText}>{props.graph[i].legend}: </Text>
+              <Text style={{color: props.graph[i].svg.fill}}>■</Text>
+              
+              {props.cond ?
+                <Text style={styles.whiteText}> {props.graph[i].value.toFixed(2)} ft² ({props.graph[i].percent}% of project area)</Text>
+              :
+                <Text style={styles.whiteText}> {props.graph[i].value.toFixed(2)} ft² ({props.graph[i].percent}%)</Text>
               }
             
             </View>

@@ -73,7 +73,6 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',        
         marginTop: height * .015,
-        height: 'auto',
         textAlign: 'center',
         alignItems: "center",
     },
@@ -106,7 +105,7 @@ export const styles = StyleSheet.create({
 
     button:{
         width: width * .3,
-        height: height * .02,
+        height: height * .05,
         maxHeight: 150
     },
 

@@ -6,8 +6,10 @@ import { ViewableArea, ContentContainer, ConfirmDelete, LoadingSpinner } from '.
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { helperGetResult, deleteTimeSlot, getProject, getAllResults, isUserTeamOwner } from '../../components/apiCalls';
 import { formatAccessGraphData, calcArea } from '../../components/helperFunctions';
-import { MyPieChart, MyBarChart } from '../../components/charts.component';
+import { MyPieChartCounts, MyPieChartArea, MyBarChart } from '../../components/charts.component';
 import {format as prettyFormat} from 'pretty-format';
+import tinycolor from 'tinycolor2';
+
 
 import { styles } from './resultPage.styles';
 
@@ -142,8 +144,9 @@ export function AccessResultPage(props) {
 
   const calcPercent = (value, total) =>{
     // times 100 to convert the decimal to a percentage
-    let ret = (value / total) * 100
-    let tempString = ret.toFixed(0)
+    let ret = ((value / total) * 100)
+    const decimalPlaces = (ret.toString().split('.')[1] || '').length;
+    let tempString = decimalPlaces > 2 ? ret.toFixed(2) : ret;
     return parseInt(tempString)
   }
 
@@ -184,6 +187,84 @@ export function AccessResultPage(props) {
     }
     return 0;
   }
+
+  // Fucntions generate random colors folowing AAA standars however runs too slow to be called on every load
+  // function generateColorPalette(numColors, minLightness) {
+  //   const colors = [];
+  //   const hueIncrement = 360 / numColors;
+  
+  //   for (let i = 0; i < numColors; i++) {
+  //     const hue = hueIncrement * i;
+  //     const saturation = 100;
+  //     let lightness = minLightness;
+  //     let contrastRatio = 0;
+  
+  //     // increase the lightness until the contrast ratio is at least 4.5:1
+  //     while (contrastRatio < 4.5) {
+  //       const backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  //       const textColor = "#ffffff"; // white text color
+  //       contrastRatio = getContrastRatio(backgroundColor, textColor);
+  //       lightness += 1;
+  //     }
+  
+  //     colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
+  //   }
+  
+  //   return colors;
+  // }
+  
+  // // get the contrast ratio between two colors
+  // function getContrastRatio(backgroundColor, textColor) {
+  //   const bg = tinycolor(backgroundColor);
+  //   const text = tinycolor(textColor);
+  //   const contrast = tinycolor.readability(bg, text);
+  //   return contrast;
+  // }
+  
+
+  const formatCountPie = (obj) => {
+
+    const totalCount = obj.data.reduce((acc, val) => acc + val, 0)
+    const palette = ["#73cfff", "#256eff", "#004bad", "#0029aa", "#00cc00", "#2ebd33", "#00b300", "#009900"]
+
+    return obj.labels.map((label, index) => {
+      return {
+        key: index + 1,
+        value: obj.data[index],
+        svg: {fill: palette[index]},
+        legend: label,
+        percent: calcPercent(obj.data[index], totalCount)
+      };
+    });
+  }
+
+  const formatAreaPie = (obj) => {
+
+    const palette = ["#73cfff", "#256eff", "#004bad", "#0029aa", "#00cc00", "#2ebd33", "#00b300", "#009900"]
+
+    const areas = obj.labels.map((label, index) => {
+      return {
+        key: index + 1,
+        value: obj.areas[index],
+        svg: {fill: palette[index]},
+        legend: label,
+        percent: calcPercent(obj.areas[index], totalArea)
+      };
+    });
+
+    const remainingArea = totalArea - obj.areas.reduce((sum, area) => sum + area, 0);
+  
+    areas.push({
+      key: areas.length + 1,
+      value: remainingArea,
+      svg: { fill: '#cccccc' },
+      legend: 'Project Area',
+      percent: calcPercent(remainingArea, totalArea)
+    });
+
+    return areas
+    
+  }
   
   const formatForTotalPie = (obj) =>{
 
@@ -191,7 +272,7 @@ export function AccessResultPage(props) {
 
     let ret = [{}];
     let sum;
-    let currentType = "Path";
+    let currentType = "Area";
     let svg = {fill: "#00FFC1"};
     let tempString;
 
@@ -392,7 +473,7 @@ export function AccessResultPage(props) {
           <View style={styles.spacing}>
             <MyBarChart
               {...props}
-              title={"Access Data"}
+              title={"Access Point Counts"}
               rotation={'0deg'}
               dataValues={props.selectedResult.graph.pointGraph.data}
               dataLabels={props.selectedResult.graph.pointGraph.labels}
@@ -401,16 +482,79 @@ export function AccessResultPage(props) {
               height={chartHeight}
             />
           </View>
+
+          <View style={styles.spacing}>
+            <MyBarChart
+              {...props}
+              title={"Access Path Counts"}
+              rotation={'0deg'}
+              dataValues={props.selectedResult.graph.pathGraph.data}
+              dataLabels={props.selectedResult.graph.pathGraph.labels}
+              barColor={color}
+              width={chartWidth}
+              height={chartHeight}
+            />
+          </View>
+
+          <View style={styles.spacing}>
+            <MyBarChart
+              {...props}
+              title={"Access Area Counts"}
+              rotation={'0deg'}
+              dataValues={props.selectedResult.graph.areaGraph.data}
+              dataLabels={props.selectedResult.graph.areaGraph.labels}
+              barColor={color}
+              width={chartWidth}
+              height={chartHeight}
+            />
+          </View>
           
-          {/* <View style={styles.spacing}>
-            <MyPieChart
-              title={'Occupied Area'}
-              graph={formatForTotalPie(props.selectedResult.graph)}
+          <View style={styles.spacing}>
+            <MyPieChartCounts
+              title={'Percentage Point Count'}
+              graph={formatCountPie(props.selectedResult.graph.pointGraph)}
               cond={false}
               height={200}
             />
           </View>
-          
+
+          <View style={styles.spacing}>
+            <MyPieChartCounts
+              title={'Percentage Path Count'}
+              graph={formatCountPie(props.selectedResult.graph.pathGraph)}
+              cond={false}
+              height={200}
+            />
+          </View>
+
+          <View style={styles.spacing}>
+            <MyPieChartCounts
+              title={'Percentage Access Area'}
+              graph={formatCountPie(props.selectedResult.graph.areaGraph)}
+              cond={false}
+              height={200}
+            />
+          </View>
+
+          <View style={styles.spacing}>
+            <MyPieChartArea
+              title={'Percentage Total Path'}
+              graph={formatAreaPie(props.selectedResult.graph.pathGraph)}
+              cond={false}
+              height={200}
+            />
+          </View>
+
+          <View style={styles.spacing}>
+            <MyPieChartArea
+              title={'Percentage Total Area'}
+              graph={formatAreaPie(props.selectedResult.graph.areaGraph)}
+              cond={false}
+              height={200}
+            />
+          </View>
+
+          {/*
           <View style={styles.spacing}>
             <MyPieChart
               title={'Path Areas'}

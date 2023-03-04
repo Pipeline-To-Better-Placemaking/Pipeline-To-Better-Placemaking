@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
 
     closeButton:{
         width: width * .25,
-        height: height * .04, 
+        height: height * .05, 
         alignSelf:'center',
     }
 

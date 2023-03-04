@@ -264,7 +264,7 @@ export function AccessTest(props) {
     }
       
     //Haversine formula for calculating distance between coordinates
-    const distanceInMeters = (lat1, lon1, lat2, lon2) => {
+    const distanceInFeet = (lat1, lon1, lat2, lon2) => {
         const R = 6371000; // radius of the earth in meters
         const phi1 = lat1 * Math.PI / 180; // latitude of point 1 in radians
         const phi2 = lat2 * Math.PI / 180; // latitude of point 2 in radians
@@ -276,15 +276,16 @@ export function AccessTest(props) {
                   Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         
-        const distance = R * c;
-        return distance;
-      }
+        const distanceInMeters = R * c;
+        const distanceInFeet = distanceInMeters * 3.28084;
+        return distanceInFeet;
+    }
       
     
     function pointToLineDistance(x, y, x1, y1, x2, y2) {
-        const a = distanceInMeters(x, y, x1, y1);
-        const b = distanceInMeters(x, y, x2, y2);
-        const c = distanceInMeters(x1, y1, x2, y2);
+        const a = distanceInFeet(x, y, x1, y1);
+        const b = distanceInFeet(x, y, x2, y2);
+        const c = distanceInFeet(x1, y1, x2, y2);
         const p = (a + b + c) / 2;
         const h = (2 / c) * Math.sqrt(p * (p - a) * (p - b) * (p - c));
         return h;
@@ -305,8 +306,6 @@ export function AccessTest(props) {
         
             const d = pointToLineDistance(x, y, x1, y1, x2, y2);
             minDistance = Math.min(minDistance, d);
-
-
             }
         }
         

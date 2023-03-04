@@ -486,7 +486,7 @@ export async function formatAccessGraphData(result){
     return result;
   }
 
-  console.log("🚀 ~ file: helperFunctions.js:487 ~ formatAccessGraphData ~ result", prettyFormat(result));
+  //console.log("🚀 ~ file: helperFunctions.js:487 ~ formatAccessGraphData ~ result", prettyFormat(result));
 
   
   let index;
@@ -499,11 +499,13 @@ export async function formatAccessGraphData(result){
       },
       pathGraph: {
         labels: [],
-        data: []
+        data: [],
+        areas: []
       },
       areaGraph: {
         labels: [],
-        data: []
+        data: [],
+        areas: []
       }
     };
   
@@ -527,16 +529,43 @@ export async function formatAccessGraphData(result){
         graph.pointGraph.data.push(1);
       }
     }    
+    // Count path access occurrances
+    else if(data.accessType == "Access Path") {
+      index = conDescSearch(graph.pathGraph.labels, result.data[i].description)
 
-    // graph[i].key = i + 1;
-    // graph[i].accessType = data.accessType;   
-    // graph[i].description = data.description;   
-    
+      // if that description already exists in graph's labels
+      if(index !== -1){
+        // increase the count of that index
+        graph.pathGraph.data[index] += 1;
+        graph.pathGraph.areas[index] += result.data[i].area;
+      }
+      // otherwise, that description does not exist in graph's labels
+      else{
+        // so push the description to the end of graph's labels and a 1 onto the end of data labels
+        graph.pathGraph.labels.push(result.data[i].description);
+        graph.pathGraph.areas.push(result.data[i].area);
+        graph.pathGraph.data.push(1);
+      }
+    }   
+    // Count area access occurrances
+    else if(data.accessType == "Access Area") {
+      index = conDescSearch(graph.areaGraph.labels, result.data[i].description)
+
+      // if that description already exists in graph's labels
+      if(index !== -1){
+        // increase the count of that index
+        graph.areaGraph.data[index] += 1;
+        graph.pathGraph.areas[index] += result.data[i].area;
+      }
+      // otherwise, that description does not exist in graph's labels
+      else{
+        // so push the description to the end of graph's labels and a 1 onto the end of data labels
+        graph.areaGraph.labels.push(result.data[i].description);
+        graph.areaGraph.areas.push(result.data[i].area);
+        graph.areaGraph.data.push(1);
+      }
+    }    
   }
-
-  console.log("🚀 ~ file: helperFunctions.js:528 ~ formatAccessGraphData ~ graph.labels", graph.pointGraph.labels);
-
-  console.log("🚀 ~ file: helperFunctions.js:528 ~ formatAccessGraphData ~ graph.data", graph.pointGraph.data);
 
   console.log("🚀 ~ file: helperFunctions.js:526 ~ formatAccessGraphData ~ graph", prettyFormat(graph));
 

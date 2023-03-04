@@ -35,7 +35,7 @@ export function InfoModal(props) {
                                         </View>
 
                                         <View style={styles.spacing}>                
-                                                <Text style={styles.infoText}>{props.data.inPerimeter ? `Inside project area` : `${props.data.distanceFromArea.toFixed(2)}m from project area`}</Text>                                          
+                                                <Text style={styles.infoText}>{props.data.inPerimeter ? `Inside project area` : `${props.data.distanceFromArea.toFixed(2)}ft from project area`}</Text>                                          
                                         </View>
 
                                         <View style={styles.spacing}>                
@@ -48,7 +48,7 @@ export function InfoModal(props) {
 
                                         {/* Extra data for specific types */}
                                             <View style={styles.spacing}>
-                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? (props.data.details.cost != 0 ? props.data.details.cost : "FREE!") : "FREE!"}</Text>
+                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? (props.data.details.cost != 0 ? Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(props.data.details.cost) : "FREE!") : "FREE!"}</Text>
                                             </View>
                                         
                                         <View style={styles.buttonView}>
@@ -74,7 +74,7 @@ export function InfoModal(props) {
                                         </View>
 
                                         <View style={styles.spacing}>                
-                                        <Text style={styles.infoText}>{props.data.inPerimeter ? `Inside project area` : `${props.data.distanceFromArea.toFixed(2)}m from project area`}</Text>                                          
+                                        <Text style={styles.infoText}>{props.data.inPerimeter ? `Inside project area` : `${props.data.distanceFromArea.toFixed(2)}ft from project area`}</Text>                                          
                                         </View>
                                         
                                         <View style={styles.spacing}>                
@@ -82,32 +82,46 @@ export function InfoModal(props) {
                                         </View>
 
                                         <View style={styles.spacing}>                
-                                                <Text style={styles.infoText}>Length: {props.data.area}m</Text>                                          
+                                                <Text style={styles.infoText}>Length: {props.data.area}ft</Text>                                          
                                         </View>
 
                                         <View style={styles.spacing}>                
                                                 <Text style={styles.infoText}>Lane Count: {props.data.details.laneCount}</Text>                                          
                                         </View>
 
-                                        <View style={styles.spacing}>                
-                                                <Text style={styles.infoText}>{(props.data.details.median) ? "The path has a median" : "The path does not have a median"}</Text>                                          
-                                        </View>
+                                        {props.data.details.median ? 
+                                            <View style={styles.spacing}>                
+                                                <Text style={styles.infoText}>The path has a median</Text>                                          
+                                            </View> 
+                                        : null}
 
-                                        <View style={styles.spacing}>                
-                                                <Text style={styles.infoText}>{(props.data.details.paved) ? "The path is paved" : "The path is not paved"}</Text>                                          
-                                        </View>
+                                        {props.data.details.paved ?
+                                            <View style={styles.spacing}>                
+                                                <Text style={styles.infoText}>The path is paved</Text>                                          
+                                            </View>
+                                        : null}
 
-                                        <View style={styles.spacing}>
-                                            <Text style={styles.infoText}>{(props.data.details.tollLane) ? "The path has tolls" : "The path does not have tolls"}</Text>
-                                        </View>
+                                        {props.data.details.tollLane ?
+                                            <View style={styles.spacing}>
+                                                <Text style={styles.infoText}>The path has tolls</Text>
+                                            </View>
+                                        : null}
 
-                                        <View style={styles.spacing}>
-                                            <Text style={styles.infoText}>{(props.data.details.twoWay) ? "The path is two-way" : "The path is one-way"}</Text>
-                                        </View>
+                                        {props.data.details.twoWay ?
+                                            <View style={styles.spacing}>
+                                                <Text style={styles.infoText}>The path is two-way</Text>
+                                            </View>
+                                        :
+                                            <View style={styles.spacing}>
+                                                <Text style={styles.infoText}>The path is one-way</Text>
+                                            </View>
+                                        }
+
 
                                          <View style={styles.spacing}>                
                                                 <Text style={styles.infoText}>{
                                                 (props.data.details.turnLane.length > 1 ? "The path has both left and right turn lanes" : (props.data.details.turnLane.length == 1 ? (props.data.details.turnLane[0] === 1 ? "The path has a left turn lane" : "The path has a right turn lane") : "The path has no turn lanes"))
+                                                //this is the conditional of the above lamba function
                                                 // if(props.data.details) {
                                                 //     if(props.data.details.turnLane && props.data.details.turnLane.length > 1) {
                                                 //     setTurnLane("The access path has both left and right turn lanes");
@@ -165,7 +179,7 @@ export function InfoModal(props) {
 
                                         {/* Extra data for specific types */}
                                             <View style={styles.spacing}>
-                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? (props.data.details.cost != 0 ? props.data.details.cost : "FREE!") : "FREE!"}</Text>
+                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? (props.data.details.cost != 0 ? Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(props.data.details.cost) : "FREE!") : "FREE!"}</Text>
                                             </View>
                                         
                                         <View style={styles.buttonView}>
