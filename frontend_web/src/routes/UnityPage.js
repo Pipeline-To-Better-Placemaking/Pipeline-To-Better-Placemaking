@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 export default function UnityPage() {
   const loc = useLocation();
+  const nav = useNavigate();
 
   const {
     unityProvider,
@@ -12,6 +13,8 @@ export default function UnityPage() {
     loadingProgression,
     sendMessage,
     UNSAFE__detachAndUnloadImmediate: detachAndUnloadImmediate,
+    addEventListener,
+    removeEventListener
   } = useUnityContext({
     // This is just to make sure the file path is correct when loading Unity inside the website
     // Build loads in the activity path without ../ needs to load inside website root
@@ -38,6 +41,23 @@ export default function UnityPage() {
     handleExtrude();
   }, [isLoaded])
 
+  const handleButtons = useCallback((isContinue) => {
+    // console.log(isContinue);
+    if (isContinue === 1) {
+      nav('../activities/times', { replace: true, state: { ...loc.state } });
+    }
+    else {
+      nav('../activities/identifying_program', { replace: true, state: { ...loc.state } });
+    }
+  }, []);
+
+  useEffect(() => {
+    addEventListener("AdminButtons", handleButtons);
+    return () => {
+      removeEventListener("AdminButtons", handleButtons);
+    };
+  }, [addEventListener, removeEventListener, handleButtons]);
+
   function handleExtrude() {
     // points.Add(new Vector3(-10,5,0));
     //     points.Add(new Vector3(-20,10,0));
@@ -57,23 +77,24 @@ export default function UnityPage() {
 
   return (
     <div>
-      <h1>Identifying Program</h1>
+      {/* <h1>Identifying Program</h1> */}
       {/* state={{userToken:loc.state.userToken, team: loc.state.team}} <-- this is a parameter for the button component if you need it later*/}
-      <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/identifying_program'
+      {/* <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/identifying_program'
         state={{ ...loc.state }} >
         Reset Model
       </Button>
       <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='success' to='../activities/times'
         state={{ ...loc.state }}>
         Accept and Continue
-      </Button>
+      </Button> */}
+      <br />
       <div style={{ justifyContent: 'center' }}>
         {!isLoaded && (
           <p>Loading Application... {Math.round(loadingProgression * 100)}%</p>
         )}
         <Unity
           unityProvider={unityProvider}
-          style={{ width: 1600, height: 900, visibility: isLoaded ? "visible" : "hidden" }}
+          style={{ width: 1600, height: 900, marginLeft: 134.4, visibility: isLoaded ? "visible" : "hidden" }}
         />
 
       </div>
