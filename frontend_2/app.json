@@ -14,7 +14,8 @@
     },
     "userInterfaceStyle": "automatic",
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/b21cfbf6-2649-4fd8-99c5-5d66833f3ddd"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -25,7 +26,8 @@
         "NSAllowsArbitraryLoads": {
           "NSAllowsArbitraryLoads": true
         }
-      }
+      },
+      "bundleIdentifier": "P2BP"
     },
     "android": {
       "adaptiveIcon": {
@@ -33,11 +35,6 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.measuringplace.twopluscommunity",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyCtLNOBqi_CiYQteBUGKS-8LJOz2jHoUT0"
-        }
-      },
       "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
@@ -47,6 +44,9 @@
       "eas": {
         "projectId": "b21cfbf6-2649-4fd8-99c5-5d66833f3ddd"
       }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }
