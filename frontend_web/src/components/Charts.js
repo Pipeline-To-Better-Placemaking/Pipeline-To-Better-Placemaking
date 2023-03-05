@@ -56,6 +56,8 @@ export default function Charts(props) {
         Maintenance: '#FFD800'
     }
 
+    const accessColor = ["#73cfff", "#256eff", "#004bad", "#0029aa", "#00cc00", "#2ebd33", "#00b300", "#009900"]
+
     const cat = selection.split('.');
 
     const soundIcons ={
@@ -1522,6 +1524,496 @@ export default function Charts(props) {
         );
     };
 
+    const multiAccessCharts = (data) => {
+        
+        var accessPoint = 0;
+        var accessPath = 0;
+        var accessArea = 0;
+        var accessSum = 0;
+
+
+        var rideShare = 0;
+        var bikeRack = 0;
+        var publicStop = 0;
+        var valet = 0;
+        var scooter = 0;
+        var accessPointSum = 0;
+
+        var sidewalk = 0;
+        var sideStreet = 0;
+        var mainRoad = 0;
+        var accessPathSum = 0;
+
+        var lot = 0;
+        var garage = 0;
+        var accessAreaSum = 0;
+
+        console.log("🚀 ~ file: Charts.js:1551 ~ data:", data);
+
+        data.map((inst) => {
+
+            console.log("🚀 ~ file: Charts.js:1555 ~ data.map ~ inst:", inst);
+
+            inst.map((obj) => {
+
+                console.log("🚀 ~ file: Charts.js:1555 ~ data.map ~ obj:", obj);
+
+                if(obj.accessType === 'Access Point') {
+                    accessPoint++;
+                    accessSum++;
+                    switch (obj.description) {
+                        case 'Ride Share Drop Off':
+                            rideShare++;
+                            accessPointSum++;
+                            break;
+                        case 'Bike Rack':
+                            bikeRack++;
+                            accessPointSum++;
+                            break;
+                        case 'Public Transport Stop':
+                            publicStop++;
+                            accessPointSum++;
+                            break;
+                        case 'Valet Counter':
+                            valet++;
+                            accessPointSum++;
+                            break;
+                        case 'E-scooter Parking':
+                            scooter++;
+                            accessPointSum++;
+                            break;
+                        default:
+                            console.log('Non-matching description');
+                            console.log(obj.description)
+                    }
+                } else if(obj.accessType === 'Access Path') {
+                    accessPath++;
+                    accessSum++;
+                    switch (obj.description) {
+                        case 'Sidewalk':
+                            sidewalk++;
+                            accessPathSum++;
+                            break;
+                        case 'Side Street':
+                            sideStreet++;
+                            accessPathSum++;
+                            break;
+                        case 'Main Road':
+                            mainRoad++;
+                            accessPathSum++;
+                            break;
+                        default:
+                            console.log('Non-matching description');
+                            console.log(obj.description)
+                    }
+                } else {
+                    accessArea++;
+                    accessSum++;
+                    // obj.instance = `Location ${ind+1}`;
+                    // constructed.push(obj);
+                    switch (obj.description) {
+                        case 'Parking Lot':
+                            lot++;
+                            accessAreaSum++;
+                            break;
+                        case 'Parking Garage':
+                            garage++;
+                            accessAreaSum++;
+                            break;
+                        default:
+                            console.log('Non-matching description');
+                            console.log(obj.description)
+                    }
+                }
+            });
+    });
+
+        console.log("🚀 ~ file: Charts.js:1624 ~ data.map ~ data:", data);
+
+
+        console.log("🚀 ~ file: Charts.js:1624 ~ data.map ~ data:", data);
+
+        
+        console.log("🚀 ~ file: Charts.js:1622 ~ multiAccessCharts ~ accessSum:", accessSum);
+
+        // access types
+        var accessTypeArr = [  
+            { accessType: 'Access Point', percentage: (accessPoint / accessSum) * 100 },  
+            { accessType: 'Access Path', percentage: (accessPath / accessSum) * 100 },  
+            { accessType: 'Access Area', percentage: (accessArea / accessSum) * 100 }];
+
+        console.log("🚀 ~ file: Charts.js:1632 ~ multiAccessCharts ~ accessTypeArr:", accessTypeArr);
+
+
+        // access point descriptions
+        var accessPointDescArr = [  
+            { description: 'Ride Share Drop Off', percentage: (rideShare / accessPointSum) * 100 },  
+            { description: 'Bike Rack', percentage: (bikeRack / accessPointSum) * 100 },  
+            { description: 'Public Transport Stop', percentage: (publicStop / accessPointSum) * 100 },  
+            { description: 'Valet Counter', percentage: (valet / accessPointSum) * 100 },  
+            { description: 'E-scooter Parking', percentage: (scooter / accessPointSum) * 100 }
+        ];
+        // access path descriptions
+        var accessPathDescArr = [  
+            { description: 'Sidewalk', percentage: (sidewalk / accessPathSum) * 100 },  
+            { description: 'Side Street', percentage: (sideStreet / accessPathSum) * 100 },  
+            { description: 'Main Road', percentage: (mainRoad / accessPathSum) * 100 }
+        ];
+
+        // access area descriptions
+        var accessAreaDescArr = [  
+            { description: 'Parking Lot', percentage: (lot / accessAreaSum) * 100 },  
+            { description: 'Parking Garage', percentage: (garage / accessAreaSum) * 100 }
+        ];
+
+
+        return(
+            <div className='Charts'>
+                <div style={{ fontSize: 'larger' }}> Access Types </div>
+                <PieChart width={width} height={height}>
+                    <Pie data={accessTypeArr} dataKey='percentage' nameKey='accessType' cx='50%' cy='50%' outerRadius={50} fill="#256eff" >
+                        {accessTypeArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                {/* <div style={{ fontSize: 'larger' }}> Occupied Area (%)</div>
+                <PieChart width={ width } height={ height }>
+                        <Pie data={ array } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
+                            { array.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000' } fillOpacity={ 0.85 } />
+                            )) }
+                        </Pie>
+                    <Tooltip />
+                </PieChart>
+                <br />
+                <div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Material'] }}>&nbsp;&nbsp;</div>&nbsp; Material (Horizontal): {totalPerc[2] < totalPerc[3] ? `<${totalPerc[3]}%` : (totalPerc[2] > totalPerc[3] ? `>${totalPerc[3]}%` : `${totalPerc[3]}%`)} </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp; Shelter (Horizontal): {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : (totalPerc[0] > totalPerc[1] ? `>${totalPerc[1]}%` : `${totalPerc[1]}%`)} </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
+                </div>
+                &nbsp;
+                <br/>
+                <div style={{ fontSize: 'larger' }}>Material Areas (ft<sup>2</sup>)</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']}>
+                        {mat.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor['Material']} stroke={'#000000'} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}>Shelter Areas (ft<sup>2</sup>)</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={shelt} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Shelter']}>
+                        {shelt.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor['Shelter']} stroke={'#000000'} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}>Constructed Boundary Distances</div>
+                <BarChart width={ width } height={ height } data={ constructed }>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='instance' />
+                    <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
+                </BarChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}>Constructed Distances - Types</div>
+                <BarChart width={width} height={height} data={constr}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='type' />
+                    <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'area'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.65} />
+                </BarChart>
+                <br />
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Material'] }}>&nbsp;&nbsp;</div>&nbsp;Material (Horizontal) </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp;Shelter (Horizontal) </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Constructed'] }}>&nbsp;&nbsp;</div>&nbsp;Constructed (Vertical) </div>
+                </div> */}
+            </div>
+        );
+    };
+
+    const accessBarCharts = (data) => {
+        console.log("🚀 ~ file: Charts.js:1574 ~ accessCharts ~ data:", data);
+
+        var point = 0, path = 0, area = 0;
+
+        for (const obj of Object.values(data)) {
+            if (obj.accessType === 'Access Point') {
+                point++;
+            } else if (obj.accessType === 'Access Path') {
+                path++;
+            } else if (obj.accessType === 'Access Area') {
+                area++;
+            }
+        }
+
+        var accessType = [{ accessType: 'Point', count: point }, { accessType: 'Path', count: path }, { accessType: 'Area', count: area }];
+        return(
+            <div className='Charts'>
+                <BarChart width={ width } height={ height } data={ accessType }>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='accessType' />
+                    <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={ 'count' } fill='#636262'>
+                        { accessType.map((entry, index) => (
+                            <Cell key={ `cell-${index}` } fill={ accessColor[index] } fillOpacity={ 0.8 } />
+                        )) }
+                    </Bar>
+                </BarChart>
+                <br />
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: accessColor[0] }}>&nbsp;&nbsp;</div>&nbsp;Point</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: accessColor[1] }}>&nbsp;&nbsp;</div>&nbsp;Path</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: accessColor[2] }}>&nbsp;&nbsp;</div>&nbsp;Area</div>
+                </div>
+            </div>
+        );
+    };
+
+    const accessCharts = (data) => {
+        
+        var accessPoint = 0;
+        var accessPath = 0;
+        var accessArea = 0;
+        var accessSum = 0;
+
+
+        var rideShare = 0;
+        var bikeRack = 0;
+        var publicStop = 0;
+        var valet = 0;
+        var scooter = 0;
+        var accessPointSum = 0;
+
+        var sidewalk = 0;
+        var sideStreet = 0;
+        var mainRoad = 0;
+        var accessPathSum = 0;
+
+        var lot = 0;
+        var garage = 0;
+        var accessAreaSum = 0;
+
+        data.map((obj) => {
+
+            console.log("🚀 ~ file: Charts.js:1555 ~ data.map ~ obj:", obj);
+
+            if(obj.accessType === 'Access Point') {
+                accessPoint++;
+                accessSum++;
+                switch (obj.description) {
+                    case 'Ride Share Drop Off':
+                        rideShare++;
+                        accessPointSum++;
+                        break;
+                    case 'Bike Rack':
+                        bikeRack++;
+                        accessPointSum++;
+                        break;
+                    case 'Public Transport Stop':
+                        publicStop++;
+                        accessPointSum++;
+                        break;
+                    case 'Valet Counter':
+                        valet++;
+                        accessPointSum++;
+                        break;
+                    case 'E-scooter Parking':
+                        scooter++;
+                        accessPointSum++;
+                        break;
+                    default:
+                        console.log('Non-matching description');
+                        console.log(obj.description)
+                }
+            } else if(obj.accessType === 'Access Path') {
+                accessPath++;
+                accessSum++;
+                switch (obj.description) {
+                    case 'Sidewalk':
+                        sidewalk++;
+                        accessPathSum++;
+                        break;
+                    case 'Side Street':
+                        sideStreet++;
+                        accessPathSum++;
+                        break;
+                    case 'Main Road':
+                        mainRoad++;
+                        accessPathSum++;
+                        break;
+                    default:
+                        console.log('Non-matching description');
+                        console.log(obj.description)
+                }
+            } else {
+                accessArea++;
+                accessSum++;
+                // obj.instance = `Location ${ind+1}`;
+                // constructed.push(obj);
+                switch (obj.description) {
+                    case 'Parking Lot':
+                        lot++;
+                        accessAreaSum++;
+                        break;
+                    case 'Parking Garage':
+                        garage++;
+                        accessAreaSum++;
+                        break;
+                    default:
+                        console.log('Non-matching description');
+                        console.log(obj.description)
+                }
+            }
+        });
+
+        // access types
+        var accessTypeArr = [  
+            { accessType: 'Access Point', value: accessPoint },  
+            { accessType: 'Access Path', value: accessPath },  
+            { accessType: 'Access Area', value: accessArea }];
+
+        // access point descriptions
+        var accessPointDescArr = [  
+            { description: 'Ride Share Drop Off', value: rideShare },  
+            { description: 'Bike Rack', value: bikeRack },  
+            { description: 'Public Transport Stop', value: publicStop },  
+            { description: 'Valet Counter', value: valet },  
+            { description: 'E-scooter Parking', value: scooter }
+        ];
+        // access path descriptions
+        var accessPathDescArr = [  
+            { description: 'Sidewalk', value: sidewalk },  
+            { description: 'Side Street', value: sideStreet },  
+            { description: 'Main Road', value: mainRoad }
+        ];
+
+        // access area descriptions
+        var accessAreaDescArr = [  
+            { description: 'Parking Lot', value: lot },  
+            { description: 'Parking Garage', value: garage }
+        ];
+
+
+        return(
+            <div className='Charts'>
+                <div style={{ fontSize: 'larger' }}> Access Types </div>
+                <PieChart width={width} height={height}>
+                    <Pie data={accessTypeArr} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={75} fill="#256eff" >
+                        {accessTypeArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <div>
+                    {accessTypeArr.map((entry, index) => {
+                        if(entry.value > 0)
+                        return (
+                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                              <div style={{ backgroundColor: accessColor[index] }}>&nbsp;&nbsp;</div>
+                              &nbsp;{entry.accessType}: {entry.value / accessSum * 100}%
+                            </div>
+                        );                          
+                    })}
+                </div>
+                <br/>
+                <div style={{ fontSize: 'larger' }}> Access Point Types </div>
+                <PieChart width={width} height={height}>
+                    <Pie data={accessPointDescArr} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={75} fill="#256eff" >
+                        {accessPointDescArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <div>
+                    {accessPointDescArr.map((entry, index) => {
+                        if(entry.value > 0)
+                            return (
+                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                <div style={{ backgroundColor: accessColor[index] }}>&nbsp;&nbsp;</div>
+                                &nbsp;{entry.description}: {entry.value / accessPointSum * 100}%
+                                </div>
+                            );  
+                    })}
+                </div>
+                {/* <div style={{ fontSize: 'larger' }}> Occupied Area (%)</div>
+                <PieChart width={ width } height={ height }>
+                        <Pie data={ array } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
+                            { array.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000' } fillOpacity={ 0.85 } />
+                            )) }
+                        </Pie>
+                    <Tooltip />
+                </PieChart>
+                <br />
+                <div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Material'] }}>&nbsp;&nbsp;</div>&nbsp; Material (Horizontal): {totalPerc[2] < totalPerc[3] ? `<${totalPerc[3]}%` : (totalPerc[2] > totalPerc[3] ? `>${totalPerc[3]}%` : `${totalPerc[3]}%`)} </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp; Shelter (Horizontal): {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : (totalPerc[0] > totalPerc[1] ? `>${totalPerc[1]}%` : `${totalPerc[1]}%`)} </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
+                </div>
+                &nbsp;
+                <br/>
+                <div style={{ fontSize: 'larger' }}>Material Areas (ft<sup>2</sup>)</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']}>
+                        {mat.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor['Material']} stroke={'#000000'} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}>Shelter Areas (ft<sup>2</sup>)</div>
+                <PieChart width={width} height={height}>
+                    <Pie data={shelt} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Shelter']}>
+                        {shelt.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor['Shelter']} stroke={'#000000'} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}>Constructed Boundary Distances</div>
+                <BarChart width={ width } height={ height } data={ constructed }>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='instance' />
+                    <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
+                </BarChart>
+                <br />
+                <div style={{ fontSize: 'larger' }}>Constructed Distances - Types</div>
+                <BarChart width={width} height={height} data={constr}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='type' />
+                    <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'area'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.65} />
+                </BarChart>
+                <br />
+                <div >
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Material'] }}>&nbsp;&nbsp;</div>&nbsp;Material (Horizontal) </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp;Shelter (Horizontal) </div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Constructed'] }}>&nbsp;&nbsp;</div>&nbsp;Constructed (Vertical) </div>
+                </div> */}
+            </div>
+        );
+    };
+    
+
     return(
        data !== [] ? 
             (type === 0 ? 
@@ -1530,14 +2022,14 @@ export default function Charts(props) {
                             <div style={{ fontSize: 'large' }}>{ testNames(cat[0]) }</div>
                             { cat[1] }  { cat[2] }
                         </div>
-                            { cat[0] === 'sound_maps' ? soundBarChart(data) : (cat[0] === 'boundaries_maps' ? BoundaryPieChart(data) : (cat[0] === 'moving_maps' ? movingBarChart(data) : (cat[0] === 'stationary_maps' ? stationaryBarCharts(data) : (cat[0] === 'nature_maps' ? NaturePieChart(data) : (cat[0] === 'light_maps' ? lightingCharts(data) : ( cat[0] === 'order_maps' ? orderCharts(data) : null)))))) }
+                            { cat[0] === 'sound_maps' ? soundBarChart(data) : (cat[0] === 'boundaries_maps' ? BoundaryPieChart(data) : (cat[0] === 'moving_maps' ? movingBarChart(data) : (cat[0] === 'stationary_maps' ? stationaryBarCharts(data) : (cat[0] === 'nature_maps' ? NaturePieChart(data) : (cat[0] === 'light_maps' ? lightingCharts(data) : ( cat[0] === 'order_maps' ? orderCharts(data) : (cat[0] === 'access_maps' ? accessCharts(data) : null))))))) }
                     </div> 
                 : 
                     <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px'}}>
                         <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
                             { testNames(cat[0]) }: Summary
                         </div>
-                        {cat[0] === 'sound_maps' ? multiSoundCharts(data) : (cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : (cat[0] === 'stationary_maps' ? multiStationary(data) : (cat[0] === 'nature_maps' ? multiNatureChart(data) : (cat[0] === 'moving_maps' ? multiMoving(data) : (cat[0] === 'light_maps' ? multiLight(data) : ( cat[0] === 'order_maps' ? multiOrderCharts(data) : null)) )) ))}
+                        {cat[0] === 'sound_maps' ? multiSoundCharts(data) : (cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : (cat[0] === 'stationary_maps' ? multiStationary(data) : (cat[0] === 'nature_maps' ? multiNatureChart(data) : (cat[0] === 'moving_maps' ? multiMoving(data) : (cat[0] === 'light_maps' ? multiLight(data) : ( cat[0] === 'order_maps' ? multiOrderCharts(data) : (cat[0] === 'access_maps' ? multiAccessCharts(data) : null))) )) ))}
                     </div>) 
         : null
     );
