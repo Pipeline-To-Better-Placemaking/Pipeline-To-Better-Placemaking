@@ -22,9 +22,9 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-          "NSAllowsArbitraryLoads": {
-              "NSAllowsArbitraryLoads": true
-          }
+        "NSAllowsArbitraryLoads": {
+          "NSAllowsArbitraryLoads": true
+        }
       }
     },
     "android": {
@@ -42,6 +42,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b21cfbf6-2649-4fd8-99c5-5d66833f3ddd"
+      }
     }
   }
 }
