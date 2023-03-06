@@ -1,5 +1,5 @@
 import {useState} from "react";
-import { storage } from "./firebase";
+import { storage } from "./firebase_config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import './routes.css';
