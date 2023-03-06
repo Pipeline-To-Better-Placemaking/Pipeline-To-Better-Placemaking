@@ -79,8 +79,7 @@ export default function ProjectForm() {
                 },
                 withCredentials: true
             });
-
-            let project = response.data;
+            
             nav('../', { replace: true, state: { team: loc.state.team, userToken: loc.state.userToken } });
 
         } catch (error) {

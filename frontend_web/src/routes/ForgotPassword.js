@@ -33,7 +33,7 @@ export default function ForgotPassword(){
     const sendForgotEmail = async (e) => {
 
         try{
-            const response = await axios.post(resetURL, JSON.stringify({ email: email }), {
+            await axios.post(resetURL, JSON.stringify({ email: email }), {
                 headers: { 'Content-Type': 'application/json' },
             });
 

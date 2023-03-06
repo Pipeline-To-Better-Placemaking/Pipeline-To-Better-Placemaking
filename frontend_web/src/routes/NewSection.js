@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Map from '../components/Map';
-import { useLocation } from 'react-router-dom';
 
 function NewSection(props) {
     //recieves location data from NewSection.js

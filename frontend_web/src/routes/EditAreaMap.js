@@ -28,7 +28,7 @@ export default function EditAreaMap() {
         updatedArea = {title: name, points: updatedPoints};
 
         try {
-            const response = await axios.put(`/projects/${loc.pathname.split('/')[5]}/areas/${area._id}`, JSON.stringify(updatedArea), {
+            await axios.put(`/projects/${loc.pathname.split('/')[5]}/areas/${area._id}`, JSON.stringify(updatedArea), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
@@ -55,7 +55,7 @@ export default function EditAreaMap() {
         console.log(updatedArea)
 
         try {
-            const response = await axios.post(`/projects/${loc.pathname.split('/')[5]}/areas`, JSON.stringify(updatedArea), {
+            await axios.post(`/projects/${loc.pathname.split('/')[5]}/areas`, JSON.stringify(updatedArea), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',

@@ -12,8 +12,6 @@ import html2canvas from 'html2canvas';
 import MapDrawers from './MapDrawers';
 import { testNames } from '../functions/HelperFunctions';
 import './controls.css';
-import { Form } from 'react-bootstrap';
-import { ClickAwayListener } from '@mui/material';
 
 const render = (status) => {
     console.log(status);
@@ -400,14 +398,14 @@ export default function FullMap(props) {
                 Description: ${data.Results[title][date][time].data[index].description}<br/>
                 <text>${!data.Results[title][date][time].data[index].inPerimeter ? `${data.Results[title][date][time].data[index].distanceFromArea.toFixed(2).toLocaleString('en-US')} ft from project perimeter` : "Inside perimeter"}</text><br/>
                 <text>Difficulty Rating: ${data.Results[title][date][time].data[index].details.diffRating}</text><br/>
-                ${data.Results[title][date][time].data[index].accessType == "Access Path" ? 
+                ${data.Results[title][date][time].data[index].accessType === "Access Path" ? 
                         `<text>Length: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft</text><br/>
                          <text>Number Lanes: ${data.Results[title][date][time].data[index].details.laneCount}</text><br/>
                          <text>This path is ${data.Results[title][date][time].data[index].details.twoWay ? `two-way` : `one-way`}<text/><br/>
                          ${data.Results[title][date][time].data[index].details.median ? `<text>This path has a median<text/>` : null}<br/>
                          ${data.Results[title][date][time].data[index].details.paved ? `<text>This path is paved<text/>` : null}<br/>
                          ${data.Results[title][date][time].data[index].details.tollLane ? `<text>This path has a toll<text/><br/>` : ""}
-                         ${data.Results[title][date][time].data[index].details.turnLane.length > 1 ? `<text>The path has both left and right turn lanes<text/>` : (data.Results[title][date][time].data[index].details.turnLane.length == 1 ? (data.Results[title][date][time].data[index].details.turnLane[0] === 1 ? "The path has a left turn lane" : "The path has a right turn lane") : "The path has no turn lanes")}<br/>`
+                         ${data.Results[title][date][time].data[index].details.turnLane.length > 1 ? `<text>The path has both left and right turn lanes<text/>` : (data.Results[title][date][time].data[index].details.turnLane.length === 1 ? (data.Results[title][date][time].data[index].details.turnLane[0] === 1 ? "The path has a left turn lane" : "The path has a right turn lane") : "The path has no turn lanes")}<br/>`
                     : 
                         `<text>Area: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft²</text><br/>
                          <text>Number spots: ${data.Results[title][date][time].data[index].details.spots}</text><br/>
@@ -794,7 +792,7 @@ export default function FullMap(props) {
                                     Cancel
                                 </Button>
                                 <Button className='newHoveringButtons' onClick={removePoint}> Undo <UndoIcon /></Button>
-                                { clicks.length > 2 || clicks.length == 0 ? null:
+                                { clicks.length > 2 || clicks.length === 0 ? null:
                                    <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/times' state={{...loc.state, path: clicks}}>
                                         Continue Section
                                     </Button>

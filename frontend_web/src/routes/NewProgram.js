@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Map from '../components/Map';
-import { useLocation } from 'react-router-dom';
 
 function NewProgram(props) {
     //recieves location data from NewProject.js

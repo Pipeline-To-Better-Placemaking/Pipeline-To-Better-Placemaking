@@ -16,7 +16,7 @@ export default function EditTeam(props){
     const updateTeam = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`/teams/${segment[3]}`, JSON.stringify({title: name}) ,{
+            await axios.put(`/teams/${segment[3]}`, JSON.stringify({title: name}) ,{
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
@@ -37,7 +37,7 @@ export default function EditTeam(props){
     const deleteTeam = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.delete(`/teams/${segment[3]}`, {
+            await axios.delete(`/teams/${segment[3]}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',

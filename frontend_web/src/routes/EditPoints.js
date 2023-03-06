@@ -44,7 +44,7 @@ export default function EditPoints(){
     const deletePoint = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.delete(`/projects/${loc.pathname.split('/')[5]}/standing_points/${currId}`, {
+            await axios.delete(`/projects/${loc.pathname.split('/')[5]}/standing_points/${currId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',

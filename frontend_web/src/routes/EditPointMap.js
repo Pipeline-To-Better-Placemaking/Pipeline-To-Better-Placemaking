@@ -23,7 +23,7 @@ export default function EditPointMap(){
         updatedPoint = {title: name, latitude: point.lat, longitude: point.lng};
 
         try {
-            const response = axios.put(`/projects/${loc.pathname.split('/')[5]}/standing_points/${conv._id}`, JSON.stringify(updatedPoint), {
+            axios.put(`/projects/${loc.pathname.split('/')[5]}/standing_points/${conv._id}`, JSON.stringify(updatedPoint), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
@@ -45,7 +45,7 @@ export default function EditPointMap(){
         updatedPoint = { title: name, latitude: point.lat, longitude: point.lng };
 
         try {
-            const response = axios.post(`/projects/${loc.pathname.split('/')[5]}/standing_points`, JSON.stringify(updatedPoint), {
+            axios.post(`/projects/${loc.pathname.split('/')[5]}/standing_points`, JSON.stringify(updatedPoint), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',

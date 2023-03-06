@@ -31,7 +31,7 @@ export default function Projects(props){
         e.preventDefault();
         console.log(selected);
         try {
-            const response =  await axios.delete(`/projects/${selected}`, {
+            await axios.delete(`/projects/${selected}`, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Authorization': `Bearer ${user.token}`

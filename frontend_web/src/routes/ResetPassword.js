@@ -47,7 +47,7 @@ export default function ResetPassword(){
     const updatePass = async (e) => {
         //On successful request, navigate to title page for user to login
         try {
-            const response = await axios.post(`/password_reset/${path[2]}/${path[3]}`, JSON.stringify({ password: password }), {
+            await axios.post(`/password_reset/${path[2]}/${path[3]}`, JSON.stringify({ password: password }), {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });

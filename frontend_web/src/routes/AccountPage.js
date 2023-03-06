@@ -125,7 +125,7 @@ export default function AccountPage(props) {
         invMess.current.style.display = 'none';
 
         try {
-            const response = await axios.post('/users/invites', JSON.stringify({
+            await axios.post('/users/invites', JSON.stringify({
                 responses:
                     [{
                         team: id,

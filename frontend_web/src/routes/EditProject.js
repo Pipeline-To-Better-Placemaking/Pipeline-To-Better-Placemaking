@@ -46,7 +46,7 @@ export default function EditProject() {
 
     React.useEffect(() => {
         projectData()
-    }, []);
+    },[]);
 
     //update submission (title) function (delete ?), redirect to TeamHome (project listings)
     const updateProject = async (e) => {
@@ -54,7 +54,7 @@ export default function EditProject() {
         updatedProj = { title: projectName, description: projectDesc }
 
         try {
-            const response = await axios.put(`/projects/${projectInfo._id}`, JSON.stringify(updatedProj), {
+            await axios.put(`/projects/${projectInfo._id}`, JSON.stringify(updatedProj), {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
@@ -75,7 +75,7 @@ export default function EditProject() {
         e.preventDefault();
 
         try {
-            const response = await axios.delete(`/projects/${projectInfo._id}`, {
+            await axios.delete(`/projects/${projectInfo._id}`, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Authorization': `Bearer ${loc.state.userToken.token}`

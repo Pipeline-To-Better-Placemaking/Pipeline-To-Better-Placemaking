@@ -189,7 +189,7 @@ const subtable = (row, type, name, open) => (
                                     return( 
                                         <TableRow key={`${index}`}>
                                             <TableCell colSpan={2} className='value'>
-                                                {!object.inPerimeter && object.distanceFromArea != undefined ? `${object.distanceFromArea.toFixed(2)} ft from perimeter` : "Inside perimeter"}
+                                                {!object.inPerimeter && object.distanceFromArea !== undefined ? `${object.distanceFromArea.toFixed(2)} ft from perimeter` : "Inside perimeter"}
                                                 {/* {object.accessType === "Access Path" ? 
                                                     (object.area > 0 ? 
                                                         (`${object.area} ft`) 

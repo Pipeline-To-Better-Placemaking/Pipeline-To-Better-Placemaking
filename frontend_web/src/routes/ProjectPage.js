@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Routes, Route, useLocation, Link } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import axios from '../api/axios.js';
 import MapPage from './MapPage';
 import TabPanel from '../components/ProjectTabPanel';
@@ -7,7 +7,6 @@ import ActivityPage from './ActivityPage';
 import SurveyorPage from './SurveyorPage';
 import NewActivityTimes from './NewActivityTimes';
 import UnityPage from './UnityPage';
-import Button from '@mui/material/Button';
 import NewProgram from './NewProgram.js';
 import UnitySurveyorPage from './UnitySurveyorPage.js';
 import NewSection from './NewSection.js';
@@ -197,7 +196,7 @@ export default function ProjectPage(){
 
     React.useEffect(() => {
         projectData()
-    }, []);
+    },[]);
 
     //loading in center, areas, and subareas from information
     var center = { lat: projectInfo?.standingPoints[0].latitude, lng: projectInfo?.standingPoints[0].longitude };

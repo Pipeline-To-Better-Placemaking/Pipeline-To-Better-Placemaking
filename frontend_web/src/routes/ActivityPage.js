@@ -168,7 +168,7 @@ export default function ActivityPage(props) {
 
     const deleteActivity = async (e) => {
         try {
-            const response = await axios.delete(`/${selectedType}/${selectedID}`, {
+            await axios.delete(`/${selectedType}/${selectedID}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
