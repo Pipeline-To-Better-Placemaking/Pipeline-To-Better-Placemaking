@@ -20,6 +20,7 @@ const createTransporter = async () => {
     // Get an access token
     const accessToken = await new Promise((resolve, reject) => {
         oauth2Client.getAccessToken((error, token) => {
+            console.log(oauth2Client.getAccessToken())
             if (error) {
                 console.error(error)
                 reject({ message: 'Could not create access token' })
@@ -53,6 +54,7 @@ const sendEmail = async (mailOptions) => {
         const transporter = await createTransporter()
         await transporter.sendMail(mailOptions)
         console.log(`Sent email to ${mailOptions.to}`)
+        transporter.close()
     } catch (error) {
         console.error(error)
         return false
@@ -69,10 +71,12 @@ const sendVerificationCode = async (email, code) => {
     }
 
     const emailHTML = `
+        <html>
         <h3>Hello from Pipeline to Better Placemaking!</h3>
         <p>Thank you for creating an account with Pipeline to Better Placemaking. Please enter the code below in the app to verify your email address.</p>
 
         <p><b>Your code is:</b> ${code}</p>
+        <html>
     `
     
     const mailOptions = {
@@ -92,10 +96,12 @@ const emailResetPassword = async (email, link) => {
 
 
     const emailHTML = `
+        <html>
         <h3>Hello from Pipeline to Better Placemaking!</h3>
         <p>Forgot your password?</p>
 
         <p><b>Please click on the link to change your password:</b> ${link}</p>
+        <html>
     `
     
     const mailOptions = {
