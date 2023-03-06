@@ -1,4 +1,4 @@
-# Pipeline to Better Placemaking (Website) Spring-Summer 2022 Group 2
+# Pipeline to Better Placemaking (Website) Fall-Spring 2023 Group 1
 ## https://p2bp.herokuapp.com
 
 ## Running frontend files locally
