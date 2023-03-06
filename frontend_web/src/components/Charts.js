@@ -1525,7 +1525,9 @@ export default function Charts(props) {
     };
 
     const multiAccessCharts = (data) => {
-        
+
+        data = Object.values(data);
+
         var accessPoint = 0;
         var accessPath = 0;
         var accessArea = 0;
@@ -1551,6 +1553,8 @@ export default function Charts(props) {
         console.log("🚀 ~ file: Charts.js:1551 ~ data:", data);
 
         data.map((inst) => {
+
+            inst = inst[0]
 
             console.log("🚀 ~ file: Charts.js:1555 ~ data.map ~ inst:", inst);
 
@@ -1626,118 +1630,120 @@ export default function Charts(props) {
                     }
                 }
             });
-    });
-
-        console.log("🚀 ~ file: Charts.js:1624 ~ data.map ~ data:", data);
-
-
-        console.log("🚀 ~ file: Charts.js:1624 ~ data.map ~ data:", data);
-
-        
-        console.log("🚀 ~ file: Charts.js:1622 ~ multiAccessCharts ~ accessSum:", accessSum);
+        });
 
         // access types
         var accessTypeArr = [  
-            { accessType: 'Access Point', percentage: (accessPoint / accessSum) * 100 },  
-            { accessType: 'Access Path', percentage: (accessPath / accessSum) * 100 },  
-            { accessType: 'Access Area', percentage: (accessArea / accessSum) * 100 }];
-
-        console.log("🚀 ~ file: Charts.js:1632 ~ multiAccessCharts ~ accessTypeArr:", accessTypeArr);
-
+            { accessType: 'Access Point', value: accessPoint },  
+            { accessType: 'Access Path', value: accessPath },  
+            { accessType: 'Access Area', value: accessArea }
+        ];
 
         // access point descriptions
         var accessPointDescArr = [  
-            { description: 'Ride Share Drop Off', percentage: (rideShare / accessPointSum) * 100 },  
-            { description: 'Bike Rack', percentage: (bikeRack / accessPointSum) * 100 },  
-            { description: 'Public Transport Stop', percentage: (publicStop / accessPointSum) * 100 },  
-            { description: 'Valet Counter', percentage: (valet / accessPointSum) * 100 },  
-            { description: 'E-scooter Parking', percentage: (scooter / accessPointSum) * 100 }
+            { description: 'Ride Share Drop Off', value: rideShare },  
+            { description: 'Bike Rack', value: bikeRack },  
+            { description: 'Public Transport Stop', value: publicStop },  
+            { description: 'Valet Counter', value: valet },  
+            { description: 'E-scooter Parking', value: scooter }
         ];
+
         // access path descriptions
         var accessPathDescArr = [  
-            { description: 'Sidewalk', percentage: (sidewalk / accessPathSum) * 100 },  
-            { description: 'Side Street', percentage: (sideStreet / accessPathSum) * 100 },  
-            { description: 'Main Road', percentage: (mainRoad / accessPathSum) * 100 }
+            { description: 'Sidewalk', value: sidewalk },  
+            { description: 'Side Street', value: sideStreet },  
+            { description: 'Main Road', value: mainRoad }
         ];
 
         // access area descriptions
         var accessAreaDescArr = [  
-            { description: 'Parking Lot', percentage: (lot / accessAreaSum) * 100 },  
-            { description: 'Parking Garage', percentage: (garage / accessAreaSum) * 100 }
+            { description: 'Parking Lot', value: lot },  
+            { description: 'Parking Garage', value: garage }
         ];
 
+        //add new results here
+        const packagedData = [ accessPointDescArr, accessPathDescArr, accessAreaDescArr ]
+        // [ labelHeight + 200, labelHeight]
+        const chartHeight = [ [345, 145], [275, 75], [310, 110] ]
+        const sums = [ accessPointSum, accessPathSum, accessAreaSum ]
+        const titles = ["Access Point Types", "Access Path Types", "Access Area Types"]
 
         return(
-            <div className='Charts'>
+            <div className='Charts' style={{ paddingBottom: 50 }}>
                 <div style={{ fontSize: 'larger' }}> Access Types </div>
                 <PieChart width={width} height={height}>
-                    <Pie data={accessTypeArr} dataKey='percentage' nameKey='accessType' cx='50%' cy='50%' outerRadius={50} fill="#256eff" >
+                    <Pie data={accessTypeArr} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
                         {accessTypeArr.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
                     </Pie>
                     <Tooltip />
                 </PieChart>
-                {/* <div style={{ fontSize: 'larger' }}> Occupied Area (%)</div>
-                <PieChart width={ width } height={ height }>
-                        <Pie data={ array } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
-                            { array.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000' } fillOpacity={ 0.85 } />
-                            )) }
-                        </Pie>
-                    <Tooltip />
-                </PieChart>
-                <br />
                 <div>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Material'] }}>&nbsp;&nbsp;</div>&nbsp; Material (Horizontal): {totalPerc[2] < totalPerc[3] ? `<${totalPerc[3]}%` : (totalPerc[2] > totalPerc[3] ? `>${totalPerc[3]}%` : `${totalPerc[3]}%`)} </div>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp; Shelter (Horizontal): {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : (totalPerc[0] > totalPerc[1] ? `>${totalPerc[1]}%` : `${totalPerc[1]}%`)} </div>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
+                    {accessTypeArr.map((entry, index) => {
+                        //if(entry.value > 0)
+                        return (
+                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                <div style={{ backgroundColor: accessColor[index] }}>&nbsp;&nbsp;</div>
+                                &nbsp;{entry.accessType}: {(entry.value / accessSum * 100).toFixed(2)}%
+                            </div>
+                        );                          
+                    })}
                 </div>
-                &nbsp;
                 <br/>
-                <div style={{ fontSize: 'larger' }}>Material Areas (ft<sup>2</sup>)</div>
-                <PieChart width={width} height={height}>
-                    <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']}>
-                        {mat.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor['Material']} stroke={'#000000'} />
-                        ))}
-                    </Pie>
-                    <Tooltip />
-                </PieChart>
-                <br />
-                <div style={{ fontSize: 'larger' }}>Shelter Areas (ft<sup>2</sup>)</div>
-                <PieChart width={width} height={height}>
-                    <Pie data={shelt} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Shelter']}>
-                        {shelt.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor['Shelter']} stroke={'#000000'} />
-                        ))}
-                    </Pie>
-                    <Tooltip />
-                </PieChart>
-                <br />
-                <div style={{ fontSize: 'larger' }}>Constructed Boundary Distances</div>
-                <BarChart width={ width } height={ height } data={ constructed }>
+                <BarChart style={{paddingBottom: 'auto'}} width={ width } height={ chartHeight[0][0] } data={ accessTypeArr }>
                     <CartesianGrid strokeDasharray='3 3' />
-                    <XAxis dataKey='instance' />
-                    <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
+                    <XAxis height={ chartHeight[0][1] } interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
+                    <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
+                    <Bar dataKey={ 'value' } fill='#636262'>
+                        { accessTypeArr.map((entry, index) => (
+                            <Cell key={ `cell-${index}` } fill={ accessColor[index] } fillOpacity={ 0.8 } />
+                        )) }
+                    </Bar>
                 </BarChart>
-                <br />
-                <div style={{ fontSize: 'larger' }}>Constructed Distances - Types</div>
-                <BarChart width={width} height={height} data={constr}>
-                    <CartesianGrid strokeDasharray='3 3' />
-                    <XAxis dataKey='type' />
-                    <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
-                    <Tooltip />
-                    <Bar dataKey={'area'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.65} />
-                </BarChart>
-                <br />
-                <div >
-                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Material'] }}>&nbsp;&nbsp;</div>&nbsp;Material (Horizontal) </div>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp;Shelter (Horizontal) </div>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Constructed'] }}>&nbsp;&nbsp;</div>&nbsp;Constructed (Vertical) </div>
-                </div> */}
+                
+                {packagedData.map((results, index) => {
+
+                    console.log("🚀 ~ file: Charts.js:1935 ~ {packagedData.map ~ results:", results);
+                    return(
+                        <div className='Charts'>
+                            <div style={{ fontSize: 'larger', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> {titles[index]} </div>
+                            <PieChart width={width} height={height}>
+                                <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                                    {results.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                                    ))}
+                                </Pie>
+                                <Tooltip />
+                            </PieChart>
+                            <div>
+                                {results.map((entry, i) => {
+                                    //if(entry.value > 0)
+                                    return (
+                                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
+                                        &nbsp;{entry.description}: {(entry.value / sums[index] * 100).toFixed(2)}%
+                                        </div>
+                                    );                          
+                                })}
+                            </div>
+                            <br/>
+                            <BarChart style={{paddingBottom: 'auto'}} width={ width } height={ chartHeight[index][0] } data={ results }>
+                                <CartesianGrid strokeDasharray='3 3' />
+                                <XAxis height={ chartHeight[index][1] } interval={0} angle={-60} textAnchor="end" dataKey='description' />
+                                <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                                <Tooltip />
+                                <Bar dataKey={ 'value' } fill='#636262'>
+                                    { results.map((entry, index) => (
+                                        <Cell key={ `cell-${index}` } fill={ accessColor[index] } fillOpacity={ 0.8 } />
+                                    )) }
+                                </Bar>
+                            </BarChart>
+                            <br/>
+                        </div>
+                    )
+                })}
             </div>
         );
     };
@@ -1783,12 +1789,13 @@ export default function Charts(props) {
 
     const accessCharts = (data) => {
         
+        // Access Type
         var accessPoint = 0;
         var accessPath = 0;
         var accessArea = 0;
         var accessSum = 0;
 
-
+        //Access Point Description
         var rideShare = 0;
         var bikeRack = 0;
         var publicStop = 0;
@@ -1796,15 +1803,18 @@ export default function Charts(props) {
         var scooter = 0;
         var accessPointSum = 0;
 
+        //Access Path Description
         var sidewalk = 0;
         var sideStreet = 0;
         var mainRoad = 0;
         var accessPathSum = 0;
 
+        //Access Area Description
         var lot = 0;
         var garage = 0;
         var accessAreaSum = 0;
 
+        //Package results
         data.map((obj) => {
 
             // console.log("🚀 ~ file: Charts.js:1555 ~ data.map ~ obj:", obj);
@@ -1910,7 +1920,7 @@ export default function Charts(props) {
         //add new results here
         const packagedData = [ accessPointDescArr, accessPathDescArr, accessAreaDescArr ]
         // [ labelHeight + 200, labelHeight]
-        const chartHeight = [ [340, 140], [275, 75], [310, 110] ]
+        const chartHeight = [ [345, 145], [275, 75], [310, 110] ]
         const sums = [ accessPointSum, accessPathSum, accessAreaSum ]
         const titles = ["Access Point Types", "Access Path Types", "Access Area Types"]
 
@@ -1918,45 +1928,58 @@ export default function Charts(props) {
             <div className='Charts' style={{ paddingBottom: 50 }}>
                 <div style={{ fontSize: 'larger' }}> Access Types </div>
                 <PieChart width={width} height={height}>
-                    <Pie data={accessTypeArr} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={75} fill="#256eff" >
+                    <Pie data={accessTypeArr} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
                         {accessTypeArr.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
                     </Pie>
                     <Tooltip />
                 </PieChart>
-
-                {accessTypeArr.map((entry, index) => {
-                    //if(entry.value > 0)
-                    return (
-                        <div style={{ display: 'flex', flexDirection: 'row' }}>
-                            <div style={{ backgroundColor: accessColor[index] }}>&nbsp;&nbsp;</div>
-                            &nbsp;{entry.accessType}: {entry.value / accessSum * 100}
-                        </div>
-                    );                          
-                })}
+                <div>
+                    {accessTypeArr.map((entry, index) => {
+                        //if(entry.value > 0)
+                        return (
+                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                <div style={{ backgroundColor: accessColor[index] }}>&nbsp;&nbsp;</div>
+                                &nbsp;{entry.accessType}: {(entry.value / accessSum * 100).toFixed(2)}%
+                            </div>
+                        );                          
+                    })}
+                </div>
+                <br/>
+                <BarChart style={{paddingBottom: 'auto'}} width={ width } height={ chartHeight[0][0] } data={ accessTypeArr }>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis height={ chartHeight[0][1] } interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
+                    <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={ 'value' } fill='#636262'>
+                        { accessTypeArr.map((entry, index) => (
+                            <Cell key={ `cell-${index}` } fill={ accessColor[index] } fillOpacity={ 0.8 } />
+                        )) }
+                    </Bar>
+                </BarChart>
                 
                 {packagedData.map((results, index) => {
 
                     console.log("🚀 ~ file: Charts.js:1935 ~ {packagedData.map ~ results:", results);
                     return(
-                        <div>
+                        <div className='Charts'>
                             <div style={{ fontSize: 'larger', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> {titles[index]} </div>
-                            <PieChart width={width} height={height + 30}>
-                                <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={75} fill="#256eff" >
+                            <PieChart width={width} height={height}>
+                                <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
                                     {results.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                                     ))}
                                 </Pie>
                                 <Tooltip />
                             </PieChart>
-                            <div style={{ display: 'flex', flexDirection: 'column', alignSelf: 'center' }}>
+                            <div>
                                 {results.map((entry, i) => {
                                     //if(entry.value > 0)
                                     return (
                                         <div style={{ display: 'flex', flexDirection: 'row' }}>
                                         <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                        &nbsp;{entry.description}: {entry.value / sums[index] * 100}%
+                                        &nbsp;{entry.description}: {(entry.value / sums[index] * 100).toFixed(2)}%
                                         </div>
                                     );                          
                                 })}
@@ -1973,6 +1996,7 @@ export default function Charts(props) {
                                     )) }
                                 </Bar>
                             </BarChart>
+                            <br/>
                         </div>
                     )
                 })}

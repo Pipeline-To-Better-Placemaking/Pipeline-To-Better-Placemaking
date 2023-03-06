@@ -164,6 +164,52 @@ const subtable = (row, type, name, open) => (
                                 ))
                             ))
                         ))) 
+                    : name === 'access_maps' ? 
+                    (Object.entries(row).map(([date, dObj]) => (
+                        Object.entries(dObj).map(([time, tObj]) => (
+                            tObj.data.map((object, index) => {
+
+                                console.log("🚀 ~ file: ActivityTable.js:172 ~ tObj.data.map ~ object:", object);
+
+                                if(index === 0) {
+                                    return(
+                                        <TableRow style={{ backgroundColor: '#aed5fa' }}>
+                                            <TableCell align='center' colSpan={4} className='value'>
+                                                {tObj.title}
+                                            </TableCell>
+                                            <TableCell align='right' colSpan={2}>
+                                                {date} {time}
+                                            </TableCell>
+                                            <TableCell align='right' colSpan={1}>
+                                                <Button onClick={open(name, tObj.title, tObj._id)}><DeleteIcon /></Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                } else {
+                                    return( 
+                                        <TableRow key={`${index}`}>
+                                            <TableCell colSpan={2} className='value'>
+                                                {!object.inPerimeter && object.distanceFromArea != undefined ? `${object.distanceFromArea.toFixed(2)} ft from perimeter` : "Inside perimeter"}
+                                                {/* {object.accessType === "Access Path" ? 
+                                                    (object.area > 0 ? 
+                                                        (`${object.area} ft`) 
+                                                        : 'N/A') 
+                                                    : (object.area > 0 ? 
+                                                        (`${object.area} ft\u00B2`) 
+                                                        : 'N/A')} */}
+                                            </TableCell>
+                                            <TableCell colSpan={2} className='type'>
+                                                {(`${object.accessType} (${object.description})`)}
+                                            </TableCell>
+                                            <TableCell>Location {index}</TableCell>
+                                            <TableCell>{date} {time}</TableCell>
+                                            <TableCell>{tObj.researchers.map((researcher, index) => (index !== (tObj.researchers.length - 1) ? `${researcher.firstname} ${researcher.lastname}, ` : `${researcher.firstname} ${researcher.lastname}`))}</TableCell>
+                                        </TableRow>
+                                    )
+                                }
+                            })
+                        ))
+                    ))) 
                     : (Object.entries(row).map(([date, dObj])=>(
                         Object.entries(dObj).map(([time, tObj])=>(
                             tObj.data.map((object, index) => (
@@ -250,7 +296,7 @@ const subtable = (row, type, name, open) => (
                                         )
                                 ))
                             :
-                                instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' || instance.split('.')[0] === 'access_maps' || instance.split('.')[0] === 'section_maps' ? 
+                                instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' || instance.split('.')[0] === 'section_maps' ? 
                                     (inst.points).map((point, i2) => (
                                         <TableRow key={`${ind}.${i2}`}>
                                             <TableCell colSpan={2} className='category'>
@@ -268,7 +314,30 @@ const subtable = (row, type, name, open) => (
                                             <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
                                         </TableRow>
                                     )) 
-                                :
+                                    : instance.split('.')[0] === 'access_maps' ?
+                                    (inst.points).map((point, i2) => {
+
+                                    console.log("🚀 ~ file: ActivityTable.js:274 ~ inst:", inst);
+
+
+                                        return(
+                                        <TableRow key={`${ind}.${i2}`}>
+                                            <TableCell colSpan={2} className='category'>
+                                                {testNames(instance.split('.')[0])}
+                                            </TableCell>
+                                            <TableCell colSpan={1} className='value'>
+                                                { point.accessType ? point.accessType : 'N/A' }
+                                            </TableCell>
+                                            <TableCell>
+                                                {
+                                                    `${point.description}`
+                                                }
+                                            </TableCell>
+                                            <TableCell>Location {i2 + 1}</TableCell>
+                                            <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
+                                        </TableRow>
+                                    )})
+                                    :
                                     <TableRow key={ind}>
                                         <TableCell colSpan={2} className='category'>
                                             {testNames(instance.split('.')[0])}

@@ -107,8 +107,11 @@ export default function ActivityPage(props) {
                                 lighting.push(obj);
                             })
                         } else if(category === 'access_maps') {
+
+                            console.log("🚀 ~ file: ActivityPage.js:111 ~ Object.entries ~ category:", category);
+
                             dataobjects.points.forEach((point, ind) => {
-                                obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, Description: point.access_description }
+                                obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, accessType: point.accessType, Description: point.description }
                                 access.push(obj);
                             })
                         } else if (category === 'nature_maps') {
