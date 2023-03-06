@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import Button from '@mui/material/Button';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import axios from '../api/axios';
 
 export default function UnityPage() {
@@ -125,7 +126,7 @@ export default function UnityPage() {
 
   const handleSurveyors = async () => {
     try {
-      console.log(loc.state.data);
+      console.log(loc.state.type);
       const response = await axios.get(`/program_maps/${loc.state.data._id}`, {
         headers: {
           'Content-Type': 'application/json',
@@ -186,7 +187,8 @@ export default function UnityPage() {
       const obj = {
         numFloors: response.data.data[0].numFloors,
         points: response.data.data[0].perimeterPoints,
-        programs: programObjects
+        programs: programObjects,
+        type: loc.state.type
       }
       const myJSON = JSON.stringify(obj);
 
@@ -216,6 +218,10 @@ export default function UnityPage() {
   return (
     <div>
       {/* <h1>Identifying Program</h1> */}
+      <Button className='backBtn' style={{ margin: '10px' }} component={Link} size='lg' variant="contained" startIcon={<KeyboardReturnIcon />} to='../'
+        state={{ team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken }} >
+        Return to map view
+      </Button>
       <br />
       {/* state={{userToken:loc.state.userToken, team: loc.state.team}} <-- this is a parameter for the button component if you need it later*/}
 

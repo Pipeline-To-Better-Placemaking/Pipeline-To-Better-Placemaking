@@ -285,7 +285,12 @@ export default function FullMap(props) {
 
     //weird
     const handleIPSurveyorRoute = () => {
-        nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData } });
+        nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData, type: 0 } });
+    }
+
+    const handleViewModelRoute = () => {
+        nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData, type: 1 } });
+
     }
 
     const handleSendBuildingData = (e) => {
@@ -315,7 +320,9 @@ export default function FullMap(props) {
 
         // this ensures? that the IPSurveyorBtn doesn't get displayed for the other test models
         const IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
+        const viewModelButton = document.getElementById('viewModelBtn');
         IPsurveyorbutton.style.display = 'none';
+        viewModelButton.style.display = 'none';
 
         if (ver === 0 || ver === 2) {
             // version 0 & 2 === spatial boundaries (constructed = polyline, shelter and material boundary)
@@ -343,6 +350,7 @@ export default function FullMap(props) {
 
 
             IPsurveyorbutton.style.display = 'flex';
+            viewModelButton.style.display = 'flex';
 
         } else {
             // version 4 moving collections
@@ -679,7 +687,8 @@ export default function FullMap(props) {
                     <div id='popUpText'>
 
                     </div>
-                    <Button id='IPSurveyorsBtn' style={{ display: 'none' }} onClick={handleIPSurveyorRoute}>Conduct Surveyor Test</Button>
+                    <Button id='IPSurveyorsBtn' style={{ display: 'none' }} onClick={handleIPSurveyorRoute}>Sign-Up</Button>
+                    <Button id='viewModelBtn' style={{ display: 'none' }} onClick={handleViewModelRoute}>View Model</Button>
                     <Button id='closeButton' onClick={closeWindow}>Close</Button>
                 </div>
             </div>
