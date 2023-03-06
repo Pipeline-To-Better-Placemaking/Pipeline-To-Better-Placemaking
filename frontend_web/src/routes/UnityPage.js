@@ -7,6 +7,7 @@ import { Area } from '../functions/HelperFunctions.js';
 export default function UnityPage() {
   const loc = useLocation();
   const nav = useNavigate();
+  const [sqFootage, setSqFootage] = useState();
 
   const {
     unityProvider,
@@ -45,7 +46,7 @@ export default function UnityPage() {
   const handleButtons = useCallback((isContinue) => {
     // console.log(isContinue);
     if (isContinue === 1) {
-      nav('../activities/times', { replace: true, state: { ...loc.state } });
+      nav('../activities/times', { replace: true, state: { ...loc.state, sqFootage: sqFootage } });
     }
     else {
       nav('../activities/identifying_program', { replace: true, state: { ...loc.state } });
@@ -58,6 +59,10 @@ export default function UnityPage() {
       removeEventListener("AdminButtons", handleButtons);
     };
   }, [addEventListener, removeEventListener, handleButtons]);
+
+  function handleSetSqFootage(sqFootage) {
+    setSqFootage(sqFootage);
+  }
 
   function handleExtrude() {
     // points.Add(new Vector3(-10,5,0));
@@ -81,8 +86,9 @@ export default function UnityPage() {
       buildingPoints.push(newObj);
     }
     )
-    console.log("Number of floors is: " + loc.state.numFloors);
-    console.log("Sq. ft area is: " + (Area(buildingPoints) * loc.state.numFloors));
+    // console.log("Number of floors is: " + loc.state.numFloors);
+    // console.log("Sq. ft area is: " + (Area(buildingPoints) * loc.state.numFloors));
+    handleSetSqFootage(Area(buildingPoints) * loc.state.numFloors);
 
     const myJSON = JSON.stringify(obj)
     // console.log(myJSON);
@@ -94,14 +100,14 @@ export default function UnityPage() {
     <div>
       {/* <h1>Identifying Program</h1> */}
       {/* state={{userToken:loc.state.userToken, team: loc.state.team}} <-- this is a parameter for the button component if you need it later*/}
-      {/* <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/identifying_program'
+      <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/identifying_program'
         state={{ ...loc.state }} >
         Reset Model
       </Button>
       <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='success' to='../activities/times'
-        state={{ ...loc.state }}>
+        state={{ ...loc.state, sqFootage: sqFootage }}>
         Accept and Continue
-      </Button> */}
+      </Button>
       <br />
       <div style={{ justifyContent: 'center' }}>
         {!isLoaded && (

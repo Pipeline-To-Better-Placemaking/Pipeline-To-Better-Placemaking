@@ -22,6 +22,11 @@ const newProgramSchema = mongoose.Schema({
         },
     }],
 
+    sqFootage: {
+        type: Number,
+        required: true
+    },
+
     programType: {
         type: String,
         required: false
@@ -101,6 +106,7 @@ module.exports.addProgram = async function (floorId, newProgram) {
     var entry = new NewProgramEntry({
         programType: newProgram.programType,
         points: newProgram.points,
+        sqFootage: newProgram.sqFootage
     })
 
     return await Floors.updateOne(

@@ -64,7 +64,8 @@ export default function UnityPage() {
 
       const newProgram = {
         points: obj[i].points,
-        programType: obj[i].programType
+        programType: obj[i].programType,
+        sqFootage: obj[i].sqFootage
       };
 
       console.log(newProgram);
