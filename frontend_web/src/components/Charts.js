@@ -1664,7 +1664,7 @@ export default function Charts(props) {
         //add new results here
         const packagedData = [ accessPointDescArr, accessPathDescArr, accessAreaDescArr ]
         // [ labelHeight + 200, labelHeight]
-        const chartHeight = [ [345, 145], [275, 75], [310, 110] ]
+        const chartHeight = [ [345, 145], [280, 80], [310, 110] ]
         const sums = [ accessPointSum, accessPathSum, accessAreaSum ]
         const titles = ["Access Point Types", "Access Path Types", "Access Area Types"]
 
