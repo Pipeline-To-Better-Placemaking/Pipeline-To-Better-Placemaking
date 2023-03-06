@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import Button from '@mui/material/Button';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Area } from '../functions/HelperFunctions.js';
 
 export default function UnityPage() {
   const loc = useLocation();
@@ -68,6 +69,20 @@ export default function UnityPage() {
       numFloors: loc.state.numFloors,
       points: loc.state.buildingArea,
     }
+
+    let buildingPoints = [];
+
+    loc.state.buildingArea.map(vertex => {
+      // console.log(vertex)
+      let newObj = {
+        latitude: vertex.lat,
+        longitude: vertex.lng,
+      };
+      buildingPoints.push(newObj);
+    }
+    )
+    console.log("Number of floors is: " + loc.state.numFloors);
+    console.log("Sq. ft area is: " + (Area(buildingPoints) * loc.state.numFloors));
 
     const myJSON = JSON.stringify(obj)
     // console.log(myJSON);
