@@ -1907,9 +1907,9 @@ export default function Charts(props) {
         // !!!!!!!!!!!!!!!!! BROKEN !!!!!!!!!!!!!!!!!
         // needs to be fixed to show proper percentages
         var accessAreaPerArr = [
-            { description: 'Parking Lot', value: lotArea / projectArea * 100 }, 
-            { description: 'Parking Garage', value: garageArea / projectArea * 100},
-            { description: 'Project Area', value: 100 },
+            { description: 'Parking Lot', value: parseFloat(lotArea.toFixed(2)) }, 
+            { description: 'Parking Garage', value: parseFloat(garageArea.toFixed(2)) },
+            { description: 'Project Area', value: parseFloat(projectArea.toFixed(2)) },
         ];
 
         //add new results here
@@ -1917,7 +1917,7 @@ export default function Charts(props) {
         // [ labelHeight + 200, labelHeight]
         const chartHeight = [ [345, 145], [280, 80], [310, 110], [310, 110] ]
         const sums = [ accessPointSum, accessPathSum, accessAreaSum, projectArea ]
-        const titles = ["Access Point Types", "Access Path Types", "Access Area Types", "Area Percentage"]
+        const titles = ["Access Point Types", "Access Path Types", "Access Area Types", "Area Sq. Ft Percentage"]
 
         return(
             <div className='Charts' style={{ paddingBottom: 50 }}>
@@ -1980,7 +1980,7 @@ export default function Charts(props) {
                                         return (
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
                                             <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                            &nbsp;{entry.description}: {(entry.value / 100 * sums[index]).toLocaleString()} ft²
+                                            &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
                                             </div>
                                         );                          
                                     })

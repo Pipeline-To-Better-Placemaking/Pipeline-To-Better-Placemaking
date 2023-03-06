@@ -74,7 +74,7 @@ export default function UnityPage() {
             )}
             <Unity
               unityProvider={unityProvider}
-              style={{ width: 1600, height: 900, visibility: isLoaded ? "visible" : "hidden" }}
+              style={{ display: "flex", justifyContent: "center", alignItems: "center", visibility: isLoaded ? "visible" : "hidden" }}
             />
 
         </div>
