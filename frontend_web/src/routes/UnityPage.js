@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ForwardIcon from '@mui/icons-material/Forward';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Area } from '../functions/HelperFunctions.js';
 
@@ -46,10 +48,12 @@ export default function UnityPage() {
   const handleButtons = useCallback((isContinue) => {
     // console.log(isContinue);
     if (isContinue === 1) {
-      nav('../activities/times', { replace: true, state: { ...loc.state, sqFootage: sqFootage } });
+      const contBtn = document.getElementById('cntBtn');
+      contBtn.style.display = 'flex';
     }
     else {
-      nav('../activities/identifying_program', { replace: true, state: { ...loc.state } });
+      const invalid = document.getElementById('invalidText');
+      invalid.style.display = 'flex';
     }
   }, []);
 
@@ -97,17 +101,26 @@ export default function UnityPage() {
   }
 
   return (
-    <div>
+    <div >
       {/* <h1>Identifying Program</h1> */}
       {/* state={{userToken:loc.state.userToken, team: loc.state.team}} <-- this is a parameter for the button component if you need it later*/}
-      <Button className='resetButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/identifying_program'
-        state={{ ...loc.state }} >
-        Reset Model
-      </Button>
-      <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='success' to='../activities/times'
-        state={{ ...loc.state, sqFootage: sqFootage }}>
-        Accept and Continue
-      </Button>
+      <div style={{ justifyContent: 'center', flexDirection: 'row', textAlign: 'center', backgroundColor: 'white', marginBottom: '5px', padding: '10px', borderRadius: '5px', width: '40%', border: '2px solid transparent', alignContent: 'center', position: 'absolute', top: '120px', left: '550px', zindex: '999' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', width: '80%' }}>
+
+          <Button className='resetButton' style={{ marginRight: '10px' }} component={Link} size='lg' variant="contained" color='error' startIcon={<DeleteIcon />} to='../activities/identifying_program'
+            state={{ ...loc.state }} >
+            Reset Model
+          </Button>
+
+          <Button className='continueButton' id='cntBtn' component={Link} size='lg' variant="contained" endIcon={<ForwardIcon />} to='../activities/times' style={{ display: 'none' }}
+            state={{ ...loc.state, sqFootage: sqFootage }}>
+            Accept and Continue
+          </Button>
+          <span id='invalidText' style={{ display: 'none', color: 'red', fontSize: 'large', fontWeight: '600', marginLeft: '10px' }}>Invalid shape. Please reset the model.</span>
+        </div>
+      </div>
+
+
       <br />
       <div style={{ justifyContent: 'center' }}>
         {!isLoaded && (
