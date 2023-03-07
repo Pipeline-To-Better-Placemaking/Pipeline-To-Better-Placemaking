@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import Button from '@mui/material/Button';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import axios from '../api/axios';
 
 export default function UnityPage() {
@@ -64,7 +65,8 @@ export default function UnityPage() {
 
       const newProgram = {
         points: obj[i].points,
-        programType: obj[i].programType
+        programType: obj[i].programType,
+        sqFootage: obj[i].sqFootage
       };
 
       console.log(newProgram);
@@ -111,7 +113,7 @@ export default function UnityPage() {
 
 
 
-    // nav('../', { replace: true, state: {team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken} });
+    nav('../', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken } });
 
   }, []);
 
@@ -122,9 +124,9 @@ export default function UnityPage() {
     };
   }, [addEventListener, removeEventListener, handleSetProgramJSON]);
 
-  async function handleSurveyors() {
+  const handleSurveyors = async () => {
     try {
-      console.log(loc.state.data);
+      console.log(loc.state.type);
       const response = await axios.get(`/program_maps/${loc.state.data._id}`, {
         headers: {
           'Content-Type': 'application/json',
@@ -135,17 +137,64 @@ export default function UnityPage() {
       });
 
       // console.log(response.data.programs.length);
+      let programObjects = [];
+      for (let i = 0; i < response.data.data[0].floors.length; i++) {
+        const curFloor = response.data.data[0].floors[i];
 
+
+        try {
+          const resp = await axios.get(`/program_floors/${curFloor}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': `Bearer ${loc.state.userToken.token}`
+            },
+            withCredentials: true
+          });
+
+          // iterate through each program on that floor
+          for (let j = 0; j < resp.data.programs.length; j++) {
+            let programPoints = [];
+            for (let k = 0; k < resp.data.programs[j].points.length; k++) {
+              const coordinate = {
+                xCoord: resp.data.programs[j].points[k].xCoord,
+                yCoord: resp.data.programs[j].points[k].yCoord,
+                zCoord: resp.data.programs[j].points[k].zCoord,
+              }
+              programPoints.push(coordinate);
+            }
+
+            let programObj = {
+              programPointsList: programPoints,
+              programType: resp.data.programs[j].programType
+            }
+
+            programObjects.push(programObj);
+          }
+
+
+        } catch (error) {
+          console.log('ERROR: ', error);
+          // setMessage(error.response.data?.message);
+          // response.current.style.display = 'inline-block';
+          return;
+        }
+      }
 
 
 
 
       const obj = {
         numFloors: response.data.data[0].numFloors,
-        points: response.data.data[0].perimeterPoints
+        points: response.data.data[0].perimeterPoints,
+        programs: programObjects,
+        type: loc.state.type
       }
       const myJSON = JSON.stringify(obj);
 
+      console.log(myJSON);
+
+      // We send the JSON to the Unity player with this function
       sendMessage("Building", "SurveyorProgram", myJSON);
 
     } catch (error) {
@@ -168,7 +217,12 @@ export default function UnityPage() {
 
   return (
     <div>
-      <h1>Identifying Program</h1>
+      {/* <h1>Identifying Program</h1> */}
+      <Button className='backBtn' style={{ margin: '10px' }} component={Link} size='lg' variant="contained" startIcon={<KeyboardReturnIcon />} to='../'
+        state={{ team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken }} >
+        Return to map view
+      </Button>
+      <br />
       {/* state={{userToken:loc.state.userToken, team: loc.state.team}} <-- this is a parameter for the button component if you need it later*/}
 
       <div>
@@ -177,7 +231,7 @@ export default function UnityPage() {
         )}
         <Unity
           unityProvider={unityProvider}
-          style={{ width: 1600, height: 900, visibility: isLoaded ? "visible" : "hidden" }}
+          style={{ width: 1600, height: 900, marginLeft: 134.4, visibility: isLoaded ? "visible" : "hidden" }}
         />
 
       </div>

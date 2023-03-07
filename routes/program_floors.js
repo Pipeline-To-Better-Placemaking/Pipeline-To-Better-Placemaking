@@ -111,6 +111,7 @@ router.put('/:id/programs/:program_id', passport.authenticate('jwt', { session: 
             _id: oldData._id,
             programType: (req.body.programType ? req.body.programType : oldData.programType),
             points: (req.body.points ? req.body.points : oldData.points),
+            sqFootage: (req.body.sqFootage ? req.body.sqFootage : oldData.sqFootage),
             color: (req.body.color ? req.body.color : oldData.color)
         }
 

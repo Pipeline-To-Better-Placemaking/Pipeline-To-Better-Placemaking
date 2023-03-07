@@ -12,6 +12,8 @@ import html2canvas from 'html2canvas';
 import MapDrawers from './MapDrawers';
 import { testNames } from '../functions/HelperFunctions';
 import './controls.css';
+import { Form } from 'react-bootstrap';
+import { ClickAwayListener } from '@mui/material';
 
 const render = (status) => {
     console.log(status);
@@ -313,7 +315,12 @@ export default function FullMap(props) {
 
     //weird
     const handleIPSurveyorRoute = () => {
-        nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData } });
+        nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData, type: 0 } });
+    }
+
+    const handleViewModelRoute = () => {
+        nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData, type: 1 } });
+
     }
 
     const handleSCSurveyorRoute = () => {
@@ -362,7 +369,9 @@ export default function FullMap(props) {
 
         // this ensures? that the IPSurveyorBtn doesn't get displayed for the other test models
         const IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
+        const viewModelButton = document.getElementById('viewModelBtn');
         IPsurveyorbutton.style.display = 'none';
+        viewModelButton.style.display = 'none';
 
         const SCsurveyorbutton = document.getElementById('SCSurveyorsBtn');
         SCsurveyorbutton.style.display = 'none';
@@ -392,7 +401,9 @@ export default function FullMap(props) {
             inner.innerHTML = '';
             inner.innerHTML = `<h5>${testNames(title)}</h5><br/>`;
             popup.style.display = 'flex';
+
             IPsurveyorbutton.style.display = 'flex';
+            viewModelButton.style.display = 'flex';
         } else if (ver === 6) {
             // version 6 == identifying access collection
             inner.innerHTML = '';
@@ -402,28 +413,27 @@ export default function FullMap(props) {
                 Description: ${data.Results[title][date][time].data[index].description}<br/>
                 <text>${!data.Results[title][date][time].data[index].inPerimeter ? `${data.Results[title][date][time].data[index].distanceFromArea.toFixed(2).toLocaleString('en-US')} ft from project perimeter` : "Inside perimeter"}</text><br/>
                 <text>Difficulty Rating: ${data.Results[title][date][time].data[index].details.diffRating}</text><br/>
-                ${data.Results[title][date][time].data[index].accessType === "Access Path" ? 
-                        `<text>Length: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft</text><br/>
+                ${data.Results[title][date][time].data[index].accessType === "Access Path" ?
+                    `<text>Length: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft</text><br/>
                          <text>Number Lanes: ${data.Results[title][date][time].data[index].details.laneCount}</text><br/>
                          <text>This path is ${data.Results[title][date][time].data[index].details.twoWay ? `two-way` : `one-way`}<text/><br/>
                          ${data.Results[title][date][time].data[index].details.median ? `<text>This path has a median<text/>` : null}<br/>
                          ${data.Results[title][date][time].data[index].details.paved ? `<text>This path is paved<text/>` : null}<br/>
                          ${data.Results[title][date][time].data[index].details.tollLane ? `<text>This path has a toll<text/><br/>` : ""}
                          ${data.Results[title][date][time].data[index].details.turnLane.length > 1 ? `<text>The path has both left and right turn lanes<text/>` : (data.Results[title][date][time].data[index].details.turnLane.length === 1 ? (data.Results[title][date][time].data[index].details.turnLane[0] === 1 ? "The path has a left turn lane" : "The path has a right turn lane") : "The path has no turn lanes")}<br/>`
-                    : 
-                        `<text>Area: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft²</text><br/>
+                    :
+                    `<text>Area: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft²</text><br/>
                          <text>Number spots: ${data.Results[title][date][time].data[index].details.spots}</text><br/>
-                         <text>Cost: ${data.Results[title][date][time].data[index].details.cost > 0 ? Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(data.Results[title][date][time].data[index].details.cost).toLocaleString('en-US') : "FREE!"}</text>`}`
+                         <text>Cost: ${data.Results[title][date][time].data[index].details.cost > 0 ? Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.Results[title][date][time].data[index].details.cost).toLocaleString('en-US') : "FREE!"}</text>`}`
             popup.style.display = 'flex';
-        } else if(ver === 7) {
+        } else if (ver === 7) {
             // version 7 == section cutter collection
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
             inner.innerHTML = `<h5>Section Cutter</h5><br/>`;
             popup.style.display = 'flex';
             SCsurveyorbutton.style.display = 'flex';
-        }
-         else {
+        } else {
             // version 4 moving collections
             const popup = document.getElementById('pathBoundWindow');
             inner.innerHTML = '';
@@ -481,33 +491,33 @@ export default function FullMap(props) {
                                 ))
                             )))
                         // If the activity is a program map, render a boundary
-                        : (title === 'program_maps' ? 
+                        : (title === 'program_maps' ?
                             !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
-                            <Bounds
-                                key={`${sdate}.${time}.${0}`}
-                                title={title}
-                                date={sdate}
-                                time={time}
-                                index={0}
-                                // [[28.376002646895927, -81.5514212934046], [28.37641799472018, -81.54852450766852], [28.374907631199783, -81.5476018277674]
-                                // , [28.37398252292356, -81.55285895743658],  [28.375115307459065, -81.55341685691168]]
-                                // [{latitude: 38.897361411665344, longitude:-77.03679200665762},
-                                //     {latitude: 38.89794173105639, longitude: -77.03680809991171},
-                                //     {latitude: 38.89764113455378, longitude:-77.03616973416617},
-                                //     ]
+                                <Bounds
+                                    key={`${sdate}.${time}.${0}`}
+                                    title={title}
+                                    date={sdate}
+                                    time={time}
+                                    index={0}
+                                    // [[28.376002646895927, -81.5514212934046], [28.37641799472018, -81.54852450766852], [28.374907631199783, -81.5476018277674]
+                                    // , [28.37398252292356, -81.55285895743658],  [28.375115307459065, -81.55341685691168]]
+                                    // [{latitude: 38.897361411665344, longitude:-77.03679200665762},
+                                    //     {latitude: 38.89794173105639, longitude: -77.03680809991171},
+                                    //     {latitude: 38.89764113455378, longitude:-77.03616973416617},
+                                    //     ]
 
-                                area={handleBaseplateRender(inst)}
-                                doThis={handleSendBuildingData(data.Results[title][sdate][time])}
-                                type={"Baseplate"}
-                                boundsPathWindow={boundsPathWindow}
-                            />
-                        ))
+                                    area={handleBaseplateRender(inst)}
+                                    doThis={handleSendBuildingData(data.Results[title][sdate][time])}
+                                    type={"Baseplate"}
+                                    boundsPathWindow={boundsPathWindow}
+                                />
+                            ))
                             // If the activity is an access map, render markers and boundaries
                             : (title === 'access_maps' ?
                                 // Check if there is data for the current time, and map over it to render each instance                    
                                 !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst, index) => (
                                     // For each instance, map over its data to display
-                                        (inst.accessType === "Access Point" ?
+                                    (inst.accessType === "Access Point" ?
                                         <Marker
                                             key={`${sdate}.${time}.${index}`}
                                             shape={'lightcircle'}
@@ -518,7 +528,7 @@ export default function FullMap(props) {
                                                 <text>${!inst.inPerimeter ? `${inst.distanceFromArea.toFixed(2).toLocaleString('en-US')} ft from project perimeter` : "Inside perimeter"}</text><br/>
                                                 <text>Difficulty Rating: ${inst.details.diffRating}</text><br/>
                                                 ${inst.details.spots ? `<text>Number spots: ${inst.details.spots}</text><br/>` : null}
-                                                <text>Cost: ${inst.details.cost > 0 ? Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(inst.details.cost).toLocaleString('en-US') : "FREE!"}</text>`}
+                                                <text>Cost: ${inst.details.cost > 0 ? Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(inst.details.cost).toLocaleString('en-US') : "FREE!"}</text>`}
                                             position={inst.path[0]}
                                             markerType={'access_maps'}
                                         />
@@ -542,19 +552,19 @@ export default function FullMap(props) {
                                     )
                                 ))
                                 // If the activity is not an access map, render markers, boundaries or polylines based on the point's kind
-                                : (title === 'section_maps' ? 
+                                : (title === 'section_maps' ?
                                     !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
-                                    
-                                    <Path
-                                                key={`${sdate}.${time}.${index}`}
-                                                path={inst.path}
-                                                title={'section'}
-                                                doThis={handleSendSectionData(data.Results[title][sdate][time])}
-                                                boundsPathWindow={boundsPathWindow}
-                                    />
+
+                                        <Path
+                                            key={`${sdate}.${time}.${index}`}
+                                            path={inst.path}
+                                            title={'section'}
+                                            doThis={handleSendSectionData(data.Results[title][sdate][time])}
+                                            boundsPathWindow={boundsPathWindow}
+                                        />
                                     )
 
-                                )
+                                    )
                                     : (title === 'light_maps' || title === 'order_maps' ?
                                         // For light and order maps, map over each instance's points to render them as markers
                                         !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
@@ -617,9 +627,9 @@ export default function FullMap(props) {
                             )
                         )
                 )
+                ))
             ))
-        ))
-    ));
+        ));
 
     // Components returned on render -----
     return (
@@ -797,8 +807,8 @@ export default function FullMap(props) {
                                     Cancel
                                 </Button>
                                 <Button className='newHoveringButtons' onClick={removePoint}> Undo <UndoIcon /></Button>
-                                { clicks.length > 2 || clicks.length === 0 ? null:
-                                   <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/times' state={{...loc.state, path: clicks}}>
+                                {clicks.length > 2 || clicks.length === 0 ? null :
+                                    <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/times' state={{ ...loc.state, path: clicks }}>
                                         Continue Section
                                     </Button>
                                 }
@@ -814,12 +824,13 @@ export default function FullMap(props) {
                     <div id='popUpText'>
 
                     </div>
-                    <Button id='IPSurveyorsBtn' style={{ display: 'none' }} onClick={handleIPSurveyorRoute}>Conduct Surveyor Test</Button>
                     <Button id='SCSurveyorsBtn' style={{ display: 'none' }} onClick={handleSCSurveyorRoute}>Conduct Surveyor Test</Button>
+                    <Button id='IPSurveyorsBtn' style={{ display: 'none' }} onClick={handleIPSurveyorRoute}>Sign-Up</Button>
+                    <Button id='viewModelBtn' style={{ display: 'none' }} onClick={handleViewModelRoute}>View Model</Button>
                     <Button id='closeButton' onClick={closeWindow}>Close</Button>
-                </div>
-            </div>
-        </div>
+                </div >
+            </div >
+        </div >
     );
 };
 
@@ -990,9 +1001,9 @@ const Bounds = ({ boundsPathWindow, ...options }) => {
         },
         types: {
             paths: area,
-            strokeColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#ff0000' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#FFFFFF')))),
+            strokeColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#ff0000' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'Baseplate' ? '#831DC7' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#FFFFFF'))))),
             strokeWeight: 2,
-            fillColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#BEFF05' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#C4C4C4')))),
+            fillColor: type === 'water' ? '#96dcff' : (type === 'vegetation' ? '#BEFF05' : (type === 'Material' ? '#00FFC1' : (type === 'Shelter' ? '#FFA64D' : (type === 'Baseplate' ? '#D79CFF' : (type === 'New' ? 'rgba(255,0,0,0.5)' : '#C4C4C4'))))),
             fillOpacity: 0.50,
             clickable: type === 'New' ? false : true
         },
