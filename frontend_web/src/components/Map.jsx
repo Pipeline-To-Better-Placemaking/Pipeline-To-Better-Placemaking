@@ -44,7 +44,7 @@ export default function FullMap(props) {
     const standingPoints = props.standingPoints ? props.standingPoints : null;
     const subAreas = props.subAreas ? props.subAreaas : [];
     const [numFloors, setNumFloors] = React.useState(1);
-    let buildingData;
+    let buildingData, sectionData;
 
     // Access Universal Data passed around including the key for maps
     const loc = useLocation();
@@ -317,11 +317,15 @@ export default function FullMap(props) {
     }
 
     const handleSCSurveyorRoute = () => {
-        nav('../activities/upload_section_media', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken } });
+        nav('../activities/upload_section_media', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, section: sectionData } });
     }
 
     const handleSendBuildingData = (e) => {
         buildingData = e;
+    }
+
+    const handleSendSectionData = (e) => {
+        sectionData = e;
     }
 
     const handleBaseplateRender = (e) => {
@@ -545,6 +549,7 @@ export default function FullMap(props) {
                                                 key={`${sdate}.${time}.${index}`}
                                                 path={inst.path}
                                                 title={'section'}
+                                                doThis={handleSendSectionData(data.Results[title][sdate][time])}
                                                 boundsPathWindow={boundsPathWindow}
                                     />
                                     )

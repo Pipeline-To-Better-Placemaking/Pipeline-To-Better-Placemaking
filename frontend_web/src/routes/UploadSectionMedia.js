@@ -1,6 +1,6 @@
-import {useState} from "react";
-import { storage } from "./firebase_config";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useState, useEffect } from "react";
+import { storage } from "./firebase";
+import { ref, uploadBytesResumable, getDownloadURL, listAll, list } from "firebase/storage";
 import { v4 } from "uuid";
 import './routes.css';
 import { Link, useLocation } from 'react-router-dom';
@@ -14,10 +14,11 @@ import Button from '@mui/material/Button';
 function UploadSectionMedia() {
     const [mediaUrl, setMediaUrl] = useState(null);
     const [progresspercent, setProgresspercent] = useState(0);
-    const [mediaUrls, setImageUrls ] = useState([]);
+    const [mediaUrls, setMediaUrls ] = useState([]);
     const location = useLocation();
     const date = new Date();
-  
+    const storageRefList = ref(storage, `media_uploads/`);
+
     const handleSubmit = (e) => {
       e.preventDefault()
       const file = e.target[0]?.files[0]
@@ -25,12 +26,14 @@ function UploadSectionMedia() {
       const storageRef = ref(storage, `media_uploads/${file.name + v4()}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
       //var isoDate = new Date(`${activity.date}T00:00:00`)
-
       const storeURL = async (url) => {
           try {
-              /*const reponse = await axios.put(`/${userId}/data`, JSON.stringify({
-                date: isoDate.toISOString(),
-              }));*/
+              console.log(url);
+              console.log(location.state.userToken);
+              const reponse = await axios.put(`/section_maps/${location.state.section._id}/data/${location.state.section.data[0]._id}`, JSON.stringify({
+                //date: isoDate.toISOString(),
+                url_link: url,
+              }));
           }
           catch (error) {
             console.log("URL was not able to be stored on Mongo");
@@ -50,12 +53,22 @@ function UploadSectionMedia() {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setMediaUrl(downloadURL);
-            setImageUrls((prev) => [...prev, downloadURL]);
+            setMediaUrls((prev) => [...prev, downloadURL]);
             storeURL(downloadURL)
           });
         }
       );
     }
+
+    useEffect(() => {
+      listAll(storageRefList).then((response) => {
+        response.items.forEach((item) => {
+          getDownloadURL(item).then((downloadURL) => {
+            setMediaUrls((prev) => [...prev, downloadURL]);
+          });
+        });
+      });
+      }, []);
 
     const divStyle = {
       display: 'flex',
@@ -86,12 +99,11 @@ function UploadSectionMedia() {
             </Button>
             <br></br>
             {
-                mediaUrl &&
-                  <div>
+                  <div className="slide-container">
                     <Slide>
-                      {mediaUrls.map((slideImage)=> (
-                        <div>
-                          <div style={{ ...divStyle, 'backgroundImage': `url(${slideImage})` }}>
+                      {mediaUrls.map((image, index)=> (
+                        <div key={index}>
+                          <div style={{ ...divStyle, 'backgroundImage': `url(${image})` }}>
                           </div>
                         </div>
                       ))} 
