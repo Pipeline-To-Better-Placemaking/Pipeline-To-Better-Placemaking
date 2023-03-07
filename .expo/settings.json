@@ -3,6 +3,8 @@
   "lanType": "ip",
   "dev": true,
   "minify": false,
-  "urlRandomness": null,
-  "https": false
+  "urlRandomness": "pp-rdv",
+  "https": false,
+  "scheme": null,
+  "devClient": false
 }
