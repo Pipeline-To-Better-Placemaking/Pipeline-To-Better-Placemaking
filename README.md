@@ -1,6 +1,10 @@
 # Spring2022-Group02
 Mobile Application for Pipeline to Better Placemaking used React Native for its development.
 
+## Notes
+### Connect to local backend server
+The mobile application connects to the heroku api, to connect to a local database you must update your local ip addres in the env file. You must also run a local instance of the desktop version on the same wifi. After that search and replace all instance of "HEROKU_SERVER" with "LOCAL_SERVER". Ensure the desktop version of the project is running on the same ip:port as your env file.
+
 !!! WARNING !!!
 The dependencies on this project are shaky at best.
 
