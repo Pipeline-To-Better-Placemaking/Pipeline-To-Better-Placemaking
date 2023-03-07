@@ -7,7 +7,9 @@ Mobile Application for Pipeline to Better Placemaking used React Native for its 
 
 ## Introduction
 ### !!! WARNING !!!
-The dependencies on this project are shaky at best.
+The dependencies on this project are shaky at best, proceed with caution.
+### Directory Logic
+The mobile directory inside screens seems to be based on the user flow inside the applications: the left tab option is Collaborate, the middle is Home, and the right is User Settings. From there each tab is broken down to its sub components.
 ### Connecting to local backend server
 The mobile application connects to the heroku api, to connect to a local database you must update your local ip addres in the env file. You must also run a local instance of the desktop version on the **same** wifi. After that search and replace all instances of **_HEROKU_SERVER_** with **_LOCAL_SERVER_**. Ensure the desktop version of the project is running on the same ip:port as your env file.
 
