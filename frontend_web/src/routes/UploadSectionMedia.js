@@ -12,6 +12,8 @@ import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel'
 
 function UploadSectionMedia() {
     const [mediaUrl, setMediaUrl] = useState(null);
@@ -21,7 +23,8 @@ function UploadSectionMedia() {
     const [title, setTitle ] = useState("");
     const [ uploaded, setUploaded ] = useState(false);
     const [ loading, setLoading ] = useState(false);
-    const [ tags, setTags ] = useState("");
+    const [selectedTag, setSelectedTag] = useState('');
+    const [ tags, setTags ] = useState([]);
 
     const location = useLocation();
     const date = new Date();
@@ -73,6 +76,16 @@ function UploadSectionMedia() {
       );
     }
 
+    const handleTags = (event) => {
+      setSelectedTag(event.target.value);
+    }
+
+    const handleTagSubmit = (event) => {
+      event.preventDefault();
+      setTags([...tags, selectedTag]);
+      setSelectedTag('');
+    };
+
     const handleImageLoad = () => {
       setLoading(false);
     }
@@ -93,14 +106,6 @@ function UploadSectionMedia() {
         });
       });
       }, []);
-
-    const divStyle = {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundSize: 'cover',
-      height: '400px'
-    }
 
     return (
         <div className="UploadSectionMedia">
@@ -131,15 +136,21 @@ function UploadSectionMedia() {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={tags}
+                    value={selectedTag}
                     label="Tags"
-                    //onChange={handleChange}
+                    onChange={handleTags}
                   >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  <MenuItem value={"House"}>House</MenuItem>
+                  <MenuItem value={"Bridge"}>Bridge</MenuItem>
+                  <MenuItem value={"Road"}>Road</MenuItem>
                   </Select>
+                  <Button onClick={handleTagSubmit}>Accept Tag</Button>
                   </FormControl>
+                  <ul>
+                    {tags.map((tag, index) => (
+                      <li key={index}>{tag}</li>
+                    ))}
+                  </ul>
                 </Box>
               </div>: null
             }
@@ -148,7 +159,16 @@ function UploadSectionMedia() {
               Accept and Continue
             </Button>
             <br></br>
-      </div>
+            <div className="slide-container">
+              <Carousel>
+                {mediaUrls.map((slideImage, index)=> (
+                  <div key={index}>
+                    <img src={slideImage} height="15vh" width="10vw"/>
+                  </div>
+                ))} 
+              </Carousel>
+            </div>
+        </div>
     );
 }
 
