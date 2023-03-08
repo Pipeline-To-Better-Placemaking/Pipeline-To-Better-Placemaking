@@ -1528,12 +1528,13 @@ export default function Charts(props) {
 
         data = Object.values(data);
 
+        // Access Type
         var accessPoint = 0;
         var accessPath = 0;
         var accessArea = 0;
         var accessSum = 0;
 
-
+        //Access Point Description
         var rideShare = 0;
         var bikeRack = 0;
         var publicStop = 0;
@@ -1541,15 +1542,16 @@ export default function Charts(props) {
         var scooter = 0;
         var accessPointSum = 0;
 
+        //Access Path Description
         var sidewalk = 0;
         var sideStreet = 0;
         var mainRoad = 0;
         var accessPathSum = 0;
 
+        //Access Area Description
         var lot = 0;
         var garage = 0;
         var accessAreaSum = 0;
-
 
         //Access Distance
         //How can we chart distance?
@@ -1673,240 +1675,6 @@ export default function Charts(props) {
 
         // access area percentage
         var accessAreaPerArr = [
-            { description: 'Parking Lot', value: lotArea },
-            { description: 'Parking Garage', value: garageArea }
-        ];
-
-        //add new results here
-        const packagedData = [ accessPointDescArr, accessPathDescArr, accessAreaDescArr, accessAreaPerArr ]
-        // [ labelHeight + 200, labelHeight]
-        const chartHeight = [ [345, 145], [280, 80], [310, 110], [280, 80] ]
-        const sums = [ accessPointSum, accessPathSum, accessAreaSum, projectArea ]
-        const titles = ["Access Point Types", "Access Path Types", "Access Area Types", "Area Percentage"]
-
-        return(
-            <div className='Charts' style={{ paddingBottom: 50 }}>
-                <div style={{ fontSize: 'larger' }}> Access Types </div>
-                <PieChart width={width} height={height}>
-                    <Pie data={accessTypeArr} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
-                        {accessTypeArr.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
-                        ))}
-                    </Pie>
-                    <Tooltip />
-                </PieChart>
-                <div>
-                    {accessTypeArr.map((entry, index) => {
-                        //if(entry.value > 0)
-                        return (
-                            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                <div style={{ backgroundColor: accessColor[index] }}>&nbsp;&nbsp;</div>
-                                &nbsp;{entry.accessType}: {(entry.value / accessSum * 100).toFixed(2)}%
-                            </div>
-                        );                          
-                    })}
-                </div>
-                <br/>
-                <BarChart style={{paddingBottom: 'auto'}} width={ width } height={ chartHeight[1][0] } data={ accessTypeArr }>
-                    <CartesianGrid strokeDasharray='3 3' />
-                    <XAxis height={ chartHeight[1][1] } interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
-                    <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Bar dataKey={ 'value' } fill='#636262'>
-                        { accessTypeArr.map((entry, index) => (
-                            <Cell key={ `cell-${index}` } fill={ accessColor[index] } fillOpacity={ 0.8 } />
-                        )) }
-                    </Bar>
-                </BarChart>
-                
-                {packagedData.map((results, index) => {
-
-                    console.log("🚀 ~ file: Charts.js:1935 ~ {packagedData.map ~ results:", results);
-                    return(
-                        <div className='Charts'>
-                            <div style={{ fontSize: 'larger', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> {titles[index]} </div>
-                            <PieChart width={width} height={height}>
-                                <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
-                                    {results.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
-                                    ))}
-                                </Pie>
-                                <Tooltip />
-                            </PieChart>
-                            <div>
-                                {results.map((entry, i) => {
-                                    //if(entry.value > 0)
-                                    return (
-                                        <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                        &nbsp;{entry.description}: {(entry.value / sums[index] * 100).toFixed(2)}%
-                                        </div>
-                                    );                          
-                                })}
-                            </div>
-                            <br/>
-                            <BarChart style={{paddingBottom: 'auto'}} width={ width } height={ chartHeight[index][0] } data={ results }>
-                                <CartesianGrid strokeDasharray='3 3' />
-                                <XAxis height={ chartHeight[index][1] } interval={0} angle={-60} textAnchor="end" dataKey='description' />
-                                <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
-                                <Tooltip />
-                                <Bar dataKey={ 'value' } fill='#636262'>
-                                    { results.map((entry, index) => (
-                                        <Cell key={ `cell-${index}` } fill={ accessColor[index] } fillOpacity={ 0.8 } />
-                                    )) }
-                                </Bar>
-                            </BarChart>
-                            <br/>
-                        </div>
-                    )
-                })}
-            </div>
-        );
-    };
-
-    const accessCharts = (data) => {
-        
-        // Access Type
-        var accessPoint = 0;
-        var accessPath = 0;
-        var accessArea = 0;
-        var accessSum = 0;
-
-        //Access Point Description
-        var rideShare = 0;
-        var bikeRack = 0;
-        var publicStop = 0;
-        var valet = 0;
-        var scooter = 0;
-        var accessPointSum = 0;
-
-        //Access Path Description
-        var sidewalk = 0;
-        var sideStreet = 0;
-        var mainRoad = 0;
-        var accessPathSum = 0;
-
-        //Access Area Description
-        var lot = 0;
-        var garage = 0;
-        var accessAreaSum = 0;
-
-        //Access Distance
-        //How can we chart distance?
-
-        //Access Area Percentage
-        var lotArea = 0;
-        var garageArea = 0;
-
-        //Package results
-        data.map((obj) => {
-
-            // console.log("🚀 ~ file: Charts.js:1555 ~ data.map ~ obj:", obj);
-
-            if(obj.accessType === 'Access Point') {
-                accessPoint++;
-                accessSum++;
-                switch (obj.description) {
-                    case 'Ride Share Drop Off':
-                        rideShare++;
-                        accessPointSum++;
-                        break;
-                    case 'Bike Rack':
-                        bikeRack++;
-                        accessPointSum++;
-                        break;
-                    case 'Public Transport Stop':
-                        publicStop++;
-                        accessPointSum++;
-                        break;
-                    case 'Valet Counter':
-                        valet++;
-                        accessPointSum++;
-                        break;
-                    case 'E-scooter Parking':
-                        scooter++;
-                        accessPointSum++;
-                        break;
-                    default:
-                        console.log('Non-matching description');
-                        console.log(obj.description)
-                }
-            } else if(obj.accessType === 'Access Path') {
-                accessPath++;
-                accessSum++;
-                switch (obj.description) {
-                    case 'Sidewalk':
-                        sidewalk++;
-                        accessPathSum++;
-                        break;
-                    case 'Side Street':
-                        sideStreet++;
-                        accessPathSum++;
-                        break;
-                    case 'Main Road':
-                        mainRoad++;
-                        accessPathSum++;
-                        break;
-                    default:
-                        console.log('Non-matching description');
-                        console.log(obj.description)
-                }
-            } else {
-                accessArea++;
-                accessSum++;
-                // obj.instance = `Location ${ind+1}`;
-                // constructed.push(obj);
-                switch (obj.description) {
-                    case 'Parking Lot':
-                        lot++;
-                        accessAreaSum++;
-                        lotArea += obj.area;
-                        break;
-                    case 'Parking Garage':
-                        garage++;
-                        accessAreaSum++;
-                        garageArea += obj.area;
-                        break;
-                    default:
-                        console.log('Non-matching description');
-                        console.log(obj.description)
-                }
-            }
-        });
-
-        // access types
-        var accessTypeArr = [  
-            { accessType: 'Access Point', value: accessPoint },  
-            { accessType: 'Access Path', value: accessPath },  
-            { accessType: 'Access Area', value: accessArea }
-        ];
-
-        // access point descriptions
-        var accessPointDescArr = [  
-            { description: 'Ride Share Drop Off', value: rideShare },  
-            { description: 'Bike Rack', value: bikeRack },  
-            { description: 'Public Transport Stop', value: publicStop },  
-            { description: 'Valet Counter', value: valet },  
-            { description: 'E-scooter Parking', value: scooter }
-        ];
-
-        // access path descriptions
-        var accessPathDescArr = [  
-            { description: 'Sidewalk', value: sidewalk },  
-            { description: 'Side Street', value: sideStreet },  
-            { description: 'Main Road', value: mainRoad }
-        ];
-
-        // access area descriptions
-        var accessAreaDescArr = [  
-            { description: 'Parking Lot', value: lot },  
-            { description: 'Parking Garage', value: garage }
-        ];
-
-        // access area percentage
-        // !!!!!!!!!!!!!!!!! BROKEN !!!!!!!!!!!!!!!!!
-        // needs to be fixed to show proper percentages
-        var accessAreaPerArr = [
             { description: 'Parking Lot', value: parseFloat(lotArea.toFixed(2)) }, 
             { description: 'Parking Garage', value: parseFloat(garageArea.toFixed(2)) },
             { description: 'Project Area', value: parseFloat(projectArea.toFixed(2)) },
@@ -1999,7 +1767,321 @@ export default function Charts(props) {
                             </div>
                             <br/>
                             {/* Don't show BarChart for Area */}
-                            {index < 3 ? 
+                            {index !== 3 ? 
+                                <BarChart style={{paddingBottom: 'auto'}} width={ width } height={ chartHeight[index][0] } data={ results }>
+                                    <CartesianGrid strokeDasharray='3 3' />
+                                    <XAxis height={ chartHeight[index][1] } interval={0} angle={-60} textAnchor="end" dataKey='description' />
+                                    <YAxis dy={1} label={{ textAnchor:"center", value: `${yLabel}`, angle: -90, position: 'insideLeft' }} />
+                                    <Tooltip />
+                                    <Bar dataKey={ 'value' } fill='#636262'>
+                                        { results.map((entry, index) => (
+                                            <Cell key={ `cell-${index}` } fill={ accessColor[index] } fillOpacity={ 0.8 } />
+                                        )) }
+                                    </Bar>
+                                </BarChart> 
+                                : null}
+                            <br/>
+                        </div>
+                    )
+                })}
+            </div>
+        );
+    };
+
+    const accessCharts = (data) => {
+        
+        // Access Type
+        var accessPoint = 0;
+        var accessPath = 0;
+        var accessArea = 0;
+        var accessSum = 0;
+
+        // Access Point Description
+        var rideShare = 0;
+        var bikeRack = 0;
+        var publicStop = 0;
+        var valet = 0;
+        var scooter = 0;
+
+        // Access Path Description
+        var sidewalk = 0;
+        var sideStreet = 0;
+        var mainRoad = 0;
+
+        // Access Area Description
+        var lot = 0;
+        var garage = 0;
+
+        // Access Distance
+        //How can we chart distance?
+
+        // Access Area Percentage
+        var lotArea = 0;
+        var garageArea = 0;
+
+        // Access Type Average Difficulty
+        var accessPointDiff = 0;
+        var accessPathDiff = 0;
+        var accessAreaDiff = 0;
+        var accessSumDiff = 0;
+
+        // Access Point Average Difficulty
+        var rideShareDiff = 0;
+        var bikeRackDiff = 0;
+        var publicStopDiff = 0;
+        var valetDiff = 0;
+        var scooterDiff = 0;
+
+        // Access Path Average Difficulty
+        var sidewalkDiff = 0;
+        var sideStreetDiff = 0;
+        var mainRoadDiff = 0;
+
+        // Access Area Average Difficulty
+        var lotDiff = 0;
+        var garageDiff = 0;
+
+
+
+        //Package results
+        data.map((obj) => {
+
+            // console.log("🚀 ~ file: Charts.js:1555 ~ data.map ~ obj:", obj);
+
+            if(obj.accessType === 'Access Point') {
+                accessPoint++;
+                accessSum++;
+                switch (obj.description) {
+                    case 'Ride Share Drop Off':
+                        rideShare++;
+                        rideShareDiff += obj.details.diffRating;
+                        accessPointDiff += obj.details.diffRating;
+                        break;
+                    case 'Bike Rack':
+                        bikeRack++;
+                        bikeRackDiff += obj.details.diffRating;
+                        accessPointDiff += obj.details.diffRating;
+                        break;
+                    case 'Public Transport Stop':
+                        publicStop++;
+                        publicStopDiff += obj.details.diffRating;
+                        accessPointDiff += obj.details.diffRating;
+                        break;
+                    case 'Valet Counter':
+                        valet++;
+                        valetDiff += obj.details.diffRating;
+                        accessPointDiff += obj.details.diffRating;
+                        break;
+                    case 'E-scooter Parking':
+                        scooter++;
+                        scooterDiff += obj.details.diffRating;
+                        accessPointDiff += obj.details.diffRating;
+                        break;
+                    default:
+                        console.log('Non-matching description');
+                        console.log(obj.description)
+                }
+            } else if(obj.accessType === 'Access Path') {
+                accessPath++;
+                accessSum++;
+                switch (obj.description) {
+                    case 'Sidewalk':
+                        sidewalk++;
+                        sidewalkDiff += obj.details.diffRating;
+                        accessPathDiff += obj.details.diffRating;
+                        break;
+                    case 'Side Street':
+                        sideStreet++;
+                        sideStreetDiff += obj.details.diffRating;
+                        accessPathDiff += obj.details.diffRating;
+                        break;
+                    case 'Main Road':
+                        mainRoad++;
+                        mainRoadDiff += obj.details.diffRating;
+                        accessPathDiff += obj.details.diffRating;
+                        break;
+                    default:
+                        console.log('Non-matching description');
+                        console.log(obj.description)
+                }
+            } else {
+                accessArea++;
+                accessSum++;
+                // obj.instance = `Location ${ind+1}`;
+                // constructed.push(obj);
+                switch (obj.description) {
+                    case 'Parking Lot':
+                        lot++;
+                        lotArea += obj.area;
+                        lotDiff += obj.details.diffRating;
+                        accessAreaDiff += obj.details.diffRating;
+                        break;
+                    case 'Parking Garage':
+                        garage++;
+                        garageArea += obj.area;
+                        garageDiff += obj.details.diffRating;
+                        accessAreaDiff += obj.details.diffRating;
+                        break;
+                    default:
+                        console.log('Non-matching description');
+                        console.log(obj.description)
+                }
+            }
+        });
+
+        // access types
+        var accessTypeArr = [  
+            { accessType: 'Access Point', value: accessPoint },  
+            { accessType: 'Access Path', value: accessPath },  
+            { accessType: 'Access Area', value: accessArea }
+        ];
+
+        // access point descriptions
+        var accessPointDescArr = [  
+            { description: 'Ride Share Drop Off', value: rideShare },  
+            { description: 'Bike Rack', value: bikeRack },  
+            { description: 'Public Transport Stop', value: publicStop },  
+            { description: 'Valet Counter', value: valet },  
+            { description: 'E-scooter Parking', value: scooter }
+        ];
+
+        // access path descriptions
+        var accessPathDescArr = [  
+            { description: 'Sidewalk', value: sidewalk },  
+            { description: 'Side Street', value: sideStreet },  
+            { description: 'Main Road', value: mainRoad }
+        ];
+
+        // access area descriptions
+        var accessAreaDescArr = [  
+            { description: 'Parking Lot', value: lot },  
+            { description: 'Parking Garage', value: garage }
+        ];
+
+        // access area percentage
+        var accessAreaPerArr = [
+            { description: 'Parking Lot', value: parseFloat(lotArea.toFixed(2)) }, 
+            { description: 'Parking Garage', value: parseFloat(garageArea.toFixed(2)) },
+            { description: 'Project Area', value: parseFloat(projectArea.toFixed(2)) },
+        ];
+
+        // access types average difficulty
+        var accessTypeDiffArr = [  
+            { accessType: 'Access Point', value: accessPointDiff },  
+            { accessType: 'Access Path', value: accessPathDiff },  
+            { accessType: 'Access Area', value: accessAreaDiff }
+        ];
+
+        // access point average difficulty
+        var accessPointDescDiffArr = [  
+            { description: 'Ride Share Drop Off', value: rideShareDiff },  
+            { description: 'Bike Rack', value: bikeRackDiff },  
+            { description: 'Public Transport Stop', value: publicStopDiff },  
+            { description: 'Valet Counter', value: valetDiff },  
+            { description: 'E-scooter Parking', value: scooterDiff }
+        ];
+
+        // access path average difficulty
+        var accessPathDescDiffArr = [  
+            { description: 'Sidewalk', value: sidewalkDiff },  
+            { description: 'Side Street', value: sideStreetDiff },  
+            { description: 'Main Road', value: mainRoadDiff }
+        ];
+
+        // access area average difficulty
+        var accessAreaDescDiffArr = [  
+            { description: 'Parking Lot', value: lotDiff },  
+            { description: 'Parking Garage', value: garageDiff }
+        ];
+
+        //add new results here
+        const packagedData = [ accessPointDescArr, accessPathDescArr, accessAreaDescArr, accessAreaPerArr, accessTypeDiffArr, accessPointDescDiffArr, accessPathDescDiffArr, accessAreaDescDiffArr, ]
+        // [ labelHeight + 200, labelHeight]
+        const chartHeight = [ [345, 145], [280, 80], [310, 110], [310, 110], [310, 110], [345, 145], [280, 80], [310, 110], [310, 110] ]
+        const sums = [ accessPoint, accessPath, accessArea, projectArea, accessSumDiff, accessPointDiff, accessPathDiff, accessAreaDiff, ]
+        const titles = ["Access Point Types", "Access Path Types", "Access Area Types", "Area Sq. Ft Percentage", "Access Point Types", "Access Path Types", "Access Area Types", ]
+
+        return(
+            <div className='Charts' style={{ paddingBottom: 50 }}>
+                <div style={{ fontSize: 'larger' }}> Access Types </div>
+                <PieChart width={width} height={height}>
+                    <Pie data={accessTypeArr} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                        {accessTypeArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <div>
+                    {accessTypeArr.map((entry, index) => {
+                        //if(entry.value > 0)
+                        return (
+                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                <div style={{ backgroundColor: accessColor[index] }}>&nbsp;&nbsp;</div>
+                                &nbsp;{entry.accessType}: {(entry.value / accessSum * 100).toFixed(2)}%
+                            </div>
+                        );                          
+                    })}
+                </div>
+                <br/>
+                <BarChart style={{paddingBottom: 'auto'}} width={ width } height={ chartHeight[2][0] } data={ accessTypeArr }>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis height={ chartHeight[2][1] } interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
+                    <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={ 'value' } fill='#636262'>
+                        { accessTypeArr.map((entry, index) => (
+                            <Cell key={ `cell-${index}` } fill={ accessColor[index] } fillOpacity={ 0.8 } />
+                        )) }
+                    </Bar>
+                </BarChart>
+                
+                {packagedData.map((results, index) => {
+
+                    
+
+                    let yLabel = index !== 3 ? "Count" : "Percentage";
+
+                    console.log("🚀 ~ file: Charts.js:1935 ~ {packagedData.map ~ results:", results);
+                    return(
+                        <div className='Charts'>
+                            <div style={{ fontSize: 'larger', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> {titles[index]} </div>
+                            <PieChart width={width} height={height}>
+                                <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                                    {results.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                                    ))}
+                                </Pie>
+                                <Tooltip />
+                            </PieChart>
+                            <div>
+                                {/* Show Default Legend */}
+                                {index !== 3 ? 
+                                    results.map((entry, i) => {
+                                        //if(entry.value > 0)
+                                        return (
+                                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                            <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
+                                            &nbsp;{entry.description}: {(entry.value / sums[index] * 100).toFixed(2)}%
+                                            </div>
+                                        );                          
+                                    })
+                                    :
+                                    // on index 3 show percentage for area chart
+                                    results.map((entry, i) => {
+                                        //if(entry.value > 0)
+                                        return (
+                                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                            <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
+                                            &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
+                                            </div>
+                                        );                          
+                                    })
+                                }
+                            </div>
+                            <br/>
+                            {/* Don't show BarChart for Area */}
+                            {index !== 3 ? 
                                 <BarChart style={{paddingBottom: 'auto'}} width={ width } height={ chartHeight[index][0] } data={ results }>
                                     <CartesianGrid strokeDasharray='3 3' />
                                     <XAxis height={ chartHeight[index][1] } interval={0} angle={-60} textAnchor="end" dataKey='description' />
