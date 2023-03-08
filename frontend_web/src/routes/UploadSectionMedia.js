@@ -97,6 +97,10 @@ function UploadSectionMedia() {
 
     }
 
+    const handleCarousel = (index) => {
+      console.log(mediaUrls[index]);
+    }
+
     useEffect(() => {
       listAll(storageRefList).then((response) => {
         response.items.forEach((item) => {
@@ -154,20 +158,22 @@ function UploadSectionMedia() {
                 </Box>
               </div>: null
             }
+            <br></br>
+            <div className="slide-container">
+              <h3>Current Images</h3>
+              <Carousel showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleCarousel}>
+                {mediaUrls.map((slideImage, index)=> (
+                  <div key={index}>
+                    <img src={slideImage} height="300px" width="200px"/>
+                  </div>
+                ))} 
+              </Carousel>
+            </div> 
+            <br></br>
             <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='success' to='../' 
               state={{...location.state}}>
               Accept and Continue
             </Button>
-            <br></br>
-            <div className="slide-container">
-              <Carousel>
-                {mediaUrls.map((slideImage, index)=> (
-                  <div key={index}>
-                    <img src={slideImage} height="15vh" width="10vw"/>
-                  </div>
-                ))} 
-              </Carousel>
-            </div>
         </div>
     );
 }
