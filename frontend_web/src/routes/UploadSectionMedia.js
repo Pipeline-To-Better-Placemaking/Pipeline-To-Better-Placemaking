@@ -1,26 +1,28 @@
 import { useState, useEffect } from "react";
- import { storage } from "./firebase_config";
+import { Link, useLocation } from 'react-router-dom'; 
+import './routes.css';
+import { storage } from "./firebase_config";
 import { ref, uploadBytesResumable, getDownloadURL, listAll, list } from "firebase/storage";
 import { v4 } from "uuid";
-import './routes.css';
-import { Link, useLocation } from 'react-router-dom';
-import logo1 from '../images/PtBPLogo.png';
-import Image from 'react-bootstrap/Image';
 import axios from '../api/axios';
-import { Slide } from 'react-slideshow-image';
-import 'react-slideshow-image/dist/styles.css'
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
 
 function UploadSectionMedia() {
     const [mediaUrl, setMediaUrl] = useState(null);
     const [progresspercent, setProgresspercent] = useState(0);
     const [mediaUrls, setMediaUrls ] = useState([]);
-    const [title, setTitle ] = useState("");
-    const [titles, setTitles] = useState([]);
     const [ image, setImage ] = useState("");
+    const [title, setTitle ] = useState("");
     const [ uploaded, setUploaded ] = useState(false);
     const [ loading, setLoading ] = useState(false);
+    const [ tags, setTags ] = useState("");
+
     const location = useLocation();
     const date = new Date();
     const storageRefList = ref(storage, `media_uploads/${location.state.section._id}`);
@@ -123,6 +125,22 @@ function UploadSectionMedia() {
                 <br></br>
                 <br></br>
                 <TextField label="Title"style={{width: "10vw", height: "15vh"}}onChange={text => {setTitle(text.target.value)}} value={title}></TextField>
+                <Box sx={{ minWidth: 120 }}>
+                  <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label"> Tags </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={tags}
+                    label="Tags"
+                    //onChange={handleChange}
+                  >
+                  <MenuItem value={10}>Ten</MenuItem>
+                  <MenuItem value={20}>Twenty</MenuItem>
+                  <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                  </FormControl>
+                </Box>
               </div>: null
             }
             <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='success' to='../' 
@@ -130,13 +148,6 @@ function UploadSectionMedia() {
               Accept and Continue
             </Button>
             <br></br>
-            {mediaUrls.map((url, index) => {
-              return (
-                <div className="MediaList">
-                  <img src={url} height="200px" width="300px" class="center"/>
-                </div>
-              );
-            })}
       </div>
     );
 }
