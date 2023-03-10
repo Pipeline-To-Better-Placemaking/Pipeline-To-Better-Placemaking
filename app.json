@@ -27,7 +27,7 @@
           "NSAllowsArbitraryLoads": true
         }
       },
-      "bundleIdentifier": "P2BP"
+      "bundleIdentifier": "ptbp"
     },
     "android": {
       "adaptiveIcon": {
