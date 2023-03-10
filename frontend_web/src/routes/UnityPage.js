@@ -147,7 +147,7 @@ export default function UnityPage() {
         )}
         <Unity
           unityProvider={unityProvider}
-          style={{ width: 1600, height: 900, marginLeft: 134.4, visibility: isLoaded ? "visible" : "hidden" }}
+          style={{ width: `100vw`, height: `77.5vh`, marginLeft: 134.4, visibility: isLoaded ? "visible" : "hidden" }}
         />
 
       </div>
