@@ -162,6 +162,9 @@ export default function MapDrawer(props) {
                 case 'program_maps':
                     newEntry = program;
 
+                    console.log("🚀 ~ file: MapDrawers.js:165 ~ toggleSwitch ~ program:", program);
+
+
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
                     newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setProgram(newEntry);

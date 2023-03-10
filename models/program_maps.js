@@ -38,8 +38,10 @@ const dataSchema = mongoose.Schema({
 
     //stores an array of object ids that correspond to each floor object. 
     floors: [{
-        type: ObjectId
-    }]
+        type: ObjectId,
+    }],
+
+    floorData: Array,
 })
 
 

@@ -76,8 +76,37 @@ router.get('/:id', passport.authenticate('jwt', { session: false }), async (req,
                     model: 'Areas'
                 }
             }])
+        .populate([{
+            path: 'data',
+            populate: {
+                path: 'floorData',
+                model: 'Program_Floors',
+            }
+        }])
 
-    res.status(200).json(map)
+    console.log("🚀 ~ file: program_maps.js:80 ~ router.get ~ map:", map);
+
+    const promises = map.data[0].floors.map(async (floor, index) => {
+        const updatedFloor = await Floor.findById(floor);
+
+        if (updatedFloor) {
+            map.data[0].floorData.push(updatedFloor);
+            return updatedFloor.toObject();
+        }
+        return floor;
+    });
+
+    Promise.all(promises).then((updatedFloors) => {
+        var result = map;
+
+        console.log("🚀 ~ file: program_maps.js:97 ~ Promise.all ~ updatedFloors:", updatedFloors);
+
+        console.log("🚀 ~ file: program_maps.js:98 ~ map:", result.data[0].floorData);
+        res.status(200).json(result);
+    }).catch((error) => {
+        console.error(error);
+        res.status(500).json({ message: 'Error updating floor data' });
+    });
 })
 
 //route signs team member up to a time slot.

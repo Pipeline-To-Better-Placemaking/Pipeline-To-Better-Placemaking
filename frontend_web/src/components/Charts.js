@@ -1845,6 +1845,8 @@ export default function Charts(props) {
 
         //Package results
         data.map((obj) => {
+            //Calculate Overall Difficulty Rating
+            accessSumDiff += parseInt(obj.details.diffRating);
 
             // console.log("🚀 ~ file: Charts.js:1555 ~ data.map ~ obj:", obj);
 
@@ -1854,28 +1856,28 @@ export default function Charts(props) {
                 switch (obj.description) {
                     case 'Ride Share Drop Off':
                         rideShare++;
-                        rideShareDiff += obj.details.diffRating;
-                        accessPointDiff += obj.details.diffRating;
+                        rideShareDiff += parseInt(obj.details.diffRating);
+                        accessPointDiff += parseInt(obj.details.diffRating);
                         break;
                     case 'Bike Rack':
                         bikeRack++;
-                        bikeRackDiff += obj.details.diffRating;
-                        accessPointDiff += obj.details.diffRating;
+                        bikeRackDiff += parseInt(obj.details.diffRating);
+                        accessPointDiff += parseInt(obj.details.diffRating);
                         break;
                     case 'Public Transport Stop':
                         publicStop++;
-                        publicStopDiff += obj.details.diffRating;
-                        accessPointDiff += obj.details.diffRating;
+                        publicStopDiff += parseInt(obj.details.diffRating);
+                        accessPointDiff += parseInt(obj.details.diffRating);
                         break;
                     case 'Valet Counter':
                         valet++;
-                        valetDiff += obj.details.diffRating;
-                        accessPointDiff += obj.details.diffRating;
+                        valetDiff += parseInt(obj.details.diffRating);
+                        accessPointDiff += parseInt(obj.details.diffRating);
                         break;
                     case 'E-scooter Parking':
                         scooter++;
-                        scooterDiff += obj.details.diffRating;
-                        accessPointDiff += obj.details.diffRating;
+                        scooterDiff += parseInt(obj.details.diffRating);
+                        accessPointDiff += parseInt(obj.details.diffRating);
                         break;
                     default:
                         console.log('Non-matching description');
@@ -1887,18 +1889,18 @@ export default function Charts(props) {
                 switch (obj.description) {
                     case 'Sidewalk':
                         sidewalk++;
-                        sidewalkDiff += obj.details.diffRating;
-                        accessPathDiff += obj.details.diffRating;
+                        sidewalkDiff += parseInt(obj.details.diffRating);
+                        accessPathDiff += parseInt(obj.details.diffRating);
                         break;
                     case 'Side Street':
                         sideStreet++;
-                        sideStreetDiff += obj.details.diffRating;
-                        accessPathDiff += obj.details.diffRating;
+                        sideStreetDiff += parseInt(obj.details.diffRating);
+                        accessPathDiff += parseInt(obj.details.diffRating);
                         break;
                     case 'Main Road':
                         mainRoad++;
-                        mainRoadDiff += obj.details.diffRating;
-                        accessPathDiff += obj.details.diffRating;
+                        mainRoadDiff += parseInt(obj.details.diffRating);
+                        accessPathDiff += parseInt(obj.details.diffRating);
                         break;
                     default:
                         console.log('Non-matching description');
@@ -1913,14 +1915,14 @@ export default function Charts(props) {
                     case 'Parking Lot':
                         lot++;
                         lotArea += obj.area;
-                        lotDiff += obj.details.diffRating;
-                        accessAreaDiff += obj.details.diffRating;
+                        lotDiff += parseInt(obj.details.diffRating);
+                        accessAreaDiff += parseInt(obj.details.diffRating);
                         break;
                     case 'Parking Garage':
                         garage++;
                         garageArea += obj.area;
-                        garageDiff += obj.details.diffRating;
-                        accessAreaDiff += obj.details.diffRating;
+                        garageDiff += parseInt(obj.details.diffRating);
+                        accessAreaDiff += parseInt(obj.details.diffRating);
                         break;
                     default:
                         console.log('Non-matching description');
@@ -1996,10 +1998,16 @@ export default function Charts(props) {
 
         //add new results here
         const packagedData = [ accessPointDescArr, accessPathDescArr, accessAreaDescArr, accessAreaPerArr, accessTypeDiffArr, accessPointDescDiffArr, accessPathDescDiffArr, accessAreaDescDiffArr, ]
+
+        console.log("🚀 ~ file: Charts.js:2000 ~ accessCharts ~ packagedData:", packagedData);
+
         // [ labelHeight + 200, labelHeight]
         const chartHeight = [ [345, 145], [280, 80], [310, 110], [310, 110], [310, 110], [345, 145], [280, 80], [310, 110], [310, 110] ]
         const sums = [ accessPoint, accessPath, accessArea, projectArea, accessSumDiff, accessPointDiff, accessPathDiff, accessAreaDiff, ]
-        const titles = ["Access Point Types", "Access Path Types", "Access Area Types", "Area Sq. Ft Percentage", "Access Point Types", "Access Path Types", "Access Area Types", ]
+
+        console.log("🚀 ~ file: Charts.js:2008 ~ accessCharts ~ sums:", sums);
+
+        const titles = ["Access Point Types", "Access Path Types", "Access Area Types", "Area Sq. Ft Percentage", "Access Type Difficulties", "Access Point Difficulties", "Access Path Difficulties", "Access Area Difficulties", ]
 
         return(
             <div className='Charts' style={{ paddingBottom: 50 }}>
@@ -2037,15 +2045,14 @@ export default function Charts(props) {
                 </BarChart>
                 
                 {packagedData.map((results, index) => {
-
-                    
-
                     let yLabel = index !== 3 ? "Count" : "Percentage";
 
                     console.log("🚀 ~ file: Charts.js:1935 ~ {packagedData.map ~ results:", results);
                     return(
                         <div className='Charts'>
                             <div style={{ fontSize: 'larger', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> {titles[index]} </div>
+                            {/* Hide Pie chart for average difficulties */}
+                            {index < 3 ? 
                             <PieChart width={width} height={height}>
                                 <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
                                     {results.map((entry, index) => (
@@ -2053,10 +2060,10 @@ export default function Charts(props) {
                                     ))}
                                 </Pie>
                                 <Tooltip />
-                            </PieChart>
+                            </PieChart> : null}
                             <div>
                                 {/* Show Default Legend */}
-                                {index !== 3 ? 
+                                {index < 3 ? 
                                     results.map((entry, i) => {
                                         //if(entry.value > 0)
                                         return (
@@ -2067,16 +2074,29 @@ export default function Charts(props) {
                                         );                          
                                     })
                                     :
-                                    // on index 3 show percentage for area chart
-                                    results.map((entry, i) => {
-                                        //if(entry.value > 0)
-                                        return (
-                                            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                            <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                            &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
-                                            </div>
-                                        );                          
-                                    })
+                                    (index === 3 ? 
+                                        // on index 3 show percentage for area chart
+                                        results.map((entry, i) => {
+                                            //if(entry.value > 0)
+                                            return (
+                                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                                <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
+                                                &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
+                                                </div>
+                                            );                          
+                                        })
+                                        :
+                                        // on index 4-6 show average difficulties for access types
+                                        results.map((entry, i) => {
+                                            //if(entry.value > 0)
+                                            return (
+                                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                                <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
+                                                &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
+                                                </div>
+                                            );                          
+                                        })
+                                    )
                                 }
                             </div>
                             <br/>
