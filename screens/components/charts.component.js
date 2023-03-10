@@ -363,15 +363,16 @@ export function MyPieChartArea(props){
       for(let i = 0; i < Object.keys(props.graph).length; i++){
         // this is mainly for the occupied area chart, if there is no data of that boundary type, don't render anything for it 
         if(props.graph[i].value !== 0){
+          console.log(props.graph[i].value)
           obj[i] = (
             <View key={i.toString()} style={styles.pieLegend}>
               <Text style={styles.whiteText}>{props.graph[i].legend}: </Text>
               <Text style={{color: props.graph[i].svg.fill}}>■</Text>
               
               {props.cond ?
-                <Text style={styles.whiteText}> {props.graph[i].value.toFixed(2)} ft² ({props.graph[i].percent}% of project area)</Text>
+                <Text style={styles.whiteText}> {props.graph[i].value.toLocaleString()} ft² ({props.graph[i].percent}% of project area)</Text>
               :
-                <Text style={styles.whiteText}> {props.graph[i].value.toFixed(2)} ft² ({props.graph[i].percent}%)</Text>
+                <Text style={styles.whiteText}> {props.graph[i].value.toLocaleString()} ft² ({props.graph[i].percent}%)</Text>
               }
             
             </View>
