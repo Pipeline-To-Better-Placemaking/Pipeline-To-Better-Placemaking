@@ -482,6 +482,33 @@ div#accountPage h1 {
     flex-direction: column;
 }
 
+.tag-container {
+    min-width: 60%;
+    max-width: 75%;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 30px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  .tag {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    height: 25px;
+    margin: 2px 5px 2px 0px;
+    color: black;
+    font-size: 0.875em;
+  }
+
+  .tag span {
+    margin-left: 5px;
+    cursor: pointer;
+  }
+
 @media (prefers-reduced-motion: no-preference) {
     .App-logo {
         animation: App-logo-spin infinite 60s linear;

@@ -23,8 +23,8 @@ function UploadSectionMedia() {
     const [ preview, setPreview ] = useState("");
     const [ title, setTitle ] = useState("");
     const [ newTitle, setNewTitle ] = useState("");
-    const [ selectedTag, setSelectedTag ] = useState('');
-    const [ newSelectedTag, setNewSelectedTag ] = useState('');
+    const [ selectedTags, setSelectedTags ] = useState([]);
+    const [ newSelectedTags, setNewSelectedTags ] = useState([]);
     const [ tags, setTags ] = useState([]);
     const [ newTags, setNewTags ] = useState([]);
     const [ selectedSlide, setSelectedSlide ] = useState('');
@@ -84,23 +84,23 @@ function UploadSectionMedia() {
     }
 
     const handleTags = (event) => {
-      setSelectedTag(event.target.value);
+      setSelectedTags(event.target.value);
     }
 
     const handleTagSubmit = (event) => {
       event.preventDefault();
-      setTags([...tags, selectedTag]);
-      setSelectedTag('');
+      setTags(selectedTags);
+      setSelectedTags([]);
     }
 
     const handleNewTags = (event) => {
-      setNewSelectedTag(event.target.value);
+      setNewSelectedTags(event.target.value);
     }
 
     const handleNewTagSubmit = (event) => {
       event.preventDefault();
-      setNewTags([...newTags, newSelectedTag]);
-      setNewSelectedTag('');
+      setNewTags(newSelectedTags);
+      setNewSelectedTags([]);
     }
 
     const handlePreview = async (e) => {
@@ -141,6 +141,17 @@ function UploadSectionMedia() {
       update();
     }
 
+    const removeNewTag = (removedTag) => {
+      const temp = newTags.filter((newTag) => newTag !== removedTag);
+      setNewTags(temp);
+    };
+
+    const removeTag = (removedTag) => {
+      const temp = tags.filter((tag) => tag !== removedTag);
+      setTags(temp);
+    };
+
+
     useEffect(() => {
       listAll(storageRefList).then((response) => {
         response.items.forEach((item) => {
@@ -177,27 +188,33 @@ function UploadSectionMedia() {
                 <br></br>
                 <br></br>
                 <TextField label="Title"style={{width: "10vw", height: "15vh"}} onChange={text => {setTitle(text.target.value)}} value={title}></TextField>
-                <Box sx={{ minWidth: 120 }}>
-                  <FormControl fullWidth>
+                <Box sx={{ minWidth: 120 }} >
+                  <FormControl fullWidth sx={{ flexDirection: 'row' }}>
                   <InputLabel id="demo-simple-select-label"> Tags </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={selectedTag}
+                    value={selectedTags}
                     label="Tags"
                     onChange={handleTags}
+                    multiple
+                    style={{minWidth: 120}}
                   >
                   {options.map((option, index) => (
                       <MenuItem value={option}>{option}</MenuItem>
                   ))}
                   </Select>
-                  <Button onClick={handleTagSubmit}>Accept Tag</Button>
+                  <Button onClick={handleTagSubmit}>Accept Tags</Button>
                   </FormControl>
-                  <ul>
-                    {tags.map((tag, index) => (
-                      <li key={index}>{tag}</li>
-                    ))}
-                  </ul>
+                  <div className="tag-container">
+                    {tags.map((tag, index) => {
+                      return (
+                        <div key={index} className="tag">
+                          {tag} <span onClick={() => removeTag(tag)}>x</span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </Box>
               </div>: null
             }
@@ -207,7 +224,7 @@ function UploadSectionMedia() {
               <Carousel showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleSlide}>
                 {mediaUrls.map((slideImage, index)=> (
                   <div key={index}>
-                    <img src={slideImage} height="300px" width="200px"/>
+                    <img src={slideImage} width="40vw"/>
                   </div>
                 ))} 
               </Carousel>
@@ -218,28 +235,33 @@ function UploadSectionMedia() {
               <div className="Edit">
                 <TextField label="New Title"style={{width: "10vw", height: "15vh"}} value={newTitle} onChange={text => {setNewTitle(text.target.value)}}></TextField>
                 <Box sx={{ minWidth: 120 }}>
-                  <FormControl fullWidth>
+                  <FormControl fullWidth sx={{ flexDirection: 'row' }}>
                   <InputLabel id="demo-simple-select-label"> Tags </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={newSelectedTag}
+                    value={newSelectedTags}
                     label="Tags"
                     onChange={handleNewTags}
+                    multiple
+                    style={{minWidth: 120}}
                   >
                   {options.map((option, index) => (
                       <MenuItem value={option}>{option}</MenuItem>
                   ))}
                   </Select>
-                  <Button onClick={handleNewTagSubmit}>Accept Tag</Button>
+                  <Button onClick={handleNewTagSubmit}>Add Tag</Button>
                   </FormControl>
-                  <ul>
-                    {newTags.map((newTag, index) => (
-                      <li key={index}>{newTag}</li>
-                    ))}
-                  </ul>
+                  <div className="tag-container">
+                    {newTags.map((newTag, index) => {
+                      return (
+                        <div key={index} className="tag">
+                          {newTag} <span onClick={() => removeNewTag(newTag)}>x</span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </Box>
-                
                 <Button onClick={handleSave}>Save</Button>
               </div> : null
             }
