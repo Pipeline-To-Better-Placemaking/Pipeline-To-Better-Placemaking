@@ -11,16 +11,16 @@ export function CreateTimeSlots(props) {
 
   // This is the index of the current time slot we're modifying
   const [selectedIndex, setSelectedIndex] = useState(0);
-
+  const MAX_TIME_SLOTS = 25; 
   // start time
   const today = new Date();
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
-  const [timeValue, setTimeValue] = useState(today);
+  const [timeValues, setTimeValues] = useState(Array(MAX_TIME_SLOTS).fill(today));
 
   // number of researchers
   const [researchersVisible, setResearchersVisible] = useState(false);
   const [tempNum, setTempNum] = useState(''); // used for Pop up
-
+  
   // select multiple standing points
   //const [tempPoints, setTempPoints] = useState([]);
   const [selectPointsVisible, setSelectPointsVisible] = useState(false);
@@ -28,11 +28,12 @@ export function CreateTimeSlots(props) {
   const groupDisplayValues = selectedPointsIndex.map(index => {
     return props.standingPoints[index.row].title;
   });
-
+  
   // edit start time value for timeslot
   const editTime = (item, index) => {
     // load the current value
-    setTimeValue(props.timeSlots[index].date);
+    console.log("index in editTime", index)
+    setTimeValues(props.timeSlots[index].date);
     // set the index for which time slot we're editing
     setSelectedIndex(index);
     // view the modal
@@ -40,34 +41,45 @@ export function CreateTimeSlots(props) {
   }
 
   // set the start time value for timeslot
-  const setTime = (time) => {
+  const setTime = (event, time, index) => {
+    console.log("time:", time)
+    console.log("index in setTime", index)
     // Get info
-    let tempList = [...props.timeSlots];
-    let timeSlot = {...tempList[selectedIndex]};
+    let tempList = props.timeSlots;
+    let timeSlot = tempList[index];
+    console.log("timeSlot:", timeSlot)
+    console.log("tempList:", tempList)
 
     // set new value
     timeSlot.date = time;
     timeSlot.timeString = getTimeStr(time);
 
     // put the item back in the list
-    tempList[selectedIndex] = timeSlot;
+    tempList[index] = timeSlot;
 
     // Update
-    props.setTimeSlots(timeSlots => [...tempList]);
-    setTimeValue(time);
+    props.setTimeSlots(tempList);
+
+    console.log(tempList)
+    setTimeValues(prevValues => {
+      const newValues = prevValues;
+      newValues[index] = time;
+      return newValues;
+    });
     setTimePickerVisibility(false);
   }
 
   // create a new timeslot
   const createTime = () => {
     // this uses the last value in the timeSlots list as the new start time value
-    let time = timeValue;
+    let time = new Date();
     let indicies = [];
     let numResearchers = '1';
     let length = props.timeSlots.length;
 
     if (length > 0) {
       time = props.timeSlots[length-1].date;
+      // console.log(time)
       numResearchers = props.timeSlots[length-1].maxResearchers;
       indicies = props.timeSlots[length-1].assignedPointIndicies;
     }
@@ -156,13 +168,15 @@ export function CreateTimeSlots(props) {
     return tempPoints.join(', ');
   }
 
-  const TimePicker = ({item, index}) => (
+  const TimePicker = ({item, index}) => {
+    console.log("index of time picker:", index)
+    return(
       <View style={styles.leftShift}>
         <Button
           onPress={() => editTime(item, index)}
           accessoryRight={ClockIcon}
           appearance='ghost'
-          style={{borderStyle: 'solid', borderColor: 'black', borderWidth: '1px', justifyContent: 'center'}}
+          style={{justifyContent: 'center'}}
           >
           <Text style={{ 
             lineHeight: 'auto',
@@ -172,12 +186,12 @@ export function CreateTimeSlots(props) {
             borderColor: 'black',
             borderWidth: '1px', }}>
               Start Time
-            <View>
+            <View style={{alignItems: 'center', marginLeft: 50, marginTop: -10}}>
               <DateTimePicker
                 isVisible={isTimePickerVisible}
                 mode="time"
-                value={timeValue}
-                onConfirm={setTime}
+                value={timeValues[index]}
+                onChange={(event, time) => setTime(event, time, index)}
                 onCancel={() => setTimePickerVisibility(false)}
               />
             </View>
@@ -186,7 +200,7 @@ export function CreateTimeSlots(props) {
         </Button>
         
       </View>
-  );
+)};
 
   const NumResearchers = ({item, index}) => (
     <View style={styles.rowView}>
