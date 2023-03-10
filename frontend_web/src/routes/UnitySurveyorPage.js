@@ -218,7 +218,7 @@ export default function UnityPage() {
   return (
     <div>
       {/* <h1>Identifying Program</h1> */}
-      <Button className='backBtn' style={{ margin: '10px' }} component={Link} size='lg' variant="contained" startIcon={<KeyboardReturnIcon />} to='../'
+      <Button className='backBtn' style={{ margin: '10px' }} component={Link} size='lg' variant="contained" startIcon={<KeyboardReturnIcon />} to='../map'
         state={{ team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken }} >
         Return to map view
       </Button>
@@ -231,7 +231,7 @@ export default function UnityPage() {
         )}
         <Unity
           unityProvider={unityProvider}
-          style={{ width: 1600, height: 900, marginLeft: 134.4, visibility: isLoaded ? "visible" : "hidden" }}
+          style={{ width: "100vw", height: "77.5vh", visibility: isLoaded ? "visible" : "hidden" }}
         />
 
       </div>
