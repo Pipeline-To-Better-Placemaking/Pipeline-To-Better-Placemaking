@@ -152,16 +152,16 @@ function UploadSectionMedia() {
       
       if(temp == "Image")
       {
-        setVideo(true);
-        setImage(false);
+        setVideo(false);
+        setImage(true);
         console.log(`Image: ${isImage}`);
         console.log(`Video: ${isVideo}`);
       }
         
       else if(temp == "Video")
       {
-        setImage(true);
-        setVideo(false);
+        setImage(false);
+        setVideo(true);
         console.log(`Image: ${isImage}`);
         console.log(`Video: ${isVideo}`);
         
@@ -177,7 +177,6 @@ function UploadSectionMedia() {
       const temp = tags.filter((tag) => tag !== removedTag);
       setTags(temp);
     };
-
 
     useEffect(() => {
       listAll(storageRefList).then((response) => {
@@ -212,11 +211,11 @@ function UploadSectionMedia() {
               <div className="ImgPreview">
                 <br></br>
                 {
-                  isVideo ?
+                  isImage ?
                   <img style={{height: "20vh", width : "30vw"}} src={preview} /> : null
                 }
                 {
-                  isImage ?
+                  isVideo ?
                   <div>
                     <video width="320" height="240" controls>
                       <source src={preview} type="video/mp4"></source>
@@ -250,7 +249,7 @@ function UploadSectionMedia() {
                     id="demo-simple-select"
                     value={selectedTags}
                     label="Tags"
-                    onClick={handleTags}
+                    onChange={handleTags}
                     multiple
                     style={{minWidth: 120}}
                   >
