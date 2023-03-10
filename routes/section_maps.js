@@ -75,6 +75,12 @@ router.get('/:id', passport.authenticate('jwt',{session:false}), async (req, res
     res.status(200).json(map)
 })
 
+// route gets a map's specific data entry
+// id is the direct key for the document with data_id being the secondary key for the data entry
+router.get('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    const map = await  Map.findData(req.params.id, req.params.data_id)
+    res.status(200).json(map)
+})
 // route signs team member up to a time slot.
 router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
     map = await Map.findById(req.params.id)
