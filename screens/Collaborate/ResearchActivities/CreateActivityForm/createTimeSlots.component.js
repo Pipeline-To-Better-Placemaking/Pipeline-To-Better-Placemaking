@@ -172,7 +172,7 @@ export function CreateTimeSlots(props) {
             borderColor: 'black',
             borderWidth: '1px', }}>
               Start Time
-            <View>
+            <View style={{alignItems: 'center', marginLeft: 50, marginTop: -10}}>
               <DateTimePicker
                 isVisible={isTimePickerVisible}
                 mode="time"
