@@ -14,7 +14,10 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel'
-import { MultipleSelect } from 'react-select-material-ui';
+import RadioGroup from "@mui/material/RadioGroup";
+import Radio from '@mui/material/Radio';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 
 function UploadSectionMedia() {
     const [ mediaUrl, setMediaUrl] = useState(null);
@@ -30,6 +33,8 @@ function UploadSectionMedia() {
     const [ selectedSlide, setSelectedSlide ] = useState('');
     const [ selectedIndex, setSelectedIndex ] = useState(0);
     const [ edit, setEdit ] = useState(false);
+    const [ isVideo, setVideo ] = useState(false);
+    const [ isImage, setImage ] = useState(true);
 
 
     const location = useLocation();
@@ -141,6 +146,28 @@ function UploadSectionMedia() {
       update();
     }
 
+    const handleMedia = (e) => {
+      const temp = e.target.value;
+      console.log(temp);
+      
+      if(temp == "Image")
+      {
+        setVideo(true);
+        setImage(false);
+        console.log(`Image: ${isImage}`);
+        console.log(`Video: ${isVideo}`);
+      }
+        
+      else if(temp == "Video")
+      {
+        setImage(true);
+        setVideo(false);
+        console.log(`Image: ${isImage}`);
+        console.log(`Video: ${isVideo}`);
+        
+      }
+    }
+
     const removeNewTag = (removedTag) => {
       const temp = newTags.filter((newTag) => newTag !== removedTag);
       setNewTags(temp);
@@ -183,9 +210,36 @@ function UploadSectionMedia() {
             {
               preview ? 
               <div className="ImgPreview">
-                <br></br> 
-                <img style={{height: "20vh", width : "30vw"}} src={preview} />
                 <br></br>
+                {
+                  isVideo ?
+                  <img style={{height: "20vh", width : "30vw"}} src={preview} /> : null
+                }
+                {
+                  isImage ?
+                  <div>
+                    <video width="320" height="240" controls>
+                      <source src={preview} type="video/mp4"></source>
+                      <source src={preview} type="video/ogg"></source>
+                    </video>
+                  </div> : null
+                }
+                
+                <br></br>
+                <br></br>
+                <FormControl sx={{alignItems: "center"}}>
+                  <FormLabel>Media Type</FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                    defaultValue="Image"
+                    onClick={handleMedia}
+                  >
+                  <FormControlLabel value="Image" control={<Radio />} label="Image" />
+                  <FormControlLabel value="Video" control={<Radio />} label="Video" />
+                  </RadioGroup>
+                </FormControl>
                 <br></br>
                 <TextField label="Title"style={{width: "10vw", height: "15vh"}} onChange={text => {setTitle(text.target.value)}} value={title}></TextField>
                 <Box sx={{ minWidth: 120 }} >
@@ -196,7 +250,7 @@ function UploadSectionMedia() {
                     id="demo-simple-select"
                     value={selectedTags}
                     label="Tags"
-                    onChange={handleTags}
+                    onClick={handleTags}
                     multiple
                     style={{minWidth: 120}}
                   >
@@ -230,6 +284,7 @@ function UploadSectionMedia() {
               </Carousel>
             </div>
             <Button onClick={handleEdit}>Open Edit Info</Button>
+
             {
               edit ?
               <div className="Edit">
