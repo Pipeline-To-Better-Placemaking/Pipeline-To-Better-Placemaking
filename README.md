@@ -23,22 +23,23 @@ The mobile application connects to the heroku api, to connect to a local databas
 ### Gaining access
 1. Locate the "Next Team Info" document to find the Expo P2BPAdmin login info and login: [Expo Login](expo.dev/login)
 2. After logging in, on the top left corner of the screen you should see "p2bpadmin" and a dropdown menu, select the dropdown.
-3. Under Organizations, select "pipeline-to-better-placemaking"
-4. On the left side of the screen, select the option "Organization Settings"
-5. On the left side of the screen, select the option "Members"
-6. On the right side of the screen, select the option "Invite Members"
-7. We recommend inviting the team as "Developers" and the project manager as "Admim".  
+3. Under Organizations, select **pipeline-to-better-placemaking**
+4. On the left side of the screen, select the option **Organization Settings**
+5. On the left side of the screen, select the option **Members**
+6. On the right side of the screen, select the option **Invite Members**
+7. We recommend inviting the team as **Developers** and the project manager as **Admim**  
    (NOTE: Expo invitations do expire so be sure to accept them soon after sending.)
 ### [Updating the build](https://docs.expo.dev/build/setup/)
 
 ## Running a Local Instance
-In order to run a local instance enter these commands in the root directory:
+Prerequisite: Install Expo Go (refer to [Expo Guide](#expo-guide) -> [Installing Expo](#installing-expo))
+
+   In order to run a local instance enter these commands in the root directory:
 ```
 npm install -force
 npm start
 ```
-After that a QR code will appear in your console, scan the code with your phone after Installing Expo Go (refer to [Expo Guide](#expo-guide) -> [Installing Expo](#installing-expo).
-Your phone should now load an instance of the mobile application.
+After that a QR code will appear in your console, scan the code with your phone and an instance of the mobile application should load.
 
 ## To deploy to iPhone through XCode (Google Maps doesn't currently work and not sure why you would want to do this)
 1) Create a **.xcodeworkspaceproj** by running: ```npx expo run:ios```
