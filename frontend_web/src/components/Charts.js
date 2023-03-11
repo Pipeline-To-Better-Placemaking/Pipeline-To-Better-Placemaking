@@ -58,15 +58,17 @@ export default function Charts(props) {
 
     const accessColor = ["#73cfff", "#256eff", "#004bad", "#0029aa", "#00cc00", "#2ebd33", "#00b300", "#009900"]
 
+    const programColor = ["#1BC500", '#D60000', '#FFFF23', '#FF69C5', '#36EFFF', '#0059FA', '#FF8D00', '#AB00FF', '#954600', '#000000', '#FDAAE5', '#C8C8C8', '#274D34', '#F5F5F5'];
+
     const cat = selection.split('.');
 
-    const soundIcons ={
-        Animals: <PetsIcon/>,
-        Music: <MusicNoteIcon/>,
-        Traffic: <CommuteIcon/>,
-        'People Sounds': <PeopleIcon/>,
-        'Water Feature': <WavesIcon/>,
-        Wind: <AirIcon/>,
+    const soundIcons = {
+        Animals: <PetsIcon />,
+        Music: <MusicNoteIcon />,
+        Traffic: <CommuteIcon />,
+        'People Sounds': <PeopleIcon />,
+        'Water Feature': <WavesIcon />,
+        Wind: <AirIcon />,
         Other: null
     }
 
@@ -89,12 +91,12 @@ export default function Charts(props) {
             'Other'
         ];
 
-        Object.entries(data).map(([dateTime, arr])=>(
-            arr.forEach((arr1, index)=>{
-                arr1.forEach((obj, ind)=>{
-                    obj.instance = `Location ${ind+1}`;
+        Object.entries(data).map(([dateTime, arr]) => (
+            arr.forEach((arr1, index) => {
+                arr1.forEach((obj, ind) => {
+                    obj.instance = `Location ${ind + 1}`;
                     measurements.push(obj);
-                    Object.entries(obj).forEach(([key, dataVal])=>{
+                    Object.entries(obj).forEach(([key, dataVal]) => {
                         if (key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5') {
                             if (key === 'decibel_1') {
                                 high = dataVal
@@ -139,7 +141,7 @@ export default function Charts(props) {
             }
         })
 
-        return(
+        return (
             <div className='Charts'>
                 <div style={{ textAlign: 'center' }}>
                     <div style={{ fontSize: 'larger' }}>Volume Range and Sources</div>
@@ -195,24 +197,24 @@ export default function Charts(props) {
             'Other'
         ]
 
-        data.forEach((obj, ind)=>{
-            obj.instance = `Location ${ind+1}`;
+        data.forEach((obj, ind) => {
+            obj.instance = `Location ${ind + 1}`;
             var locArr = [];
-            Object.entries(obj).forEach(([key, dataVal], index)=>{
+            Object.entries(obj).forEach(([key, dataVal], index) => {
                 if (key === 'average') {
                     avgs.push(dataVal);
                 }
-                if(key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5'){
+                if (key === 'decibel_1' || key === 'decibel_2' || key === 'decibel_3' || key === 'decibel_4' || key === 'decibel_5') {
                     locArr.push({ instance: key, recording: dataVal.recording });
 
-                    if(key === 'decibel_1'){
+                    if (key === 'decibel_1') {
                         high = dataVal
                         low = dataVal
                         frequent.push(dataVal);
                     } else {
-                        if(dataVal.recording > high.recording){
+                        if (dataVal.recording > high.recording) {
                             high = dataVal;
-                        } else if (dataVal.recording < high.recording){
+                        } else if (dataVal.recording < high.recording) {
                             low = dataVal;
                         }
                     }
@@ -237,23 +239,23 @@ export default function Charts(props) {
             soundLoc.push(locArr);
         })
 
-        frequent.forEach((value, index)=>{
-            if(value > frequent[indexes[0]]){
+        frequent.forEach((value, index) => {
+            if (value > frequent[indexes[0]]) {
                 indexes = []
                 indexes = [index];
-            } else if (value === frequent[indexes[0]] && index !== indexes[0]){
-               indexes.push(index);
+            } else if (value === frequent[indexes[0]] && index !== indexes[0]) {
+                indexes.push(index);
             }
         });
 
-        return(
+        return (
             <div className='Charts'>
                 <div style={{ textAlign: 'center' }}>
                     <div style={{ fontSize: 'larger' }}>Volume Range and Sources</div>
                     <b>Highest Recorded Volume:</b> {high.recording} dB
                     <br />
                     <b>Predominant Source:</b>
-                    <br/>
+                    <br />
                     {soundIcons[high.predominant_type] ? soundIcons[high.predominant_type] : soundIcons.Other}
                     <br />
                     {high.predominant_type}
@@ -270,10 +272,10 @@ export default function Charts(props) {
                     <br />
                     {indexes.map((value) => (`${indexing[value]} `))}
                 </div>&nbsp;
-                <br/>
+                <br />
                 {soundLoc.map((position, index) => (
-                    <div style={{borderBottom: '1px solid black', textAlign: 'center'}}>
-                        <div style={{ backgroundColor: '#B073FF' }}><b>Location {index+1}</b></div>
+                    <div style={{ borderBottom: '1px solid black', textAlign: 'center' }}>
+                        <div style={{ backgroundColor: '#B073FF' }}><b>Location {index + 1}</b></div>
                         <BarChart width={width} height={height} data={position}>
                             <CartesianGrid strokeDasharray='3 3' />
                             <XAxis dataKey='instance' />
@@ -287,9 +289,9 @@ export default function Charts(props) {
                         <br />
                     </div>
                 ))}&nbsp;
-                <br/>
+                <br />
                 <b>Location Averages</b>
-                <BarChart width={ width } height={ height } data={ data }>
+                <BarChart width={width} height={height} data={data}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='instance' />
                     <YAxis label={{ value: 'Decibels', angle: -90, position: 'insideLeft' }} />
@@ -308,7 +310,7 @@ export default function Charts(props) {
         var socializing = 0, waiting = 0, recreation = 0, eating = 0, solitary = 0;
 
         for (const [dateTime, resultArr] of Object.entries(data)) {
-            for(const index1 of resultArr){
+            for (const index1 of resultArr) {
                 for (const obj of index1) {
                     if (obj.posture === 'Standing') {
                         standing++;
@@ -448,64 +450,64 @@ export default function Charts(props) {
             }
 
             if (obj.activity.includes('Socializing')) {
-                socializing ++;
+                socializing++;
             }
             if (obj.activity.includes('Waiting')) {
-                waiting ++;
+                waiting++;
             }
             if (obj.activity.includes('Recreation')) {
-                recreation ++;
+                recreation++;
             }
-            if(obj.activity.includes('Eating')) {
-                eating ++;
-            } 
+            if (obj.activity.includes('Eating')) {
+                eating++;
+            }
             if (obj.activity.includes('Solitary')) {
-                solitary ++;
+                solitary++;
             }
         };
 
         var posture = [{ posture: 'Sitting', count: sitting }, { posture: 'Standing', count: standing }, { posture: 'Laying', count: laying }, { posture: 'Squatting', count: squatting }];
         var age = [{ age: '0-14', count: kid }, { age: '15-21', count: teen }, { age: '22-30', count: yAdult }, { age: '30-50', count: mAdult }, { age: '50+', count: senior }];
-        var gender =[{ gender: 'Male', count: male }, { gender: 'Female', count: female }];
+        var gender = [{ gender: 'Male', count: male }, { gender: 'Female', count: female }];
         var activity = [{ activity: 'Socializing', count: socializing }, { activity: 'Waiting', count: waiting }, { activity: 'Recreation', count: recreation }, { activity: 'Eating', count: eating }, { activity: 'Solitary', count: solitary }];
 
-        return( 
+        return (
             <div className='Charts'>
                 <div style={{ fontSize: 'larger' }}>Posture</div>
-                <BarChart width={ width } height={ height } data={ posture }>
+                <BarChart width={width} height={height} data={posture}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='posture' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Bar dataKey={'count'} >
-                        { posture.map((entry, index) => (
-                            <Cell key={ `cell-${index}` } stroke={ '#000000' } fill={ stationaryColor[entry.posture] } fillOpacity={ 0.7 } />
-                        )) }
+                        {posture.map((entry, index) => (
+                            <Cell key={`cell-${index}`} stroke={'#000000'} fill={stationaryColor[entry.posture]} fillOpacity={0.7} />
+                        ))}
                     </Bar>
                 </BarChart>
                 <div style={{ fontSize: 'larger' }}>Age</div>
-                <BarChart width={ width } height={ height } data={ age }>
+                <BarChart width={width} height={height} data={age}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='age' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={ 'count' } fill='#636262' fillOpacity={ 0.75 } />
+                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
                 </BarChart>
                 <div style={{ fontSize: 'larger' }}>Gender</div>
-                <BarChart width={ width } height={ height } data={ gender }>
+                <BarChart width={width} height={height} data={gender}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='gender' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={ 'count' } fill='#636262' fillOpacity={ 0.75 } />
+                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
                 </BarChart>
                 <div style={{ fontSize: 'larger' }}>Activity</div>
-                <BarChart width={ width } height={ height } data={ activity }>
+                <BarChart width={width} height={height} data={activity}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='activity' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={ 'count' } fill='#636262' fillOpacity={ 0.75 } />
+                    <Bar dataKey={'count'} fill='#636262' fillOpacity={0.75} />
                 </BarChart>
                 <br />
                 <div >
@@ -583,17 +585,17 @@ export default function Charts(props) {
         }
 
         var mode = [{ mode: 'Walking', count: walking }, { mode: 'Running', count: running }, { mode: 'Swimming', count: swimming }, { mode: 'Activity on Wheels', count: onwheels }, { mode: 'Handicap Assisted Wheels', count: handicap }];
-        return(
+        return (
             <div className='Charts'>
-                <BarChart width={ width } height={ height } data={ mode }>
+                <BarChart width={width} height={height} data={mode}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='mode' />
                     <YAxis label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={ 'count' } fill='#636262'>
-                        { mode.map((entry, index) => (
-                            <Cell key={ `cell-${index}` } fill={ movingColor[entry.mode] } fillOpacity={ 0.8 } />
-                        )) }
+                    <Bar dataKey={'count'} fill='#636262'>
+                        {mode.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={movingColor[entry.mode]} fillOpacity={0.8} />
+                        ))}
                     </Bar>
                 </BarChart>
                 <br />
@@ -612,9 +614,9 @@ export default function Charts(props) {
         var rhythmic = 0, building = 0, task = 0;
 
         for (const arr of Object.values(data)) {
-            for(const arr1 of arr){
+            for (const arr1 of arr) {
                 for (const obj of arr1) {
-                    for(const point of obj.points){
+                    for (const point of obj.points) {
                         if (point.light_description === 'Rhythmic') {
                             rhythmic++;
                         } else if (point.light_description === 'Building') {
@@ -655,11 +657,11 @@ export default function Charts(props) {
     const lightingCharts = (data) => {
         var rhythmic = 0, building = 0, task = 0;
 
-        for(const lObj of Object.values(data)){
-            for(const point of lObj.points){
-                if(point.light_description === 'Rhythmic'){
+        for (const lObj of Object.values(data)) {
+            for (const point of lObj.points) {
+                if (point.light_description === 'Rhythmic') {
                     rhythmic++;
-                } else if (point.light_description === 'Building'){
+                } else if (point.light_description === 'Building') {
                     building++;
                 } else {
                     task++;
@@ -668,7 +670,7 @@ export default function Charts(props) {
         }
 
         var lights = [{ type: 'Building', count: building }, { type: 'Rhythmic', count: rhythmic }, { type: 'Task', count: task }];
-        return(
+        return (
             <div className='Charts'>
                 <BarChart width={width} height={height} data={lights}>
                     <CartesianGrid strokeDasharray='3 3' />
@@ -693,10 +695,10 @@ export default function Charts(props) {
 
     const multiOrderCharts = (data) => {
         var behavior = 0, maintenance = 0;
-        for(const arr of Object.values(data)){
-            for(const subarr of arr){
-                for(const terArr of subarr){
-                    for(const point of terArr.points){
+        for (const arr of Object.values(data)) {
+            for (const subarr of arr) {
+                for (const terArr of subarr) {
+                    for (const point of terArr.points) {
                         if (point.kind === 'Maintenance') {
                             maintenance++;
                         } else {
@@ -733,9 +735,9 @@ export default function Charts(props) {
     const orderCharts = (data) => {
         var behavior = 0, maintenance = 0;
 
-        for(const obj of data){
-            for(const point of obj.points){
-                if(point.kind === 'Maintenance'){
+        for (const obj of data) {
+            for (const point of obj.points) {
+                if (point.kind === 'Maintenance') {
                     maintenance++;
                 } else {
                     behavior++;
@@ -790,11 +792,11 @@ export default function Charts(props) {
         var temporary = 0;
         var ceiling = 0;
 
-        for (const arr of  Object.values(data)) {
-            for(const ind0 in arr){
-                for(const index in arr[ind0]) {
-                    if(arr[0][index].kind === 'Shelter') {
-                        shelter += arr[0][index].value ;
+        for (const arr of Object.values(data)) {
+            for (const ind0 in arr) {
+                for (const index in arr[ind0]) {
+                    if (arr[0][index].kind === 'Shelter') {
+                        shelter += arr[0][index].value;
                         switch (arr[0][index].description) {
                             case 'Canopy':
                                 canopy += arr[0][index].value;
@@ -816,7 +818,7 @@ export default function Charts(props) {
                                 console.log(arr[0][index].description)
                         }
                         ind++;
-                    } else if(arr[0][index].kind === 'Material') {
+                    } else if (arr[0][index].kind === 'Material') {
                         material += arr[0][index].value;
                         switch (arr[0][index].description) {
                             case 'Bricks':
@@ -840,7 +842,7 @@ export default function Charts(props) {
                         }
                         ind++;
                     } else {
-                        arr[0][index].instance = `Location ${ind+1}`;
+                        arr[0][index].instance = `Location ${ind + 1}`;
                         constructed.push(arr[0][index]);
                         switch (arr[0][index].description) {
                             case 'Curbs':
@@ -882,7 +884,7 @@ export default function Charts(props) {
         var shelt = [{ type: 'Canopy', area: canopy }, { type: 'Contructed Ceiling', area: ceiling }, { type: 'Temporary', area: temporary }, { type: 'Trees', area: trees }, { type: 'Umbrella Dining', area: umbrella }];
         var constr = [{ type: 'Curbs', area: curbs }, { type: 'Fences', area: fences }, { type: 'Building Wall', area: wall }, { type: 'Partial Wall', area: partial }, { type: 'Planter', area: planter }];
 
-        return(
+        return (
             <div className='Charts'>
                 <div style={{ fontSize: 'larger' }}> Boundary Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
@@ -894,12 +896,12 @@ export default function Charts(props) {
                     <Tooltip />
                 </PieChart>
                 <div style={{ fontSize: 'larger' }}> Occupied Area (%)</div>
-                <PieChart width={ width } height={ height }>
-                        <Pie data={ array } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
-                            { array.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000' } fillOpacity={ 0.85 } />
-                            )) }
-                        </Pie>
+                <PieChart width={width} height={height}>
+                    <Pie data={array} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                        {array.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000'} fillOpacity={0.85} />
+                        ))}
+                    </Pie>
                     <Tooltip />
                 </PieChart>
                 <br />
@@ -909,7 +911,7 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
                 &nbsp;
-                <br/>
+                <br />
                 <div style={{ fontSize: 'larger' }}>Material Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']}>
@@ -931,12 +933,12 @@ export default function Charts(props) {
                 </PieChart>
                 <br />
                 <div style={{ fontSize: 'larger' }}>Constructed Boundary Distances</div>
-                <BarChart width={ width } height={ height } data={ constructed }>
+                <BarChart width={width} height={height} data={constructed}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='instance' />
                     <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
+                    <Bar dataKey={'value'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.65} />
                 </BarChart>
                 <br />
                 <div style={{ fontSize: 'larger' }}>Constructed Distances - Types</div>
@@ -986,10 +988,10 @@ export default function Charts(props) {
             if (obj.kind === 'Shelter' || obj.kind === 'Material') {
                 obj.instance = `Location ${ind + 1}`;
                 horizontal.push(obj);
-                if(obj.kind === 'Shelter'){
+                if (obj.kind === 'Shelter') {
                     shelter += obj.value;
-                    switch (obj.description){
-                        case 'Canopy' :
+                    switch (obj.description) {
+                        case 'Canopy':
                             canopy += obj.value;
                             break;
                         case 'Constructed Ceiling':
@@ -1033,7 +1035,7 @@ export default function Charts(props) {
                 }
                 ind++;
             } else {
-                obj.instance = `Location ${ind+1}`;
+                obj.instance = `Location ${ind + 1}`;
                 constructed.push(obj);
                 switch (obj.description) {
                     case 'Curbs':
@@ -1068,18 +1070,18 @@ export default function Charts(props) {
         totalPerc[5] = Math.round(totalPerc[4]);
 
         var array = [{ kind: 'Shelter', value: totalPerc[0] }, { kind: 'Material', value: totalPerc[2] }, { kind: 'Unmarked', value: totalPerc[4] }];
-        var mat = [{ type: 'Bricks', area: bricks}, {type: 'Concrete', area: concrete },{type: 'Natural',area: grass},{type: 'Tile',area: tile},{type: 'Wood', area: wood}];
+        var mat = [{ type: 'Bricks', area: bricks }, { type: 'Concrete', area: concrete }, { type: 'Natural', area: grass }, { type: 'Tile', area: tile }, { type: 'Wood', area: wood }];
         var shelt = [{ type: 'Canopy', area: canopy }, { type: 'Contructed Ceiling', area: ceiling }, { type: 'Temporary', area: temporary }, { type: 'Trees', area: trees }, { type: 'Umbrella Dining', area: umbrella }];
         var constr = [{ type: 'Curbs', area: curbs }, { type: 'Fences', area: fences }, { type: 'Building Wall', area: wall }, { type: 'Partial Wall', area: partial }, { type: 'Planter', area: planter }];
 
-        return(
+        return (
             <div id='boundCharts' className='Charts'>
                 <div style={{ fontSize: 'larger' }}>Boundary Areas (ft<sup>2</sup>)</div>
-                <PieChart width={ width } height={ height }>
-                    <Pie data={ horizontal } dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={ 50 } fill='#00B68A' >
-                        { horizontal.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000' } fillOpacity={ 0.85 }/>
-                        )) }
+                <PieChart width={width} height={height}>
+                    <Pie data={horizontal} dataKey='value' nameKey='kind' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
+                        {horizontal.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={boundsColor[entry.kind]} stroke={'#000000'} fillOpacity={0.85} />
+                        ))}
                     </Pie>
                     <Tooltip />
                 </PieChart>
@@ -1092,14 +1094,14 @@ export default function Charts(props) {
                     </Pie>
                     <Tooltip />
                 </PieChart>
-                <br/>
+                <br />
                 <div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Material'] }}>&nbsp;&nbsp;</div>&nbsp; Material (Horizontal): {totalPerc[2] < totalPerc[3] ? `<${totalPerc[3]}%` : (totalPerc[2] > totalPerc[3] ? `>${totalPerc[3]}%` : `${totalPerc[3]}%`)} </div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Shelter'] }}>&nbsp;&nbsp;</div>&nbsp; Shelter (Horizontal): {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : (totalPerc[0] > totalPerc[1] ? `>${totalPerc[1]}%` : `${totalPerc[1]}%`)} </div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; Unmarked: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
                 &nbsp;
-                <br/>
+                <br />
                 <div style={{ fontSize: 'larger' }}>Material Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={mat} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill={boundsColor['Material']} >
@@ -1121,14 +1123,14 @@ export default function Charts(props) {
                 </PieChart>
                 <br />
                 <div style={{ fontSize: 'larger' }}>Constructed Boundary Distances</div>
-                <BarChart width={ width } height={ height } data={ constructed }>
+                <BarChart width={width} height={height} data={constructed}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis dataKey='instance' />
                     <YAxis label={{ value: 'Distance (ft)', angle: -90, position: 'insideBottomLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={ 'value' } fill={ boundsColor['Constructed'] } stroke={ boundsColor['Constructed'] } fillOpacity={ 0.65 } />
+                    <Bar dataKey={'value'} fill={boundsColor['Constructed']} stroke={boundsColor['Constructed']} fillOpacity={0.65} />
                 </BarChart>
-                <br/>
+                <br />
                 <div style={{ fontSize: 'larger' }}>Constructed Distances - Types</div>
                 <BarChart width={width} height={height} data={constr}>
                     <CartesianGrid strokeDasharray='3 3' />
@@ -1148,7 +1150,7 @@ export default function Charts(props) {
     };
 
     const multiNatureChart = (data) => {
-        var waterAndVeg = [{nature: 'Water', area: 0}, {nature: 'Vegetation', area: 0}];
+        var waterAndVeg = [{ nature: 'Water', area: 0 }, { nature: 'Vegetation', area: 0 }];
         var domestic = 0;
         var wild = 0;
         var dogs = 0, cats = 0, otherD = 0;
@@ -1171,12 +1173,12 @@ export default function Charts(props) {
         for (const [dateTime, resultArr] of Object.entries(data)) {
             for (const index1 of resultArr) {
                 for (const obj of index1) {
-                    for (const [natureType, typeArr] of Object.entries(obj)){
-                        for(const typePoint in typeArr){
+                    for (const [natureType, typeArr] of Object.entries(obj)) {
+                        for (const typePoint in typeArr) {
                             if (natureType === 'water') {
                                 waterAndVeg[0].area += typeArr[typePoint].area;
                                 water += typeArr[typePoint].area;
-                                switch(typeArr[typePoint].description){
+                                switch (typeArr[typePoint].description) {
                                     case 'Lake':
                                         lake += typeArr[typePoint].area;
                                         break;
@@ -1189,7 +1191,7 @@ export default function Charts(props) {
                                     case 'Swamp':
                                         swamp += typeArr[typePoint].area;
                                         break;
-                                    default: 
+                                    default:
                                         console.log('Non-matching description');
                                         console.log(typeArr[typePoint].description)
                                 }
@@ -1274,7 +1276,7 @@ export default function Charts(props) {
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Vegetation'] }}>&nbsp;&nbsp;</div>&nbsp; Vegetation </div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water</div>
                 </div>
-                <br/>
+                <br />
                 <div style={{ fontSize: 'larger' }}>Occupied Area (%)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={totalArea} dataKey='area' nameKey='nature' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
@@ -1285,12 +1287,12 @@ export default function Charts(props) {
                     <Tooltip />
                 </PieChart>
                 <div >
-                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Vegetation'] }}>&nbsp;&nbsp;</div>&nbsp; Vegetation: { totalPerc[2] < totalPerc[3] ? `<${totalPerc[3]}%` : `${totalPerc[3]}%` }</div>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: { totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : `${totalPerc[1]}%` }</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Vegetation'] }}>&nbsp;&nbsp;</div>&nbsp; Vegetation: {totalPerc[2] < totalPerc[3] ? `<${totalPerc[3]}%` : `${totalPerc[3]}%`}</div>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: natureColor['Water'] }}>&nbsp;&nbsp;</div>&nbsp; Water: {totalPerc[0] < totalPerc[1] ? `<${totalPerc[1]}%` : `${totalPerc[1]}%`}</div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}><div style={{ backgroundColor: boundsColor['Unmarked'] }}>&nbsp;&nbsp;</div>&nbsp; None: {totalPerc[4] < totalPerc[5] ? `<${totalPerc[5]}%` : (totalPerc[4] > totalPerc[5] ? `>${totalPerc[5]}%` : `${totalPerc[5]}%`)} </div>
                 </div>
                 &nbsp;
-                <br/>
+                <br />
                 <div style={{ fontSize: 'larger' }}> Vegetation Areas (ft<sup>2</sup>)</div>
                 <PieChart width={width} height={height}>
                     <Pie data={vege} dataKey='area' nameKey='type' cx='50%' cy='50%' outerRadius={50} fill='#00B68A' >
@@ -1310,7 +1312,7 @@ export default function Charts(props) {
                     </Pie>
                     <Tooltip />
                 </PieChart>
-                <br/>
+                <br />
                 <div style={{ fontSize: 'larger' }}>Species</div>
                 <BarChart width={width} height={height} data={species}>
                     <CartesianGrid strokeDasharray='3 3' />
@@ -1360,11 +1362,11 @@ export default function Charts(props) {
         var design = 0;
         var field = 0;
 
-        for(const ind in data){
+        for (const ind in data) {
             for (const [natureType, typeArr] of Object.entries(data[ind])) {
                 var adjusted;
-                for (const typePoint in typeArr){
-                    if (natureType === 'water'){
+                for (const typePoint in typeArr) {
+                    if (natureType === 'water') {
                         adjusted = typeArr[typePoint];
                         adjusted.nature = 'Water';
                         waterAndVeg.push(adjusted);
@@ -1386,7 +1388,7 @@ export default function Charts(props) {
                                 console.log('Non-matching description');
                                 console.log(typeArr[typePoint].description)
                         }
-                    } else if(natureType === 'vegetation'){
+                    } else if (natureType === 'vegetation') {
                         adjusted = typeArr[typePoint];
                         adjusted.nature = 'Vegetation';
                         waterAndVeg.push(adjusted);
@@ -1406,30 +1408,30 @@ export default function Charts(props) {
                                 console.log(typeArr[typePoint].description)
                         }
                     } else {
-                        if(typeArr[typePoint].description === 'Dog'){
+                        if (typeArr[typePoint].description === 'Dog') {
                             dogs++;
-                        } else if (typeArr[typePoint].description === 'Cat'){
+                        } else if (typeArr[typePoint].description === 'Cat') {
                             cats++;
-                        } else if (typeArr[typePoint].description === 'Duck'){
+                        } else if (typeArr[typePoint].description === 'Duck') {
                             ducks++;
-                        } else if (typeArr[typePoint].description === 'Turtle'){
+                        } else if (typeArr[typePoint].description === 'Turtle') {
                             turtles++;
-                        } else if (typeArr[typePoint].description === 'Rabbit'){
+                        } else if (typeArr[typePoint].description === 'Rabbit') {
                             rabbits++;
-                        } else if (typeArr[typePoint].description === 'Bird'){
+                        } else if (typeArr[typePoint].description === 'Bird') {
                             birds++;
-                        } else if (typeArr[typePoint].description === 'Squirrel'){
+                        } else if (typeArr[typePoint].description === 'Squirrel') {
                             squirrels++;
-                        } 
+                        }
 
-                        if (typeArr[typePoint].kind === 'Domesticated'){
+                        if (typeArr[typePoint].kind === 'Domesticated') {
                             domestic++;
-                            if (typeArr[typePoint].description === 'Other'){
+                            if (typeArr[typePoint].description === 'Other') {
                                 otherD++;
                             }
-                        } else if (typeArr[typePoint].kind === 'Wild'){
+                        } else if (typeArr[typePoint].kind === 'Wild') {
                             wild++;
-                            if (typeArr[typePoint].description === 'Other'){
+                            if (typeArr[typePoint].description === 'Other') {
                                 otherW++;
                             }
                         }
@@ -1446,8 +1448,8 @@ export default function Charts(props) {
         totalPerc[5] = Math.round(totalPerc[4]);
 
         var totalArea = [{ nature: 'Water', area: totalPerc[0] }, { nature: 'Vegetation', area: totalPerc[2] }, { nature: 'None', area: totalPerc[4] }];
-        var species = [{ species: 'Domestic Dogs', count: dogs }, { species: 'Domestic Cats', count: cats }, { species: 'Wild Birds', count: birds }, {species: 'Wild Ducks', count: ducks }, { species: 'Wild Rabbits', count: rabbits }, { species: 'Wild Squirrels', count: squirrels }, { species: 'Wild Turtles', count: turtles}, {species: 'Domestic (Other)', count: otherD}, {species: 'Wild (Other)', count: otherW}];
-        var variant = [{ variant: 'Wild', count: (wild+otherW)}, { variant: 'Domesticated', count: (domestic+otherD) }];
+        var species = [{ species: 'Domestic Dogs', count: dogs }, { species: 'Domestic Cats', count: cats }, { species: 'Wild Birds', count: birds }, { species: 'Wild Ducks', count: ducks }, { species: 'Wild Rabbits', count: rabbits }, { species: 'Wild Squirrels', count: squirrels }, { species: 'Wild Turtles', count: turtles }, { species: 'Domestic (Other)', count: otherD }, { species: 'Wild (Other)', count: otherW }];
+        var variant = [{ variant: 'Wild', count: (wild + otherW) }, { variant: 'Domesticated', count: (domestic + otherD) }];
         var h2o = [{ type: 'Lake', area: lake }, { type: 'Ocean', area: ocean }, { type: 'River', area: river }, { type: 'Swamp', area: swamp }];
         var vege = [{ type: 'Native', area: native }, { type: 'Design', area: design }, { type: 'Field', area: field }];
 
@@ -1572,7 +1574,7 @@ export default function Charts(props) {
 
                 console.log("🚀 ~ file: Charts.js:1555 ~ data.map ~ obj:", obj);
 
-                if(obj.accessType === 'Access Point') {
+                if (obj.accessType === 'Access Point') {
                     accessPoint++;
                     accessSum++;
                     switch (obj.description) {
@@ -1600,7 +1602,7 @@ export default function Charts(props) {
                             console.log('Non-matching description');
                             console.log(obj.description)
                     }
-                } else if(obj.accessType === 'Access Path') {
+                } else if (obj.accessType === 'Access Path') {
                     accessPath++;
                     accessSum++;
                     switch (obj.description) {
@@ -1645,49 +1647,49 @@ export default function Charts(props) {
         });
 
         // access types
-        var accessTypeArr = [  
-            { accessType: 'Access Point', value: accessPoint },  
-            { accessType: 'Access Path', value: accessPath },  
+        var accessTypeArr = [
+            { accessType: 'Access Point', value: accessPoint },
+            { accessType: 'Access Path', value: accessPath },
             { accessType: 'Access Area', value: accessArea }
         ];
 
         // access point descriptions
-        var accessPointDescArr = [  
-            { description: 'Ride Share Drop Off', value: rideShare },  
-            { description: 'Bike Rack', value: bikeRack },  
-            { description: 'Public Transport Stop', value: publicStop },  
-            { description: 'Valet Counter', value: valet },  
+        var accessPointDescArr = [
+            { description: 'Ride Share Drop Off', value: rideShare },
+            { description: 'Bike Rack', value: bikeRack },
+            { description: 'Public Transport Stop', value: publicStop },
+            { description: 'Valet Counter', value: valet },
             { description: 'E-scooter Parking', value: scooter }
         ];
 
         // access path descriptions
-        var accessPathDescArr = [  
-            { description: 'Sidewalk', value: sidewalk },  
-            { description: 'Side Street', value: sideStreet },  
+        var accessPathDescArr = [
+            { description: 'Sidewalk', value: sidewalk },
+            { description: 'Side Street', value: sideStreet },
             { description: 'Main Road', value: mainRoad }
         ];
 
         // access area descriptions
-        var accessAreaDescArr = [  
-            { description: 'Parking Lot', value: lot },  
+        var accessAreaDescArr = [
+            { description: 'Parking Lot', value: lot },
             { description: 'Parking Garage', value: garage }
         ];
 
         // access area percentage
         var accessAreaPerArr = [
-            { description: 'Parking Lot', value: parseFloat(lotArea.toFixed(2)) }, 
+            { description: 'Parking Lot', value: parseFloat(lotArea.toFixed(2)) },
             { description: 'Parking Garage', value: parseFloat(garageArea.toFixed(2)) },
             { description: 'Project Area', value: parseFloat(projectArea.toFixed(2)) },
         ];
 
         //add new results here
-        const packagedData = [ accessPointDescArr, accessPathDescArr, accessAreaDescArr, accessAreaPerArr ]
+        const packagedData = [accessPointDescArr, accessPathDescArr, accessAreaDescArr, accessAreaPerArr]
         // [ labelHeight + 200, labelHeight]
-        const chartHeight = [ [345, 145], [280, 80], [310, 110], [310, 110] ]
-        const sums = [ accessPointSum, accessPathSum, accessAreaSum, projectArea ]
+        const chartHeight = [[345, 145], [280, 80], [310, 110], [310, 110]]
+        const sums = [accessPointSum, accessPathSum, accessAreaSum, projectArea]
         const titles = ["Access Point Types", "Access Path Types", "Access Area Types", "Area Sq. Ft Percentage"]
 
-        return(
+        return (
             <div className='Charts' style={{ paddingBottom: 50 }}>
                 <div style={{ fontSize: 'larger' }}> Access Types </div>
                 <PieChart width={width} height={height}>
@@ -1706,30 +1708,30 @@ export default function Charts(props) {
                                 <div style={{ backgroundColor: accessColor[index] }}>&nbsp;&nbsp;</div>
                                 &nbsp;{entry.accessType}: {(entry.value / accessSum * 100).toFixed(2)}%
                             </div>
-                        );                          
+                        );
                     })}
                 </div>
-                <br/>
-                <BarChart style={{paddingBottom: 'auto'}} width={ width } height={ chartHeight[2][0] } data={ accessTypeArr }>
+                <br />
+                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[2][0]} data={accessTypeArr}>
                     <CartesianGrid strokeDasharray='3 3' />
-                    <XAxis height={ chartHeight[2][1] } interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
+                    <XAxis height={chartHeight[2][1]} interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
                     <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={ 'value' } fill='#636262'>
-                        { accessTypeArr.map((entry, index) => (
-                            <Cell key={ `cell-${index}` } fill={ accessColor[index] } fillOpacity={ 0.8 } />
-                        )) }
+                    <Bar dataKey={'value'} fill='#636262'>
+                        {accessTypeArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={accessColor[index]} fillOpacity={0.8} />
+                        ))}
                     </Bar>
                 </BarChart>
-                
+
                 {packagedData.map((results, index) => {
 
-                    
+
 
                     let yLabel = index < 3 ? "Count" : "Percentage";
 
                     console.log("🚀 ~ file: Charts.js:1935 ~ {packagedData.map ~ results:", results);
-                    return(
+                    return (
                         <div className='Charts'>
                             <div style={{ fontSize: 'larger', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> {titles[index]} </div>
                             <PieChart width={width} height={height}>
@@ -1742,15 +1744,15 @@ export default function Charts(props) {
                             </PieChart>
                             <div>
                                 {/* Show Area Legend */}
-                                {index === 3 ? 
+                                {index === 3 ?
                                     results.map((entry, i) => {
                                         //if(entry.value > 0)
                                         return (
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                            <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                            &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
+                                                <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
+                                                &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
                                             </div>
-                                        );                          
+                                        );
                                     })
                                     :
                                     // Else show Percentage Legend
@@ -1758,29 +1760,29 @@ export default function Charts(props) {
                                         //if(entry.value > 0)
                                         return (
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                            <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                            &nbsp;{entry.description}: {(entry.value / sums[index] * 100).toFixed(2)}%
+                                                <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
+                                                &nbsp;{entry.description}: {(entry.value / sums[index] * 100).toFixed(2)}%
                                             </div>
-                                        );                          
+                                        );
                                     })
                                 }
                             </div>
-                            <br/>
+                            <br />
                             {/* Don't show BarChart for Area */}
-                            {index !== 3 ? 
-                                <BarChart style={{paddingBottom: 'auto'}} width={ width } height={ chartHeight[index][0] } data={ results }>
+                            {index !== 3 ?
+                                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[index][0]} data={results}>
                                     <CartesianGrid strokeDasharray='3 3' />
-                                    <XAxis height={ chartHeight[index][1] } interval={0} angle={-60} textAnchor="end" dataKey='description' />
-                                    <YAxis dy={1} label={{ textAnchor:"center", value: `${yLabel}`, angle: -90, position: 'insideLeft' }} />
+                                    <XAxis height={chartHeight[index][1]} interval={0} angle={-60} textAnchor="end" dataKey='description' />
+                                    <YAxis dy={1} label={{ textAnchor: "center", value: `${yLabel}`, angle: -90, position: 'insideLeft' }} />
                                     <Tooltip />
-                                    <Bar dataKey={ 'value' } fill='#636262'>
-                                        { results.map((entry, index) => (
-                                            <Cell key={ `cell-${index}` } fill={ accessColor[index] } fillOpacity={ 0.8 } />
-                                        )) }
+                                    <Bar dataKey={'value'} fill='#636262'>
+                                        {results.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={accessColor[index]} fillOpacity={0.8} />
+                                        ))}
                                     </Bar>
-                                </BarChart> 
+                                </BarChart>
                                 : null}
-                            <br/>
+                            <br />
                         </div>
                     )
                 })}
@@ -1789,7 +1791,7 @@ export default function Charts(props) {
     };
 
     const accessCharts = (data) => {
-        
+
         // Access Type
         var accessPoint = 0;
         var accessPath = 0;
@@ -1850,7 +1852,7 @@ export default function Charts(props) {
 
             // console.log("🚀 ~ file: Charts.js:1555 ~ data.map ~ obj:", obj);
 
-            if(obj.accessType === 'Access Point') {
+            if (obj.accessType === 'Access Point') {
                 accessPoint++;
                 accessSum++;
                 switch (obj.description) {
@@ -1883,7 +1885,7 @@ export default function Charts(props) {
                         console.log('Non-matching description');
                         console.log(obj.description)
                 }
-            } else if(obj.accessType === 'Access Path') {
+            } else if (obj.accessType === 'Access Path') {
                 accessPath++;
                 accessSum++;
                 switch (obj.description) {
@@ -1932,84 +1934,84 @@ export default function Charts(props) {
         });
 
         // access types
-        var accessTypeArr = [  
-            { accessType: 'Access Point', value: accessPoint },  
-            { accessType: 'Access Path', value: accessPath },  
+        var accessTypeArr = [
+            { accessType: 'Access Point', value: accessPoint },
+            { accessType: 'Access Path', value: accessPath },
             { accessType: 'Access Area', value: accessArea }
         ];
 
         // access point descriptions
-        var accessPointDescArr = [  
-            { description: 'Ride Share Drop Off', value: rideShare },  
-            { description: 'Bike Rack', value: bikeRack },  
-            { description: 'Public Transport Stop', value: publicStop },  
-            { description: 'Valet Counter', value: valet },  
+        var accessPointDescArr = [
+            { description: 'Ride Share Drop Off', value: rideShare },
+            { description: 'Bike Rack', value: bikeRack },
+            { description: 'Public Transport Stop', value: publicStop },
+            { description: 'Valet Counter', value: valet },
             { description: 'E-scooter Parking', value: scooter }
         ];
 
         // access path descriptions
-        var accessPathDescArr = [  
-            { description: 'Sidewalk', value: sidewalk },  
-            { description: 'Side Street', value: sideStreet },  
+        var accessPathDescArr = [
+            { description: 'Sidewalk', value: sidewalk },
+            { description: 'Side Street', value: sideStreet },
             { description: 'Main Road', value: mainRoad }
         ];
 
         // access area descriptions
-        var accessAreaDescArr = [  
-            { description: 'Parking Lot', value: lot },  
+        var accessAreaDescArr = [
+            { description: 'Parking Lot', value: lot },
             { description: 'Parking Garage', value: garage }
         ];
 
         // access area percentage
         var accessAreaPerArr = [
-            { description: 'Parking Lot', value: parseFloat(lotArea.toFixed(2)) }, 
+            { description: 'Parking Lot', value: parseFloat(lotArea.toFixed(2)) },
             { description: 'Parking Garage', value: parseFloat(garageArea.toFixed(2)) },
             { description: 'Project Area', value: parseFloat(projectArea.toFixed(2)) },
         ];
 
         // access types average difficulty
-        var accessTypeDiffArr = [  
-            { accessType: 'Access Point', value: accessPointDiff },  
-            { accessType: 'Access Path', value: accessPathDiff },  
+        var accessTypeDiffArr = [
+            { accessType: 'Access Point', value: accessPointDiff },
+            { accessType: 'Access Path', value: accessPathDiff },
             { accessType: 'Access Area', value: accessAreaDiff }
         ];
 
         // access point average difficulty
-        var accessPointDescDiffArr = [  
-            { description: 'Ride Share Drop Off', value: rideShareDiff },  
-            { description: 'Bike Rack', value: bikeRackDiff },  
-            { description: 'Public Transport Stop', value: publicStopDiff },  
-            { description: 'Valet Counter', value: valetDiff },  
+        var accessPointDescDiffArr = [
+            { description: 'Ride Share Drop Off', value: rideShareDiff },
+            { description: 'Bike Rack', value: bikeRackDiff },
+            { description: 'Public Transport Stop', value: publicStopDiff },
+            { description: 'Valet Counter', value: valetDiff },
             { description: 'E-scooter Parking', value: scooterDiff }
         ];
 
         // access path average difficulty
-        var accessPathDescDiffArr = [  
-            { description: 'Sidewalk', value: sidewalkDiff },  
-            { description: 'Side Street', value: sideStreetDiff },  
+        var accessPathDescDiffArr = [
+            { description: 'Sidewalk', value: sidewalkDiff },
+            { description: 'Side Street', value: sideStreetDiff },
             { description: 'Main Road', value: mainRoadDiff }
         ];
 
         // access area average difficulty
-        var accessAreaDescDiffArr = [  
-            { description: 'Parking Lot', value: lotDiff },  
+        var accessAreaDescDiffArr = [
+            { description: 'Parking Lot', value: lotDiff },
             { description: 'Parking Garage', value: garageDiff }
         ];
 
         //add new results here
-        const packagedData = [ accessPointDescArr, accessPathDescArr, accessAreaDescArr, accessAreaPerArr, accessTypeDiffArr, accessPointDescDiffArr, accessPathDescDiffArr, accessAreaDescDiffArr, ]
+        const packagedData = [accessPointDescArr, accessPathDescArr, accessAreaDescArr, accessAreaPerArr, accessTypeDiffArr, accessPointDescDiffArr, accessPathDescDiffArr, accessAreaDescDiffArr,]
 
         console.log("🚀 ~ file: Charts.js:2000 ~ accessCharts ~ packagedData:", packagedData);
 
         // [ labelHeight + 200, labelHeight]
-        const chartHeight = [ [345, 145], [280, 80], [310, 110], [310, 110], [310, 110], [345, 145], [280, 80], [310, 110], [310, 110] ]
-        const sums = [ accessPoint, accessPath, accessArea, projectArea, accessSumDiff, accessPointDiff, accessPathDiff, accessAreaDiff, ]
+        const chartHeight = [[345, 145], [280, 80], [310, 110], [310, 110], [310, 110], [345, 145], [280, 80], [310, 110], [310, 110]]
+        const sums = [accessPoint, accessPath, accessArea, projectArea, accessSumDiff, accessPointDiff, accessPathDiff, accessAreaDiff,]
 
         console.log("🚀 ~ file: Charts.js:2008 ~ accessCharts ~ sums:", sums);
 
-        const titles = ["Access Point Types", "Access Path Types", "Access Area Types", "Area Sq. Ft Percentage", "Access Type Difficulties", "Access Point Difficulties", "Access Path Difficulties", "Access Area Difficulties", ]
+        const titles = ["Access Point Types", "Access Path Types", "Access Area Types", "Area Sq. Ft Percentage", "Access Type Difficulties", "Access Point Difficulties", "Access Path Difficulties", "Access Area Difficulties",]
 
-        return(
+        return (
             <div className='Charts' style={{ paddingBottom: 50 }}>
                 <div style={{ fontSize: 'larger' }}> Access Types </div>
                 <PieChart width={width} height={height}>
@@ -2028,62 +2030,62 @@ export default function Charts(props) {
                                 <div style={{ backgroundColor: accessColor[index] }}>&nbsp;&nbsp;</div>
                                 &nbsp;{entry.accessType}: {(entry.value / accessSum * 100).toFixed(2)}%
                             </div>
-                        );                          
+                        );
                     })}
                 </div>
-                <br/>
-                <BarChart style={{paddingBottom: 'auto'}} width={ width } height={ chartHeight[2][0] } data={ accessTypeArr }>
+                <br />
+                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[2][0]} data={accessTypeArr}>
                     <CartesianGrid strokeDasharray='3 3' />
-                    <XAxis height={ chartHeight[2][1] } interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
+                    <XAxis height={chartHeight[2][1]} interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
                     <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey={ 'value' } fill='#636262'>
-                        { accessTypeArr.map((entry, index) => (
-                            <Cell key={ `cell-${index}` } fill={ accessColor[index] } fillOpacity={ 0.8 } />
-                        )) }
+                    <Bar dataKey={'value'} fill='#636262'>
+                        {accessTypeArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={accessColor[index]} fillOpacity={0.8} />
+                        ))}
                     </Bar>
                 </BarChart>
-                
+
                 {packagedData.map((results, index) => {
                     let yLabel = index !== 3 ? "Count" : "Percentage";
 
                     console.log("🚀 ~ file: Charts.js:1935 ~ {packagedData.map ~ results:", results);
-                    return(
+                    return (
                         <div className='Charts'>
                             <div style={{ fontSize: 'larger', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> {titles[index]} </div>
                             {/* Hide Pie chart for average difficulties */}
-                            {index < 3 ? 
-                            <PieChart width={width} height={height}>
-                                <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
-                                    {results.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
-                                    ))}
-                                </Pie>
-                                <Tooltip />
-                            </PieChart> : null}
+                            {index < 3 ?
+                                <PieChart width={width} height={height}>
+                                    <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                                        {results.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip />
+                                </PieChart> : null}
                             <div>
                                 {/* Show Default Legend */}
-                                {index < 3 ? 
+                                {index < 3 ?
                                     results.map((entry, i) => {
                                         //if(entry.value > 0)
                                         return (
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                            <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                            &nbsp;{entry.description}: {(entry.value / sums[index] * 100).toFixed(2)}%
+                                                <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
+                                                &nbsp;{entry.description}: {(entry.value / sums[index] * 100).toFixed(2)}%
                                             </div>
-                                        );                          
+                                        );
                                     })
                                     :
-                                    (index === 3 ? 
+                                    (index === 3 ?
                                         // on index 3 show percentage for area chart
                                         results.map((entry, i) => {
                                             //if(entry.value > 0)
                                             return (
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                                &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
+                                                    <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
+                                                    &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
                                                 </div>
-                                            );                          
+                                            );
                                         })
                                         :
                                         // on index 4-6 show average difficulties for access types
@@ -2091,30 +2093,30 @@ export default function Charts(props) {
                                             //if(entry.value > 0)
                                             return (
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                                &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
+                                                    <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
+                                                    &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
                                                 </div>
-                                            );                          
+                                            );
                                         })
                                     )
                                 }
                             </div>
-                            <br/>
+                            <br />
                             {/* Don't show BarChart for Area */}
-                            {index !== 3 ? 
-                                <BarChart style={{paddingBottom: 'auto'}} width={ width } height={ chartHeight[index][0] } data={ results }>
+                            {index !== 3 ?
+                                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[index][0]} data={results}>
                                     <CartesianGrid strokeDasharray='3 3' />
-                                    <XAxis height={ chartHeight[index][1] } interval={0} angle={-60} textAnchor="end" dataKey='description' />
-                                    <YAxis dy={1} label={{ textAnchor:"center", value: `${yLabel}`, angle: -90, position: 'insideLeft' }} />
+                                    <XAxis height={chartHeight[index][1]} interval={0} angle={-60} textAnchor="end" dataKey='description' />
+                                    <YAxis dy={1} label={{ textAnchor: "center", value: `${yLabel}`, angle: -90, position: 'insideLeft' }} />
                                     <Tooltip />
-                                    <Bar dataKey={ 'value' } fill='#636262'>
-                                        { results.map((entry, index) => (
-                                            <Cell key={ `cell-${index}` } fill={ accessColor[index] } fillOpacity={ 0.8 } />
-                                        )) }
+                                    <Bar dataKey={'value'} fill='#636262'>
+                                        {results.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={accessColor[index]} fillOpacity={0.8} />
+                                        ))}
                                     </Bar>
-                                </BarChart> 
+                                </BarChart>
                                 : null}
-                            <br/>
+                            <br />
                         </div>
                     )
                 })}
@@ -2122,23 +2124,490 @@ export default function Charts(props) {
         );
     };
 
-    return(
-       data !== [] ? 
-            (type === 0 ? 
-                    <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px' }}>
-                        <div className='sectionName'>
-                            <div style={{ fontSize: 'large' }}>{ testNames(cat[0]) }</div>
-                            { cat[1] }  { cat[2] }
-                        </div>
-                            { cat[0] === 'sound_maps' ? soundBarChart(data) : (cat[0] === 'boundaries_maps' ? BoundaryPieChart(data) : (cat[0] === 'moving_maps' ? movingBarChart(data) : (cat[0] === 'stationary_maps' ? stationaryBarCharts(data) : (cat[0] === 'nature_maps' ? NaturePieChart(data) : (cat[0] === 'light_maps' ? lightingCharts(data) : ( cat[0] === 'order_maps' ? orderCharts(data) : (cat[0] === 'access_maps' ? accessCharts(data) : null))))))) }
-                    </div> 
-                : 
-                    <div key={ selection } style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px'}}>
-                        <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
-                            { testNames(cat[0]) }: Summary
-                        </div>
-                        {cat[0] === 'sound_maps' ? multiSoundCharts(data) : (cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : (cat[0] === 'stationary_maps' ? multiStationary(data) : (cat[0] === 'nature_maps' ? multiNatureChart(data) : (cat[0] === 'moving_maps' ? multiMoving(data) : (cat[0] === 'light_maps' ? multiLight(data) : ( cat[0] === 'order_maps' ? multiOrderCharts(data) : (cat[0] === 'access_maps' ? multiAccessCharts(data) : null))) )) ))}
-                    </div>) 
-        : null
+    const multiProgramCharts = (data) => {
+        console.log(data);
+        data = Object.values(data);
+
+        let foodAndBev = 0;
+        let entertain = 0;
+        let hospitality = 0;
+        let healthcare = 0;
+        let retail = 0;
+        let commercial = 0;
+        let resident = 0;
+        let lab = 0;
+        let storage = 0;
+        let empty = 0;
+        let civil = 0;
+        let monument = 0;
+        let publicSpace = 0;
+        let programSum = 0;
+
+        let foodAndBevArea = 0;
+        let entertainArea = 0;
+        let hospitalityArea = 0;
+        let healthcareArea = 0;
+        let retailArea = 0;
+        let commercialArea = 0;
+        let residentArea = 0;
+        let labArea = 0;
+        let storageArea = 0;
+        let emptyArea = 0;
+        let civilArea = 0;
+        let monumentArea = 0;
+        let publicSpaceArea = 0;
+        let totalArea = 0;
+
+        // {"Food and beverage", food},
+        // {"Entertainment / leisure", entertain},
+        // {"Hospitality", hospitality},
+        // {"Healthcare", health},
+        // {"Retail", retail},
+        // {"Commercial", commercial},
+        // {"Residential", residential},
+        // {"Laboratory", lab},
+        // {"Storage / warehouse", storage},
+        // {"Empty / abandoned / unused", empty},
+        // {"Civil", civil},
+        // {"Monument", monument},
+        // {"Public Space", publicSpace}
+        data.map((inst) => {
+            inst = inst[0][0];
+            totalArea += inst.sqFootage;
+
+            inst.floorData.map((obj) => {
+                obj.programs.map((program) => {
+                    programSum++;
+                    switch (program.programType) {
+                        case 'Food and beverage':
+                            foodAndBev++;
+                            foodAndBevArea += program.sqFootage;
+                            break;
+                        case 'Entertainment / leisure':
+                            entertain++;
+                            entertainArea += program.sqFootage;
+                            break;
+                        case 'Hospitality':
+                            hospitality++;
+                            hospitalityArea += program.sqFootage;
+                            break;
+                        case 'Healthcare':
+                            healthcare++;
+                            healthcareArea += program.sqFootage;
+                            break;
+                        case 'Retail':
+                            retail++;
+                            retailArea += program.sqFootage;
+                            break;
+                        case 'Commercial':
+                            commercial++;
+                            commercialArea += program.sqFootage;
+                            break;
+                        case 'Residential':
+                            resident++;
+                            residentArea += program.sqFootage;
+                            break;
+                        case 'Laboratory':
+                            lab++;
+                            labArea += program.sqFootage;
+                            break;
+                        case 'Storage / warehouse':
+                            storage++;
+                            storageArea += program.sqFootage;
+                            break;
+                        case 'Empty / abandoned / unused':
+                            empty++;
+                            emptyArea += program.sqFootage;
+                            break;
+                        case 'Civil':
+                            civil++;
+                            civilArea += program.sqFootage;
+                            break;
+                        case 'Monument':
+                            monument++;
+                            monumentArea += program.sqFootage;
+                            break;
+                        case 'Public Space':
+                            publicSpace++;
+                            publicSpaceArea += program.sqFootage;
+                            break;
+                        default:
+                            console.log('Non-matching program type');
+                            console.log(program.programType);
+                            break;
+                    }
+                })
+            })
+        })
+
+
+
+        const programTypeArr = [
+            { programType: 'Food and beverage', value: foodAndBev },
+            { programType: 'Entertainment / leisure', value: entertain },
+            { programType: 'Hospitality', value: hospitality },
+            { programType: 'Healthcare', value: healthcare },
+            { programType: 'Retail', value: retail },
+            { programType: 'Commercial', value: commercial },
+            { programType: 'Residential', value: resident },
+            { programType: 'Laboratory', value: lab },
+            { programType: 'Storage / warehouse', value: storage },
+            { programType: 'Empty / abandoned / unused', value: empty },
+            { programType: 'Civil', value: civil },
+            { programType: 'Monument', value: monument },
+            { programType: 'Public Space', value: publicSpace },
+        ];
+
+        const programTypeAreaArr = [
+            { programType: 'Food and beverage Area', value: parseFloat(foodAndBevArea.toFixed(1)) },
+            { programType: 'Entertainment / leisure Area', value: parseFloat(entertainArea.toFixed(1)) },
+            { programType: 'Hospitality Area', value: parseFloat(hospitalityArea.toFixed(1)) },
+            { programType: 'Healthcare Area', value: parseFloat(healthcareArea.toFixed(1)) },
+            { programType: 'Retail Area', value: parseFloat(retailArea.toFixed(1)) },
+            { programType: 'Commercial Area', value: parseFloat(commercialArea.toFixed(1)) },
+            { programType: 'Residential Area', value: parseFloat(residentArea.toFixed(1)) },
+            { programType: 'Laboratory Area', value: parseFloat(labArea.toFixed(1)) },
+            { programType: 'Storage / warehouse Area', value: parseFloat(storageArea.toFixed(1)) },
+            { programType: 'Empty / abandoned / unused Area', value: parseFloat(emptyArea.toFixed(1)) },
+            { programType: 'Civil Area', value: parseFloat(civilArea.toFixed(1)) },
+            { programType: 'Monument Area', value: parseFloat(monumentArea.toFixed(1)) },
+            { programType: 'Public Space Area', value: parseFloat(publicSpaceArea.toFixed(1)) },
+            { programType: 'Total Building Area', value: parseFloat(totalArea.toFixed(1)) }
+        ];
+
+        const packagedData = [programTypeArr, programTypeAreaArr];
+
+        const chartHeight = [[345, 145], [280, 80]]
+        const sums = [programSum, totalArea]
+
+        const titles = ["Program Types", "Program Areas"];
+
+        return (
+            <div className='Charts' style={{ paddingBottom: 50 }}>
+                <div style={{ fontSize: 'larger' }}> Program Types </div>
+                <PieChart width={width} height={height}>
+                    <Pie data={programTypeArr} dataKey='value' nameKey='programType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                        {programTypeArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={programColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <div>
+                    {programTypeArr.map((entry, index) => {
+                        if (entry.value > 0)
+                            return (
+                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                    <div style={{ backgroundColor: programColor[index] }}>&nbsp;&nbsp;</div>
+                                    &nbsp;{entry.programType}: {(entry.value / programSum * 100).toFixed(1)}%
+                                </div>
+                            );
+                    })}
+                </div>
+                <br />
+                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[1][0]} data={programTypeArr}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis height={chartHeight[0][1]} interval={0} angle={-60} textAnchor="end" dataKey='programType' />
+                    <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'value'} fill='#636262'>
+                        {programTypeArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={programColor[index]} fillOpacity={0.8} />
+
+                        ))}
+                    </Bar>
+                </BarChart>
+
+                <div style={{ fontSize: 'larger' }}> Program Type Areas </div>
+                <PieChart width={width} height={height}>
+                    <Pie data={programTypeAreaArr} dataKey='value' nameKey='programType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                        {programTypeAreaArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={programColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <div>
+                    {programTypeAreaArr.map((entry, index) => {
+                        if (entry.value > 0 && index !== 13)
+                            return (
+                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                    <div style={{ backgroundColor: programColor[index] }}>&nbsp;&nbsp;</div>
+                                    &nbsp;{entry.programType}: {(entry.value / totalArea * 100).toFixed(1)}%
+                                </div>
+                            );
+                    })}
+                </div>
+                <br />
+                <div>
+                    {programTypeAreaArr.map((entry, index) => {
+                        if (entry.value > 0)
+                            return (
+                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                    <div style={{ backgroundColor: programColor[index] }}>&nbsp;&nbsp;</div>
+                                    &nbsp;{entry.programType}: {(entry.value).toFixed(1)} ft²
+                                </div>
+                            );
+                    })}
+                </div>
+                <br />
+            </div>
+
+
+
+        )
+
+
+    };
+
+
+    const programCharts = (data) => {
+        // console.log(data);
+        data = data[0];
+
+        let foodAndBev = 0;
+        let entertain = 0;
+        let hospitality = 0;
+        let healthcare = 0;
+        let retail = 0;
+        let commercial = 0;
+        let resident = 0;
+        let lab = 0;
+        let storage = 0;
+        let empty = 0;
+        let civil = 0;
+        let monument = 0;
+        let publicSpace = 0;
+        let programSum = 0;
+
+        let foodAndBevArea = 0;
+        let entertainArea = 0;
+        let hospitalityArea = 0;
+        let healthcareArea = 0;
+        let retailArea = 0;
+        let commercialArea = 0;
+        let residentArea = 0;
+        let labArea = 0;
+        let storageArea = 0;
+        let emptyArea = 0;
+        let civilArea = 0;
+        let monumentArea = 0;
+        let publicSpaceArea = 0;
+        let totalArea = data.sqFootage;
+
+        // {"Food and beverage", food},
+        // {"Entertainment / leisure", entertain},
+        // {"Hospitality", hospitality},
+        // {"Healthcare", health},
+        // {"Retail", retail},
+        // {"Commercial", commercial},
+        // {"Residential", residential},
+        // {"Laboratory", lab},
+        // {"Storage / warehouse", storage},
+        // {"Empty / abandoned / unused", empty},
+        // {"Civil", civil},
+        // {"Monument", monument},
+        // {"Public Space", publicSpace}
+
+        data.floorData.map((obj) => {
+            obj.programs.map((program) => {
+                programSum++;
+                switch (program.programType) {
+                    case 'Food and beverage':
+                        foodAndBev++;
+                        foodAndBevArea += program.sqFootage;
+                        break;
+                    case 'Entertainment / leisure':
+                        entertain++;
+                        entertainArea += program.sqFootage;
+                        break;
+                    case 'Hospitality':
+                        hospitality++;
+                        hospitalityArea += program.sqFootage;
+                        break;
+                    case 'Healthcare':
+                        healthcare++;
+                        healthcareArea += program.sqFootage;
+                        break;
+                    case 'Retail':
+                        retail++;
+                        retailArea += program.sqFootage;
+                        break;
+                    case 'Commercial':
+                        commercial++;
+                        commercialArea += program.sqFootage;
+                        break;
+                    case 'Residential':
+                        resident++;
+                        residentArea += program.sqFootage;
+                        break;
+                    case 'Laboratory':
+                        lab++;
+                        labArea += program.sqFootage;
+                        break;
+                    case 'Storage / warehouse':
+                        storage++;
+                        storageArea += program.sqFootage;
+                        break;
+                    case 'Empty / abandoned / unused':
+                        empty++;
+                        emptyArea += program.sqFootage;
+                        break;
+                    case 'Civil':
+                        civil++;
+                        civilArea += program.sqFootage;
+                        break;
+                    case 'Monument':
+                        monument++;
+                        monumentArea += program.sqFootage;
+                        break;
+                    case 'Public Space':
+                        publicSpace++;
+                        publicSpaceArea += program.sqFootage;
+                        break;
+                    default:
+                        console.log('Non-matching program type');
+                        console.log(program.programType);
+                        break;
+                }
+            })
+        })
+
+        const programTypeArr = [
+            { programType: 'Food and beverage', value: foodAndBev },
+            { programType: 'Entertainment / leisure', value: entertain },
+            { programType: 'Hospitality', value: hospitality },
+            { programType: 'Healthcare', value: healthcare },
+            { programType: 'Retail', value: retail },
+            { programType: 'Commercial', value: commercial },
+            { programType: 'Residential', value: resident },
+            { programType: 'Laboratory', value: lab },
+            { programType: 'Storage / warehouse', value: storage },
+            { programType: 'Empty / abandoned / unused', value: empty },
+            { programType: 'Civil', value: civil },
+            { programType: 'Monument', value: monument },
+            { programType: 'Public Space', value: publicSpace },
+        ];
+
+        const programTypeAreaArr = [
+            { programType: 'Food and beverage Area', value: parseFloat(foodAndBevArea.toFixed(1)) },
+            { programType: 'Entertainment / leisure Area', value: parseFloat(entertainArea.toFixed(1)) },
+            { programType: 'Hospitality Area', value: parseFloat(hospitalityArea.toFixed(1)) },
+            { programType: 'Healthcare Area', value: parseFloat(healthcareArea.toFixed(1)) },
+            { programType: 'Retail Area', value: parseFloat(retailArea.toFixed(1)) },
+            { programType: 'Commercial Area', value: parseFloat(commercialArea.toFixed(1)) },
+            { programType: 'Residential Area', value: parseFloat(residentArea.toFixed(1)) },
+            { programType: 'Laboratory Area', value: parseFloat(labArea.toFixed(1)) },
+            { programType: 'Storage / warehouse Area', value: parseFloat(storageArea.toFixed(1)) },
+            { programType: 'Empty / abandoned / unused Area', value: parseFloat(emptyArea.toFixed(1)) },
+            { programType: 'Civil Area', value: parseFloat(civilArea.toFixed(1)) },
+            { programType: 'Monument Area', value: parseFloat(monumentArea.toFixed(1)) },
+            { programType: 'Public Space Area', value: parseFloat(publicSpaceArea.toFixed(1)) },
+            { programType: 'Total Building Area', value: parseFloat(totalArea.toFixed(1)) }
+        ];
+
+        const packagedData = [programTypeArr, programTypeAreaArr];
+
+        const chartHeight = [[345, 145], [280, 80]]
+        const sums = [programSum, totalArea]
+
+        const titles = ["Program Types", "Program Areas"];
+
+        return (
+            <div className='Charts' style={{ paddingBottom: 50 }}>
+                <div style={{ fontSize: 'larger' }}> Program Types </div>
+                <PieChart width={width} height={height}>
+                    <Pie data={programTypeArr} dataKey='value' nameKey='programType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                        {programTypeArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={programColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <div>
+                    {programTypeArr.map((entry, index) => {
+                        if (entry.value > 0)
+                            return (
+                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                    <div style={{ backgroundColor: programColor[index] }}>&nbsp;&nbsp;</div>
+                                    &nbsp;{entry.programType}: {(entry.value / programSum * 100).toFixed(1)}%
+                                </div>
+                            );
+                    })}
+                </div>
+                <br />
+                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[1][0]} data={programTypeArr}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis height={chartHeight[0][1]} interval={0} angle={-60} textAnchor="end" dataKey='programType' />
+                    <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey={'value'} fill='#636262'>
+                        {programTypeArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={programColor[index]} fillOpacity={0.8} />
+
+                        ))}
+                    </Bar>
+                </BarChart>
+
+                <div style={{ fontSize: 'larger' }}> Program Type Areas </div>
+                <PieChart width={width} height={height}>
+                    <Pie data={programTypeAreaArr} dataKey='value' nameKey='programType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                        {programTypeAreaArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={programColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
+                <div>
+                    {programTypeAreaArr.map((entry, index) => {
+                        if (entry.value > 0 && index !== 13)
+                            return (
+                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                    <div style={{ backgroundColor: programColor[index] }}>&nbsp;&nbsp;</div>
+                                    &nbsp;{entry.programType}: {(entry.value / totalArea * 100).toFixed(1)}%
+                                </div>
+                            );
+                    })}
+                </div>
+                <br />
+                <div>
+                    {programTypeAreaArr.map((entry, index) => {
+                        if (entry.value > 0)
+                            return (
+                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                    <div style={{ backgroundColor: programColor[index] }}>&nbsp;&nbsp;</div>
+                                    &nbsp;{entry.programType}: {(entry.value).toFixed(1)} ft²
+                                </div>
+                            );
+                    })}
+                </div>
+                <br />
+            </div>
+
+
+
+        )
+
+
+    };
+
+    return (
+        data !== [] ?
+            (type === 0 ?
+                <div key={selection} style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px' }}>
+                    <div className='sectionName'>
+                        <div style={{ fontSize: 'large' }}>{testNames(cat[0])}</div>
+                        {cat[1]}  {cat[2]}
+                    </div>
+                    {cat[0] === 'sound_maps' ? soundBarChart(data) : (cat[0] === 'boundaries_maps' ? BoundaryPieChart(data) : (cat[0] === 'moving_maps' ? movingBarChart(data) : (cat[0] === 'stationary_maps' ? stationaryBarCharts(data) : (cat[0] === 'nature_maps' ? NaturePieChart(data) : (cat[0] === 'light_maps' ? lightingCharts(data) : (cat[0] === 'order_maps' ? orderCharts(data) : (cat[0] === 'access_maps' ? accessCharts(data) : (cat[0] === 'program_maps' ? programCharts(data) : null))))))))}
+                </div>
+                :
+                <div key={selection} style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px' }}>
+                    <div className='sectionName' style={{ fontSize: 'large', marginBottom: '5px' }}>
+                        {testNames(cat[0])}: Summary
+                    </div>
+                    {cat[0] === 'sound_maps' ? multiSoundCharts(data) : (cat[0] === 'boundaries_maps' ? multiBoundaryCharts(data) : (cat[0] === 'stationary_maps' ? multiStationary(data) : (cat[0] === 'nature_maps' ? multiNatureChart(data) : (cat[0] === 'moving_maps' ? multiMoving(data) : (cat[0] === 'light_maps' ? multiLight(data) : (cat[0] === 'order_maps' ? multiOrderCharts(data) : (cat[0] === 'access_maps' ? multiAccessCharts(data) : (cat[0] === 'program_maps' ? multiProgramCharts(data) : null))))))))}
+                </div>)
+            : null
     );
 };

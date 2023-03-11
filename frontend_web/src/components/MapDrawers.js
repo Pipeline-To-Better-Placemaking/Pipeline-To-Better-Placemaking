@@ -88,7 +88,7 @@ export default function MapDrawer(props) {
         // default is false has reverse setting so !checked[cat + date] must be sent
         // selected means checked[..]=false
         props.selection(category, date, time, !checked[`${category}.${date}.${time}`]);
-        if(!checked[`${category}.${date}.${time}`]) {
+        if (!checked[`${category}.${date}.${time}`]) {
             var newSelections = selections;
             var newEntry;
             newSelections[`${category}.${date}.${time}`] = drawers.Results[category][date][time];
@@ -96,7 +96,7 @@ export default function MapDrawer(props) {
             switch (category) {
                 case 'stationary_maps':
                     newEntry = stationary;
-                    
+
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
                     newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setStationary(newEntry);
@@ -125,7 +125,7 @@ export default function MapDrawer(props) {
 
                 case 'section_maps':
                     newEntry = section;
-    
+
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
                     newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setSection(newEntry);
@@ -168,7 +168,7 @@ export default function MapDrawer(props) {
                     if (!newEntry[`${date}.${time}`]) newEntry[`${date}.${time}`] = [];
                     newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setProgram(newEntry);
-                    break;    
+                    break;
                 default:
                     console.log(`Error handling selection change.`);
             }
@@ -199,7 +199,7 @@ export default function MapDrawer(props) {
                     delete removeEntry[`${date}.${time}`]
                     setBoundaries(removeEntry);
                     break;
-                
+
                 case 'section_maps':
                     removeEntry = section;
                     delete removeEntry[`${date}.${time}`]
@@ -230,7 +230,7 @@ export default function MapDrawer(props) {
                     removeEntry = program;
                     delete removeEntry[`${date}.${time}`]
                     setProgram(removeEntry);
-                    break;    
+                    break;
                 default:
                     console.log(`Error handling selection change.`);
             }
@@ -240,62 +240,62 @@ export default function MapDrawer(props) {
     const list = (name, drawer) => (
         <Box
             sx={{ width: menuAnchors[name] === 'top' || menuAnchors[name] === 'bottom' ? 'auto' : 250 }}
-            id={ menuAnchors[name]+'ListBox' }
+            id={menuAnchors[name] + 'ListBox'}
         >
             <List>
-                { Object.entries(drawer).map(([category, dates], index) => (
-                    <div key={ category }>
-                        <ListItemButton 
-                            key={ category+index } 
-                            onClick={ handleClickDate(category, !dateOpen[category]) }
+                {Object.entries(drawer).map(([category, dates], index) => (
+                    <div key={category}>
+                        <ListItemButton
+                            key={category + index}
+                            onClick={handleClickDate(category, !dateOpen[category])}
                         >
-                            <ListItemText primary={ category ? testNames(category) : '' } />
-                            { menuAnchors[name] === 'left' ? 
-                                (dateOpen[category] ? <ExpandLess /> : <ExpandMore />): null }
+                            <ListItemText primary={category ? testNames(category) : ''} />
+                            {menuAnchors[name] === 'left' ?
+                                (dateOpen[category] ? <ExpandLess /> : <ExpandMore />) : null}
                         </ListItemButton>
-                        { menuAnchors[name] === 'left' ? dateList(category, dates) : null }
+                        {menuAnchors[name] === 'left' ? dateList(category, dates) : null}
                     </div>
-                )) }
+                ))}
             </List>
         </Box>
     );
 
     function dateList(title, dates) {
-        return(
-            <Collapse in={ dateOpen[title] } timeout='auto' unmountOnExit>
+        return (
+            <Collapse in={dateOpen[title]} timeout='auto' unmountOnExit>
                 <List component='div' disablePadding>
-                    { Object.entries(dates).map(([date, times], index) => (
-                        <div key={ title+date }>
-                            <ListItemButton 
-                                key={ title + date + index } sx={{ pl: 4, bgcolor: '#dcedfc' }} 
-                                onClick={ handleClickTime(`${title}${date}`, !timeOpen[`${title}${date}`]) }
+                    {Object.entries(dates).map(([date, times], index) => (
+                        <div key={title + date}>
+                            <ListItemButton
+                                key={title + date + index} sx={{ pl: 4, bgcolor: '#dcedfc' }}
+                                onClick={handleClickTime(`${title}${date}`, !timeOpen[`${title}${date}`])}
                             >
-                                <ListItemText primary={ date }/>
-                                {date ? (timeOpen[`${title}${date}`] ? <ExpandLess /> : <ExpandMore />):null }
+                                <ListItemText primary={date} />
+                                {date ? (timeOpen[`${title}${date}`] ? <ExpandLess /> : <ExpandMore />) : null}
                             </ListItemButton>
-                            { timeList(title, date, times) }
+                            {timeList(title, date, times)}
                         </div>
-                    )) }
+                    ))}
                 </List>
             </Collapse>
         );
-   };
+    };
 
     const timeList = (title, date, times) => (
-        <Collapse in={ timeOpen[`${title}${date}`] } timeout='auto' unmountOnExit>
+        <Collapse in={timeOpen[`${title}${date}`]} timeout='auto' unmountOnExit>
             <List component='div' disablePadding>
                 {
                     Object.keys(times).map((time, index) => (
-                        time ? <ListItem key={ date + time + index } sx={{ pl: 4, bgcolor: '#aed5fa' }}>
-                            <FormControlLabel 
+                        time ? <ListItem key={date + time + index} sx={{ pl: 4, bgcolor: '#aed5fa' }}>
+                            <FormControlLabel
                                 control={
-                                    <Switch 
-                                        checked={ checked[`${title}.${date}.${time}`] ? 
-                                            checked[`${title}.${date}.${time}`] : false } 
-                                        onChange={ toggleSwitch(title, date, time, checked[`${title}${date}${time}`]) } 
+                                    <Switch
+                                        checked={checked[`${title}.${date}.${time}`] ?
+                                            checked[`${title}.${date}.${time}`] : false}
+                                        onChange={toggleSwitch(title, date, time, checked[`${title}${date}${time}`])}
                                     />
-                                } 
-                                label={ time } 
+                                }
+                                label={time}
                             />
                         </ListItem> : null
                     ))
@@ -305,27 +305,27 @@ export default function MapDrawer(props) {
     );
 
     const dataDrawer = (selections) => (
-        <TableContainer component={ Paper }> 
+        <TableContainer component={Paper}>
             {/* type 1 - bottom drawer table */}
-            <ActivityTable type={ 1 } activity={ selections }/>
+            <ActivityTable type={1} activity={selections} />
         </TableContainer>
     );
 
-    const charts = (selections, stationary, moving, order, boundaries, lighting, nature, sound, access, section, program) => (
+    const charts = (selections, stationary, moving, order, boundaries, lighting, nature, sound, access, program, section) => (
         <>
-            { Object.entries(selections).map(([selection, obj])=>(
-                <Charts key={ selection } selection={ selection } data={ obj.data } type={ 0 } projArea={ area }/>
-            )) }
-            { Object.keys(stationary)?.length > 1 ? <Charts selection='stationary_maps.Group' data={stationary} type={1} projArea={area} /> : null }
-            { Object.keys(moving)?.length > 1 ? <Charts selection='moving_maps.Group' data={moving} type={1} projArea={area} /> : null }
-            { Object.keys(order)?.length > 1 ? <Charts selection='order_maps.Group' data={order} type={1} projArea={area} /> : null }
-            { Object.keys(boundaries)?.length > 1 ? <Charts selection='boundaries_maps.Group' data={boundaries} type={1} projArea={area} /> : null }
-            { Object.keys(lighting)?.length > 1 ? <Charts selection='light_maps.Group' data={lighting} type={1} projArea={area} /> : null }
-            { Object.keys(nature)?.length > 1 ? <Charts selection='nature_maps.Group' data={nature} type={1} projArea={area} /> : null }
-            { Object.keys(sound)?.length > 1 ? <Charts selection='sound_maps.Group' data={sound} type={1} projArea={area} /> : null }
-            { Object.keys(access)?.length > 1 ? <Charts selection='access_maps.Group' data={access} type={1} projArea={area} /> : null }
-            { Object.keys(program)?.length > 1 ? <Charts selection='program_maps.Group' data={program} type={1} projArea={area} /> : null }
-            { Object.keys(section)?.length > 1 ? <Charts selection='section_maps.Group' data={section} type={1} projArea={area} /> : null }
+            {Object.entries(selections).map(([selection, obj]) => (
+                <Charts key={selection} selection={selection} data={obj.data} type={0} projArea={area} />
+            ))}
+            {Object.keys(stationary)?.length > 1 ? <Charts selection='stationary_maps.Group' data={stationary} type={1} projArea={area} /> : null}
+            {Object.keys(moving)?.length > 1 ? <Charts selection='moving_maps.Group' data={moving} type={1} projArea={area} /> : null}
+            {Object.keys(order)?.length > 1 ? <Charts selection='order_maps.Group' data={order} type={1} projArea={area} /> : null}
+            {Object.keys(boundaries)?.length > 1 ? <Charts selection='boundaries_maps.Group' data={boundaries} type={1} projArea={area} /> : null}
+            {Object.keys(lighting)?.length > 1 ? <Charts selection='light_maps.Group' data={lighting} type={1} projArea={area} /> : null}
+            {Object.keys(nature)?.length > 1 ? <Charts selection='nature_maps.Group' data={nature} type={1} projArea={area} /> : null}
+            {Object.keys(sound)?.length > 1 ? <Charts selection='sound_maps.Group' data={sound} type={1} projArea={area} /> : null}
+            {Object.keys(access)?.length > 1 ? <Charts selection='access_maps.Group' data={access} type={1} projArea={area} /> : null}
+            {Object.keys(program)?.length > 1 ? <Charts selection='program_maps.Group' data={program} type={1} projArea={area} /> : null}
+            {Object.keys(section)?.length > 1 ? <Charts selection='section_maps.Group' data={section} type={1} projArea={area} /> : null}
         </>
     );
 
@@ -336,33 +336,33 @@ export default function MapDrawer(props) {
 
     return (
         <div id='projectFrame'>
-            { Object.entries(drawers).map(([name, data]) => (
-                <React.Fragment key={ menuAnchors[name] }>
-                    <Button 
-                        id={ menuAnchors[name] + 'Button' } 
-                        onClick={ toggleDrawer(menuAnchors[name], !state[menuAnchors[name]]) }
+            {Object.entries(drawers).map(([name, data]) => (
+                <React.Fragment key={menuAnchors[name]}>
+                    <Button
+                        id={menuAnchors[name] + 'Button'}
+                        onClick={toggleDrawer(menuAnchors[name], !state[menuAnchors[name]])}
                     >
-                        { name }
+                        {name}
                     </Button>
                     <Drawer
-                        id={ menuAnchors[name]+'Drawer' }
-                        anchor={ menuAnchors[name] }
-                        open={ state[menuAnchors[name]] }
-                        onClose={ toggleDrawer(menuAnchors[name], false) }
-                        hideBackdrop={ true }
+                        id={menuAnchors[name] + 'Drawer'}
+                        anchor={menuAnchors[name]}
+                        open={state[menuAnchors[name]]}
+                        onClose={toggleDrawer(menuAnchors[name], false)}
+                        hideBackdrop={true}
                     >
-                        { menuAnchors[name] === 'bottom' ?
+                        {menuAnchors[name] === 'bottom' ?
                             <Button
-                                id={ menuAnchors[name] + 'CloseButton' }
+                                id={menuAnchors[name] + 'CloseButton'}
                                 sx={{ position: 'fixed', alignSelf: 'center' }}
-                                onClick={ toggleDrawer(menuAnchors[name], !state[menuAnchors[name]]) }
+                                onClick={toggleDrawer(menuAnchors[name], !state[menuAnchors[name]])}
                             >
                                 Close <Close />
                             </Button>
-                            : null }
-                        { menuAnchors[name] === 'left' ? 
-                            list(name, data) 
-                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : (menuAnchors[name] === 'right' ? charts(selections, stationary, moving, order, boundaries, lighting, nature, sound, access, program, section) : null)) }
+                            : null}
+                        {menuAnchors[name] === 'left' ?
+                            list(name, data)
+                            : (menuAnchors[name] === 'bottom' ? dataDrawer(selections) : (menuAnchors[name] === 'right' ? charts(selections, stationary, moving, order, boundaries, lighting, nature, sound, access, program, section) : null))}
                     </Drawer>
                 </React.Fragment>
             ))}
