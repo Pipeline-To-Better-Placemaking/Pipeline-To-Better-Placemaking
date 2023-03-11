@@ -5,11 +5,11 @@
 Make sure you are running up-to-date versions of Node.js and npm, 
     https://nodejs.org/en/
     
-Clone the repository locally/Download the files from the repository.
-On the command line or terminal within the /frontend_web folder run: npm install.
-On the command line or terminal within the root directory of your download run: npm install.
-On the command line or terminal within the root directory of your download run: npm start 
-(This will build the /frontend_web project and store a cached version in the frontend_web/build folder. The command will then start the backend server which loads the cached build of the frontend on the same server:port)
+1. Clone the repository locally/Download the files from the repository. 
+2. On the command line or terminal within the /frontend_web folder run: ```npm install```
+3. On the command line or terminal within the root directory of your download run: ```npm install```
+4. On the command line or terminal within the root directory of your download run: ```npm start```  
+   (This will build the /frontend_web project and store a cached version in the frontend_web/build folder. The command will then start the backend server which loads the cached build of the frontend on the same server:port)
 
 
 ## Frontend React .js files
