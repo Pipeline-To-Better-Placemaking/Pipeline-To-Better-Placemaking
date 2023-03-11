@@ -13,6 +13,7 @@ frontend_web\src\api\axios.js
 
 # production
 /build
+/src/api
 
 # misc
 .DS_Store
