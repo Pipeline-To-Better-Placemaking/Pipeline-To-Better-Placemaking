@@ -1,9 +1,16 @@
 # Spring23-Group01
 Mobile Application for Pipeline to Better Placemaking used React Native for its development.
 
-[Introduction](https://github.com/Pipeline-To-Better-Placemaking/Pipeline-To-Better-Placemaking/edit/master/README.md#introduction)<br>
-[Running a Local Instance](https://github.com/Pipeline-To-Better-Placemaking/Pipeline-To-Better-Placemaking/edit/master/README.md#running-a-local-instance)<br>
-[Deploy to iPhone through XCode](https://github.com/Pipeline-To-Better-Placemaking/Pipeline-To-Better-Placemaking/edit/master/README.md#to-deploy-to-iphone-through-xcode-google-maps-doesnt-currently-work)<br>
+* [Introduction](#introduction)
+   * [Warning](#-warning-)
+   * [Directory Logic](#directory-logic)
+   * [Connecting to local backend](#connecting-to-local-backend-server)
+* [Expo Guide](#expo-guide)
+   * [Installing Expo](#installing-expo)
+   * [Gaining Access](#gaining-access)
+   * [Updating the Build](#updating-the-build)
+* [Running a Local Instance](#running-a-local-instance)
+* [Deploy to iPhone through XCode](#deploying-to-iphone-through-xcode-google-maps-doesnt-currently-work-and-not-sure-why-you-would-want-to-do-this)
 
 ## Introduction
 ### !!! WARNING !!!
@@ -30,6 +37,9 @@ The mobile application connects to the heroku api, to connect to a local databas
 7. We recommend inviting the team as **Developers** and the project manager as **Admim**  
    (NOTE: Expo invitations do expire so be sure to accept them soon after sending.)
 ### [Updating the build](https://docs.expo.dev/build/setup/)
+The link in the header has the relevant information  
+   Only update the internal build with completed components.  
+   Otherwise use ```eas update``` to and follow the prompts to update the master branch of the internal deployment
 
 ## Running a Local Instance
 Prerequisite: Install Expo Go (refer to [Expo Guide](#expo-guide) -> [Installing Expo](#installing-expo))
@@ -41,7 +51,7 @@ npm start
 ```
 After that a QR code will appear in your console, scan the code with your phone and an instance of the mobile application should load.
 
-## To deploy to iPhone through XCode (Google Maps doesn't currently work and not sure why you would want to do this)
+## Deploying to iPhone through XCode (Google Maps doesn't currently work and not sure why you would want to do this)
 1) Create a **.xcodeworkspaceproj** by running: ```npx expo run:ios```
 2) Start XCode and open the **.xcodeworkspaceproj**
 3) If you haven't already sign up for a **PERSONAL** Apple Developer Account (This will be free if not you're looking at the wrong thing, this will not cost $99)
