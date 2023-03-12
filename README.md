@@ -10,7 +10,7 @@ Mobile Application for Pipeline to Better Placemaking used React Native for its 
    * [Gaining Access](#gaining-access)
    * [Updating the Build](#updating-the-build)
 * [Running a Local Instance](#running-a-local-instance)
-* [Deploy to iPhone through XCode](#deploying-to-iphone-through-xcode-google-maps-doesnt-currently-work-and-not-sure-why-you-would-want-to-do-this)
+* [Deploying to iPhone through XCode](#deploying-to-iphone-through-xcode-google-maps-doesnt-currently-work-and-not-sure-why-you-would-want-to-do-this)
 
 ## Introduction
 ### !!! WARNING !!!
