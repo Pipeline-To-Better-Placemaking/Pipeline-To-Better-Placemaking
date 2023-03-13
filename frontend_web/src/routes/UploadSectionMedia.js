@@ -18,6 +18,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
 
 function UploadSectionMedia() {
     const [ mediaUrl, setMediaUrl] = useState(null);
@@ -284,11 +286,11 @@ function UploadSectionMedia() {
             </div>
             <Button onClick={handleEdit}>Open Edit Info</Button>
 
-            {
-              edit ?
-              <div className="Edit">
+                <Dialog open={edit} fullWidth maxWidth="md" PaperProps={{ style: { display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}} >
+                <div className="Edit" style={{alignItems: 'center', justifyContent: 'center' }}>
+                <DialogTitle>Edit Info</DialogTitle>
                 <TextField label="New Title"style={{width: "10vw", height: "15vh"}} value={newTitle} onChange={text => {setNewTitle(text.target.value)}}></TextField>
-                <Box sx={{ minWidth: 120 }}>
+                <Box sx={{ minWidth: 120}}>
                   <FormControl fullWidth sx={{ flexDirection: 'row' }}>
                   <InputLabel id="demo-simple-select-label"> Tags </InputLabel>
                   <Select
@@ -316,9 +318,10 @@ function UploadSectionMedia() {
                     })}
                   </div>
                 </Box>
+                <br></br>
                 <Button onClick={handleSave}>Save</Button>
-              </div> : null
-            }
+                </div>
+                </Dialog>
             <br></br>
             <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='success' to='../' 
               state={{...location.state}}>
