@@ -1,0 +1,126 @@
+import React from 'react';
+import MapView, { Marker, Polygon, Polyline } from 'react-native-maps'
+import { View } from 'react-native';
+import { PressMapAreaWrapper } from './mapPoints.component';
+
+import { styles } from './sharedMap.styles';
+
+export function PeopleMovingMap(props) {
+
+    // Color constants for the data points
+    const colors = ["blue", "red", "yellow", "green", "orange", "pink"]
+
+    // Custom colored data pin
+    const DataPin = (props) => {
+
+        return(
+            <View style={[styles.dataPin, {backgroundColor: colors[1]}]}/>
+        )
+    }
+
+    const CreatePolyline = () => {
+
+        if(props.markers === null || props.markers.length == 0) {
+            return (null);
+        }
+
+        else if (props.markers.length == 1) {
+
+            return (props.markers.map((coord, index) => (
+                <Marker
+                    key={index}
+                    coordinate = {props.markers[0]}
+                >
+                    <DataPin/>
+                </Marker>
+        )));
+
+        }
+        else if (props.markers.length > 1) {
+
+            return (
+                <Polyline
+                    coordinates={props.markers}
+                    strokeWidth={3}
+                    strokeColor={'rgba(255,0,0,0.5)'}
+                />
+            );
+        }
+    }
+
+    const AllLines = () => {
+
+        if (props.viewAllLines) {
+
+            //console.log("Drawing lines")
+
+            return (props.totalPaths.map((obj, index) => (
+                <Polyline
+                    coordinates={obj.path}
+                    strokeWidth={3}
+                    strokeColor={colors[obj.colorIndex]}
+                    key={index}
+                />
+            )))
+        }
+        else{
+            return null
+        }
+    }
+
+    // Shows plotted points of the line being drawn
+    const ShowPolygon = () => {
+        if(props.markers === null) {
+            return (null);
+        }
+        else {
+            return (
+                props.markers.map((coord, index) => (
+                <Marker
+                    key={index}
+                    coordinate = {{
+                        latitude: coord.latitude,
+                        longitude: coord.longitude
+                    }}
+                >
+                    <DataPin index={index}/>
+                </Marker>
+             )))
+         }
+    }
+    // offsets the default marker slightly to have its point appear in a precise location
+    let offsetPoint = {
+        x: 0.5,
+        y: 1.1
+    }
+    return(
+
+        <View>
+            <PressMapAreaWrapper
+                area={props.area}
+                mapHeight={props.lineTools ? '93%' : '96%'}
+                onPress={props.addMarker}
+                recenter={props.recenter}
+            >
+                <Marker
+                    coordinate={props.position}
+                    anchor={offsetPoint}
+                />
+
+                <Polygon
+                    coordinates={props.area}
+                    strokeWidth={3}
+                    strokeColor={'rgba(255,0,0,0.5)'}
+                    fillColor={'rgba(0,0,0,0.2)'}
+                />
+
+                <ShowPolygon/>
+
+                <CreatePolyline/>
+
+                <AllLines/>
+
+            </PressMapAreaWrapper>
+        </View>
+    )
+};
