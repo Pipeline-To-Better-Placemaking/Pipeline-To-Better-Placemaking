@@ -43,7 +43,7 @@
     "react-native-safe-area-view": "^1.1.1",
     "react-native-screens": "~3.18.0",
     "react-native-status-bar-height": "^2.6.0",
-    "react-native-svg": "13.4.0",
+    "react-native-svg": "13.2.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-web": "~0.18.7",
     "tinycolor2": "^1.6.0",

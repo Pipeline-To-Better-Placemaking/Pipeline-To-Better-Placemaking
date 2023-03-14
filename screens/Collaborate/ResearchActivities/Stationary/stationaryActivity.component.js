@@ -224,19 +224,23 @@ export function StationaryActivity(props) {
     // begins/updates the timer
     function startTime(current){
         let count = current;
-        setId(setInterval(() =>{            
+        setId(setInterval(() =>{          
             count--;
             // timer is what actually gets rendered so update every second
             setTimer(count);
             // console.log(count);
             // when the timer reaches 0, call restart
+            if(!start)
+                clearInterval(id)
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
                 clearInterval(id);
-                restart();
+                setStart(false);
+                endActivity();
             }
-        // 1000 ms == 1 s
-        }, 1000));
+        // ios 1000 ms == 1 s
+        // android 2000ms == 2 s ?? wtf mate
+        }, Platform.OS === 'ios' ? 1000 : 2000 ));
     }
 
     const PlayPauseButton = () =>{
