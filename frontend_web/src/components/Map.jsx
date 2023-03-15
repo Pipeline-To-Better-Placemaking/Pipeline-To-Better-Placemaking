@@ -14,6 +14,7 @@ import { testNames } from '../functions/HelperFunctions';
 import './controls.css';
 import { Form } from 'react-bootstrap';
 import { ClickAwayListener } from '@mui/material';
+import axios from '../api/axios';
 
 const render = (status) => {
     console.log(status);
@@ -78,6 +79,7 @@ export default function FullMap(props) {
         section_maps: sectionCollections,
     });
 
+   
     /**
         Function: onSelection
         Description: This function handles the boolean toggling from Map Drawer selections/switches.
@@ -262,13 +264,20 @@ export default function FullMap(props) {
             setClick(e.latLng);
             setCenter(e.latLng);
         } else if (props.type === 3 || props.type === 4 || props.type === 6 || props.type === 8 || props.type === 10) {
+            if(clicks.length >= 2 && props.type ===10){
+                //too many points for section
+                return;
+            }
+           
             var clickObj = {
                 lat: 0,
                 lng: 0
             }
             clickObj.lat = e.latLng.lat();
             clickObj.lng = e.latLng.lng();
+            
             setClicks([...clicks, clickObj]);
+        
         } else {
             setCenter(e.latLng);
         }
@@ -313,17 +322,132 @@ export default function FullMap(props) {
         setPlaceOn(!placeOn);
     }
 
-    //weird
+    const handleSignUpSC = async () => {
+        console.log("section signup")
+        
+        try {
+            await axios.put(`section_maps/${sectionData._id}/claim`, JSON.stringify({
+                user: loc.state.userToken.user._id
+            }), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                withCredentials: true
+            });
+
+        } catch (error) {
+            console.log('ERROR: ', error);
+            return;
+        }
+        console.log("signup successful")
+        let SCsignUpBtn = document.getElementById('signUpSCBtn')
+        let SCwithdrawBtn = document.getElementById('withdrawSCBtn')
+        let SCsurveyorbutton = document.getElementById('SCSurveyorsBtn');
+
+        SCwithdrawBtn.style.display = 'flex'
+        SCsurveyorbutton.style.display = 'flex'
+        SCsignUpBtn.style.display = 'none'
+    }
+
+    const handleSignUpIP = async () => {
+        console.log("program signup")
+        try {
+            await axios.put(`program_maps/${buildingData._id}/claim`, JSON.stringify({
+                user: loc.state.userToken.user._id
+            }), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                withCredentials: true
+            });
+
+        } catch (error) {
+            console.log('ERROR: ', error);
+            return;
+        }
+        console.log("signup successful")
+        let IPsignUpBtn = document.getElementById('signUpIPBtn')
+        let IPwithdrawBtn = document.getElementById('withdrawIPBtn')
+        let IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
+        let viewModelButton = document.getElementById('viewModelBtn');
+
+        IPwithdrawBtn.style.display = 'flex'
+        IPsurveyorbutton.style.display = 'flex'
+        viewModelButton.style.display = 'flex'
+        IPsignUpBtn.style.display = 'none'
+       
+    }
+
+    const handleWithdrawSC = async  () => {
+        console.log("section withdraw")
+        try {
+            await axios.delete(`section_maps/${sectionData._id}/claim`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                withCredentials: true
+            });
+        } catch (error) {
+            console.log('ERROR: ', error);
+            return;
+        }
+        console.log("withdraw successful")
+
+        let SCsignUpBtn = document.getElementById('signUpSCBtn')
+        let SCwithdrawBtn = document.getElementById('withdrawSCBtn')
+        let SCsurveyorbutton = document.getElementById('SCSurveyorsBtn');
+
+        SCwithdrawBtn.style.display = 'none'
+        SCsurveyorbutton.style.display = 'none'
+        SCsignUpBtn.style.display = 'flex'
+    }
+
+    const handleWithdrawIP = async () => {
+        console.log("program withdraw")
+        console.log(loc.state.userToken.token)
+        try {
+            await axios.delete(`program_maps/${buildingData._id}/claim`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${loc.state.userToken.token}`
+                },
+                withCredentials: true
+            });
+        } catch (error) {
+            console.log('ERROR: ', error);
+            return;
+        }
+        console.log("withdraw successful")
+
+        let IPsignUpBtn = document.getElementById('signUpIPBtn')
+        let IPwithdrawBtn = document.getElementById('withdrawIPBtn')
+        let IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
+        let viewModelButton = document.getElementById('viewModelBtn');
+
+        IPwithdrawBtn.style.display = 'none'
+        viewModelButton.style.display = 'none'
+        IPsurveyorbutton.style.display = 'none'
+        IPsignUpBtn.style.display = 'flex'
+        
+
+    }
+
     const handleIPSurveyorRoute = () => {
+        console.log(buildingData)
         nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData, type: 0 } });
     }
 
     const handleViewModelRoute = () => {
+        console.log(buildingData)
         nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData, type: 1 } });
 
     }
 
     const handleSCSurveyorRoute = () => {
+        console.log(sectionData)
         nav('../activities/upload_section_media', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, section: sectionData } });
     }
 
@@ -333,6 +457,11 @@ export default function FullMap(props) {
 
     const handleSendSectionData = (e) => {
         sectionData = e;
+    }
+
+    const handlePopupClose = () => {
+        let okBtn = document.getElementById('okSectionBtn')
+        okBtn.style.display = 'none'
     }
 
     const handleBaseplateRender = (e) => {
@@ -370,8 +499,17 @@ export default function FullMap(props) {
         // this ensures? that the IPSurveyorBtn doesn't get displayed for the other test models
         const IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
         const viewModelButton = document.getElementById('viewModelBtn');
+        const IPsignUpBtn = document.getElementById('signUpIPBtn');
+        const IPwithdrawBtn = document.getElementById('withdrawIPBtn');
+        const SCsignUpBtn = document.getElementById('signUpSCBtn');
+        const SCwithdrawBtn = document.getElementById('withdrawSCBtn');
+
         IPsurveyorbutton.style.display = 'none';
         viewModelButton.style.display = 'none';
+        IPsignUpBtn.style.display = 'none';
+        IPwithdrawBtn.style.display = 'none';
+        SCsignUpBtn.style.display = 'none';
+        SCwithdrawBtn.style.display = 'none';
 
         const SCsurveyorbutton = document.getElementById('SCSurveyorsBtn');
         SCsurveyorbutton.style.display = 'none';
@@ -401,9 +539,33 @@ export default function FullMap(props) {
             inner.innerHTML = '';
             inner.innerHTML = `<h5>${testNames(title)}</h5><br/>`;
             popup.style.display = 'flex';
+            
+            let max = buildingData.maxResearchers;
+            let len = buildingData.researchers.length;
 
-            IPsurveyorbutton.style.display = 'flex';
-            viewModelButton.style.display = 'flex';
+            //check here if user is a researcher or not
+            // console.log("testing")
+            // console.log(buildingData)
+            const userId = loc.state.userToken.user._id
+            let researchers = buildingData.researchers
+
+            let findUser = researchers.findIndex(element => element._id === userId)
+            if(findUser >= 0){
+                max = -1; //do not add the user
+
+                //show the withdraw, begin test, and view model buttons
+                IPwithdrawBtn.style.display = 'flex';
+                IPsurveyorbutton.style.display = 'flex';
+                viewModelButton.style.display = 'flex';
+            }
+
+            if(max > 0 && (max-len) > 0){
+                //show sign up button
+                IPsignUpBtn.style.display = 'flex';
+            }
+
+            
+            
         } else if (ver === 6) {
             // version 6 == identifying access collection
             inner.innerHTML = '';
@@ -432,7 +594,27 @@ export default function FullMap(props) {
             inner.innerHTML = '';
             inner.innerHTML = `<h5>Section Cutter</h5><br/>`;
             popup.style.display = 'flex';
-            SCsurveyorbutton.style.display = 'flex';
+
+            console.log(sectionData)
+
+            const userId = loc.state.userToken.user._id
+            let researchers = sectionData.researchers
+            let max = sectionData.maxResearchers;
+            let len = sectionData.researchers.length;
+
+            let findUser = researchers.findIndex(element => element._id === userId)
+            if(findUser >= 0){
+                max = -1; //do not add the user
+
+                //show the withdraw and begin test buttons show
+                SCwithdrawBtn.style.display = 'flex';
+                SCsurveyorbutton.style.display = 'flex';
+            }
+            if(max > 0 && (max-len) > 0){
+                //show sign up button
+                SCsignUpBtn.style.display = 'flex';
+            }
+            
         } else {
             // version 4 moving collections
             const popup = document.getElementById('pathBoundWindow');
@@ -537,9 +719,11 @@ export default function FullMap(props) {
                                             <Path
                                                 key={`${sdate}.${time}.${index}`}
                                                 path={inst.path}
-                                                //mode={point.mode ? point.mode : point.kind}
+                                                mode={inst.inPerimeter ? 'intAccess' : 'extAccess'}
                                                 title={title} date={sdate} time={time} index={index}
                                                 boundsPathWindow={boundsPathWindow}
+                                                
+
                                             />
                                             : inst.accessType === "Access Area" ? // If the data (point) is an access area, render a polygon
                                                 <Bounds
@@ -561,6 +745,7 @@ export default function FullMap(props) {
                                             title={'section'}
                                             doThis={handleSendSectionData(data.Results[title][sdate][time])}
                                             boundsPathWindow={boundsPathWindow}
+                                            mode={'section'}
                                         />
                                     )
 
@@ -807,15 +992,24 @@ export default function FullMap(props) {
                                     Cancel
                                 </Button>
                                 <Button className='newHoveringButtons' onClick={removePoint}> Undo <UndoIcon /></Button>
-                                {clicks.length > 2 || clicks.length === 0 ? null :
+                                {clicks.length === 2 ? 
                                     <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='../activities/times' state={{ ...loc.state, path: clicks }}>
                                         Continue Section
                                     </Button>
+                                :  null    
                                 }
 
                             </div>
                         </div>
+                        {/* <div id = 'sectionPopup' style={{display: 'none'}}>
+                                <h1>Section Cutter test can only have two points!</h1>
+                                <Button id = "okSectionBtn" style = {{display: 'none'}} onClick = {handlePopupClose}>
+                                    Ok
+                                </Button>
+                        </div> */}
                     </div>
+                   
+
                     : null
             }
 
@@ -824,8 +1018,12 @@ export default function FullMap(props) {
                     <div id='popUpText'>
 
                     </div>
-                    <Button id='SCSurveyorsBtn' style={{ display: 'none' }} onClick={handleSCSurveyorRoute}>Conduct Surveyor Test</Button>
-                    <Button id='IPSurveyorsBtn' style={{ display: 'none' }} onClick={handleIPSurveyorRoute}>Sign-Up</Button>
+                    <Button id='withdrawSCBtn' style={{ display: 'none' }} onClick={handleWithdrawSC}>Withdraw</Button>
+                    <Button id='withdrawIPBtn' style={{ display: 'none' }} onClick={handleWithdrawIP}>Withdraw</Button>
+                    <Button id='SCSurveyorsBtn' style={{ display: 'none' }} onClick={handleSCSurveyorRoute}>Begin</Button>
+                    <Button id='IPSurveyorsBtn' style={{ display: 'none' }} onClick={handleIPSurveyorRoute}>Begin</Button>
+                    <Button id='signUpSCBtn' style={{ display: 'none' }} onClick={handleSignUpSC}>Sign Up</Button>
+                    <Button id='signUpIPBtn' style={{ display: 'none' }} onClick={handleSignUpIP}>Sign Up</Button> 
                     <Button id='viewModelBtn' style={{ display: 'none' }} onClick={handleViewModelRoute}>View Model</Button>
                     <Button id='closeButton' onClick={closeWindow}>Close</Button>
                 </div >
@@ -1056,7 +1254,9 @@ const Path = ({ boundsPathWindow, ...options }) => {
         'Handicap Assisted Wheels': '#FFA500',
         Constructed: '#FF00E5',
         New: 'rgba(255, 0, 0, 0.5)',
-        section: '#8800FF'
+        section: '#FFFF00',
+        intAccess: '#FFFF00',
+        extAccess: '#FF0000'
     }
     const lines = {
         style: {
