@@ -107,7 +107,7 @@ a.backButton>svg.css-i4bv87-MuiSvgIcon-root, a.backButton>svg.MuiSvgIcon-root {
 
 .logo {
     margin-bottom: 5vh;
-    z-index: 0;
+    z-index: 2;
 }
 
 .logo1{
@@ -337,7 +337,7 @@ form.MuiBox-root {
 
 #logo1 {
     position: relative;
-    z-index: -1;
+    z-index: 1;
 }
 
 #logo2 {

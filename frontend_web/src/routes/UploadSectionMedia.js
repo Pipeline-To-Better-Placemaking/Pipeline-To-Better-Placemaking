@@ -5,27 +5,18 @@ import { storage } from "./firebase_config";
 import { ref, uploadBytesResumable, getDownloadURL, listAll, list } from "firebase/storage";
 import { v4 } from "uuid";
 import axios from '../api/axios';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { LinearProgress, Button, TextField, Box, InputLabel, MenuItem, FormControl, RadioGroup, Radio, FormControlLabel, FormLabel, DialogTitle, Dialog } from '@mui/material'
+import LinearProgressWithLabel from '@mui/material/LinearProgress'
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel'
-import RadioGroup from "@mui/material/RadioGroup";
-import Radio from '@mui/material/Radio';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog from '@mui/material/Dialog';
 
 function UploadSectionMedia() {
     const [ mediaUrl, setMediaUrl] = useState(null);
     const [ progresspercent, setProgresspercent] = useState(0);
     const [ mediaUrls, setMediaUrls ] = useState([]);
     const [ preview, setPreview ] = useState("");
+    const [ file, setFile ] = useState(null);
     const [ title, setTitle ] = useState("");
     const [ newTitle, setNewTitle ] = useState("");
     const [ selectedTags, setSelectedTags ] = useState([]);
@@ -44,9 +35,7 @@ function UploadSectionMedia() {
     const storageRefList = ref(storage, `media_uploads/${location.state.section._id}`);
 
 
-    const handleSubmit = (e) => {
-      e.preventDefault()
-      const file = e.target[0]?.files[0]
+    const handleSubmit = () => {
       if (!file) return;
       const storageRef = ref(storage, `media_uploads/${location.state.section._id}/${file.name + v4()}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
@@ -76,6 +65,7 @@ function UploadSectionMedia() {
           const progress =
             Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
           setProgresspercent(progress);
+          console.log("🚀 ~ file: UploadSectionMedia.js:71 ~ handleSubmit ~ progress:", progress);
         },
         (error) => {
           alert(error);
@@ -111,6 +101,7 @@ function UploadSectionMedia() {
     }
 
     const handlePreview = async (e) => {
+      setFile(e.target.files[0])
       setPreview(URL.createObjectURL(e.target.files[0]));
     }
 
@@ -195,23 +186,17 @@ function UploadSectionMedia() {
 
     return (
         <div className="UploadSectionMedia">
-            <form onSubmit={handleSubmit} className='form'>
-                <div className="SubmitButton">
-                  <h1> Section Cutter </h1>
-                  <br></br>
-                  <input type='file' onChange={handlePreview} />
-                  <br></br>
-                  <button type='submit'> Upload Media </button>
-                  <br></br>
-                  <progress id="file" max="100" value={progresspercent}>  </progress>
-                </div>
-                
-            </form>
-            <br></br>
+          <h1> Section Cutter </h1>
+          <br/>
             {
-              preview ? 
+              !preview ? 
+                <div className="SubmitButton">
+                  <input type='file' onChange={handlePreview} />
+                  <br/>
+                </div>
+            :
               <div className="ImgPreview">
-                <br></br>
+                <br/>
                 {
                   isImage ?
                   <img style={{height: "20vh", width : "30vw"}} src={preview} /> : null
@@ -226,8 +211,7 @@ function UploadSectionMedia() {
                   </div> : null
                 }
                 
-                <br></br>
-                <br></br>
+                <br/>
                 <FormControl sx={{alignItems: "center"}}>
                   <FormLabel>Media Type</FormLabel>
                   <RadioGroup
@@ -241,10 +225,10 @@ function UploadSectionMedia() {
                   <FormControlLabel value="Video" control={<Radio />} label="Video" />
                   </RadioGroup>
                 </FormControl>
-                <br></br>
-                <TextField label="Title"style={{width: "10vw", height: "15vh"}} onChange={text => {setTitle(text.target.value)}} value={title}></TextField>
+                <br/>
+                <TextField label="Title"style={{width: "10vw", margin: "1vw"}} onChange={text => {setTitle(text.target.value)}} value={title}/>
                 <Box sx={{ minWidth: 120 }} >
-                  <FormControl fullWidth sx={{ flexDirection: 'row' }}>
+                  <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label"> Tags </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
@@ -259,9 +243,9 @@ function UploadSectionMedia() {
                       <MenuItem value={option}>{option}</MenuItem>
                   ))}
                   </Select>
-                  <Button onClick={handleTagSubmit}>Accept Tags</Button>
+                  {/* <Button onClick={handleTagSubmit}>Accept Tags</Button> */}
                   </FormControl>
-                  <div className="tag-container">
+                  {/* <div className="tag-container">
                     {tags.map((tag, index) => {
                       return (
                         <div key={index} className="tag">
@@ -269,9 +253,15 @@ function UploadSectionMedia() {
                         </div>
                       );
                     })}
-                  </div>
+                  </div> */}
+                  
+                  <div style={{ alignItems: 'center', margin: '1vw'}}>
+                    <Button onClick={handleSubmit}> Upload Media </Button>
+                    <br/>
+                    {progresspercent > 0 && progresspercent < 99.99? <LinearProgressWithLabel value={progresspercent}/> : null}
+                    </div>
                 </Box>
-              </div>: null
+              </div>
             }
             <br></br>
             <div className="slide-container">
@@ -289,7 +279,7 @@ function UploadSectionMedia() {
                 <Dialog open={edit} fullWidth maxWidth="md" PaperProps={{ style: { display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}} >
                 <div className="Edit" style={{alignItems: 'center', justifyContent: 'center' }}>
                 <DialogTitle>Edit Info</DialogTitle>
-                <TextField label="New Title"style={{width: "10vw", height: "15vh"}} value={newTitle} onChange={text => {setNewTitle(text.target.value)}}></TextField>
+                <TextField label="New Title"style={{width: "10vw", margin: "1vw"}} value={newTitle} onChange={text => {setNewTitle(text.target.value)}}></TextField>
                 <Box sx={{ minWidth: 120}}>
                   <FormControl fullWidth sx={{ flexDirection: 'row' }}>
                   <InputLabel id="demo-simple-select-label"> Tags </InputLabel>
