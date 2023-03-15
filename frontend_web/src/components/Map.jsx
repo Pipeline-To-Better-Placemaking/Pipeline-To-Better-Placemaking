@@ -1020,7 +1020,7 @@ export default function FullMap(props) {
                     </div>
                     <Button id='withdrawSCBtn' style={{ display: 'none' }} onClick={handleWithdrawSC}>Withdraw</Button>
                     <Button id='withdrawIPBtn' style={{ display: 'none' }} onClick={handleWithdrawIP}>Withdraw</Button>
-                    <Button id='SCSurveyorsBtn' style={{ display: 'none' }} onClick={handleSCSurveyorRoute}>Begin</Button>
+                    <Button id='SCSurveyorsBtn' style={{ display: 'none' }} onClick={handleSCSurveyorRoute}>Add Image</Button>
                     <Button id='IPSurveyorsBtn' style={{ display: 'none' }} onClick={handleIPSurveyorRoute}>Begin</Button>
                     <Button id='signUpSCBtn' style={{ display: 'none' }} onClick={handleSignUpSC}>Sign Up</Button>
                     <Button id='signUpIPBtn' style={{ display: 'none' }} onClick={handleSignUpIP}>Sign Up</Button> 
