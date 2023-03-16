@@ -104,8 +104,8 @@ export const styles = StyleSheet.create({
     },
 
     button:{
-        width: width * .3,
-        height: height * .05,
+        width: width * .32,
+        height: height * .06,
         maxHeight: 150
     },
 
