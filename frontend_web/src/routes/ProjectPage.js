@@ -11,6 +11,7 @@ import NewProgram from './NewProgram.js';
 import UnitySurveyorPage from './UnitySurveyorPage.js';
 import NewSection from './NewSection.js';
 import UploadSectionMedia from './UploadSectionMedia';
+import ViewMedia from './ViewMedia';
 
 /* 
     (1) Handles routes to projects/:id/(activities/map/surveyors) 
@@ -275,7 +276,10 @@ export default function ProjectPage(){
                             </div>
                         }>
                         </Route>
-                        <Route path ='activities/upload_section_media' element = {<UploadSectionMedia/>}>
+                        <Route path='activities/upload_section_media' element={<UploadSectionMedia/>}>
+
+                        </Route>
+                        <Route path='activities/view_media' element={<ViewMedia/>} >
 
                         </Route>
                         <Route path='surveyors' element={

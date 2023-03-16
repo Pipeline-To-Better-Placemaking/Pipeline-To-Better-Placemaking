@@ -344,10 +344,12 @@ export default function FullMap(props) {
         let SCsignUpBtn = document.getElementById('signUpSCBtn')
         let SCwithdrawBtn = document.getElementById('withdrawSCBtn')
         let SCsurveyorbutton = document.getElementById('SCSurveyorsBtn');
+        let viewMediaButton = document.getElementById('viewMediaBtn');
 
         SCwithdrawBtn.style.display = 'flex'
         SCsurveyorbutton.style.display = 'flex'
         SCsignUpBtn.style.display = 'none'
+        viewMediaButton.style.display = 'flex'
     }
 
     const handleSignUpIP = async () => {
@@ -399,10 +401,12 @@ export default function FullMap(props) {
         let SCsignUpBtn = document.getElementById('signUpSCBtn')
         let SCwithdrawBtn = document.getElementById('withdrawSCBtn')
         let SCsurveyorbutton = document.getElementById('SCSurveyorsBtn');
+        let viewMediaButton = document.getElementById('viewMediaBtn');
 
         SCwithdrawBtn.style.display = 'none'
         SCsurveyorbutton.style.display = 'none'
         SCsignUpBtn.style.display = 'flex'
+        viewMediaButton.style.display = 'none'
     }
 
     const handleWithdrawIP = async () => {
@@ -444,6 +448,10 @@ export default function FullMap(props) {
         console.log(buildingData)
         nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData, type: 1 } });
 
+    }
+
+    const handleViewMediaRoute = () => {
+        nav('../activities/view_media', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, section: sectionData } });
     }
 
     const handleSCSurveyorRoute = () => {
@@ -499,6 +507,7 @@ export default function FullMap(props) {
         // this ensures? that the IPSurveyorBtn doesn't get displayed for the other test models
         const IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
         const viewModelButton = document.getElementById('viewModelBtn');
+        const viewMediaButton = document.getElementById("viewMediaBtn");
         const IPsignUpBtn = document.getElementById('signUpIPBtn');
         const IPwithdrawBtn = document.getElementById('withdrawIPBtn');
         const SCsignUpBtn = document.getElementById('signUpSCBtn');
@@ -506,6 +515,7 @@ export default function FullMap(props) {
 
         IPsurveyorbutton.style.display = 'none';
         viewModelButton.style.display = 'none';
+        viewMediaButton.style.display = 'none';
         IPsignUpBtn.style.display = 'none';
         IPwithdrawBtn.style.display = 'none';
         SCsignUpBtn.style.display = 'none';
@@ -609,6 +619,7 @@ export default function FullMap(props) {
                 //show the withdraw and begin test buttons show
                 SCwithdrawBtn.style.display = 'flex';
                 SCsurveyorbutton.style.display = 'flex';
+                viewMediaButton.style.display = 'flex';
             }
             if(max > 0 && (max-len) > 0){
                 //show sign up button
@@ -1020,11 +1031,12 @@ export default function FullMap(props) {
                     </div>
                     <Button id='withdrawSCBtn' style={{ display: 'none' }} onClick={handleWithdrawSC}>Withdraw</Button>
                     <Button id='withdrawIPBtn' style={{ display: 'none' }} onClick={handleWithdrawIP}>Withdraw</Button>
-                    <Button id='SCSurveyorsBtn' style={{ display: 'none' }} onClick={handleSCSurveyorRoute}>Add Image</Button>
+                    <Button id='SCSurveyorsBtn' style={{ display: 'none' }} onClick={handleSCSurveyorRoute}>Add Media</Button>
                     <Button id='IPSurveyorsBtn' style={{ display: 'none' }} onClick={handleIPSurveyorRoute}>Begin</Button>
                     <Button id='signUpSCBtn' style={{ display: 'none' }} onClick={handleSignUpSC}>Sign Up</Button>
                     <Button id='signUpIPBtn' style={{ display: 'none' }} onClick={handleSignUpIP}>Sign Up</Button> 
                     <Button id='viewModelBtn' style={{ display: 'none' }} onClick={handleViewModelRoute}>View Model</Button>
+                    <Button id='viewMediaBtn' style={{ display: 'none' }} onClick={handleViewMediaRoute}>View Media</Button>
                     <Button id='closeButton' onClick={closeWindow}>Close</Button>
                 </div >
             </div >

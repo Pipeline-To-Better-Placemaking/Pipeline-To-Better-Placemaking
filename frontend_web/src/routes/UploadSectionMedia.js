@@ -44,7 +44,7 @@ function UploadSectionMedia() {
               await axios.post(`/section_maps/${location.state.section._id}/data`, JSON.stringify({
                   url_link: url,
                   title: title,
-                  tags: tags,
+                  tags: selectedTags,
                 }), {
                   headers: {
                     'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ function UploadSectionMedia() {
         try {
             await axios.put(`/section_maps/${location.state.section._id}/data/${location.state.section.data[selectedIndex + 1]._id}`, JSON.stringify({
                 title: newTitle,
-                tags: newTags,
+                tags: newSelectedTags,
               }), {
                 headers: {
                   'Content-Type': 'application/json',
