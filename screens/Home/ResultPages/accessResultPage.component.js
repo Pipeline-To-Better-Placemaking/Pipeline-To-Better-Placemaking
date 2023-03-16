@@ -6,7 +6,7 @@ import { ViewableArea, ContentContainer, ConfirmDelete, LoadingSpinner } from '.
 import { getDayStr, getTimeStr } from '../../components/timeStrings.component.js';
 import { helperGetResult, deleteTimeSlot, getProject, getAllResults, isUserTeamOwner } from '../../components/apiCalls';
 import { formatAccessGraphData, calcArea } from '../../components/helperFunctions';
-import { MyPieChartCounts, MyPieChartArea, MyBarChart } from '../../components/charts.component';
+import { MyPieChartCounts, MyPieChartArea, MyBarChart, MyBarChartLength } from '../../components/charts.component';
 import {format as prettyFormat} from 'pretty-format';
 import tinycolor from 'tinycolor2';
 
@@ -482,6 +482,15 @@ export function AccessResultPage(props) {
               height={chartHeight}
             />
           </View>
+          
+          <View style={styles.spacing}>
+            <MyPieChartCounts
+              title={'Percentage Point Count'}
+              graph={formatCountPie(props.selectedResult.graph.pointGraph)}
+              cond={false}
+              height={200}
+            />
+          </View>
 
           <View style={styles.spacing}>
             <MyBarChart
@@ -497,6 +506,15 @@ export function AccessResultPage(props) {
           </View>
 
           <View style={styles.spacing}>
+            <MyPieChartCounts
+              title={'Percentage Path Count'}
+              graph={formatCountPie(props.selectedResult.graph.pathGraph)}
+              cond={false}
+              height={200}
+            />
+          </View>
+
+          <View style={styles.spacing}>
             <MyBarChart
               {...props}
               title={"Access Area Counts"}
@@ -508,28 +526,10 @@ export function AccessResultPage(props) {
               height={chartHeight}
             />
           </View>
-          
-          <View style={styles.spacing}>
-            <MyPieChartCounts
-              title={'Percentage Point Count'}
-              graph={formatCountPie(props.selectedResult.graph.pointGraph)}
-              cond={false}
-              height={200}
-            />
-          </View>
 
           <View style={styles.spacing}>
             <MyPieChartCounts
-              title={'Percentage Path Count'}
-              graph={formatCountPie(props.selectedResult.graph.pathGraph)}
-              cond={false}
-              height={200}
-            />
-          </View>
-
-          <View style={styles.spacing}>
-            <MyPieChartCounts
-              title={'Percentage Access Area'}
+              title={'Percentage Area Count'}
               graph={formatCountPie(props.selectedResult.graph.areaGraph)}
               cond={false}
               height={200}
@@ -537,22 +537,26 @@ export function AccessResultPage(props) {
           </View>
 
           <View style={styles.spacing}>
-            <MyPieChartArea
-              title={'Percentage Total Path'}
-              graph={formatAreaPie(props.selectedResult.graph.pathGraph)}
-              cond={false}
-              height={200}
+            <MyBarChartLength
+              {...props}
+              title={"Internal Path Length"}
+              rotation={'0deg'}
+              dataValues={props.selectedResult.graph.pathGraph.lengthBar}
+              dataLabels={props.selectedResult.graph.pathGraph.labels}
+              barColor={color}
+              width={chartWidth}
+              height={chartHeight}
             />
           </View>
 
-          <View style={styles.spacing}>
+          {/* <View style={styles.spacing}>
             <MyPieChartArea
               title={'Percentage Total Area'}
               graph={formatAreaPie(props.selectedResult.graph.areaGraph)}
               cond={false}
               height={200}
             />
-          </View>
+          </View> */}
 
           {/*
           <View style={styles.spacing}>

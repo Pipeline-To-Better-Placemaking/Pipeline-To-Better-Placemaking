@@ -128,6 +128,117 @@ export function MyBarChart({children, ...props}){
   );
 }
 
+export function MyBarChartLength({children, ...props}){
+
+  console.log("🚀 ~ file: charts.component.js:23 ~ MyBarChart ~ props.dataLabels", props.dataLabels);
+  console.log("🚀 ~ file: charts.component.js:23 ~ MyBarChart ~ props.dataValues", props.dataValues);
+
+
+  if(props.dataLabels === null || props.dataLabels.length <= 0) {
+    return null;
+  }
+
+  const theme = useTheme();
+  const themeContext = React.useContext(ThemeContext);
+  let textColor = (themeContext.theme === "light" ? 'black' : 'white');
+  let fontSize = 10;
+
+  let ticks = Math.max.apply(Math, props.dataValues)%5 + 1;
+  if(ticks > 10) ticks = 10;
+
+  const Gradient = () => (
+        <Defs key={'gradient'}>
+          <LinearGradient id={'gradient'} x1={'0%'} y={'0%'} x2={'0%'} y2={'100%'}>
+            <Stop offset={'0%'} stopColor={props.barColor}/>
+            <Stop offset={'100%'} stopColor={'rgb(255, 255, 255)'}/>
+          </LinearGradient>
+        </Defs>
+      )
+
+  const CUT_OFF = 20
+  const Labels = ({ x, y, bandwidth, data }) => (
+      data.map((value, index) => (
+          <TextSVG
+            key={ index }
+            x={ x(index) + (bandwidth / 2) }
+            y={ value < CUT_OFF ? `${y(value) - 10}ft` : `${y(value) + 15}ft` }
+            fontSize={fontSize}
+            fill={textColor}
+            alignmentBaseline={ 'middle' }
+            textAnchor={ 'middle' }
+          >
+              {`${value} ft`}
+          </TextSVG>
+      ))
+  )
+
+  const xAxisLabels = (label, index) => {
+    if (props.rotation === '0deg') {
+      return (
+        <Text
+          key={index}
+          style={[styles.xaxis0, {
+            transform:[{rotate:props.rotation}],
+            width: ((props.width-10) / (props.dataLabels.length*2))
+          }]}
+        >
+          {label}
+        </Text>
+      );
+    }
+
+    return (
+      <View key={index} style={styles.xaxisView} >
+        <Text style={[ styles.xaxis1, {transform:[{rotate:props.rotation}]}]} >
+          {label}
+        </Text>
+      </View>
+    )
+  }
+
+  return (
+    <View style={{marginBottom:15}}>
+      <Text category={'h4'}> {props.title} </Text>
+      <View style={{height:props.height, width:props.width, flexDirection:'row'}}>
+        <YAxis
+          
+          data={props.dataValues}
+          contentInset={{top: 20, bottom: 10}}
+          svg={{fontSize:fontSize, fill:textColor}}
+          min={0}
+          numberOfTicks={ticks}
+        />
+        <View style={{ flex: 1, marginLeft: 5 }}>
+          <BarChart
+            style={{flex:1}}
+            data={props.dataValues}
+            gridMin={0}
+            spacing={0.2}
+            svg={{fill:'url(#gradient)', opacity:.5}}
+            contentInset={{top: 20, bottom: 10, right:20}}
+            numberOfTicks={ticks}
+            >
+              <Grid />
+              <Gradient />
+              <Labels />
+          </BarChart>
+        </View>
+      </View>
+      <View
+        style={{
+          flex: 1,
+          marginLeft: 20,
+          flexDirection:'row',
+          maxWidth:props.width - 40,
+          justifyContent:'flex-start',
+        }}
+      >
+        {props.dataLabels.map((value, index) => {return xAxisLabels(value, index)})}
+      </View>
+    </View>
+  );
+}
+
 export function CompareBarChart({children, ...props}){
 
   if(props.dataLabels === null || props.dataLabels.length <= 0) {

@@ -4,7 +4,7 @@
     "owner": "pipeline-to-better-placemaking",
     "description": "Measure the qualities of public spaces",
     "slug": "app",
-    "version": "1.0.0",
+    "version": "3.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "splash": {
@@ -27,7 +27,7 @@
           "NSAllowsArbitraryLoads": true
         }
       },
-      "bundleIdentifier": "ptbp"
+      "bundleIdentifier": "ptbp",
     },
     "android": {
       "adaptiveIcon": {

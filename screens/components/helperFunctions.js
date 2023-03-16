@@ -495,17 +495,18 @@ export async function formatAccessGraphData(result){
       key: 0, 
       pointGraph: {
         labels: [],
-        data: []
+        data: [],
       },
       pathGraph: {
         labels: [],
         data: [],
-        areas: []
+        areas: [],
+        lengthBar: [],
       },
       areaGraph: {
         labels: [],
         data: [],
-        areas: []
+        areas: [],
       }
     };
   
@@ -538,12 +539,14 @@ export async function formatAccessGraphData(result){
         // increase the count of that index
         graph.pathGraph.data[index] += 1;
         graph.pathGraph.areas[index] += result.data[i].area;
+        result.data[i].inPerimeter ? graph.pathGraph.lengthBar[index] += result.data[i].area : null;
       }
       // otherwise, that description does not exist in graph's labels
       else{
         // so push the description to the end of graph's labels and a 1 onto the end of data labels
         graph.pathGraph.labels.push(result.data[i].description);
         graph.pathGraph.areas.push(result.data[i].area);
+        result.data[i].inPerimeter ? graph.pathGraph.lengthBar.push(parseFloat(result.data[i].area.toFixed(1))) : graph.pathGraph.lengthBar.push(0);        
         graph.pathGraph.data.push(1);
       }
     }   
@@ -555,13 +558,13 @@ export async function formatAccessGraphData(result){
       if(index !== -1){
         // increase the count of that index
         graph.areaGraph.data[index] += 1;
-        graph.pathGraph.areas[index] += result.data[i].area;
+        graph.pathGraph.areas[index] += parseFloat(result.data[i].area.toFixed(1));
       }
       // otherwise, that description does not exist in graph's labels
       else{
         // so push the description to the end of graph's labels and a 1 onto the end of data labels
         graph.areaGraph.labels.push(result.data[i].description);
-        graph.areaGraph.areas.push(result.data[i].area);
+        graph.areaGraph.areas.push(parseFloat(result.data[i].area.toFixed(1)));
         graph.areaGraph.data.push(1);
       }
     }    
@@ -680,6 +683,18 @@ export function calcArea(markers){
   // return the parsed float of the fixed number
   return parseFloat(tempString);
 }
+
+export function calcPolygonArea(markers){
+  // Use the earth's radius in feet
+  const earthRadiusFeet = 20902231.76;
+  let area = 0;
+  for(let i = 0; i < markers.length; i++) {
+    let j = (i + 1) % markers.length;
+    area += markers[i].longitude * markers[j].latitude - markers[j].longitude * markers[i].latitude;
+  }
+  area = parseFloat((Math.abs(area) / 2.0).toFixed(1))
+  return (area * earthRadiusFeet * earthRadiusFeet)
+}
   
 // helpers for calcArea
 function calculateAreaInSquareMeters(x1, x2, y1, y2) {return (y1 * x2 - x1 * y2) / 2}
@@ -700,8 +715,8 @@ export function haverSine(coords1, coords2) {
   let meters = R * C;
   // convert it to feet
   let feet = meters * 3.28084;
-  // fix the percision to the 2nd decimal place
-  let tempString = feet.toFixed(2);
+  // fix the percision to 1 decimal place
+  let tempString = feet.toFixed(1);
   // return the parsed float of the fixed number
   return parseFloat(tempString);
 }

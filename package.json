@@ -20,6 +20,7 @@
     "@ui-kitten/moment": "^5.1.2",
     "expo": "~47.0.12",
     "expo-location": "~15.0.1",
+    "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.2",
     "expo-updates": "~0.15.6",
     "moment": "^2.29.1",
@@ -43,12 +44,11 @@
     "react-native-safe-area-view": "^1.1.1",
     "react-native-screens": "~3.18.0",
     "react-native-status-bar-height": "^2.6.0",
-    "react-native-svg": "13.4.0",
+    "react-native-svg": "13.5.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-web": "~0.18.7",
     "tinycolor2": "^1.6.0",
-    "watchman": "^1.0.0",
-    "expo-splash-screen": "~0.17.5"
+    "watchman": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3"
