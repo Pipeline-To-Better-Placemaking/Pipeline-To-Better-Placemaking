@@ -2157,6 +2157,7 @@ export default function Charts(props) {
         let monumentArea = 0;
         let publicSpaceArea = 0;
         let totalArea = 0;
+        let remainingArea = 0;
 
         // {"Food and beverage", food},
         // {"Entertainment / leisure", entertain},
@@ -2174,6 +2175,7 @@ export default function Charts(props) {
         data.map((inst) => {
             inst = inst[0][0];
             totalArea += inst.sqFootage;
+            remainingArea += inst.sqFootage;
 
             inst.floorData.map((obj) => {
                 obj.programs.map((program) => {
@@ -2182,54 +2184,72 @@ export default function Charts(props) {
                         case 'Food and beverage':
                             foodAndBev++;
                             foodAndBevArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
                             break;
                         case 'Entertainment / leisure':
                             entertain++;
                             entertainArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
                             break;
                         case 'Hospitality':
                             hospitality++;
                             hospitalityArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
                             break;
                         case 'Healthcare':
                             healthcare++;
                             healthcareArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
                             break;
                         case 'Retail':
                             retail++;
                             retailArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
                             break;
                         case 'Commercial':
                             commercial++;
                             commercialArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
                             break;
                         case 'Residential':
                             resident++;
                             residentArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
                             break;
                         case 'Laboratory':
                             lab++;
                             labArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
                             break;
                         case 'Storage / warehouse':
                             storage++;
                             storageArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
                             break;
                         case 'Empty / abandoned / unused':
                             empty++;
                             emptyArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
                             break;
                         case 'Civil':
                             civil++;
                             civilArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
                             break;
                         case 'Monument':
                             monument++;
                             monumentArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
                             break;
                         case 'Public Space':
                             publicSpace++;
                             publicSpaceArea += program.sqFootage;
+                            remainingArea -= program.sqFootage;
+                            break;
+                        case 'Void Space':
+                            programSum--;
+                            remainingArea -= program.sqFootage;
+                            totalArea -= program.sqFootage;
                             break;
                         default:
                             console.log('Non-matching program type');
@@ -2273,6 +2293,23 @@ export default function Charts(props) {
             { programType: 'Monument Area', value: parseFloat(monumentArea.toFixed(1)) },
             { programType: 'Public Space Area', value: parseFloat(publicSpaceArea.toFixed(1)) },
             { programType: 'Total Building Area', value: parseFloat(totalArea.toFixed(1)) }
+        ];
+
+        const programTypeAreaArrForPieChart = [
+            { programType: 'Food and beverage Area', value: parseFloat(foodAndBevArea.toFixed(1)) },
+            { programType: 'Entertainment / leisure Area', value: parseFloat(entertainArea.toFixed(1)) },
+            { programType: 'Hospitality Area', value: parseFloat(hospitalityArea.toFixed(1)) },
+            { programType: 'Healthcare Area', value: parseFloat(healthcareArea.toFixed(1)) },
+            { programType: 'Retail Area', value: parseFloat(retailArea.toFixed(1)) },
+            { programType: 'Commercial Area', value: parseFloat(commercialArea.toFixed(1)) },
+            { programType: 'Residential Area', value: parseFloat(residentArea.toFixed(1)) },
+            { programType: 'Laboratory Area', value: parseFloat(labArea.toFixed(1)) },
+            { programType: 'Storage / warehouse Area', value: parseFloat(storageArea.toFixed(1)) },
+            { programType: 'Empty / abandoned / unused Area', value: parseFloat(emptyArea.toFixed(1)) },
+            { programType: 'Civil Area', value: parseFloat(civilArea.toFixed(1)) },
+            { programType: 'Monument Area', value: parseFloat(monumentArea.toFixed(1)) },
+            { programType: 'Public Space Area', value: parseFloat(publicSpaceArea.toFixed(1)) },
+            { programType: 'Unknown Area', value: parseFloat(remainingArea.toFixed(1)) }
         ];
 
         const packagedData = [programTypeArr, programTypeAreaArr];
@@ -2320,16 +2357,17 @@ export default function Charts(props) {
 
                 <div style={{ fontSize: 'larger' }}> Program Type Areas </div>
                 <PieChart width={width} height={height}>
-                    <Pie data={programTypeAreaArr} dataKey='value' nameKey='programType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
-                        {programTypeAreaArr.map((entry, index) => (
+                    <Pie data={programTypeAreaArrForPieChart} dataKey='value' nameKey='programType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                        {programTypeAreaArrForPieChart.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={programColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
                     </Pie>
                     <Tooltip />
                 </PieChart>
                 <div>
-                    {programTypeAreaArr.map((entry, index) => {
-                        if (entry.value > 0 && index !== 13)
+                    {programTypeAreaArrForPieChart.map((entry, index) => {
+                        // && index !== 13
+                        if (entry.value > 0)
                             return (
                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                                     <div style={{ backgroundColor: programColor[index] }}>&nbsp;&nbsp;</div>
@@ -2394,6 +2432,7 @@ export default function Charts(props) {
         let monumentArea = 0;
         let publicSpaceArea = 0;
         let totalArea = data.sqFootage;
+        let remainingArea = totalArea;
 
         // {"Food and beverage", food},
         // {"Entertainment / leisure", entertain},
@@ -2416,54 +2455,72 @@ export default function Charts(props) {
                     case 'Food and beverage':
                         foodAndBev++;
                         foodAndBevArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
                         break;
                     case 'Entertainment / leisure':
                         entertain++;
                         entertainArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
                         break;
                     case 'Hospitality':
                         hospitality++;
                         hospitalityArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
                         break;
                     case 'Healthcare':
                         healthcare++;
                         healthcareArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
                         break;
                     case 'Retail':
                         retail++;
                         retailArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
                         break;
                     case 'Commercial':
                         commercial++;
                         commercialArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
                         break;
                     case 'Residential':
                         resident++;
                         residentArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
                         break;
                     case 'Laboratory':
                         lab++;
                         labArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
                         break;
                     case 'Storage / warehouse':
                         storage++;
                         storageArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
                         break;
                     case 'Empty / abandoned / unused':
                         empty++;
                         emptyArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
                         break;
                     case 'Civil':
                         civil++;
                         civilArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
                         break;
                     case 'Monument':
                         monument++;
                         monumentArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
                         break;
                     case 'Public Space':
                         publicSpace++;
                         publicSpaceArea += program.sqFootage;
+                        remainingArea -= program.sqFootage;
+                        break;
+                    case 'Void Space':
+                        programSum--;
+                        remainingArea -= program.sqFootage;
+                        totalArea -= program.sqFootage;
                         break;
                     default:
                         console.log('Non-matching program type');
@@ -2504,6 +2561,23 @@ export default function Charts(props) {
             { programType: 'Monument Area', value: parseFloat(monumentArea.toFixed(1)) },
             { programType: 'Public Space Area', value: parseFloat(publicSpaceArea.toFixed(1)) },
             { programType: 'Total Building Area', value: parseFloat(totalArea.toFixed(1)) }
+        ];
+
+        const programTypeAreaArrForPieChart = [
+            { programType: 'Food and beverage Area', value: parseFloat(foodAndBevArea.toFixed(1)) },
+            { programType: 'Entertainment / leisure Area', value: parseFloat(entertainArea.toFixed(1)) },
+            { programType: 'Hospitality Area', value: parseFloat(hospitalityArea.toFixed(1)) },
+            { programType: 'Healthcare Area', value: parseFloat(healthcareArea.toFixed(1)) },
+            { programType: 'Retail Area', value: parseFloat(retailArea.toFixed(1)) },
+            { programType: 'Commercial Area', value: parseFloat(commercialArea.toFixed(1)) },
+            { programType: 'Residential Area', value: parseFloat(residentArea.toFixed(1)) },
+            { programType: 'Laboratory Area', value: parseFloat(labArea.toFixed(1)) },
+            { programType: 'Storage / warehouse Area', value: parseFloat(storageArea.toFixed(1)) },
+            { programType: 'Empty / abandoned / unused Area', value: parseFloat(emptyArea.toFixed(1)) },
+            { programType: 'Civil Area', value: parseFloat(civilArea.toFixed(1)) },
+            { programType: 'Monument Area', value: parseFloat(monumentArea.toFixed(1)) },
+            { programType: 'Public Space Area', value: parseFloat(publicSpaceArea.toFixed(1)) },
+            { programType: 'Unknown Area', value: parseFloat(remainingArea.toFixed(1)) }
         ];
 
         const packagedData = [programTypeArr, programTypeAreaArr];
@@ -2551,16 +2625,17 @@ export default function Charts(props) {
 
                 <div style={{ fontSize: 'larger' }}> Program Type Areas </div>
                 <PieChart width={width} height={height}>
-                    <Pie data={programTypeAreaArr} dataKey='value' nameKey='programType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
-                        {programTypeAreaArr.map((entry, index) => (
+                    <Pie data={programTypeAreaArrForPieChart} dataKey='value' nameKey='programType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                        {programTypeAreaArrForPieChart.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={programColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
                     </Pie>
                     <Tooltip />
                 </PieChart>
                 <div>
-                    {programTypeAreaArr.map((entry, index) => {
-                        if (entry.value > 0 && index !== 13)
+                    {programTypeAreaArrForPieChart.map((entry, index) => {
+                        // && index !== 13
+                        if (entry.value > 0)
                             return (
                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                                     <div style={{ backgroundColor: programColor[index] }}>&nbsp;&nbsp;</div>

@@ -12,14 +12,14 @@ using UnityEngine.EventSystems;
 public class Surveyor : MonoBehaviour
 {
     [DllImport("__Internal")]
-    private static extern void ReceiveProgramData (string programJSON);
+    private static extern void ReceiveProgramData(string programJSON);
 
     ProBuilderMesh mesh;
     ProBuilderMesh newProgramMesh;
     ProBuilderMesh floorMesh;
     ProBuilderMesh loadedProgramMesh;
 
-    private const float EarthRadius = 6371e3f; 
+    private const float EarthRadius = 6371e3f;
 
     public float dragSpeed = 2;
     private Vector3 dragOrigin;
@@ -36,7 +36,7 @@ public class Surveyor : MonoBehaviour
 
     List<GameObject> DotList = new List<GameObject>();
     List<ProBuilderMesh> floorList = new List<ProBuilderMesh>();
-    
+
     public GameObject extrudeUIBox;
     public GameObject previewUIBox;
     public GameObject startUIBox;
@@ -101,14 +101,14 @@ public class Surveyor : MonoBehaviour
             this.programType = programType;
             this.floorNum = floorNum;
             this.sqFootage = sqFootage;
-            
+
             Debug.Log(this.floorNum);
             for (int i = 0; i < _points.Count; i++)
             {
                 // Debug.Log("xcoord is: " + _points[i].x);
                 // Debug.Log("ycoord is: " + _points[i].y);
                 // Debug.Log("zcoord is: " + _points[i].z);
-                points.Add( new Coordinate( _points[i].x , _points[i].y , _points[i].z ) );
+                points.Add(new Coordinate(_points[i].x, _points[i].y, _points[i].z));
             }
         }
     }
@@ -197,7 +197,7 @@ public class Surveyor : MonoBehaviour
         // // floorList[1].gameObject.SetActive(true);
 
         // dragCamera = Camera.main.gameObject.GetComponent<DragCamera>();
-        
+
         // programMapping = new Dictionary<string, Material>(){
         // {"Food and beverage", food},
         // {"Entertainment / leisure", entertain},
@@ -213,7 +213,7 @@ public class Surveyor : MonoBehaviour
         // {"Monument", monument},
         // {"Public Space", publicSpace}
         // };
-        
+
     }
 
     public static float Distance(float lat1, float lon1, float lat2, float lon2)
@@ -240,11 +240,11 @@ public class Surveyor : MonoBehaviour
     public void SurveyorProgram(string json)
     {
         Debug.Log(json);
-        
+
 
         dragCamera = Camera.main.gameObject.GetComponent<DragCamera>();
         submitProgramBtn.SetActive(false);
-        
+
         programMapping = new Dictionary<string, Material>(){
         {"Food and beverage", food},
         {"Entertainment / leisure", entertain},
@@ -277,20 +277,20 @@ public class Surveyor : MonoBehaviour
         int numFloors = int.Parse(data.numFloors);
         // Debug.Log ($"The numFloors is: {numFloors}");
 
-        Debug.Log ($"Programs[0] programType is: {data.programs[0].programType}");
+        Debug.Log($"Programs[0] programType is: {data.programs[0].programType}");
 
         PopulateFloorNumDropDown(numFloors);
 
         // First vertex is the first longtitude point
-        vertices.Add(new Vector3(0,0,0));
+        vertices.Add(new Vector3(0, 0, 0));
         float prevLat = 0;
         float prevLon = 0;
         float newLat, newLon;
         for (int i = 1; i < data.points.Length; i++)
         {
-            float lat1 = data.points[i-1].lat;
+            float lat1 = data.points[i - 1].lat;
             float lat2 = data.points[i].lat;
-            float lon1 = data.points[i-1].lng;
+            float lon1 = data.points[i - 1].lng;
             float lon2 = data.points[i].lng;
 
             float latDist = Distance(lat1, lon1, lat2, lon1);
@@ -321,7 +321,7 @@ public class Surveyor : MonoBehaviour
             prevLon = newLon;
         }
 
-        mesh.CreateShapeFromPolygon(vertices, numFloors*14, true);
+        mesh.CreateShapeFromPolygon(vertices, numFloors * 14, true);
         mesh.tag = "Model";
         mesh.GetComponent<MeshRenderer>().sharedMaterial = material;
 
@@ -364,7 +364,7 @@ public class Surveyor : MonoBehaviour
 
         for (int j = 1; j < numFloors; j++)
         {
-            for(int i = 0; i < vertices.Count; i++)
+            for (int i = 0; i < vertices.Count; i++)
             {
                 var temp = vertices[i];
                 temp.y = (14) + temp.y;
@@ -393,16 +393,16 @@ public class Surveyor : MonoBehaviour
         {
             // scary "vertices.Clear()"
             vertices.Clear();
-            int savedYCoord = (((int)data.programs[i].programPointsList[0].yCoord)/14);
+            int savedYCoord = (((int)data.programs[i].programPointsList[0].yCoord) / 14);
             for (int j = 0; j < data.programs[i].programPointsList.Length; j++)
             {
-                
+
                 vertices.Add(new Vector3(data.programs[i].programPointsList[j].xCoord, data.programs[i].programPointsList[j].yCoord, data.programs[i].programPointsList[j].zCoord));
-                
+
             }
             var tempMesh = new GameObject();
             loadedProgramMesh = tempMesh.gameObject.AddComponent<ProBuilderMesh>();
-            loadedProgramMesh.gameObject.transform.SetParent(floorList[ savedYCoord ].gameObject.transform);
+            loadedProgramMesh.gameObject.transform.SetParent(floorList[savedYCoord].gameObject.transform);
 
             // Maybe we put this line in later (to help make sure programs don't overlap?)
             // loadedProgramMesh.gameObject.AddComponent<MeshCollider>();
@@ -446,20 +446,20 @@ public class Surveyor : MonoBehaviour
             }
             DotList.Clear();
             floorList[currentFloorShown].gameObject.SetActive(false);
-            floorList[index-1].gameObject.SetActive(true);
+            floorList[index - 1].gameObject.SetActive(true);
 
-            currentFloorShown = index-1;
+            currentFloorShown = index - 1;
             Debug.Log(index);
             // Add code here to move the camera around
             Vector3 curFloor = floorList[currentFloorShown].GetComponent<MeshRenderer>().bounds.center;
-            
+
             Camera.main.transform.position = new Vector3(curFloor.x, curFloor.y + 50, curFloor.z);
         }
-        else 
+        else
         {
             validFloorNum = false;
         }
-        
+
     }
 
     void CameraStuff()
@@ -525,14 +525,14 @@ public class Surveyor : MonoBehaviour
         //                     transform.Translate(move, Space.World);
         //                 }
         //             }
-                
+
         //     }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (extrudeUIBox.gameObject.activeInHierarchy )
+        if (extrudeUIBox.gameObject.activeInHierarchy)
         {
             screenPosition = Input.mousePosition;
 
@@ -540,7 +540,7 @@ public class Surveyor : MonoBehaviour
 
             CameraStuff();
 
-            
+
 
 
             if (Physics.Raycast(ray, out RaycastHit hitData))
@@ -549,7 +549,7 @@ public class Surveyor : MonoBehaviour
                 // Debug.Log(worldPosition);
 
                 // worldPosition.y = Camera.main.transform.position.y;
-                
+
 
                 // float safeYCoord = worldPosition.y;
                 if (Input.GetMouseButtonDown(0))
@@ -569,7 +569,7 @@ public class Surveyor : MonoBehaviour
                         // Debug.Log(worldPosition);
 
                         // Add code to display where the user clicked with a dot
-                        
+
                         // !!!! Duplicate the dot mesh so that it renders a new dot everytime
                         // !!!! Fix the position of the dot when the user clicks
 
@@ -580,13 +580,13 @@ public class Surveyor : MonoBehaviour
                         newDot.gameObject.transform.position = worldPosition;
                         DotList.Add(newDot);
                     }
-                    
+
                 }
             }
 
             transform.position = worldPosition;
         }
-    
+
     }
 
     // Add a new function here to receive the JSON from the website
@@ -596,7 +596,8 @@ public class Surveyor : MonoBehaviour
 
 
     // communicates between Unity and React
-    public void sendProgramJSON(string data) {
+    public void sendProgramJSON(string data)
+    {
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     ReceiveProgramData (data);
 #endif
@@ -627,7 +628,7 @@ public class Surveyor : MonoBehaviour
         extrudeUIBox.SetActive(true);
 
         Vector3 curFloor = floorList[currentFloorShown].GetComponent<MeshRenderer>().bounds.center;
-        
+
 
         Camera.main.transform.rotation = Quaternion.identity;
 
@@ -655,13 +656,13 @@ public class Surveyor : MonoBehaviour
     {
         Debug.Log("Yay!");
 
-        
+
 
         string str = JsonConvert.SerializeObject(programList, Formatting.Indented);
         Debug.Log(str);
         sendProgramJSON(str);
     }
-    
+
     // Add code to put the programs on different floors
     // Change floorNumber input field to a dropdown like Jacob said --> DONE
     //  |__---> Toggle which floor plans are visible (and programs) --> DONE
@@ -673,13 +674,13 @@ public class Surveyor : MonoBehaviour
     public void OnClickButton()
     {
         // floorNumber.text != "" &&
-        if ( programOption != "Please select program type" && programOption != "" && validFloorNum && inputPoints.Count > 2)
+        if (programOption != "Please select program type" && programOption != "" && validFloorNum && inputPoints.Count > 2)
         {
             // int inputFloorNum = int.Parse(floorNumber.text);
 
             extrudeUIBox.SetActive(false);
             previewUIBox.SetActive(true);
-            
+
             mesh.gameObject.SetActive(true);
             for (int i = 0; i < floorList.Count; i++)
             {
@@ -687,23 +688,23 @@ public class Surveyor : MonoBehaviour
             }
 
             dragCamera.enabled = true;
-            
+
 
             var go = new GameObject();
             newProgramMesh = go.gameObject.AddComponent<ProBuilderMesh>();
             newProgramMesh.gameObject.transform.SetParent(floorList[currentFloorShown].gameObject.transform);
 
-    
+
             // 13.99 is just how far to extrude, less than the standard 14 units we are using
-            if(newProgramMesh.CreateShapeFromPolygon(inputPoints, 13.99f, false))
+            if (newProgramMesh.CreateShapeFromPolygon(inputPoints, 13.99f, false))
             {
-                
+
                 newProgramMesh.GetComponent<MeshRenderer>().sharedMaterial = programMapping[programOption];
                 previewAcceptButton.SetActive(true);
 
-                
+
             }
-            else 
+            else
             {
                 invalidShapeText.SetActive(true);
             }
@@ -713,7 +714,7 @@ public class Surveyor : MonoBehaviour
 
 
         }
-        else 
+        else
         {
             if (programOption == "Please select program type" || programOption == "")
             {
@@ -745,7 +746,7 @@ public class Surveyor : MonoBehaviour
         }
         DotList.Clear();
 
-        
+
 
         dragCamera.enabled = false;
         Camera.main.transform.rotation = Quaternion.identity;
@@ -760,11 +761,11 @@ public class Surveyor : MonoBehaviour
 
 
         Vector3 curFloor = floorList[currentFloorShown].GetComponent<MeshRenderer>().bounds.center;
-            
+
         Camera.main.transform.position = new Vector3(curFloor.x, curFloor.y + 50, curFloor.z);
         Camera.main.transform.Rotate(Vector3.right, 90f);
 
-        
+
 
         previewUIBox.SetActive(false);
         extrudeUIBox.SetActive(true);
@@ -796,7 +797,7 @@ public class Surveyor : MonoBehaviour
         {
             submitProgramBtn.SetActive(true);
         }
-        
+
         // Bring user to the main UI where they can start to add a new program or submit the programs they created.
         // Move camera
         // mesh.gameObject.SetActive(true);
@@ -817,11 +818,11 @@ public class Surveyor : MonoBehaviour
 
         for (int i = 1; i < inputPoints.Count; i++)
         {
-            float x1 = inputPoints[i-1].x;
-            float z1 = inputPoints[i-1].z;
+            float x1 = inputPoints[i - 1].x;
+            float z1 = inputPoints[i - 1].z;
             float x2 = inputPoints[i].x;
             float z2 = inputPoints[i].z;
-            listArea.Add(CalculateAreaInSquareMeters(x1,x2,z1,z2));
+            listArea.Add(CalculateAreaInSquareMeters(x1, x2, z1, z2));
         }
 
         float totalArea = 0;
@@ -834,39 +835,39 @@ public class Surveyor : MonoBehaviour
         float metersSqr = Mathf.Abs(totalArea);
         float feetSqr = metersSqr * 10.76391042f;
 
-        
-        
+
+
 
         return feetSqr;
-            // calculate areas for each triangle segment
-                //     for (let i = 1; i < listX.length; i++) {
-                //         let x1 = listX[i - 1];
-                //         let y1 = listY[i - 1];
-                //         let x2 = listX[i];
-                //         let y2 = listY[i];
-                //         listArea.push(calculateAreaInSquareMeters(x1, x2, y1, y2));
+        // calculate areas for each triangle segment
+        //     for (let i = 1; i < listX.length; i++) {
+        //         let x1 = listX[i - 1];
+        //         let y1 = listY[i - 1];
+        //         let x2 = listX[i];
+        //         let y2 = listY[i];
+        //         listArea.push(calculateAreaInSquareMeters(x1, x2, y1, y2));
 
-                //     }
+        //     }
 
-                //     // sum areas of all triangle segments
-                //     let areaSum = 0;
-                //     listArea.forEach(tarea => areaSum = areaSum + tarea)
+        //     // sum areas of all triangle segments
+        //     let areaSum = 0;
+        //     listArea.forEach(tarea => areaSum = areaSum + tarea)
 
-                //     // get abolute value of area (which is in meters squared); area can't be negative
-                //     let metersSqr = Math.abs(areaSum);
-                //     // convert it to feet squared
-                //     let feetSqr = metersSqr * 10.76391042;
-                //     // fix the percision to the 2nd decimal place
-                //     let tempString = feetSqr.toFixed(2);
-                //     // return the parsed float of the fixed number
-                //     return parseFloat(tempString);
-                // }
+        //     // get abolute value of area (which is in meters squared); area can't be negative
+        //     let metersSqr = Math.abs(areaSum);
+        //     // convert it to feet squared
+        //     let feetSqr = metersSqr * 10.76391042;
+        //     // fix the percision to the 2nd decimal place
+        //     let tempString = feetSqr.toFixed(2);
+        //     // return the parsed float of the fixed number
+        //     return parseFloat(tempString);
+        // }
 
-                // // helpers for calcArea
-                // function calculateAreaInSquareMeters(x1, x2, y1, y2) { return (y1 * x2 - x1 * y2) / 2 }
+        // // helpers for calcArea
+        // function calculateAreaInSquareMeters(x1, x2, y1, y2) { return (y1 * x2 - x1 * y2) / 2 }
     }
     public static float CalculateAreaInSquareMeters(float x1, float x2, float y1, float y2) { return (y1 * x2 - x1 * y2) / 2; }
-    
 
-    
+
+
 }
