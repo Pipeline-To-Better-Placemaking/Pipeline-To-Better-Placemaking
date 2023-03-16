@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from 'react-router-dom'; 
+import { Link, useLocation, useNavigate } from 'react-router-dom'; 
 import './routes.css';
 import { storage } from "./firebase_config";
 import { ref, uploadBytesResumable, getDownloadURL, listAll, list } from "firebase/storage";
 import { v4 } from "uuid";
 import axios from '../api/axios';
-import { LinearProgress, Button, TextField, Box, InputLabel, MenuItem, FormControl, RadioGroup, Radio, FormControlLabel, FormLabel, DialogTitle, Dialog } from '@mui/material'
+import { Input, Button, TextField, Box, InputLabel, MenuItem, FormControl, RadioGroup, Radio, FormControlLabel, FormLabel, DialogTitle, Dialog } from '@mui/material'
 import LinearProgressWithLabel from '@mui/material/LinearProgress'
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -31,6 +31,7 @@ function UploadSectionMedia() {
 
 
     const location = useLocation();
+    const nav = useNavigate();
     const date = new Date();
     const storageRefList = ref(storage, `media_uploads/${location.state.section._id}`);
 
@@ -75,9 +76,14 @@ function UploadSectionMedia() {
             setMediaUrl(downloadURL);
             setMediaUrls((prev) => [...prev, downloadURL]);
             storeURL(downloadURL)
+            setFile(null);
           });
         }
       );
+    }
+
+    const handleViewNav = () => {
+      nav('../activities/view_media', { state: location.state });
     }
 
     const handleTags = (event) => {
@@ -161,6 +167,12 @@ function UploadSectionMedia() {
       }
     }
 
+    const resetInput = () => {
+      setPreview("");
+      setSelectedTags([]);
+      setTitle("");
+    }
+
     const removeNewTag = (removedTag) => {
       const temp = newTags.filter((newTag) => newTag !== removedTag);
       setNewTags(temp);
@@ -186,25 +198,29 @@ function UploadSectionMedia() {
 
     return (
         <div className="UploadSectionMedia">
-          <h1> Section Cutter </h1>
+          <div style={{flex: 1, flexDirection: 'row'}}>
+            <h1> Section Cutter <Button onClick={handleViewNav}> View Test Media </Button>  </h1>            
+            
+          </div>
           <br/>
             {
               !preview ? 
                 <div className="SubmitButton">
-                  <input type='file' onChange={handlePreview} />
+                  <Input className="Mui-focused" type='file' onChange={handlePreview} />
                   <br/>
+                  {progresspercent === 100 ? <p>Successfully Uploaded</p> : null}
                 </div>
             :
               <div className="ImgPreview">
                 <br/>
                 {
                   isImage ?
-                  <img style={{height: "20vh", width : "30vw"}} src={preview} /> : null
+                  <img style={{width : "50vw"}} src={preview} /> : null
                 }
                 {
                   isVideo ?
                   <div>
-                    <video width="320" height="240" controls>
+                    <video style={{width : "50vw"}} controls>
                       <source src={preview} type="video/mp4"></source>
                       <source src={preview} type="video/ogg"></source>
                     </video>
@@ -244,19 +260,19 @@ function UploadSectionMedia() {
                   ))}
                   </Select>
                   </FormControl>               
-                  <div style={{ alignItems: 'center', margin: '1vw'}}>
-                    <Button onClick={handleSubmit}> Upload Media </Button>
+                  <div style={{margin: '1vw'}}>
+                      <Button onClick={handleSubmit}> Upload Media </Button> 
                     <br/>
-                    {progresspercent > 0 && progresspercent < 99.99? <LinearProgressWithLabel value={progresspercent}/> : null}
+                    {progresspercent > 0 ? (progresspercent < 99.99 ? <LinearProgressWithLabel value={progresspercent}/> : resetInput()) : null}
                     </div>
                 </Box>
               </div>
             }
-            <br></br>
+            {/* <br></br>
             <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='success' to='../' 
               state={{...location.state}}>
               Accept and Continue
-            </Button>
+            </Button> */}
         </div>
     );
 }

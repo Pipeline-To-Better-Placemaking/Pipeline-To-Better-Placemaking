@@ -41,9 +41,27 @@ function ViewMedia() {
     }
 
     // Opens edit dialog box
-    const handleEdit = () => {
+    const handleEdit = async () => {
+      try {
+        const map = await axios.get(`/section_maps/${loc.state.section._id}/data/${loc.state.section.data[selectedIndex + 1]._id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Authorization': `Bearer ${loc.state.userToken.token}`
+          },
+          withCredentials: true
+        });
+        
+        //console.log("Map: ", map)
+        setNewSelectedTags(map.data.tags)
+        setNewTitle(map.data.title)
         setEdit(true);
       }
+      catch (error) {
+        console.log("Could not get image from mongo");
+        return;
+      }
+    }
 
     // Saves dialog box changes and closes it
     const handleSave = () => {
@@ -70,6 +88,19 @@ function ViewMedia() {
         }
         update();
       }
+
+    const handleCancel = () => {
+      setEdit(false);
+    }
+
+    const handleDownload = () => {
+      const link = document.createElement('a');
+      link.href = selectedSlide;
+      link.download = 'SectionImage.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
     
     // Updates list of images for specific project
     useEffect(() => {
@@ -91,40 +122,45 @@ function ViewMedia() {
         <h1>View Media</h1>
         <br></br>
         <div className="slide-container">
-              <Carousel showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleSlide}>
-                {mediaUrls.map((slideImage, index)=> (
-                  <div key={index}>
-                    <img src={slideImage} width="40vw"/>
-                  </div>
-                ))} 
-              </Carousel>
-            </div>
-            <Button onClick={handleOpen}>Open in New Tab</Button>
-            <Button onClick={handleEdit}>Open Edit Info</Button>
-                <Dialog open={edit} fullWidth maxWidth="md" PaperProps={{ style: { display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}} >  
-                    <DialogTitle>Edit Info</DialogTitle>
-                    <TextField label="New Title"style={{width: "10vw", margin: "1vw"}} value={newTitle} onChange={text => {setNewTitle(text.target.value)}}></TextField>
-                    <Box sx={{ minWidth: 120}}>
-                        <FormControl fullWidth sx={{ flexDirection: 'row' }}>
-                        <InputLabel id="demo-simple-select-label"> Tags </InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={newSelectedTags}
-                            label="Tags"
-                            onChange={handleNewTags}
-                            multiple
-                            style={{minWidth: 120}}
-                        >
-                        {options.map((option, index) => (
-                            <MenuItem value={option}>{option}</MenuItem>
-                        ))}
-                        </Select>
-                        </FormControl>
-                    </Box>
-                    <br></br>
-                    <Button onClick={handleSave}>Save</Button>
-                </Dialog>
+          <Carousel showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleSlide}>
+            {mediaUrls.map((slideImage, index)=> (
+              <div key={index}>
+                <img src={slideImage} width="40vw"/>
+              </div>
+            ))} 
+          </Carousel>
+        </div>
+        <div style={{flex: 1, flexDirection: 'row', margin: "1vh"}}>
+          <Button onClick={handleDownload}>Download Image</Button>
+          <Button onClick={handleEdit}>Open Edit Info</Button>
+        </div>
+            <Dialog open={edit} fullWidth maxWidth="md" PaperProps={{ style: { display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}} >  
+                <DialogTitle>Edit Info</DialogTitle>
+                <TextField label="New Title"style={{width: "10vw", margin: "1vw"}} value={newTitle} onChange={text => {setNewTitle(text.target.value)}}></TextField>
+                <Box sx={{ minWidth: 120}}>
+                    <FormControl fullWidth sx={{ flexDirection: 'row' }}>
+                    <InputLabel id="demo-simple-select-label"> Tags </InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={newSelectedTags}
+                        label="Tags"
+                        onChange={handleNewTags}
+                        multiple
+                        style={{minWidth: 120}}
+                    >
+                    {options.map((option, index) => (
+                        <MenuItem value={option}>{option}</MenuItem>
+                    ))}
+                    </Select>
+                    </FormControl>
+                </Box>
+                <br/>
+                <div style={{flex: 1, flexDirection: 'row', margin: "1vh"}}>
+                  <Button onClick={handleSave}>Save</Button>
+                  <Button onClick={handleCancel}>Cancel</Button>
+                </div>
+            </Dialog>
     </div>
     );
 }

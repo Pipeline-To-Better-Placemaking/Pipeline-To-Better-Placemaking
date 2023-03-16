@@ -137,7 +137,7 @@ export default function ProjectPage(){
         }
 
         try {
-            console.log(`/${apiCategory[cat]}/${id}`);
+            //console.log(`/${apiCategory[cat]}/${id}`);
             const response = await axios.get(`/${apiCategory[cat]}/${id}`, {
                 headers: {
                     // 'Content-Type': 'application/json',

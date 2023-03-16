@@ -84,8 +84,6 @@ router.get('/:id', passport.authenticate('jwt', { session: false }), async (req,
             }
         }])
 
-    console.log("🚀 ~ file: program_maps.js:80 ~ router.get ~ map:", map);
-
     const promises = map.data[0].floors.map(async (floor, index) => {
         const updatedFloor = await Floor.findById(floor);
 
@@ -98,10 +96,6 @@ router.get('/:id', passport.authenticate('jwt', { session: false }), async (req,
 
     Promise.all(promises).then((updatedFloors) => {
         var result = map;
-
-        console.log("🚀 ~ file: program_maps.js:97 ~ Promise.all ~ updatedFloors:", updatedFloors);
-
-        console.log("🚀 ~ file: program_maps.js:98 ~ map:", result.data[0].floorData);
         res.status(200).json(result);
     }).catch((error) => {
         console.error(error);

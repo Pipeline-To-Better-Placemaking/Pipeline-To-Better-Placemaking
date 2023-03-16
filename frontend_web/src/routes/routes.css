@@ -451,7 +451,6 @@ div#accountPage h1 {
 }
 
 .UploadSectionMedia {
-    width: 100vw;
     height: auto;
     display: flex;
     align-items: center;
@@ -475,7 +474,7 @@ div#accountPage h1 {
 }
 
 .slide-container {
-    width: 100vw;
+    width: 70vw;
     height: auto;
     display: flex;
     align-items: center;
