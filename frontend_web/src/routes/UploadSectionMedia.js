@@ -243,18 +243,7 @@ function UploadSectionMedia() {
                       <MenuItem value={option}>{option}</MenuItem>
                   ))}
                   </Select>
-                  {/* <Button onClick={handleTagSubmit}>Accept Tags</Button> */}
-                  </FormControl>
-                  {/* <div className="tag-container">
-                    {tags.map((tag, index) => {
-                      return (
-                        <div key={index} className="tag">
-                          {tag} <span onClick={() => removeTag(tag)}>x</span>
-                        </div>
-                      );
-                    })}
-                  </div> */}
-                  
+                  </FormControl>               
                   <div style={{ alignItems: 'center', margin: '1vw'}}>
                     <Button onClick={handleSubmit}> Upload Media </Button>
                     <br/>
@@ -263,55 +252,6 @@ function UploadSectionMedia() {
                 </Box>
               </div>
             }
-            <br></br>
-            <div className="slide-container">
-              <h3>Current Images</h3>
-              <Carousel showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleSlide}>
-                {mediaUrls.map((slideImage, index)=> (
-                  <div key={index}>
-                    <img src={slideImage} width="40vw"/>
-                  </div>
-                ))} 
-              </Carousel>
-            </div>
-            <Button onClick={handleEdit}>Open Edit Info</Button>
-
-                <Dialog open={edit} fullWidth maxWidth="md" PaperProps={{ style: { display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}} >
-                <div className="Edit" style={{alignItems: 'center', justifyContent: 'center' }}>
-                <DialogTitle>Edit Info</DialogTitle>
-                <TextField label="New Title"style={{width: "10vw", margin: "1vw"}} value={newTitle} onChange={text => {setNewTitle(text.target.value)}}></TextField>
-                <Box sx={{ minWidth: 120}}>
-                  <FormControl fullWidth sx={{ flexDirection: 'row' }}>
-                  <InputLabel id="demo-simple-select-label"> Tags </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={newSelectedTags}
-                    label="Tags"
-                    onChange={handleNewTags}
-                    multiple
-                    style={{minWidth: 120}}
-                  >
-                  {options.map((option, index) => (
-                      <MenuItem value={option}>{option}</MenuItem>
-                  ))}
-                  </Select>
-                  <Button onClick={handleNewTagSubmit}>Add Tag</Button>
-                  </FormControl>
-                  <div className="tag-container">
-                    {newTags.map((newTag, index) => {
-                      return (
-                        <div key={index} className="tag">
-                          {newTag} <span onClick={() => removeNewTag(newTag)}>x</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </Box>
-                <br></br>
-                <Button onClick={handleSave}>Save</Button>
-                </div>
-                </Dialog>
             <br></br>
             <Button className='continueButton' component={Link} size='lg' variant='filledTonal' color='success' to='../' 
               state={{...location.state}}>

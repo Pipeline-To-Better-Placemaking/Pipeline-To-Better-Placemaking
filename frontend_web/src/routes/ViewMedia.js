@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from 'react-router-dom'; 
 import './routes.css';
 import { storage } from "./firebase_config";
-import { ref, uploadBytesResumable, getDownloadURL, listAll, list } from "firebase/storage";
+import { ref, getDownloadURL, listAll, list } from "firebase/storage";
 import axios from '../api/axios';
-import { LinearProgress, Button, TextField, Box, InputLabel, MenuItem, FormControl, RadioGroup, Radio, FormControlLabel, FormLabel, DialogTitle, Dialog } from '@mui/material'
+import { Button, TextField, Box, InputLabel, MenuItem, FormControl, RadioGroup, Radio, FormControlLabel, FormLabel, DialogTitle, Dialog } from '@mui/material'
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel'
@@ -16,12 +16,18 @@ function ViewMedia() {
     const [ edit, setEdit ] = useState(false);
     const [ selectedIndex, setSelectedIndex ] = useState(0);
     const [ newTitle, setNewTitle ] = useState("");
-    const [ selectedSlide, setSelectedSlide ] = useState('');
+    const [ selectedSlide, setSelectedSlide ] = useState(mediaUrls[1]);
     const [ newSelectedTags, setNewSelectedTags ] = useState([]);
 
     const loc = useLocation();
     const options = ["Sidewalk", "Transit Shelter", "Bus Lane", "Turn Lane", "Planter", "Drive Lane", "Bike Lane", "Parking Lane", "Street Lighting", "Stairs/Ramps", "Outdoor Seating Area", "Outdoor Restaurant Seating Area", "Canopy", "Building Structure", "Loggia", "Breezeway", "Drainage Field/Ditch", "Tree Canopy", "Lake/River Water", "Monument/Fountain", "Leisure Area"];
     const storageRefList = ref(storage, `media_uploads/${loc.state.section._id}`);
+
+    // Opens link on new tab to allow media to be downloaded
+    const handleOpen = () => {
+      console.log(selectedSlide);
+      window.open(selectedSlide, '_blank');
+    }
 
     // Lets front end know which slide it is on for future api calls
     const handleSlide = (index) => {
@@ -93,6 +99,7 @@ function ViewMedia() {
                 ))} 
               </Carousel>
             </div>
+            <Button onClick={handleOpen}>Open in New Tab</Button>
             <Button onClick={handleEdit}>Open Edit Info</Button>
                 <Dialog open={edit} fullWidth maxWidth="md" PaperProps={{ style: { display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}} >  
                     <DialogTitle>Edit Info</DialogTitle>
