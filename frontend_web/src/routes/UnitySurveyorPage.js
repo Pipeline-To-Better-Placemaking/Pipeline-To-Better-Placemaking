@@ -113,7 +113,14 @@ export default function UnityPage() {
 
 
 
-    nav('../', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken } });
+    // Maybe instead of doing this, call a handleNavigation function 
+    // detachAndUnloadImmediate().catch((reason) => {
+    //   console.log(reason);
+    // });
+
+    // !!!!!!!!!!!!!!!!!!!!!!! safely handle the unmounting of the Unity component before you navigate to a different screen
+
+    // nav('../', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken } });
 
   }, []);
 
