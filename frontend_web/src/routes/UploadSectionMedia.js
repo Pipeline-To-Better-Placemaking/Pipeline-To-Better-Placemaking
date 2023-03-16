@@ -38,7 +38,7 @@ function UploadSectionMedia() {
 
     const handleSubmit = () => {
       if (!file) return;
-      const storageRef = ref(storage, `media_uploads/${location.state.section._id}/${file.name + v4()}`);
+      const storageRef = ref(storage, `media_uploads/${location.state.section._id}/${v4() + file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
       const storeURL = async (url) => {
           try {
@@ -107,6 +107,7 @@ function UploadSectionMedia() {
     }
 
     const handlePreview = async (e) => {
+      setProgresspercent(0);
       setFile(e.target.files[0])
       setPreview(URL.createObjectURL(e.target.files[0]));
     }
