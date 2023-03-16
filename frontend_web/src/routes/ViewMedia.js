@@ -16,7 +16,7 @@ function ViewMedia() {
     const [ edit, setEdit ] = useState(false);
     const [ selectedIndex, setSelectedIndex ] = useState(0);
     const [ newTitle, setNewTitle ] = useState("");
-    const [ selectedSlide, setSelectedSlide ] = useState(mediaUrls[1]);
+    const [ selectedSlide, setSelectedSlide ] = useState("");
     const [ newSelectedTags, setNewSelectedTags ] = useState([]);
 
     const loc = useLocation();
@@ -33,6 +33,7 @@ function ViewMedia() {
     const handleSlide = (index) => {
         setSelectedSlide(mediaUrls[index]);
         setSelectedIndex(index);
+        console.log(selectedSlide);
       }
     
     // Updates the tags that the user is currently selecting
@@ -102,15 +103,23 @@ function ViewMedia() {
       document.body.removeChild(link);
     };
     
+    console.log(`Initial: ${selectedSlide}`);
+
     // Updates list of images for specific project
     useEffect(() => {
         listAll(storageRefList).then((response) => {
           response.items.forEach((item) => {
             getDownloadURL(item).then((downloadURL) => {
+              console.log(downloadURL);
               setMediaUrls((prev) => [...prev, downloadURL]);
-            });
+              if(selectedSlide == "")
+              {
+                setSelectedSlide(downloadURL);
+              }  
+            }); 
           });
         });
+        console.log(`After: ${selectedSlide}`);
         }, []);
 
     return (
