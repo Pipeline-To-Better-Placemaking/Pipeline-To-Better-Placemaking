@@ -2420,7 +2420,7 @@ export default function Charts(props) {
     };
 
     const programCharts = (data) => {
-        // console.log(data);
+        console.log(data);
         data = data[0];
 
         let foodAndBev = 0;

@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { Link, useLocation } from 'react-router-dom';
 
+
 import './controls.css';
 
 export default function ProjectTabs(props) {
@@ -27,8 +28,18 @@ export default function ProjectTabs(props) {
         }
     }, [tail, segTail]);
 
+    const refreshClick = (route) => {
+        const link = document.createElement('a');
+        link.href = route;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     // manual adjustment of selected quality for Mui
     const handleUpdate = (tab, value) => {
+        //props.refresh()
+
         setValue(value);
         if (tab === 'map') {
             setMapIndex('Mui-selected');
@@ -51,6 +62,15 @@ export default function ProjectTabs(props) {
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        console.log(newValue)
+        switch (newValue){
+            case 0:
+                refreshClick('map')
+            case 1:
+                refreshClick('surveyors')
+            case 2:
+                refreshClick('activities')
+        }
     };
 
     function LinkTab(props) {

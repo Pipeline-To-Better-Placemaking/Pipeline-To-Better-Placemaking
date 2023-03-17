@@ -49,6 +49,7 @@ export default function FullMap(props) {
     const [numFloors, setNumFloors] = React.useState(1);
     let buildingData, sectionData;
 
+
     // Access Universal Data passed around including the key for maps
     const loc = useLocation();
     const nav = useNavigate();
@@ -341,6 +342,12 @@ export default function FullMap(props) {
             return;
         }
         console.log("signup successful")
+
+        sectionData.researchers.push(loc.state.userToken.user._id)
+        const newObj = await props.refresh()
+        console.log(newObj.activities.section_maps)
+        console.log(sectionData.time)
+
         let SCsignUpBtn = document.getElementById('signUpSCBtn')
         let SCwithdrawBtn = document.getElementById('withdrawSCBtn')
         let SCsurveyorbutton = document.getElementById('SCSurveyorsBtn');
@@ -370,6 +377,10 @@ export default function FullMap(props) {
             return;
         }
         console.log("signup successful")
+
+        buildingData.researchers.push(loc.state.userToken.user._id)
+        props.refresh()
+
         let IPsignUpBtn = document.getElementById('signUpIPBtn')
         let IPwithdrawBtn = document.getElementById('withdrawIPBtn')
         let IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
@@ -397,6 +408,9 @@ export default function FullMap(props) {
             return;
         }
         console.log("withdraw successful")
+
+        sectionData.researchers = sectionData.researchers.filter(item => item._id !== loc.state.userToken.user._id);
+        props.refresh()
 
         let SCsignUpBtn = document.getElementById('signUpSCBtn')
         let SCwithdrawBtn = document.getElementById('withdrawSCBtn')
@@ -428,6 +442,11 @@ export default function FullMap(props) {
             return;
         }
         console.log("withdraw successful")
+        // console.log(buildingData)
+        // console.log(buildingData.researchers)
+
+        buildingData.researchers = buildingData.researchers.filter(item => item._id !== loc.state.userToken.user._id);
+        props.refresh()
 
         let IPsignUpBtn = document.getElementById('signUpIPBtn')
         let IPwithdrawBtn = document.getElementById('withdrawIPBtn')
@@ -465,12 +484,12 @@ export default function FullMap(props) {
         nav('../activities/upload_section_media', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, section: sectionData } });
     }
 
-    const handleSendBuildingData = (e) => {
-        buildingData = e;
+    const handleSendBuildingData = (e, title, sdate, time ) => {
+        buildingData = e[title][sdate][time];
     }
 
-    const handleSendSectionData = (e) => {
-        sectionData = e;
+    const handleSendSectionData = (e, title, sdate, time) => {
+        sectionData = e[title][sdate][time];
     }
 
     const handlePopupClose = () => {
@@ -712,7 +731,7 @@ export default function FullMap(props) {
                                     //     ]
 
                                     area={handleBaseplateRender(inst)}
-                                    doThis={handleSendBuildingData(data.Results[title][sdate][time])}
+                                    doThis={handleSendBuildingData(data.Results, title, sdate, time)}
                                     type={"Baseplate"}
                                     boundsPathWindow={boundsPathWindow}
                                 />
@@ -766,7 +785,7 @@ export default function FullMap(props) {
                                             key={`${sdate}.${time}.${index}`}
                                             path={inst.path}
                                             title={'section'}
-                                            doThis={handleSendSectionData(data.Results[title][sdate][time])}
+                                            doThis={handleSendSectionData(data.Results, title, sdate, time)}
                                             boundsPathWindow={boundsPathWindow}
                                             mode={'section'}
                                         />
