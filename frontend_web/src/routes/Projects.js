@@ -122,7 +122,7 @@ export default function Projects(props){
             <div id='cardFlexBox'>
                 {
                     teamInfo?.projects?.map((project, index) => (
-                        <DisplayCards key={(project._id + index)} type={1} project={project} user={user} team={teamAndUser.state ? teamAndUser.state.team : null} open={openConfirmation}/>
+                        <DisplayCards key={(project._id + index)} type={1} project={project} owner={teamInfo.users[0]} user={user} team={teamAndUser.state ? teamAndUser.state.team : null} open={openConfirmation}/>
                     ))
                 }
             </div>
