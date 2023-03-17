@@ -1677,9 +1677,9 @@ export default function Charts(props) {
 
         // access area percentage
         var accessAreaPerArr = [
-            { description: 'Parking Lot', value: parseFloat(lotArea.toFixed(2)) },
-            { description: 'Parking Garage', value: parseFloat(garageArea.toFixed(2)) },
-            { description: 'Project Area', value: parseFloat(projectArea.toFixed(2)) },
+            { description: 'Parking Lot', value: parseFloat(lotArea.toFixed(1)) },
+            { description: 'Parking Garage', value: parseFloat(garageArea.toFixed(1)) },
+            { description: 'Project Area', value: parseFloat(projectArea.toFixed(1)) },
         ];
 
         //add new results here
@@ -1706,7 +1706,7 @@ export default function Charts(props) {
                         return (
                             <div style={{ display: 'flex', flexDirection: 'row' }}>
                                 <div style={{ backgroundColor: accessColor[index] }}>&nbsp;&nbsp;</div>
-                                &nbsp;{entry.accessType}: {(entry.value / accessSum * 100).toFixed(2)}%
+                                &nbsp;{entry.accessType}: {(entry.value / accessSum * 100).toFixed(1)}%
                             </div>
                         );
                     })}
@@ -1750,7 +1750,7 @@ export default function Charts(props) {
                                         return (
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
                                                 <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                                &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
+                                                &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(1)}%
                                             </div>
                                         );
                                     })
@@ -1761,7 +1761,7 @@ export default function Charts(props) {
                                         return (
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
                                                 <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                                &nbsp;{entry.description}: {(entry.value / sums[index] * 100).toFixed(2)}%
+                                                &nbsp;{entry.description}: {(entry.value / sums[index] * 100).toFixed(1)}%
                                             </div>
                                         );
                                     })
@@ -1789,6 +1789,21 @@ export default function Charts(props) {
             </div>
         );
     };
+
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+          return (
+            <div className="custom-tooltip" style={{
+                backgroundColor: "#F1F1F1",
+                borderRadius: "5px",
+                alignContent: "center",
+            }}>
+              <p className="label" style={{padding:"1vw"}}>{`${payload[0].payload.key ? payload[0].payload.key : "Count"}: ${payload[0].payload.key === "Length" ? `${payload[0].value}ft` : payload[0].value}`}</p>
+            </div>
+          );
+        }
+        return null;
+      };
 
     const accessCharts = (data) => {
 
@@ -1821,6 +1836,9 @@ export default function Charts(props) {
         var lotArea = 0;
         var garageArea = 0;
 
+        // Access Difficulties
+        var difficulties = [0, 0, 0, 0, 0];
+
         // Access Type Average Difficulty
         var accessPointDiff = 0;
         var accessPathDiff = 0;
@@ -1843,13 +1861,18 @@ export default function Charts(props) {
         var lotDiff = 0;
         var garageDiff = 0;
 
+        // Internal Access Path Length
+        var sidewalkLen = 0;
+        var sideStreetLen = 0;
+        var mainRoadLen = 0;
+
 
 
         //Package results
         data.map((obj) => {
             //Calculate Overall Difficulty Rating
             accessSumDiff += parseInt(obj.details.diffRating);
-
+            difficulties[obj.details.diffRating]++;
             // console.log("🚀 ~ file: Charts.js:1555 ~ data.map ~ obj:", obj);
 
             if (obj.accessType === 'Access Point') {
@@ -1893,16 +1916,20 @@ export default function Charts(props) {
                         sidewalk++;
                         sidewalkDiff += parseInt(obj.details.diffRating);
                         accessPathDiff += parseInt(obj.details.diffRating);
+                        if(obj.details)
+                        sidewalkLen += parseFloat(obj.area);
                         break;
                     case 'Side Street':
                         sideStreet++;
                         sideStreetDiff += parseInt(obj.details.diffRating);
                         accessPathDiff += parseInt(obj.details.diffRating);
+                        sideStreetLen += parseFloat(obj.area);
                         break;
                     case 'Main Road':
                         mainRoad++;
                         mainRoadDiff += parseInt(obj.details.diffRating);
                         accessPathDiff += parseInt(obj.details.diffRating);
+                        mainRoadLen += parseFloat(obj.area);
                         break;
                     default:
                         console.log('Non-matching description');
@@ -1933,14 +1960,14 @@ export default function Charts(props) {
             }
         });
 
-        // access types
+        // 0 - access types count 
         var accessTypeArr = [
             { accessType: 'Access Point', value: accessPoint },
             { accessType: 'Access Path', value: accessPath },
             { accessType: 'Access Area', value: accessArea }
         ];
 
-        // access point descriptions
+        // 1 - access point count descriptions
         var accessPointDescArr = [
             { description: 'Ride Share Drop Off', value: rideShare },
             { description: 'Bike Rack', value: bikeRack },
@@ -1949,96 +1976,87 @@ export default function Charts(props) {
             { description: 'E-scooter Parking', value: scooter }
         ];
 
-        // access path descriptions
+        // 2 - access path count descriptions
         var accessPathDescArr = [
             { description: 'Sidewalk', value: sidewalk },
             { description: 'Side Street', value: sideStreet },
             { description: 'Main Road', value: mainRoad }
         ];
 
-        // access area descriptions
+        // 3 - access area count descriptions
         var accessAreaDescArr = [
             { description: 'Parking Lot', value: lot },
             { description: 'Parking Garage', value: garage }
         ];
 
-        // access area percentage
-        var accessAreaPerArr = [
-            { description: 'Parking Lot', value: parseFloat(lotArea.toFixed(2)) },
-            { description: 'Parking Garage', value: parseFloat(garageArea.toFixed(2)) },
-            { description: 'Project Area', value: parseFloat(projectArea.toFixed(2)) },
+        // 4 - access difficulty
+        var accessDiff = [
+            { description: 'Difficulty 1', value: difficulties[0] },
+            { description: 'Difficulty 2', value: difficulties[1] },
+            { description: 'Difficulty 3', value: difficulties[2] },
+            { description: 'Difficulty 4', value: difficulties[3] },
+            { description: 'Difficulty 5', value: difficulties[4] },
         ];
 
-        // access types average difficulty
-        var accessTypeDiffArr = [
-            { accessType: 'Access Point', value: accessPointDiff },
-            { accessType: 'Access Path', value: accessPathDiff },
-            { accessType: 'Access Area', value: accessAreaDiff }
-        ];
-
-        // access point average difficulty
-        var accessPointDescDiffArr = [
-            { description: 'Ride Share Drop Off', value: rideShareDiff },
-            { description: 'Bike Rack', value: bikeRackDiff },
-            { description: 'Public Transport Stop', value: publicStopDiff },
-            { description: 'Valet Counter', value: valetDiff },
-            { description: 'E-scooter Parking', value: scooterDiff }
-        ];
-
-        // access path average difficulty
-        var accessPathDescDiffArr = [
-            { description: 'Sidewalk', value: sidewalkDiff },
-            { description: 'Side Street', value: sideStreetDiff },
-            { description: 'Main Road', value: mainRoadDiff }
-        ];
-
-        // access area average difficulty
-        var accessAreaDescDiffArr = [
-            { description: 'Parking Lot', value: lotDiff },
-            { description: 'Parking Garage', value: garageDiff }
+        // 5 - access path length
+        var accessPathDescLenArr = [
+            { description: 'Sidewalk', value: parseFloat(sidewalkLen.toFixed(1)), key: "Length" },
+            { description: 'Side Street', value: parseFloat(sideStreetLen.toFixed(1)), key: "Length" },
+            { description: 'Main Road', value: parseFloat(mainRoadLen.toFixed(1)), key: "Length" }
         ];
 
         //add new results here
-        const packagedData = [accessPointDescArr, accessPathDescArr, accessAreaDescArr, accessAreaPerArr, accessTypeDiffArr, accessPointDescDiffArr, accessPathDescDiffArr, accessAreaDescDiffArr,]
+        const packagedData = [
+            accessPointDescArr, accessPathDescArr, accessAreaDescArr, 
+            accessDiff, accessPathDescLenArr]
 
         console.log("🚀 ~ file: Charts.js:2000 ~ accessCharts ~ packagedData:", packagedData);
 
         // [ labelHeight + 200, labelHeight]
-        const chartHeight = [[345, 145], [280, 80], [310, 110], [310, 110], [310, 110], [345, 145], [280, 80], [310, 110], [310, 110]]
-        const sums = [accessPoint, accessPath, accessArea, projectArea, accessSumDiff, accessPointDiff, accessPathDiff, accessAreaDiff,]
+        const chartHeight = [
+            [345, 145], [280, 80], [310, 110], [290, 90], 
+            [275, 75],
+        ]
 
-        console.log("🚀 ~ file: Charts.js:2008 ~ accessCharts ~ sums:", sums);
+        const sums = [
+            accessPoint, accessPath, accessArea, 
+            accessDiff, null]
 
-        const titles = ["Access Point Types", "Access Path Types", "Access Area Types", "Area Sq. Ft Percentage", "Access Type Difficulties", "Access Point Difficulties", "Access Path Difficulties", "Access Area Difficulties",]
+        //console.log("🚀 ~ file: Charts.js:2008 ~ accessCharts ~ sums:", sums);
+
+        const titles = [
+            "Access Point Types", "Access Path Types", "Access Area Types",
+            "Access Difficulty", "Access Path Length"
+        ]
 
         return (
             <div className='Charts' style={{ paddingBottom: 50 }}>
                 <div style={{ fontSize: 'larger' }}> Access Types </div>
                 <PieChart width={width} height={height}>
-                    <Pie data={accessTypeArr} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                    <Pie data={accessTypeArr.filter((entry) => entry.value !== 0)} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
                         {accessTypeArr.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
                     </Pie>
-                    <Tooltip />
+                    <Tooltip content={<CustomTooltip/>} />
                 </PieChart>
                 <div>
-                    {accessTypeArr.map((entry, index) => {
-                        //if(entry.value > 0)
+                    {accessTypeArr.filter((entry) => entry.value !== 0).map((entry, index) => {
+                        if(entry.value > 0)
                         return (
                             <div style={{ display: 'flex', flexDirection: 'row' }}>
                                 <div style={{ backgroundColor: accessColor[index] }}>&nbsp;&nbsp;</div>
-                                &nbsp;{entry.accessType}: {(entry.value / accessSum * 100).toFixed(2)}%
+                                &nbsp;{entry.accessType}: {(entry.value / accessSum * 100).toFixed(1)}%
                             </div>
                         );
                     })}
                 </div>
                 <br />
-                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[2][0]} data={accessTypeArr}>
+                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[2][0]} data={accessTypeArr.filter((entry) => entry.value !== 0)}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis height={chartHeight[2][1]} interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
                     <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
+                    <Tooltip content={<CustomTooltip/>} />
                     <Bar dataKey={'value'} fill='#636262'>
                         {accessTypeArr.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={accessColor[index]} fillOpacity={0.8} />
@@ -2047,76 +2065,79 @@ export default function Charts(props) {
                 </BarChart>
 
                 {packagedData.map((results, index) => {
-                    let yLabel = index !== 3 ? "Count" : "Percentage";
+                    let yLabel = index === 3 ? "Rating" : (index === 4 ? "Length" : "Count");
 
                     console.log("🚀 ~ file: Charts.js:1935 ~ {packagedData.map ~ results:", results);
                     return (
                         <div className='Charts'>
                             <div style={{ fontSize: 'larger', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> {titles[index]} </div>
-                            {/* Hide Pie chart for average difficulties */}
+                            {index > 2 ? <br/> : null}
+                            {/* Hide Pie chart for difficulties and length */}
                             {index < 3 ?
                                 <PieChart width={width} height={height}>
-                                    <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                                    <Pie data={results.filter((entry) => entry.value !== 0)} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
                                         {results.map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                                         ))}
                                     </Pie>
-                                    <Tooltip />
+                                    <Tooltip content={<CustomTooltip/>} />
                                 </PieChart> : null}
                             <div>
-                                {/* Show Default Legend */}
+                                {/* Show Default Legend for 3 access types */}
                                 {index < 3 ?
-                                    results.map((entry, i) => {
-                                        //if(entry.value > 0)
+                                    results.filter((entry) => entry.value !== 0).map((entry, i) => {
+                                        if(entry.value > 0)
                                         return (
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
                                                 <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                                &nbsp;{entry.description}: {(entry.value / sums[index] * 100).toFixed(2)}%
+                                                &nbsp;{entry.description}: {(entry.value / sums[index] * 100).toFixed(1)}%
                                             </div>
                                         );
                                     })
                                     :
                                     (index === 3 ?
-                                        // on index 3 show percentage for area chart
-                                        results.map((entry, i) => {
-                                            //if(entry.value > 0)
+                                        // on index 3 show access difficulties
+                                        results.filter((entry) => entry.value !== 0).map((entry, i) => {
+                                            if(entry.value > 0)
                                             return (
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                                                     <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                                    &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
+                                                    &nbsp;{entry.description}: {entry.value}
                                                 </div>
                                             );
                                         })
                                         :
-                                        // on index 4-6 show average difficulties for access types
-                                        results.map((entry, i) => {
-                                            //if(entry.value > 0)
+                                        // on index 4 show length for access path descriptions
+                                        results.filter((entry) => entry.value !== 0).map((entry, i) => {
+                                            if(entry.value > 0)
                                             return (
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                                                     <div style={{ backgroundColor: accessColor[i] }}>&nbsp;&nbsp;</div>
-                                                    &nbsp;{entry.description}: {((entry.value / sums[index]).toLocaleString() * 100).toFixed(2)}%
+                                                    &nbsp;{entry.description}: {entry.value}ft
                                                 </div>
                                             );
                                         })
-                                    )
+                                    )                                    
                                 }
                             </div>
                             <br />
-                            {/* Don't show BarChart for Area */}
-                            {index !== 3 ?
-                                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[index][0]} data={results}>
+                            {/* Set Bar chart parameters */}
+                            {true ?
+                                // Default Bar Chart
+                                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[index][0]} data={results.filter((entry) => entry.value !== 0)}>
                                     <CartesianGrid strokeDasharray='3 3' />
                                     <XAxis height={chartHeight[index][1]} interval={0} angle={-60} textAnchor="end" dataKey='description' />
                                     <YAxis dy={1} label={{ textAnchor: "center", value: `${yLabel}`, angle: -90, position: 'insideLeft' }} />
-                                    <Tooltip />
+                                    <Tooltip content={<CustomTooltip/>} />
                                     <Bar dataKey={'value'} fill='#636262'>
                                         {results.map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={accessColor[index]} fillOpacity={0.8} />
                                         ))}
                                     </Bar>
                                 </BarChart>
-                                : null}
-                            <br />
+                                :
+                                null}
+                            <br/>
                         </div>
                     )
                 })}
@@ -2397,7 +2418,6 @@ export default function Charts(props) {
 
 
     };
-
 
     const programCharts = (data) => {
         // console.log(data);
