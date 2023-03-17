@@ -302,7 +302,7 @@ export default function UnityPage() {
       </Button>
       <br />
       {loc.state.type === 1 ? <Button id='printButton' variant="contained" style={{ top: '125px', display: 'none' }} onClick={convertToImage}>Print Page</Button> : null}
-      <Button id={'rightButton'} variant="contained" style={{ top: '-50px' }} onClick={toggleDrawer('right', !state['right'])}>Graph</Button>
+      {loc.state.type === 1 ? <Button id={'rightButton'} variant="contained" style={{ top: '-50px' }} onClick={toggleDrawer('right', !state['right'])}>Graph</Button> : null}
 
       {/* state={{userToken:loc.state.userToken, team: loc.state.team}} <-- this is a parameter for the button component if you need it later*/}
 
