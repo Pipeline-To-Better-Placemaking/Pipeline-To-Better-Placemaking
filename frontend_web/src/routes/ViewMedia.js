@@ -31,10 +31,10 @@ function ViewMedia() {
 
     // Lets front end know which slide it is on for future api calls
     const handleSlide = (index) => {
-        setSelectedSlide(mediaUrls[index]);
-        setSelectedIndex(index);
-        console.log(selectedSlide);
-      }
+      setSelectedSlide(mediaUrls[index]);
+      setSelectedIndex(index);
+      console.log(selectedSlide);
+    }
     
     // Updates the tags that the user is currently selecting
     const handleNewTags = (event) => {
@@ -95,33 +95,68 @@ function ViewMedia() {
     }
 
     const handleDownload = () => {
-      const link = document.createElement('a');
-      link.href = selectedSlide;
-      console.log("link_href:", link.href);
-      link.download = 'SectionImage.png';
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const uuidPattern = /[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}/i;
+      const fileExtension = selectedSlide.split('.').pop().split('?')[0];
+    
+      console.log("🚀 ~ file: ViewMedia.js:102 ~ handleDownload ~ fileExtension:", fileExtension);
+    
+      // This can be downloaded directly:
+      const xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = (event) => {
+        const blob = xhr.response;
+
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${newTitle}.${fileExtension}`;
+        link.type = 'application/octet-stream';
+
+        link.setAttribute('rel', 'noopener noreferrer');
+        link.setAttribute('type', 'application/octet-stream');
+        link.setAttribute('content-disposition', 'attachment');
+        document.body.appendChild(link);
+        link.click();
+        URL.revokeObjectURL(link.href);
+        document.body.removeChild(link);
+        };
+        xhr.open('GET', selectedSlide);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Authorization', `Bearer ${loc.state.userToken.token}`);
+        xhr.withCredentials = true;
+        xhr.send();
     };
     
-    console.log(`Initial: ${selectedSlide}`);
-
+    
     // Updates list of images for specific project
     useEffect(() => {
         listAll(storageRefList).then((response) => {
+
+          console.log("🚀 ~ file: ViewMedia.js:119 ~ listAll ~ response:", response);
+
           response.items.forEach((item) => {
-            getDownloadURL(item).then((downloadURL) => {
-              console.log(downloadURL);
-              setMediaUrls((prev) => [...prev, downloadURL]);
-              if(selectedSlide == "")
-              {
-                setSelectedSlide(downloadURL);
-              }  
-            }); 
+
+            const fireapp = `${item._location.bucket}`;
+            const bucket = storage.bucket(fireapp);
+            const fn = `${item._location.path_}`;
+            
+            const tempFilePath = "/";
+            
+            bucket.file(fn).download({destination: tempFilePath}).then(()=>{
+                console.log('Image downloaded locally to', tempFilePath);
+                // var filestream = fs.createReadStream(tempFilePath);
+                // filestream.pipe(response);
+                // setMediaUrls((prev) => [...prev, tempFilePath]);
+                // if(selectedSlide == "")
+                //   setSelectedSlide(tempFilePath);
+            });
+            // getDownloadURL(item).then((downloadURL) => {
+            //   console.log(downloadURL);
+            //   setMediaUrls((prev) => [...prev, downloadURL]);
+            //   if(selectedSlide == "")
+            //     setSelectedSlide(downloadURL);
+            // }); 
           });
         });
-        console.log(`After: ${selectedSlide}`);
         }, []);
 
     return (
@@ -142,7 +177,7 @@ function ViewMedia() {
           </Carousel>
         </div>
         <div style={{flex: 1, flexDirection: 'row', margin: "1vh"}}>
-          <Button onClick={handleDownload}>Download Image</Button>
+          <Button download={"SectionImage.png"} onClick={handleDownload}>Download Image</Button>
           <Button onClick={handleEdit}>Open Edit Info</Button>
         </div>
             <Dialog open={edit} fullWidth maxWidth="md" PaperProps={{ style: { display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}} >  
