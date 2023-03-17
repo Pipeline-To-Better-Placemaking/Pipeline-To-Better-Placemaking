@@ -416,11 +416,14 @@ export default function FullMap(props) {
         let SCwithdrawBtn = document.getElementById('withdrawSCBtn')
         let SCsurveyorbutton = document.getElementById('SCSurveyorsBtn');
         let viewMediaButton = document.getElementById('viewMediaBtn');
-
+        
+        const userId = loc.state.userToken.user._id
+        const owner = loc.state.owner
+        if( owner.user !== userId )
+            viewMediaButton.style.display = 'none'
         SCwithdrawBtn.style.display = 'none'
         SCsurveyorbutton.style.display = 'none'
         SCsignUpBtn.style.display = 'flex'
-        viewMediaButton.style.display = 'none'
     }
 
     const handleWithdrawIP = async () => {
@@ -449,9 +452,12 @@ export default function FullMap(props) {
         let IPwithdrawBtn = document.getElementById('withdrawIPBtn')
         let IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
         let viewModelButton = document.getElementById('viewModelBtn');
-
+        
+        const userId = loc.state.userToken.user._id
+        const owner = loc.state.owner
+        if( owner.user !== userId )
+            viewModelButton.style.display = 'none'
         IPwithdrawBtn.style.display = 'none'
-        viewModelButton.style.display = 'none'
         IPsurveyorbutton.style.display = 'none'
         IPsignUpBtn.style.display = 'flex'
         
@@ -577,6 +583,7 @@ export default function FullMap(props) {
             // console.log(buildingData)
             const userId = loc.state.userToken.user._id
             let researchers = buildingData.researchers
+            const owner = loc.state.owner
 
             let findUser = researchers.findIndex(element => element._id === userId)
             if(findUser >= 0){
@@ -586,6 +593,8 @@ export default function FullMap(props) {
                 IPwithdrawBtn.style.display = 'flex';
                 IPsurveyorbutton.style.display = 'flex';
                 viewModelButton.style.display = 'flex';
+            } else if(owner.user === userId) {
+                viewModelButton.style.display = 'flex';                
             }
 
             if(max > 0 && (max-len) > 0){
@@ -605,7 +614,7 @@ export default function FullMap(props) {
                 <text>${!data.Results[title][date][time].data[index].inPerimeter ? `${data.Results[title][date][time].data[index].distanceFromArea.toFixed(2).toLocaleString('en-US')} ft from project perimeter` : "Inside perimeter"}</text><br/>
                 <text>Difficulty Rating: ${data.Results[title][date][time].data[index].details.diffRating}</text><br/>
                 ${data.Results[title][date][time].data[index].accessType === "Access Path" ?
-                    `<text>Length: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft</text><br/>
+                        `${data.Results[title][date][time].data[index].inPerimeter ? `<text>Length: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft</text><br/>` : null}
                          <text>Number Lanes: ${data.Results[title][date][time].data[index].details.laneCount}</text><br/>
                          <text>This path is ${data.Results[title][date][time].data[index].details.twoWay ? `two-way` : `one-way`}<text/><br/>
                          ${data.Results[title][date][time].data[index].details.median ? `<text>This path has a median<text/>` : null}<br/>
@@ -627,6 +636,7 @@ export default function FullMap(props) {
             console.log(sectionData)
 
             const userId = loc.state.userToken.user._id
+            const owner = loc.state.owner
             let researchers = sectionData.researchers
             let max = sectionData.maxResearchers;
             let len = sectionData.researchers.length;
@@ -639,6 +649,8 @@ export default function FullMap(props) {
                 SCwithdrawBtn.style.display = 'flex';
                 SCsurveyorbutton.style.display = 'flex';
                 viewMediaButton.style.display = 'flex';
+            } else if(owner.user === userId) {
+                viewMediaButton.style.display = 'flex';                
             }
             if(max > 0 && (max-len) > 0){
                 //show sign up button
