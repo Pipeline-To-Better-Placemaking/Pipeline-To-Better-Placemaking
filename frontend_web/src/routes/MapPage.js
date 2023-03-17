@@ -25,6 +25,7 @@ export default function MapPage(props) {
                 area={ area }
                 standingPoints={ standingPoints }
                 subAreas={ subAreas }
+                refresh = {props.refresh}
             />
         </div>
     );

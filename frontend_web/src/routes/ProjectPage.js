@@ -13,6 +13,7 @@ import NewSection from './NewSection.js';
 import UploadSectionMedia from './UploadSectionMedia';
 import ViewMedia from './ViewMedia';
 
+
 /* 
     (1) Handles routes to projects/:id/(activities/map/surveyors) 
     (2) Sets object structure for Results, Graphs, and Data drawers(menus) on the Map Page
@@ -22,6 +23,7 @@ import ViewMedia from './ViewMedia';
 export default function ProjectPage(){
     // Retrieve Location info
     const loc = useLocation();
+    //const nav = useNavigation();
     // Boolean to load routes after data has been reformatted
     const [loaded, setLoaded] = React.useState(false);
     // Holds basic projects info including map ids
@@ -40,6 +42,8 @@ export default function ProjectPage(){
     var sPoints = {};
 
     const projectData = async() => {
+        console.log("in project data")
+        console.log(projectId)
         try {
             const response = await axios.get(`/projects/${projectId}`, {
                 headers: {
@@ -109,11 +113,14 @@ export default function ProjectPage(){
             ))
 
             setActivities(results);
+            //console.log(activities)
             setStandingPoints(sPoints);
             setDrawer({ Results: results, Graphs: '', Data: '' });
             // After all other values are set loaded to true to render routes with appropriate data
             setLoaded(true);
             
+            return({activities: activities, drawer: drawer})
+
         } catch(error){
             //project api get error
             console.log('ERROR: ', error);
@@ -197,6 +204,16 @@ export default function ProjectPage(){
 
     React.useEffect(() => {
         projectData()
+        //nav('../map', {state: loc.state})
+
+        if(loc.pathname.split('/')[6] === undefined){
+            console.log('attempt')
+            const link = document.createElement('a');
+            link.href = loc.pathname + "/map";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
     },[]);
 
     //loading in center, areas, and subareas from information
@@ -206,7 +223,7 @@ export default function ProjectPage(){
 
     return (
         <div id='ProjectPage'>
-            <TabPanel state={ loc.state }/>
+            <TabPanel state={ loc.state } refresh = {projectData}/>
             {
                 loaded ? 
                     <Routes>
@@ -228,14 +245,17 @@ export default function ProjectPage(){
                                 center={ center }
                                 standingPoints={ standingPoints }
                                 subAreas={ subAreas }
+                                refresh = {projectData}
                             />
                         } />
                         <Route path='activities' element={
                             <ActivityPage 
                                 title={ projectInfo?.title }  
                                 drawers={ activities }
+                                //refresh = {projectData}
                             />
-                        } />
+                        }
+                         />
                         <Route path='activities/times' element={
                             <NewActivityTimes 
                                 projectInfo={projectInfo}
