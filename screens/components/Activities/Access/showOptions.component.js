@@ -114,12 +114,12 @@ export function ShowOptions(props) {
 
     const getButtonAppearance = (optionValue, selectValue) => {
         if (Array.isArray(selectValue) && selectValue.includes(optionValue)) {
-          return 'filled';
-        } else if (selectValue === optionValue) {
-          return 'filled';
-        } else {
-          return 'outline';
-        }
+            return 'filled';
+          } else if (selectValue === optionValue) {
+            return 'filled';
+          } else {
+            return 'outline';
+          }
     };
       
 
@@ -360,11 +360,11 @@ export function ShowOptions(props) {
                                 key={option.value}
                                 style={styles.button}
                                 onPress={() => {
-                                    if (option.value === turnOptions[0].value) {
-                                        // If the option is the first option, select only this option
-                                        setSelect4([option.value]);
-                                    } else {
-                                        // If the option is not the first option, add or remove the option value from select4
+                                    // if (option.value === turnOptions[0].value) {
+                                    //     // If the option is the first option, select only this option
+                                    //     setSelect4([option.value]);
+                                    // } else {
+                                        // Add or remove the option value from select4
                                         if (select4.includes(option.value)) {
                                             // Remove the option value from select4 if it's already in the array
                                             setSelect4(select4.filter(value => value !== option.value));
@@ -374,12 +374,13 @@ export function ShowOptions(props) {
                                         }
                                         if (option.value === 1) {
                                             // If the option is the "deselect all" option, clear the array
-                                            setSelect4([]);
-                                        } else if (select4.includes(1)) {
+                                            setSelect4([option.value]);
+                                        }
+                                        if (select4.includes(1)) {
                                             // If the "deselect all" option is selected, remove it from the array
                                             setSelect4(select4.filter(value => value !== 1));
                                         }
-                                    }
+                                    // }
                                     console.log(select4);
                                   }}
                                   

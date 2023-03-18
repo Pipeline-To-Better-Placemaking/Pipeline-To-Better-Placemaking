@@ -19,8 +19,6 @@ export function AccessMap(props) {
         )
     }
 
-// BEGIN BOUNDARY CLONE
-
         const CreatePoly = () => {
             // if the type of access is a point (marker)
             if(props.type === 0){
@@ -268,8 +266,6 @@ export function AccessMap(props) {
             }
             else return null
         }
-
-// END BOUNDARY CLONE
 
     // offsets the data circle to have its center appear at the exact location of the marker
     let offsetPoint = {
