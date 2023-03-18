@@ -231,8 +231,12 @@ export const SoundMapAreaWrapper = ({children, area, mapHeight, recenter }) => {
       fetchConfig()
   })
 
-  // recenters the map only if the recenter bool is true
-  if(recenter) _current.animateToRegion(defaultRegion, 750);
+  
+  // // recenters the map only if the recenter bool is true
+  // console.log("recenter is ", recenter, "_center is ", _center)
+  // for some reason using _current crashes the entire application, quirky!
+  // if (recenter) 
+  //   _current.animateToRegion(defaultRegion, 750);
 
   return (
     <View>
@@ -266,7 +270,7 @@ export const PressMapAreaWrapper = ({children, area, mapHeight, onPress, recente
   })
 
   // recenters the map only if the recenter bool is true
-  if(recenter) _current.animateToRegion(defaultRegion, 750);
+  // if(recenter) _current.animateToRegion(defaultRegion, 750);
   
   return (
     <View>
