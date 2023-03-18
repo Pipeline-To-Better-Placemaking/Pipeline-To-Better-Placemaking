@@ -56,7 +56,7 @@ projectExport = function(stationaryData, movingData, soundData, natureData, ligh
         var worksheetaccess = XLSX.utils.json_to_sheet(access)
         XLSX.utils.book_append_sheet(workbook, worksheetaccess, 'IdentifyingAccess');
 
-        section = boundToXLSX(sectionData)
+        section = sectionToXLSX(sectionData)
         var worksheetsection = XLSX.utils.json_to_sheet(section);
         XLSX.utils.book_append_sheet(workbook, worksheetsection, 'SectionCutter');
 
