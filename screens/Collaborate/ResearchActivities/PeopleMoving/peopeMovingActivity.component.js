@@ -250,13 +250,10 @@ export function PeopleMovingActivity(props) {
             setTimer(count);
             // console.log(count);
             // when the timer reaches 0, call restart
-            if(!start)
-                clearInterval(id)
             if(count === 0){
                 // clear the interval to avoid resuming timer issues
                 clearInterval(id);
-                setStart(false);
-                endActivity();
+                restart();
             }
         // ios 1000 ms == 1 s
         // android 2000ms == 2 s ?? wtf mate
