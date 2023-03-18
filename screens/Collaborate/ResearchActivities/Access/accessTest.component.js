@@ -293,20 +293,28 @@ export function AccessTest(props) {
     }
     
     function calculateMinimumDistance(projectCoords, testCoords) {
+        const R = 20902231; // Radius of earth in feet (assuming a flat earth approximation)
         let minDistance = Number.MAX_VALUE;
         
-        for (let i = 0; i < projectCoords.length - 1; i++) {
-            const x1 = projectCoords[i][0];
-            const y1 = projectCoords[i][1];
-            const x2 = projectCoords[i + 1][0];
-            const y2 = projectCoords[i + 1][1];
-        
-            for (let j = 0; j < testCoords.length; j++) {
-            const x = testCoords[j][0];
-            const y = testCoords[j][1];
-        
-            const d = pointToLineDistance(x, y, x1, y1, x2, y2);
-            minDistance = Math.min(minDistance, d);
+        // Iterate over all pairs of points in the two polygons
+        for(let i = 0; i < projectCoords.length; i++) {
+            for(let j = 0; j < testCoords.length; j++) {
+            const lat1 = projectCoords[i][0];
+            const lng1 = projectCoords[i][1];
+            const lat2 = testCoords[j][0];
+            const lng2 = testCoords[j][1];
+
+            // Convert latitude and longitude to feet using inverse haversine formula
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.pow(Math.sin(dLat/2), 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.pow(Math.sin(dLng/2), 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            const distance = R * c;
+
+            // Update the minimum distance if necessary
+            if(distance < minDistance) {
+                minDistance = distance;
+            }
             }
         }
         

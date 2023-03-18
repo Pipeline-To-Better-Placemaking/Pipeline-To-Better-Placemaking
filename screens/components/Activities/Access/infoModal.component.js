@@ -48,7 +48,13 @@ export function InfoModal(props) {
 
                                         {/* Extra data for specific types */}
                                             <View style={styles.spacing}>
-                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? (props.data.details.cost != 0 ? Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(props.data.details.cost).toLocaleString('en-US') : "FREE!") : "FREE!"}</Text>
+                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? 
+                                                    (props.data.details.cost != 0 ? 
+                                                        Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(props.data.details.cost).toLocaleString('en-US') 
+                                                        : 
+                                                        "FREE!") 
+                                                    : 
+                                                    "N/A"}</Text>
                                             </View>
                                         
                                         <View style={styles.buttonView}>
@@ -120,7 +126,7 @@ export function InfoModal(props) {
 
                                          <View style={styles.spacing}>                
                                                 <Text style={styles.infoText}>{
-                                                (props.data.details.turnLane.length > 1 ? "The path has both left and right turn lanes" : (props.data.details.turnLane.length == 1 ? (props.data.details.turnLane[0] === 1 ? "The path has a left turn lane" : "The path has a right turn lane") : "The path has no turn lanes"))
+                                                (props.data.details.turnLane.length > 1 ? "The path has both left and right turn lanes" : (props.data.details.turnLane.length == 1 ? (props.data.details.turnLane[0] === 1 ? "The path has no turn lanes" : (props.data.details.turnLane[0] === 2 ? "The path has a left turn lane" : "The path has a right turn lane")) : ""))
                                                 //this is the conditional of the above lamba function
                                                 // if(props.data.details) {
                                                 //     if(props.data.details.turnLane && props.data.details.turnLane.length > 1) {
@@ -183,7 +189,13 @@ export function InfoModal(props) {
 
                                         {/* Extra data for specific types */}
                                             <View style={styles.spacing}>
-                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? (props.data.details.cost != 0 ? Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(props.data.details.cost).toLocaleString('en-US') : "FREE!") : "FREE!"}</Text>
+                                                <Text style={styles.infoText}>Cost: {props.data.details.cost ? 
+                                                    (props.data.details.cost != 0 ? 
+                                                        Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(props.data.details.cost).toLocaleString('en-US') 
+                                                        : 
+                                                        "FREE!") 
+                                                    : 
+                                                    "N/A"}</Text>
                                             </View>
                                         
                                         <View style={styles.buttonView}>
