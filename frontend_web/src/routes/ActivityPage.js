@@ -19,6 +19,9 @@ import { testNames } from '../functions/HelperFunctions';
 export default function ActivityPage(props) {
     // Props from MapPage.js
     const drawers = props.drawers;
+
+    console.log("🚀 ~ file: ActivityPage.js:23 ~ ActivityPage ~ drawers:", drawers);
+
     const loc = useLocation();
     const nav = useNavigate();
 
@@ -108,12 +111,10 @@ export default function ActivityPage(props) {
                             })
                         } else if(category === 'access_maps') {
 
-                            console.log("🚀 ~ file: ActivityPage.js:111 ~ Object.entries ~ category:", category);
+                            //console.log("🚀 ~ file: ActivityPage.js:111 ~ Object.entries ~ category:", category);
 
-                            dataobjects.points.forEach((point, ind) => {
-                                obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, accessType: point.accessType, Description: point.description }
-                                access.push(obj);
-                            })
+                            obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: index, 'Access Type': dataobjects.accessType, Description: dataobjects.description, "Length/Area (ft/sq.ft)": dataobjects.area, 'Distance From Area (ft)': dataobjects.distanceFromArea, 'In Perimeter': dataobjects.inPerimeter, 'Difficulty Rating': dataobjects.details.diffRating, Cost: dataobjects.details.cost, Spots: dataobjects.details.spots, Floors: dataobjects.details.floors, 'Lane Count': dataobjects.details.laneCount, Median: dataobjects.details.median, 'Toll Lane': dataobjects.details.tollLane, Paved: dataobjects.details.paved, 'Two Way': dataobjects.details.twoWay, 'Turn Lane': dataobjects.details.turnLane.length > 1 ? "Left and Right" : (dataobjects.details.turnLane.length === 1 ? (dataobjects.details.turnLane[0] === 1 ? "Left" : "Right") : (dataobjects.details.turnLane[0] === 0 ? "None" : "") )}
+                            access.push(obj);
                         } else if (category === 'nature_maps') {
                             Object.entries(dataobjects).forEach(([type, pointArr], ind0)=>{
                                 if(type === 'weather'){

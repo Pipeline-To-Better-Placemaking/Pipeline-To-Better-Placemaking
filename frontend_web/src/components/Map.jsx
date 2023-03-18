@@ -620,7 +620,7 @@ export default function FullMap(props) {
                          ${data.Results[title][date][time].data[index].details.median ? `<text>This path has a median<text/>` : null}<br/>
                          ${data.Results[title][date][time].data[index].details.paved ? `<text>This path is paved<text/>` : null}<br/>
                          ${data.Results[title][date][time].data[index].details.tollLane ? `<text>This path has a toll<text/><br/>` : ""}
-                         ${data.Results[title][date][time].data[index].details.turnLane.length > 1 ? `<text>The path has both left and right turn lanes<text/>` : (data.Results[title][date][time].data[index].details.turnLane.length === 1 ? (data.Results[title][date][time].data[index].details.turnLane[0] === 1 ? "The path has a left turn lane" : "The path has a right turn lane") : "The path has no turn lanes")}<br/>`
+                         ${data.Results[title][date][time].data[index].details.turnLane.length > 1 ? `<text>The path has both left and right turn lanes<text/>` : (data.Results[title][date][time].data[index].details.turnLane.length === 1 ? (data.Results[title][date][time].data[index].details.turnLane[0] === 1 ? "The path has no turn lanes" : (data.Results[title][date][time].data[index].details.turnLane[0] === 2 ?"The path has a left turn lane" : "The path has a right turn lane")) : "The path has no turn lanes")}<br/>`
                     :
                     `<text>Area: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft²</text><br/>
                          <text>Number spots: ${data.Results[title][date][time].data[index].details.spots}</text><br/>
