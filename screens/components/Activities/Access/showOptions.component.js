@@ -173,7 +173,7 @@ export function ShowOptions(props) {
                     floors: parseInt(laneCount),
                 }
                 setSpotsCount(0)
-                setCostValue(0)
+                setCostValue(null)
                 setLaneCount(null)
             }
             else {
@@ -182,7 +182,7 @@ export function ShowOptions(props) {
                     cost: parseFloat(costValue),
                 }
                 setSpotsCount(0)
-                setCostValue(0)
+                setCostValue(null)
             }
         }
 

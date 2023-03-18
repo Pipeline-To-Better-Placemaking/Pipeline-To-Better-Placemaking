@@ -570,7 +570,7 @@ export async function formatAccessGraphData(result){
     }    
   }
 
-  console.log("🚀 ~ file: helperFunctions.js:526 ~ formatAccessGraphData ~ graph", prettyFormat(graph));
+  //console.log("🚀 ~ file: helperFunctions.js:526 ~ formatAccessGraphData ~ graph", prettyFormat(graph));
 
   tempResult.graph = {...graph};
   return tempResult;
