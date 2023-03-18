@@ -36,7 +36,7 @@ export function DataModal(props) {
         const buttonRows = [];
         const buttons = props.desc.map((desc, index) => (
             <Button
-                style={[styles.button, { height: 70 }]}
+                style={[styles.button]}
                 key={index}
                 onLayout={(event) => {
                     if (index % 3 === 0) {
