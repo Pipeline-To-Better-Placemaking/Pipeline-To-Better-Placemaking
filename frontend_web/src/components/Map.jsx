@@ -624,7 +624,15 @@ export default function FullMap(props) {
                     :
                     `<text>Area: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft²</text><br/>
                          <text>Number spots: ${data.Results[title][date][time].data[index].details.spots}</text><br/>
-                         <text>Cost: ${data.Results[title][date][time].data[index].details.cost > 0 ? Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.Results[title][date][time].data[index].details.cost).toLocaleString('en-US') : "FREE!"}</text>`}`
+                         <text>Cost: ${
+                            data.Results[title][date][time].data[index].details.cost ?
+                            (data.Results[title][date][time].data[index].details.cost > 0 ? 
+                                Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.Results[title][date][time].data[index].details.cost).toLocaleString('en-US') 
+                                : 
+                                "FREE!")
+                            :
+                            "N/A"
+                        }</text>`}`
             popup.style.display = 'flex';
         } else if (ver === 7) {
             // version 7 == section cutter collection
@@ -751,8 +759,16 @@ export default function FullMap(props) {
                                                 <text>${inst.description}</text><br/>
                                                 <text>${!inst.inPerimeter ? `${inst.distanceFromArea.toFixed(2).toLocaleString('en-US')} ft from project perimeter` : "Inside perimeter"}</text><br/>
                                                 <text>Difficulty Rating: ${inst.details.diffRating}</text><br/>
-                                                ${inst.details.spots ? `<text>Number spots: ${inst.details.spots}</text><br/>` : null}
-                                                <text>Cost: ${inst.details.cost > 0 ? Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(inst.details.cost).toLocaleString('en-US') : "FREE!"}</text>`}
+                                                ${inst.details.spots ? `<text>Number spots: ${inst.details.spots}</text><br/>` : ""}
+                                                <text>Cost: ${
+                                                    inst.details.cost ?
+                                                        (inst.details.cost > 0 ? 
+                                                        Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(inst.details.cost).toLocaleString('en-US') 
+                                                        : 
+                                                        "FREE!")
+                                                    :
+                                                    "N/A"
+                                                }</text>`}
                                             position={inst.path[0]}
                                             markerType={'access_maps'}
                                         />
