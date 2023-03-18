@@ -48,7 +48,13 @@ export function InfoModal(props) {
 
                                         {/* Extra data for specific types */}
                                             <View style={styles.spacing}>
-                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? (props.data.details.cost != 0 ? Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(props.data.details.cost).toLocaleString('en-US') : "FREE!") : "FREE!"}</Text>
+                                                <Text style={styles.infoText}>Cost: {(props.data.details.cost) ? 
+                                                    (props.data.details.cost != 0 ? 
+                                                        Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(props.data.details.cost).toLocaleString('en-US') 
+                                                        : 
+                                                        "FREE!") 
+                                                    : 
+                                                    "N/A"}</Text>
                                             </View>
                                         
                                         <View style={styles.buttonView}>

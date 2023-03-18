@@ -9,7 +9,7 @@ export function ShowOptions(props) {
     const [spotsCount, setSpotsCount] = useState(null);
     const [lineNumber, setLineNumber] = useState(null);
     const [loopsCount, setLoopsCount] = useState(null);
-    const [costValue, setCostValue] = useState(0);
+    const [costValue, setCostValue] = useState(null);
     const [laneCount, setLaneCount] = useState(null);
     const [select1, setSelect1] = useState(null);
     const [select2, setSelect2] = useState(null);
@@ -52,7 +52,7 @@ export function ShowOptions(props) {
         setSelect3(null)
         setSelect4([])
         setSelect5(null)
-        setCostValue(0)
+        setCostValue(null)
         setLaneCount(0)
         setLineNumber(0)
         setLoopsCount(0)
