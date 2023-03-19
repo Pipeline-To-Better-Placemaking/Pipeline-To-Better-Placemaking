@@ -17,6 +17,8 @@ function ViewMedia() {
     const [ selectedIndex, setSelectedIndex ] = useState(0);
     const [ newTitle, setNewTitle ] = useState("");
     const [ selectedSlide, setSelectedSlide ] = useState("");
+    const [ tags, setTags ] = useState([]);
+    const [ object, setObject ] = useState(null);
     const [ newSelectedTags, setNewSelectedTags ] = useState([]);
 
     const loc = useLocation();
@@ -33,8 +35,9 @@ function ViewMedia() {
     const handleSlide = (index) => {
       setSelectedSlide(mediaUrls[index]);
       setSelectedIndex(index);
-      console.log(selectedSlide);
+      setTags(object[index + 1].tags)
     }
+
     
     // Updates the tags that the user is currently selecting
     const handleNewTags = (event) => {
@@ -42,10 +45,10 @@ function ViewMedia() {
     }
 
     // Pulls info from database to display
-    const handleInfo = () => {
+    const handleSlideShow = () => {
       const storeTags = async () => {
         try {
-          const response = await axios.get(`/section_maps/${loc.state.section._id}/data/${loc.state.section.data[selectedIndex + 1]._id}`, {
+          const response = await axios.get(`/section_maps/${loc.state.section._id}`, {
             headers: {
               'Content-Type': 'application/json',
               'Access-Control-Allow-Origin': '*',
@@ -53,7 +56,21 @@ function ViewMedia() {
             },
             withCredentials: true
           });
-          console.log(response.data.tags);
+          for(let i = 1; i < (response.data.data).length; i++)
+          {
+            setMediaUrls((prev) => [...prev, response.data.data[i].url_link]);
+          }
+          if(selectedSlide == "")
+          {
+            setSelectedSlide(response.data.data[1].url_link);
+          }
+          console.log(response.data.data[1].tags);
+          setObject(response.data.data);
+
+          if(tags.length == 0)
+          {
+            setTags(response.data.data[1].tags);
+          }
         }
         catch (error) {
           console.log(error);
@@ -129,17 +146,11 @@ function ViewMedia() {
     
     // Updates list of images for specific project
     useEffect(() => {
-      listAll(storageRefList).then((response) => {
-        response.items.forEach((item) => {
-          getDownloadURL(item).then((downloadURL) => {
-            setMediaUrls((prev) => [...prev, downloadURL]);
-          });
-        });
-      });
-      }, []);
+      handleSlideShow();
+      }, [])
 
 
-    console.log(loc)
+    // console.log(loc)
 
     return (
     <div className="ViewMedia">
@@ -158,8 +169,17 @@ function ViewMedia() {
             ))} 
           </Carousel>
         </div>
+        <div className="tag-container">
+            {tags.map((tag, index) => {
+                return (
+                  <div key={index} className="tag">
+                      {tag}
+                  </div>
+                );
+            })}
+        </div>
         <div style={{flex: 1, flexDirection: 'row', margin: "1vh"}}>
-          <Button download={"SectionImage.png"} onClick={handleDownload}>Download Image</Button>
+          <Button download={"SectionImage.png"} onClick={handleOpen}>Download Image</Button>
           <Button onClick={handleEdit}>Open Edit Info</Button>
         </div>
             <Dialog open={edit} fullWidth maxWidth="md" PaperProps={{ style: { display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}} >  
