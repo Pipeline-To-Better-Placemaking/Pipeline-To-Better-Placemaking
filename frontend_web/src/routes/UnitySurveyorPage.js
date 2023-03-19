@@ -15,6 +15,7 @@ export default function UnityPage() {
   const [message, setMessage] = React.useState('');
   const [programJSON, setProgramJSON] = React.useState();
   const [state, setState] = React.useState({ right: false });
+  const [chartData, setChartData] = React.useState(loc.state.data.data);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.title === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -22,6 +23,27 @@ export default function UnityPage() {
     }
     setState({ ...state, [anchor]: open });
   };
+
+  const handleSetChartData = async () => {
+    try {
+      const response = await axios.get(`/program_maps/${loc.state.data._id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${loc.state.userToken.token}`
+        },
+        withCredentials: true
+      });
+      console.log("THIS IS RESPONSE.DATA ==: ", response.data.data);
+      setChartData(response.data.data);
+
+    } catch (error) {
+      console.log('ERROR: ', error);
+      // setMessage(error.response.data?.message);
+      // response.current.style.display = 'inline-block';
+      return;
+    }
+  }
 
   const {
     unityProvider,
@@ -115,6 +137,7 @@ export default function UnityPage() {
     const printBtn = document.getElementById('printButton');
     printBtn.style.display = 'flex';
 
+    handleSetChartData();
 
 
 
@@ -323,7 +346,7 @@ export default function UnityPage() {
           onClose={toggleDrawer('right', false)}
           hideBackdrop={true}
         >
-          <Charts selection='program_maps' data={loc.state.data.data} type={0} />
+          <Charts selection='program_maps' data={chartData} type={0} />
         </Drawer>
 
 

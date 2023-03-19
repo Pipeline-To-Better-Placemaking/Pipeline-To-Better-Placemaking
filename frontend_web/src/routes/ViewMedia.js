@@ -41,6 +41,30 @@ function ViewMedia() {
         setNewSelectedTags(event.target.value);
     }
 
+    // Pulls info from database to display
+    const handleInfo = () => {
+      const storeTags = async () => {
+        try {
+          const response = await axios.get(`/section_maps/${loc.state.section._id}/data/${loc.state.section.data[selectedIndex + 1]._id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': `Bearer ${loc.state?.userToken?.token}`
+            },
+            withCredentials: true
+          });
+          console.log(response.data.tags);
+        }
+        catch (error) {
+          console.log(error);
+          console.log("Was not able to retrieve tags");
+          return;
+        }
+      }
+
+      storeTags();
+    }
+
     // Opens edit dialog box
     const handleEdit = async () => {
       try {
@@ -95,37 +119,13 @@ function ViewMedia() {
     }
 
     const handleDownload = () => {
-      const uuidPattern = /[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}/i;
-      const fileExtension = selectedSlide.split('.').pop().split('?')[0];
-    
-      console.log("🚀 ~ file: ViewMedia.js:102 ~ handleDownload ~ fileExtension:", fileExtension);
-    
-      // This can be downloaded directly:
-      const xhr = new XMLHttpRequest();
-      xhr.responseType = 'blob';
-      xhr.onload = (event) => {
-        const blob = xhr.response;
-
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `${newTitle}.${fileExtension}`;
-        link.type = 'application/octet-stream';
-
-        link.setAttribute('rel', 'noopener noreferrer');
-        link.setAttribute('type', 'application/octet-stream');
-        link.setAttribute('content-disposition', 'attachment');
-        document.body.appendChild(link);
-        link.click();
-        URL.revokeObjectURL(link.href);
-        document.body.removeChild(link);
-        };
-        xhr.open('GET', selectedSlide);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.setRequestHeader('Authorization', `Bearer ${loc.state.userToken.token}`);
-        xhr.withCredentials = true;
-        xhr.send();
+      const link = document.createElement('a');
+      link.href = selectedSlide;
+      link.download = 'SectionImage.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     };
-    
     
     // Updates list of images for specific project
     useEffect(() => {
