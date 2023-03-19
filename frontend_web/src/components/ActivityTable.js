@@ -118,7 +118,7 @@ const subtable = (row, type, name, open) => (
                                 ))
                             ))
                         ))) 
-                    :(name === 'light_maps' || name === 'order_maps' ? 
+                    : ( name === 'light_maps' || name === 'order_maps' ? 
                         (Object.entries(row).map(([date, dObj]) => (
                             Object.entries(dObj).map(([time, tObj]) => (
                                 tObj.data.map((object, index) => (
@@ -210,7 +210,29 @@ const subtable = (row, type, name, open) => (
                             })
                         ))
                     ))) 
-                    : (Object.entries(row).map(([date, dObj])=>(
+                    : (
+                        name === 'section_maps' ? 
+                        (Object.entries(row).map(([date, dObj]) => (
+                            Object.entries(dObj).map(([time, tObj]) => (
+                                tObj.data.map((object, index) => (
+                                        (index == 0 ? null : <TableRow key={`${index}`}>
+                            
+                                            <TableCell colSpan={2} className='value'>
+                                                { object.title ? object.title : 'N/A'}
+                                            </TableCell>
+                                            <TableCell colSpan={2} className='type'>
+                                                { object.tags ? `${object.tags}` : 'N/A tags' }
+                                            </TableCell>
+                                            <TableCell></TableCell>
+                                            <TableCell>{date} {time}</TableCell>
+                                                <TableCell>{tObj.researchers.map((researcher, index) => (index !== (tObj.researchers.length - 1) ? `${researcher.firstname} ${researcher.lastname}, ` : `${researcher.firstname} ${researcher.lastname}`))}</TableCell>
+                                        </TableRow>)
+                           
+                                ))
+                            ))
+                        )))
+                        :
+                        (Object.entries(row).map(([date, dObj])=>(
                         Object.entries(dObj).map(([time, tObj])=>(
                             tObj.data.map((object, index) => (
                                 index === 0 ? 
@@ -250,9 +272,12 @@ const subtable = (row, type, name, open) => (
                                         <TableCell>{ date } { time }</TableCell>
                                         <TableCell>{tObj.researchers.map((researcher, index) => (index !== (tObj.researchers.length - 1) ? `${researcher.firstname} ${researcher.lastname}, ` : `${researcher.firstname} ${researcher.lastname}`))}</TableCell>
                                     </TableRow>
+                            
                             ))
                         ))
-                    ))))
+                    ))) 
+                    ))
+            
                 : Object.entries(row).map(([instance, data])=>(
                         Object.values(data.data).map((inst, ind) => (
                             instance.split('.')[0] === 'nature_maps' ? 
@@ -296,7 +321,7 @@ const subtable = (row, type, name, open) => (
                                         )
                                 ))
                             :
-                                instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' || instance.split('.')[0] === 'section_maps' ? 
+                                instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' ? 
                                     (inst.points).map((point, i2) => (
                                         <TableRow key={`${ind}.${i2}`}>
                                             <TableCell colSpan={2} className='category'>
@@ -337,8 +362,29 @@ const subtable = (row, type, name, open) => (
                                             <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
                                         </TableRow>
                                     )})
-                                    :
-                                    <TableRow key={ind}>
+                                    : 
+                                    // !!!!!!!!!!!!!!!!!!!!!! FIX ME !!!!!!!!!!!!!!!!!!!!!!!!!
+                                    // DATA DRAWER FOR SECTIO MAPS TO BE SET UP
+                                    ( instance.split('.')[0] === 'section_maps' ?
+                                        (inst.points).map((point, i2) => (
+                                        <TableRow key={`${ind}.${i2}`}>
+                                            <TableCell colSpan={2} className='category'>
+                                                {testNames(instance.split('.')[0])}
+                                            </TableCell>
+                                            <TableCell colSpan={1} className='value'>
+                                                { point.kind ? point.kind : 'N/A' }
+                                            </TableCell>
+                                            <TableCell>
+                                                {
+                                                    point.description ? `${point.description}` : (point.light_description ? `${point.light_description}` : `${point.access_description}`)
+                                                }
+                                            </TableCell>
+                                            <TableCell>Location {i2 + 1}</TableCell>
+                                            <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
+                                        </TableRow>
+                                        ))
+                                    : 
+                                        <TableRow key={ind}>
                                         <TableCell colSpan={2} className='category'>
                                             {testNames(instance.split('.')[0])}
                                         </TableCell>
@@ -355,7 +401,7 @@ const subtable = (row, type, name, open) => (
                                         <TableCell>Location {ind + 1}</TableCell>
                                         <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
                                     </TableRow>
-                        )) 
+                        )))
 
                     ))
                 }
