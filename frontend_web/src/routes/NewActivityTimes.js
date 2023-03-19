@@ -142,7 +142,7 @@ export default function NewActivityTimes(props) {
             let area = props.projectInfo.subareas.findIndex((element) => element._id === collectionDetails.area);
             collectionDetails.area = props.projectInfo.subareas[area];
 
-            nav('../', { replace: true, state: { team: loc.state.team, owner: loc.state.owner, project: loc.state.project, userToken: loc.state.userToken } });
+            nav('../map', { replace: true, state: { team: loc.state.team, owner: loc.state.owner, project: loc.state.project, userToken: loc.state.userToken } });
 
         } catch (error) {
             console.log('ERROR: ', error);
