@@ -5,12 +5,45 @@ import Button from '@mui/material/Button';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import axios from '../api/axios';
+import html2canvas from 'html2canvas';
+import Drawer from '@mui/material/Drawer';
+import Charts from '../components/Charts.js';
 
 export default function UnityPage() {
   const loc = useLocation();
   const nav = useNavigate();
   const [message, setMessage] = React.useState('');
   const [programJSON, setProgramJSON] = React.useState();
+  const [state, setState] = React.useState({ right: false });
+  const [chartData, setChartData] = React.useState(loc.state.data.data);
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.title === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setState({ ...state, [anchor]: open });
+  };
+
+  const handleSetChartData = async () => {
+    try {
+      const response = await axios.get(`/program_maps/${loc.state.data._id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${loc.state.userToken.token}`
+        },
+        withCredentials: true
+      });
+      console.log("THIS IS RESPONSE.DATA ==: ", response.data.data);
+      setChartData(response.data.data);
+
+    } catch (error) {
+      console.log('ERROR: ', error);
+      // setMessage(error.response.data?.message);
+      // response.current.style.display = 'inline-block';
+      return;
+    }
+  }
 
   const {
     unityProvider,
@@ -101,8 +134,10 @@ export default function UnityPage() {
         return;
       }
     }
+    const printBtn = document.getElementById('printButton');
+    printBtn.style.display = 'flex';
 
-
+    handleSetChartData();
 
 
 
@@ -222,6 +257,65 @@ export default function UnityPage() {
 
   }
 
+  /**
+        Function: saveAs
+        Description: This function generates a simulated link and link click to download an image with the given URL and filename. If the browser supports the "download" attribute, the image will be downloaded directly. Otherwise, a new window will be opened with the image URL.
+        @param {string} url - The URL of the image to download
+        @param {string} filename - The filename to save the image as
+        @return {void}
+    */
+  function saveAs(url, filename) {
+    var link = document.createElement('a');
+    //simulated link and link click with removal
+    if (typeof link.download === 'string') {
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      //remove the link when done
+      document.body.removeChild(link);
+    } else {
+      window.open(url);
+    }
+  }
+
+  /**
+        Function: convertToImage
+        Description: This function converts the mapFrame HTML element to an image using html2canvas library
+        and downloads the image with the given title as a PNG file using the saveAs function.
+        @param {Event} e - The event object.
+        @return {void}
+    */
+  const convertToImage = (e) => {
+    html2canvas(document.getElementById('UnityHolder'), {
+      useCORS: true
+    }).then(
+      function (canvas) { saveAs(canvas.toDataURL(), `${loc.state.data.title}.png`) }
+    );
+  }
+
+  // const handleDataForCharts = async () => {
+  //   let response;
+  //   // try {
+  //   //   response = await axios.get(`/program_maps/${loc.state.data._id}`, {
+  //   //     headers: {
+  //   //       'Content-Type': 'application/json',
+  //   //       'Access-Control-Allow-Origin': '*',
+  //   //       'Authorization': `Bearer ${loc.state.userToken.token}`
+  //   //     },
+  //   //     withCredentials: true
+  //   //   });
+
+  //   // } catch (error) {
+  //   //   console.log('ERROR: ', error);
+  //   //   setMessage(error.response.data?.message);
+  //   //   // response.current.style.display = 'inline-block';
+  //   //   return;
+  //   // }
+
+  //   return response.data;
+  // }
+
   return (
     <div>
       {/* <h1>Identifying Program</h1> */}
@@ -230,18 +324,36 @@ export default function UnityPage() {
         Return to map view
       </Button>
       <br />
+      {loc.state.type === 1 ? <Button id='printButton' variant="contained" style={{ top: '125px', display: 'none' }} onClick={convertToImage}>Print Page</Button> : null}
+      {loc.state.type === 1 ? <Button id={'rightButton'} variant="contained" style={{ top: '-50px' }} onClick={toggleDrawer('right', !state['right'])}>Graph</Button> : null}
+
       {/* state={{userToken:loc.state.userToken, team: loc.state.team}} <-- this is a parameter for the button component if you need it later*/}
 
-      <div>
+      <div id='UnityHolder'>
         {!isLoaded && (
           <p>Loading Application... {Math.round(loadingProgression * 100)}%</p>
         )}
         <Unity
           unityProvider={unityProvider}
-          style={{ width: "100vw", height: "77.5vh", visibility: isLoaded ? "visible" : "hidden" }}
+          style={{ width: "99vw", height: "77.5vh", visibility: isLoaded ? "visible" : "hidden" }}
         />
 
+
+        <Drawer
+          id={'rightDrawer'}
+          anchor={'right'}
+          open={state['right']}
+          onClose={toggleDrawer('right', false)}
+          hideBackdrop={true}
+        >
+          <Charts selection='program_maps' data={chartData} type={0} />
+        </Drawer>
+
+
       </div>
+
+
+
     </div>
   );
 };

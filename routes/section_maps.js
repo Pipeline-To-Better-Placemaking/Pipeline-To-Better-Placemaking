@@ -99,6 +99,7 @@ router.put('/:id/claim', passport.authenticate('jwt',{session:false}), async (re
 
 // route removes researcher from a time slot.
 router.delete('/:id/claim', passport.authenticate('jwt',{session:false}), async (req, res, next) => {
+    user = await req.user;
     map = await Map.findById(req.params.id)
     project = await Project.findById(map.project)
     return res.status(200).json(await Map.removeResearcher(map._id,user._id))

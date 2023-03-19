@@ -49,6 +49,7 @@ export default function FullMap(props) {
     const [numFloors, setNumFloors] = React.useState(1);
     let buildingData, sectionData;
 
+
     // Access Universal Data passed around including the key for maps
     const loc = useLocation();
     const nav = useNavigate();
@@ -341,6 +342,12 @@ export default function FullMap(props) {
             return;
         }
         console.log("signup successful")
+
+        sectionData.researchers.push(loc.state.userToken.user._id)
+        const newObj = await props.refresh()
+        console.log(newObj.activities.section_maps)
+        console.log(sectionData.time)
+
         let SCsignUpBtn = document.getElementById('signUpSCBtn')
         let SCwithdrawBtn = document.getElementById('withdrawSCBtn')
         let SCsurveyorbutton = document.getElementById('SCSurveyorsBtn');
@@ -370,6 +377,10 @@ export default function FullMap(props) {
             return;
         }
         console.log("signup successful")
+
+        buildingData.researchers.push(loc.state.userToken.user._id)
+        props.refresh()
+
         let IPsignUpBtn = document.getElementById('signUpIPBtn')
         let IPwithdrawBtn = document.getElementById('withdrawIPBtn')
         let IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
@@ -398,15 +409,21 @@ export default function FullMap(props) {
         }
         console.log("withdraw successful")
 
+        sectionData.researchers = sectionData.researchers.filter(item => item._id !== loc.state.userToken.user._id);
+        props.refresh()
+
         let SCsignUpBtn = document.getElementById('signUpSCBtn')
         let SCwithdrawBtn = document.getElementById('withdrawSCBtn')
         let SCsurveyorbutton = document.getElementById('SCSurveyorsBtn');
         let viewMediaButton = document.getElementById('viewMediaBtn');
-
+        
+        const userId = loc.state.userToken.user._id
+        const owner = loc.state.owner
+        if( owner.user !== userId )
+            viewMediaButton.style.display = 'none'
         SCwithdrawBtn.style.display = 'none'
         SCsurveyorbutton.style.display = 'none'
         SCsignUpBtn.style.display = 'flex'
-        viewMediaButton.style.display = 'none'
     }
 
     const handleWithdrawIP = async () => {
@@ -425,14 +442,22 @@ export default function FullMap(props) {
             return;
         }
         console.log("withdraw successful")
+        // console.log(buildingData)
+        // console.log(buildingData.researchers)
+
+        buildingData.researchers = buildingData.researchers.filter(item => item._id !== loc.state.userToken.user._id);
+        props.refresh()
 
         let IPsignUpBtn = document.getElementById('signUpIPBtn')
         let IPwithdrawBtn = document.getElementById('withdrawIPBtn')
         let IPsurveyorbutton = document.getElementById('IPSurveyorsBtn');
         let viewModelButton = document.getElementById('viewModelBtn');
-
+        
+        const userId = loc.state.userToken.user._id
+        const owner = loc.state.owner
+        if( owner.user !== userId )
+            viewModelButton.style.display = 'none'
         IPwithdrawBtn.style.display = 'none'
-        viewModelButton.style.display = 'none'
         IPsurveyorbutton.style.display = 'none'
         IPsignUpBtn.style.display = 'flex'
         
@@ -459,12 +484,12 @@ export default function FullMap(props) {
         nav('../activities/upload_section_media', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, section: sectionData } });
     }
 
-    const handleSendBuildingData = (e) => {
-        buildingData = e;
+    const handleSendBuildingData = (e, title, sdate, time ) => {
+        buildingData = e[title][sdate][time];
     }
 
-    const handleSendSectionData = (e) => {
-        sectionData = e;
+    const handleSendSectionData = (e, title, sdate, time) => {
+        sectionData = e[title][sdate][time];
     }
 
     const handlePopupClose = () => {
@@ -558,6 +583,7 @@ export default function FullMap(props) {
             // console.log(buildingData)
             const userId = loc.state.userToken.user._id
             let researchers = buildingData.researchers
+            const owner = loc.state.owner
 
             let findUser = researchers.findIndex(element => element._id === userId)
             if(findUser >= 0){
@@ -567,6 +593,8 @@ export default function FullMap(props) {
                 IPwithdrawBtn.style.display = 'flex';
                 IPsurveyorbutton.style.display = 'flex';
                 viewModelButton.style.display = 'flex';
+            } else if(owner.user === userId) {
+                viewModelButton.style.display = 'flex';                
             }
 
             if(max > 0 && (max-len) > 0){
@@ -586,17 +614,25 @@ export default function FullMap(props) {
                 <text>${!data.Results[title][date][time].data[index].inPerimeter ? `${data.Results[title][date][time].data[index].distanceFromArea.toFixed(2).toLocaleString('en-US')} ft from project perimeter` : "Inside perimeter"}</text><br/>
                 <text>Difficulty Rating: ${data.Results[title][date][time].data[index].details.diffRating}</text><br/>
                 ${data.Results[title][date][time].data[index].accessType === "Access Path" ?
-                    `<text>Length: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft</text><br/>
+                        `${data.Results[title][date][time].data[index].inPerimeter ? `<text>Length: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft</text><br/>` : null}
                          <text>Number Lanes: ${data.Results[title][date][time].data[index].details.laneCount}</text><br/>
                          <text>This path is ${data.Results[title][date][time].data[index].details.twoWay ? `two-way` : `one-way`}<text/><br/>
                          ${data.Results[title][date][time].data[index].details.median ? `<text>This path has a median<text/>` : null}<br/>
                          ${data.Results[title][date][time].data[index].details.paved ? `<text>This path is paved<text/>` : null}<br/>
                          ${data.Results[title][date][time].data[index].details.tollLane ? `<text>This path has a toll<text/><br/>` : ""}
-                         ${data.Results[title][date][time].data[index].details.turnLane.length > 1 ? `<text>The path has both left and right turn lanes<text/>` : (data.Results[title][date][time].data[index].details.turnLane.length === 1 ? (data.Results[title][date][time].data[index].details.turnLane[0] === 1 ? "The path has a left turn lane" : "The path has a right turn lane") : "The path has no turn lanes")}<br/>`
+                         ${data.Results[title][date][time].data[index].details.turnLane.length > 1 ? `<text>The path has both left and right turn lanes<text/>` : (data.Results[title][date][time].data[index].details.turnLane.length === 1 ? (data.Results[title][date][time].data[index].details.turnLane[0] === 1 ? "The path has no turn lanes" : (data.Results[title][date][time].data[index].details.turnLane[0] === 2 ?"The path has a left turn lane" : "The path has a right turn lane")) : "The path has no turn lanes")}<br/>`
                     :
                     `<text>Area: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft²</text><br/>
                          <text>Number spots: ${data.Results[title][date][time].data[index].details.spots}</text><br/>
-                         <text>Cost: ${data.Results[title][date][time].data[index].details.cost > 0 ? Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.Results[title][date][time].data[index].details.cost).toLocaleString('en-US') : "FREE!"}</text>`}`
+                         <text>Cost: ${
+                            data.Results[title][date][time].data[index].details.cost ?
+                            (data.Results[title][date][time].data[index].details.cost > 0 ? 
+                                Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.Results[title][date][time].data[index].details.cost).toLocaleString('en-US') 
+                                : 
+                                "FREE!")
+                            :
+                            "N/A"
+                        }</text>`}`
             popup.style.display = 'flex';
         } else if (ver === 7) {
             // version 7 == section cutter collection
@@ -608,6 +644,7 @@ export default function FullMap(props) {
             console.log(sectionData)
 
             const userId = loc.state.userToken.user._id
+            const owner = loc.state.owner
             let researchers = sectionData.researchers
             let max = sectionData.maxResearchers;
             let len = sectionData.researchers.length;
@@ -620,6 +657,8 @@ export default function FullMap(props) {
                 SCwithdrawBtn.style.display = 'flex';
                 SCsurveyorbutton.style.display = 'flex';
                 viewMediaButton.style.display = 'flex';
+            } else if(owner.user === userId) {
+                viewMediaButton.style.display = 'flex';                
             }
             if(max > 0 && (max-len) > 0){
                 //show sign up button
@@ -700,7 +739,7 @@ export default function FullMap(props) {
                                     //     ]
 
                                     area={handleBaseplateRender(inst)}
-                                    doThis={handleSendBuildingData(data.Results[title][sdate][time])}
+                                    doThis={handleSendBuildingData(data.Results, title, sdate, time)}
                                     type={"Baseplate"}
                                     boundsPathWindow={boundsPathWindow}
                                 />
@@ -720,8 +759,16 @@ export default function FullMap(props) {
                                                 <text>${inst.description}</text><br/>
                                                 <text>${!inst.inPerimeter ? `${inst.distanceFromArea.toFixed(2).toLocaleString('en-US')} ft from project perimeter` : "Inside perimeter"}</text><br/>
                                                 <text>Difficulty Rating: ${inst.details.diffRating}</text><br/>
-                                                ${inst.details.spots ? `<text>Number spots: ${inst.details.spots}</text><br/>` : null}
-                                                <text>Cost: ${inst.details.cost > 0 ? Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(inst.details.cost).toLocaleString('en-US') : "FREE!"}</text>`}
+                                                ${inst.details.spots ? `<text>Number spots: ${inst.details.spots}</text><br/>` : ""}
+                                                <text>Cost: ${
+                                                    inst.details.cost ?
+                                                        (inst.details.cost > 0 ? 
+                                                        Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(inst.details.cost).toLocaleString('en-US') 
+                                                        : 
+                                                        "FREE!")
+                                                    :
+                                                    "N/A"
+                                                }</text>`}
                                             position={inst.path[0]}
                                             markerType={'access_maps'}
                                         />
@@ -754,7 +801,7 @@ export default function FullMap(props) {
                                             key={`${sdate}.${time}.${index}`}
                                             path={inst.path}
                                             title={'section'}
-                                            doThis={handleSendSectionData(data.Results[title][sdate][time])}
+                                            doThis={handleSendSectionData(data.Results, title, sdate, time)}
                                             boundsPathWindow={boundsPathWindow}
                                             mode={'section'}
                                         />
