@@ -277,7 +277,7 @@ const subtable = (row, type, name, open) => (
                         ))
                     ))) 
                     ))
-            
+                // Data Drawers
                 : Object.entries(row).map(([instance, data])=>(
                         Object.values(data.data).map((inst, ind) => (
                             instance.split('.')[0] === 'nature_maps' ? 
@@ -340,49 +340,46 @@ const subtable = (row, type, name, open) => (
                                         </TableRow>
                                     )) 
                                     : instance.split('.')[0] === 'access_maps' ?
-                                    (inst.points).map((point, i2) => {
+                                   // (inst).map((object, index) => {
 
-                                    console.log("🚀 ~ file: ActivityTable.js:274 ~ inst:", inst);
+                                    //console.log("🚀 ~ file: ActivityTable.js:345 ~ inst:", inst);
 
 
-                                        return(
-                                        <TableRow key={`${ind}.${i2}`}>
-                                            <TableCell colSpan={2} className='category'>
-                                                {testNames(instance.split('.')[0])}
+                                        //return(
+                                            (<TableRow key={`${ind}`}>
+                                            <TableCell colSpan={2} className='value'>
+                                                {!inst.inPerimeter && inst.distanceFromArea !== undefined ? `${inst.distanceFromArea.toFixed(2)} ft from perimeter` : "Inside perimeter"}
+                                                {/* {object.accessType === "Access Path" ? 
+                                                    (object.area > 0 ? 
+                                                        (`${object.area} ft`) 
+                                                        : 'N/A') 
+                                                    : (object.area > 0 ? 
+                                                        (`${object.area} ft\u00B2`) 
+                                                        : 'N/A')} */}
                                             </TableCell>
-                                            <TableCell colSpan={1} className='value'>
-                                                { point.accessType ? point.accessType : 'N/A' }
+                                            <TableCell colSpan={2} className='type'>
+                                                {(`${inst.accessType} (${inst.description})`)}
                                             </TableCell>
-                                            <TableCell>
-                                                {
-                                                    `${point.description}`
-                                                }
-                                            </TableCell>
-                                            <TableCell>Location {i2 + 1}</TableCell>
+                                            <TableCell>Location {ind}</TableCell>
                                             <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
-                                        </TableRow>
-                                    )})
+                                        </TableRow>)
+                                  //  )
+                                //})
                                     : 
                                     // !!!!!!!!!!!!!!!!!!!!!! FIX ME !!!!!!!!!!!!!!!!!!!!!!!!!
                                     // DATA DRAWER FOR SECTIO MAPS TO BE SET UP
                                     ( instance.split('.')[0] === 'section_maps' ?
-                                        (inst.points).map((point, i2) => (
-                                        <TableRow key={`${ind}.${i2}`}>
-                                            <TableCell colSpan={2} className='category'>
-                                                {testNames(instance.split('.')[0])}
+                                        (ind == 0 ? null : 
+                                        <TableRow key={`${ind}`}>
+                                            <TableCell colSpan={2} className='value'>
+                                                { inst.title ? inst.title : 'N/A'}
                                             </TableCell>
-                                            <TableCell colSpan={1} className='value'>
-                                                { point.kind ? point.kind : 'N/A' }
+                                            <TableCell colSpan={2} className='type'>
+                                                { inst.tags ? `${inst.tags}` : 'N/A tags' }
                                             </TableCell>
-                                            <TableCell>
-                                                {
-                                                    point.description ? `${point.description}` : (point.light_description ? `${point.light_description}` : `${point.access_description}`)
-                                                }
-                                            </TableCell>
-                                            <TableCell>Location {i2 + 1}</TableCell>
+                                            <TableCell></TableCell>
                                             <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
-                                        </TableRow>
-                                        ))
+                                        </TableRow>)
                                     : 
                                         <TableRow key={ind}>
                                         <TableCell colSpan={2} className='category'>
