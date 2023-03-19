@@ -49,7 +49,7 @@ export default function FullMap(props) {
     const [numFloors, setNumFloors] = React.useState(1);
     let buildingData, sectionData;
 
-
+   
     // Access Universal Data passed around including the key for maps
     const loc = useLocation();
     const nav = useNavigate();
@@ -324,8 +324,7 @@ export default function FullMap(props) {
     }
 
     const handleSignUpSC = async () => {
-        console.log("section signup")
-        
+        console.log('section sign up')
         try {
             await axios.put(`section_maps/${sectionData._id}/claim`, JSON.stringify({
                 user: loc.state.userToken.user._id
@@ -341,13 +340,11 @@ export default function FullMap(props) {
             console.log('ERROR: ', error);
             return;
         }
-        console.log("signup successful")
+        console.log('section sign up success')
 
-        sectionData.researchers.push(loc.state.userToken.user._id)
-        const newObj = await props.refresh()
-        console.log(newObj.activities.section_maps)
-        console.log(sectionData.time)
-
+       let userObj = {firstname: loc.state.userToken.user.firstname, lastname: loc.state.userToken.user.lastname , _id: loc.state.userToken.user._id}
+        sectionData.researchers.push(userObj)
+        
         let SCsignUpBtn = document.getElementById('signUpSCBtn')
         let SCwithdrawBtn = document.getElementById('withdrawSCBtn')
         let SCsurveyorbutton = document.getElementById('SCSurveyorsBtn');
@@ -378,8 +375,8 @@ export default function FullMap(props) {
         }
         console.log("signup successful")
 
-        buildingData.researchers.push(loc.state.userToken.user._id)
-        props.refresh()
+        let userObj = {firstname: loc.state.userToken.user.firstname, lastname: loc.state.userToken.user.lastname , _id: loc.state.userToken.user._id}
+        buildingData.researchers.push(userObj)
 
         let IPsignUpBtn = document.getElementById('signUpIPBtn')
         let IPwithdrawBtn = document.getElementById('withdrawIPBtn')
@@ -394,7 +391,7 @@ export default function FullMap(props) {
     }
 
     const handleWithdrawSC = async  () => {
-        console.log("section withdraw")
+        console.log('section withdraw')
         try {
             await axios.delete(`section_maps/${sectionData._id}/claim`, {
                 headers: {
@@ -407,10 +404,8 @@ export default function FullMap(props) {
             console.log('ERROR: ', error);
             return;
         }
-        console.log("withdraw successful")
-
+        console.log('section withdraw success')
         sectionData.researchers = sectionData.researchers.filter(item => item._id !== loc.state.userToken.user._id);
-        props.refresh()
 
         let SCsignUpBtn = document.getElementById('signUpSCBtn')
         let SCwithdrawBtn = document.getElementById('withdrawSCBtn')
@@ -427,8 +422,7 @@ export default function FullMap(props) {
     }
 
     const handleWithdrawIP = async () => {
-        console.log("program withdraw")
-        console.log(loc.state.userToken.token)
+        console.log('program withdraw')
         try {
             await axios.delete(`program_maps/${buildingData._id}/claim`, {
                 headers: {
@@ -441,12 +435,8 @@ export default function FullMap(props) {
             console.log('ERROR: ', error);
             return;
         }
-        console.log("withdraw successful")
-        // console.log(buildingData)
-        // console.log(buildingData.researchers)
-
+        console.log('program withdraw success')
         buildingData.researchers = buildingData.researchers.filter(item => item._id !== loc.state.userToken.user._id);
-        props.refresh()
 
         let IPsignUpBtn = document.getElementById('signUpIPBtn')
         let IPwithdrawBtn = document.getElementById('withdrawIPBtn')
@@ -466,22 +456,22 @@ export default function FullMap(props) {
 
     const handleIPSurveyorRoute = () => {
         console.log(buildingData)
-        nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData, type: 0 } });
+        nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, owner: loc.state.owner, project: loc.state.project, userToken: loc.state.userToken, data: buildingData, type: 0 } });
     }
 
     const handleViewModelRoute = () => {
         console.log(buildingData)
-        nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, data: buildingData, type: 1 } });
+        nav('../activities/program_surveyors', { replace: true, state: { team: loc.state.team, owner: loc.state.owner, project: loc.state.project, userToken: loc.state.userToken, data: buildingData, type: 1 } });
 
     }
 
     const handleViewMediaRoute = () => {
-        nav('../activities/view_media', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, section: sectionData } });
+        nav('../activities/view_media', { replace: true, state: { team: loc.state.team, owner: loc.state.owner, project: loc.state.project, userToken: loc.state.userToken, section: sectionData } });
     }
 
     const handleSCSurveyorRoute = () => {
         console.log(sectionData)
-        nav('../activities/upload_section_media', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken, section: sectionData } });
+        nav('../activities/upload_section_media', { replace: true, state: { team: loc.state.team, owner: loc.state.owner, project: loc.state.project, userToken: loc.state.userToken, section: sectionData } });
     }
 
     const handleSendBuildingData = (e, title, sdate, time ) => {
@@ -490,11 +480,6 @@ export default function FullMap(props) {
 
     const handleSendSectionData = (e, title, sdate, time) => {
         sectionData = e[title][sdate][time];
-    }
-
-    const handlePopupClose = () => {
-        let okBtn = document.getElementById('okSectionBtn')
-        okBtn.style.display = 'none'
     }
 
     const handleBaseplateRender = (e) => {
@@ -579,8 +564,6 @@ export default function FullMap(props) {
             let len = buildingData.researchers.length;
 
             //check here if user is a researcher or not
-            // console.log("testing")
-            // console.log(buildingData)
             const userId = loc.state.userToken.user._id
             let researchers = buildingData.researchers
             const owner = loc.state.owner
@@ -633,27 +616,28 @@ export default function FullMap(props) {
             inner.innerHTML = `<h5>Section Cutter</h5><br/>`;
             popup.style.display = 'flex';
 
-            console.log(sectionData)
-
             const userId = loc.state.userToken.user._id
             const owner = loc.state.owner
-            let researchers = sectionData.researchers
             let max = sectionData.maxResearchers;
             let len = sectionData.researchers.length;
-
-            let findUser = researchers.findIndex(element => element._id === userId)
+           
+            let findUser = sectionData.researchers.findIndex(element => element._id === userId)
+            
             if(findUser >= 0){
-                max = -1; //do not add the user
+                max = -1; //user was found in researchers
 
                 //show the withdraw and begin test buttons show
                 SCwithdrawBtn.style.display = 'flex';
                 SCsurveyorbutton.style.display = 'flex';
                 viewMediaButton.style.display = 'flex';
+
             } else if(owner.user === userId) {
-                viewMediaButton.style.display = 'flex';                
+                //user was not found but is an owner
+                viewMediaButton.style.display = 'flex';             
             }
+
             if(max > 0 && (max-len) > 0){
-                //show sign up button
+                //user was not found and there is still spots
                 SCsignUpBtn.style.display = 'flex';
             }
             
@@ -977,7 +961,8 @@ export default function FullMap(props) {
                             state={{
                                 team: loc.state.team,
                                 project: loc.state.project,
-                                userToken: loc.state.userToken
+                                userToken: loc.state.userToken,
+                                owner: loc.state.owner
                             }}>
                             Cancel <Clear />
 
@@ -1029,6 +1014,7 @@ export default function FullMap(props) {
                                         team: loc.state.team,
                                         project: loc.state.project,
                                         userToken: loc.state.userToken,
+                                        owner: loc.state.owner
                                     }}>
 
                                     Cancel

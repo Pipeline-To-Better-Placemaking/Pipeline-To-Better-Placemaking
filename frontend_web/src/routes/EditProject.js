@@ -63,7 +63,7 @@ export default function EditProject() {
                 withCredentials: true
             });
 
-            nav(`../`, { replace: true, state: { team: loc.state.team, userToken: loc.state.userToken } });
+            nav(`../`, { replace: true, state: { team: loc.state.team, userToken: loc.state.userToken , owner: loc.state.owner} });
 
         } catch (error) {
             console.log('ERROR: ', error);
@@ -83,7 +83,7 @@ export default function EditProject() {
                 withCredentials: true
             });
             
-            nav('../', { replace: true, state: { team: loc.state.team, userToken: loc.state.userToken } });
+            nav('../', { replace: true, state: { team: loc.state.team, userToken: loc.state.userToken, owner: loc.state.owner } });
 
         } catch (error) {
             console.log('ERROR: ', error);
@@ -165,7 +165,7 @@ export default function EditProject() {
                             >
                                 Delete
                             </Button>
-                            <Button component={Link} state={{ team: loc.state && loc.state.team ? loc.state.team : '', userToken: loc.state && loc.state.userToken ? loc.state.userToken : '' }} type='submit' size='lg' to={`/home/teams/${segment[3]}`}>
+                            <Button component={Link} state={{ team: loc.state && loc.state.team ? loc.state.team : '', userToken: loc.state && loc.state.userToken ? loc.state.userToken : '', owner: loc.state && loc.state.owner ? loc.state.owner : ''}} type='submit' size='lg' to={`/home/teams/${segment[3]}`}>
                                 Cancel
                             </Button>
                         </Box>

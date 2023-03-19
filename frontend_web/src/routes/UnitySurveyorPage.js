@@ -297,7 +297,7 @@ export default function UnityPage() {
     <div>
       {/* <h1>Identifying Program</h1> */}
       <Button className='backBtn' style={{ margin: '10px' }} component={Link} size='lg' variant="contained" startIcon={<KeyboardReturnIcon />} to='../map'
-        state={{ team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken }} >
+        state={{ team: loc.state.team, owner: loc.state.owner, project: loc.state.project, userToken: loc.state.userToken }} >
         Return to map view
       </Button>
       <br />

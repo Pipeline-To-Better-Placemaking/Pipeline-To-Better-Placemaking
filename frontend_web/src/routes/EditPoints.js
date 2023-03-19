@@ -53,7 +53,7 @@ export default function EditPoints(){
                 withCredentials: true
             });
             closeWindow(e);
-            nav(`../edit/${loc.pathname.split('/')[5]}`, { replace: true, state: { project: loc.state.project, team: loc.state.team, userToken: loc.state.userToken } });
+            nav(`../edit/${loc.pathname.split('/')[5]}`, { replace: true, state: { project: loc.state.project, owner: loc.state.owner, team: loc.state.team, userToken: loc.state.userToken } });
         } catch (error) {
             console.log('ERROR: ', error);
             return;
@@ -71,7 +71,7 @@ export default function EditPoints(){
                 <Card.Body id='pointCardContent'>
                     <Button id='addNewPoint' component={Link} to='point_map' state={loc.state}>New Standing Point</Button>
                     {pointCards(standingPoints)}
-                    <Button component={Link} to={`../edit/${loc.pathname.split('/')[5]}`} state={{project: loc.state.project, team: loc.state.team, userToken: loc.state.userToken}}>Cancel</Button>
+                    <Button component={Link} to={`../edit/${loc.pathname.split('/')[5]}`} state={{project: loc.state.project, owner: loc.state.owner, team: loc.state.team, userToken: loc.state.userToken}}>Cancel</Button>
                 </Card.Body>
             </Card>
             <div id='deleteWindow' style={{ display: 'none', position: 'fixed', justifyContent: 'center', alignItems: 'center' }}>

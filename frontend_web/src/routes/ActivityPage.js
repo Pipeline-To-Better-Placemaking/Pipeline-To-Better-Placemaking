@@ -178,7 +178,7 @@ export default function ActivityPage(props) {
             });
 
             closeWindow(e);
-            nav(`../../projects/${loc.pathname.split('/')[5]}/activities`, { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken } });
+            nav(`../../projects/${loc.pathname.split('/')[5]}/activities`, { replace: true, state: { team: loc.state.team, owner: loc.state.owner, project: loc.state.project, userToken: loc.state.userToken } });
 
         } catch (error) {
             console.log('ERROR: ', error);

@@ -129,40 +129,28 @@ function ViewMedia() {
     
     // Updates list of images for specific project
     useEffect(() => {
-        listAll(storageRefList).then((response) => {
-
-          console.log("🚀 ~ file: ViewMedia.js:119 ~ listAll ~ response:", response);
-
-          response.items.forEach((item) => {
-
-            const fireapp = `${item._location.bucket}`;
-            const bucket = storage.bucket(fireapp);
-            const fn = `${item._location.path_}`;
-            
-            const tempFilePath = "/";
-            
-            bucket.file(fn).download({destination: tempFilePath}).then(()=>{
-                console.log('Image downloaded locally to', tempFilePath);
-                // var filestream = fs.createReadStream(tempFilePath);
-                // filestream.pipe(response);
-                // setMediaUrls((prev) => [...prev, tempFilePath]);
-                // if(selectedSlide == "")
-                //   setSelectedSlide(tempFilePath);
-            });
-            // getDownloadURL(item).then((downloadURL) => {
-            //   console.log(downloadURL);
-            //   setMediaUrls((prev) => [...prev, downloadURL]);
-            //   if(selectedSlide == "")
-            //     setSelectedSlide(downloadURL);
-            // }); 
-          });
+      listAll(storageRefList).then((response) => {
+        response.items.forEach((item) => {
+          getDownloadURL(item).then((downloadURL) => {
+            console.log(downloadURL);
+            setMediaUrls((prev) => [...prev, downloadURL]);
+            if(selectedSlide == "")
+            {
+              setSelectedSlide(downloadURL);
+            }  
+          }); 
         });
-        }, []);
+      });
+      console.log(`After: ${selectedSlide}`);
+      }, []);
+
+
+    console.log(loc)
 
     return (
     <div className="ViewMedia">
           <Button className='backBtn' style={{ margin: '10px' }} component={Link} size='lg' variant="contained" startIcon={<KeyboardReturnIcon />} to='../map'
-            state={{ team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken }} >
+            state={{ team: loc.state.team, owner: loc.state.owner, project: loc.state.project, userToken: loc.state.userToken }} >
             Return to map view
           </Button>
         <h1>View Media</h1>

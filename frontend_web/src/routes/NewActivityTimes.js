@@ -142,7 +142,7 @@ export default function NewActivityTimes(props) {
             let area = props.projectInfo.subareas.findIndex((element) => element._id === collectionDetails.area);
             collectionDetails.area = props.projectInfo.subareas[area];
 
-            nav('../', { replace: true, state: { team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken } });
+            nav('../', { replace: true, state: { team: loc.state.team, owner: loc.state.owner, project: loc.state.project, userToken: loc.state.userToken } });
 
         } catch (error) {
             console.log('ERROR: ', error);
@@ -393,7 +393,7 @@ export default function NewActivityTimes(props) {
                     <Button id='newTimeButton' onClick={newTime} className='scheme'>New Time Slot</Button>
                     {timeCards(timeSlots)}
                 </Card.Body>
-                <Button component={Link} to='../activities' state={{ team: loc.state.team, project: loc.state.project, userToken: loc.state.userToken }}>Cancel</Button>
+                <Button component={Link} to='../activities' state={{ team: loc.state.team, owner: loc.state.owner, project: loc.state.project, userToken: loc.state.userToken }}>Cancel</Button>
 
                 {testNames(activity.activity) !== 'Identifying Program' ? null
                     :

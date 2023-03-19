@@ -37,7 +37,7 @@ export default function EditAreaMap() {
                 withCredentials: true
             });
 
-            nav(`../edit/${loc.pathname.split('/')[5]}`, { replace: true, state: { project: loc.state.project, team: loc.state.team, userToken: loc.state.userToken } })
+            nav(`../edit/${loc.pathname.split('/')[5]}`, { replace: true, state: { project: loc.state.project, owner: loc.state.owner, team: loc.state.team, userToken: loc.state.userToken } })
 
         } catch (error) {
             console.log('ERROR: ', error);
@@ -64,7 +64,7 @@ export default function EditAreaMap() {
                 withCredentials: true
             });
 
-            nav(`../edit/${loc.pathname.split('/')[5]}`, { replace: true, state: { project: loc.state.project, team: loc.state.team, userToken: loc.state.userToken } })
+            nav(`../edit/${loc.pathname.split('/')[5]}`, { replace: true, state: { project: loc.state.project, owner: loc.state.owner, team: loc.state.team, userToken: loc.state.userToken } })
 
         } catch (error) {
             console.log('ERROR: ', error);

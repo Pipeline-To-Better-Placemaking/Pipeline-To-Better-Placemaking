@@ -23,7 +23,6 @@ import ViewMedia from './ViewMedia';
 export default function ProjectPage(){
     // Retrieve Location info
     const loc = useLocation();
-    //const nav = useNavigation();
     // Boolean to load routes after data has been reformatted
     const [loaded, setLoaded] = React.useState(false);
     // Holds basic projects info including map ids
@@ -42,8 +41,6 @@ export default function ProjectPage(){
     var sPoints = {};
 
     const projectData = async() => {
-        console.log("in project data")
-        console.log(projectId)
         try {
             const response = await axios.get(`/projects/${projectId}`, {
                 headers: {
@@ -108,7 +105,7 @@ export default function ProjectPage(){
             ))
             response?.data?.programCollections.map((collection) => (
                 collection.maps.map(async (id, index) => {
-                    await collectionPoints(id, 'program', collection.date, index);
+                    await collectionPoints(id, 'program', collection.date, index)
                 })
             ))
 
@@ -119,7 +116,6 @@ export default function ProjectPage(){
             // After all other values are set loaded to true to render routes with appropriate data
             setLoaded(true);
             
-            return({activities: activities, drawer: drawer})
 
         } catch(error){
             //project api get error
@@ -153,7 +149,7 @@ export default function ProjectPage(){
                 },
                 withCredentials: true
             });
-
+            
             var map = results;
 
             if (response?.data && response?.data.date && response?.data.date !== null){

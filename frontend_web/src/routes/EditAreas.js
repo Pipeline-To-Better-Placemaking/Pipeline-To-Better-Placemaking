@@ -54,7 +54,7 @@ export default function EditAreas(){
             });
 
             closeWindow(e);
-            nav(`../edit/${loc.pathname.split('/')[5]}`, { replace: true, state: { project: loc.state.project, team: loc.state.team, userToken: loc.state.userToken } });
+            nav(`../edit/${loc.pathname.split('/')[5]}`, { replace: true, state: { project: loc.state.project, owner: loc.state.owner, team: loc.state.team, userToken: loc.state.userToken } });
 
         } catch (error) {
             console.log('ERROR: ', error);
@@ -73,7 +73,7 @@ export default function EditAreas(){
                 <Card.Body id='areaCardContent'>
                     <Button id='addNewArea'component={Link} to='area_map' state={loc?.state}>New Area</Button>
                     {areaCards(areas)}
-                    <Button component={Link} to={`../edit/${loc.pathname.split('/')[5]}`} state={{ project: loc.state.project, team: loc.state.team, userToken: loc.state.userToken }}>Cancel</Button>
+                    <Button component={Link} to={`../edit/${loc.pathname.split('/')[5]}`} state={{ project: loc.state.project, owner: loc.state.owner, team: loc.state.team, userToken: loc.state.userToken }}>Cancel</Button>
                 </Card.Body>
             </Card>
             <div id='deleteWindow' style={{ display: 'none', position: 'fixed', justifyContent: 'center', alignItems: 'center' }}>
