@@ -26,6 +26,13 @@ public class Surveyor : MonoBehaviour
     public bool cameraDragging = false;
     public float outerLeft = -10f;
     public float outerRight = 10f;
+    private int type;
+
+    public static int idCounter = 0;
+    private bool selectedProgramDelete = false;
+    private int numNewPrograms = 0;
+    private GameObject programToDelete;
+    private Material materialToSave;
 
     public Material material;
 
@@ -40,12 +47,25 @@ public class Surveyor : MonoBehaviour
     public GameObject extrudeUIBox;
     public GameObject previewUIBox;
     public GameObject startUIBox;
+    public GameObject addProgramBtn;
+    public GameObject deleteUIBox;
+    public GameObject deleteProgramBtn;
     public GameObject submitProgramBtn;
     public GameObject previewAcceptButton;
     public GameObject invalidShapeText;
     public TMP_Text indicateTextForExtrude;
+    public GameObject deleteButtonsContainer;
+    public GameObject deleteCancelButton;
+    public GameObject deleteText;
+    public GameObject deleteConfirmText;
+    public GameObject submitIndicateText;
+    public TMP_Text submitAllProgramsText;
+
+
+
 
     public GameObject dot;
+
 
 
 
@@ -53,7 +73,7 @@ public class Surveyor : MonoBehaviour
     public TMP_Dropdown floorNumberDropDown;
     [SerializeField] public string programOption;
 
-    public Material food, entertain, hospitality, health, retail, commercial, residential, lab, storage, empty, civil, monument, publicSpace;
+    public Material food, entertain, hospitality, health, retail, commercial, residential, lab, storage, empty, civil, monument, publicSpace, voidSpace, deleteMat;
 
     IDictionary<string, Material> programMapping;
 
@@ -95,12 +115,15 @@ public class Surveyor : MonoBehaviour
         public string programType;
         public int floorNum;
         public float sqFootage;
+        public int programID;
 
         public Program(string programType, List<Vector3> _points, int floorNum, float sqFootage)
         {
             this.programType = programType;
             this.floorNum = floorNum;
             this.sqFootage = sqFootage;
+            this.programID = idCounter;
+            idCounter++;
 
             Debug.Log(this.floorNum);
             for (int i = 0; i < _points.Count; i++)
@@ -110,6 +133,7 @@ public class Surveyor : MonoBehaviour
                 // Debug.Log("zcoord is: " + _points[i].z);
                 points.Add(new Coordinate(_points[i].x, _points[i].y, _points[i].z));
             }
+
         }
     }
     [System.Serializable]
@@ -145,12 +169,13 @@ public class Surveyor : MonoBehaviour
 
         // mesh.gameObject.AddComponent<MeshCollider>();
 
-        // vertices.Add(new Vector3(0,0,0));
-        // vertices.Add(new Vector3(0,0,100));
-        // vertices.Add(new Vector3(100,0,100));
-        // vertices.Add(new Vector3(100,0,0));
+        // vertices.Add(new Vector3(0, 0, 0));
+        // vertices.Add(new Vector3(0, 0, 100));
+        // vertices.Add(new Vector3(100, 0, 100));
+        // vertices.Add(new Vector3(100, 0, 0));
 
         // mesh.CreateShapeFromPolygon(vertices, 42, true);
+
         // mesh.tag = "Model";
         // mesh.GetComponent<MeshRenderer>().sharedMaterial = material;
 
@@ -173,7 +198,7 @@ public class Surveyor : MonoBehaviour
 
         // for (int j = 1; j < 3; j++)
         // {
-        //     for(int i = 0; i < vertices.Count; i++)
+        //     for (int i = 0; i < vertices.Count; i++)
         //     {
         //         var temp = vertices[i];
         //         temp.y = (14) + temp.y;
@@ -211,7 +236,8 @@ public class Surveyor : MonoBehaviour
         // {"Empty / abandoned / unused", empty},
         // {"Civil", civil},
         // {"Monument", monument},
-        // {"Public Space", publicSpace}
+        // {"Public Space", publicSpace},
+        // {"Void Space", voidSpace}
         // };
 
     }
@@ -243,7 +269,7 @@ public class Surveyor : MonoBehaviour
 
 
         dragCamera = Camera.main.gameObject.GetComponent<DragCamera>();
-        submitProgramBtn.SetActive(false);
+        // submitProgramBtn.SetActive(false);
 
         programMapping = new Dictionary<string, Material>(){
         {"Food and beverage", food},
@@ -258,7 +284,8 @@ public class Surveyor : MonoBehaviour
         {"Empty / abandoned / unused", empty},
         {"Civil", civil},
         {"Monument", monument},
-        {"Public Space", publicSpace}
+        {"Public Space", publicSpace},
+        {"Void Space", voidSpace}
         };
 
 
@@ -271,7 +298,13 @@ public class Surveyor : MonoBehaviour
         // Debug.Log ($"{json}");
         Building data = JsonUtility.FromJson<Building>(json);
 
-        if (int.Parse(data.type) == 1) { startUIBox.SetActive(false); }
+        type = int.Parse(data.type);
+
+        if (type == 1)
+        {
+            addProgramBtn.SetActive(false);
+            submitAllProgramsText.text = "Done";
+        }
 
         // Debug.Log ($"Info obj numFloors is: {data.numFloors} and points is: {data.points.Length}");
         int numFloors = int.Parse(data.numFloors);
@@ -409,12 +442,27 @@ public class Surveyor : MonoBehaviour
 
             loadedProgramMesh.CreateShapeFromPolygon(vertices, 13.99f, false);
             loadedProgramMesh.GetComponent<MeshRenderer>().sharedMaterial = programMapping[data.programs[i].programType];
+            loadedProgramMesh.gameObject.AddComponent<MeshCollider>();
+
+            if (type == 1)
+            {
+                loadedProgramMesh.gameObject.tag = "Program";
+            }
+            else { loadedProgramMesh.gameObject.tag = "LoadedProgram"; }
+
+            loadedProgramMesh.gameObject.AddComponent<ProgramIDComponent>();
+            loadedProgramMesh.gameObject.GetComponent<ProgramIDComponent>().programID = idCounter;
 
             loadedProgramMesh.ToMesh();
             loadedProgramMesh.Refresh();
 
-            programList.Add(new Program(data.programs[i].programType, vertices, savedYCoord, (float)CalculateArea(vertices)));
+            programList.Add(new Program(data.programs[i].programType, vertices, savedYCoord, (float)ShoelaceFormula(vertices)));
 
+        }
+
+        if (programList.Count > 0)
+        {
+            deleteProgramBtn.SetActive(true);
         }
 
 
@@ -472,61 +520,36 @@ public class Surveyor : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             Vector3 difference = Input.mousePosition - dragOrigin;
-            Camera.main.transform.position -= new Vector3(difference.x * 0.05f, 0, difference.y * 0.05f);
+            Vector3 pan = new Vector3(difference.x * 0.05f, 0, difference.y * 0.05f);
+            pan = Quaternion.Euler(0f, Camera.main.transform.eulerAngles.y, 0f) * pan;
+
+            Camera.main.transform.position -= pan;
             dragOrigin = Input.mousePosition;
         }
 
-        if (Input.mouseScrollDelta.y > 0 && Camera.main.transform.position.y > 10)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - 5, Camera.main.transform.position.z);
+            if (Input.mouseScrollDelta.y > 0 && Camera.main.transform.position.y > 10)
+            {
+                Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - 5, Camera.main.transform.position.z);
+            }
+            else if (Input.mouseScrollDelta.y < 0)
+            {
+                Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y + 5, Camera.main.transform.position.z);
+            }
         }
-        else if (Input.mouseScrollDelta.y < 0)
+
+
+    }
+
+    void RotateStuff()
+    {
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.Mouse2))
         {
-            Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y + 5, Camera.main.transform.position.z);
+            float horizontal = Input.GetAxis("Mouse X") * 1.5f;
+            Camera.main.transform.Rotate(0, 0, horizontal);
+
         }
-        // Vector2 mousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-        // Debug.Log (mousePosition);
-        //         float left = Screen.width * 0.2f;
-        //         float right = Screen.width - (Screen.width * 0.2f);
-
-        //         if(mousePosition.x < left)
-        //         {
-        //             cameraDragging = true;
-        //         }
-        //         else if(mousePosition.x > right)
-        //         {
-        //             cameraDragging = true;
-        //         }
-
-
-        //         if (cameraDragging) {
-
-        //             if (Input.GetMouseButtonDown(1))
-        //             {
-        //                 dragOrigin = Input.mousePosition;
-        //                 return;
-        //             }
-
-        //             if (!Input.GetMouseButton(1)) return;
-
-        //             Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
-        //             Vector3 move = new Vector3(pos.x * dragSpeed, 0, 0);
-
-        //             if (move.x > 0f)
-        //             {
-        //                 if(this.transform.position.x < outerRight)
-        //                 {
-        //                     transform.Translate(move, Space.World);
-        //                 }
-        //             }
-        //             else{
-        //                 if(this.transform.position.x > outerLeft)
-        //                 {
-        //                     transform.Translate(move, Space.World);
-        //                 }
-        //             }
-
-        //     }
     }
 
     // Update is called once per frame
@@ -539,12 +562,13 @@ public class Surveyor : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
             CameraStuff();
-
+            RotateStuff();
 
 
 
             if (Physics.Raycast(ray, out RaycastHit hitData))
             {
+
                 worldPosition = hitData.point;
                 // Debug.Log(worldPosition);
 
@@ -554,8 +578,11 @@ public class Surveyor : MonoBehaviour
                 // float safeYCoord = worldPosition.y;
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if (!EventSystem.current.IsPointerOverGameObject())
+                    if (!EventSystem.current.IsPointerOverGameObject() && (hitData.transform.tag != "Program" && hitData.transform.tag != "LoadedProgram"))
                     {
+                        // Debug.Log(hitData.transform.gameObject.GetComponent<ProgramIDComponent>().programID);
+
+
                         // GameObject newSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         // newSphere.transform.position = worldPosition;
                         // sphereList.Add(newSphere);
@@ -586,7 +613,34 @@ public class Surveyor : MonoBehaviour
 
             transform.position = worldPosition;
         }
+        else if (deleteUIBox.gameObject.activeInHierarchy)
+        {
+            screenPosition = Input.mousePosition;
 
+            Ray ray = Camera.main.ScreenPointToRay(screenPosition);
+
+            if (Physics.Raycast(ray, out RaycastHit hitData))
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (selectedProgramDelete != true && hitData.transform.tag == "Program")
+                    {
+                        deleteText.SetActive(false);
+                        deleteConfirmText.SetActive(true);
+
+                        deleteCancelButton.SetActive(false);
+                        deleteButtonsContainer.SetActive(true);
+
+                        selectedProgramDelete = true;
+                        programToDelete = hitData.transform.gameObject;
+
+                        materialToSave = programToDelete.GetComponent<MeshRenderer>().sharedMaterial;
+                        programToDelete.GetComponent<MeshRenderer>().sharedMaterial = deleteMat;
+
+                    }
+                }
+            }
+        }
     }
 
     // Add a new function here to receive the JSON from the website
@@ -636,6 +690,70 @@ public class Surveyor : MonoBehaviour
         Camera.main.transform.Rotate(Vector3.right, 90f);
     }
 
+    public void deleteProgramButton()
+    {
+        startUIBox.SetActive(false);
+        deleteUIBox.SetActive(true);
+        submitIndicateText.SetActive(false);
+    }
+
+    public void deleteCancelBtn()
+    {
+        startUIBox.SetActive(true);
+        deleteUIBox.SetActive(false);
+    }
+
+    public void deleteNoBtn()
+    {
+        deleteText.SetActive(true);
+        deleteConfirmText.SetActive(false);
+
+        deleteCancelButton.SetActive(true);
+        deleteButtonsContainer.SetActive(false);
+
+        selectedProgramDelete = false;
+
+        programToDelete.GetComponent<MeshRenderer>().sharedMaterial = materialToSave;
+    }
+
+    public void deleteYesBtn()
+    {
+
+        int num = programToDelete.GetComponent<ProgramIDComponent>().programID;
+        for (int i = 0; i < programList.Count; i++)
+        {
+            if (programList[i].programID == num)
+            {
+                programList.RemoveAt(i);
+                break;
+            }
+        }
+        Destroy(programToDelete);
+        selectedProgramDelete = false;
+
+        deleteText.SetActive(true);
+        deleteConfirmText.SetActive(false);
+
+        deleteCancelButton.SetActive(true);
+        deleteButtonsContainer.SetActive(false);
+
+        deleteUIBox.SetActive(false);
+        startUIBox.SetActive(true);
+
+        numNewPrograms--;
+
+        if (programList.Count <= 0)
+        {
+            // submitProgramBtn.SetActive(false);
+            deleteProgramBtn.SetActive(false);
+        }
+
+        if (type == 1)
+        {
+            submitAllProgramsText.text = "Update Model";
+        }
+    }
+
     public void UndoBtn()
     {
         if (inputPoints.Count > 0)
@@ -654,13 +772,21 @@ public class Surveyor : MonoBehaviour
     // Maybe have a flag variable so that the website moves on to the next page after the Unity page
     public void SubmitAllPrograms()
     {
-        Debug.Log("Yay!");
+        if (numNewPrograms > 0 || type == 1)
+        {
+            Debug.Log("Yay!");
+            startUIBox.SetActive(false);
 
 
+            string str = JsonConvert.SerializeObject(programList, Formatting.Indented);
+            Debug.Log(str);
+            sendProgramJSON(str);
+        }
+        else
+        {
+            submitIndicateText.SetActive(true);
+        }
 
-        string str = JsonConvert.SerializeObject(programList, Formatting.Indented);
-        Debug.Log(str);
-        sendProgramJSON(str);
     }
 
     // Add code to put the programs on different floors
@@ -700,6 +826,10 @@ public class Surveyor : MonoBehaviour
             {
 
                 newProgramMesh.GetComponent<MeshRenderer>().sharedMaterial = programMapping[programOption];
+                newProgramMesh.gameObject.AddComponent<MeshCollider>();
+                newProgramMesh.gameObject.tag = "Program";
+                newProgramMesh.gameObject.AddComponent<ProgramIDComponent>();
+                newProgramMesh.gameObject.GetComponent<ProgramIDComponent>().programID = idCounter;
                 previewAcceptButton.SetActive(true);
 
 
@@ -777,7 +907,7 @@ public class Surveyor : MonoBehaviour
     {
         // Add the points of the current mesh to a list that will be packaged in a JSON later
 
-        programList.Add(new Program(programOption, inputPoints, currentFloorShown, (float)CalculateArea(inputPoints)));
+        programList.Add(new Program(programOption, inputPoints, currentFloorShown, (float)ShoelaceFormula(inputPoints)));
         // Debug.Log(programList[0]);
         // Debug.Log(programList);
         // Debug.Log (CalculateArea(inputPoints));
@@ -792,10 +922,14 @@ public class Surveyor : MonoBehaviour
         previewUIBox.SetActive(false);
         startUIBox.SetActive(true);
         previewAcceptButton.SetActive(false);
+        submitIndicateText.SetActive(false);
+
+        numNewPrograms++;
 
         if (programList.Count > 0)
         {
             submitProgramBtn.SetActive(true);
+            deleteProgramBtn.SetActive(true);
         }
 
         // Bring user to the main UI where they can start to add a new program or submit the programs they created.
@@ -808,6 +942,22 @@ public class Surveyor : MonoBehaviour
         // Camera.main.transform.position = new Vector3(0,0,0);
         // Camera.main.transform.Rotate(Vector3.left, 90f);
     }
+
+    public static float ShoelaceFormula(List<Vector3> inputPoints)
+    {
+        float sum = 0f;
+        int j = inputPoints.Count - 1;
+
+        for (int i = 0; i < inputPoints.Count; i++)
+        {
+            sum += (inputPoints[j].x + inputPoints[i].x) * (inputPoints[j].z - inputPoints[i].z);
+            j = i;
+        }
+        float areaInSquareMeters = Mathf.Abs(sum / 2.0f);
+        float areaInSquareFeet = areaInSquareMeters * 10.7639f;
+        return areaInSquareFeet;
+    }
+
 
     public static double CalculateArea(List<Vector3> inputPoints)
     {
@@ -839,32 +989,7 @@ public class Surveyor : MonoBehaviour
 
 
         return feetSqr;
-        // calculate areas for each triangle segment
-        //     for (let i = 1; i < listX.length; i++) {
-        //         let x1 = listX[i - 1];
-        //         let y1 = listY[i - 1];
-        //         let x2 = listX[i];
-        //         let y2 = listY[i];
-        //         listArea.push(calculateAreaInSquareMeters(x1, x2, y1, y2));
 
-        //     }
-
-        //     // sum areas of all triangle segments
-        //     let areaSum = 0;
-        //     listArea.forEach(tarea => areaSum = areaSum + tarea)
-
-        //     // get abolute value of area (which is in meters squared); area can't be negative
-        //     let metersSqr = Math.abs(areaSum);
-        //     // convert it to feet squared
-        //     let feetSqr = metersSqr * 10.76391042;
-        //     // fix the percision to the 2nd decimal place
-        //     let tempString = feetSqr.toFixed(2);
-        //     // return the parsed float of the fixed number
-        //     return parseFloat(tempString);
-        // }
-
-        // // helpers for calcArea
-        // function calculateAreaInSquareMeters(x1, x2, y1, y2) { return (y1 * x2 - x1 * y2) / 2 }
     }
     public static float CalculateAreaInSquareMeters(float x1, float x2, float y1, float y2) { return (y1 * x2 - x1 * y2) / 2; }
 

@@ -118,7 +118,7 @@ const subtable = (row, type, name, open) => (
                                 ))
                             ))
                         ))) 
-                    :(name === 'light_maps' || name === 'order_maps' ? 
+                    : ( name === 'light_maps' || name === 'order_maps' ? 
                         (Object.entries(row).map(([date, dObj]) => (
                             Object.entries(dObj).map(([time, tObj]) => (
                                 tObj.data.map((object, index) => (
@@ -210,22 +210,80 @@ const subtable = (row, type, name, open) => (
                             })
                         ))
                     ))) 
-                    : (Object.entries(row).map(([date, dObj])=>(
-                        Object.entries(dObj).map(([time, tObj])=>(
-                            tObj.data.map((object, index) => (
-                                index === 0 ? 
-                                    <>
-                                        <TableRow style={{ backgroundColor: '#aed5fa' }}>
-                                            <TableCell align='center' colSpan={4} className='value'>
-                                                {tObj.title}
+                    : (
+                        name === 'section_maps' ? 
+                        (Object.entries(row).map(([date, dObj]) => (
+                            Object.entries(dObj).map(([time, tObj]) => (
+                                tObj.data.map((object, index) => (
+                                        (index == 0 ? null : <TableRow key={`${index}`}>
+                            
+                                            <TableCell colSpan={2} className='value'>
+                                                { object.title ? object.title : 'N/A'}
                                             </TableCell>
-                                            <TableCell align='right' colSpan={2}>
-                                                {date} {time}
+                                            <TableCell colSpan={2} className='type'>
+                                                { object.tags ? `${object.tags}` : 'N/A tags' }
                                             </TableCell>
-                                            <TableCell align='right' colSpan={1}>
-                                                <Button onClick={open(name, tObj.title, tObj._id)}><DeleteIcon /></Button>
-                                            </TableCell>
-                                        </TableRow>
+                                            <TableCell></TableCell>
+                                            <TableCell>{date} {time}</TableCell>
+                                                <TableCell>{tObj.researchers.map((researcher, index) => (index !== (tObj.researchers.length - 1) ? `${researcher.firstname} ${researcher.lastname}, ` : `${researcher.firstname} ${researcher.lastname}`))}</TableCell>
+                                        </TableRow>)
+                           
+                                ))
+                            ))
+                        )))
+                        :
+                        (name === 'program_maps' ? 
+                            (Object.entries(row).map(([date, dObj]) => (
+                                Object.entries(dObj).map(([time, tObj]) => (
+                                    tObj.data.map((object, index) => (
+                                        object.floorData.map((floor, idx) => (
+                                            floor.programs.map((program, i) => (
+                                                <TableRow key={`${index}`}>
+                                                    <TableCell colSpan={2} className='value'>
+                                                        { program.sqFootage ? `${program.sqFootage.toFixed(1)} ft\u00B2` : 'N/A'}
+                                                    </TableCell>
+                                                    <TableCell colSpan={2} className='type'>
+                                                        { program.programType ? `${program.programType}` : 'N/A tags' }
+                                                    </TableCell>
+                                                    <TableCell>Floor {floor.floorNum}</TableCell>
+                                                    <TableCell>{date} {time}</TableCell>
+                                                        <TableCell>{tObj.researchers.map((researcher, index) => (index !== (tObj.researchers.length - 1) ? `${researcher.firstname} ${researcher.lastname}, ` : `${researcher.firstname} ${researcher.lastname}`))}</TableCell>
+                                                </TableRow>
+                                            ))
+                                        ))
+                                    ))
+                                ))
+                            )))
+                            :
+                            (Object.entries(row).map(([date, dObj])=>(
+                            Object.entries(dObj).map(([time, tObj])=>(
+                                tObj.data.map((object, index) => (
+                                    index === 0 ? 
+                                        <>
+                                            <TableRow style={{ backgroundColor: '#aed5fa' }}>
+                                                <TableCell align='center' colSpan={4} className='value'>
+                                                    {tObj.title}
+                                                </TableCell>
+                                                <TableCell align='right' colSpan={2}>
+                                                    {date} {time}
+                                                </TableCell>
+                                                <TableCell align='right' colSpan={1}>
+                                                    <Button onClick={open(name, tObj.title, tObj._id)}><DeleteIcon /></Button>
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow key={ index }>
+                                                <TableCell colSpan={ 2 } className='value'>
+                                                    {object.average ? `${object.average} dB` : (object.value && (object.kind === 'Construction' || object.kind === 'Constructed') ? `${object.value} ft` : (object.value && object.kind ? `${object.value} ft\u00B2` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
+                                                </TableCell>
+                                                <TableCell colSpan={ 2 } className='type'>
+                                                    {object.average ? `${object.sound_type}` : (object.kind ? (`${object.kind} (${object.description})`) : (object.age ? `${object.age} ${object.gender} (${object.activity})` : 'N/A'))}
+                                                </TableCell>
+                                                <TableCell>Location { index + 1 }</TableCell>
+                                                <TableCell>{ date } { time }</TableCell>
+                                                <TableCell>{tObj.researchers.map((researcher, index) => (index !== (tObj.researchers.length - 1) ? `${researcher.firstname} ${researcher.lastname}, ` : `${researcher.firstname} ${researcher.lastname}`))}</TableCell>
+                                            </TableRow>
+                                        </>
+                                    :
                                         <TableRow key={ index }>
                                             <TableCell colSpan={ 2 } className='value'>
                                                 {object.average ? `${object.average} dB` : (object.value && (object.kind === 'Construction' || object.kind === 'Constructed') ? `${object.value} ft` : (object.value && object.kind ? `${object.value} ft\u00B2` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
@@ -237,22 +295,13 @@ const subtable = (row, type, name, open) => (
                                             <TableCell>{ date } { time }</TableCell>
                                             <TableCell>{tObj.researchers.map((researcher, index) => (index !== (tObj.researchers.length - 1) ? `${researcher.firstname} ${researcher.lastname}, ` : `${researcher.firstname} ${researcher.lastname}`))}</TableCell>
                                         </TableRow>
-                                    </>
-                                :
-                                    <TableRow key={ index }>
-                                        <TableCell colSpan={ 2 } className='value'>
-                                            {object.average ? `${object.average} dB` : (object.value && (object.kind === 'Construction' || object.kind === 'Constructed') ? `${object.value} ft` : (object.value && object.kind ? `${object.value} ft\u00B2` : (object.posture ? object.posture : (object.mode ? object.mode : ''))))}
-                                        </TableCell>
-                                        <TableCell colSpan={ 2 } className='type'>
-                                            {object.average ? `${object.sound_type}` : (object.kind ? (`${object.kind} (${object.description})`) : (object.age ? `${object.age} ${object.gender} (${object.activity})` : 'N/A'))}
-                                        </TableCell>
-                                        <TableCell>Location { index + 1 }</TableCell>
-                                        <TableCell>{ date } { time }</TableCell>
-                                        <TableCell>{tObj.researchers.map((researcher, index) => (index !== (tObj.researchers.length - 1) ? `${researcher.firstname} ${researcher.lastname}, ` : `${researcher.firstname} ${researcher.lastname}`))}</TableCell>
-                                    </TableRow>
+                                
+                                ))
                             ))
-                        ))
-                    ))))
+                            )))
+                        ) 
+                    ))
+                // Data Drawers
                 : Object.entries(row).map(([instance, data])=>(
                         Object.values(data.data).map((inst, ind) => (
                             instance.split('.')[0] === 'nature_maps' ? 
@@ -296,7 +345,7 @@ const subtable = (row, type, name, open) => (
                                         )
                                 ))
                             :
-                                instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' || instance.split('.')[0] === 'section_maps' ? 
+                                instance.split('.')[0] === 'light_maps' || instance.split('.')[0] === 'order_maps' ? 
                                     (inst.points).map((point, i2) => (
                                         <TableRow key={`${ind}.${i2}`}>
                                             <TableCell colSpan={2} className='category'>
@@ -315,30 +364,71 @@ const subtable = (row, type, name, open) => (
                                         </TableRow>
                                     )) 
                                     : instance.split('.')[0] === 'access_maps' ?
-                                    (inst.points).map((point, i2) => {
+                                   // (inst).map((object, index) => {
 
-                                    console.log("🚀 ~ file: ActivityTable.js:274 ~ inst:", inst);
+                                    //console.log("🚀 ~ file: ActivityTable.js:345 ~ inst:", inst);
 
 
-                                        return(
-                                        <TableRow key={`${ind}.${i2}`}>
+                                        //return(
+                                            (<TableRow key={`${ind}`}>
                                             <TableCell colSpan={2} className='category'>
                                                 {testNames(instance.split('.')[0])}
                                             </TableCell>
                                             <TableCell colSpan={1} className='value'>
-                                                { point.accessType ? point.accessType : 'N/A' }
+                                                {!inst.inPerimeter && inst.distanceFromArea !== undefined ? `${inst.distanceFromArea.toFixed(2)} ft from perimeter` : "Inside perimeter"}
+                                                {/* {object.accessType === "Access Path" ? 
+                                                    (object.area > 0 ? 
+                                                        (`${object.area} ft`) 
+                                                        : 'N/A') 
+                                                    : (object.area > 0 ? 
+                                                        (`${object.area} ft\u00B2`) 
+                                                        : 'N/A')} */}
                                             </TableCell>
-                                            <TableCell>
-                                                {
-                                                    `${point.description}`
-                                                }
+                                            <TableCell colSpan={1} className='type'>
+                                                {(`${inst.accessType} (${inst.description})`)}
                                             </TableCell>
-                                            <TableCell>Location {i2 + 1}</TableCell>
+                                            <TableCell>Location {ind + 1}</TableCell>
                                             <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
-                                        </TableRow>
-                                    )})
-                                    :
-                                    <TableRow key={ind}>
+                                        </TableRow>)
+                                  //  )
+                                //})
+                                    : 
+                                    ( instance.split('.')[0] === 'section_maps' ?
+                                        (ind == 0 ? null : 
+                                        <TableRow key={`${ind}`}>
+                                            <TableCell colSpan={2} className='category'>
+                                                {testNames(instance.split('.')[0])}
+                                            </TableCell>
+                                            <TableCell colSpan={1} className='value'>
+                                                { inst.title ? inst.title : 'N/A'}
+                                            </TableCell>
+                                            <TableCell colSpan={1} className='type'>
+                                                { inst.tags ? `${inst.tags}` : 'N/A tags' }
+                                            </TableCell>
+                                            <TableCell></TableCell>
+                                            <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
+                                        </TableRow>)
+                                    : 
+                                        (instance.split('.')[0] === 'program_maps' ? 
+                                        inst.floorData.map((floor, ind) => (
+                                            floor.programs.map((program, i) => (
+                                                <TableRow key={`${ind}`}>
+                                                    <TableCell colSpan={2} className='category'>
+                                                        {testNames(instance.split('.')[0])}
+                                                    </TableCell>
+                                                    <TableCell colSpan={1} className='value'>
+                                                        { program.sqFootage ? `${program.sqFootage.toFixed(1)} ft\u00B2` : 'N/A'}
+                                                    </TableCell>
+                                                    <TableCell colSpan={1} className='type'>
+                                                        { program.programType ? `${program.programType}` : 'N/A tags' }
+                                                    </TableCell>
+                                                    <TableCell>Floor {floor.floorNum}</TableCell>
+                                                    <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
+                                                </TableRow>
+                                            ))
+                                        ))
+                                        :
+                                        <TableRow key={ind}>
                                         <TableCell colSpan={2} className='category'>
                                             {testNames(instance.split('.')[0])}
                                         </TableCell>
@@ -354,8 +444,8 @@ const subtable = (row, type, name, open) => (
                                         </TableCell>
                                         <TableCell>Location {ind + 1}</TableCell>
                                         <TableCell>{`${instance.split('.')[1]} ${instance.split('.')[2]}`}</TableCell>
-                                    </TableRow>
-                        )) 
+                                    </TableRow>)
+                        )))
 
                     ))
                 }

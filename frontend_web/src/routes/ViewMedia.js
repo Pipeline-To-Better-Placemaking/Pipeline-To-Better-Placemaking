@@ -41,6 +41,30 @@ function ViewMedia() {
         setNewSelectedTags(event.target.value);
     }
 
+    // Pulls info from database to display
+    const handleInfo = () => {
+      const storeTags = async () => {
+        try {
+          const response = await axios.get(`/section_maps/${loc.state.section._id}/data/${loc.state.section.data[selectedIndex + 1]._id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': `Bearer ${loc.state?.userToken?.token}`
+            },
+            withCredentials: true
+          });
+          console.log(response.data.tags);
+        }
+        catch (error) {
+          console.log(error);
+          console.log("Was not able to retrieve tags");
+          return;
+        }
+      }
+
+      storeTags();
+    }
+
     // Opens edit dialog box
     const handleEdit = async () => {
       try {

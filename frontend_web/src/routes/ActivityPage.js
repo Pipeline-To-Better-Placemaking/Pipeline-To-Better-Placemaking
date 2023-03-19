@@ -19,6 +19,9 @@ import { testNames } from '../functions/HelperFunctions';
 export default function ActivityPage(props) {
     // Props from MapPage.js
     const drawers = props.drawers;
+
+    console.log("🚀 ~ file: ActivityPage.js:23 ~ ActivityPage ~ drawers:", drawers);
+
     const loc = useLocation();
     const nav = useNavigate();
 
@@ -63,12 +66,14 @@ export default function ActivityPage(props) {
         var sound = [];
         var access = [];
         var section = [];
+        var program = [];
 
         // Loop through Project Data
         Object.entries(drawers).forEach(([category, catobject])=>{
             Object.entries(catobject).forEach(([date, dateobject])=>{
                 Object.entries(dateobject).forEach(([time, timeobject])=>{
                     Object.entries(timeobject.data).forEach(([index, dataobjects])=>{
+                        console.log(category)
                         var obj = {}
                         // Create an object based on category and append it to its related array
                         if(category === 'stationary_maps') {
@@ -78,24 +83,45 @@ export default function ActivityPage(props) {
                             obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: index, Mode: dataobjects.mode }
                             moving.push(obj);
                         } else if (category === 'sound_maps') {
-                            obj = { 
-                                'Activity Type': testNames(category), 
-                                Date: date, Time: time, Point: index, 
-                                'Average (dB)': dataobjects.average, 
-                                'Sound Types/Sources': `${dataobjects.sound_type}`,
-                                'Reading 1': `${dataobjects.decibel_1.recording} ${dataobjects.decibel_1.predominant_type}`,
-                                'Reading 2': `${dataobjects.decibel_2.recording} ${dataobjects.decibel_2.predominant_type}`,
-                                'Reading 3': `${dataobjects.decibel_3.recording} ${dataobjects.decibel_3.predominant_type}`,
-                                'Reading 4': `${dataobjects.decibel_4.recording} ${dataobjects.decibel_4.predominant_type}`,
-                                'Reading 5': `${dataobjects.decibel_5.recording} ${dataobjects.decibel_5.predominant_type}`
+                            if ((!dataobjects.decibel_1.recording) || (!dataobjects.decibel_2.predominant_type))
+                            {
+                                console.log("Dataobjects is undefined");
+                                obj = {
+                                    'Activity Type': testNames(category), 
+                                    Date: date, Time: time, Point: index,
+                                    'Reading 1': 'null'
+                                }
+                                sound.push(obj)
                             }
-                            sound.push(obj);
+                            else {
+                                obj = { 
+                                    'Activity Type': testNames(category), 
+                                    Date: date, Time: time, Point: index, 
+                                    'Average (dB)': dataobjects.average, 
+                                    'Sound Types/Sources': `${dataobjects.sound_type}`,
+                                    'Reading 1': `${dataobjects.decibel_1.recording} ${dataobjects.decibel_1.predominant_type}`,
+                                    'Reading 2': `${dataobjects.decibel_2.recording} ${dataobjects.decibel_2.predominant_type}`,
+                                    'Reading 3': `${dataobjects.decibel_3.recording} ${dataobjects.decibel_3.predominant_type}`,
+                                    'Reading 4': `${dataobjects.decibel_4.recording} ${dataobjects.decibel_4.predominant_type}`,
+                                    'Reading 5': `${dataobjects.decibel_5.recording} ${dataobjects.decibel_5.predominant_type}`
+                                }
+                                sound.push(obj);
+                            } 
                         } else if (category === 'boundaries_maps') {
                             obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: index, Kind: dataobjects.kind, Description: dataobjects.description, Purpose: `${dataobjects.purpose}`, 'Value (ft/sq.ft)': dataobjects.value }
                             boundaries.push(obj);
                         } else if (category === 'section_maps') {
-                            obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: index, Kind: dataobjects.kind, Description: dataobjects.description, Purpose: `${dataobjects.purpose}`, 'Value (ft/sq.ft)': dataobjects.value }
+                            obj = { 'Activity Type': testNames(category), Date: date, Time: time, Title: dataobjects.title, Tags: `${dataobjects.tags}`, URL : dataobjects.url_link }
                             section.push(obj);
+                        } else if (category === 'program_maps') {
+                            console.log("dataobjects for program_maps", dataobjects);
+                            dataobjects.floorData.forEach((floor, index) => {
+                                console.log("floor", floor)
+                                floor.programs.map((programfml, idx) => {
+                                    obj = { 'Activity Type': testNames(category), Date: date, Time: time, Floor: floor.floorNum, ProgramType: programfml.programType, 'Square Footage (ft/sq.ft)': programfml.sqFootage.toFixed(2) }
+                                    program.push(obj);
+                                })
+                            })
                         } else if(category === 'order_maps') {
                             dataobjects.points.forEach((point, ind)=>{
                                 obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, Kind: point.kind, Description: `${point.description}` }
@@ -108,12 +134,10 @@ export default function ActivityPage(props) {
                             })
                         } else if(category === 'access_maps') {
 
-                            console.log("🚀 ~ file: ActivityPage.js:111 ~ Object.entries ~ category:", category);
+                            //console.log("🚀 ~ file: ActivityPage.js:111 ~ Object.entries ~ category:", category);
 
-                            dataobjects.points.forEach((point, ind) => {
-                                obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, accessType: point.accessType, Description: point.description }
-                                access.push(obj);
-                            })
+                            obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: index, 'Access Type': dataobjects.accessType, Description: dataobjects.description, "Length/Area (ft/sq.ft)": dataobjects.area, 'Distance From Area (ft)': dataobjects.distanceFromArea, 'In Perimeter': dataobjects.inPerimeter, 'Difficulty Rating': dataobjects.details.diffRating, Cost: dataobjects.details.cost, Spots: dataobjects.details.spots, Floors: dataobjects.details.floors, 'Lane Count': dataobjects.details.laneCount, Median: dataobjects.details.median, 'Toll Lane': dataobjects.details.tollLane, Paved: dataobjects.details.paved, 'Two Way': dataobjects.details.twoWay, 'Turn Lane': dataobjects.details.turnLane.length > 1 ? "Left and Right" : (dataobjects.details.turnLane.length === 1 ? (dataobjects.details.turnLane[0] === 0 ?  "None" : (dataobjects.details.turnLane[0] === 1 ? "Left" : "Right")) : "" )}
+                            access.push(obj);
                         } else if (category === 'nature_maps') {
                             Object.entries(dataobjects).forEach(([type, pointArr], ind0)=>{
                                 if(type === 'weather'){
@@ -147,17 +171,20 @@ export default function ActivityPage(props) {
         var worksheetsound = XLSX.utils.json_to_sheet(sound);
         var worksheetaccess = XLSX.utils.json_to_sheet(access);
         var worksheetsection = XLSX.utils.json_to_sheet(section);
+        var worksheetprogram = XLSX.utils.json_to_sheet(program);
 
         // Append worksheets to workbook and name them
         XLSX.utils.book_append_sheet(workbook, worksheetord, 'AbsenceOfOrder');
         XLSX.utils.book_append_sheet(workbook, worksheetsound, 'AcousticalProfile');
-        XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
+        XLSX.utils.book_append_sheet(workbook, worksheetaccess, 'IdentifyingAccess');
+        XLSX.utils.book_append_sheet(workbook, worksheetprogram, 'IdentifyingProgram');
         XLSX.utils.book_append_sheet(workbook, worksheetlight, 'LightingProfile');
         XLSX.utils.book_append_sheet(workbook, worksheetnat, 'NaturePrevalence');
         XLSX.utils.book_append_sheet(workbook, worksheetmov, 'PeopleInMotion');
         XLSX.utils.book_append_sheet(workbook, worksheetstat, 'PeopleInPlace');
-        XLSX.utils.book_append_sheet(workbook, worksheetaccess, 'IdentifyingAccess');
         XLSX.utils.book_append_sheet(workbook, worksheetsection, 'SectionCutter');
+        XLSX.utils.book_append_sheet(workbook, worksheetbounds, 'SpatialBoundaries');
+
         
         // Excel Format
         XLSX.writeFileXLSX(workbook, `${props.title}.xlsx`);
