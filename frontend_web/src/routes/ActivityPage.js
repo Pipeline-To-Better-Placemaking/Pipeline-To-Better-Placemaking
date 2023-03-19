@@ -118,7 +118,7 @@ export default function ActivityPage(props) {
                             dataobjects.floorData.forEach((floor, index) => {
                                 console.log("floor", floor)
                                 floor.programs.map((programfml, idx) => {
-                                    obj = { 'Activity Type': testNames(category), Date: date, Time: time, Floor: floor.floorNum, ProgramType: programfml.programType, 'Square Footage (ft/sq.ft)': programfml.sqFootage }
+                                    obj = { 'Activity Type': testNames(category), Date: date, Time: time, Floor: floor.floorNum, ProgramType: programfml.programType, 'Square Footage (ft/sq.ft)': programfml.sqFootage.toFixed(2) }
                                     program.push(obj);
                                 })
                             })
