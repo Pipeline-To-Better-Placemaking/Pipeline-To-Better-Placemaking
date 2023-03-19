@@ -95,66 +95,21 @@ function ViewMedia() {
     }
 
     const handleDownload = () => {
-      const uuidPattern = /[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}/i;
-      const fileExtension = selectedSlide.split('.').pop().split('?')[0];
-    
-      console.log("🚀 ~ file: ViewMedia.js:102 ~ handleDownload ~ fileExtension:", fileExtension);
-    
-      // This can be downloaded directly:
-      const xhr = new XMLHttpRequest();
-      xhr.responseType = 'blob';
-      xhr.onload = (event) => {
-        const blob = xhr.response;
-
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `${newTitle}.${fileExtension}`;
-        link.type = 'application/octet-stream';
-
-        link.setAttribute('rel', 'noopener noreferrer');
-        link.setAttribute('type', 'application/octet-stream');
-        link.setAttribute('content-disposition', 'attachment');
-        document.body.appendChild(link);
-        link.click();
-        URL.revokeObjectURL(link.href);
-        document.body.removeChild(link);
-        };
-        xhr.open('GET', selectedSlide);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.setRequestHeader('Authorization', `Bearer ${loc.state.userToken.token}`);
-        xhr.withCredentials = true;
-        xhr.send();
+      const link = document.createElement('a');
+      link.href = selectedSlide;
+      link.download = 'SectionImage.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     };
-    
     
     // Updates list of images for specific project
     useEffect(() => {
         listAll(storageRefList).then((response) => {
-
-          console.log("🚀 ~ file: ViewMedia.js:119 ~ listAll ~ response:", response);
-
           response.items.forEach((item) => {
-
-            const fireapp = `${item._location.bucket}`;
-            const bucket = storage.bucket(fireapp);
-            const fn = `${item._location.path_}`;
-            
-            const tempFilePath = "/";
-            
-            bucket.file(fn).download({destination: tempFilePath}).then(()=>{
-                console.log('Image downloaded locally to', tempFilePath);
-                // var filestream = fs.createReadStream(tempFilePath);
-                // filestream.pipe(response);
-                // setMediaUrls((prev) => [...prev, tempFilePath]);
-                // if(selectedSlide == "")
-                //   setSelectedSlide(tempFilePath);
+            getDownloadURL(item).then((downloadURL) => {
+              setMediaUrls((prev) => [...prev, downloadURL]);
             });
-            // getDownloadURL(item).then((downloadURL) => {
-            //   console.log(downloadURL);
-            //   setMediaUrls((prev) => [...prev, downloadURL]);
-            //   if(selectedSlide == "")
-            //     setSelectedSlide(downloadURL);
-            // }); 
           });
         });
         }, []);
