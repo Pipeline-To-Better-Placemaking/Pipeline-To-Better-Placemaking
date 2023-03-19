@@ -132,16 +132,10 @@ function ViewMedia() {
       listAll(storageRefList).then((response) => {
         response.items.forEach((item) => {
           getDownloadURL(item).then((downloadURL) => {
-            console.log(downloadURL);
             setMediaUrls((prev) => [...prev, downloadURL]);
-            if(selectedSlide == "")
-            {
-              setSelectedSlide(downloadURL);
-            }  
-          }); 
+          });
         });
       });
-      console.log(`After: ${selectedSlide}`);
       }, []);
 
 
