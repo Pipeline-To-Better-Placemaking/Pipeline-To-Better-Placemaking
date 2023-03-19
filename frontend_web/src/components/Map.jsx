@@ -696,7 +696,8 @@ export default function FullMap(props) {
                             ((data.Results[title][sdate][time].data).map((inst, ind0) => (
                                 // Loop through the instances and render markers and boundaries
                                 Object.entries(inst).map(([natureType, pointArr], ind1) => (
-                                    pointArr.map((natureObj, ind2) => (
+
+                                    Array.isArray(pointArr) && pointArr.map((natureObj, ind2) => (
                                         // If the object is an animal, render a marker
                                         natureType === 'animal' ?
                                             <Marker

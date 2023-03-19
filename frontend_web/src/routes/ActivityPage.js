@@ -115,8 +115,13 @@ export default function ActivityPage(props) {
                             section.push(obj);
                         } else if (category === 'program_maps') {
                             console.log("dataobjects for program_maps", dataobjects);
-                            obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: index, Kind: dataobjects.kind, Description: dataobjects.description, Purpose: `${dataobjects.purpose}`, 'Value (ft/sq.ft)': dataobjects.value }
-                            program.push(obj);
+                            dataobjects.floorData.forEach((floor, index) => {
+                                console.log("floor", floor)
+                                floor.programs.map((programfml, idx) => {
+                                    obj = { 'Activity Type': testNames(category), Date: date, Time: time, Floor: floor.floorNum, ProgramType: programfml.programType, 'Square Footage (ft/sq.ft)': programfml.sqFootage.toFixed(2) }
+                                    program.push(obj);
+                                })
+                            })
                         } else if(category === 'order_maps') {
                             dataobjects.points.forEach((point, ind)=>{
                                 obj = { 'Activity Type': testNames(category), Date: date, Time: time, Point: ind, Kind: point.kind, Description: `${point.description}` }
