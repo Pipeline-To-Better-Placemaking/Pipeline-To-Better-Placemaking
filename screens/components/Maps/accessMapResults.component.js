@@ -106,7 +106,7 @@ console.log("🚀 ~ file: accessMapResults.component.js:12 ~ AccessMapResults ~ 
                                 <Polyline
                                     coordinates={props.dataMarkers[i].path}
                                     strokeWidth={3}
-                                    strokeColor={colors[1]}
+                                    strokeColor={props.dataMarkers[i].inPerimeter ? 'yellow' : 'red'}
                                     tappable={true}
                                     onPress={()=> dataCallout(props.dataMarkers[i])}
                                 />
