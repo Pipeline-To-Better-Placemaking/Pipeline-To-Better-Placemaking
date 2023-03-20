@@ -43,7 +43,6 @@ export function CreateTimeSlots(props) {
   
   // set the start time value for timeslot
   const setTime = (event, time) => {
-    // setTimeValues(props.timeSlots[selectedIndex].date);
     console.log("time:", time);
     console.log("index in setTime", selectedIndex)
     // Get info
@@ -58,10 +57,10 @@ export function CreateTimeSlots(props) {
     
     // put the item back in the list
     tempList[selectedIndex] = timeSlot;
-
+    
     // Update
-    // setTimeValues(tempList[index].date);
     console.log("updated tempList", tempList);
+    // setTimeValues(props.timeSlots[selectedIndex].date);
     props.setTimeSlots(timeSlots => [...tempList]);
     console.log("final timeSlots:", props.timeSlots)
     // setTimeValues(prevValues => {
@@ -174,7 +173,7 @@ export function CreateTimeSlots(props) {
 
   const TimePicker = ({item, index}) => {
     setSelectedIndex(index)
-    setTimeValues(props.timeSlots[index].date);
+    // setTimeValues(props.timeSlots[index].date);
     return(
       <View style={styles.leftShift}>
         <Button
@@ -195,7 +194,7 @@ export function CreateTimeSlots(props) {
               <DateTimePicker
                 isVisible={isTimePickerVisible}
                 mode="time"
-                value={timeValues}
+                value={props.timeSlots[index].date}
                 onChange={(event, time) => setTime(event, time)}
                 onCancel={() => setTimePickerVisibility(false)}
               />
