@@ -77,18 +77,11 @@ function ViewMedia() {
       console.log(isFilter);
 
       
-      for(let i = 1; i < object.length; i++)
-      {
-        console.log(object[i].tags)
-        let intersection = findCommon(event.target.value, object[i].tags);
-        console.log(intersection);
-        let temp = [object[i].url_link]
-        if((intersection == true) && (findCommon(filteredImages, temp) == false))
-        {
-          filteredImages.push(object[i].url_link);
-        }
-
-      }
+      const temp =object.filter(item => {
+        return item.tags.some(tag => event.target.value.includes(tag));
+      }).map(item => item.url_link)
+      
+      setFilteredImages(temp);
       console.log(filteredImages);
     }
 
@@ -123,6 +116,10 @@ function ViewMedia() {
           {
             setTags(response.data.data[1].tags);
           }
+
+          setFilteredImages(mediaUrls);
+          console.log(filteredImages);
+          console.log(mediaUrls);
         }
         catch (error) {
           console.log(error);
@@ -235,7 +232,11 @@ function ViewMedia() {
         <br></br>
         <div className="slide-container">
           <Carousel showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleSlide}>
-            { filteredImages.map((slideFilter, i)=> (
+            {
+              console.log(filteredImages)
+            }
+            { 
+            filteredImages.map((slideFilter, i)=> (
               <div key={i}>
                 <img src={slideFilter} height="400vh"/>
               </div>
