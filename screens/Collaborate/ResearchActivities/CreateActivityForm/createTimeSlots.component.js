@@ -173,11 +173,13 @@ export function CreateTimeSlots(props) {
 
   const TimePicker = ({item, index}) => {
     setSelectedIndex(index)
+
+    // we update this value inside of datetimepicker now
     // setTimeValues(props.timeSlots[index].date);
     return(
       <View style={styles.leftShift}>
         <Button
-          onPress={() => editTime(item, index)}
+          // onPress={() => editTime(item, index)}
           accessoryRight={ClockIcon}
           appearance='ghost'
           style={{justifyContent: 'center'}}
