@@ -59,9 +59,19 @@ export function TeamPage(props) {
     let projectDetails = await getFilteredProjectDetails(item);
     // if successfully retrieved project info, Update
     if(projectDetails !== null) {
+      // if (projectDetails.activities.length === 0) {
+      //   let obj = {}
+      //   await props.setActivities(obj);
+      //   console.log("props.activites in MINE", props.activities);
+      //   console.log("projectDeatils.activities in MINE", projectDetails.activities);
+      // }
+      // else
+      
       // set selected project page information
       await props.setActivities([...projectDetails.activities]);
       await props.setPastActivities([...projectDetails.pastActivities]);
+      console.log("props.activites in team component", props.activities);
+      console.log("projectDeatils.activities in team", projectDetails.activities)
       projectDetails.activities = [];
       projectDetails.pastActivities = [];
       await props.setProject(projectDetails);
@@ -69,7 +79,9 @@ export function TeamPage(props) {
 
       // open project page
       props.navigation.navigate('ProjectPage');
+      
     }
+    
   };
 
   const closePopUp = () => {

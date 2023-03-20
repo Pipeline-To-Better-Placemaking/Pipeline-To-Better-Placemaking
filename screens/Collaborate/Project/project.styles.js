@@ -45,7 +45,8 @@ export const styles = StyleSheet.create({
 
     list:{
         maxHeight:'100%', 
-        maxWidth:'90%'
+        maxWidth:'90%',
+        minHeight: 100
     }
 
 });
