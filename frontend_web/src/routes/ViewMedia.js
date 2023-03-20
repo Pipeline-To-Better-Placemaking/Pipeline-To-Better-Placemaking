@@ -23,7 +23,7 @@ function ViewMedia() {
     const [ filter, setFilter ] = useState([]);
     const [ filteredImages, setFilteredImages ] = useState([]);
     const [ isFilter, setIsFilter ] = useState(false);
-    const [ compare, setCompare ] = useState([]);
+    const [ filterSelect, setFilterSelect ] = useState([]);
 
     const loc = useLocation();
     const options = ["Sidewalk", "Transit Shelter", "Bus Lane", "Turn Lane", "Planter", "Drive Lane", "Bike Lane", "Parking Lane", "Street Lighting", "Stairs/Ramps", "Outdoor Seating Area", "Outdoor Restaurant Seating Area", "Canopy", "Building Structure", "Loggia", "Breezeway", "Drainage Field/Ditch", "Tree Canopy", "Lake/River Water", "Monument/Fountain", "Leisure Area"];
@@ -37,9 +37,14 @@ function ViewMedia() {
 
     // Lets front end know which slide it is on for future api calls
     const handleSlide = (index) => {
-      setSelectedSlide(mediaUrls[index]);
+
+      console.log("🚀 ~ file: ViewMedia.js:41 ~ handleSlide ~ filteredImages:", filteredImages);
+      console.log("🚀 ~ file: ViewMedia.js:41 ~ handleSlide ~ filter:", filter);
+
+      
+      setSelectedSlide(filteredImages[index]);
       setSelectedIndex(index);
-      setTags(object[index + 1].tags)
+      setTags(filter[index].tags)
     }
 
     const findCommon = (array1, array2) => {
@@ -64,25 +69,24 @@ function ViewMedia() {
     }
 
     const handleFilter = (event) => {
-      setFilter(event.target.value);
-      setFilteredImages(mediaUrls);
-      console.log(filter);
 
-      if((event.target.value).length > 0)
-        setIsFilter(true);
+      console.log("🚀 ~ file: ViewMedia.js:73 ~ handleFilter ~ event:", event);
+
+      setFilterSelect(event.target.value)
+      console.log("🚀 ~ file: ViewMedia.js:73 ~ handleFilter ~ filterSelect:", filterSelect);
       
-      if((event.target.value).length == 0)
-        setIsFilter(false);
-
-      console.log(isFilter);
-
-      
-      let temp =object.filter(item => {
+      let filteredURL = object.filter(item => {
         return item.tags.some(tag => event.target.value.includes(tag));
       }).map(item => item.url_link)
-      if(temp.length === 0)
-        temp = mediaUrls
-      setFilteredImages(temp);
+      let filteredObj = object.filter(item => {
+        return item.tags.some(tag => event.target.value.includes(tag));
+      })
+      if(filteredURL.length === 0) {
+        filteredURL = mediaUrls
+        filteredObj = object.slice(1);
+      }
+      setFilter(filteredObj);
+      setFilteredImages(filteredURL);
       console.log(filteredImages);
     }
 
@@ -113,6 +117,7 @@ function ViewMedia() {
             setSelectedSlide(response.data.data[1].url_link);
           }
           setObject(response.data.data);
+          setFilter(response.data.data.slice(1));
 
           if(tags.length == 0)
           {
@@ -216,11 +221,11 @@ function ViewMedia() {
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={filter}
+                        value={filterSelect}
                         label="Filter by Tags"
                         onChange={handleFilter}
                         multiple
-                        style={{minWidth: 120}}
+                        style={{minWidth: "20vw", maxWidth: "40vw"}}
                     >
                     {options.map((option, index) => (
                         <MenuItem value={option}>{option}</MenuItem>
@@ -232,17 +237,15 @@ function ViewMedia() {
         
         <br></br>
         <div className="slide-container">
-        <Carousel showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleSlide}>
-  {filteredImages.map((slideFilter, i) => (
-    <div key={i} style={{ height: 400 }}>
-      <img src={slideFilter} style={{ height: "100%", width: "100%", objectFit: "contain", objectPosition: "center" }} />
-    </div>
-  ))}
-</Carousel>
-
-
-
+          <Carousel showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleSlide}>
+            {filteredImages.map((slideFilter, i) => (
+              <div key={i} style={{ height: 400 }}>
+                <img src={slideFilter} style={{ height: "100%", width: "100%", objectFit: "contain", objectPosition: "center" }} />
+              </div>
+            ))}
+          </Carousel>
         </div>
+        
         <div className="tag-container">
             {tags.map((tag, index) => {
                 return (

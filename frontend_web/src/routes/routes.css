@@ -487,21 +487,34 @@ div#accountPage h1 {
     display: flex;
     flex-wrap: wrap;
     min-height: 30px;
+    margin-top: 2vh;
     border: 1px solid gray;
     border-radius: 5px;
-    padding: 10px;
+    padding: 1%;
   }
   .tag {
     display: flex;
     align-items: center;
+    line-height: 1rem;
     padding: 5px;
+    margin-bottom: 0.5rem;
     border: 1px solid gray;
     border-radius: 5px;
     height: 25px;
     margin: 2px 5px 2px 0px;
     color: black;
-    font-size: 0.875em;
+    font-size: 1rem;
   }
+
+  .tag:hover {
+    background-color: #e5e5e5;
+    cursor: pointer;
+  }
+
+  .tag.selected {
+    background-color: #2196f3;
+    color: #fff;
+  } 
 
   .tag span {
     margin-left: 5px;
