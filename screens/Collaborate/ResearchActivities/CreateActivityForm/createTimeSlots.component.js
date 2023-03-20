@@ -15,7 +15,7 @@ export function CreateTimeSlots(props) {
   // start time
   const today = new Date();
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
-  const [timeValues, setTimeValues] = useState(Array(MAX_TIME_SLOTS).fill(today));
+  const [timeValues, setTimeValues] = useState(today);
 
   // number of researchers
   const [researchersVisible, setResearchersVisible] = useState(false);
@@ -40,33 +40,36 @@ export function CreateTimeSlots(props) {
     // view the modal
     setTimePickerVisibility(true);
   }
-
+  
   // set the start time value for timeslot
-  const setTime = (event, time, index) => {
-    console.log("time:", time)
-    console.log("index in setTime", index)
+  const setTime = (event, time) => {
+    // setTimeValues(props.timeSlots[selectedIndex].date);
+    console.log("time:", time);
+    console.log("index in setTime", selectedIndex)
     // Get info
     let tempList = props.timeSlots;
-    let timeSlot = tempList[index];
+    let timeSlot = {...tempList[selectedIndex]};
     console.log("timeSlot:", timeSlot)
     console.log("tempList:", tempList)
-
+    
     // set new value
     timeSlot.date = time;
     timeSlot.timeString = getTimeStr(time);
-
+    
     // put the item back in the list
-    tempList[index] = timeSlot;
+    tempList[selectedIndex] = timeSlot;
 
     // Update
-    props.setTimeSlots(tempList);
-
-    setTimeValues(prevValues => {
-      const newTimeValues = prevValues;
-      newTimeValues[index] = time;
-      console.log("new timeValues", newTimeValues[index])
-      return newTimeValues;
-    });
+    // setTimeValues(tempList[index].date);
+    console.log("updated tempList", tempList);
+    props.setTimeSlots(timeSlots => [...tempList]);
+    console.log("final timeSlots:", props.timeSlots)
+    // setTimeValues(prevValues => {
+    //   const newTimeValues = prevValues;
+    //   newTimeValues[index] = time;
+    //   console.log("new timeValues", newTimeValues[index])
+    //   return newTimeValues;
+    // });
     setTimePickerVisibility(false);
   }
 
@@ -170,7 +173,8 @@ export function CreateTimeSlots(props) {
   }
 
   const TimePicker = ({item, index}) => {
-    console.log("index of time picker:", index)
+    setSelectedIndex(index)
+    setTimeValues(props.timeSlots[index].date);
     return(
       <View style={styles.leftShift}>
         <Button
@@ -191,8 +195,8 @@ export function CreateTimeSlots(props) {
               <DateTimePicker
                 isVisible={isTimePickerVisible}
                 mode="time"
-                value={timeValues[index]}
-                onChange={(event, time) => setTime(event, time, index)}
+                value={timeValues}
+                onChange={(event, time) => setTime(event, time)}
                 onCancel={() => setTimePickerVisibility(false)}
               />
             </View>
