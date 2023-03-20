@@ -77,10 +77,11 @@ function ViewMedia() {
       console.log(isFilter);
 
       
-      const temp =object.filter(item => {
+      let temp =object.filter(item => {
         return item.tags.some(tag => event.target.value.includes(tag));
       }).map(item => item.url_link)
-      
+      if(temp.length === 0)
+        temp = mediaUrls
       setFilteredImages(temp);
       console.log(filteredImages);
     }
@@ -105,6 +106,7 @@ function ViewMedia() {
           for(let i = 1; i < (response.data.data).length; i++)
           {
             setMediaUrls((prev) => [...prev, response.data.data[i].url_link]);
+            setFilteredImages((prev) => [...prev, response.data.data[i].url_link])
           }
           if(selectedSlide == "")
           {
@@ -117,7 +119,6 @@ function ViewMedia() {
             setTags(response.data.data[1].tags);
           }
 
-          setFilteredImages(mediaUrls);
           console.log(filteredImages);
           console.log(mediaUrls);
         }
@@ -231,18 +232,16 @@ function ViewMedia() {
         
         <br></br>
         <div className="slide-container">
-          <Carousel showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleSlide}>
-            {
-              console.log(filteredImages)
-            }
-            { 
-            filteredImages.map((slideFilter, i)=> (
-              <div key={i}>
-                <img src={slideFilter} height="400vh"/>
-              </div>
-            ))
-            }
-          </Carousel>
+        <Carousel showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleSlide}>
+  {filteredImages.map((slideFilter, i) => (
+    <div key={i} style={{ height: 400 }}>
+      <img src={slideFilter} style={{ height: "100%", width: "100%", objectFit: "contain", objectPosition: "center" }} />
+    </div>
+  ))}
+</Carousel>
+
+
+
         </div>
         <div className="tag-container">
             {tags.map((tag, index) => {
