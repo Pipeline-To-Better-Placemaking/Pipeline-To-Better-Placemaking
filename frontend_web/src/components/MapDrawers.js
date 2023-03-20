@@ -130,7 +130,6 @@ export default function MapDrawer(props) {
                     newEntry[`${date}.${time}`].push(drawers.Results[category][date][time].data);
                     setSection(newEntry);
                     break;
-
                 case 'light_maps':
                     newEntry = lighting;
 

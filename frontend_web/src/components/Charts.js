@@ -6,6 +6,8 @@ import CommuteIcon from '@mui/icons-material/Commute';
 import PeopleIcon from '@mui/icons-material/People';
 import WavesIcon from '@mui/icons-material/Waves';
 import AirIcon from '@mui/icons-material/Air';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { Area, testNames } from '../functions/HelperFunctions';
 
 export default function Charts(props) {
@@ -71,6 +73,21 @@ export default function Charts(props) {
         Wind: <AirIcon />,
         Other: null
     }
+
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+          return (
+            <div className="custom-tooltip" style={{
+                backgroundColor: "#F1F1F1",
+                borderRadius: "5px",
+                alignContent: "center",
+            }}>
+              <p className="label" style={{padding:"1vw"}}>{`${payload[0].payload.key ? payload[0].payload.key : "Count"}: ${payload[0].payload.key === "Length" ? `${payload[0].value}ft` : payload[0].value}`}</p>
+            </div>
+          );
+        }
+        return null;
+    };
 
     const multiSoundCharts = (data) => {
         var frequent = [0, 0, 0, 0, 0, 0, 0];
@@ -1872,21 +1889,6 @@ export default function Charts(props) {
         );
     };
 
-    const CustomTooltip = ({ active, payload, label }) => {
-        if (active && payload && payload.length) {
-          return (
-            <div className="custom-tooltip" style={{
-                backgroundColor: "#F1F1F1",
-                borderRadius: "5px",
-                alignContent: "center",
-            }}>
-              <p className="label" style={{padding:"1vw"}}>{`${payload[0].payload.key ? payload[0].payload.key : "Count"}: ${payload[0].payload.key === "Length" ? `${payload[0].value}ft` : payload[0].value}`}</p>
-            </div>
-          );
-        }
-        return null;
-    };
-
     const accessCharts = (data) => {
 
         // Access Type
@@ -2768,6 +2770,98 @@ export default function Charts(props) {
 
     };
 
+    // Kinda pointless would just show the same images
+
+    // const multiSectionCharts = (data) => {
+
+    //     data = Object.values(data);
+        
+    //     return (
+    //         <div className='Charts' style={{ paddingBottom: 50 }}>
+    //             <div style={{ fontSize: 'larger' }}> Section Media </div>
+    //                 {data.map((inst) => {
+    //                     inst.map((obj, index) => {
+    //                         if(index > 0)
+    //                             return(
+    //                                 <div style={{ alignItems: 'center', display: 'flex', flexDirection:'column', width: 'auto', maxWidth: '100%'}}>
+    //                                     <br/>
+    //                                     <h5>{obj.title}</h5>
+    //                                     <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'center', width: 'auto'}} key={index}>
+    //                                         <a href={obj.url_link}>
+    //                                             <img style={{maxWidth: '70%'}} src={obj.url_link} />
+    //                                         </a>
+    //                                     </div>
+    //                                     <Box
+    //                                         border={1}
+    //                                         borderRadius={4}
+    //                                         borderColor="grey.400"
+    //                                         p={2}
+    //                                         m={1}
+    //                                         width='auto'
+    //                                         alignItems= 'center'>
+    
+    //                                         {obj.tags.length > 0 ? obj.tags.sort((a, b) => a.localeCompare(b)).map((tag, index) => {
+    //                                             //console.log("🚀 ~ file: Charts.js:2819 ~ {obj.tags.map ~ obj:", obj);
+    //                                             //console.log("🚀 ~ file: Charts.js:2819 ~ {obj.tags.map ~ tag:", tag);
+    //                                             return(
+    //                                                 <Typography style={{ alignItems: 'center'}} key={index}>{tag}</Typography> 
+    //                                             )
+    //                                         }) : null}
+    
+    
+    //                                     </Box>
+    //                                 </div>
+    //                             )
+    //                     })}
+    //                 )})
+    //         </div>
+    //     )
+    // };
+
+    const sectionCharts = (data) => {
+
+        console.log(data)
+        return(
+            <div className='Charts' style={{ paddingBottom: 50, textAlign: 'center' }}>
+                <div style={{ fontSize: 'larger' }}> Section Media </div>
+                    {data.map((obj, index) => {
+                        if(index > 0)
+                            return(
+                                <div style={{ alignItems: 'center', display: 'flex', flexDirection:'column', width: 'auto', maxWidth: '100%'}}>
+                                    <br/>
+                                    <h5>{obj.title}</h5>
+                                    <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'center', width: 'auto'}} key={index}>
+                                        <a href={obj.url_link}>
+                                            <img style={{maxWidth: '70%'}} src={obj.url_link} />
+                                        </a>
+                                    </div>
+                                    <Box
+                                        border={1}
+                                        borderRadius={4}
+                                        borderColor="grey.400"
+                                        p={2}
+                                        m={1}
+                                        width='auto'
+                                        alignItems= 'center'>
+
+                                        {obj.tags.length > 0 ? obj.tags.sort((a, b) => a.localeCompare(b)).map((tag, index) => {
+                                            //console.log("🚀 ~ file: Charts.js:2819 ~ {obj.tags.map ~ obj:", obj);
+                                            //console.log("🚀 ~ file: Charts.js:2819 ~ {obj.tags.map ~ tag:", tag);
+                                            return(
+                                                <Typography style={{ alignItems: 'center'}} key={index}>{tag}</Typography> 
+                                            )
+                                        }) : null}
+
+
+                                    </Box>
+                                </div>
+                            )
+                    })}
+            </div>
+        )
+    };
+
+
     return (
         data !== [] ?
             (type === 0 ?
@@ -2776,7 +2870,7 @@ export default function Charts(props) {
                         <div style={{ fontSize: 'large' }}>{testNames(cat[0])}</div>
                         {cat[1]}  {cat[2]}
                     </div>
-                    {cat[0] === 'sound_maps' ? soundBarChart(data) : (cat[0] === 'boundaries_maps' ? BoundaryPieChart(data) : (cat[0] === 'moving_maps' ? movingBarChart(data) : (cat[0] === 'stationary_maps' ? stationaryBarCharts(data) : (cat[0] === 'nature_maps' ? NaturePieChart(data) : (cat[0] === 'light_maps' ? lightingCharts(data) : (cat[0] === 'order_maps' ? orderCharts(data) : (cat[0] === 'access_maps' ? accessCharts(data) : (cat[0] === 'program_maps' ? programCharts(data) : null))))))))}
+                    {cat[0] === 'sound_maps' ? soundBarChart(data) : (cat[0] === 'boundaries_maps' ? BoundaryPieChart(data) : (cat[0] === 'moving_maps' ? movingBarChart(data) : (cat[0] === 'stationary_maps' ? stationaryBarCharts(data) : (cat[0] === 'nature_maps' ? NaturePieChart(data) : (cat[0] === 'light_maps' ? lightingCharts(data) : (cat[0] === 'order_maps' ? orderCharts(data) : (cat[0] === 'access_maps' ? accessCharts(data) : (cat[0] === 'program_maps' ? programCharts(data) : (cat[0] === 'section_maps' ? sectionCharts(data) : null)))))))))}
                 </div>
                 :
                 <div key={selection} style={{ borderBottom: '2px solid #e8e8e8', paddingBottom: '5px' }}>

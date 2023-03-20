@@ -28,6 +28,7 @@ function UploadSectionMedia() {
     const [ edit, setEdit ] = useState(false);
     const [ isVideo, setVideo ] = useState(false);
     const [ isImage, setImage ] = useState(true);
+    const [ emptyField, setEmptyField ] = useState(false);
 
 
     const location = useLocation();
@@ -37,7 +38,10 @@ function UploadSectionMedia() {
 
 
     const handleSubmit = () => {
-      if (!file) return;
+      if (!file || title === "") {
+        setEmptyField(true);
+        return;
+      }
       const storageRef = ref(storage, `media_uploads/${location.state.section._id}/${v4() + file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
       const storeURL = async (url) => {
@@ -107,6 +111,10 @@ function UploadSectionMedia() {
     }
 
     const handlePreview = async (e) => {
+      if(e.target.files[0].name.endsWith('.mp4') || e.target.files[0].name.endsWith('.webm') || e.target.files[0].name.endsWith('.ogg')) {
+        console.log("TEST");
+        setImage(false);
+      }
       setProgresspercent(0);
       setFile(e.target.files[0])
       setPreview(URL.createObjectURL(e.target.files[0]));
@@ -200,7 +208,7 @@ function UploadSectionMedia() {
     return (
         <div className="UploadSectionMedia">
           <div style={{flex: 1, flexDirection: 'row'}}>
-            <h1> Section Cutter <Button onClick={handleViewNav}> View Test Media </Button>  </h1>            
+            <h1> Section Cutter <Button onClick={resetInput}> Start Over </Button> <Button onClick={handleViewNav}> View Test Media </Button>  </h1>            
             
           </div>
           <br/>
@@ -216,19 +224,17 @@ function UploadSectionMedia() {
                 <br/>
                 {
                   isImage ?
-                  <img style={{width : "50vw"}} src={preview} /> : null
-                }
-                {
-                  isVideo ?
+                  <img style={{width : "50vw"}} src={preview} /> 
+                  : 
                   <div>
                     <video style={{width : "50vw"}} controls>
                       <source src={preview} type="video/mp4"></source>
                       <source src={preview} type="video/ogg"></source>
                     </video>
-                  </div> : null
+                  </div> 
                 }
                 
-                <br/>
+                {/* <br/>
                 <FormControl sx={{alignItems: "center"}}>
                   <FormLabel>Media Type</FormLabel>
                   <RadioGroup
@@ -241,9 +247,10 @@ function UploadSectionMedia() {
                   <FormControlLabel value="Image" control={<Radio />} label="Image" />
                   <FormControlLabel value="Video" control={<Radio />} label="Video" />
                   </RadioGroup>
-                </FormControl>
+                </FormControl> */}
                 <br/>
-                <TextField label="Title"style={{width: "10vw", margin: "1vw"}} onChange={text => {setTitle(text.target.value)}} value={title}/>
+                {emptyField ? <p style={{color: 'red'}}>Please add a title</p> : null}
+                <TextField label="Title"style={{width: "20vw", margin: "1vw"}} onChange={text => {setTitle(text.target.value)}} value={title}/>
                 <Box sx={{ minWidth: 120 }} >
                   <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label"> Tags </InputLabel>
@@ -254,18 +261,18 @@ function UploadSectionMedia() {
                     label="Tags"
                     onChange={handleTags}
                     multiple
-                    style={{minWidth: 120}}
+                    style={{minWidth: "20vw", maxWidth: "40vw", flex: 1, flexWrap: 'wrap'}}
                   >
                   {options.map((option, index) => (
                       <MenuItem value={option}>{option}</MenuItem>
                   ))}
                   </Select>
                   </FormControl>               
-                  <div style={{margin: '1vw'}}>
-                      <Button onClick={handleSubmit}> Upload Media </Button> 
+                  <div style={{margin: '1vw', alignItems: 'center'}}>
+                    <Button onClick={handleSubmit}> Upload Media </Button> 
                     <br/>
                     {progresspercent > 0 ? (progresspercent < 99.99 ? <LinearProgressWithLabel value={progresspercent}/> : resetInput()) : null}
-                    </div>
+                  </div>
                 </Box>
               </div>
             }
