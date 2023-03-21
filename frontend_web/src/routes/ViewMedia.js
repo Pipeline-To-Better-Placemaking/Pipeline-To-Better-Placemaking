@@ -4,7 +4,7 @@ import './routes.css';
 import { storage } from "./firebase_config";
 import { ref, getDownloadURL, listAll, list } from "firebase/storage";
 import axios from '../api/axios';
-import { Button, TextField, Box, InputLabel, MenuItem, FormControl, RadioGroup, Radio, FormControlLabel, FormLabel, DialogTitle, Dialog } from '@mui/material'
+import { Button, TextField, Box, InputLabel, MenuItem, FormControl, RadioGroup, Radio, FormControlLabel, FormLabel, DialogTitle, Dialog, Typography } from '@mui/material'
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel'
@@ -24,6 +24,7 @@ function ViewMedia() {
     const [ filteredImages, setFilteredImages ] = useState([]);
     const [ isFilter, setIsFilter ] = useState(false);
     const [ filterSelect, setFilterSelect ] = useState([]);
+    const [ showTitle, setShowTitle ] = useState("");
 
     const loc = useLocation();
     const options = ["Sidewalk", "Transit Shelter", "Bus Lane", "Turn Lane", "Planter", "Drive Lane", "Bike Lane", "Parking Lane", "Street Lighting", "Stairs/Ramps", "Outdoor Seating Area", "Outdoor Restaurant Seating Area", "Canopy", "Building Structure", "Loggia", "Breezeway", "Drainage Field/Ditch", "Tree Canopy", "Lake/River Water", "Monument/Fountain", "Leisure Area"];
@@ -41,10 +42,10 @@ function ViewMedia() {
       console.log("🚀 ~ file: ViewMedia.js:41 ~ handleSlide ~ filteredImages:", filteredImages);
       console.log("🚀 ~ file: ViewMedia.js:41 ~ handleSlide ~ filter:", filter);
 
-      
+      setShowTitle(filter[index].title);
       setSelectedSlide(filteredImages[index]);
       setSelectedIndex(index);
-      setTags(filter[index].tags)
+      setTags(filter[index].tags);
     }
 
     const findCommon = (array1, array2) => {
@@ -138,8 +139,12 @@ function ViewMedia() {
     }
 
     // Opens edit dialog box
-    const handleEdit = async () => {
-      try {
+    const handleEdit =  () => {
+        setNewSelectedTags(object[selectedIndex + 1].tags);
+        setNewTitle(object[selectedIndex + 1].title);
+        setEdit(true);
+      //set to async if uncomment
+      /*try {
         const map = await axios.get(`/section_maps/${loc.state.section._id}/data/${loc.state.section.data[selectedIndex + 1]._id}`, {
           headers: {
             'Content-Type': 'application/json',
@@ -150,14 +155,15 @@ function ViewMedia() {
         });
         
         //console.log("Map: ", map)
-        setNewSelectedTags(map.data.tags)
-        setNewTitle(map.data.title)
+        
+        // setNewSelectedTags(map.data.tags)
+        // setNewTitle(map.data.title)
         setEdit(true);
       }
       catch (error) {
         console.log("Could not get image from mongo");
         return;
-      }
+      }*/
     }
 
     // Saves dialog box changes and closes it
@@ -246,7 +252,7 @@ function ViewMedia() {
           </Carousel>
         </div>
         <div className="tag-container">
-            {tags.map((tag, index) => {
+            {tags.sort((a, b) => a.localeCompare(b)).map((tag, index) => {
                 return (
                   <div key={index} className="tag">
                       {tag}
@@ -273,7 +279,7 @@ function ViewMedia() {
                         multiple
                         style={{minWidth: 120}}
                     >
-                    {options.map((option, index) => (
+                    {options.sort((a, b) => a.localeCompare(b)).map((option, index) => (
                         <MenuItem value={option}>{option}</MenuItem>
                     ))}
                     </Select>
