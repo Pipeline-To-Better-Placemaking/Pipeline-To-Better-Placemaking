@@ -39,14 +39,17 @@ function ViewMedia() {
     // Lets front end know which slide it is on for future api calls
     const handleSlide = (index) => {
 
-      console.log("🚀 ~ file: ViewMedia.js:41 ~ handleSlide ~ filteredImages:", filteredImages);
-      console.log("🚀 ~ file: ViewMedia.js:41 ~ handleSlide ~ filter:", filter);
+      // console.log("🚀 ~ file: ViewMedia.js:41 ~ handleSlide ~ filteredImages:", filteredImages);
+      // console.log("🚀 ~ file: ViewMedia.js:41 ~ handleSlide ~ filter:", filter);
+      // console.log("🚀 ~ file: ViewMedia.js:51 ~ handleSlide ~ filter[index].title:", filter[index].title);
 
       setShowTitle(filter[index].title);
       setSelectedSlide(filteredImages[index]);
       setSelectedIndex(index);
       setTags(filter[index].tags);
     }
+
+
 
     const findCommon = (array1, array2) => {
       for(let i = 0; i < array1.length; i++) {
@@ -140,8 +143,8 @@ function ViewMedia() {
 
     // Opens edit dialog box
     const handleEdit =  () => {
-        setNewSelectedTags(object[selectedIndex + 1].tags);
-        setNewTitle(object[selectedIndex + 1].title);
+        setNewSelectedTags(filter[selectedIndex].tags);
+        setNewTitle(filter[selectedIndex].title);
         setEdit(true);
       //set to async if uncomment
       /*try {
@@ -243,7 +246,22 @@ function ViewMedia() {
         
         <br></br>
         <div className="slide-container">
-          <Carousel style={{color: 'black' }} infiniteLoop={true} showArrows={true} showThumbs={true} useKeyboardArrows={true} onChange={handleSlide}>
+          <Carousel thumbHeight={100} emulateTouch={false} swipeable={false} transitionTime={500} swipeScrollTolerance={5} style={{color: 'black' }} infiniteLoop={true} showArrows={true} showThumbs={true} useKeyboardArrows={true} onChange={handleSlide}
+          renderArrowPrev={(onClickHandler, hasPrev, label) =>
+              hasPrev && (
+                  <button type="button" onClick={onClickHandler} title={label} className="arrowStyles" style={{ left: 0 }}>
+                      {`<`}
+                  </button>
+              )
+          }
+          renderArrowNext={(onClickHandler, hasNext, label) =>
+              hasNext && (
+                  <button type="button" onClick={onClickHandler} title={label} className="arrowStyles" style={{ right: 0 }}>
+                      {`>`}
+                  </button>
+              )
+          }
+          >
             {filteredImages.map((slideFilter, i) => (
               <div key={i} style={{ height: 400 }}>
                 <img src={slideFilter} style={{ height: "100%", width: "100%", objectFit: "contain", objectPosition: "center" }} />
@@ -251,6 +269,7 @@ function ViewMedia() {
             ))}
           </Carousel>
         </div>
+        <Typography>{showTitle !== "" ? showTitle : "No Title Available"}</Typography>
         <div className="tag-container">
             {tags.sort((a, b) => a.localeCompare(b)).map((tag, index) => {
                 return (

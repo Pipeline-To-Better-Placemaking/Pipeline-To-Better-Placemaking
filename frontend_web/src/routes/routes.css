@@ -529,6 +529,21 @@ div#accountPage h1 {
     flex-direction: column;
 }
 
+    .arrowStyles {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        width: 30px;
+        height: 100%;
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+    }
+
+    .arrowStyles:hover {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
 @media (prefers-reduced-motion: no-preference) {
     .App-logo {
         animation: App-logo-spin infinite 60s linear;
