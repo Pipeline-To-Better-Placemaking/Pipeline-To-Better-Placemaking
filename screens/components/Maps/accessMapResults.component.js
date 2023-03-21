@@ -10,7 +10,7 @@ import { styles } from './sharedMap.styles';
 
 export function AccessMapResults(props) {
 
-console.log("🚀 ~ file: accessMapResults.component.js:12 ~ AccessMapResults ~ props", prettyFormat(props));
+// console.log("🚀 ~ file: accessMapResults.component.js:12 ~ AccessMapResults ~ props", prettyFormat(props));
 
 
     // filter controls

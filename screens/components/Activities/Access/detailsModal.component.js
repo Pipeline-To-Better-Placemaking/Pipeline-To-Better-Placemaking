@@ -47,8 +47,8 @@ export function DetailsModal(props){
             return;
         } else obj.diffRating = parseInt(diffValue);
 
-        console.log("🚀 ~ file: detailsModal.component.js:61 ~ sendData ~ data:", obj);
-        console.log("🚀 ~ file: detailsModal.component.js:61 ~ sendData ~ data:", errorModal);
+        // console.log("🚀 ~ file: detailsModal.component.js:61 ~ sendData ~ data:", obj);
+        // console.log("🚀 ~ file: detailsModal.component.js:61 ~ sendData ~ data:", errorModal);
 
 
         if(!errorModal) {

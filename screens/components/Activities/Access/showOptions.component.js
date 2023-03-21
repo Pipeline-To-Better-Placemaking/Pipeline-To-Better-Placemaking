@@ -61,7 +61,7 @@ export function ShowOptions(props) {
 
     const sendData = async () => {
 
-        console.log("🚀 ~ file: showOptions.component.js:136 ~ sendData ~ optionProp:", optionProp);
+        // console.log("🚀 ~ file: showOptions.component.js:136 ~ sendData ~ optionProp:", optionProp);
         // check for null fields
         switch(optionProp.accessType) {
 

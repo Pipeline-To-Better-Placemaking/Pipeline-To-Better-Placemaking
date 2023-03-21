@@ -38,7 +38,7 @@ export function ProjectPage(props) {
       // set selected project page information
       await props.setActivities([...projectDetails.activities]);
       await props.setPastActivities([...projectDetails.pastActivities]);
-      console.log("project details activities in project component:", projectDetails.activities);
+      //console.log("project details activities in project component:", projectDetails.activities);
       projectDetails.activities = [];
       projectDetails.pastActivities = [];
       await props.setProject(projectDetails);

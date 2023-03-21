@@ -240,7 +240,7 @@ export function CreateActivityStack(props) {
     //console.log("create collection response:", collectionDetails);
     if(collectionDetails.success !== undefined) {
       success = collectionDetails.success
-      console.log("success: ", success);
+      //console.log("success: ", success);
     }
 
     if(success) {
@@ -307,7 +307,7 @@ export function CreateActivityStack(props) {
     } catch (error) {
         console.log("ERROR: ", error)
     }
-    console.log("create activity response:", activityDetails);
+    //console.log("create activity response:", activityDetails);
     if (activityDetails.success !== undefined) {
       success = activityDetails.success
       console.log("success: ", success);
@@ -341,7 +341,7 @@ export function CreateActivityStack(props) {
     } catch (error) {
         console.log("ERROR: ", error)
     }
-    console.log("put collection response:", collectionDetails);
+    //console.log("put collection response:", collectionDetails);
     if(collectionDetails.success !== undefined) {
       success = collectionDetails.success
       console.log("success: ", success);
@@ -438,7 +438,7 @@ export function CreateActivityStack(props) {
     } catch (error) {
         console.log("ERROR: ", error)
     }
-    console.log("put timeslot response:", activityDetails);
+    //console.log("put timeslot response:", activityDetails);
     if (activityDetails.success !== undefined) {
       success = activityDetails.success
       console.log("success: ", success);
@@ -463,7 +463,7 @@ export function CreateActivityStack(props) {
     } catch (error) {
       console.log("ERROR: ", error)
     }
-    console.log("delete timeslot response:", res);
+    //console.log("delete timeslot response:", res);
   }
 
   const deleteActivity = async () => {
@@ -488,7 +488,7 @@ export function CreateActivityStack(props) {
     } catch (error) {
       console.log("ERROR: ", error)
     }
-    console.log("delete collection response:", res);
+    //console.log("delete collection response:", res);
     if (success) {
       // remove collection from the list
       let collections = [...props.activities];

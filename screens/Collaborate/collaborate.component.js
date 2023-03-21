@@ -97,7 +97,7 @@ export function Collaborate(props) {
     //let success = false
     let teamDetails = await getTeam(item);
     if(teamDetails != null) {
-      console.log("Selected Team: ", teamDetails);
+      //console.log("Selected Team: ", teamDetails);
       // set selected team
       await props.setTeam(teamDetails)
 

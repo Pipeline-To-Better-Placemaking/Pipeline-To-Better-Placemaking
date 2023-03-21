@@ -70,12 +70,12 @@ export function TeamPage(props) {
       // set selected project page information
       await props.setActivities([...projectDetails.activities]);
       await props.setPastActivities([...projectDetails.pastActivities]);
-      console.log("props.activites in team component", props.activities);
-      console.log("projectDeatils.activities in team", projectDetails.activities)
+      // console.log("props.activites in team component", props.activities);
+      // console.log("projectDeatils.activities in team", projectDetails.activities)
       projectDetails.activities = [];
       projectDetails.pastActivities = [];
       await props.setProject(projectDetails);
-      console.log("Selected Project: ", projectDetails);
+      // console.log("Selected Project: ", projectDetails);
 
       // open project page
       props.navigation.navigate('ProjectPage');

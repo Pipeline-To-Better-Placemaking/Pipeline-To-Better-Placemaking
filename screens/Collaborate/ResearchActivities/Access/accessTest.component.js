@@ -118,8 +118,8 @@ export function AccessTest(props) {
 
             let info = await response.json()
 
-            console.log("🚀 ~ file: accessTest.component.js:117 ~ endActivity ~ info", info);
-            console.log("🚀 ~ file: accessTest.component.js:117 ~ endActivity ~ data", data);
+            // console.log("🚀 ~ file: accessTest.component.js:117 ~ endActivity ~ info", info);
+            // console.log("🚀 ~ file: accessTest.component.js:117 ~ endActivity ~ data", data);
 
 
         } catch (error) {
@@ -201,7 +201,7 @@ export function AccessTest(props) {
         setStart(false);
         handleDetailsOpen();
 
-        console.log("🚀 ~ file: accessTest.component.js:184 ~ closeData ~ data", prettyFormat(data));
+        //console.log("🚀 ~ file: accessTest.component.js:184 ~ closeData ~ data", prettyFormat(data));
 
 
         // whenever the data is packaged, clear out the current paths stuff for next enteries
@@ -222,7 +222,7 @@ export function AccessTest(props) {
     const closeDetails = async (inf) => {        
         data[dataIndex - 1].details = inf;
 
-        console.log("🚀 ~ file: accessTest.component.js:204 ~ closeDetails ~ data[dataIndex - 1]", data[dataIndex - 1]);
+        //console.log("🚀 ~ file: accessTest.component.js:204 ~ closeDetails ~ data[dataIndex - 1]", data[dataIndex - 1]);
 
         setStart(true);
         setDetailsModal(false);
@@ -496,19 +496,19 @@ export function AccessTest(props) {
     const accessType = (val) =>{
         if(start){
             if(val === 0){
-                console.log('Point Access');
+                //console.log('Point Access');
                 setAccessIndex(0);
                 // pull up line toolbar for every non-point access type
                 setLineTools(true);
             }
             else if (val === 1){
-                console.log('Path Access');
+                //console.log('Path Access');
                 setAccessIndex(1);
                 // pull up line toolbar for every non-point access type
                 setLineTools(true);
             }
             else if (val === 2){
-                console.log('Area Access');
+                //console.log('Area Access');
                 setAccessIndex(2);
                 // pull up line toolbar for every non-point access type
                 setLineTools(true);

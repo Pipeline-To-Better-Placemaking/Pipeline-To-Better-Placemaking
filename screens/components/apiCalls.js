@@ -418,7 +418,7 @@ export async function getTimeSlot(route, id) {
   let success = false
   let timeSlotDetails = null
   //console.log("Route: ", route);
-  console.log("ID: ", id);
+  // console.log("ID: ", id);
   try {
     const response = await fetch(HEROKU_SERVER+'/' + route + id, {
         method: 'GET',
@@ -429,7 +429,7 @@ export async function getTimeSlot(route, id) {
         }
     })
     timeSlotDetails = await response.json();
-    console.log("time slot: ", timeSlotDetails);
+    // console.log("time slot: ", timeSlotDetails);
     success = true
   } catch (error) {
       console.log("error", error)
@@ -882,7 +882,7 @@ export async function getAccessResults(projectDetails, results) {
       results.push(tempObj);
     }
   }
-  console.log(results);
+  //console.log(results);
   return results;
 }
 

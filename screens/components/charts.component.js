@@ -19,8 +19,8 @@ height={}
 */
 export function MyBarChart({children, ...props}){
 
-  console.log("🚀 ~ file: charts.component.js:23 ~ MyBarChart ~ props.dataLabels", props.dataLabels);
-  console.log("🚀 ~ file: charts.component.js:23 ~ MyBarChart ~ props.dataValues", props.dataValues);
+  // console.log("🚀 ~ file: charts.component.js:23 ~ MyBarChart ~ props.dataLabels", props.dataLabels);
+  // console.log("🚀 ~ file: charts.component.js:23 ~ MyBarChart ~ props.dataValues", props.dataValues);
 
 
   if(props.dataLabels === null || props.dataLabels.length <= 0) {
@@ -130,8 +130,8 @@ export function MyBarChart({children, ...props}){
 
 export function MyBarChartLength({children, ...props}){
 
-  console.log("🚀 ~ file: charts.component.js:23 ~ MyBarChart ~ props.dataLabels", props.dataLabels);
-  console.log("🚀 ~ file: charts.component.js:23 ~ MyBarChart ~ props.dataValues", props.dataValues);
+  // console.log("🚀 ~ file: charts.component.js:23 ~ MyBarChart ~ props.dataLabels", props.dataLabels);
+  // console.log("🚀 ~ file: charts.component.js:23 ~ MyBarChart ~ props.dataValues", props.dataValues);
 
 
   if(props.dataLabels === null || props.dataLabels.length <= 0) {
@@ -465,7 +465,7 @@ export function MyPieChartCounts(props){
 
 export function MyPieChartArea(props){
 
-  console.log("🚀 ~ file: charts.component.js:357 ~ MyPieChartArea ~ props:", props);
+  // console.log("🚀 ~ file: charts.component.js:357 ~ MyPieChartArea ~ props:", props);
 
   // if there are not any values for the passed in object, don't render anything
   if(props.graph[0] !== undefined){
@@ -474,7 +474,7 @@ export function MyPieChartArea(props){
       for(let i = 0; i < Object.keys(props.graph).length; i++){
         // this is mainly for the occupied area chart, if there is no data of that boundary type, don't render anything for it 
         if(props.graph[i].value !== 0){
-          console.log(props.graph[i].value)
+          // console.log(props.graph[i].value)
           obj[i] = (
             <View key={i.toString()} style={styles.pieLegend}>
               <Text style={styles.whiteText}>{props.graph[i].legend}: </Text>
