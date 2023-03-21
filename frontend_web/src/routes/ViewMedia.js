@@ -246,7 +246,7 @@ function ViewMedia() {
         
         <br></br>
         <div className="slide-container">
-          <Carousel thumbHeight={100} emulateTouch={false} swipeable={false} transitionTime={500} swipeScrollTolerance={5} style={{color: 'black' }} infiniteLoop={true} showArrows={true} showThumbs={true} useKeyboardArrows={true} onChange={handleSlide}
+          <Carousel emulateTouch={false} swipeable={false} transitionTime={500} swipeScrollTolerance={5} style={{color: 'black' }} infiniteLoop={true} showArrows={true} showThumbs={true} useKeyboardArrows={true} onChange={handleSlide}
           renderArrowPrev={(onClickHandler, hasPrev, label) =>
               hasPrev && (
                   <button type="button" onClick={onClickHandler} title={label} className="arrowStyles" style={{ left: 0 }}>

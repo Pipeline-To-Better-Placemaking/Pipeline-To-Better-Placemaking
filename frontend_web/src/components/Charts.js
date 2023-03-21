@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, Tooltip, Legend, PieChart, Pie } from 'recharts';
+import { Button } from '@mui/material'
 import PetsIcon from '@mui/icons-material/Pets';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import CommuteIcon from '@mui/icons-material/Commute';
@@ -2824,14 +2825,27 @@ export default function Charts(props) {
             <div className='Charts' style={{ paddingBottom: 50, textAlign: 'center' }}>
                 <div style={{ fontSize: 'larger' }}> Section Media </div>
                     {data.map((obj, index) => {
-                        if(index > 0)
+                        const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv'];
+                        if(index > 0) {
+                            console.log("🚀 ~ file: Charts.js:2831 ~ {data.map ~ obj.url_link.split(`?`)[0]:", obj.url_link.split("?")[0]);
+
                             return(
                                 <div style={{ alignItems: 'center', display: 'flex', flexDirection:'column', width: 'auto', maxWidth: '100%'}}>
                                     <br/>
                                     <h5>{obj.title}</h5>
                                     <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'center', width: 'auto'}} key={index}>
                                         <a href={obj.url_link}>
-                                            <img style={{maxWidth: '70%'}} src={obj.url_link} />
+                                        {
+                                        videoExtensions.some(ext => obj.url_link.split("?")[0].endsWith(ext)) ?
+                                            <Button style={{width: "70%"}} href={obj.url_link} target="_blank" >
+                                                Open Video in New Tab
+                                            </Button>
+                                        :
+                                            <a href={obj.url_link} target="_blank">
+                                                <img style={{maxWidth: '70%'}} src={obj.url_link} />
+                                            </a>
+                                        }
+
                                         </a>
                                     </div>
                                     <Box
@@ -2855,6 +2869,7 @@ export default function Charts(props) {
                                     </Box>
                                 </div>
                             )
+                        }
                     })}
             </div>
         )
