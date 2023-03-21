@@ -237,7 +237,7 @@ function ViewMedia() {
         
         <br></br>
         <div className="slide-container">
-          <Carousel showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleSlide}>
+          <Carousel style={{color: 'black' }} infiniteLoop={true} showArrows={true} showThumbs={true} useKeyboardArrows={true} onChange={handleSlide}>
             {filteredImages.map((slideFilter, i) => (
               <div key={i} style={{ height: 400 }}>
                 <img src={slideFilter} style={{ height: "100%", width: "100%", objectFit: "contain", objectPosition: "center" }} />
@@ -245,7 +245,6 @@ function ViewMedia() {
             ))}
           </Carousel>
         </div>
-        
         <div className="tag-container">
             {tags.map((tag, index) => {
                 return (
