@@ -48,7 +48,6 @@ export default function FullMap(props) {
     const subAreas = props.subAreas ? props.subAreaas : [];
     const [numFloors, setNumFloors] = React.useState(1);
     let buildingData, sectionData;
-    const refresh = props.refresh
 
    
     // Access Universal Data passed around including the key for maps
@@ -82,11 +81,11 @@ export default function FullMap(props) {
     });
 
 
-   React.useEffect(() => {
-        let newInfo = refresh
-        console.log(newInfo)
-        //setData(refresh)
-    }, []);
+//    React.useEffect(() => {
+//         let newInfo = refresh
+//         console.log(newInfo)
+//         //setData(refresh)
+//     }, []);
     /**
         Function: onSelection
         Description: This function handles the boolean toggling from Map Drawer selections/switches.
@@ -603,11 +602,11 @@ export default function FullMap(props) {
                 <text>${!data.Results[title][date][time].data[index].inPerimeter ? `${data.Results[title][date][time].data[index].distanceFromArea.toFixed(2).toLocaleString('en-US')} ft from project perimeter` : "Inside perimeter"}</text><br/>
                 <text>Difficulty Rating: ${data.Results[title][date][time].data[index].details.diffRating}</text><br/>
                 ${data.Results[title][date][time].data[index].accessType === "Access Path" ?
-                        `${data.Results[title][date][time].data[index].inPerimeter ? `<text>Length: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft</text><br/>` : null}
-                         <text>Number Lanes: ${data.Results[title][date][time].data[index].details.laneCount}</text><br/>
-                         <text>This path is ${data.Results[title][date][time].data[index].details.twoWay ? `two-way` : `one-way`}<text/><br/>
-                         ${data.Results[title][date][time].data[index].details.median ? `<text>This path has a median<text/>` : null}<br/>
-                         ${data.Results[title][date][time].data[index].details.paved ? `<text>This path is paved<text/>` : null}<br/>
+                        `${data.Results[title][date][time].data[index].inPerimeter ? `<text>Length: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft</text><br/>` : ""}
+                         ${data.Results[title][date][time].data[index].details.laneCount === undefined ? "" : `<text>Number Lanes: ${data.Results[title][date][time].data[index].details.laneCount} </text><br/>`}
+                         ${data.Results[title][date][time].data[index].details.twoWay === undefined ? "" : data.Results[title][date][time].data[index].details.twoWay ? `<text>This road is two-way<text/><br/>` : `<text>This road is one-way<text/><br/>`}
+                         ${data.Results[title][date][time].data[index].details.median ? `<text>This path has a median<text/><br/>` : ""}
+                         ${data.Results[title][date][time].data[index].details.paved ? `<text>This path is paved<text/><br/>` : ""}
                          ${data.Results[title][date][time].data[index].details.tollLane ? `<text>This path has a toll<text/><br/>` : ""}
                          ${data.Results[title][date][time].data[index].details.turnLane.length > 1 ? `<text>The path has both left and right turn lanes<text/>` : (data.Results[title][date][time].data[index].details.turnLane.length === 1 ? (data.Results[title][date][time].data[index].details.turnLane[0] === 1 ? "The path has no turn lanes" : (data.Results[title][date][time].data[index].details.turnLane[0] === 2 ?"The path has a left turn lane" : "The path has a right turn lane")) : "The path has no turn lanes")}<br/>`
                     :
