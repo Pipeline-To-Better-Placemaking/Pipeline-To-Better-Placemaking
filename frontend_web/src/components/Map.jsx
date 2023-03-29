@@ -48,6 +48,7 @@ export default function FullMap(props) {
     const subAreas = props.subAreas ? props.subAreaas : [];
     const [numFloors, setNumFloors] = React.useState(1);
     let buildingData, sectionData;
+    const refresh = props.refresh
 
    
     // Access Universal Data passed around including the key for maps
@@ -80,7 +81,12 @@ export default function FullMap(props) {
         section_maps: sectionCollections,
     });
 
-   
+
+   React.useEffect(() => {
+        let newInfo = refresh
+        console.log(newInfo)
+        //setData(refresh)
+    }, []);
     /**
         Function: onSelection
         Description: This function handles the boolean toggling from Map Drawer selections/switches.
@@ -780,7 +786,7 @@ export default function FullMap(props) {
                                 ))
                                 // If the activity is not an access map, render markers, boundaries or polylines based on the point's kind
                                 : (title === 'section_maps' ?
-                                    !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst) => (
+                                    !data.Results[title][sdate][time].data ? null : (data.Results[title][sdate][time].data).map((inst, index) => (
 
                                         <Path
                                             key={`${sdate}.${time}.${index}`}
