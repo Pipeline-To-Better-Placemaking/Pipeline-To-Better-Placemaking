@@ -25,6 +25,7 @@ function ViewMedia() {
     const [ isFilter, setIsFilter ] = useState(false);
     const [ filterSelect, setFilterSelect ] = useState([]);
     const [ showTitle, setShowTitle ] = useState("");
+    const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv'];
 
     const loc = useLocation();
     const options = ["Sidewalk", "Transit Shelter", "Bus Lane", "Turn Lane", "Planter", "Drive Lane", "Bike Lane", "Parking Lane", "Street Lighting", "Stairs/Ramps", "Outdoor Seating Area", "Outdoor Restaurant Seating Area", "Canopy", "Building Structure", "Loggia", "Breezeway", "Drainage Field/Ditch", "Tree Canopy", "Lake/River Water", "Monument/Fountain", "Leisure Area"];
@@ -246,7 +247,7 @@ function ViewMedia() {
         
         <br></br>
         <div className="slide-container">
-          <Carousel emulateTouch={false} swipeable={false} transitionTime={500} swipeScrollTolerance={5} style={{color: 'black' }} infiniteLoop={true} showArrows={true} showThumbs={true} useKeyboardArrows={true} onChange={handleSlide}
+          <Carousel emulateTouch={false} swipeable={false} transitionTime={500} swipeScrollTolerance={5} style={{color: 'black' }} infiniteLoop={false} showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleSlide}
           renderArrowPrev={(onClickHandler, hasPrev, label) =>
               hasPrev && (
                   <button type="button" onClick={onClickHandler} title={label} className="arrowStyles" style={{ left: 0 }}>
@@ -263,8 +264,18 @@ function ViewMedia() {
           }
           >
             {filteredImages.map((slideFilter, i) => (
-              <div key={i} style={{ height: 400 }}>
-                <img src={slideFilter} style={{ height: "100%", width: "100%", objectFit: "contain", objectPosition: "center" }} />
+              <div key={i} style={{ height: 400, display:'flex', alignItems:'center', placeContent:'center' }}>
+                {slideFilter != undefined ? 
+                  videoExtensions.some(ext => slideFilter.split("?")[0].endsWith(ext)) ?
+                    <video style={{width : "90%"}} controls>
+                      <source src={slideFilter} type="video/mp4"></source>
+                      <source src={slideFilter} type="video/ogg"></source>
+                    </video>
+                  :
+                    <img style={{maxWidth: '90%'}} src={slideFilter} />
+                :
+                  null
+                }
               </div>
             ))}
           </Carousel>
