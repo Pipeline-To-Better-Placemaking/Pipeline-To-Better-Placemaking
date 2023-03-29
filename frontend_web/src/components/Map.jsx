@@ -612,6 +612,8 @@ export default function FullMap(props) {
                     :
                     `<text>Area: ${data.Results[title][date][time].data[index].area.toLocaleString('en-US')} ft²</text><br/>
                          <text>Number spots: ${data.Results[title][date][time].data[index].details.spots}</text><br/>
+
+                         
                          <text>Cost: ${
                             data.Results[title][date][time].data[index].details.cost ?
                             (data.Results[title][date][time].data[index].details.cost > 0 ? 
