@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, Tooltip, Legend, PieChart, Pie } from 'recharts';
+import { Button } from '@mui/material'
 import PetsIcon from '@mui/icons-material/Pets';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import CommuteIcon from '@mui/icons-material/Commute';
@@ -1777,7 +1778,7 @@ export default function Charts(props) {
             <div className='Charts' style={{ paddingBottom: 50 }}>
                 <div style={{ fontSize: 'larger' }}> Access Types </div>
                 <PieChart width={width} height={height}>
-                    <Pie data={accessTypeArr.filter((entry) => entry.value !== 0)} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                    <Pie data={accessTypeArr} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
                         {accessTypeArr.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
@@ -1785,7 +1786,7 @@ export default function Charts(props) {
                     <Tooltip content={<CustomTooltip/>} />
                 </PieChart>
                 <div>
-                    {accessTypeArr.filter((entry) => entry.value !== 0).map((entry, index) => {
+                    {accessTypeArr.map((entry, index) => {
                         if(entry.value > 0)
                         return (
                             <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -1796,7 +1797,7 @@ export default function Charts(props) {
                     })}
                 </div>
                 <br />
-                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[2][0]} data={accessTypeArr.filter((entry) => entry.value !== 0)}>
+                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[2][0]} data={accessTypeArr}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis height={chartHeight[2][1]} interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
                     <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
@@ -1819,7 +1820,7 @@ export default function Charts(props) {
                             {/* Hide Pie chart for difficulties and length */}
                             {index < 3 ?
                                 <PieChart width={width} height={height}>
-                                    <Pie data={results.filter((entry) => entry.value !== 0)} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                                    <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
                                         {results.map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                                         ))}
@@ -1829,7 +1830,7 @@ export default function Charts(props) {
                             <div>
                                 {/* Show Default Legend for 3 access types */}
                                 {index < 3 ?
-                                    results.filter((entry) => entry.value !== 0).map((entry, i) => {
+                                    results.map((entry, i) => {
                                         if(entry.value > 0)
                                         return (
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -1841,7 +1842,7 @@ export default function Charts(props) {
                                     :
                                     (index === 3 ?
                                         // on index 3 show access difficulties
-                                        results.filter((entry) => entry.value !== 0).map((entry, i) => {
+                                        results.map((entry, i) => {
                                             if(entry.value > 0)
                                             return (
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -1852,7 +1853,7 @@ export default function Charts(props) {
                                         })
                                         :
                                         // on index 4 show length for access path descriptions
-                                        results.filter((entry) => entry.value !== 0).map((entry, i) => {
+                                        results.map((entry, i) => {
                                             if(entry.value > 0)
                                             return (
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -1868,7 +1869,7 @@ export default function Charts(props) {
                             {/* Set Bar chart parameters */}
                             {true ?
                                 // Default Bar Chart
-                                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[index][0]} data={results.filter((entry) => entry.value !== 0)}>
+                                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[index][0]} data={results}>
                                     <CartesianGrid strokeDasharray='3 3' />
                                     <XAxis height={chartHeight[index][1]} interval={0} angle={-60} textAnchor="end" dataKey='description' />
                                     <YAxis dy={1} label={{ textAnchor: "center", value: `${yLabel}`, angle: -90, position: 'insideLeft' }} />
@@ -2117,7 +2118,7 @@ export default function Charts(props) {
             <div className='Charts' style={{ paddingBottom: 50 }}>
                 <div style={{ fontSize: 'larger' }}> Access Types </div>
                 <PieChart width={width} height={height}>
-                    <Pie data={accessTypeArr.filter((entry) => entry.value !== 0)} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                    <Pie data={accessTypeArr} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
                         {accessTypeArr.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
@@ -2125,7 +2126,7 @@ export default function Charts(props) {
                     <Tooltip content={<CustomTooltip/>} />
                 </PieChart>
                 <div>
-                    {accessTypeArr.filter((entry) => entry.value !== 0).map((entry, index) => {
+                    {accessTypeArr.map((entry, index) => {
                         if(entry.value > 0)
                         return (
                             <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -2136,7 +2137,7 @@ export default function Charts(props) {
                     })}
                 </div>
                 <br />
-                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[2][0]} data={accessTypeArr.filter((entry) => entry.value !== 0)}>
+                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[2][0]} data={accessTypeArr}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis height={chartHeight[2][1]} interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
                     <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
@@ -2159,7 +2160,7 @@ export default function Charts(props) {
                             {/* Hide Pie chart for difficulties and length */}
                             {index < 3 ?
                                 <PieChart width={width} height={height}>
-                                    <Pie data={results.filter((entry) => entry.value !== 0)} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                                    <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
                                         {results.map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                                         ))}
@@ -2169,7 +2170,7 @@ export default function Charts(props) {
                             <div>
                                 {/* Show Default Legend for 3 access types */}
                                 {index < 3 ?
-                                    results.filter((entry) => entry.value !== 0).map((entry, i) => {
+                                    results.map((entry, i) => {
                                         if(entry.value > 0)
                                         return (
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -2181,7 +2182,7 @@ export default function Charts(props) {
                                     :
                                     (index === 3 ?
                                         // on index 3 show access difficulties
-                                        results.filter((entry) => entry.value !== 0).map((entry, i) => {
+                                        results.map((entry, i) => {
                                             if(entry.value > 0)
                                             return (
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -2192,7 +2193,7 @@ export default function Charts(props) {
                                         })
                                         :
                                         // on index 4 show length for access path descriptions
-                                        results.filter((entry) => entry.value !== 0).map((entry, i) => {
+                                        results.map((entry, i) => {
                                             if(entry.value > 0)
                                             return (
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -2208,7 +2209,7 @@ export default function Charts(props) {
                             {/* Set Bar chart parameters */}
                             {true ?
                                 // Default Bar Chart
-                                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[index][0]} data={results.filter((entry) => entry.value !== 0)}>
+                                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[index][0]} data={results}>
                                     <CartesianGrid strokeDasharray='3 3' />
                                     <XAxis height={chartHeight[index][1]} interval={0} angle={-60} textAnchor="end" dataKey='description' />
                                     <YAxis dy={1} label={{ textAnchor: "center", value: `${yLabel}`, angle: -90, position: 'insideLeft' }} />
@@ -2419,7 +2420,7 @@ export default function Charts(props) {
 
         const packagedData = [programTypeArr, programTypeAreaArr];
 
-        const chartHeight = [[345, 145], [280, 80]]
+        const chartHeight = [[350, 150], [280, 80]]
         const sums = [programSum, totalArea]
 
         const titles = ["Program Types", "Program Areas"];
@@ -2495,9 +2496,6 @@ export default function Charts(props) {
                 </div>
                 <br />
             </div>
-
-
-
         )
 
 
@@ -2551,6 +2549,11 @@ export default function Charts(props) {
         // {"Civil", civil},
         // {"Monument", monument},
         // {"Public Space", publicSpace}
+
+        if(data.floorData.length === 0) 
+            return(
+                <Typography>No Test Data</Typography>
+            )
 
         data.floorData.map((obj) => {
             obj.programs.map((program) => {
@@ -2686,7 +2689,7 @@ export default function Charts(props) {
 
         const packagedData = [programTypeArr, programTypeAreaArr];
 
-        const chartHeight = [[345, 145], [280, 80]]
+        const chartHeight = [[350, 150], [280, 80]]
         const sums = [programSum, totalArea]
 
         const titles = ["Program Types", "Program Areas"];
@@ -2762,9 +2765,6 @@ export default function Charts(props) {
                 </div>
                 <br />
             </div>
-
-
-
         )
 
 
@@ -2825,14 +2825,27 @@ export default function Charts(props) {
             <div className='Charts' style={{ paddingBottom: 50, textAlign: 'center' }}>
                 <div style={{ fontSize: 'larger' }}> Section Media </div>
                     {data.map((obj, index) => {
-                        if(index > 0)
+                        const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv'];
+                        if(index > 0) {
+                            console.log("🚀 ~ file: Charts.js:2831 ~ {data.map ~ obj.url_link.split(`?`)[0]:", obj.url_link.split("?")[0]);
+
                             return(
                                 <div style={{ alignItems: 'center', display: 'flex', flexDirection:'column', width: 'auto', maxWidth: '100%'}}>
                                     <br/>
                                     <h5>{obj.title}</h5>
                                     <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'center', width: 'auto'}} key={index}>
                                         <a href={obj.url_link}>
-                                            <img style={{maxWidth: '70%'}} src={obj.url_link} />
+                                        {
+                                        videoExtensions.some(ext => obj.url_link.split("?")[0].endsWith(ext)) ?
+                                            <Button style={{width: "70%"}} href={obj.url_link} target="_blank" >
+                                                Open Video in New Tab
+                                            </Button>
+                                        :
+                                            <a href={obj.url_link} target="_blank">
+                                                <img style={{maxWidth: '70%'}} src={obj.url_link} />
+                                            </a>
+                                        }
+
                                         </a>
                                     </div>
                                     <Box
@@ -2856,6 +2869,7 @@ export default function Charts(props) {
                                     </Box>
                                 </div>
                             )
+                        }
                     })}
             </div>
         )

@@ -268,7 +268,7 @@ function UploadSectionMedia() {
                   ))}
                   </Select>
                   </FormControl>               
-                  <div style={{margin: '1vw', alignItems: 'center'}}>
+                  <div style={{margin: '1vw', display:'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <Button onClick={handleSubmit}> Upload Media </Button> 
                     <br/>
                     {progresspercent > 0 ? (progresspercent < 99.99 ? <LinearProgressWithLabel value={progresspercent}/> : resetInput()) : null}

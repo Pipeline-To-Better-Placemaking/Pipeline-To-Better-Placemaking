@@ -4,7 +4,7 @@ import './routes.css';
 import { storage } from "./firebase_config";
 import { ref, getDownloadURL, listAll, list } from "firebase/storage";
 import axios from '../api/axios';
-import { Button, TextField, Box, InputLabel, MenuItem, FormControl, RadioGroup, Radio, FormControlLabel, FormLabel, DialogTitle, Dialog } from '@mui/material'
+import { Button, TextField, Box, InputLabel, MenuItem, FormControl, RadioGroup, Radio, FormControlLabel, FormLabel, DialogTitle, Dialog, Typography } from '@mui/material'
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel'
@@ -24,6 +24,7 @@ function ViewMedia() {
     const [ filteredImages, setFilteredImages ] = useState([]);
     const [ isFilter, setIsFilter ] = useState(false);
     const [ filterSelect, setFilterSelect ] = useState([]);
+    const [ showTitle, setShowTitle ] = useState("");
 
     const loc = useLocation();
     const options = ["Sidewalk", "Transit Shelter", "Bus Lane", "Turn Lane", "Planter", "Drive Lane", "Bike Lane", "Parking Lane", "Street Lighting", "Stairs/Ramps", "Outdoor Seating Area", "Outdoor Restaurant Seating Area", "Canopy", "Building Structure", "Loggia", "Breezeway", "Drainage Field/Ditch", "Tree Canopy", "Lake/River Water", "Monument/Fountain", "Leisure Area"];
@@ -38,14 +39,17 @@ function ViewMedia() {
     // Lets front end know which slide it is on for future api calls
     const handleSlide = (index) => {
 
-      console.log("🚀 ~ file: ViewMedia.js:41 ~ handleSlide ~ filteredImages:", filteredImages);
-      console.log("🚀 ~ file: ViewMedia.js:41 ~ handleSlide ~ filter:", filter);
+      // console.log("🚀 ~ file: ViewMedia.js:41 ~ handleSlide ~ filteredImages:", filteredImages);
+      // console.log("🚀 ~ file: ViewMedia.js:41 ~ handleSlide ~ filter:", filter);
+      // console.log("🚀 ~ file: ViewMedia.js:51 ~ handleSlide ~ filter[index].title:", filter[index].title);
 
-      
+      setShowTitle(filter[index].title);
       setSelectedSlide(filteredImages[index]);
       setSelectedIndex(index);
-      setTags(filter[index].tags)
+      setTags(filter[index].tags);
     }
+
+
 
     const findCommon = (array1, array2) => {
       for(let i = 0; i < array1.length; i++) {
@@ -138,8 +142,12 @@ function ViewMedia() {
     }
 
     // Opens edit dialog box
-    const handleEdit = async () => {
-      try {
+    const handleEdit =  () => {
+        setNewSelectedTags(filter[selectedIndex].tags);
+        setNewTitle(filter[selectedIndex].title);
+        setEdit(true);
+      //set to async if uncomment
+      /*try {
         const map = await axios.get(`/section_maps/${loc.state.section._id}/data/${loc.state.section.data[selectedIndex + 1]._id}`, {
           headers: {
             'Content-Type': 'application/json',
@@ -150,14 +158,15 @@ function ViewMedia() {
         });
         
         //console.log("Map: ", map)
-        setNewSelectedTags(map.data.tags)
-        setNewTitle(map.data.title)
+        
+        // setNewSelectedTags(map.data.tags)
+        // setNewTitle(map.data.title)
         setEdit(true);
       }
       catch (error) {
         console.log("Could not get image from mongo");
         return;
-      }
+      }*/
     }
 
     // Saves dialog box changes and closes it
@@ -237,7 +246,22 @@ function ViewMedia() {
         
         <br></br>
         <div className="slide-container">
-          <Carousel showArrows={true} showThumbs={false} useKeyboardArrows={true} onChange={handleSlide}>
+          <Carousel emulateTouch={false} swipeable={false} transitionTime={500} swipeScrollTolerance={5} style={{color: 'black' }} infiniteLoop={true} showArrows={true} showThumbs={true} useKeyboardArrows={true} onChange={handleSlide}
+          renderArrowPrev={(onClickHandler, hasPrev, label) =>
+              hasPrev && (
+                  <button type="button" onClick={onClickHandler} title={label} className="arrowStyles" style={{ left: 0 }}>
+                      {`<`}
+                  </button>
+              )
+          }
+          renderArrowNext={(onClickHandler, hasNext, label) =>
+              hasNext && (
+                  <button type="button" onClick={onClickHandler} title={label} className="arrowStyles" style={{ right: 0 }}>
+                      {`>`}
+                  </button>
+              )
+          }
+          >
             {filteredImages.map((slideFilter, i) => (
               <div key={i} style={{ height: 400 }}>
                 <img src={slideFilter} style={{ height: "100%", width: "100%", objectFit: "contain", objectPosition: "center" }} />
@@ -245,9 +269,9 @@ function ViewMedia() {
             ))}
           </Carousel>
         </div>
-        
+        <Typography>{showTitle !== "" ? showTitle : "No Title Available"}</Typography>
         <div className="tag-container">
-            {tags.map((tag, index) => {
+            {tags.sort((a, b) => a.localeCompare(b)).map((tag, index) => {
                 return (
                   <div key={index} className="tag">
                       {tag}
@@ -274,7 +298,7 @@ function ViewMedia() {
                         multiple
                         style={{minWidth: 120}}
                     >
-                    {options.map((option, index) => (
+                    {options.sort((a, b) => a.localeCompare(b)).map((option, index) => (
                         <MenuItem value={option}>{option}</MenuItem>
                     ))}
                     </Select>
