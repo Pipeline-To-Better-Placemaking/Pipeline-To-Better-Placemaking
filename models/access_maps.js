@@ -39,15 +39,6 @@ const dataSchema = mongoose.Schema({
     //area of the access point if its a lot/garage
     area: Number,
 
-    //path from the parking lot/garage/spot to the perimeter of the place
-    distancePath:[{
-        latitude:{
-            type: Number
-        },
-        longitude:{
-            type: Number
-        }
-    }],
 
     details:{//how difficult is it to get to the place from this access spot
         diffRating: String,

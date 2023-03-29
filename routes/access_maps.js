@@ -176,7 +176,6 @@ router.put('/:id/data/:data_id', passport.authenticate('jwt',{session:false}), a
             distance: (req.body.distance ? req.body.distance : oldData.distance),
             path: (req.body.path ? req.body.path : oldData.path),
             time: (req.body.time ? req.body.time : oldData.time),
-            distancePath: (req.body.distancePath ? req.body.distancePath : oldData.distancePath),
             details: (req.body.details ? req.body.details : req.body.details),
             floors: (req.body.floors ? req.body.floors : oldData.floors),
         }
