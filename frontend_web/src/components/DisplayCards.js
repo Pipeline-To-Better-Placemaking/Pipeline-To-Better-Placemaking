@@ -9,6 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import { testNames } from '../functions/HelperFunctions';
 import '../routes/routes.css';
+import { Table, TableCell, TableRow } from '@mui/material';
 
 export default function DisplayCards(props) {
     //Surveyor Cards have surveyor name in header
@@ -24,20 +25,30 @@ export default function DisplayCards(props) {
     //Activity renders in the body
     const surveyorActivities = (activities) => (
         <CardContent style={{display: 'flex', flexDirection: 'column', justifyContent:'space-evenly', width: '100%'}}>
+            <Table>
             { activities.map((activity, index) => (
-                <div key={ 'a' + index } className='cardRow'>
-                    <Typography variant='text' component='div'>
-                        { testNames(activity.activity) }
-                    </Typography>
-                    <Typography variant='text' component='div'>
-                        { activity.date }
-                    </Typography>
-                    <Typography variant='text' component='div'>
-                        { activity.time }
-                    </Typography>
-                </div>
+                
+                    <TableRow>
+                    <TableCell colSpan={2} align='left'>
+                        <Typography variant='text' component='div'>
+                            { testNames(activity.activity) }
+                        </Typography>
+                    </TableCell>
+                    <TableCell colSpan={1} align='left'>
+                        <Typography variant='text' component='div'>
+                            { activity.date }
+                        </Typography>
+                    </TableCell>
+                    <TableCell colSpan={1} align='left'>
+                        <Typography variant='text' component='div'>
+                            { activity.time }
+                        </Typography>
+                    </TableCell>
+                </TableRow>
             )) }
+            </Table>
         </CardContent>
+        
     );
 
     //For Better Placemaking projects listed on home page (url)/home
