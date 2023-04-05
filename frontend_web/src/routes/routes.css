@@ -396,6 +396,9 @@ form.MuiBox-root {
 
 #tagText {
     z-index: 100;
+    color: white;
+    font-weight: bolder;
+    font-size: large;
 }
 
 div#cardFlexBox {

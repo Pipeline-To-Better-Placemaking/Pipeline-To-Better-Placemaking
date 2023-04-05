@@ -103,7 +103,8 @@ export default function Title(props) {
             {/* pageTemplate -> Blue base background */}
             <div className='pageTemplate'>
                 {/* tag - sizing for logo/tag (title text) */}
-                <div>
+                <div style={{paddingRight: '7vw'}}>
+
                     <div className='logo'>
                         <Image src={ logo1 } className='App-logo' alt='logo' id='logo1'/>
                     </div>

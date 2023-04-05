@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import UndoIcon from '@mui/icons-material/Undo';
 import IPDialog from '../components/IPDialog';
+import SCDialog from '../components/SCDialog';
 import Clear from '@mui/icons-material/Clear';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
@@ -1050,7 +1051,7 @@ export default function FullMap(props) {
                                     </Button>
                                 :  null    
                                 }
-
+                                <SCDialog />
                             </div>
                         </div>
                         {/* <div id = 'sectionPopup' style={{display: 'none'}}>
@@ -1073,7 +1074,7 @@ export default function FullMap(props) {
                     <Button id='withdrawSCBtn' style={{ display: 'none' }} onClick={handleWithdrawSC}>Withdraw</Button>
                     <Button id='withdrawIPBtn' style={{ display: 'none' }} onClick={handleWithdrawIP}>Withdraw</Button>
                     <Button id='SCSurveyorsBtn' style={{ display: 'none' }} onClick={handleSCSurveyorRoute}>Add Media</Button>
-                    <Button id='IPSurveyorsBtn' style={{ display: 'none' }} onClick={handleIPSurveyorRoute}>Begin</Button>
+                    <Button id='IPSurveyorsBtn' style={{ display: 'none' }} onClick={handleIPSurveyorRoute}>Commence</Button>
                     <Button id='signUpSCBtn' style={{ display: 'none' }} onClick={handleSignUpSC}>Sign Up</Button>
                     <Button id='signUpIPBtn' style={{ display: 'none' }} onClick={handleSignUpIP}>Sign Up</Button> 
                     <Button id='viewModelBtn' style={{ display: 'none' }} onClick={handleViewModelRoute}>View Model</Button>
