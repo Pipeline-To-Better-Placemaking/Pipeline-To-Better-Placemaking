@@ -5,8 +5,7 @@ import { isLatLngLiteral } from '@googlemaps/typescript-guards';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import UndoIcon from '@mui/icons-material/Undo';
-import IPDialog from '../components/IPDialog';
-import SCDialog from '../components/SCDialog';
+import { IPDialog, SCDialog } from '../FAQDialog';
 import Clear from '@mui/icons-material/Clear';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
@@ -996,7 +995,6 @@ export default function FullMap(props) {
 
 
                             <Button style={{ marginRight: '20px' }} className='newHoveringButtons' onClick={removePoint}>Undo <UndoIcon /></Button>
-                            {/* ref={ ref } */}
                             <div style={{ marginRight: '20px', marginTop: '5px' }}>
 
                                 <TextField
@@ -1010,8 +1008,6 @@ export default function FullMap(props) {
                                 />
 
                             </div>
-
-                            {/* <Button className='newHoveringButtons' onClick={setNumFloors(3)} > Submit Floors</Button> */}
 
                             {clicks.length < 3 || numFloors < 1 ? null :
                                 <Button style={{ marginRight: '10px' }} className='continueButton' component={Link} size='lg' variant='filledTonal' color='error' to='extrude'
@@ -1054,12 +1050,6 @@ export default function FullMap(props) {
                                 <SCDialog />
                             </div>
                         </div>
-                        {/* <div id = 'sectionPopup' style={{display: 'none'}}>
-                                <h1>Section Cutter test can only have two points!</h1>
-                                <Button id = "okSectionBtn" style = {{display: 'none'}} onClick = {handlePopupClose}>
-                                    Ok
-                                </Button>
-                        </div> */}
                     </div>
                    
 

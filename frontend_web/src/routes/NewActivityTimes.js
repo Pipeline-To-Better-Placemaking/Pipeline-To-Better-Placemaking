@@ -6,6 +6,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import axios from '../api/axios';
 import TimeForm from '../components/TimeForm';
 import { testNames } from '../functions/HelperFunctions';
+import { TSDialog } from '../FAQDialog';
 import '../components/controls.css';
 
 export default function NewActivityTimes(props) {
@@ -375,7 +376,7 @@ export default function NewActivityTimes(props) {
     return (
         <div id='newActivityTimes'>
             <Card id='timeCard'>
-                <Card.Header >
+                <Card.Header>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <h1>{activity.title}</h1>
                         <Button id='createActivityButton' className='confirm' onClick={addNewActivity}>Schedule Activity <DoneIcon /></Button>
@@ -387,6 +388,7 @@ export default function NewActivityTimes(props) {
                     Date: {activity.date}
                     <br />
                     Time per Location: {activity.timer}
+                    <TSDialog />
                 </Card.Header>
                 <Card.Body id='timeCardContent'>
                     <span ref={response} style={{ display: 'inline-block', color: 'red' }}>{message}</span>

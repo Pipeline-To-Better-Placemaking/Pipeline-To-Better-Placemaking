@@ -9,6 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
+import { APDialog } from '../FAQDialog';
 import * as XLSX from 'xlsx/xlsx.mjs';
 import axios from '../api/axios';
 import './routes.css';
@@ -226,7 +227,8 @@ export default function ActivityPage(props) {
                                 align='center' 
                                 colSpan={ 12 }
                             >
-                                <Typography variant='h6'>Activity Results</Typography>
+                                <APDialog />
+                                <Typography variant='h6'>  Activity Results</Typography>
                                 <Button onClick={ exportData }>Export Data</Button>
                             </TableCell>
                         </TableRow>
