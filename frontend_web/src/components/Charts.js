@@ -1546,6 +1546,11 @@ export default function Charts(props) {
 
     const multiAccessCharts = (data) => {
 
+        if(data.length === 0) 
+            return(
+                <Typography style={{textAlign: "center", justifyContent: "center"}} >No Test Data</Typography>
+            )
+
         data = Object.values(data);
         // Access Type
         var accessPoint = 0;
@@ -1778,8 +1783,8 @@ export default function Charts(props) {
             <div className='Charts' style={{ paddingBottom: 50 }}>
                 <div style={{ fontSize: 'larger' }}> Access Types </div>
                 <PieChart width={width} height={height}>
-                    <Pie data={accessTypeArr} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
-                        {accessTypeArr.map((entry, index) => (
+                    <Pie data={accessTypeArr.filter(obj => obj.value !== 0)} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                        {accessTypeArr.filter(obj => obj.value !== 0).map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
                     </Pie>
@@ -1797,13 +1802,13 @@ export default function Charts(props) {
                     })}
                 </div>
                 <br />
-                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[2][0]} data={accessTypeArr}>
+                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[2][0]} data={accessTypeArr.filter(obj => obj.value !== 0)}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis height={chartHeight[2][1]} interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
                     <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip content={<CustomTooltip/>} />
                     <Bar dataKey={'value'} fill='#636262'>
-                        {accessTypeArr.map((entry, index) => (
+                        {accessTypeArr.filter(obj => obj.value !== 0).map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={accessColor[index]} fillOpacity={0.8} />
                         ))}
                     </Bar>
@@ -1820,8 +1825,8 @@ export default function Charts(props) {
                             {/* Hide Pie chart for difficulties and length */}
                             {index < 3 ?
                                 <PieChart width={width} height={height}>
-                                    <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
-                                        {results.map((entry, index) => (
+                                    <Pie data={results.filter(obj => obj.value !== 0)} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                                        {results.filter(obj => obj.value !== 0).map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                                         ))}
                                     </Pie>
@@ -1830,7 +1835,7 @@ export default function Charts(props) {
                             <div>
                                 {/* Show Default Legend for 3 access types */}
                                 {index < 3 ?
-                                    results.map((entry, i) => {
+                                    results.filter(obj => obj.value !== 0).map((entry, i) => {
                                         if(entry.value > 0)
                                         return (
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -1842,7 +1847,7 @@ export default function Charts(props) {
                                     :
                                     (index === 3 ?
                                         // on index 3 show access difficulties
-                                        results.map((entry, i) => {
+                                        results.filter(obj => obj.value !== 0).map((entry, i) => {
                                             if(entry.value > 0)
                                             return (
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -1853,7 +1858,7 @@ export default function Charts(props) {
                                         })
                                         :
                                         // on index 4 show length for access path descriptions
-                                        results.map((entry, i) => {
+                                        results.filter(obj => obj.value !== 0).map((entry, i) => {
                                             if(entry.value > 0)
                                             return (
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -1869,13 +1874,13 @@ export default function Charts(props) {
                             {/* Set Bar chart parameters */}
                             {true ?
                                 // Default Bar Chart
-                                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[index][0]} data={results}>
+                                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[index][0]} data={results.filter(obj => obj.value !== 0)}>
                                     <CartesianGrid strokeDasharray='3 3' />
                                     <XAxis height={chartHeight[index][1]} interval={0} angle={-60} textAnchor="end" dataKey='description' />
                                     <YAxis dy={1} label={{ textAnchor: "center", value: `${yLabel}`, angle: -90, position: 'insideLeft' }} />
                                     <Tooltip content={<CustomTooltip/>} />
                                     <Bar dataKey={'value'} fill='#636262'>
-                                        {results.map((entry, index) => (
+                                        {results.filter(obj => obj.value !== 0).map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={accessColor[index]} fillOpacity={0.8} />
                                         ))}
                                     </Bar>
@@ -1891,6 +1896,11 @@ export default function Charts(props) {
     };
 
     const accessCharts = (data) => {
+
+        if(data.length === 0) 
+            return(
+                <Typography style={{textAlign: "center", justifyContent: "center"}} >No Test Data</Typography>
+            )
 
         // Access Type
         var accessPoint = 0;
@@ -2118,8 +2128,8 @@ export default function Charts(props) {
             <div className='Charts' style={{ paddingBottom: 50 }}>
                 <div style={{ fontSize: 'larger' }}> Access Types </div>
                 <PieChart width={width} height={height}>
-                    <Pie data={accessTypeArr} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
-                        {accessTypeArr.map((entry, index) => (
+                    <Pie data={accessTypeArr.filter(obj => obj.value !== 0)} dataKey='value' nameKey='accessType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                        {accessTypeArr.filter(obj => obj.value !== 0).map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
                     </Pie>
@@ -2137,13 +2147,13 @@ export default function Charts(props) {
                     })}
                 </div>
                 <br />
-                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[2][0]} data={accessTypeArr}>
+                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[2][0]} data={accessTypeArr.filter(obj => obj.value !== 0)}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis height={chartHeight[2][1]} interval={0} angle={-60} textAnchor="end" dataKey='accessType' />
                     <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip content={<CustomTooltip/>} />
                     <Bar dataKey={'value'} fill='#636262'>
-                        {accessTypeArr.map((entry, index) => (
+                        {accessTypeArr.filter(obj => obj.value !== 0).map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={accessColor[index]} fillOpacity={0.8} />
                         ))}
                     </Bar>
@@ -2160,8 +2170,8 @@ export default function Charts(props) {
                             {/* Hide Pie chart for difficulties and length */}
                             {index < 3 ?
                                 <PieChart width={width} height={height}>
-                                    <Pie data={results} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
-                                        {results.map((entry, index) => (
+                                    <Pie data={results.filter(obj => obj.value !== 0)} dataKey='value' nameKey='description' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                                        {results.filter(obj => obj.value !== 0).map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={accessColor[index]} stroke={'#000000'} fillOpacity={0.85} />
                                         ))}
                                     </Pie>
@@ -2170,7 +2180,7 @@ export default function Charts(props) {
                             <div>
                                 {/* Show Default Legend for 3 access types */}
                                 {index < 3 ?
-                                    results.map((entry, i) => {
+                                    results.filter(obj => obj.value !== 0).map((entry, i) => {
                                         if(entry.value > 0)
                                         return (
                                             <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -2182,7 +2192,7 @@ export default function Charts(props) {
                                     :
                                     (index === 3 ?
                                         // on index 3 show access difficulties
-                                        results.map((entry, i) => {
+                                        results.filter(obj => obj.value !== 0).map((entry, i) => {
                                             if(entry.value > 0)
                                             return (
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -2193,7 +2203,7 @@ export default function Charts(props) {
                                         })
                                         :
                                         // on index 4 show length for access path descriptions
-                                        results.map((entry, i) => {
+                                        results.filter(obj => obj.value !== 0).map((entry, i) => {
                                             if(entry.value > 0)
                                             return (
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -2209,13 +2219,13 @@ export default function Charts(props) {
                             {/* Set Bar chart parameters */}
                             {true ?
                                 // Default Bar Chart
-                                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[index][0]} data={results}>
+                                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[index][0]} data={results.filter(obj => obj.value !== 0)}>
                                     <CartesianGrid strokeDasharray='3 3' />
                                     <XAxis height={chartHeight[index][1]} interval={0} angle={-60} textAnchor="end" dataKey='description' />
                                     <YAxis dy={1} label={{ textAnchor: "center", value: `${yLabel}`, angle: -90, position: 'insideLeft' }} />
                                     <Tooltip content={<CustomTooltip/>} />
                                     <Bar dataKey={'value'} fill='#636262'>
-                                        {results.map((entry, index) => (
+                                        {results.filter(obj => obj.value !== 0).map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={accessColor[index]} fillOpacity={0.8} />
                                         ))}
                                     </Bar>
@@ -2231,7 +2241,7 @@ export default function Charts(props) {
     };
 
     const multiProgramCharts = (data) => {
-        console.log(data);
+        //console.log(data);
         data = Object.values(data);
 
         let foodAndBev = 0;
@@ -2502,7 +2512,7 @@ export default function Charts(props) {
     };
 
     const programCharts = (data) => {
-        console.log(data);
+        //console.log(data);
         data = data[0];
 
         let foodAndBev = 0;
@@ -2552,7 +2562,7 @@ export default function Charts(props) {
 
         if(data.floorData.length === 0) 
             return(
-                <Typography>No Test Data</Typography>
+                <Typography style={{textAlign: "center", justifyContent: "center"}} >No Test Data</Typography>
             )
 
         data.floorData.map((obj) => {
@@ -2687,7 +2697,35 @@ export default function Charts(props) {
             { programType: 'Unknown Area', value: parseFloat(remainingArea.toFixed(1)) }
         ];
 
-        const packagedData = [programTypeArr, programTypeAreaArr];
+        const filteredProgramTypeArr = []
+        const filteredProgramTypeArrColors = []
+        const filteredProgramTypeAreaArr = [];
+        const filteredProgramTypeAreaArrColors = [];
+        const filteredProgramTypeAreaArrForPieChart = [];
+        const filteredProgramTypeAreaArrForPieChartColors = [];
+
+        programTypeArr.forEach((obj, index) => {
+            if (obj.value !== 0) {
+                filteredProgramTypeArr.push(obj);
+                filteredProgramTypeArrColors.push(programColor[index]);
+            }
+        })
+
+        programTypeAreaArr.forEach((obj, index) => {
+            if (obj.value !== 0) {
+                filteredProgramTypeAreaArr.push(obj);
+                filteredProgramTypeAreaArrColors.push(programColor[index]);
+            }
+        })
+
+        programTypeAreaArrForPieChart.forEach((obj, index) => {
+            if (obj.value !== 0) {
+                filteredProgramTypeAreaArrForPieChart.push(obj);
+                filteredProgramTypeAreaArrForPieChartColors.push(programColor[index]);
+            }
+        })
+
+        const packagedData = [filteredProgramTypeArr, filteredProgramTypeAreaArr];
 
         const chartHeight = [[350, 150], [280, 80]]
         const sums = [programSum, totalArea]
@@ -2698,33 +2736,33 @@ export default function Charts(props) {
             <div className='Charts' style={{ paddingBottom: 50 }}>
                 <div style={{ fontSize: 'larger' }}> Program Types </div>
                 <PieChart width={width} height={height}>
-                    <Pie data={programTypeArr} dataKey='value' nameKey='programType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
-                        {programTypeArr.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={programColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                    <Pie data={filteredProgramTypeArr} dataKey='value' nameKey='programType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                        {filteredProgramTypeArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={filteredProgramTypeArrColors[index]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
                     </Pie>
                     <Tooltip />
                 </PieChart>
                 <div>
-                    {programTypeArr.map((entry, index) => {
+                    {filteredProgramTypeArr.map((entry, index) => {
                         if (entry.value > 0)
                             return (
                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                    <div style={{ backgroundColor: programColor[index] }}>&nbsp;&nbsp;</div>
+                                    <div style={{ backgroundColor: filteredProgramTypeArrColors[index] }}>&nbsp;&nbsp;</div>
                                     &nbsp;{entry.programType}: {(entry.value / programSum * 100).toFixed(1)}%
                                 </div>
                             );
                     })}
                 </div>
                 <br />
-                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[1][0]} data={programTypeArr}>
+                <BarChart style={{ paddingBottom: 'auto' }} width={width} height={chartHeight[1][0]} data={filteredProgramTypeArr}>
                     <CartesianGrid strokeDasharray='3 3' />
                     <XAxis height={chartHeight[0][1]} interval={0} angle={-60} textAnchor="end" dataKey='programType' />
                     <YAxis dy={1} label={{ value: 'Count', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Bar dataKey={'value'} fill='#636262'>
-                        {programTypeArr.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={programColor[index]} fillOpacity={0.8} />
+                        {filteredProgramTypeArr.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={filteredProgramTypeArrColors[index]} fillOpacity={0.8} />
 
                         ))}
                     </Bar>
@@ -2732,20 +2770,20 @@ export default function Charts(props) {
 
                 <div style={{ fontSize: 'larger' }}> Program Type Areas </div>
                 <PieChart width={width} height={height}>
-                    <Pie data={programTypeAreaArrForPieChart} dataKey='value' nameKey='programType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
-                        {programTypeAreaArrForPieChart.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={programColor[index]} stroke={'#000000'} fillOpacity={0.85} />
+                    <Pie data={filteredProgramTypeAreaArrForPieChart} dataKey='value' nameKey='programType' cx='50%' cy='50%' outerRadius={100} fill="#256eff" >
+                        {filteredProgramTypeAreaArrForPieChart.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={filteredProgramTypeAreaArrForPieChartColors[index]} stroke={'#000000'} fillOpacity={0.85} />
                         ))}
                     </Pie>
                     <Tooltip />
                 </PieChart>
                 <div>
-                    {programTypeAreaArrForPieChart.map((entry, index) => {
+                    {filteredProgramTypeAreaArrForPieChart.map((entry, index) => {
                         // && index !== 13
                         if (entry.value > 0)
                             return (
                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                    <div style={{ backgroundColor: programColor[index] }}>&nbsp;&nbsp;</div>
+                                    <div style={{ backgroundColor: filteredProgramTypeAreaArrForPieChartColors[index] }}>&nbsp;&nbsp;</div>
                                     &nbsp;{entry.programType}: {(entry.value / totalArea * 100).toFixed(1)}%
                                 </div>
                             );
@@ -2753,11 +2791,11 @@ export default function Charts(props) {
                 </div>
                 <br />
                 <div>
-                    {programTypeAreaArr.map((entry, index) => {
+                    {filteredProgramTypeAreaArrForPieChart.map((entry, index) => {
                         if (entry.value > 0)
                             return (
                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                    <div style={{ backgroundColor: programColor[index] }}>&nbsp;&nbsp;</div>
+                                    <div style={{ backgroundColor: filteredProgramTypeAreaArrForPieChartColors[index] }}>&nbsp;&nbsp;</div>
                                     &nbsp;{entry.programType}: {(entry.value).toFixed(1)} ft²
                                 </div>
                             );

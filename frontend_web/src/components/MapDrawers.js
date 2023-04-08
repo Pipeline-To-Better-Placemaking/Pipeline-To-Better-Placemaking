@@ -242,7 +242,15 @@ export default function MapDrawer(props) {
             id={menuAnchors[name] + 'ListBox'}
         >
             <List>
-                {Object.entries(drawer).map(([category, dates], index) => (
+                {Object.entries(drawer).sort(([categoryA, datesA], [categoryB, datesB]) => {
+                    if (categoryA < categoryB) {
+                        return -1;
+                    } else if (categoryA > categoryB) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }).map(([category, dates], index) => (
                     <div key={category}>
                         <ListItemButton
                             key={category + index}
