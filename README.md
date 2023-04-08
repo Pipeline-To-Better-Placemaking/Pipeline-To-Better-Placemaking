@@ -42,7 +42,7 @@ The link in the header has the relevant information
    Otherwise use ```eas update``` to and follow the prompts to update the master branch of the internal deployment
 
 ## Running a Local Instance
-Prerequisite: Install Expo Go (refer to [Expo Guide](#expo-guide) -> [Installing Expo](#installing-expo))
+Prerequisite: Install Expo Go (refer to [Expo Guide](#expo-guide) -> [Installing Expo](#installing-expo)
 
    In order to run a local instance enter these commands in the root directory:
 ```
