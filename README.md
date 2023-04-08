@@ -1,5 +1,5 @@
 # Spring23-Group01
-Mobile Application for Pipeline to Better Placemaking used React Native for its development.
+ ### Mobile Application for Pipeline to Better Placemaking using React Native for its development.
 
 * [Introduction](#introduction)
    * [Warning](#-warning-)
@@ -14,11 +14,11 @@ Mobile Application for Pipeline to Better Placemaking used React Native for its 
 
 ## Introduction
 ### !!! WARNING !!!
-The dependencies on this project are shaky at best, proceed with caution.
+  The dependencies on this project are shaky at best, proceed with caution.
 ### Directory Logic
-The mobile directory inside screens seems to be based on the user flow inside the applications: the left tab option is Collaborate, the middle is Home, and the right is User Settings. From there each tab is broken down to its sub components.
+  The mobile directory inside the ```screens``` folder seems to be based on the user flow inside the applications: the left tab option is **_Collaborate_**, the middle is **_Home_**, and the right is **_User Settings_**. From there each tab is broken down to its sub components.
 ### Connecting to local backend server
-The mobile application connects to the heroku api, to connect to a local database you must update your local ip addres in the env file. You must also run a local instance of the desktop version on the **same** wifi. After that search and replace all instances of **_HEROKU_SERVER_** with **_LOCAL_SERVER_**. Ensure the desktop version of the project is running on the same ip:port as your env file.
+  The mobile application connects to the heroku api, to connect to a local database you must update your local ip addres in the env file. You must also run   a local instance of the desktop version on the **same** wifi. After that search and replace all instances of **_HEROKU_SERVER_** with **_LOCAL_SERVER_**.   Ensure the desktop version of the project is running on the same ip:port as your env file.
 
 ## Expo Guide
 ### Installing Expo
@@ -43,10 +43,10 @@ The link in the header has the relevant information
 
 ## Running a Local Instance
 Prerequisite: 
- * Install Expo Go refer to [Expo Guide](#expo-guide) -> [Installing Expo](#installing-expo)
- * Download the ```.env``` file from the OneDrive -> Design Documentation - Fall 2022, SD1 -> Environment Files and rename it accordingly  
+* Install Expo Go refer to [Expo Guide](#expo-guide) -> [Installing Expo](#installing-expo)
+* Download the ```.env``` file from the OneDrive -> Design Documentation - Fall 2022, SD1 -> Environment Files and rename it accordingly  
    
-   In order to run a local instance enter these commands in the root directory:
+In order to run a local instance enter these commands in the root directory:
 ```
 npm install -force
 npm start
