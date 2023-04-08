@@ -42,8 +42,10 @@ The link in the header has the relevant information
    Otherwise use ```eas update``` to and follow the prompts to update the master branch of the internal deployment
 
 ## Running a Local Instance
-Prerequisite: Install Expo Go (refer to [Expo Guide](#expo-guide) -> [Installing Expo](#installing-expo))
-
+Prerequisite: 
+ * Install Expo Go refer to [Expo Guide](#expo-guide) -> [Installing Expo](#installing-expo)
+ * Download the ```.env``` file from the OneDrive -> Design Documentation - Fall 2022, SD1 -> Environment Files and rename it accordingly  
+   
    In order to run a local instance enter these commands in the root directory:
 ```
 npm install -force
