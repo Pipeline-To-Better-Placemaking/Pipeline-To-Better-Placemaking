@@ -44,7 +44,7 @@ The link in the header has the relevant information
 ## Running a Local Instance
 Prerequisite: 
 * Install Expo Go refer to [Expo Guide](#expo-guide) -> [Installing Expo](#installing-expo)
-* Download the ```.env``` file from the OneDrive -> Design Documentation - Fall 2022, SD1 -> Environment Files and rename it accordingly  
+* Download the ```.env``` file from the OneDrive -> Design Documentation - Fall 2022, SD1 -> Environment Files, rename it accordingly and place it in the root of your project directory
    
 In order to run a local instance enter these commands in the root directory:
 ```
