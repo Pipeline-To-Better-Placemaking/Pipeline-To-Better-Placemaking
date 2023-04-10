@@ -1298,7 +1298,7 @@ const Path = ({ boundsPathWindow, ...options }) => {
         'Handicap Assisted Wheels': '#FFA500',
         Constructed: '#FF00E5',
         New: 'rgba(255, 0, 0, 0.5)',
-        section: '#FFFF00',
+        section: '#FFC300',
         intAccess: '#FFFF00',
         extAccess: '#FF0000'
     }
