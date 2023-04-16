@@ -1308,7 +1308,9 @@ const Path = ({ boundsPathWindow, ...options }) => {
             strokeColor: colors[options.mode] ? colors[options.mode] : '#000000',
             strokeOpacity: 0.9,
             strokeWeight: 4,
-            clickable: true
+            clickable: true,
+            //padding: 2,
+            //add this padding to make clicking the line easier
         }
     }
 
