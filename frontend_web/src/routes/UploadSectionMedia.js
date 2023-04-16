@@ -215,10 +215,14 @@ function UploadSectionMedia() {
             {
               !preview ? 
                 <div className="SubmitButton">
-                  <Input className="Mui-focused" type='file' onChange={handlePreview} />
+                  <Button variant="contained" component="label" >
+                  Upload
+                  <input hidden type="file" onChange={handlePreview}/>
+                </Button>
                   <br/>
-                  {progresspercent === 100 ? <p>Successfully Uploaded</p> : null}
+                  {progresspercent == 100 ? <p>Successfully Uploaded</p> : null}
                 </div>
+                  
             :
               <div className="ImgPreview">
                 <br/>
@@ -271,7 +275,8 @@ function UploadSectionMedia() {
                   <div style={{margin: '1vw', display:'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <Button onClick={handleSubmit}> Upload Media </Button> 
                     <br/>
-                    {progresspercent > 0 ? (progresspercent < 99.99 ? <LinearProgressWithLabel value={progresspercent}/> : resetInput()) : null}
+                    {progresspercent > 0 ? (progresspercent < 99.99 ? <LinearProgressWithLabel value={progresspercent} style={{display: 'flex', width:'20vw', height: '1vh'}}/> 
+                    : resetInput()) : null}
                   </div>
                 </Box>
               </div>

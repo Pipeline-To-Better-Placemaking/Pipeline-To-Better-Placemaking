@@ -6,9 +6,10 @@ Make sure you are running up-to-date versions of Node.js and npm,
     https://nodejs.org/en/
     
 1. Clone the repository locally/Download the files from the repository. 
-2. On the command line or terminal within the /frontend_web folder run: ```npm install```
-3. On the command line or terminal within the root directory of your download run: ```npm install```
-4. On the command line or terminal within the root directory of your download run: ```npm start```  
+2. Download the ```.env``` file from the OneDrive -> Design Documentation - Fall 2022, SD1 -> Environment Files, rename it accordingly and place it in the root of your project directory
+4. On the command line or terminal within the /frontend_web folder run: ```npm install```
+5. On the command line or terminal within the root directory of your download run: ```npm install```
+6. On the command line or terminal within the root directory of your download run: ```npm start```  
    (This will build the /frontend_web project and store a cached version in the frontend_web/build folder. The command will then start the backend server which loads the cached build of the frontend on the same server:port)
 
 

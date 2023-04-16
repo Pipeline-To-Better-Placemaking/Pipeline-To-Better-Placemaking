@@ -271,7 +271,7 @@ export default function MapDrawer(props) {
         return (
             <Collapse in={dateOpen[title]} timeout='auto' unmountOnExit>
                 <List component='div' disablePadding>
-                    {Object.entries(dates).map(([date, times], index) => (
+                    {Object.entries(dates).sort((a,b) => a.date - b.date).map(([date, times], index) => (
                         <div key={title + date}>
                             <ListItemButton
                                 key={title + date + index} sx={{ pl: 4, bgcolor: '#dcedfc' }}
@@ -292,7 +292,7 @@ export default function MapDrawer(props) {
         <Collapse in={timeOpen[`${title}${date}`]} timeout='auto' unmountOnExit>
             <List component='div' disablePadding>
                 {
-                    Object.keys(times).map((time, index) => (
+                    Object.keys(times).sort((a,b) => a.time - b.time).map((time, index) => (
                         time ? <ListItem key={date + time + index} sx={{ pl: 4, bgcolor: '#aed5fa' }}>
                             <FormControlLabel
                                 control={

@@ -463,7 +463,15 @@ export default function ActivityTable(props) {
     const activityRow = props.activity;
 
     return(
-            props.type === 0 ? (Object.entries(activityRow).map(([type, obj]) => (
+            props.type === 0 ? (Object.entries(activityRow).sort(([categoryA, datesA], [categoryB, datesB]) => {
+                if (categoryA < categoryB) {
+                    return -1;
+                } else if (categoryA > categoryB) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }).map(([type, obj]) => (
                 <Row key={ type } name={ type } row={ obj } open={props.open}/>
             ))) : subtable(activityRow, 1, '', '')
     );
