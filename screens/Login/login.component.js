@@ -32,6 +32,7 @@ export const LoginScreen = ( props ) => {
   };
 
   const navigateLogin = async () => {
+    console.log("Praise Jesus!");
     setLoading(true);
 
     let defaultLocation = {

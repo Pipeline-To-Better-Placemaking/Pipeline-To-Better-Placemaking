@@ -154,7 +154,7 @@ export function UserSettings(props) {
         let result = null;
 
         try {
-            const response = await fetch(`https://p2bp.herokuapp.com/api/verify/?email=${email}&code=${verificationCode}`, {
+            const response = await fetch(HEROKU_SERVER + `/verify/?email=${email}&code=${verificationCode}`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
