@@ -131,7 +131,7 @@ export function CreateActivityStack(props) {
   }
 
   const create = async () => {
-    setLoading(true);
+    // setLoading(true);
     // some error checking if they don't fill everything out
     let name = activityName;
     let row = selectedActivityIndex.row;
@@ -171,7 +171,7 @@ export function CreateActivityStack(props) {
       else if (row === 8) { // Access
         await putCollection(name, 'access', '/access_collections', 'access_maps/');
       }
-      await props.setUpdateActivity(false);
+      // await props.setUpdateActivity(false);
       setLoading(false);
       props.navigation.navigate('ProjectPage')
     }
@@ -205,7 +205,7 @@ export function CreateActivityStack(props) {
         await postCollection(name, 'access', '/access_collections', 'access_maps/');
       }
       // Navigate back to Project page
-      setLoading(false);
+      // setLoading(false);
       props.navigation.navigate('ProjectPage')
     }
   };

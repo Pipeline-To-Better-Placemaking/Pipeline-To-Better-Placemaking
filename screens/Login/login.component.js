@@ -43,7 +43,7 @@ export const LoginScreen = ( props ) => {
     let success = false;
     let res = null;
 
-    console.log(HEROKU_SERVER);
+    console.log(HEROKU_SERVER + "Hi mom");
 
     try {
 
@@ -65,38 +65,44 @@ export const LoginScreen = ( props ) => {
         success = false;
     }
 
-    if (success) {
-      setAccessDenied(false);
-
-      await AsyncStorage.setItem("@token", res.token)
-      await AsyncStorage.setItem("@id", res.user._id)
-      await AsyncStorage.setItem("@isVerified", JSON.stringify(res.user.is_verified))
-      await AsyncStorage.setItem("@email", res.user.email)
-      await AsyncStorage.setItem("@firstName", res.user.firstname)
-      await AsyncStorage.setItem("@lastName", res.user.lastname)
-      await AsyncStorage.setItem("@teams", JSON.stringify(res.user.teams))
-      await AsyncStorage.setItem("@invites", JSON.stringify(res.user.invites))
-      await AsyncStorage.setItem("@mapConfig", "satellite")
-      let { status } = await Location.requestForegroundPermissionsAsync();
-
-      if (status === 'granted') {
-        defaultLocation = await Location.getCurrentPositionAsync({});
-        defaultLocation = defaultLocation.coords
-      } else {
-        console.log('Permission to access location was denied');
-      }
-
-      await props.setLocation(defaultLocation);
-      await props.setSignedIn(true);
-      await setLoading(false);
-
-      props.navigation.navigate("TabNavigation")
-    } else {
+    console.log("line 68");
+    console.log(success);
+    if (!success) {
       console.log("login failed: ", res.message);
       setAccessDenied(true);
+      await setLoading(false);
+      return;
     }
+    setAccessDenied(false);
+    console.log("before awaits");
+    await AsyncStorage.setItem("@token", res.token)
+    await AsyncStorage.setItem("@id", res.user._id)
+    await AsyncStorage.setItem("@isVerified", JSON.stringify(res.user.is_verified))
+    await AsyncStorage.setItem("@email", res.user.email)
+    await AsyncStorage.setItem("@firstName", res.user.firstname)
+    await AsyncStorage.setItem("@lastName", res.user.lastname)
+    await AsyncStorage.setItem("@teams", JSON.stringify(res.user.teams))
+    await AsyncStorage.setItem("@invites", JSON.stringify(res.user.invites))
+    await AsyncStorage.setItem("@mapConfig", "satellite")
+    console.log("before status");
+    // let { status } = await Location.requestForegroundPermissionsAsync();
+    console.log("after awaits");
 
-    setLoading(false);
+    /*if (status === 'granted') {
+      console.log("after get Current Pos");
+      const gotLocation = await Location.getCurrentPositionAsync({});
+      defaultLocation = gotLocation.coords;
+    } else {
+      console.log('Permission to access location was denied');
+    }*/
+
+    await props.setLocation(defaultLocation);
+    await props.setSignedIn(true);
+    console.log("before set loading " + loading);
+    await setLoading(false);
+    console.log("After set loading " + loading);
+    props.navigation.navigate("TabNavigation");
+    console.log("After nav " + loading);
   };
 
   const resetPassword = async (inf) =>{

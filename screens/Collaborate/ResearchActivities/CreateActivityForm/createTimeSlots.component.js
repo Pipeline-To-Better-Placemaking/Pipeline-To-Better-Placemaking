@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, userEffect } from 'react';
 import { View } from 'react-native';
 import { Select, SelectItem, Modal, Text, Button, Input, Icon, Divider, List, Card } from '@ui-kitten/components';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -28,21 +28,21 @@ export function CreateTimeSlots(props) {
   const groupDisplayValues = selectedPointsIndex.map(index => {
     return props.standingPoints[index.row].title;
   });
-  
-  // edit start time value for timeslot
-  const editTime = (item, index) => {
-    // load the current value
-    console.log("index in editTime", index);
-    setTimeValues(props.timeSlots[index].date);
-    console.log("timevalues", timeValues);
-    // set the index for which time slot we're editing
-    setSelectedIndex(index);
-    // view the modal
-    setTimePickerVisibility(true);
-  }
+
+  const [isLoading, setIsLoading] = useState(false);
   
   // set the start time value for timeslot
   const setTime = (event, time) => {
+    console.log("Quick Test");
+    console.log(event);
+    console.log(event.type === "dismissed")
+    setTimePickerVisibility(false);
+    if (event.type === "dismissed") {
+      // setTimePickerVisibility(false);
+      return;
+    }
+
+
     console.log("time:", time);
     console.log("index in setTime", selectedIndex)
     // Get info
@@ -61,7 +61,7 @@ export function CreateTimeSlots(props) {
     // Update
     console.log("updated tempList", tempList);
     // setTimeValues(props.timeSlots[selectedIndex].date);
-    props.setTimeSlots(timeSlots => [...tempList]);
+    // props.setTimeSlots(timeSlots => [...tempList]);
     console.log("final timeSlots:", props.timeSlots)
     // setTimeValues(prevValues => {
     //   const newTimeValues = prevValues;
@@ -69,7 +69,7 @@ export function CreateTimeSlots(props) {
     //   console.log("new timeValues", newTimeValues[index])
     //   return newTimeValues;
     // });
-    setTimePickerVisibility(false);
+    return;
   }
 
   // create a new timeslot
@@ -171,6 +171,14 @@ export function CreateTimeSlots(props) {
     return tempPoints.join(', ');
   }
 
+  const onComplete = () => {
+    console.log("in onComplete");
+    // This pulls up the date time picker for some reason
+    // setIsLoading(true);
+    props.create();
+    // setIsLoading(false);
+  }
+
   const TimePicker = ({item, index}) => {
     setSelectedIndex(index)
 
@@ -198,7 +206,6 @@ export function CreateTimeSlots(props) {
                 mode="time"
                 value={props.timeSlots[index].date}
                 onChange={(event, time) => setTime(event, time)}
-                onCancel={() => setTimePickerVisibility(false)}
               />
             </View>
           </Text>
@@ -343,14 +350,14 @@ export function CreateTimeSlots(props) {
 
       <ContentContainer>
         
-        <LoadingSpinner loading={props.loading} />
+        <LoadingSpinner loading={isLoading} />
         
         <View style={styles.container}>
 
           <View style={styles.btnView}>
             <Button
-              onPress={createTime}
               accessoryLeft={PlusIcon}
+              onPress={createTime}
             >
               Create Time Slot
             </Button>
@@ -372,7 +379,7 @@ export function CreateTimeSlots(props) {
               Back
             </Button>
             <Button
-              onPress={() => props.create()}
+              onPress={() => onComplete()}
               status='success'
               accessoryRight={DoneIcon}
             >
