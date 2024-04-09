@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import { LineTools } from '../../../components/Activities/PeopleMoving/lineTools.component.js';
 import { PeopleMovingMap } from '../../../components/Maps/peopleMovingMap.component.js';
 import { useTheme,  Button,  Icon, Text } from '@ui-kitten/components';

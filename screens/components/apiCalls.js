@@ -417,8 +417,9 @@ export async function getTimeSlot(route, id) {
   let token = await AsyncStorage.getItem("@token");
   let success = false
   let timeSlotDetails = null
-  //console.log("Route: ", route);
-  // console.log("ID: ", id);
+  console.log("in getTimeSlot()");
+  console.log("Route: ", route);
+  console.log("ID: ", id);
   try {
     const response = await fetch(HEROKU_SERVER+'/' + route + id, {
         method: 'GET',
@@ -429,7 +430,7 @@ export async function getTimeSlot(route, id) {
         }
     })
     timeSlotDetails = await response.json();
-    // console.log("time slot: ", timeSlotDetails);
+    console.log("time slot: ", timeSlotDetails);
     success = true
   } catch (error) {
       console.log("error", error)

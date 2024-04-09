@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView, { Marker, Polygon, Polyline } from 'react-native-maps'
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { PressMapAreaWrapper } from './mapPoints.component';
 
 import { styles } from './sharedMap.styles';

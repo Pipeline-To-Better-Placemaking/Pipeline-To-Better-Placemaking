@@ -34,6 +34,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "config": {
+        "googleMaps": {
+          "apiKey": ""
+        }
+      },
       "package": "com.measuringplace.twopluscommunity",
       "softwareKeyboardLayoutMode": "pan"
     },

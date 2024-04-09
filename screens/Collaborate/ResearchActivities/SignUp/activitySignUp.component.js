@@ -27,8 +27,10 @@ export function ActivitySignUpPage(props) {
   }, []);
 
   const refreshDetails = async () => {
+    console.log("In Refresh Details!");
     let collectionDetails = {...props.activity};
     collectionDetails = await getAllCollectionInfo(collectionDetails);
+    console.log(collectionDetails);
 
     // if successfully retrieved activity info, Update
     if(collectionDetails !== null) {

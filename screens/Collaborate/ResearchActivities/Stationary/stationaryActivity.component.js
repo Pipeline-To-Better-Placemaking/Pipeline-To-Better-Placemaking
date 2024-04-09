@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
@@ -236,7 +236,7 @@ export function StationaryActivity(props) {
                 // clear the interval to avoid resuming timer issues
                 clearInterval(id);
                 setStart(false);
-                endActivity();
+                restart();
             }
         // ios 1000 ms == 1 s
         // android 2000ms == 2 s ?? wtf mate

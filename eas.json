@@ -12,18 +12,17 @@
       }
     },
     "preview": {
-      "releaseChannel": "master",
       "distribution": "internal",
       "ios": {
         "resourceClass": "m1-medium"
-      }
+      },
     },
     "production": {
       "releaseChannel": "master",
       "distribution": "internal",
       "ios": {
         "resourceClass": "m1-medium"
-      }
+      },
     }
   },
   "submit": {

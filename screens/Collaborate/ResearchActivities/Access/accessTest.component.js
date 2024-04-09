@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, LogBox, Modal  } from 'react-native';
+import { LogBox, Modal, Platform, TouchableOpacity, View } from 'react-native';
 import { ViewableArea, ContentContainer } from '../../../components/content.component';
 import { Header } from '../../../components/headers.component';
 import { useTheme, Button, Text, Icon } from '@ui-kitten/components';
